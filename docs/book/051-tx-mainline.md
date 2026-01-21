@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 50 章：99. 自测题：你是否真的理解了 weaving？](../docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 52 章：主线时间线：Spring Core Tx（事务）](../docs/tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md)
+上一章：[第 50 章：99. 自测题：你是否真的理解了 weaving？](../aop/spring-core-aop-weaving/appendix/050-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 52 章：主线时间线：Spring Core Tx（事务）](../tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 事务这条线解决的问题是：**一次业务操作里，哪些数据库操作应该“同生共死”**？你要能讲清楚：边界在哪、回滚规则是什么、传播行为为什么会让你“以为开启了事务但其实没有”。
@@ -50,8 +50,15 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/tx/spring-core-tx/README.md`](../docs/tx/spring-core-tx/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/tx/spring-core-tx/part-00-guide/03-mainline-timeline.md`](../docs/tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md`](../tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/tx/spring-core-tx/part-00-guide/053-04-branch-decision-matrix.md`](../tx/spring-core-tx/part-00-guide/053-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/tx/spring-core-tx/appendix/060-90-common-pitfalls.md`](../tx/spring-core-tx/appendix/060-90-common-pitfalls.md)
+- 自检清单：[`docs/tx/spring-core-tx/appendix/061-99-self-check.md`](../tx/spring-core-tx/appendix/061-99-self-check.md)
+
+- 模块目录页：[`docs/tx/spring-core-tx/README.md`](../tx/spring-core-tx/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/tx/spring-core-tx/part-00-guide/03-mainline-timeline.md`](../tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md)
 
 建议先跑的最小闭环：
 
@@ -62,8 +69,11 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-tx -Dtest=SpringCoreTxLabTest test`（`spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part00_guide/SpringCoreTxExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxLabTest test`（`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`（`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - 事务主分支）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`（`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxBranchMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - 常见坑聚合）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`（`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/appendix/SpringCoreTxPitfallsBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part00_guide/SpringCoreTxExerciseTest.java`
 
 ---
 

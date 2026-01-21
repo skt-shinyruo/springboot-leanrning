@@ -43,6 +43,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
 
+from repo_paths import find_module_root
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -147,13 +149,25 @@ def normalize_blank_lines(text: str) -> str:
 
 
 def discover_modules(repo_root: Path) -> list[str]:
+    """
+    发现“有模块目录页”的模块：以 docs/<topic>/<module>/README.md 为准，并要求代码模块目录存在。
+    """
+    docs_root = repo_root / "docs"
+    if not docs_root.is_dir():
+        return []
+
     modules: list[str] = []
-    for p in sorted(repo_root.iterdir()):
-        if not p.is_dir():
+    for readme in sorted(docs_root.glob("*/*/README.md")):
+        module = readme.parent.name
+        if find_module_root(repo_root, module) is None:
             continue
-        if (p / "docs" / "README.md").is_file():
-            modules.append(p.name)
+        modules.append(module)
     return modules
+
+
+def resolve_docs_readme(repo_root: Path, module: str) -> Path | None:
+    candidates = sorted((repo_root / "docs").glob(f"*/{module}/README.md"))
+    return candidates[0] if candidates else None
 
 
 def iter_links_from_docs_readme(readme: Path) -> Iterable[tuple[str, str]]:
@@ -178,14 +192,13 @@ def extract_title(md: Path) -> str | None:
     return None
 
 
-def iter_module_chapters(repo_root: Path, module_root: Path) -> list[ChapterRef]:
-    readme = module_root / "docs" / "README.md"
-    if not readme.is_file():
+def iter_module_chapters(repo_root: Path, docs_readme: Path) -> list[ChapterRef]:
+    if not docs_readme.is_file():
         return []
 
     index = 0
     last: dict[Path, tuple[int, str]] = {}
-    for title, target_raw in iter_links_from_docs_readme(readme):
+    for title, target_raw in iter_links_from_docs_readme(docs_readme):
         index += 1
         target = normalize_md_link_target(target_raw)
         if target is None or is_external_link(target):
@@ -193,14 +206,14 @@ def iter_module_chapters(repo_root: Path, module_root: Path) -> list[ChapterRef]
         if not target.endswith(".md"):
             continue
 
-        chapter = (readme.parent / target).resolve()
+        chapter = (docs_readme.parent / target).resolve()
         try:
             chapter.relative_to(repo_root)
         except ValueError:
             continue
         if "/docs/" not in chapter.as_posix():
             continue
-        if chapter == readme:
+        if chapter == docs_readme:
             continue
 
         last[chapter] = (index, title or chapter.name)
@@ -212,7 +225,7 @@ def iter_module_chapters(repo_root: Path, module_root: Path) -> list[ChapterRef]
         out.append(
             ChapterRef(
                 kind="module",
-                module=module_root.name,
+                module=docs_readme.parent.name,
                 path=chapter_path.relative_to(repo_root).as_posix(),
                 title=title,
             )
@@ -221,7 +234,7 @@ def iter_module_chapters(repo_root: Path, module_root: Path) -> list[ChapterRef]
 
 
 def iter_book_chapters(repo_root: Path) -> list[ChapterRef]:
-    root = repo_root / "docs-site" / "content" / "book"
+    root = repo_root / "docs" / "book"
     if not root.is_dir():
         return []
     out: list[ChapterRef] = []
@@ -250,7 +263,10 @@ def load_chapters(
             for module_name in discover_modules(repo_root):
                 if modules and module_name not in modules:
                     continue
-                chapters.extend(iter_module_chapters(repo_root, repo_root / module_name))
+                docs_readme = resolve_docs_readme(repo_root, module_name)
+                if docs_readme is None:
+                    continue
+                chapters.extend(iter_module_chapters(repo_root, docs_readme))
         if include_book:
             chapters.extend(iter_book_chapters(repo_root))
 

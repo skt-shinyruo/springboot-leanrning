@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 145 章：05. 读取资源：InputStream、编码与“可观察性”](145-05-reading-and-encoding.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 147 章：90. 常见坑清单（建议反复对照）](../appendix/147-90-common-pitfalls.md)
+上一章：[第 145 章：05. 读取资源：InputStream、编码与“可观察性”](145-05-reading-and-encoding.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 147 章：90. 常见坑清单（建议反复对照）](../appendix/147-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -56,7 +56,7 @@
 
 - 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
-- 建议命令：`mvn -pl spring-core-resources test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

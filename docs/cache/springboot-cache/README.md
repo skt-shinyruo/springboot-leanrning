@@ -15,8 +15,16 @@
 - [sync 与击穿](part-01-cache/112-04-sync-stampede.md)
 - [过期语义](part-01-cache/113-05-expiry-with-ticker.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[108-02-breakpoint-map.md](part-00-guide/108-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[108-04-branch-decision-matrix.md](part-00-guide/108-04-branch-decision-matrix.md)
+- 排障 playbook：[114-90-common-pitfalls.md](appendix/114-90-common-pitfalls.md)
+- 自检清单：[115-99-self-check.md](appendix/115-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-cache -Dtest=BootCacheBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-cache -Dtest=BootCacheBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/114-90-common-pitfalls.md)
 - [自检](appendix/115-99-self-check.md)
-

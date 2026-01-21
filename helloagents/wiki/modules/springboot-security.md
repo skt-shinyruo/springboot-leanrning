@@ -36,11 +36,22 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/security/springboot-security/README.md`
-- **Docs Guide:** `docs/security/springboot-security/part-00-guide/00-deep-dive-guide.md`
-- **Lab:** `springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
-- **Lab (Multi FilterChain):** `springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityMultiFilterChainOrderLabTest.java`
-- **Lab (Dev Profile):** `springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityDevProfileLabTest.java`
-- **Exercise:** `springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
+- **Docs Guide:** `docs/security/springboot-security/part-00-guide/086-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/security/springboot-security/part-00-guide/086-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md`
+- **Playbook:** `docs/security/springboot-security/appendix/092-90-common-pitfalls.md`
+- **Self-check:** `docs/security/springboot-security/appendix/093-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-security -Dtest=BootSecurityBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java`
+- **Lab:** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+- **Lab (Multi FilterChain):** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityMultiFilterChainOrderLabTest.java`
+- **Lab (Dev Profile):** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityDevProfileLabTest.java`
+- **Exercise:** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

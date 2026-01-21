@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 106 章：Cache 主线](/book/106-cache-mainline/) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 108 章：00 - Deep Dive Guide（springboot-cache）](108-00-deep-dive-guide.md)
+上一章：[第 106 章：Cache 主线](../../../book/106-cache-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 108 章：00 - Deep Dive Guide（springboot-cache）](108-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

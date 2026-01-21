@@ -27,6 +27,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+from repo_paths import find_module_root
+
 
 MD_LINK_WITH_TEXT_RE = re.compile(r"(!?)\[([^\]]*)\]\(([^)]+)\)")
 SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
@@ -74,7 +76,7 @@ def discover_modules(repo_root: Path) -> list[tuple[str, Path]]:
     for readme in sorted(docs_root.glob("*/*/README.md")):
         module = readme.parent.name
         # 仅收录确实存在代码模块目录的条目（避免把非模块目录误判为模块）
-        if not (repo_root / module).is_dir():
+        if find_module_root(repo_root, module) is None:
             continue
         modules.append((module, readme))
 

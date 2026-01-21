@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 54 章：01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？](054-01-transaction-boundary.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 56 章：03. 回滚规则：为什么 checked exception 默认不回滚？](056-03-rollback-rules.md)
+上一章：[第 54 章：01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？](054-01-transaction-boundary.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 56 章：03. 回滚规则：为什么 checked exception 默认不回滚？](056-03-rollback-rules.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -53,7 +53,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreTxLabTest`
-- 建议命令：`mvn -pl spring-core-tx test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -67,7 +67,7 @@
 2. 调用入口必须“走代理”  
    - 同类内部自调用会绕过代理（AOP/Tx 的同一类坑）
 3. 目标方法必须能被代理拦截  
-   - `final` 方法、`private` 方法等可能导致拦截失效（见 AOP 模块的 [04. final-and-proxy-limits](../../../docs/aop/spring-core-aop/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md)）
+   - `final` 方法、`private` 方法等可能导致拦截失效（见 AOP 模块的 [04. final-and-proxy-limits](../../../aop/spring-core-aop/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md)）
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->

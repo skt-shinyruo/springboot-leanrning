@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 149 章：Profiles 主线](/book/149-profiles-mainline/) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 151 章：深挖指南（Spring Core Profiles）](151-00-deep-dive-guide.md)
+上一章：[第 149 章：Profiles 主线](../../../book/149-profiles-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 151 章：深挖指南（Spring Core Profiles）](151-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

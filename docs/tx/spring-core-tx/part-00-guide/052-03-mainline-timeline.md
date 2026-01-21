@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 51 章：事务主线（Tx）](/book/051-tx-mainline/) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 53 章：深挖指南（Spring Core Tx）](053-00-deep-dive-guide.md)
+上一章：[第 51 章：事务主线（Tx）](../../../book/051-tx-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 53 章：深挖指南（Spring Core Tx）](053-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

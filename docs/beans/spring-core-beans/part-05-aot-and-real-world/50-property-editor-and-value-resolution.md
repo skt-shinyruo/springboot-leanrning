@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
 
 ## 机制主线
 
@@ -146,7 +146,7 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -157,16 +157,16 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 ## 0. 复现入口（可运行）
 
 1) PropertyEditor（自定义 editor）
-   - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java`
+   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java`
 
 2) BeanDefinitionValueResolver（引用/集合/Map/Properties）
-   - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
+   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
 
 推荐运行命令：
 
 ```bash
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansPropertyEditorLabTest test
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLabTest test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPropertyEditorLabTest test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLabTest test
 ```
 
 ## 2. 怎么用：最小可用写法（以 Lab 为准）
@@ -210,7 +210,7 @@ mvn -pl spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLab
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
 
 上一章：[49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀](49-built-in-factorybeans-gallery.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90. 常见坑清单（建议反复对照）](../appendix/025-90-common-pitfalls.md)
 

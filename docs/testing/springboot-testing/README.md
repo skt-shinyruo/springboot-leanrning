@@ -11,8 +11,16 @@
 
 - [slice 与 mocking](part-01-testing/185-01-slice-and-mocking.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[184-02-breakpoint-map.md](part-00-guide/184-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[184-04-branch-decision-matrix.md](part-00-guide/184-04-branch-decision-matrix.md)
+- 排障 playbook：[186-90-common-pitfalls.md](appendix/186-90-common-pitfalls.md)
+- 自检清单：[187-99-self-check.md](appendix/187-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-testing -Dtest=BootTestingBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-testing -Dtest=BootTestingBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/186-90-common-pitfalls.md)
 - [自检](appendix/187-99-self-check.md)
-

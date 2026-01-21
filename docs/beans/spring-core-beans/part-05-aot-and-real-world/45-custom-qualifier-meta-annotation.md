@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansCustomQualifierLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
 
 ## 机制主线
 
@@ -52,7 +52,7 @@
 
 入口测试：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
   - `customQualifierMetaAnnotation_canNarrowDownCandidates_forSingleInjection()`（meta-annotation 命中收敛）
 
 - `DefaultListableBeanFactory#findAutowireCandidates`（候选集合）
@@ -85,7 +85,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansCustomQualifierLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -93,12 +93,12 @@
 
 本模块提供一个最小实验：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
 
 推荐运行命令：
 
 ```bash
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 ```
 
 ## 3. 源码 / 断点建议（把“为什么注入的是它”讲成可复述算法）
@@ -133,7 +133,7 @@ mvn -pl spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansCustomQualifierLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
 
 上一章：[44. SpEL 与 `@Value("#{...}")`：表达式解析链路](44-spel-and-value-expression.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers](46-xml-namespace-extension.md)
 

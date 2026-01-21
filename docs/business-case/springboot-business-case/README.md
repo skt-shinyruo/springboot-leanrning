@@ -11,8 +11,16 @@
 
 - [架构与端到端流转](part-01-business-case/191-01-architecture-and-flow.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[190-02-breakpoint-map.md](part-00-guide/190-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[190-04-branch-decision-matrix.md](part-00-guide/190-04-branch-decision-matrix.md)
+- 排障 playbook：[192-90-common-pitfalls.md](appendix/192-90-common-pitfalls.md)
+- 自检清单：[193-99-self-check.md](appendix/193-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/192-90-common-pitfalls.md)
 - [自检](appendix/193-99-self-check.md)
-

@@ -20,8 +20,18 @@
 - [多层代理叠加](part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
 - [叠加排障手册](part-03-proxy-stacking/039-10-real-world-stacking-playbook.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[029-02-breakpoint-map.md](part-00-guide/029-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[029-04-branch-decision-matrix.md](part-00-guide/029-04-branch-decision-matrix.md)
+- 排障 playbook：[040-90-common-pitfalls.md](appendix/040-90-common-pitfalls.md)
+- 自检清单：[041-99-self-check.md](appendix/041-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
+- 可跑入口（Branch Matrix - Proxy 基础）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
+- 可跑入口（Branch Matrix - AutoProxy）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
+- 可跑入口（Branch Matrix - 多代理叠加）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/040-90-common-pitfalls.md)
 - [自检](appendix/041-99-self-check.md)
-

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 126 章：Events 主线](/book/126-events-mainline/) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 128 章：深挖指南（Spring Core Events）](128-00-deep-dive-guide.md)
+上一章：[第 126 章：Events 主线](../../../book/126-events-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 128 章：深挖指南（Spring Core Events）](128-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

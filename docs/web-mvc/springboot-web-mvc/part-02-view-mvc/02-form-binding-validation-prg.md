@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcViewLabTest`
-    - Test file：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
+    - Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
 
 ## 机制主线
 
@@ -65,10 +65,10 @@
 
 ## 在本模块里去哪里看
 
-- Controller：`springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcUserController.java`
-- 表单 DTO：`springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcCreateUserForm.java`
-- 表单模板：`springboot-web-mvc/src/main/resources/templates/pages/user-form.html`
-- 详情模板：`springboot-web-mvc/src/main/resources/templates/pages/user-detail.html`
+- Controller：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcUserController.java`
+- 表单 DTO：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcCreateUserForm.java`
+- 表单模板：`spring-boot-modules/springboot-web-mvc/src/main/resources/templates/pages/user-form.html`
+- 详情模板：`spring-boot-modules/springboot-web-mvc/src/main/resources/templates/pages/user-detail.html`
 
 ## 源码与断点
 
@@ -79,7 +79,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcViewLabTest`
-- 建议命令：`mvn -pl springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -88,7 +88,7 @@
 ## 实验入口（先跑再看）
 
 - MockMvc（建议先看这个）：
-  - `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
+  - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
     - `rendersUserFormPage`
     - `reRendersFormWhenPostIsInvalid`
     - `redirectsWhenPostIsValid`
@@ -139,7 +139,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootWebMvcViewLabTest`
-- Test file：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
+- Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
 
 上一章：[part-02-view-mvc/01-thymeleaf-and-view-resolver.md](076-01-thymeleaf-and-view-resolver.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-02-view-mvc/03-error-pages-and-content-negotiation.md](03-error-pages-and-content-negotiation.md)
 

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 148 章：自测题（Spring Core Resources）](../docs/resources/spring-core-resources/appendix/148-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 150 章：主线时间线：Spring Profiles](../docs/profiles/spring-core-profiles/part-00-guide/150-03-mainline-timeline.md)
+上一章：[第 148 章：自测题（Spring Core Resources）](../resources/spring-core-resources/appendix/148-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 150 章：主线时间线：Spring Profiles](../profiles/spring-core-profiles/part-00-guide/150-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**为什么同一个应用在 dev/prod 行为不一样、为什么某个 Bean 在某环境“消失了”、为什么条件装配没生效**。
@@ -51,15 +51,24 @@ Profile 影响两条线：
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/profiles/spring-core-profiles/README.md`](../docs/profiles/spring-core-profiles/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/profiles/spring-core-profiles/part-00-guide/03-mainline-timeline.md`](../docs/profiles/spring-core-profiles/part-00-guide/150-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md`](../profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/profiles/spring-core-profiles/part-00-guide/151-04-branch-decision-matrix.md`](../profiles/spring-core-profiles/part-00-guide/151-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/profiles/spring-core-profiles/appendix/153-90-common-pitfalls.md`](../profiles/spring-core-profiles/appendix/153-90-common-pitfalls.md)
+- 自检清单：[`docs/profiles/spring-core-profiles/appendix/154-99-self-check.md`](../profiles/spring-core-profiles/appendix/154-99-self-check.md)
+
+- 模块目录页：[`docs/profiles/spring-core-profiles/README.md`](../profiles/spring-core-profiles/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/profiles/spring-core-profiles/part-00-guide/03-mainline-timeline.md`](../profiles/spring-core-profiles/part-00-guide/150-03-mainline-timeline.md)
 
 ---
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-profiles -Dtest=SpringCoreProfilesLabTest test`（`spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/SpringCoreProfilesLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part00_guide/SpringCoreProfilesExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesLabTest test`（`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/SpringCoreProfilesLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBookMatrixLabTest test`（`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/SpringCoreProfilesBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBranchMatrixLabTest test`（`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/SpringCoreProfilesBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part00_guide/SpringCoreProfilesExerciseTest.java`
 
 ---
 

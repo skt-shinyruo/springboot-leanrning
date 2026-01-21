@@ -15,6 +15,15 @@
 - [超时与重试](part-01-web-client/178-04-timeout-and-retry.md)
 - [MockWebServer 测试](part-01-web-client/179-05-testing-with-mockwebserver.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[174-02-breakpoint-map.md](part-00-guide/174-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[174-04-branch-decision-matrix.md](part-00-guide/174-04-branch-decision-matrix.md)
+- 排障 playbook：[180-90-common-pitfalls.md](appendix/180-90-common-pitfalls.md)
+- 自检清单：[181-99-self-check.md](appendix/181-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/180-90-common-pitfalls.md)

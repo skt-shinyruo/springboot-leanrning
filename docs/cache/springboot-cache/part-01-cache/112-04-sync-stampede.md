@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 111 章：03：key / condition / unless：缓存边界](111-03-key-condition-unless.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 113 章：05：过期与可测性：用 Ticker 控制时间](113-05-expiry-with-ticker.md)
+上一章：[第 111 章：03：key / condition / unless：缓存边界](111-03-key-condition-unless.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 113 章：05：过期与可测性：用 Ticker 控制时间](113-05-expiry-with-ticker.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -49,7 +49,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootCacheLabTest`
-- 建议命令：`mvn -pl springboot-cache test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-cache test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

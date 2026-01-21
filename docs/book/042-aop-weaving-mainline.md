@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](../docs/aop/spring-core-aop/appendix/041-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）](../docs/aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md)
+上一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](../aop/spring-core-aop/appendix/041-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）](../aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**代理做不到的增强怎么办**？当你需要在类加载期/编译期把增强“织进字节码”，AspectJ weaving（LTW/CTW）就会成为另一条主线。
@@ -48,15 +48,25 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/aop/spring-core-aop-weaving/README.md`](../docs/aop/spring-core-aop-weaving/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/aop/spring-core-aop-weaving/part-00-guide/03-mainline-timeline.md`](../docs/aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md`](../aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md`](../aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md`](../aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md)
+- 自检清单：[`docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md`](../aop/spring-core-aop-weaving/appendix/050-99-self-check.md)
+
+- 模块目录页：[`docs/aop/spring-core-aop-weaving/README.md`](../aop/spring-core-aop-weaving/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/aop/spring-core-aop-weaving/part-00-guide/03-mainline-timeline.md`](../aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md)
 
 ---
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-aop-weaving -Dtest=AspectjLtwLabTest test`（`spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjLtwLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part00_guide/SpringCoreAopWeavingExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwLabTest test`（`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjLtwLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`（`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjWeavingBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - LTW）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`（`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjLtwBranchMatrixLabTest.java`；也可直接 `mvn -q -pl :spring-core-aop-weaving test`）
+- Lab（进阶：Branch Matrix - CTW）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`（`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part03_ctw_fundamentals/AspectjCtwBranchMatrixLabTest.java`；也可直接 `mvn -q -pl :spring-core-aop-weaving test`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part00_guide/SpringCoreAopWeavingExerciseTest.java`
 
 ---
 

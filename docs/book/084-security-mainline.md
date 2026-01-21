@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 83 章：99 - Self Check（springboot-web-mvc）](../docs/web-mvc/springboot-web-mvc/appendix/083-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 85 章：主线时间线：Spring Boot Security](../docs/security/springboot-security/part-00-guide/085-03-mainline-timeline.md)
+上一章：[第 83 章：99 - Self Check（springboot-web-mvc）](../web-mvc/springboot-web-mvc/appendix/083-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 85 章：主线时间线：Spring Boot Security](../security/springboot-security/part-00-guide/085-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**你没写安全框架代码，为什么请求就会被拦住、为什么会出现 401/403、为什么 CSRF 会影响表单提交**。
@@ -49,15 +49,24 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/security/springboot-security/README.md`](../docs/security/springboot-security/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/security/springboot-security/part-00-guide/03-mainline-timeline.md`](../docs/security/springboot-security/part-00-guide/085-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/security/springboot-security/part-00-guide/086-02-breakpoint-map.md`](../security/springboot-security/part-00-guide/086-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md`](../security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/security/springboot-security/appendix/092-90-common-pitfalls.md`](../security/springboot-security/appendix/092-90-common-pitfalls.md)
+- 自检清单：[`docs/security/springboot-security/appendix/093-99-self-check.md`](../security/springboot-security/appendix/093-99-self-check.md)
+
+- 模块目录页：[`docs/security/springboot-security/README.md`](../security/springboot-security/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/security/springboot-security/part-00-guide/03-mainline-timeline.md`](../security/springboot-security/part-00-guide/085-03-mainline-timeline.md)
 
 ---
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl springboot-security -Dtest=BootSecurityLabTest test`（`springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
+- Lab：`mvn -q -pl :springboot-security -Dtest=BootSecurityLabTest test`（`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-security -Dtest=BootSecurityBookMatrixLabTest test`（`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`（`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
 
 ---
 

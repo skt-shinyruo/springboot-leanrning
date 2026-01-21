@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 47 章：03. CTW：Compile-Time Weaving（编译期织入）](../part-03-ctw/047-03-ctw-basics.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 49 章：90. 常见坑清单（LTW/CTW）](../appendix/049-90-common-pitfalls.md)
+上一章：[第 47 章：03. CTW：Compile-Time Weaving（编译期织入）](../part-03-ctw/047-03-ctw-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 49 章：90. 常见坑清单（LTW/CTW）](../appendix/049-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -113,7 +113,7 @@ execution(* Foo.deep(..)) && cflow(execution(* Foo.entry(..)))
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
-- 建议命令：`mvn -pl spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

@@ -33,8 +33,16 @@
 - 测试与排障：[01](part-07-testing-debugging/080-01-webmvc-testing-and-troubleshooting.md)
 - 安全与观测：从 [01](part-08-security-observability/081-01-security-filterchain-and-mvc.md) 开始
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[066-02-breakpoint-map.md](part-00-guide/066-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[064-04-branch-decision-matrix.md](part-00-guide/064-04-branch-decision-matrix.md)
+- 排障 playbook：[082-90-common-pitfalls.md](appendix/082-90-common-pitfalls.md)
+- 自检清单：[083-99-self-check.md](appendix/083-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
+- 可跑入口（Branch Matrix - 错误分支矩阵 400/406/415）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/082-90-common-pitfalls.md)
 - [自检](appendix/083-99-self-check.md)
-

@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
 
 ## 机制主线
 
@@ -29,7 +29,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
@@ -64,22 +64,22 @@
 ### 2.1 复现入口（可运行）
 
 - 入口测试（推荐先跑通再下断点）：
-  - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
 - 推荐运行命令：
-  - 类级：`mvn -pl spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest test`
-  - 方法级（更快）：`mvn -pl spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenTypeInfoIsLost test`
+  - 类级：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest test`
+  - 方法级（更快）：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenTypeInfoIsLost test`
 - 你将断言/观察到：
   - 容器“看起来”注册了一个 `T` 的实现，但在按 `ResolvableType` 匹配时可能失配（尤其是代理/手工注册实例时）
   - 结论不是“泛型不能用”，而是“泛型匹配依赖可被保留的类型信息”，要知道何时会丢
 
 对应实验（可运行 + 可断言）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
 
 建议直接跑：
 
 ```bash
-mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest test
+mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest test
 ```
 
 这个 Lab 做了两件事（对照非常强）：
@@ -164,7 +164,7 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLa
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
 
 上一章：[36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](36-type-conversion-and-beanwrapper.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](38-environment-and-propertysource.md)
 

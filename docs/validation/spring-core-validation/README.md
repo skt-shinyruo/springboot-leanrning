@@ -21,8 +21,16 @@
 - 代理边界与自调用：`spring-core-aop`
 - Web 入参/错误映射：`springboot-web-mvc`
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[157-02-breakpoint-map.md](part-00-guide/157-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[157-04-branch-decision-matrix.md](part-00-guide/157-04-branch-decision-matrix.md)
+- 排障 playbook：[164-90-common-pitfalls.md](appendix/164-90-common-pitfalls.md)
+- 自检清单：[165-99-self-check.md](appendix/165-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/164-90-common-pitfalls.md)
 - [自检](appendix/165-99-self-check.md)
-

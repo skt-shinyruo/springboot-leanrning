@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？](099-03-flush-and-visibility.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 101 章：05. Fetching 与 N+1：为什么查一次会变成查很多次？](101-05-fetching-and-n-plus-one.md)
+上一章：[第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？](099-03-flush-and-visibility.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 101 章：05. Fetching 与 N+1：为什么查一次会变成查很多次？](101-05-fetching-and-n-plus-one.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -60,7 +60,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootDataJpaLabTest`
-- 建议命令：`mvn -pl springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

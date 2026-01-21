@@ -21,8 +21,16 @@
 
 - 事务边界与一致性：`spring-core-tx`
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[096-02-breakpoint-map.md](part-00-guide/096-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[096-04-branch-decision-matrix.md](part-00-guide/096-04-branch-decision-matrix.md)
+- 排障 playbook：[104-90-common-pitfalls.md](appendix/104-90-common-pitfalls.md)
+- 自检清单：[105-99-self-check.md](appendix/105-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/104-90-common-pitfalls.md)
 - [自检](appendix/105-99-self-check.md)
-

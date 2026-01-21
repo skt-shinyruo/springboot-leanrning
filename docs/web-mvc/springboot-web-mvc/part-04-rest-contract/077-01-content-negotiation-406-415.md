@@ -6,11 +6,11 @@
     - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
     - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
     - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcContractJacksonLabTest`
+    - 推荐 Lab：`BootWebMvcErrorBranchMatrixLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../part-05-real-world-http/078-01-cors-preflight.md)
+上一章：[第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../part-05-real-world-http/078-01-cors-preflight.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,15 +27,18 @@
 
 !!! example "本章配套实验（先跑再读）"
 
-    - Lab：`BootWebMvcContractJacksonLabTest`
+    - Lab：`BootWebMvcErrorBranchMatrixLabTest`（同一视角对照 400/406/415 分支）
+    - Lab：`BootWebMvcContractJacksonLabTest`（聚焦 406/415 + strict JSON）
 
 ## 机制主线
 
-- 本章用 `BootWebMvcContractJacksonLabTest` 固定两条证据链：
-  - `/echo` 用错误 `Content-Type` → 415
-  - `/ping` 用错误 `Accept` → 406
-- 若你在排障时想“把猜测变成证据”，建议再配合 `BootWebMvcTestingDebuggingLabTest`：
-  - 直接拿到 `resolvedException`，确认到底是 406 还是 415 的分支入口。
+- 本章推荐先跑 `BootWebMvcErrorBranchMatrixLabTest` 固定三类分支（同一视角对照 400/406/415）：
+  - `/api/users`：malformed JSON → 400（`HttpMessageNotReadableException`）
+  - `/api/advanced/contract/echo`：错误 `Content-Type` → 415
+  - `/api/advanced/contract/ping`：错误 `Accept` → 406
+- 然后用 `BootWebMvcContractJacksonLabTest` 把“契约可控”做成可回归证据（strict media type / unknown fields）。
+- 排障时如果你想“把猜测变成证据”，可以对照 `BootWebMvcTestingDebuggingLabTest` 的写法：
+  - 直接拿到 `resolvedException`，最快锁定“到底走的是 406 还是 415（或 400）”的分支入口。
 
 ## 源码与断点
 
@@ -53,10 +56,11 @@
 2. **再确认 converter**：
    - 415（read 失败）：能否找到“能读该 Content-Type”的 converter？
    - 406（write 失败）：能否找到“能写出 Accept 的格式”的 converter？
-3. **用证据锁住分支**：MockMvc 的 `resolvedException`（见 `BootWebMvcTestingDebuggingLabTest`）是最快的“分支定位器”。
+3. **用证据锁住分支**：MockMvc 的 `resolvedException`（见 `BootWebMvcErrorBranchMatrixLabTest` / `BootWebMvcTestingDebuggingLabTest`）是最快的“分支定位器”。
 
 ## 最小可运行实验（Lab）
 
+- Lab：`BootWebMvcErrorBranchMatrixLabTest`
 - Lab：`BootWebMvcContractJacksonLabTest`
 - Lab：`BootWebMvcTestingDebuggingLabTest`
 
@@ -72,6 +76,7 @@
 
 ### 对应 Lab/Test
 
+- Lab：`BootWebMvcErrorBranchMatrixLabTest`
 - Lab：`BootWebMvcContractJacksonLabTest`
 - Lab：`BootWebMvcTestingDebuggingLabTest`
 

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 71 章：01：校验（Validation）与错误响应形状（Error Shape）](071-01-validation-and-error-shaping.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 73 章：03：请求绑定（Binding）与 Converter/Formatter](073-03-binding-and-converters.md)
+上一章：[第 71 章：01：校验（Validation）与错误响应形状（Error Shape）](071-01-validation-and-error-shaping.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 73 章：03：请求绑定（Binding）与 Converter/Formatter](073-03-binding-and-converters.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest`
-    - Test file：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part09_advice_order/BootWebMvcAdviceOrderLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part10_advice_matching/BootWebMvcAdviceMatchingLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+    - Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part09_advice_order/BootWebMvcAdviceOrderLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part10_advice_matching/BootWebMvcAdviceMatchingLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 ## 机制主线
 
@@ -78,23 +78,23 @@ Spring MVC 的异常可能来自不同阶段：
 - Lab：`BootWebMvcLabTest`
 - Lab：`BootWebMvcExceptionResolverChainLabTest`（用 resolvedException 固化：binder/validation/converter 三类 400 的根因差异）
 - 建议命令（方法级入口）：
-  - `mvn -q -pl springboot-web-mvc -Dtest=BootWebMvcLabTest#returnsBadRequestWhenJsonIsMalformed test`
-  - `mvn -q -pl springboot-web-mvc -Dtest=BootWebMvcExceptionResolverChainLabTest#canDebugHttpMessageNotReadableExceptionFromInvalidJsonViaResolvedException test`
+  - `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcLabTest#returnsBadRequestWhenJsonIsMalformed test`
+  - `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcExceptionResolverChainLabTest#canDebugHttpMessageNotReadableExceptionFromInvalidJsonViaResolvedException test`
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 实验入口
 
 - 观察现状（malformed JSON 只断言 400）：
-  - `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
+  - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
     - `returnsBadRequestWhenJsonIsMalformed`
 - 观察 MVC 内部异常类型（用 resolvedException 固化“400 从哪里来”）：
-  - `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java`
+  - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java`
     - `canDebugBindExceptionFromModelAttributeValidationViaResolvedException`
     - `canDebugMethodArgumentNotValidExceptionFromRequestBodyValidationViaResolvedException`
     - `canDebugHttpMessageNotReadableExceptionFromInvalidJsonViaResolvedException`
 - 练习：为 malformed JSON 补齐统一错误响应：
-  - `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+  - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
     - `exercise_handleMalformedJson`
 
 ## Debug 建议
@@ -200,7 +200,7 @@ Spring MVC 的异常可能来自不同阶段：
 - Lab：`BootWebMvcAdviceOrderLabTest`
 - Lab：`BootWebMvcAdviceMatchingLabTest`
 - Exercise：`BootWebMvcExerciseTest`
-- Test file：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part09_advice_order/BootWebMvcAdviceOrderLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part10_advice_matching/BootWebMvcAdviceMatchingLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part09_advice_order/BootWebMvcAdviceOrderLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part10_advice_matching/BootWebMvcAdviceMatchingLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 上一章：[part-01-web-mvc/01-validation-and-error-shaping.md](071-01-validation-and-error-shaping.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-mvc/03-binding-and-converters.md](073-03-binding-and-converters.md)
 

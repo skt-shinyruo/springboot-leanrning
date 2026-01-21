@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 28 章：主线时间线：Spring Core AOP](028-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 30 章：01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+上一章：[第 28 章：主线时间线：Spring Core AOP](028-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 30 章：01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -169,7 +169,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest`
-- 建议命令：`mvn -pl spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -179,13 +179,13 @@
 
 ```bash
 # 跑整个 aop 模块测试
-mvn -pl spring-core-aop test
+mvn -pl :spring-core-aop test
 
 # 只跑一个测试类（断点更舒服）
-mvn -pl spring-core-aop -Dtest=SpringCoreAopProxyMechanicsLabTest test
+mvn -pl :spring-core-aop -Dtest=SpringCoreAopProxyMechanicsLabTest test
 
 # 只跑一个测试方法（最推荐）
-mvn -pl spring-core-aop -Dtest=SpringCoreAopProxyMechanicsLabTest#jdkDynamicProxyIsUsedForInterfaceBasedBeans_whenProxyTargetClassIsFalse test
+mvn -pl :spring-core-aop -Dtest=SpringCoreAopProxyMechanicsLabTest#jdkDynamicProxyIsUsedForInterfaceBasedBeans_whenProxyTargetClassIsFalse test
 ```
 
 > 提示：如果你需要“启动后挂起等待 IDE attach”，可以加 `-Dmaven.surefire.debug`（默认监听 5005）。

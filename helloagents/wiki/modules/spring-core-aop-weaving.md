@@ -10,6 +10,10 @@
 - **Status:** 🚧In Development
 - **Last Updated:** 2026-01-09
 
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
+  - 对应测试类：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjWeavingBookMatrixLabTest.java`
+
 ## Specifications
 
 ### Source Layout
@@ -21,19 +25,26 @@
 - docs：`docs/aop/spring-core-aop-weaving/part-03-ctw/`（CTW：编译期织入与范围控制）
 - docs：`docs/aop/spring-core-aop-weaving/part-04-join-points/`（Join Point/Pointcut Cookbook）
 - docs：`docs/aop/spring-core-aop-weaving/appendix/`（常见坑/自测题）
-- src(main)：`spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/SpringCoreAopWeavingApplication.java`（入口）
-- src(main)：`spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/support/**`（可断言观察点：InvocationLog/JoinPointEvent）
-- src(main)：`spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/ctwtargets/**`（CTW 目标对象）
-- src(main)：`spring-core-aop-weaving/src/main/aspect/com/learning/springboot/springcoreaopweaving/part03_ctw_fundamentals/**`（CTW aspects，AspectJ 语法）
-- src(test)：`spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`（LTW 配置）
-- src(test)：`spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/ltwtargets/**`（LTW 目标对象）
-- src(test)：`spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/**`（LTW aspects + Labs）
-- src(test)：`spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part03_ctw_fundamentals/**`（CTW Labs）
-- src(test)：`spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part00_guide/**`（Exercises，默认 `@Disabled`）
+- src(main)：`spring-core-modules/spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/SpringCoreAopWeavingApplication.java`（入口）
+- src(main)：`spring-core-modules/spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/support/**`（可断言观察点：InvocationLog/JoinPointEvent）
+- src(main)：`spring-core-modules/spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/ctwtargets/**`（CTW 目标对象）
+- src(main)：`spring-core-modules/spring-core-aop-weaving/src/main/aspect/com/learning/springboot/springcoreaopweaving/part03_ctw_fundamentals/**`（CTW aspects，AspectJ 语法）
+- src(test)：`spring-core-modules/spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`（LTW 配置）
+- src(test)：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/ltwtargets/**`（LTW 目标对象）
+- src(test)：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/**`（LTW aspects + Labs）
+- src(test)：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part03_ctw_fundamentals/**`（CTW Labs）
+- src(test)：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part00_guide/**`（Exercises，默认 `@Disabled`）
 
 ### Docs Index
 
 - 入口：`docs/aop/spring-core-aop-weaving/README.md`
+- 断点地图：`docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md`
+- 关键分支矩阵：`docs/aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md`
+- 排障 playbook：`docs/aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md`
+- 自检清单：`docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md`
+- Branch Matrix（关键分支入口，建议直接跑模块以分流 LTW/CTW）：`mvn -q -pl :spring-core-aop-weaving test`
+  - LTW：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
+  - CTW：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`
 
 ### Requirement: LTW/CTW 可验证闭环
 

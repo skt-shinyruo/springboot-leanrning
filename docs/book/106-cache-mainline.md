@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 105 章：99 - Self Check（springboot-data-jpa）](../docs/data-jpa/springboot-data-jpa/appendix/105-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 107 章：主线时间线：Spring Boot Cache](../docs/cache/springboot-cache/part-00-guide/107-03-mainline-timeline.md)
+上一章：[第 105 章：99 - Self Check（springboot-data-jpa）](../data-jpa/springboot-data-jpa/appendix/105-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 107 章：主线时间线：Spring Boot Cache](../cache/springboot-cache/part-00-guide/107-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**为什么加上 `@Cacheable` 就能缓存、缓存 key 怎么算、为什么同一个方法有时命中有时不命中**。核心仍然是：AOP 代理 + Cache 抽象。
@@ -49,15 +49,24 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/cache/springboot-cache/README.md`](../docs/cache/springboot-cache/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/cache/springboot-cache/part-00-guide/03-mainline-timeline.md`](../docs/cache/springboot-cache/part-00-guide/107-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md`](../cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md`](../cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/cache/springboot-cache/appendix/114-90-common-pitfalls.md`](../cache/springboot-cache/appendix/114-90-common-pitfalls.md)
+- 自检清单：[`docs/cache/springboot-cache/appendix/115-99-self-check.md`](../cache/springboot-cache/appendix/115-99-self-check.md)
+
+- 模块目录页：[`docs/cache/springboot-cache/README.md`](../cache/springboot-cache/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/cache/springboot-cache/part-00-guide/03-mainline-timeline.md`](../cache/springboot-cache/part-00-guide/107-03-mainline-timeline.md)
 
 ---
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl springboot-cache -Dtest=BootCacheLabTest test`（`springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`springboot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseTest.java`
+- Lab：`mvn -q -pl :springboot-cache -Dtest=BootCacheLabTest test`（`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-cache -Dtest=BootCacheBookMatrixLabTest test`（`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-cache -Dtest=BootCacheBranchMatrixLabTest test`（`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseTest.java`
 
 ---
 

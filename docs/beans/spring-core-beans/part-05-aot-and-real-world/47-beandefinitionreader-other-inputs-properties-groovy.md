@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
 
 ## 机制主线
 
@@ -37,10 +37,10 @@
 
 - Properties：
   - 测试：`SpringCoreBeansPropertiesBeanDefinitionReaderLabTest#propertiesBeanDefinitionReader_registersBeanDefinitions_fromPropertiesFile`
-  - 资源：`spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.properties`
+  - 资源：`spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.properties`
 - Groovy：
   - 测试：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest#groovyBeanDefinitionReader_registersBeanDefinitions_fromGroovyScript`
-  - 资源：`spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.groovy`
+  - 资源：`spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.groovy`
 
 ## 1. 是什么：为什么要有 BeanDefinitionReader 家族？
 
@@ -93,7 +93,7 @@ BeanDefinitionReader 的价值在于：
 ---
 
 - `GroovyBeanDefinitionReader` 属于 Spring Beans 体系，但执行 groovy 脚本需要 Groovy 运行库。
-- 本仓库已在 `spring-core-beans/pom.xml` 以 test scope 引入 `org.apache.groovy:groovy`，因此这章的 Lab 在测试环境可直接运行。
+- 本仓库已在 `spring-core-modules/spring-core-beans/pom.xml` 以 test scope 引入 `org.apache.groovy:groovy`，因此这章的 Lab 在测试环境可直接运行。
 
 ## 3. 原理：Reader 把“输入”落到定义层主线的哪个位置？
 
@@ -135,27 +135,27 @@ BeanDefinitionReader 的价值在于：
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 0. 复现入口（可运行）
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java`
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
 
 推荐运行命令：
 
 ```bash
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansPropertiesBeanDefinitionReaderLabTest test
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansGroovyBeanDefinitionReaderLabTest test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPropertiesBeanDefinitionReaderLabTest test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansGroovyBeanDefinitionReaderLabTest test
 ```
 
-- `spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.properties`
-- `spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.groovy`
+- `spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.properties`
+- `spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.groovy`
 
 - `GroovyBeanDefinitionReader` 位于 Spring beans 包中，但运行时需要 Groovy 运行库
-- 本仓库已在 `spring-core-beans/pom.xml` 以 test scope 引入 `org.apache.groovy:groovy:4.0.21`，确保 Lab 可运行
+- 本仓库已在 `spring-core-modules/spring-core-beans/pom.xml` 以 test scope 引入 `org.apache.groovy:groovy:4.0.21`，确保 Lab 可运行
 
 ## 4. 怎么实现的：断点入口与观察点（从 reader 到 registry）
 
@@ -190,7 +190,7 @@ Groovy reader 的典型断点：
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
 
 上一章：[46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers](46-xml-namespace-extension.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[48. 方法注入：replaced-method / MethodReplacer（实例化策略分支）](48-method-injection-replaced-method.md)
 

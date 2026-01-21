@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 162 章：05. 自定义约束：如何写一个最小可用的 `@Constraint`？](162-05-custom-constraint.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 164 章：90. 常见坑清单（建议反复对照）](../appendix/164-90-common-pitfalls.md)
+上一章：[第 162 章：05. 自定义约束：如何写一个最小可用的 `@Constraint`？](162-05-custom-constraint.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 164 章：90. 常见坑清单（建议反复对照）](../appendix/164-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -68,7 +68,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
-- 建议命令：`mvn -pl spring-core-validation test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

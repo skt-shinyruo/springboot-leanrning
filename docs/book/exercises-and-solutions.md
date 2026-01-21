@@ -51,7 +51,7 @@
 5. 只跑当前模块测试验证：
 
 ```bash
-mvn -q -pl <module> test
+mvn -q -pl :<artifactId> test
 ```
 
 ---
@@ -77,4 +77,4 @@ mvn -q -pl <module> test
 ## 常见坑
 
 - 只改了业务实现但没理解代理/事务边界：建议回到书的 [Debugger Pack](debugger-pack.md) 把断点装在关键入口上
-- 多模块联动导致你以为“改对了”：建议缩小范围，先用 `-pl <module>` 只跑单模块
+- 多模块联动导致你以为“改对了”：建议缩小范围，先用 `-pl :<artifactId>` 只跑单模块

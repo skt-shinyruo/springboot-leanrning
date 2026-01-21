@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](../part-01-web-mvc/075-05-interceptor-async-lifecycle.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../part-04-rest-contract/077-01-content-negotiation-406-415.md)
+上一章：[第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](../part-01-web-mvc/075-05-interceptor-async-lifecycle.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../part-04-rest-contract/077-01-content-negotiation-406-415.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-    - Test file：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+    - Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 ## 机制主线
 
@@ -49,9 +49,9 @@
 
 在本模块里可以直接对照：
 
-- 页面 Controller：`springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcPingController.java`
-- 页面模板：`springboot-web-mvc/src/main/resources/templates/pages/ping.html`
-- 静态资源（CSS）：`springboot-web-mvc/src/main/resources/static/css/app.css`
+- 页面 Controller：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcPingController.java`
+- 页面模板：`spring-boot-modules/springboot-web-mvc/src/main/resources/templates/pages/ping.html`
+- 静态资源（CSS）：`spring-boot-modules/springboot-web-mvc/src/main/resources/static/css/app.css`
 
 `MvcPingController` 里同时提供两种写法：
 - 返回 view name：`GET /pages/ping`
@@ -71,7 +71,7 @@
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
 - 建议命令（方法级入口）：
-  - `mvn -q -pl springboot-web-mvc -Dtest=BootWebMvcViewLabTest#rendersPingPage test`
+  - `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcViewLabTest#rendersPingPage test`
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -140,7 +140,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-- Test file：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+- Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 上一章：[part-01-web-mvc/05-interceptor-async-lifecycle.md](../part-01-web-mvc/075-05-interceptor-async-lifecycle.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-02-view-mvc/02-form-binding-validation-prg.md](02-form-binding-validation-prg.md)
 

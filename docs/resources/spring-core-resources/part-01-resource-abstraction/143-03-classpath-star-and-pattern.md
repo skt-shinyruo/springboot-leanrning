@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？](142-02-classpath-locations.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md)
+上一章：[第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？](142-02-classpath-locations.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -63,7 +63,7 @@ pattern 扫描返回的资源数组顺序不一定稳定（与 classpath 顺序�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
-- 建议命令：`mvn -pl spring-core-resources test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

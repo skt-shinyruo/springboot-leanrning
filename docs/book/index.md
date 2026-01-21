@@ -52,9 +52,9 @@
 
 书里的章节会把关键的“主线节点”串起来；当你需要更深的机制细节、更多边界案例时：
 
-- 模块入口总览（模块内目录页）：[模块文档总览](../modules/index.md)
-- 知识库概览（项目约定/路线图/历史）：[知识库概览](../helloagents/wiki/overview.md)
-- 写作规范（为什么这样写更像书）：[写作指南：把文档写成“书”](../book-style.md)
+- 主题索引（模块 docs 入口）：[`docs/topics/index.md`](../topics/index.md)
+- 写作规范（为什么这样写更像书）：[写作指南：把文档写成“书”](book-style.md)
+- 知识库（HelloAGENTS SSOT，仓库内阅读）：`helloagents/wiki/overview.md`
 
 ## 本书的“写法”（不强制模板，但追求可顺读）
 

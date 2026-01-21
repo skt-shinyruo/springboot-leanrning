@@ -8,7 +8,7 @@
 
 ## 代码与命名约定
 
-- **模块组织:** 每个学习主题一个独立 Maven module（例如 `spring-core-beans`、`spring-core-events`）。
+- **模块组织:** 每个学习主题一个独立 Maven module（例如 `spring-core-beans`、`spring-core-events`）。物理目录按领域分组：`spring-core-modules/<module>` 与 `spring-boot-modules/<module>`。
 - **包名约定:** `com.learning.springboot.<module>`（例如 `com.learning.springboot.springcorebeans`）。
 - **风格优先级:** 以当前仓库代码风格为准（避免为了“更优雅”而过度重构）。
 
@@ -40,12 +40,12 @@
 
 ### 命令与运行约定
 
-- **单模块测试：** `mvn -pl <module> test`
-- **单测试类：** `mvn -pl <module> -Dtest=SomeTest test`
-- **单测试方法：** `mvn -pl <module> -Dtest=SomeTest#someMethod test`
-- **调试（attach 5005）：** `mvn -pl <module> -Dtest=SomeTest#someMethod -Dmaven.surefire.debug test`
+- **单模块测试（推荐用 artifactId，避免路径耦合）：** `mvn -q -pl :<artifactId> test`
+- **单测试类：** `mvn -q -pl :<artifactId> -Dtest=SomeTest test`
+- **单测试方法：** `mvn -q -pl :<artifactId> -Dtest=SomeTest#someMethod test`
+- **调试（attach 5005）：** `mvn -q -pl :<artifactId> -Dtest=SomeTest#someMethod -Dmaven.surefire.debug test`
 - **脚本优先（便于统一）：**
-  - `bash scripts/test-module.sh <module>`
+  - `bash scripts/test-module.sh <artifactId>`（会自动补齐 `:<artifactId>`）
   - `bash scripts/test-all.sh`
   - `bash scripts/docs-site-build.sh`（可选：本地构建文档站点预览）
 
@@ -80,7 +80,7 @@
 2. **关键分支（Decisive Branch）**
    - 至少 1 个“如果/否则”的分支判断（例如：是否命中某个 resolver / 是否被代理 / 是否进入 async 二次 dispatch）
 3. **验证入口（Verification Entry）**
-   - 至少 1 个方法级可运行入口：`mvn -pl <module> -Dtest=Class#method test`
+   - 至少 1 个方法级可运行入口：`mvn -q -pl :<artifactId> -Dtest=Class#method test`
    - 说明“你应该看到什么”（断言/输出/可观察信号）
 4. **断点与观察点（Debugger Pack）**
    - Entrypoints（2+）：关键入口方法（例如 `DispatcherServlet#doDispatch` / `AbstractApplicationContext#refresh`）

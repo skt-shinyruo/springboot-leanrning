@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 10 章：主线时间线：Spring Core Beans（IoC 容器）](010-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](012-01-quickstart-30min.md)
+上一章：[第 10 章：主线时间线：Spring Core Beans（IoC 容器）](010-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](012-01-quickstart-30min.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansResolvableDependencyLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 ## 机制主线
 
@@ -36,6 +36,10 @@
 > 你需要把概念映射到**时间线（refresh 流程）**、**数据结构（BeanDefinition/缓存）**、以及**关键参与者（哪些类/哪些扩展点在起作用）**。
 
 > 适用版本：本仓库基于 Spring Boot 3.x（对应 Spring Framework 6.x）。类名/方法名可能在小版本中微调，但主干结构非常稳定。
+
+如果你希望用“一章”把 **`refresh()` 时间线** 与 **`doCreateBean()` 创建链路** 串成连续叙事（并落到关键方法/关键分支），建议先读这一篇主线章：
+
+- [从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)
 
 ---
 
@@ -84,6 +88,28 @@
 ---
 
 ## 1. 深挖时最容易迷路的点（以及正确抓手）
+
+### 1.0 症状驱动导航：遇到现象先选对入口（章节 → 断点 → Lab）
+
+深挖最怕的不是“看不懂源码”，而是**选错入口**：入口错了，你会在巨大调用栈里看一整晚，最后只得到一句“Spring 好复杂”。
+
+这张表的目标是：把“现象”直接映射到**层次（定义/候选/实例）**，再映射到**章节入口/断点抓手/Lab 证据链**。
+
+| 现象（你看到的） | 先判断你卡在哪一层 | 推荐章节入口（最短路径） | 建议断点（抓住分支） | 对应 LabTest（证据链） |
+|---|---|---|---|---|
+| Bean 根本没注册出来（扫描/导入/`@Bean` 像没生效） | 定义层（BeanDefinition 图没长出来） | [18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)<br>[12. 注解为何生效（bootstrap）](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) | `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`<br>`ConfigurationClassPostProcessor#processConfigBeanDefinitions` | `SpringCoreBeansRegistryPostProcessorLabTest`<br>`SpringCoreBeansBootstrapInternalsLabTest` |
+| `@Autowired` 为 null / `@PostConstruct` 没跑（尤其是自己 new BeanFactory） | 实例层（规则没装上：BPP 缺失） | [12. 注解为何生效（bootstrap）](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) | `PostProcessorRegistrationDelegate#registerBeanPostProcessors`<br>`AutowiredAnnotationBeanPostProcessor#postProcessProperties`<br>`InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization` | `SpringCoreBeansBootstrapInternalsLabTest`<br>`SpringCoreBeansBeanFactoryApiLabTest` |
+| 启动即报错 vs 第一次 `getBean` 才报错 | refresh 第 9 步 vs on-demand | [18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md) | `DefaultListableBeanFactory#preInstantiateSingletons`<br>`AbstractBeanFactory#doGetBean` | `SpringCoreBeansPreInstantiationLabTest` |
+| 单个注入歧义（NoUniqueBeanDefinitionException） | 候选层（候选集合收敛失败） | [33. 候选选择与顺序](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) | `DefaultListableBeanFactory#doResolveDependency` | `SpringCoreBeansInjectionAmbiguityLabTest`<br>`SpringCoreBeansAutowireCandidateSelectionLabTest` |
+| 循环依赖：setter 能救、constructor 就死；或 early reference 形态奇怪 | 实例层（创建窗口 + 缓存/early reference） | [18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)<br>[16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md) | `DefaultSingletonBeanRegistry#getSingleton/addSingletonFactory`<br>`AbstractAutowireCapableBeanFactory#doCreateBean`（earlySingletonExposure） | `SpringCoreBeansCircularDependencyBoundaryLabTest`<br>`SpringCoreBeansEarlyReferenceLabTest` |
+| 代理不生效 / 自调用绕过 / 你以为有 AOP 但没有 | 实例层（BPP 包装阶段） | [31. BPP 如何把 Bean 换成 Proxy](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md) | `BeanPostProcessor#postProcessAfterInitialization` | `SpringCoreBeansProxyingPhaseLabTest` |
+| `getBean(\"x\")` 拿到的不是你以为的类型，`&x` 又变了 | 实例层（FactoryBean 语义） | [08. FactoryBean：& 前缀与产品对象](../part-01-ioc-container/08-factorybean.md)<br>[18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md) | `AbstractBeanFactory#getObjectForBeanInstance` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
+
+你不需要一次性把表背下来，但建议你每次排障都强制自己走一遍“表的流程”：
+
+1. 我现在看到的是定义层问题、候选层问题，还是实例层问题？
+2. 我应该把断点打在 refresh 的哪个阶段？
+3. 我能用哪个 `*LabTest` 把现象固化成可回归断言？
 
 ### 1.1 不要试图“背源码”，要建立 3 条主线
 
@@ -315,16 +341,16 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 0. 复现入口（可运行）
 
 - 入口测试（推荐先跑通再下断点）：
-  - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 - 推荐运行命令：
-  - `mvn -pl spring-core-beans -Dtest=SpringCoreBeansLabTest test`
+  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest test`
 
 本章不新增概念，而是给你一套“深挖路线”，让你能在 IDE 里通过断点和测试，把容器行为看成**可追踪的过程**。
 
@@ -338,13 +364,13 @@
 ### 0.1 推荐运行方式（命令行也能精确到方法）
 
 ```bash
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 ```
 
 只跑一个测试方法（建议用于断点深挖）：
 
 ```bash
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansContainerLabTest#beanDefinitionIsNotTheBeanInstance test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest#beanDefinitionIsNotTheBeanInstance test
 ```
 
 > 你也可以直接在 IDE 里右键运行某个 `@Test` 方法；命令行写法的价值在于“可复制、可分享、可复现”。
@@ -361,7 +387,7 @@ mvn -pl spring-core-beans -Dtest=SpringCoreBeansContainerLabTest#beanDefinitionI
 运行方式（推荐精确到方法，噪声最小）：
 
 ```bash
-mvn -pl spring-core-beans -Dtest=<TestClass>#<testMethod> test
+mvn -pl :spring-core-beans -Dtest=<TestClass>#<testMethod> test
 ```
 
 10 个最小实验清单（按“先建立阶段感，再补边界”的顺序）：
@@ -436,17 +462,17 @@ mvn -pl spring-core-beans -Dtest=<TestClass>#<testMethod> test
 对应章节与可跑实验：
 
 - [35. BeanDefinition 的合并（MergedBeanDefinition）](../part-04-wiring-and-boundaries/35-merged-bean-definition.md)
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
 
 对应章节与可跑实验：
 
 - [20. registerResolvableDependency：能注入但它不是 Bean](../part-04-wiring-and-boundaries/20-resolvable-dependency.md)
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
 
 对应章节与可跑实验：
 
 - [11. 调试与自检：异常 → 断点入口 + bean graph](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java`
 - [19. dependsOn：强制初始化顺序](../part-04-wiring-and-boundaries/19-depends-on.md)
 
 1) 只跑一个测试方法（它把阶段用 events 固化成了断言）：
@@ -492,7 +518,7 @@ mvn -pl spring-core-beans -Dtest=<TestClass>#<testMethod> test
 - 能用断点验证自己的推理，而不是靠日志碰运气
 
 回到概念章继续读也不会“太简单”了：因为你已经知道每个概念在源码里对应哪里、能怎么证明。
-对应 Lab/Test：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 推荐断点：`AbstractApplicationContext#refresh`、`AbstractAutowireCapableBeanFactory#doCreateBean`、`DefaultListableBeanFactory#doResolveDependency`
 
 ## 常见坑与边界
@@ -517,7 +543,7 @@ mvn -pl spring-core-beans -Dtest=<TestClass>#<testMethod> test
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansResolvableDependencyLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Bean 心智模型：BeanDefinition vs Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md)
 

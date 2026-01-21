@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 74 章：04：Interceptor 与 Filter：入口在哪里、顺序怎么理解](074-04-interceptor-and-filter-ordering.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md)
+上一章：[第 74 章：04：Interceptor 与 Filter：入口在哪里、顺序怎么理解](074-04-interceptor-and-filter-ordering.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -72,7 +72,7 @@
 建议命令（方法级入口）：
 
 ```bash
-mvn -q -pl springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#asyncTraceRecordsAfterConcurrentHandlingStartedAndAsyncDispatchCallbacks test
+mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#asyncTraceRecordsAfterConcurrentHandlingStartedAndAsyncDispatchCallbacks test
 ```
 
 你在测试里会看到两类证据：

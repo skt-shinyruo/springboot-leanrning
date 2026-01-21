@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 177 章：03：错误处理：4xx/5xx → 领域异常](177-03-error-handling.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 179 章：05：测试策略：为什么用 MockWebServer？](179-05-testing-with-mockwebserver.md)
+上一章：[第 177 章：03：错误处理：4xx/5xx → 领域异常](177-03-error-handling.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 179 章：05：测试策略：为什么用 MockWebServer？](179-05-testing-with-mockwebserver.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -45,7 +45,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
-- 建议命令：`mvn -pl springboot-web-client test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-web-client test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

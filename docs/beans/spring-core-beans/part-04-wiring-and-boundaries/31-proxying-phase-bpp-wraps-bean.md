@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
 
 ## 机制主线
 
@@ -149,16 +149,16 @@ JDK 代理的本质是：
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 对应实验（可运行 + 可断言）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
 
 ```bash
-mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test
+mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test
 ```
 
 在实验里我们写了一个最小的 `BeanPostProcessor`：
@@ -174,16 +174,16 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test
   - 你如何定位“是哪个 `BeanPostProcessor` 把它换掉了”？请给出从 `initializeBean` 到 `applyBeanPostProcessorsAfterInitialization` 的断点闭环。
 - 复现入口（可断言 + 可断点）：
   - JDK proxy 导致“按实现类获取失败”：
-    - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
       - `whenABeanIsWrappedAsJdkProxy_lookupByConcreteClassMayBecomeUnavailable()`
   - class-based proxy（CGLIB）下“按实现类获取仍可能可用”（类型是子类）：
-    - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
       - `whenABeanIsWrappedAsCglibProxy_lookupByConcreteClassMayStillWork()`
   - JDK proxy 导致“按实现类注入失败”（在循环依赖场景更直观）：
-    - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
       - `injectingConcreteTypeFailsWhenFinalBeanIsJdkProxy_duringCircularDependency()`
   - “是谁把它换掉了”的最短闭环（记录 BPP before/after 与最终类型差异）：
-    - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
       - `beanCreationTrace_recordsPhases_andExposesProxyReplacement()`
 
 > 这三个点的最大价值：它能解释“为什么你在一个断点里看到的是原始对象，最终 getBean 却拿到 proxy”，以及“为什么循环依赖里 early 与 final 可能不一致”。
@@ -217,7 +217,7 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test
 
 ## 断点闭环（用本仓库 Lab/Test 跑一遍）
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
 
 建议断点：
 
@@ -241,17 +241,17 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test
 
 最小复现入口：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
   - `beanPostProcessorCanReturnAProxyAsTheFinalExposedBean_andSelfInvocationStillBypassesTheProxy()`
 
 你在断点里应该看到什么（用于纠错）：
 
 最小复现入口：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
   - `whenABeanIsWrappedAsJdkProxy_lookupByConcreteClassMayBecomeUnavailable()`
 
-对应 Lab/Test：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
 推荐断点：`AbstractAutowireCapableBeanFactory#initializeBean`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`、`DefaultListableBeanFactory#doResolveDependency`
 
 ## 常见坑与边界
@@ -290,7 +290,7 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
 
 上一章：[30. 注入发生在什么时候：field vs constructor](30-injection-phase-field-vs-constructor.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[32. @Resource 的 name-first：CommonAnnotationBeanPostProcessor](32-resource-injection-name-first.md)
 

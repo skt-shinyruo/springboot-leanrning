@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
 
 ## 机制主线
 
@@ -103,7 +103,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -113,18 +113,18 @@
 
 入口测试（建议先跑通再下断点）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
 
 推荐运行命令：
 
 ```bash
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest test
 ```
 
-- `spring-core-beans/src/test/resources/META-INF/spring.handlers`
-- `spring-core-beans/src/test/resources/META-INF/spring.schemas`
-- `spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/demo-namespace.xml`
-- `spring-core-beans/src/test/resources/META-INF/spring/demo.xsd`
+- `spring-core-modules/spring-core-beans/src/test/resources/META-INF/spring.handlers`
+- `spring-core-modules/spring-core-beans/src/test/resources/META-INF/spring.schemas`
+- `spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/demo-namespace.xml`
+- `spring-core-modules/spring-core-beans/src/test/resources/META-INF/spring/demo.xsd`
 
 - Handler：`.../xmlns/DemoNamespaceHandler`
 - Parser：`.../xmlns/DemoMessageBeanDefinitionParser`
@@ -167,7 +167,7 @@ mvn -pl spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest tes
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
 
 上一章：[45. 自定义 Qualifier：meta-annotation 与候选收敛](45-custom-qualifier-meta-annotation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy](47-beandefinitionreader-other-inputs-properties-groovy.md)
 

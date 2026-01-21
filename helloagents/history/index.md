@@ -64,6 +64,9 @@
 | 202601161709 | readme-bookify-mainline-entrypoints | Enhancement | ✅Completed | [202601161709_readme-bookify-mainline-entrypoints](2026-01/202601161709_readme-bookify-mainline-entrypoints/) |
 | 202601161730 | bookify-book-chapters-08-10-12 | Enhancement | ✅Completed | [202601161730_bookify-book-chapters-08-10-12](2026-01/202601161730_bookify-book-chapters-08-10-12/) |
 | 202601162341 | docs_global_book_chapters | Refactor | ✅Completed | [202601162341_docs_global_book_chapters](2026-01/202601162341_docs_global_book_chapters/) |
+| 202601201248 | tutorials_style_reorg | Refactor | ✅Completed | [202601201248_tutorials_style_reorg](2026-01/202601201248_tutorials_style_reorg/) |
+| 202601201656 | rollout_book_matrix_all_modules | Enhancement | ✅Completed | [202601201656_rollout_book_matrix_all_modules](2026-01/202601201656_rollout_book_matrix_all_modules/) |
+| 202601201802 | rollout_branch_matrix_breakpoint_playbook_all_modules | Enhancement | ✅Completed | [202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules](2026-01/202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules/) |
 
 ---
 
@@ -130,3 +133,13 @@
 - [202601162341_docs_global_book_chapters](2026-01/202601162341_docs_global_book_chapters/) - 全站：以模块 docs/README.md 为 SSOT，固化全局章节编号（001- 前缀）与全书顺读导航（分卷→模块→章节 + prev/next），并补齐旧 Book 主线 00–18 redirect 兼容入口
 - [202601171204_docs_booklike_rewrite_all](2026-01/202601171204_docs_booklike_rewrite_all/) - 全站：章节正文二次书籍化（V2）全量改写（modules 174 章 + Book 43 页），补齐导读/证据链/收束承接并清理空块与重复入口；通过 docs 闸门与 mkdocs strict build
 - [202601171641_docs_unify_by_topic](2026-01/202601171641_docs_unify_by_topic/) - 全站 docs：文档迁移到仓库根 `docs/` 并按主题归档；下线 docs 门禁脚本与 strict 校验，docs-site 改为直接读取 `docs/` 构建发布
+- [202601181724_spring_core_beans_refresh_mainline_deepen](2026-01/202601181724_spring_core_beans_refresh_mainline_deepen/) - spring-core-beans：加深 “refresh → doCreateBean” 源码主线叙事，并与现有 Part 结构与 Labs/索引串联
+- [202601182033_beans_branch_decision_table_webmvc_error_async_deepen](2026-01/202601182033_beans_branch_decision_table_webmvc_error_async_deepen/) - beans：新增“分支决策表”排障套路；web-mvc：补齐 error/async 主链路证据链叙事，并同步知识库/测试
+- [202601182117_beans_bootstrap_guide_webmvc_deepen](2026-01/202601182117_beans_bootstrap_guide_webmvc_deepen/) - beans：补齐 bootstrap 处理器表/时间线与主线关键分支；web-mvc：补齐 ERROR vs ASYNC dispatch 对照，并同步知识库/测试
+- [202601201248_tutorials_style_reorg](2026-01/202601201248_tutorials_style_reorg/) - 工程结构：对齐 tutorials 风格（模块分组聚合 + 目录重排），并以 springboot-web-mvc + Book 主线作为首批深度示范落地（矩阵 Lab + docs gate）
+- [202601201656_rollout_book_matrix_all_modules](2026-01/202601201656_rollout_book_matrix_all_modules/) - 全模块：推广 Book Matrix 聚合入口（JUnit Platform Suite），统一每章主线的最小可运行测试入口；同步 Book 主线章节与知识库模块页，并通过全仓 `mvn test` 与 docs-site build 验证
+- [202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules](2026-01/202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules/) - 全模块：推广“关键分支矩阵”体系（Branch Matrix + Breakpoint Map + Branch Decision Matrix + Playbook + Self-check），并在 Book 主线/模块 README/知识库模块页统一入口；通过 docs 闸门与全仓 `mvn test` 验证
+- [202601202226_docs-site-modules-nav](2026-01/202601202226_docs-site-modules-nav/) - docs-site：侧边栏扩展为“模块文档 + 主线之书（Book）”双入口（AUTO MODULE NAV / AUTO BOOK NAV），并新增站点主题索引页
+- [202601202238_topics-grouping-boot-core](2026-01/202601202238_topics-grouping-boot-core/) - docs-site：模块文档主题按 Spring Boot / Spring Core 分组展示，并以 `docs/README.md` 作为顺序与显示名 SSOT
+- [202601202318_docs_site_nav_ssot_links](2026-01/202601202318_docs_site_nav_ssot_links/) - docs-site：主题 SSOT（topics.yml）+ 模块导航收敛（索引级入口）+ `/book/` 绝对链接清理与门禁
+- [202601211049_docs-literate-nav](2026-01/202601211049_docs-literate-nav/) - docs-site：文档即目录（literate-nav），以 `docs/SUMMARY.md` 作为站点导航 SSOT，并下线旧的 topics.yml / nav 注入脚本

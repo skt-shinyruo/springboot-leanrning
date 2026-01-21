@@ -4,27 +4,37 @@
 
 ## 主题索引
 
+<!-- BEGIN AUTO TOPICS INDEX -->
+### Spring Boot（应用层）
+
 - 基础入门：[`docs/basics/`](basics/)
-- IoC / Bean：[`docs/beans/`](beans/)
-- AOP（含 weaving）：[`docs/aop/`](aop/)
-- 事务（Tx）：[`docs/tx/`](tx/)
 - Web MVC：[`docs/web-mvc/`](web-mvc/)
 - Security：[`docs/security/`](security/)
 - Data JPA：[`docs/data-jpa/`](data-jpa/)
 - Cache：[`docs/cache/`](cache/)
 - Async & Scheduling：[`docs/async-scheduling/`](async-scheduling/)
-- Events：[`docs/events/`](events/)
-- Resources：[`docs/resources/`](resources/)
-- Profiles：[`docs/profiles/`](profiles/)
-- Validation：[`docs/validation/`](validation/)
 - Actuator：[`docs/actuator/`](actuator/)
 - Web Client：[`docs/web-client/`](web-client/)
 - Testing：[`docs/testing/`](testing/)
 - Business Case：[`docs/business-case/`](business-case/)
+
+### Spring Core（底层机制）
+
+- IoC / Bean：[`docs/beans/`](beans/)
+- AOP（含 weaving）：[`docs/aop/`](aop/)
+- 事务（Tx）：[`docs/tx/`](tx/)
+- Events：[`docs/events/`](events/)
+- Resources：[`docs/resources/`](resources/)
+- Profiles：[`docs/profiles/`](profiles/)
+- Validation：[`docs/validation/`](validation/)
+
+### Book（主线之书）
+
 - Book：[`docs/book/`](book/)
+
+<!-- END AUTO TOPICS INDEX -->
 
 ## 说明
 
 - **单一源文档（SSOT）**：模块目录下不再保留 `docs/`，避免双写与不一致。
 - `docs-site/` 仅作为站点构建/发布的载体（如保留），文档源以 `docs/` 为准。
-

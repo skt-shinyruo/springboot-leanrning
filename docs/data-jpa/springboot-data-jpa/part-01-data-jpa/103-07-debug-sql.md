@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 102 章：06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）](102-06-datajpatest-slice.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 104 章：90. 常见坑清单（建议反复对照）](../appendix/104-90-common-pitfalls.md)
+上一章：[第 102 章：06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）](102-06-datajpatest-slice.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 104 章：90. 常见坑清单（建议反复对照）](../appendix/104-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -34,7 +34,7 @@
 
 ## 本模块的默认配置
 
-`springboot-data-jpa/src/main/resources/application.properties` 已经开启：
+`spring-boot-modules/springboot-data-jpa/src/main/resources/application.properties` 已经开启：
 
 - `spring.jpa.show-sql=true`
 
@@ -56,7 +56,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootDataJpaDebugSqlLabTest`
-- 建议命令：`mvn -pl springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

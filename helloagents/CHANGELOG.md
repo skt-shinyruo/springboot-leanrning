@@ -6,15 +6,26 @@
 
 ### Changed
 - `docs`：将所有模块文档从 `<module>/docs/` 迁移到仓库根 `docs/`，并按主题分组为 `docs/<topic>/<module>/...`；Book 内容从 `docs-site/content/book/` 迁移到 `docs/book/`。
-- `docs-site`：MkDocs 站点改为直接读取 `../docs`；`scripts/docs-site-sync.py` 仅负责生成 Book-only 导航并注入到 `docs-site/mkdocs.yml`；`scripts/docs-site-build.sh`/`scripts/docs-site-serve.sh` 不再依赖 `.generated/`。
+- `docs-site`：MkDocs 站点改为直接读取 `../docs`，并通过 `mkdocs-literate-nav` 以 `docs/SUMMARY.md` 作为站点导航 SSOT（文档即目录）。
+- `docs`：站点导航 SSOT 由 YAML/脚本注入切换为 `docs/SUMMARY.md`（Markdown 目录文件，顺序/显示名/层级都以此为准）。
+- `docs-site`：侧边栏目录收敛为“索引级入口”（README + Guide + Pitfalls/Self-check），避免展开全部章节导致导航爆炸。
+- `docs`：清理文档中的 `/book/` 绝对链接，统一改为相对链接，兼容 GitHub Pages 子路径部署。
 - `GitHub Pages`：`.github/workflows/docs-site-pages.yml` 调整为仅在 push/main(master) 或手动触发时构建发布（不再在 PR 中作为门禁）。
+- 调整 Maven 工程结构：按 tutorials 风格分组聚合到 `spring-boot-modules/` 与 `spring-core-modules/`。
+- 修复 Book/模块文档跨目录引用的相对链接（避免 `docs/docs/...` 断链），并通过 docs gate。
+- 修复 `scripts/generate-book-labs-index.py` 生成的 `docs/book/labs-index.md` 外链前缀（从 `../` 修正为 `../../`）。
 
 ### Removed
-- `scripts`：下线文档门禁脚本（`scripts/check-docs.sh` + `scripts/check-*.py`）。
+- `docs`：删除旧的导航/主题 SSOT：`docs/topics/topics.yml`（避免与 `docs/SUMMARY.md` 双轨维护）。
+- `scripts`：删除旧的导航同步/注入脚本：`scripts/docs-topics-sync.py`、`scripts/docs-site-sync.py`。
 - `docs-site`：移除 `mkdocs --strict` 构建门禁（保留 build 作为普通构建/发布步骤）。
 
 ### Added
-- `docs-site`：新增 MkDocs 文档站点骨架（`docs-site/mkdocs.yml` + `scripts/docs-site-sync.py` + serve/build 脚本），将各模块 `docs/` 与 `helloagents/wiki` 聚合为可搜索、可侧边栏导航的静态站点；生成目录与 build 输出已加入 `.gitignore`。
+- `docs`：新增站点目录文件 `docs/SUMMARY.md`（Markdown 目录文件，作为站点导航 SSOT）。
+- `docs-site`：新增 `mkdocs-literate-nav` 依赖（固定版本），用于从 `docs/SUMMARY.md` 解析生成导航。
+- `scripts`：新增 `/book/` 绝对链接修复与门禁脚本 `scripts/fix-abs-book-links.py` / `scripts/check-abs-book-links.py`（保证 GitHub Pages 子路径部署跳转正确）。
+- 全模块补齐 Book Matrix（每章最小可运行测试入口），并在 Book 主线章节与知识库模块页统一入口。
+- `docs-site`：新增 MkDocs 文档站点骨架（`docs-site/mkdocs.yml` + serve/build 脚本），将仓库根 `docs/` 构建为可搜索、可侧边栏导航的静态站点；build 输出已加入 `.gitignore`。
 - `docs-site`：新增“写作指南”页面 `docs/book-style.md`，用于统一书籍化重排原则（主线时间线先行、提示框作为插入段、redirect 保留旧入口）。
 - `docs-site`：在写作指南中新增“章节学习卡片（五问闭环）”规范（知识点 / 怎么使用 / 原理 / 源码入口 / 推荐 Lab），用于把每章的学习目标、可运行入口与源码证据链收敛到第一屏。
 - `docs-site`：新增“主线之书（Book-only）”目录骨架（`docs/book/`），覆盖 18 模块的跨模块时间线章节树，并新增工具页（Labs 索引 / Debugger Pack / Exercises & Solutions / 迁移规则）。
@@ -23,6 +34,10 @@
 - GitHub Pages：新增自动构建与发布 workflow（`.github/workflows/docs-site-pages.yml`），在 `push main/master` 时构建并发布 `docs-site/.site/`。
 - `helloagents`：新增学习路线图 `helloagents/wiki/learning-path.md`，并在 `helloagents/wiki/overview.md` 与四模块页（Beans/AOP/Tx/Web MVC）增加 Start Here/路线图入口，收敛新读者的“先跑什么/再读什么”路径。
 - `spring-core-beans`：新增 30 分钟快启章节（Start Here），并系统补齐/强化 docs（容器主线、BPP 顺序、FactoryBean、循环依赖、AOT/真实世界等）与可运行证据链；同时更新 `scripts/generate-spring-beans-public-api-index.py` 并重新生成 Appendix 95/96（补齐“坑点与排障”）。
+- `spring-core-beans`：新增“主线叙事”章节：从 `AbstractApplicationContext#refresh` 走到 `AbstractAutowireCapableBeanFactory#doCreateBean`，聚焦关键方法与关键分支，并在导读/目录页增加入口：`docs/beans/spring-core-beans/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`。
+- `spring-core-beans`：在主线叙事章补充“分支决策表”（现象 → 阶段 → 关键方法 → 必看变量 → LabTest），把主线叙事进一步压缩成可复用排障套路。
+- `spring-core-beans`：继续深化主线叙事与导读：补齐 `preInstantiateSingletons` 的关键分支伪代码（FactoryBean/SmartFactoryBean/SmartInitializingSingleton/background init），补齐 `doGetBean` 的关键分支（dependsOn/parent fallback/prototype guard）；同时在 bootstrap 章新增“处理器速查表 + 时机时间线 + 过早 getBean 反例”，在深挖指南新增“症状驱动导航（现象→章节→断点→Lab）”速查表。
+- `springboot-web-mvc`：深化“DispatcherServlet 主链路”章节：补齐 `doDispatch` → `processDispatchResult` 的关键方法/关键分支（multipart/async/exception/afterCompletion），并补齐“FilterChain → ExceptionResolvers → Spring Boot `/error`”完整叙事（含 async 两次 dispatch 时间线 + 证据链）；进一步补齐 ERROR vs ASYNC dispatch 对照（DispatcherType=ERROR/ASYNC）与分支决策表，降低排障误判成本。
 - `spring-core-events`：新增异步 multicaster 默认 Lab `SpringCoreEventsAsyncMulticasterLabTest`，用于可断言验证自定义 `ApplicationEventMulticaster` + `TaskExecutor` 的异步分发主线。
 - `springboot-data-jpa`：新增用于 N+1/EntityGraph 验证的示例实体与仓库（`LibraryAuthor/LibraryBook`），并增强 `BootDataJpaLabTest` 覆盖 `getReferenceById` 懒代理与 N+1/EntityGraph 边界的可断言证据链。
 - `scripts`：新增教学化覆盖度自检脚本 `scripts/check-teaching-coverage.py`（面向所有包含 `docs/README.md` 的模块：`spring-core-*` + `springboot-*`），并提供聚合闸门脚本 `scripts/check-docs.sh`（断链检查 + 教学覆盖），用于验收“每章至少 1 个可跑入口 + 每模块至少 N 个 LabTest”。
@@ -47,6 +62,11 @@
 - `springboot-data-jpa`：新增 merge/detach 语义默认 Lab `BootDataJpaMergeAndDetachLabTest`，固化 detached 修改不落库与 `merge()` 返回 managed copy 的关键边界。
 - `spring-core-events`：新增 listener filtering 默认 Lab `SpringCoreEventsListenerFilteringLabTest`，用于可断言解释“监听器没触发”常见根因（参数类型过滤）。
 - `springboot-web-client`：新增 WebClient filter 顺序默认 Lab `BootWebClientWebClientFilterOrderLabTest`，用 `ExchangeFunction` stub 在无真实网络下可断言验证 request 顺序与 response 顺序反转。
+- 新增 Web MVC “错误分支矩阵”可运行 Lab：`BootWebMvcErrorBranchMatrixLabTest`（覆盖 400/406/415/406 等关键分支）。
+- 全模块：新增“关键分支矩阵（Branch Matrix）”体系：为 18 个模块补齐/新增 `*BranchMatrixLabTest`（JUnit Platform Suite 聚合关键分支），并在模块 README、Book 主线（18 章）、`helloagents/wiki/modules/*.md` 统一入口；同时在各模块 appendix（90/99）加入统一排障模板（Symptoms → Repro → Evidence → Decision → Fix → Verify）与“从 Book/Branch Matrix 进入”的自检路径。
+- `spring-core-aop-weaving`：补齐 LTW/CTW 双入口分支矩阵（`AspectjLtwBranchMatrixLabTest`/`AspectjCtwBranchMatrixLabTest`），并增加“运行环境假设/跳过”保护，避免在 Surefire 多 execution 或 `-Dtest=...` 场景下产生误失败。
+- 全模块：新增“关键分支矩阵”体系（Branch Matrix / Breakpoint Map / Branch Decision Matrix / Playbook / Self-check）并推广到 18 个模块；同时在 Book 主线 18 章与各模块 README、知识库模块页统一入口与可跑命令（含 `spring-core-aop-weaving` LTW/CTW 环境分流说明）。
+- 新增并迁移方案包：`helloagents/history/2026-01/202601201248_tutorials_style_reorg/`（记录 tutorials 风格重排与首批示范落地）。
 
 ### Removed
 - `scripts`：移除章节契约相关脚本：`scripts/check-chapter-contract.py`、`scripts/ag-contract-docs.py`（不再推荐 A–G 作为写作规范，也不再提供相关闸门/自检工具）。

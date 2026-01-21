@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 150 章：主线时间线：Spring Profiles](150-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 152 章：Profile 激活与 Bean 选择](../part-01-profiles/152-01-profile-activation-and-bean-selection.md)
+上一章：[第 150 章：主线时间线：Spring Profiles](150-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 152 章：Profile 激活与 Bean 选择](../part-01-profiles/152-01-profile-activation-and-bean-selection.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -79,7 +79,7 @@ Profiles 的“深挖主线”是把“我以为激活了 dev”为何没生效�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreProfilesLabTest`
-- 建议命令：`mvn -pl spring-core-profiles test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-profiles test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

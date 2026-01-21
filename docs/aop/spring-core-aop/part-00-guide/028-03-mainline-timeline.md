@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 27 章：AOP/代理主线](/book/027-aop-proxy-mainline/) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](029-00-deep-dive-guide.md)
+上一章：[第 27 章：AOP/代理主线](../../../book/027-aop-proxy-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](029-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

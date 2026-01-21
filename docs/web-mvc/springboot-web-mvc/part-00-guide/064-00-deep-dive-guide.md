@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 63 章：主线时间线：Spring Boot Web MVC](063-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 65 章：01：知识地图（Web MVC Deep Dive Map）](065-01-knowledge-map.md)
+上一章：[第 63 章：主线时间线：Spring Boot Web MVC](063-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 65 章：01：知识地图（Web MVC Deep Dive Map）](065-01-knowledge-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -28,11 +28,11 @@
     先跑通一个最小入口，保证环境与依赖没问题：
 
     ```bash
-    mvn -q -pl springboot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test
+    mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test
     ```
 
     然后把断点放在“分支发生处”（而不是满屏日志）：
-    - 断点地图（Part 01 Debugger Pack）：`part-00-guide/02-breakpoint-map.md`
+    - 断点地图（Part 01 Debugger Pack）：`part-00-guide/066-02-breakpoint-map.md`
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -76,11 +76,11 @@
 目标：能把断点打在“分支发生的地方”，并能解释“为什么是这个状态码/这个错误体”。
 
 推荐顺序：
-1. 知识地图：`part-00-guide/01-knowledge-map.md`
-2. DispatcherServlet 主链路：`part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md`
+1. 知识地图：`part-00-guide/065-01-knowledge-map.md`
+2. DispatcherServlet 主链路：`part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md`
 3. resolver/binder：`part-03-web-mvc-internals/02-argument-resolver-and-binder.md`
-4. converter/return value：`part-03-web-mvc-internals/03-message-converters-and-return-values.md`
-5. exception resolvers：`part-03-web-mvc-internals/04-exception-resolvers-and-error-flow.md`
+4. converter/return value：`part-03-web-mvc-internals/068-03-message-converters-and-return-values.md`
+5. exception resolvers：`part-03-web-mvc-internals/069-04-exception-resolvers-and-error-flow.md`
 
 证据链（先跑再断点）：
 - `BootWebMvcInternalsLabTest`（自定义 ArgumentResolver）
@@ -118,7 +118,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-- 建议命令：`mvn -pl springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -131,7 +131,7 @@
 6. 能写出最小 async/SSE 示例，并避免 flaky（asyncDispatch、有限事件）
 
 ## 如何跑实验
-- 运行本模块测试：`mvn -pl springboot-web-mvc test`
+- 运行本模块测试：`mvn -pl :springboot-web-mvc test`
 
 ## 对应 Lab（可运行）
 
@@ -202,6 +202,6 @@
 - Lab：`BootWebMvcObservabilityLabTest`
 - Exercise：`BootWebMvcExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/01-knowledge-map.md](065-01-knowledge-map.md)
+上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/065-01-knowledge-map.md](065-01-knowledge-map.md)
 
 <!-- BOOKIFY:END -->

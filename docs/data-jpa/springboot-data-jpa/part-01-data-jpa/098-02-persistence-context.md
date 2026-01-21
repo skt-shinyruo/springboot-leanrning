@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 97 章：01. Entity 状态机：transient / managed / detached / removed](097-01-entity-states.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？](099-03-flush-and-visibility.md)
+上一章：[第 97 章：01. Entity 状态机：transient / managed / detached / removed](097-01-entity-states.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？](099-03-flush-and-visibility.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -54,7 +54,7 @@ Persistence Context（持久化上下文）是 JPA/Hibernate 的核心：
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootDataJpaLabTest`
-- 建议命令：`mvn -pl springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

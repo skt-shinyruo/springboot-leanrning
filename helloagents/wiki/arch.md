@@ -2,7 +2,14 @@
 
 ## 1. 总体架构
 
-本仓库是一个 **Maven 多模块学习工程**：根 `pom.xml` 聚合多个独立模块，每个模块围绕一个主题提供：
+本仓库是一个 **Maven 多模块学习工程**。为了让目录结构更接近 `tutorials` 风格、便于按领域扩展与浏览，代码模块按“Spring Boot / Spring Core”分组放在两个父目录下：
+
+- `spring-boot-modules/`：Spring Boot 相关模块（`springboot-*`）
+- `spring-core-modules/`：Spring Core 相关模块（`spring-core-*`）
+
+根 `pom.xml` 仅聚合这两个“分组聚合 POM”（`spring-boot-modules/pom.xml`、`spring-core-modules/pom.xml`），再由它们继续聚合具体模块。
+
+每个模块围绕一个主题提供：
 
 - `README.md`（导航索引）
 - `docs/`（分章节说明）
@@ -11,14 +18,18 @@
 
 ```mermaid
 flowchart TD
-    Root[Root pom.xml<br/>springboot-learning] --> M1[spring-core-* modules]
-    Root --> M2[springboot-* modules]
-    M1 --> Docs1[docs/*.md]
-    M1 --> Code1[src/main/java]
-    M1 --> Tests1[src/test/java]
-    M2 --> Docs2[docs/*.md]
-    M2 --> Code2[src/main/java]
-    M2 --> Tests2[src/test/java]
+    Root[Root pom.xml<br/>springboot-learning] --> BootGroup[spring-boot-modules/pom.xml]
+    Root --> CoreGroup[spring-core-modules/pom.xml]
+
+    BootGroup --> BootM[springboot-* modules]
+    CoreGroup --> CoreM[spring-core-* modules]
+
+    BootM --> Docs1[docs/**.md]
+    BootM --> Code1[src/main/java]
+    BootM --> Tests1[src/test/java]
+    CoreM --> Docs2[docs/**.md]
+    CoreM --> Code2[src/main/java]
+    CoreM --> Tests2[src/test/java]
 ```
 
 ## 2. 技术栈
@@ -35,4 +46,4 @@ flowchart TD
 | adr_id | 标题 | 日期 | 状态 | 影响模块 | 详情 |
 | --- | --- | --- | --- | --- | --- |
 | ADR-001 | 以“可断言实验”作为学习闭环 | 2026-01-01 | ✅Adopted | 全部 | 见各模块 Labs/Exercises 设计 |
-
+| ADR-002 | 按 tutorials 风格分组聚合模块 | 2026-01-20 | ✅Adopted | 全部 | 见 `helloagents/history/2026-01/202601201248_tutorials_style_reorg/how.md` |

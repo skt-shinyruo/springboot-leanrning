@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
 
 ## 机制主线
 
@@ -108,23 +108,23 @@ Spring 里很多“规则”只在特定场景成立。最关键的分界线就�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 对应实验（可运行 + 可断言）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
 
 ```bash
-mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLabTest test
+mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLabTest test
 ```
 
 - 题目：`@Primary` / `@Priority` / `@Order` 分别解决什么问题？哪些只影响“集合顺序”，哪些会影响“单依赖候选收敛”？
 - 追问：
   - 为什么 `@Order` 不能解决“单注入歧义”（`NoUniqueBeanDefinitionException`）？你如何用断点证明它根本不参与 `determineAutowireCandidate`？
   - `@Primary` 与 `@Priority` 谁优先？在没有 `@Primary/@Qualifier` 时，`@Priority` 为什么有时能“打破平局”？
-- 复现入口（可断言）：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+- 复现入口（可断言）：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
   - 单注入歧义：`orderAnnotation_doesNotResolveSingleInjectionAmbiguity()`
   - by-name fallback：`byNameFallback_canResolveSingleInjectionAmbiguity_forAutowiredFieldInjection()`
   - `@Primary` 压过 by-name fallback：`primaryOverridesByNameFallback_forSingleInjection()`
@@ -153,7 +153,7 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLab
 
 ## 断点闭环（用本仓库 Lab/Test 跑一遍）
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
 
 建议断点：
 
@@ -163,7 +163,7 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLab
 - “集合注入顺序不稳定/不符合预期” → **实例层（排序）**：看 `AnnotationAwareOrderComparator#sort`（本章第 3 节）
 - “我以为 `@Priority` 会影响一切注入场景” → **实例层规则差异**：它既可能参与单依赖 tie-break，也会影响集合排序，但优先级低于 `@Primary`（本章第 2/3 节）
 - “候选选择行为跟想象不一致” → **先确认注入点类型**：单依赖 vs 集合是两套规则（本章第 1 节）
-对应 Lab/Test：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
 推荐断点：`DefaultListableBeanFactory#determineAutowireCandidate`、`DefaultListableBeanFactory#doResolveDependency`、`AnnotationAwareOrderComparator#sort`
 
 ## 常见坑与边界
@@ -179,7 +179,7 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLab
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
 
 上一章：[32. @Resource 的 name-first：CommonAnnotationBeanPostProcessor](32-resource-injection-name-first.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[34. @Value 占位符解析：strict vs non-strict](34-value-placeholder-resolution-strict-vs-non-strict.md)
 

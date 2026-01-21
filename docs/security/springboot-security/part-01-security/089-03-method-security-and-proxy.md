@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 90 章：04：FilterChain：多链路 + 顺序 + 自定义 Filter](090-04-filter-chain-and-order.md)
+上一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 90 章：04：FilterChain：多链路 + 顺序 + 自定义 Filter](090-04-filter-chain-and-order.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityLabTest`
-    - Test file：`springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+    - Test file：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 ## 机制主线
 
@@ -35,8 +35,8 @@
 
 对应代码：
 
-- `springboot-security/src/main/java/com/learning/springboot/bootsecurity/part01_security/AdminOnlyService.java`
-- `springboot-security/src/main/java/com/learning/springboot/bootsecurity/part01_security/SelfInvocationPitfallService.java`
+- `spring-boot-modules/springboot-security/src/main/java/com/learning/springboot/bootsecurity/part01_security/AdminOnlyService.java`
+- `spring-boot-modules/springboot-security/src/main/java/com/learning/springboot/bootsecurity/part01_security/SelfInvocationPitfallService.java`
 
 对应验证入口（可跑）：
 
@@ -76,7 +76,7 @@ Method Security 的本质仍然是 **代理**：
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootSecurityLabTest`
-- 建议命令：`mvn -pl springboot-security test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-security test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -115,7 +115,7 @@ Method Security 的本质仍然是 **代理**：
 ### 对应 Lab/Test
 
 - Lab：`BootSecurityLabTest`
-- Test file：`springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+- Test file：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 上一章：[part-01-security/02-csrf.md](088-02-csrf.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-security/04-filter-chain-and-order.md](090-04-filter-chain-and-order.md)
 

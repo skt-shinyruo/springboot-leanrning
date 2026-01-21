@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](134-06-async-multicaster.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 136 章：90. 常见坑清单（建议反复对照）](../appendix/136-90-common-pitfalls.md)
+上一章：[第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](134-06-async-multicaster.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 136 章：90. 常见坑清单（建议反复对照）](../appendix/136-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreEventsTransactionalEventLabTest`
-    - Test file：`spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
+    - Test file：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
 
 ## 机制主线
 
@@ -73,17 +73,17 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootBusinessCaseLabTest` / `SpringCoreEventsTransactionalEventLabTest`
-- 建议命令：`mvn -pl spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
-- 代码入口：`springboot-business-case/src/main/java/com/learning/springboot/bootbusinesscase/events/OrderEventListeners.java`
+- 代码入口：`spring-boot-modules/springboot-business-case/src/main/java/com/learning/springboot/bootbusinesscase/events/OrderEventListeners.java`
 - 行为断言：`BootBusinessCaseLabTest` 里有两类断言
   - 成功提交：既有 `sync:` 也有 `afterCommit:` 日志
   - 回滚失败：只有 `sync:`，不会出现 `afterCommit:`
 
 ```bash
-mvn -pl springboot-business-case test
+mvn -pl :springboot-business-case test
 ```
 
 - `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot`
@@ -92,11 +92,11 @@ mvn -pl springboot-business-case test
 ## 对应 Lab/Test（可运行）
 
 - 入口测试：
-  - `spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
+  - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
     - `afterCommitListenerRunsOnlyAfterCommit`
     - `afterCommitDoesNotRunOnRollback_butAfterRollbackDoes`
 - 推荐运行命令：
-  - `mvn -pl spring-core-events -Dtest=SpringCoreEventsTransactionalEventLabTest test`
+  - `mvn -pl :spring-core-events -Dtest=SpringCoreEventsTransactionalEventLabTest test`
 
 ## 常见坑与边界
 
@@ -129,7 +129,7 @@ mvn -pl springboot-business-case test
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreEventsTransactionalEventLabTest`
-- Test file：`spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
+- Test file：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
 
 上一章：[06-async-multicaster](134-06-async-multicaster.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](../appendix/136-90-common-pitfalls.md)
 

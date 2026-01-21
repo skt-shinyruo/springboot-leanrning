@@ -16,8 +16,16 @@
 - [读取与编码](part-01-resource-abstraction/145-05-reading-and-encoding.md)
 - [jar vs filesystem](part-01-resource-abstraction/146-06-jar-vs-filesystem.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[140-02-breakpoint-map.md](part-00-guide/140-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[140-04-branch-decision-matrix.md](part-00-guide/140-04-branch-decision-matrix.md)
+- 排障 playbook：[147-90-common-pitfalls.md](appendix/147-90-common-pitfalls.md)
+- 自检清单：[148-99-self-check.md](appendix/148-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/147-90-common-pitfalls.md)
 - [自检](appendix/148-99-self-check.md)
-

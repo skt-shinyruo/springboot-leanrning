@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 190 章：00 - Deep Dive Guide（springboot-business-case）](../part-00-guide/190-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 192 章：90 - Common Pitfalls（springboot-business-case）](../appendix/192-90-common-pitfalls.md)
+上一章：[第 190 章：00 - Deep Dive Guide（springboot-business-case）](../part-00-guide/190-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 192 章：90 - Common Pitfalls（springboot-business-case）](../appendix/192-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootBusinessCaseLabTest`
-    - Test file：`springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
+    - Test file：`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
 
 ## 机制主线
 
@@ -51,7 +51,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootBusinessCaseLabTest`
-- 建议命令：`mvn -pl springboot-business-case test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-business-case test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -59,7 +59,7 @@
 本章把业务主线串起来，并明确每个边界点“应该观察什么、如何用测试复现”。
 
 ## 最小可复现入口
-- `BootBusinessCaseLabTest`：`springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
+- `BootBusinessCaseLabTest`：`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
 
 ## 常见坑与边界
 
@@ -81,7 +81,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootBusinessCaseLabTest`
-- Test file：`springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
+- Test file：`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
 
 上一章：[part-00-guide/00-deep-dive-guide.md](../part-00-guide/190-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/192-90-common-pitfalls.md)
 

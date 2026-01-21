@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 131 章：03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？](131-03-condition-and-payload.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 133 章：05. 异步监听器：`@Async` 生效需要什么？线程会怎么变？](../part-02-async-and-transactional/133-05-async-listener.md)
+上一章：[第 131 章：03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？](131-03-condition-and-payload.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 133 章：05. 异步监听器：`@Async` 生效需要什么？线程会怎么变？](../part-02-async-and-transactional/133-05-async-listener.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -69,7 +69,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreEventsMechanicsLabTest`
-- 建议命令：`mvn -pl spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

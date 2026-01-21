@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？](161-04-groups.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](163-06-debugging.md)
+上一章：[第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？](161-04-groups.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](163-06-debugging.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -60,7 +60,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreValidationMechanicsLabTest`
-- 建议命令：`mvn -pl spring-core-validation test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

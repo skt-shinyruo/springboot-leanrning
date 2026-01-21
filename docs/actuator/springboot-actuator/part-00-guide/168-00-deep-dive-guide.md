@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 167 章：主线时间线：Spring Boot Actuator](167-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 169 章：01 - Actuator 基础与暴露](../part-01-actuator/169-01-actuator-basics.md)
+上一章：[第 167 章：主线时间线：Spring Boot Actuator](167-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 169 章：01 - Actuator 基础与暴露](../part-01-actuator/169-01-actuator-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -96,7 +96,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
-- 建议命令：`mvn -pl springboot-actuator test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-actuator test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -106,7 +106,7 @@
 3. 能定位 Actuator 相关排障的第一现场：`/actuator`、条件报告、日志与配置来源
 
 ## 如何跑实验
-- 运行本模块测试：`mvn -pl springboot-actuator test`
+- 运行本模块测试：`mvn -pl :springboot-actuator test`
 
 ## 对应 Lab（可运行）
 

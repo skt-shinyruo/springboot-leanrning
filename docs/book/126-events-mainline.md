@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 125 章：99 - Self Check（springboot-async-scheduling）](../docs/async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 127 章：主线时间线：Spring Events](../docs/events/spring-core-events/part-00-guide/127-03-mainline-timeline.md)
+上一章：[第 125 章：99 - Self Check（springboot-async-scheduling）](../async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 127 章：主线时间线：Spring Events](../events/spring-core-events/part-00-guide/127-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**为什么发布一个事件就能触发多个监听器、异常怎么传播、事务提交后再发事件该怎么写**。
@@ -47,15 +47,25 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/events/spring-core-events/README.md`](../docs/events/spring-core-events/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/events/spring-core-events/part-00-guide/03-mainline-timeline.md`](../docs/events/spring-core-events/part-00-guide/127-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/events/spring-core-events/part-00-guide/128-02-breakpoint-map.md`](../events/spring-core-events/part-00-guide/128-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/events/spring-core-events/part-00-guide/128-04-branch-decision-matrix.md`](../events/spring-core-events/part-00-guide/128-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/events/spring-core-events/appendix/136-90-common-pitfalls.md`](../events/spring-core-events/appendix/136-90-common-pitfalls.md)
+- 自检清单：[`docs/events/spring-core-events/appendix/137-99-self-check.md`](../events/spring-core-events/appendix/137-99-self-check.md)
+
+- 模块目录页：[`docs/events/spring-core-events/README.md`](../events/spring-core-events/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/events/spring-core-events/part-00-guide/03-mainline-timeline.md`](../events/spring-core-events/part-00-guide/127-03-mainline-timeline.md)
 
 ---
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-events -Dtest=SpringCoreEventsLabTest test`（`spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part00_guide/SpringCoreEventsExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsLabTest test`（`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`（`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - 基础事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`（`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsBasicsBranchMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - 异步/事务事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`（`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsAsyncTransactionalBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part00_guide/SpringCoreEventsExerciseTest.java`
 
 ---
 

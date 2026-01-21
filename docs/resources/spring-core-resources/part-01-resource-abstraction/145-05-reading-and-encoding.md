@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](146-06-jar-vs-filesystem.md)
+上一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](146-06-jar-vs-filesystem.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -55,7 +55,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreResourcesMechanicsLabTest`
-- 建议命令：`mvn -pl spring-core-resources test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

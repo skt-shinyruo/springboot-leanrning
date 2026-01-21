@@ -36,12 +36,23 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/web-client/springboot-web-client/README.md`
-- **Docs Guide:** `docs/web-client/springboot-web-client/part-00-guide/00-deep-dive-guide.md`
+- **Docs Guide:** `docs/web-client/springboot-web-client/part-00-guide/174-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/web-client/springboot-web-client/part-00-guide/174-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/web-client/springboot-web-client/part-00-guide/174-04-branch-decision-matrix.md`
+- **Playbook:** `docs/web-client/springboot-web-client/appendix/180-90-common-pitfalls.md`
+- **Self-check:** `docs/web-client/springboot-web-client/appendix/181-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBranchMatrixLabTest.java`
 - **Labs:**
-  - `springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientRestClientLabTest.java`
-  - `springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java`
-  - `springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientFilterOrderLabTest.java`
-- **Exercise:** `springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part00_guide/BootWebClientExerciseTest.java`
+  - `spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientRestClientLabTest.java`
+  - `spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java`
+  - `spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientFilterOrderLabTest.java`
+- **Exercise:** `spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part00_guide/BootWebClientExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

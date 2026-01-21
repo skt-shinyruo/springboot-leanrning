@@ -12,6 +12,15 @@
 - [配置源与 Profiles](part-01-boot-basics/005-01-property-sources-and-profiles.md)
 - [配置绑定（@ConfigurationProperties）](part-01-boot-basics/006-02-configuration-properties-binding.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[004-02-breakpoint-map.md](part-00-guide/004-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[004-04-branch-decision-matrix.md](part-00-guide/004-04-branch-decision-matrix.md)
+- 排障 playbook：[007-90-common-pitfalls.md](appendix/007-90-common-pitfalls.md)
+- 自检清单：[008-99-self-check.md](appendix/008-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-basics -Dtest=BootBasicsBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/007-90-common-pitfalls.md)

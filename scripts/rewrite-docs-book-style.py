@@ -29,6 +29,8 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+from repo_paths import find_module_root
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -85,7 +87,7 @@ def discover_modules(repo_root: Path) -> list[str]:
     modules: list[str] = []
     for readme in sorted(docs_root.glob("*/*/README.md")):
         module = readme.parent.name
-        if (repo_root / module).is_dir():
+        if find_module_root(repo_root, module) is not None:
             modules.append(module)
     return modules
 

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 154 章：自测题（Spring Core Profiles）](../docs/profiles/spring-core-profiles/appendix/154-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 156 章：主线时间线：Spring Validation](../docs/validation/spring-core-validation/part-00-guide/156-03-mainline-timeline.md)
+上一章：[第 154 章：自测题（Spring Core Profiles）](../profiles/spring-core-profiles/appendix/154-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 156 章：主线时间线：Spring Validation](../validation/spring-core-validation/part-00-guide/156-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**校验错误从哪里来、为什么同样是“参数不合法”会走不同分支、为什么方法级校验常常“看起来没生效”**。
@@ -48,15 +48,24 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/validation/spring-core-validation/README.md`](../docs/validation/spring-core-validation/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/validation/spring-core-validation/part-00-guide/03-mainline-timeline.md`](../docs/validation/spring-core-validation/part-00-guide/156-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md`](../validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/validation/spring-core-validation/part-00-guide/157-04-branch-decision-matrix.md`](../validation/spring-core-validation/part-00-guide/157-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/validation/spring-core-validation/appendix/164-90-common-pitfalls.md`](../validation/spring-core-validation/appendix/164-90-common-pitfalls.md)
+- 自检清单：[`docs/validation/spring-core-validation/appendix/165-99-self-check.md`](../validation/spring-core-validation/appendix/165-99-self-check.md)
+
+- 模块目录页：[`docs/validation/spring-core-validation/README.md`](../validation/spring-core-validation/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/validation/spring-core-validation/part-00-guide/03-mainline-timeline.md`](../validation/spring-core-validation/part-00-guide/156-03-mainline-timeline.md)
 
 ---
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-validation -Dtest=SpringCoreValidationLabTest test`（`spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part00_guide/SpringCoreValidationExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationLabTest test`（`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`（`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`（`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part00_guide/SpringCoreValidationExerciseTest.java`
 
 ---
 

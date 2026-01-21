@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 172 章：Web Client 主线](/book/172-web-client-mainline/) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 174 章：00 - Deep Dive Guide（springboot-web-client）](174-00-deep-dive-guide.md)
+上一章：[第 172 章：Web Client 主线](../../../book/172-web-client-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 174 章：00 - Deep Dive Guide（springboot-web-client）](174-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

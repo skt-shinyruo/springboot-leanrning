@@ -36,10 +36,21 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/business-case/springboot-business-case/README.md`
-- **Docs Guide:** `docs/business-case/springboot-business-case/part-00-guide/00-deep-dive-guide.md`
-- **Lab:** `springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
-- **Lab (Service):** `springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseServiceLabTest.java`
-- **Exercise:** `springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part00_guide/BootBusinessCaseExerciseTest.java`
+- **Docs Guide:** `docs/business-case/springboot-business-case/part-00-guide/190-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/business-case/springboot-business-case/part-00-guide/190-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/business-case/springboot-business-case/part-00-guide/190-04-branch-decision-matrix.md`
+- **Playbook:** `docs/business-case/springboot-business-case/appendix/192-90-common-pitfalls.md`
+- **Self-check:** `docs/business-case/springboot-business-case/appendix/193-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBranchMatrixLabTest.java`
+- **Lab:** `spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
+- **Lab (Service):** `spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseServiceLabTest.java`
+- **Exercise:** `spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part00_guide/BootBusinessCaseExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

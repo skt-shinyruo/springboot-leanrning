@@ -10,6 +10,10 @@
 - **Status:** 🚧In Development
 - **Last Updated:** 2026-01-09
 
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBookMatrixLabTest test`
+  - 对应测试类：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesBookMatrixLabTest.java`
+
 ## Specifications
 
 ### Source Layout
@@ -17,13 +21,18 @@
 - docs：`docs/resources/spring-core-resources/part-00-guide/`（深挖指南）
 - docs：`docs/resources/spring-core-resources/part-01-resource-abstraction/`（Resource 抽象与定位规则）
 - docs：`docs/resources/spring-core-resources/appendix/`（常见坑/自测题）
-- src(main)：`spring-core-resources/src/main/java/com/learning/springboot/springcoreresources/SpringCoreResourcesApplication.java`（入口，包名保持不变）
-- src(main)：`spring-core-resources/src/main/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/**`
-- src(test)：`spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part00_guide/**`
-- src(test)：`spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/**`
+- src(main)：`spring-core-modules/spring-core-resources/src/main/java/com/learning/springboot/springcoreresources/SpringCoreResourcesApplication.java`（入口，包名保持不变）
+- src(main)：`spring-core-modules/spring-core-resources/src/main/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/**`
+- src(test)：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part00_guide/**`
+- src(test)：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/**`
 
 ### Docs Index
 - 入口：`docs/resources/spring-core-resources/README.md`
+- 断点地图：`docs/resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md`
+- 关键分支矩阵：`docs/resources/spring-core-resources/part-00-guide/140-04-branch-decision-matrix.md`
+- 排障 playbook：`docs/resources/spring-core-resources/appendix/147-90-common-pitfalls.md`
+- 自检清单：`docs/resources/spring-core-resources/appendix/148-99-self-check.md`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
 
 ### Requirement: Resource 学习闭环
 **Module:** spring-core-resources

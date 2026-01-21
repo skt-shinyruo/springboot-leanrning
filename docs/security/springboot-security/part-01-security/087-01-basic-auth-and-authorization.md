@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 86 章：00 - Deep Dive Guide（springboot-security）](../part-00-guide/086-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md)
+上一章：[第 86 章：00 - Deep Dive Guide（springboot-security）](../part-00-guide/086-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityLabTest`
-    - Test file：`springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+    - Test file：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 ## 机制主线
 
@@ -62,7 +62,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootSecurityLabTest`
-- 建议命令：`mvn -pl springboot-security test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-security test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -111,7 +111,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootSecurityLabTest`
-- Test file：`springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+- Test file：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 上一章：[part-00-guide/00-deep-dive-guide.md](../part-00-guide/086-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-security/02-csrf.md](088-02-csrf.md)
 

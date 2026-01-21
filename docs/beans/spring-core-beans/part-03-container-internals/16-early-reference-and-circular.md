@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 ## 机制主线
 
@@ -85,7 +85,7 @@
 
 对应测试：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
   - `getEarlyBeanReference_canProvideEarlyProxyDuringCircularDependencyResolution()`（核心闭环：early 与 final 都是同一个 proxy）
   - `injectingConcreteTypeFailsWhenFinalBeanIsJdkProxy_duringCircularDependency()`（边界：按实现类注入可能因 JDK proxy 直接失败）
 
@@ -228,17 +228,17 @@ Spring 为了避免这种不一致，提供了一个 fail-fast 的保护开关�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 对应实验：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
 
 补充实验（raw injection despite wrapping 的风险与开关语义）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java`
 
 在 `SpringCoreBeansContainerLabTest` 里你已经见过：
 
@@ -248,14 +248,14 @@ Spring 为了避免这种不一致，提供了一个 fail-fast 的保护开关�
   - 引入代理（AOP/事务）后，为什么必须把 early reference 和 `getEarlyBeanReference` 一起讲？不然会出现什么“对象形态不一致”的问题？
 - 复现入口（可断言 + 可断点）：
   - setter vs constructor 循环依赖（基础现象）：
-    - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
       - `circularDependencyWithConstructorsFailsFast()`
       - `circularDependencyWithSettersMaySucceedViaEarlySingletonExposure()`
   - early proxy（解决 raw vs wrapped 不一致）：
-    - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
       - `getEarlyBeanReference_canProvideEarlyProxyDuringCircularDependencyResolution()`
   - proxy 类型陷阱（按实现类注入/获取失败）：
-    - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
       - `injectingConcreteTypeFailsWhenFinalBeanIsJdkProxy_duringCircularDependency()`
 
 ## 3. 本模块的实验：让 early reference 直接变成 proxy
@@ -277,7 +277,7 @@ Spring 为了避免这种不一致，提供了一个 fail-fast 的保护开关�
 
 ## 断点闭环（用本仓库 Lab/Test 跑一遍）
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
   - `getEarlyBeanReference_canProvideEarlyProxyDuringCircularDependencyResolution()`
 
 建议断点：
@@ -289,7 +289,7 @@ Spring 为了避免这种不一致，提供了一个 fail-fast 的保护开关�
 
 最小复现入口（必现，且错误信息直给“expected type vs actual proxy type”）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
   - `injectingConcreteTypeFailsWhenFinalBeanIsJdkProxy_duringCircularDependency()`
 
 你在断点里应该看到什么（用于纠错）：
@@ -299,9 +299,9 @@ Spring 为了避免这种不一致，提供了一个 fail-fast 的保护开关�
 ### 5.1 最小复现入口（可断言 + 可断点）
 
 - 入口测试：
-  - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java`
 - 推荐运行命令：
-  - `mvn -pl spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabTest test`
+  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabTest test`
 
 1) `allowRawInjectionDespiteWrapping=false`：**创建该 bean 时 fail-fast**，拒绝让系统进入 raw/proxy 不一致状态（如果是 eager singleton 场景，表现为 refresh 失败）
 2) `allowRawInjectionDespiteWrapping=true`：容器允许继续运行，但 dependent bean 持有 raw，容器对外暴露 proxy，调用链会出现“绕过代理”
@@ -313,7 +313,7 @@ Spring 为了避免这种不一致，提供了一个 fail-fast 的保护开关�
 
 - 你能解释清楚：为什么循环依赖场景下，容器需要一个“提前暴露的引用”？
 - 你能解释清楚：`getEarlyBeanReference` 为什么必须跟“代理/包装”一起讲？
-对应 Lab/Test：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
 推荐断点：`DefaultSingletonBeanRegistry#getSingleton`、`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`、`SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference`
 
 ## 常见坑与边界
@@ -353,7 +353,7 @@ Spring 为了避免这种不一致，提供了一个 fail-fast 的保护开关�
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 上一章：[15. 实例化前短路：还没 new 就拿到对象了？](15-pre-instantiation-short-circuit.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[17. 生命周期回调顺序：Aware/@PostConstruct/afterPropertiesSet/initMethod](17-lifecycle-callback-order.md)
 

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 115 章：99 - Self Check（springboot-cache）](../docs/cache/springboot-cache/appendix/115-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 117 章：主线时间线：Spring Boot Async & Scheduling](../docs/async-scheduling/springboot-async-scheduling/part-00-guide/117-03-mainline-timeline.md)
+上一章：[第 115 章：99 - Self Check（springboot-cache）](../cache/springboot-cache/appendix/115-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 117 章：主线时间线：Spring Boot Async & Scheduling](../async-scheduling/springboot-async-scheduling/part-00-guide/117-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 当你把应用写到“能跑”之后，很快就会遇到并发与时间：慢任务要丢到后台、外部调用要异步、定时任务要按点触发。
@@ -90,15 +90,24 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/async-scheduling/springboot-async-scheduling/README.md`](../docs/async-scheduling/springboot-async-scheduling/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/async-scheduling/springboot-async-scheduling/part-00-guide/03-mainline-timeline.md`](../docs/async-scheduling/springboot-async-scheduling/part-00-guide/117-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-02-breakpoint-map.md`](../async-scheduling/springboot-async-scheduling/part-00-guide/118-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md`](../async-scheduling/springboot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/async-scheduling/springboot-async-scheduling/appendix/124-90-common-pitfalls.md`](../async-scheduling/springboot-async-scheduling/appendix/124-90-common-pitfalls.md)
+- 自检清单：[`docs/async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md`](../async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md)
+
+- 模块目录页：[`docs/async-scheduling/springboot-async-scheduling/README.md`](../async-scheduling/springboot-async-scheduling/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/async-scheduling/springboot-async-scheduling/part-00-guide/03-mainline-timeline.md`](../async-scheduling/springboot-async-scheduling/part-00-guide/117-03-mainline-timeline.md)
 
 ---
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl springboot-async-scheduling -Dtest=BootAsyncSchedulingLabTest test`（`springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseTest.java`
+- Lab：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingLabTest test`（`spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`（`spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`（`spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseTest.java`
 
 ---
 

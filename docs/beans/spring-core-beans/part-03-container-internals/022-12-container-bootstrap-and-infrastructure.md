@@ -10,13 +10,14 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
+上一章：[第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 - 本章主题：**12. 容器启动与基础设施处理器：为什么注解能工作？**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 主线叙事补充（建议在深挖前先通读一次）：[从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）](18-refresh-to-bean-creation-mainline.md)
 
 !!! summary "本章要点"
 
@@ -27,7 +28,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
 ## 机制主线
 
@@ -43,7 +44,7 @@
 
 对应测试：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`（证据：字段为 null、`@PostConstruct` 没跑）
 
 ### 1.2 注册 annotation processors 后，注解才会被处理
@@ -60,8 +61,22 @@
 
 对应测试：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `registerAnnotationConfigProcessors_enablesAutowiredAndPostConstruct()`（证据：字段被注入、`@PostConstruct` 被触发）
+
+#### 1.2.1 注解能力处理器速查表：功能 → 处理器 → 类型 → 关键方法 → refresh 落点
+
+很多人学 Spring 注解会陷入“背注解名”的状态，但源码级理解的抓手应该是：**是哪一个处理器在什么阶段动了手**。
+
+你可以把“注解为什么能工作”拆成下面这张表（只列最核心的几条，足够覆盖 80% 排障场景）：
+
+| 你看到的能力（现象） | 关键处理器 | 处理器类型 | 关键方法（断点入口） | refresh 落点（阶段） |
+|---|---|---|---|---|
+| `@Configuration/@Bean/@Import/@ComponentScan` 能扩张定义图 | `ConfigurationClassPostProcessor` | `BeanDefinitionRegistryPostProcessor` + `BeanFactoryPostProcessor` | `postProcessBeanDefinitionRegistry`<br>`processConfigBeanDefinitions` | 第 5 步：`invokeBeanFactoryPostProcessors`（定义阶段） |
+| `@Autowired/@Value` 能注入字段/方法/构造器参数 | `AutowiredAnnotationBeanPostProcessor` | `SmartInstantiationAwareBeanPostProcessor`（BPP） | `determineCandidateConstructors`（构造器分支）<br>`postProcessProperties`（属性填充分支） | 第 6 步：`registerBeanPostProcessors`（装规则）<br>创建阶段：`populateBean` / 构造器解析 |
+| `@Resource/@PostConstruct/@PreDestroy` 能生效 | `CommonAnnotationBeanPostProcessor` | `InstantiationAwareBeanPostProcessor` + `DestructionAwareBeanPostProcessor`（BPP） | `postProcessProperties`（`@Resource`）<br>`postProcessBeforeInitialization`（`@PostConstruct`）<br>`postProcessBeforeDestruction`（`@PreDestroy`） | 第 6 步：`registerBeanPostProcessors`（装规则）<br>创建/销毁阶段：`initializeBean` / destroy |
+| `*Aware`（BeanName/BeanFactory/ApplicationContext/Environment…）能被回调 | `ApplicationContextAwareProcessor`（容器内置） | `BeanPostProcessor`（BPP） | `postProcessBeforeInitialization`（触发各类 `setXxx(...)`） | 第 3 步：`prepareBeanFactory`（先塞基础设施） |
+| 某些类型“能注入但不是 Bean”（如 `Environment`） | `registerResolvableDependency`（容器内置） | ——（不是 processor，是解析规则） | `DefaultListableBeanFactory#doResolveDependency`（优先命中 resolvableDependencies） | 第 3 步：`prepareBeanFactory`（先塞基础设施） |
 
 ### 1.3 源码解析：为什么 `AnnotationConfigApplicationContext` “默认就有注解能力”？
 
@@ -105,6 +120,41 @@ AnnotatedBeanDefinitionReader(registry):
 
 - **registry 里有处理器，但 BeanFactory 的 BPP 列表里没有它 ⇒ 注解不会生效**
 
+#### 1.3.3 把“时机差异”画成时间线：定义层注册 → 处理器执行 → 规则装载 → 创建链路命中
+
+如果你把这一章只记成一句话，那就记成：
+
+> 注解能力是一套“处理器 + 时机”的组合：先注册定义，再执行 BFPP/BDRPP 扩张定义，再注册 BPP 装规则，最后在创建链路里真正命中。
+
+把它压缩成时间线会更稳：
+
+```text
+T0（bootstrap）：registerAnnotationConfigProcessors
+  - 只是注册 BeanDefinition（定义层），处理器还没“生效”
+
+T1（refresh 第 5 步）：invokeBeanFactoryPostProcessors
+  - 执行 BDRPP/BFPP
+  - ConfigurationClassPostProcessor 在这里把 @Configuration/@Bean/@Import 解析成更多 BeanDefinition
+
+T2（refresh 第 6 步）：registerBeanPostProcessors
+  - 实例化各种 BPP，并加入 beanFactory.getBeanPostProcessors()
+  - 到这里“注入/回调/代理规则”才算装上
+
+T3（refresh 第 9 步 或首次 getBean）：进入创建链路
+  - populateBean / initializeBean 命中 BPP：@Autowired/@PostConstruct/... 才真正发生
+```
+
+#### 1.3.4 反例（最常见的坑）：在 BDRPP/BFPP 阶段过早 `getBean()` 会让对象错过 BPP
+
+一个非常“真实世界”的坑是：你在 BFPP/BDRPP 执行阶段就调用了 `getBean()`（例如为了拿一个辅助对象做注册），这会导致：
+
+- bean 在 “BPP 还没注册完” 之前就被创建了
+- 于是它会错过注入、生命周期回调、甚至代理包装
+
+本仓库有一个很直观的对照证据链：同一个目标 bean，early vs late 的创建时机不同，最终对象形态/回调就可能不同：
+
+- `SpringCoreBeansRegistryPostProcessorLabTest`
+
 ## 2. `@Bean` 为什么能“变成 BeanDefinition”？
 
 很多人以为：
@@ -117,7 +167,7 @@ AnnotatedBeanDefinitionReader(registry):
 
 对应测试（同一个 config class，两种容器启动方式得到不同结果）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `configurationClassIsNotParsedWithoutConfigurationClassPostProcessor()`（证据：不装 processors 时 `@Bean` 方法不会变成 BeanDefinition）
 
 - **误解 1：注解是语言特性**
@@ -242,7 +292,7 @@ AnnotatedBeanDefinitionReader(registry):
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -250,8 +300,8 @@ AnnotatedBeanDefinitionReader(registry):
 
 对应实验：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
 - `@Autowired` 不会发生（字段仍然是 `null`）
 - `@PostConstruct` 不会运行（回调不会被触发）
@@ -272,7 +322,7 @@ AnnotatedBeanDefinitionReader(registry):
 
 ## 断点闭环（用本仓库 Lab/Test 跑一遍）
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`
   - `registerAnnotationConfigProcessors_enablesAutowiredAndPostConstruct()`
 
@@ -298,15 +348,15 @@ AnnotatedBeanDefinitionReader(registry):
 
 最小复现入口（必现）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
   - `withoutAnnotationConfigProcessors_resourceIsIgnored()`
 
 你在断点里应该看到什么（用于纠错）：
 
 - 你能解释清楚：`@Autowired`/`@PostConstruct`/`@Bean` 分别依赖哪些处理器让它们生效吗？
-对应 Lab/Test：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
+对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
 推荐断点：`AnnotationConfigUtils#registerAnnotationConfigProcessors`、`ConfigurationClassPostProcessor#processConfigBeanDefinitions`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`
 
 1) 你能按“refresh 主线”复述 Spring 容器启动时序吗？
@@ -349,7 +399,7 @@ AnnotatedBeanDefinitionReader(registry):
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
 上一章：[11. 调试与可观察性：从异常到断点入口](../part-02-boot-autoconfig/019-11-debugging-and-observability.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[13. BeanDefinitionRegistryPostProcessor：定义注册再推进](13-bdrpp-definition-registration.md)
 

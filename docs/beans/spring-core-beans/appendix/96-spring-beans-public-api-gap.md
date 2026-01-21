@@ -2,7 +2,7 @@
 ⚠️ GENERATED FILE - 请勿手工编辑。
 - Generator: scripts/generate-spring-beans-public-api-index.py
 - Source: /home/feng/.m2/repository/org/springframework/spring-beans/6.2.15/spring-beans-6.2.15-sources.jar
-- Generated at: 2026-01-14 16:42:38
+- Generated at: 2026-01-20 14:30:48
 -->
 
 # 96. spring-beans Public API 覆盖差距（Gap）清单（Spring Framework 6.2.15）

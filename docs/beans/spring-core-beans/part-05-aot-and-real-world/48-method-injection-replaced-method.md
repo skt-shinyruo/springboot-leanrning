@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansReplacedMethodLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
 
 ## 机制主线
 
@@ -37,7 +37,7 @@
 ---
 
 - 测试：`SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides`
-- XML：`spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
+- XML：`spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
 
 ## 1. 是什么：它解决什么问题？不解决什么问题？
 
@@ -104,21 +104,21 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansReplacedMethodLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 0. 复现入口（可运行）
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
 
 推荐运行命令：
 
 ```bash
-mvn -pl spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 ```
 
-- `spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
+- `spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
 
 - 你想让某个 bean 的某个方法在运行时“由容器决定实现”，而不是固定写死在类里
 - 或者你需要一种“配置驱动的可插拔方法实现”（历史上在 XML 配置时代更常见）
@@ -168,7 +168,7 @@ mvn -pl spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansReplacedMethodLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
 
 上一章：[47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy](47-beandefinitionreader-other-inputs-properties-groovy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀](49-built-in-factorybeans-gallery.md)
 

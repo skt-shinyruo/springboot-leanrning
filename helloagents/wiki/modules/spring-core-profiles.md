@@ -10,6 +10,10 @@
 - **Status:** 🚧In Development
 - **Last Updated:** 2026-01-09
 
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBookMatrixLabTest test`
+  - 对应测试类：`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/SpringCoreProfilesBookMatrixLabTest.java`
+
 ## Specifications
 
 ### Source Layout
@@ -17,13 +21,18 @@
 - docs：`docs/profiles/spring-core-profiles/part-00-guide/`（深挖指南）
 - docs：`docs/profiles/spring-core-profiles/part-01-profiles/`（profiles 激活与选择）
 - docs：`docs/profiles/spring-core-profiles/appendix/`（常见坑/自测题）
-- src(main)：`spring-core-profiles/src/main/java/com/learning/springboot/springcoreprofiles/SpringCoreProfilesApplication.java`（入口，包名保持不变）
-- src(main)：`spring-core-profiles/src/main/java/com/learning/springboot/springcoreprofiles/part01_profiles/**`
-- src(test)：`spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part00_guide/**`
-- src(test)：`spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/**`
+- src(main)：`spring-core-modules/spring-core-profiles/src/main/java/com/learning/springboot/springcoreprofiles/SpringCoreProfilesApplication.java`（入口，包名保持不变）
+- src(main)：`spring-core-modules/spring-core-profiles/src/main/java/com/learning/springboot/springcoreprofiles/part01_profiles/**`
+- src(test)：`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part00_guide/**`
+- src(test)：`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/**`
 
 ### Docs Index
 - 入口：`docs/profiles/spring-core-profiles/README.md`
+- 断点地图：`docs/profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md`
+- 关键分支矩阵：`docs/profiles/spring-core-profiles/part-00-guide/151-04-branch-decision-matrix.md`
+- 排障 playbook：`docs/profiles/spring-core-profiles/appendix/153-90-common-pitfalls.md`
+- 自检清单：`docs/profiles/spring-core-profiles/appendix/154-99-self-check.md`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBranchMatrixLabTest test`
 
 ### Requirement: Profiles 学习闭环
 **Module:** spring-core-profiles

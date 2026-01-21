@@ -20,8 +20,16 @@
 - Web 请求主线：`springboot-web-mvc`
 - AOP 代理边界：`spring-core-aop`
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[086-02-breakpoint-map.md](part-00-guide/086-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[086-04-branch-decision-matrix.md](part-00-guide/086-04-branch-decision-matrix.md)
+- 排障 playbook：[092-90-common-pitfalls.md](appendix/092-90-common-pitfalls.md)
+- 自检清单：[093-99-self-check.md](appendix/093-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-security -Dtest=BootSecurityBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/092-90-common-pitfalls.md)
 - [自检](appendix/093-99-self-check.md)
-

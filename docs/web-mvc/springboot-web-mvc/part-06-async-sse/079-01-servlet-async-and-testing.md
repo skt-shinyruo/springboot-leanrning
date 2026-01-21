@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../part-05-real-world-http/078-01-cors-preflight.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 80 章：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）](../part-07-testing-debugging/080-01-webmvc-testing-and-troubleshooting.md)
+上一章：[第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../part-05-real-world-http/078-01-cors-preflight.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 80 章：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）](../part-07-testing-debugging/080-01-webmvc-testing-and-troubleshooting.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

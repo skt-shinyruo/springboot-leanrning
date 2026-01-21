@@ -11,7 +11,7 @@
 <!-- CHAPTER-CARD:END -->
 
 ## 已迁移
-本页为旧入口兼容页，正文已迁移到：[新位置](/book/002-boot-basics-mainline/)。
+本页为旧入口兼容页，正文已迁移到：[新位置](../../../book/002-boot-basics-mainline.md)。
 
 ## 可跑入口（保留以通过教学闸门）
 
@@ -19,4 +19,4 @@
 
 ## 返回
 - [模块目录](../README.md)
-- [全书目录](/book/)
+- [全书目录](../../../book/index.md)

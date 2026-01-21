@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](../part-01-ioc-container/018-07-configuration-enhancement.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md)
+上一章：[第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](../part-01-ioc-container/018-07-configuration-enhancement.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
 
 ## 机制主线
 
@@ -59,7 +59,7 @@
 
 对应测试：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
   - `containerCanProvideAllFormatterBeansByType()`（你应该看到 `upperFormatter/lowerFormatter` 都在容器里）
 
 - 先确认“容器里有没有你以为的 bean”
@@ -79,9 +79,9 @@
 
 对应测试：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
   - `beanDefinitionIsNotTheBeanInstance()`（你应该看到：definition 存在，但 instance 可能尚未创建；definition != instance）
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansBeanDefinitionOriginLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansBeanDefinitionOriginLabTest.java`
   - `beanDefinitionMetadata_canAnswerWhoRegisteredThisBean_andWhereItCameFrom()`（你应该看到：factoryBeanName/factoryMethodName/source 等元数据能回答“谁注册的/从哪来的”）
 
 本仓库里你已经反复用过两类“最小容器”：
@@ -235,7 +235,7 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -280,7 +280,7 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 对应实验：
 
 - `SpringCoreBeansBeanGraphDebugLabTest.dumpBeanGraph_candidatesAndRecordedDependencies_helpTroubleshootWhyItsInjected()`
-- 辅助工具：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java`
+- 辅助工具：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java`
 
 - 在运行参数里加 `--debug`
 - 或在配置里开启 `debug=true`
@@ -323,7 +323,7 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 运行本模块：
 
 ```bash
-mvn -pl spring-core-beans spring-boot:run
+mvn -pl :spring-core-beans spring-boot:run
 ```
 
 ## 9. 异常 → 断点入口（从报错秒跳到正确抓手）
@@ -332,18 +332,18 @@ mvn -pl spring-core-beans spring-boot:run
 
 | 你看到的异常 | 常见含义（先分流） | 最有效入口断点（优先打条件断点） | 关联章节 / 可跑实验 |
 | --- | --- | --- | --- |
-| `NoSuchBeanDefinitionException` | 容器里根本没有候选（定义没注册/条件没满足/按 name 找不到） | `DefaultListableBeanFactory#doResolveDependency`、`DefaultListableBeanFactory#getBeanNamesForType` | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`（`missingBeanLookupsFailFast()`） |
-| `NoUniqueBeanDefinitionException` | 候选太多且无法唯一化（典型：单依赖注入时同类型有多个候选） | `DefaultListableBeanFactory#doResolveDependency`、`DefaultListableBeanFactory#determineAutowireCandidate`、`DefaultListableBeanFactory#determinePrimaryCandidate` | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`（`orderAnnotation_doesNotResolveSingleInjectionAmbiguity()`） |
-| `UnsatisfiedDependencyException` | “注入失败”的总包装：可能是没有候选、候选太多、类型不匹配、创建链路失败（它经常包着真正 root cause） | `DefaultListableBeanFactory#doResolveDependency`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`AbstractAutowireCapableBeanFactory#populateBean` | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[30](../part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java`（`unsatisfiedDependency_failsFast()`） |
-| `BeanCurrentlyInCreationException` | 循环依赖/提前暴露相关：某个 bean 正在创建中又被请求（构造器循环依赖最常见） | `DefaultSingletonBeanRegistry#getSingleton`、`DefaultSingletonBeanRegistry#beforeSingletonCreation`、`AbstractBeanFactory#doGetBean` | [09](../part-01-ioc-container/09-circular-dependencies.md)、[16](../part-03-container-internals/16-early-reference-and-circular.md)、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`（`circularDependencyWithConstructorsFailsFast()`） |
-| `Circular depends-on relationship`（message） | **定义层拓扑环**：人为写了 `dependsOn A -> B -> A`；不要误判成“循环依赖/三级缓存” | `AbstractBeanFactory#doGetBean`、`DefaultSingletonBeanRegistry#registerDependentBean`、`DefaultSingletonBeanRegistry#isDependent` | [19](../part-04-wiring-and-boundaries/19-depends-on.md)、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`（`dependsOn_cycle_failsFast()`） |
-| `BeanCreationException` | bean 创建链路失败（构造器异常 / init 回调异常 / BPP 包装失败 / 循环依赖失败等都会落到这里） | `AbstractAutowireCapableBeanFactory#doCreateBean`、`AbstractAutowireCapableBeanFactory#createBeanInstance`、`AbstractAutowireCapableBeanFactory#initializeBean` | [00](../part-00-guide/011-00-deep-dive-guide.md)、[12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`（`withoutBeforeInstantiationShortCircuit_refreshFailsAndConstructorWasCalled()`） |
-| `BeanDefinitionStoreException` | definition 解析/注册阶段失败（XML/注解解析/占位符等；通常发生在 refresh 前半段） | `XmlBeanDefinitionReader#loadBeanDefinitions`、`DefaultListableBeanFactory#registerBeanDefinition`、`AbstractApplicationContext#refresh` | [02](../part-01-ioc-container/02-bean-registration.md)、[12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java`（`beanDefinitionStoreException_invalidXml()`） |
-| （无异常）`@Autowired/@Resource/@PostConstruct` 不生效（字段为 null / 回调没跑） | 容器没装“注解能力基础设施”（annotation processors 未注册/未生效）；常见于 `GenericApplicationContext` 手工启动 | `AnnotationConfigUtils#registerAnnotationConfigProcessors`、`PostProcessorRegistrationDelegate#registerBeanPostProcessors`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`CommonAnnotationBeanPostProcessor#postProcessProperties` | [12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`（`withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`）、`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`（`withoutAnnotationConfigProcessors_resourceIsIgnored()`） |
+| `NoSuchBeanDefinitionException` | 容器里根本没有候选（定义没注册/条件没满足/按 name 找不到） | `DefaultListableBeanFactory#doResolveDependency`、`DefaultListableBeanFactory#getBeanNamesForType` | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`（`missingBeanLookupsFailFast()`） |
+| `NoUniqueBeanDefinitionException` | 候选太多且无法唯一化（典型：单依赖注入时同类型有多个候选） | `DefaultListableBeanFactory#doResolveDependency`、`DefaultListableBeanFactory#determineAutowireCandidate`、`DefaultListableBeanFactory#determinePrimaryCandidate` | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`（`orderAnnotation_doesNotResolveSingleInjectionAmbiguity()`） |
+| `UnsatisfiedDependencyException` | “注入失败”的总包装：可能是没有候选、候选太多、类型不匹配、创建链路失败（它经常包着真正 root cause） | `DefaultListableBeanFactory#doResolveDependency`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`AbstractAutowireCapableBeanFactory#populateBean` | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[30](../part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java`（`unsatisfiedDependency_failsFast()`） |
+| `BeanCurrentlyInCreationException` | 循环依赖/提前暴露相关：某个 bean 正在创建中又被请求（构造器循环依赖最常见） | `DefaultSingletonBeanRegistry#getSingleton`、`DefaultSingletonBeanRegistry#beforeSingletonCreation`、`AbstractBeanFactory#doGetBean` | [09](../part-01-ioc-container/09-circular-dependencies.md)、[16](../part-03-container-internals/16-early-reference-and-circular.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`（`circularDependencyWithConstructorsFailsFast()`） |
+| `Circular depends-on relationship`（message） | **定义层拓扑环**：人为写了 `dependsOn A -> B -> A`；不要误判成“循环依赖/三级缓存” | `AbstractBeanFactory#doGetBean`、`DefaultSingletonBeanRegistry#registerDependentBean`、`DefaultSingletonBeanRegistry#isDependent` | [19](../part-04-wiring-and-boundaries/19-depends-on.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`（`dependsOn_cycle_failsFast()`） |
+| `BeanCreationException` | bean 创建链路失败（构造器异常 / init 回调异常 / BPP 包装失败 / 循环依赖失败等都会落到这里） | `AbstractAutowireCapableBeanFactory#doCreateBean`、`AbstractAutowireCapableBeanFactory#createBeanInstance`、`AbstractAutowireCapableBeanFactory#initializeBean` | [00](../part-00-guide/011-00-deep-dive-guide.md)、[12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`（`withoutBeforeInstantiationShortCircuit_refreshFailsAndConstructorWasCalled()`） |
+| `BeanDefinitionStoreException` | definition 解析/注册阶段失败（XML/注解解析/占位符等；通常发生在 refresh 前半段） | `XmlBeanDefinitionReader#loadBeanDefinitions`、`DefaultListableBeanFactory#registerBeanDefinition`、`AbstractApplicationContext#refresh` | [02](../part-01-ioc-container/02-bean-registration.md)、[12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java`（`beanDefinitionStoreException_invalidXml()`） |
+| （无异常）`@Autowired/@Resource/@PostConstruct` 不生效（字段为 null / 回调没跑） | 容器没装“注解能力基础设施”（annotation processors 未注册/未生效）；常见于 `GenericApplicationContext` 手工启动 | `AnnotationConfigUtils#registerAnnotationConfigProcessors`、`PostProcessorRegistrationDelegate#registerBeanPostProcessors`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`CommonAnnotationBeanPostProcessor#postProcessProperties` | [12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`（`withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`）、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`（`withoutAnnotationConfigProcessors_resourceIsIgnored()`） |
 
 > 小技巧：如果断点命中次数太多，先加条件（例如 `beanName.equals("xxx")`），再去看调用栈；深挖路线见 [00](../part-00-guide/011-00-deep-dive-guide.md)。
 
-对应 Lab/Test：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java`
+对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java`
 推荐断点：`DefaultListableBeanFactory#doResolveDependency`、`DefaultSingletonBeanRegistry#getSingleton`、`DefaultListableBeanFactory#preInstantiateSingletons`
 
 > 你不需要先知道“为什么会代理”，先把“代理类型”判定出来，后面的断点路径会短很多。
@@ -354,12 +354,12 @@ mvn -pl spring-core-beans spring-boot:run
 
 最小可跑入口（本仓库专门为这套闭环提供的实验）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
   - `beanCreationTrace_recordsPhases_andExposesProxyReplacement()`
 
 `--debug` 的条件报告很好用，但对进阶学习者更高收益的心智模型是：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansConditionEvaluationReportLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansConditionEvaluationReportLabTest.java`
 
 ## 12. 高收益条件断点模板（降噪）
 
@@ -373,7 +373,7 @@ mvn -pl spring-core-beans spring-boot:run
 
 复现入口：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`
   - `registerAnnotationConfigProcessors_enablesAutowiredAndPostConstruct()`
 
@@ -387,11 +387,11 @@ mvn -pl spring-core-beans spring-boot:run
 
 复现入口：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionAmbiguityLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionAmbiguityLabTest.java`
   - `singleInjectionFailsFast_whenMultipleCandidatesExist_andNoPrimaryOrQualifierIsPresent()`
   - `primary_canResolveSingleInjectionAmbiguity_byChoosingTheDefaultWinner()`
   - `qualifier_canResolveSingleInjectionAmbiguity_byExplicitlySelectingTheTargetBean()`
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
   - `orderAnnotation_doesNotResolveSingleInjectionAmbiguity()`
 
 推荐断点（闭环版）：
@@ -404,7 +404,7 @@ mvn -pl spring-core-beans spring-boot:run
 
 复现入口：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
   - `singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization()`
 
 推荐断点（闭环版）：
@@ -417,9 +417,9 @@ mvn -pl spring-core-beans spring-boot:run
 
 复现入口：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
   - `beanCreationTrace_recordsPhases_andExposesProxyReplacement()`
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
   - `beanPostProcessorCanReturnAProxyAsTheFinalExposedBean_andSelfInvocationStillBypassesTheProxy()`
 
 推荐断点（闭环版）：
@@ -462,7 +462,7 @@ mvn -pl spring-core-beans spring-boot:run
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
 - （另有 9 个 test file 路径引用，略）
 
 上一章：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](021-10-spring-boot-auto-configuration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[12. 容器启动与基础设施处理器：为什么注解能工作](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)

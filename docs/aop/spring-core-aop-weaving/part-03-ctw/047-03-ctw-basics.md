@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 48 章：04. Join Point & Pointcut Cookbook（速查）](../part-04-join-points/048-04-join-point-cookbook.md)
+上一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 48 章：04. Join Point & Pointcut Cookbook（速查）](../part-04-join-points/048-04-join-point-cookbook.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -63,7 +63,7 @@ CTW 的代价主要在于：
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`AspectjCtwLabTest`
-- 建议命令：`mvn -pl spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -90,7 +90,7 @@ CTW 的验证点是“构建产物是否已被织入”。
 - Verification：
   - 命令行下 JVM 无 agent 仍生效：`AspectjCtwLabTest#ctw_weavingWorksWithoutJavaAgent_forMethodExecutionAndCall`
   - 若你在 IDE 单跑看不到效果，优先对比“是否使用了 maven 编译产物”
-- Fix：以 maven 构建产物为准（先跑 `mvn -pl spring-core-aop-weaving test`）；IDE 场景需要确保复用 maven 编译输出或启用相同 weaving 配置
+- Fix：以 maven 构建产物为准（先跑 `mvn -pl :spring-core-aop-weaving test`）；IDE 场景需要确保复用 maven 编译输出或启用相同 weaving 配置
 
 ## 小结与下一章
 

@@ -26,6 +26,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+from repo_paths import find_module_root
+
 
 MD_LINK_WITH_TEXT_RE = re.compile(r"(!?)\[([^\]]*)\]\(([^)]+)\)")
 SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
@@ -35,7 +37,7 @@ TEST_CLASS_RE = re.compile(
     r"\b([A-Za-z_][A-Za-z0-9_]*(?:LabTest|ExerciseTest|ExerciseSolutionTest))\b"
 )
 TEST_FILE_PATH_RE = re.compile(
-    r"(?P<path>(?:(?:spring-core|springboot)-[a-z0-9-]+/)?src/test/java/[A-Za-z0-9_./-]+\.java)",
+    r"(?P<path>(?:(?:spring-boot-modules|spring-core-modules)/)?(?:(?:spring-core|springboot)-[a-z0-9-]+/)?src/test/java/[A-Za-z0-9_./-]+\.java)",
     re.IGNORECASE,
 )
 
@@ -96,7 +98,7 @@ def discover_modules(repo_root: Path) -> list[tuple[str, Path]]:
     modules: list[tuple[str, Path]] = []
     for readme in sorted(docs_root.glob("*/*/README.md")):
         module = readme.parent.name
-        if not (repo_root / module).is_dir():
+        if find_module_root(repo_root, module) is None:
             continue
         modules.append((module, readme))
     return modules
@@ -450,8 +452,8 @@ def main(argv: list[str]) -> int:
     all_warnings: list[str] = []
 
     for module, docs_readme in module_items:
-        module_root = repo_root / module
-        if not module_root.is_dir():
+        module_root = find_module_root(repo_root, module)
+        if module_root is None:
             all_warnings.append(f"- {module}: missing module directory")
             continue
         if not docs_readme or not docs_readme.is_file():

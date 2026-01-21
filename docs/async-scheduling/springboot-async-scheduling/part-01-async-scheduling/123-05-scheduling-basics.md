@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 124 章：90：常见坑清单（Async & Scheduling）](../appendix/124-90-common-pitfalls.md)
+上一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 124 章：90：常见坑清单（Async & Scheduling）](../appendix/124-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -51,7 +51,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootAsyncSchedulingLabTest`
-- 建议命令：`mvn -pl springboot-async-scheduling test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-async-scheduling test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

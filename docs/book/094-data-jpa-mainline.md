@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 93 章：99 - Self Check（springboot-security）](../docs/security/springboot-security/appendix/093-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 95 章：主线时间线：Spring Boot Data JPA](../docs/data-jpa/springboot-data-jpa/part-00-guide/095-03-mainline-timeline.md)
+上一章：[第 93 章：99 - Self Check（springboot-security）](../security/springboot-security/appendix/093-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 95 章：主线时间线：Spring Boot Data JPA](../data-jpa/springboot-data-jpa/part-00-guide/095-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 你会在真实项目里频繁遇到三类“看起来像魔法”的现象：
@@ -80,8 +80,15 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/data-jpa/springboot-data-jpa/README.md`](../docs/data-jpa/springboot-data-jpa/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/data-jpa/springboot-data-jpa/part-00-guide/03-mainline-timeline.md`](../docs/data-jpa/springboot-data-jpa/part-00-guide/095-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/data-jpa/springboot-data-jpa/part-00-guide/096-02-breakpoint-map.md`](../data-jpa/springboot-data-jpa/part-00-guide/096-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/data-jpa/springboot-data-jpa/part-00-guide/096-04-branch-decision-matrix.md`](../data-jpa/springboot-data-jpa/part-00-guide/096-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/data-jpa/springboot-data-jpa/appendix/104-90-common-pitfalls.md`](../data-jpa/springboot-data-jpa/appendix/104-90-common-pitfalls.md)
+- 自检清单：[`docs/data-jpa/springboot-data-jpa/appendix/105-99-self-check.md`](../data-jpa/springboot-data-jpa/appendix/105-99-self-check.md)
+
+- 模块目录页：[`docs/data-jpa/springboot-data-jpa/README.md`](../data-jpa/springboot-data-jpa/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/data-jpa/springboot-data-jpa/part-00-guide/03-mainline-timeline.md`](../data-jpa/springboot-data-jpa/part-00-guide/095-03-mainline-timeline.md)
 
 建议先跑的最小闭环：
 
@@ -91,8 +98,10 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl springboot-data-jpa -Dtest=BootDataJpaLabTest test`（`springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
+- Lab：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaLabTest test`（`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`（`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`（`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
 
 ---
 

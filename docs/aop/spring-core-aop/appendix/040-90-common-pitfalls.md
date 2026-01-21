@@ -10,10 +10,25 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 39 章：10 real world stacking playbook](../part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](041-99-self-check.md)
+上一章：[第 39 章：10 real world stacking playbook](../part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](041-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+
+### 排障模板（统一结构）
+
+当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+
+1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
+   - Book Matrix：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
+   - Branch Matrix - Proxy 基础：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
+   - Branch Matrix - AutoProxy：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
+   - Branch Matrix - 多代理叠加：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
+3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[029-02-breakpoint-map.md](../part-00-guide/029-02-breakpoint-map.md)
+4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[029-04-branch-decision-matrix.md](../part-00-guide/029-04-branch-decision-matrix.md)
+5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
+6. 验证（Verify）：复跑入口 + 对照自检清单：[041-99-self-check.md](041-99-self-check.md)
 
 - 本章主题：**90. 常见坑清单（建议反复对照）**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
@@ -41,7 +56,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
-- 建议命令：`mvn -pl spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 

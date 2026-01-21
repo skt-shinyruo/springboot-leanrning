@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 38 章：09. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](038-09-multi-proxy-stacking.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 40 章：90. 常见坑清单（建议反复对照）](../appendix/040-90-common-pitfalls.md)
+上一章：[第 38 章：09. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](038-09-multi-proxy-stacking.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 40 章：90. 常见坑清单（建议反复对照）](../appendix/040-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -169,7 +169,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
-- 建议命令：`mvn -pl spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -193,14 +193,14 @@ tagline: 把 AOP/Tx/Cache/Security 拉到同一条调用链里，用断点与可
 
 ```bash
 # 只跑这一组集成 Lab（最推荐）
-mvn -pl spring-core-aop -Dtest=SpringCoreAopRealWorldStackingLabTest test
+mvn -pl :spring-core-aop -Dtest=SpringCoreAopRealWorldStackingLabTest test
 
 # 精确到某个方法（断点更舒服）
-mvn -pl spring-core-aop -Dtest=SpringCoreAopRealWorldStackingLabTest#cache_hit_short_circuits_target_but_security_still_applies test
+mvn -pl :spring-core-aop -Dtest=SpringCoreAopRealWorldStackingLabTest#cache_hit_short_circuits_target_but_security_still_applies test
 ```
 
 ```bash
-mvn -pl spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldStackingLabTest test
+mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldStackingLabTest test
 ```
 
 ## 2. Lab 入口：你要验证的 4 个真实结论

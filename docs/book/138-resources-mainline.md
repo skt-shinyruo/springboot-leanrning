@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 137 章：自测题（Spring Core Events）](../docs/events/spring-core-events/appendix/137-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 139 章：主线时间线：Spring Resources](../docs/resources/spring-core-resources/part-00-guide/139-03-mainline-timeline.md)
+上一章：[第 137 章：自测题（Spring Core Events）](../events/spring-core-events/appendix/137-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 139 章：主线时间线：Spring Resources](../resources/spring-core-resources/part-00-guide/139-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 很多“本地没问题、线上就翻车”的问题，最后都会回到资源读取：
@@ -80,15 +80,24 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/resources/spring-core-resources/README.md`](../docs/resources/spring-core-resources/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/resources/spring-core-resources/part-00-guide/03-mainline-timeline.md`](../docs/resources/spring-core-resources/part-00-guide/139-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md`](../resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/resources/spring-core-resources/part-00-guide/140-04-branch-decision-matrix.md`](../resources/spring-core-resources/part-00-guide/140-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/resources/spring-core-resources/appendix/147-90-common-pitfalls.md`](../resources/spring-core-resources/appendix/147-90-common-pitfalls.md)
+- 自检清单：[`docs/resources/spring-core-resources/appendix/148-99-self-check.md`](../resources/spring-core-resources/appendix/148-99-self-check.md)
+
+- 模块目录页：[`docs/resources/spring-core-resources/README.md`](../resources/spring-core-resources/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/resources/spring-core-resources/part-00-guide/03-mainline-timeline.md`](../resources/spring-core-resources/part-00-guide/139-03-mainline-timeline.md)
 
 ---
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-resources -Dtest=SpringCoreResourcesLabTest test`（`spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part00_guide/SpringCoreResourcesExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesLabTest test`（`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBookMatrixLabTest test`（`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`（`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part00_guide/SpringCoreResourcesExerciseTest.java`
 
 ---
 

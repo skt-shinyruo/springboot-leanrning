@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 65 章：01：知识地图（Web MVC Deep Dive Map）](065-01-knowledge-map.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 67 章：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](../part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md)
+上一章：[第 65 章：01：知识地图（Web MVC Deep Dive Map）](065-01-knowledge-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 67 章：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](../part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

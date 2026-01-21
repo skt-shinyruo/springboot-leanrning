@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansBeansSupportUtilitiesLabTest` / `SpringCoreBeansTypeConversionLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
 
 ## 机制主线
 
@@ -179,7 +179,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansBeansSupportUtilitiesLabTest` / `SpringCoreBeansTypeConversionLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -192,20 +192,20 @@
 ### 3.1 复现入口（可运行）
 
 - 入口测试（推荐先跑通再下断点）：
-  - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java`
 - 推荐运行命令：
-  - 类级：`mvn -pl spring-core-beans -Dtest=SpringCoreBeansTypeConversionLabTest test`
-  - 方法级（更快）：`mvn -pl spring-core-beans -Dtest=SpringCoreBeansTypeConversionLabTest#stringPropertyValue_canBeConvertedToIntDuringPopulateBean test`
+  - 类级：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansTypeConversionLabTest test`
+  - 方法级（更快）：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansTypeConversionLabTest#stringPropertyValue_canBeConvertedToIntDuringPopulateBean test`
 - 你将断言/观察到：
   - **populateBean 阶段**会把定义层的字符串属性值（`"8080"`）转换成目标属性类型（`int`）
   - 自定义 `ConversionService` 能让“字符串 → 领域值对象”的转换在注入阶段发生（而不是你手写解析代码）
 
 对应实验（可运行 + 可断言）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java`
 
 ```bash
-mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansTypeConversionLabTest test
+mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansTypeConversionLabTest test
 ```
 
 ## 4. Debug / 断点建议（把“转换”从黑盒变成白盒）
@@ -220,9 +220,9 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansTypeConversionLabTest test
 
 本仓库补齐这组 support 类型的最小闭环入口（可运行 + 可断言）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
 - 推荐运行命令：
-  - `mvn -pl spring-core-beans -Dtest=SpringCoreBeansBeansSupportUtilitiesLabTest test`
+  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeansSupportUtilitiesLabTest test`
 
 ## 源码锚点（建议从这里下断点）
 
@@ -267,7 +267,7 @@ mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansTypeConversionLabTest test
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansBeansSupportUtilitiesLabTest` / `SpringCoreBeansTypeConversionLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java` / `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
 
 上一章：[35. MergedBeanDefinition：合并后的 RootBeanDefinition](35-merged-bean-definition.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md)
 

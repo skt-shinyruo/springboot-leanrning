@@ -26,25 +26,23 @@
     </properties>
 
     <modules>
-        <module>springboot-basics</module>
-        <module>springboot-web-mvc</module>
-        <module>springboot-data-jpa</module>
-        <module>springboot-actuator</module>
-        <module>springboot-testing</module>
-        <module>springboot-business-case</module>
-        <module>springboot-security</module>
-        <module>springboot-web-client</module>
-        <module>springboot-async-scheduling</module>
-        <module>springboot-cache</module>
-        <module>spring-core-beans</module>
-        <module>spring-core-aop</module>
-        <module>spring-core-aop-weaving</module>
-        <module>spring-core-events</module>
-        <module>spring-core-validation</module>
-        <module>spring-core-resources</module>
-        <module>spring-core-tx</module>
-        <module>spring-core-profiles</module>
+        <module>spring-boot-modules</module>
+        <module>spring-core-modules</module>
     </modules>
+
+    <dependencies>
+        <!-- 用于将多个 *LabTest 聚合成单一“Book Matrix”入口（@Suite + @SelectClasses） -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

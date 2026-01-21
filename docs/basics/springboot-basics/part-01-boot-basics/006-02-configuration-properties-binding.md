@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](005-01-property-sources-and-profiles.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 7 章：90：常见坑清单（建议反复对照）](../appendix/007-90-common-pitfalls.md)
+上一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](005-01-property-sources-and-profiles.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 7 章：90：常见坑清单（建议反复对照）](../appendix/007-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootBasicsDefaultLabTest` / `BootBasicsOverrideLabTest`
-    - Test file：`springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java` / `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java` / `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
+    - Test file：`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java` / `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java` / `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
 
 ## 机制主线
 
@@ -60,18 +60,18 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootBasicsDefaultLabTest` / `BootBasicsOverrideLabTest`
-- 建议命令：`mvn -pl springboot-basics test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-basics test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 实验入口
 
 - 绑定与读取：
-  - `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
+  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
 - 测试级覆盖后仍能绑定：
-  - `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
+  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
 - Exercises（建议做）：
-  - `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
+  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
     - `exercise_addNewPropertyField`
     - `exercise_invalidPropertyType`
 
@@ -102,7 +102,7 @@
 
 - Lab：`BootBasicsDefaultLabTest` / `BootBasicsOverrideLabTest`
 - Exercise：`BootBasicsExerciseTest`
-- Test file：`springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java` / `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java` / `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
+- Test file：`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java` / `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java` / `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
 
 上一章：[part-01-boot-basics/01-property-sources-and-profiles.md](005-01-property-sources-and-profiles.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/007-90-common-pitfalls.md)
 

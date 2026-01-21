@@ -14,8 +14,18 @@
 - [CTW 基础](part-03-ctw/047-03-ctw-basics.md)
 - [Join Point 菜谱](part-04-join-points/048-04-join-point-cookbook.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[044-02-breakpoint-map.md](part-00-guide/044-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[044-04-branch-decision-matrix.md](part-00-guide/044-04-branch-decision-matrix.md)
+- 排障 playbook：[049-90-common-pitfalls.md](appendix/049-90-common-pitfalls.md)
+- 自检清单：[050-99-self-check.md](appendix/050-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
+- 可跑入口（Branch Matrix - LTW/CTW）：建议直接跑模块 `mvn -q -pl :spring-core-aop-weaving test`（让 Surefire 自动区分 execution）；或分别：
+  - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
+  - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/049-90-common-pitfalls.md)
 - [自检](appendix/050-99-self-check.md)
-

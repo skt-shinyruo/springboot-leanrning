@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 26 章：99. 自测题：你是否真的理解了？](../docs/beans/spring-core-beans/appendix/026-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 28 章：主线时间线：Spring Core AOP](../docs/aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md)
+上一章：[第 26 章：99. 自测题：你是否真的理解了？](../beans/spring-core-beans/appendix/026-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 28 章：主线时间线：Spring Core AOP](../aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**为什么你没写任何“拦截器代码”，却能获得事务/缓存/安全/审计**？答案通常不是魔法，而是代理：在“方法调用边界”插入一段可观察、可调试、可组合的增强逻辑。
@@ -47,8 +47,15 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/aop/spring-core-aop/README.md`](../docs/aop/spring-core-aop/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/aop/spring-core-aop/part-00-guide/03-mainline-timeline.md`](../docs/aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md`](../aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md`](../aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/aop/spring-core-aop/appendix/040-90-common-pitfalls.md`](../aop/spring-core-aop/appendix/040-90-common-pitfalls.md)
+- 自检清单：[`docs/aop/spring-core-aop/appendix/041-99-self-check.md`](../aop/spring-core-aop/appendix/041-99-self-check.md)
+
+- 模块目录页：[`docs/aop/spring-core-aop/README.md`](../aop/spring-core-aop/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/aop/spring-core-aop/part-00-guide/03-mainline-timeline.md`](../aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md)
 
 建议先跑的最小闭环：
 
@@ -58,8 +65,12 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-aop -Dtest=SpringCoreAopLabTest test`（`spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part00_guide/SpringCoreAopExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopLabTest test`（`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`（`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - Proxy 基础）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`（`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopProxyBranchMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - AutoProxy）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`（`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part02_autoproxy_and_pointcuts/SpringCoreAopAutoProxyBranchMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - 多代理叠加）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`（`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part03_proxy_stacking/SpringCoreAopStackingBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part00_guide/SpringCoreAopExerciseTest.java`
 
 ---
 

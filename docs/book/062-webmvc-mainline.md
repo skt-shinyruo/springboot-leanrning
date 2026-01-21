@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 61 章：自测题（Spring Core Tx）](../docs/tx/spring-core-tx/appendix/061-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 63 章：主线时间线：Spring Boot Web MVC](../docs/web-mvc/springboot-web-mvc/part-00-guide/063-03-mainline-timeline.md)
+上一章：[第 61 章：自测题（Spring Core Tx）](../tx/spring-core-tx/appendix/061-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 63 章：主线时间线：Spring Boot Web MVC](../web-mvc/springboot-web-mvc/part-00-guide/063-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**一个 HTTP 请求进入 Spring Boot 后，是怎么被路由到你的 Controller、怎么完成参数绑定/校验、怎么写回响应、出错时怎么被统一处理**。
@@ -54,8 +54,15 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页：[`docs/web-mvc/springboot-web-mvc/README.md`](../docs/web-mvc/springboot-web-mvc/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/web-mvc/springboot-web-mvc/part-00-guide/03-mainline-timeline.md`](../docs/web-mvc/springboot-web-mvc/part-00-guide/063-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/web-mvc/springboot-web-mvc/part-00-guide/066-02-breakpoint-map.md`](../web-mvc/springboot-web-mvc/part-00-guide/066-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/web-mvc/springboot-web-mvc/part-00-guide/064-04-branch-decision-matrix.md`](../web-mvc/springboot-web-mvc/part-00-guide/064-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/web-mvc/springboot-web-mvc/appendix/082-90-common-pitfalls.md`](../web-mvc/springboot-web-mvc/appendix/082-90-common-pitfalls.md)
+- 自检清单：[`docs/web-mvc/springboot-web-mvc/appendix/083-99-self-check.md`](../web-mvc/springboot-web-mvc/appendix/083-99-self-check.md)
+
+- 模块目录页：[`docs/web-mvc/springboot-web-mvc/README.md`](../web-mvc/springboot-web-mvc/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/web-mvc/springboot-web-mvc/part-00-guide/03-mainline-timeline.md`](../web-mvc/springboot-web-mvc/part-00-guide/063-03-mainline-timeline.md)
 
 建议先跑的最小闭环：
 
@@ -65,8 +72,10 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl springboot-web-mvc -Dtest=BootWebMvcLabTest test`（`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- Lab：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcLabTest test`（`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`（`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBookMatrixLabTest.java`）
+- Lab（进阶：错误分支矩阵 400/406/415）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`（`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part07_testing/BootWebMvcErrorBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 ---
 

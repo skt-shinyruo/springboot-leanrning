@@ -47,12 +47,13 @@
 
 ## 4. 文档站点（MkDocs）
 
-> 目标：基于仓库根 `docs/` 构建可搜索的静态站点，并提供 **Book-only** 的顺读侧边栏目录。
+> 目标：基于仓库根 `docs/` 构建可搜索的静态站点；并遵循“文档即目录”，用一份 Markdown 目录文件统一维护站点导航。
 
-- 文档统一入口：`docs/README.md`（按主题索引）
+- 站点目录（SSOT）：`docs/SUMMARY.md`（目录本身就是文档，按其顺序/层级展示）
+- 主题索引页（可发现性）：`docs/topics/index.md`
 - Book（主线之书）：`docs/book/index.md`（目录与阅读说明）
 - 站点配置：`docs-site/mkdocs.yml`（`docs_dir: ../docs`）
-- Book-only 目录生成：`python3 scripts/docs-site-sync.py`（注入到 `docs-site/mkdocs.yml` 的 AUTO BOOK NAV 区段）
 - 本地预览：`bash scripts/docs-site-serve.sh`
 - 构建：`bash scripts/docs-site-build.sh`
+- 文档门禁（自检）：`bash scripts/check-docs.sh`
 - GitHub Pages 发布：workflow `.github/workflows/docs-site-pages.yml`（push 到 main/master 或 `workflow_dispatch`）

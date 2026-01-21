@@ -15,8 +15,16 @@
 - [self-invocation](part-01-async-scheduling/122-04-self-invocation.md)
 - [@Scheduled 基础](part-01-async-scheduling/123-05-scheduling-basics.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[118-02-breakpoint-map.md](part-00-guide/118-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[118-04-branch-decision-matrix.md](part-00-guide/118-04-branch-decision-matrix.md)
+- 排障 playbook：[124-90-common-pitfalls.md](appendix/124-90-common-pitfalls.md)
+- 自检清单：[125-99-self-check.md](appendix/125-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/124-90-common-pitfalls.md)
 - [自检](appendix/125-99-self-check.md)
-

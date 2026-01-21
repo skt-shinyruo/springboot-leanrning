@@ -37,11 +37,22 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/actuator/springboot-actuator/README.md`
-- **Docs Guide:** `docs/actuator/springboot-actuator/part-00-guide/00-deep-dive-guide.md`
+- **Docs Guide:** `docs/actuator/springboot-actuator/part-00-guide/168-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/actuator/springboot-actuator/part-00-guide/168-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/actuator/springboot-actuator/part-00-guide/168-04-branch-decision-matrix.md`
+- **Playbook:** `docs/actuator/springboot-actuator/appendix/170-90-common-pitfalls.md`
+- **Self-check:** `docs/actuator/springboot-actuator/appendix/171-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBranchMatrixLabTest.java`
 - **Labs:**
-  - `springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`
-  - `springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`
-- **Exercise:** `springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseTest.java`
+  - `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`
+  - `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`
+- **Exercise:** `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

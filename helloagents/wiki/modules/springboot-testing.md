@@ -36,12 +36,23 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/testing/springboot-testing/README.md`
-- **Docs Guide:** `docs/testing/springboot-testing/part-00-guide/00-deep-dive-guide.md`
+- **Docs Guide:** `docs/testing/springboot-testing/part-00-guide/184-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/testing/springboot-testing/part-00-guide/184-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/testing/springboot-testing/part-00-guide/184-04-branch-decision-matrix.md`
+- **Playbook:** `docs/testing/springboot-testing/appendix/186-90-common-pitfalls.md`
+- **Self-check:** `docs/testing/springboot-testing/appendix/187-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-testing -Dtest=BootTestingBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-testing -Dtest=BootTestingBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBranchMatrixLabTest.java`
 - **Labs:**
-  - `springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`
-  - `springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`
-  - `springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`
-- **Exercise:** `springboot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
+  - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`
+  - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`
+  - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`
+- **Exercise:** `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

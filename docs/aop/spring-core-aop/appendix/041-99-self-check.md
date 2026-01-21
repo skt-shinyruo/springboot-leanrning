@@ -10,10 +10,21 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 40 章：90. 常见坑清单（建议反复对照）](040-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 42 章：织入主线（LTW/CTW）](/book/042-aop-weaving-mainline/)
+上一章：[第 40 章：90. 常见坑清单（建议反复对照）](040-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 42 章：织入主线（LTW/CTW）](../../../book/042-aop-weaving-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+
+## 从 Book Matrix 进入（主线最小集合）
+
+- `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
+
+## 从 Branch Matrix 进入（关键分支最小集合）
+
+- Proxy 基础：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
+- AutoProxy：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
+- 多代理叠加：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
+- 配套资料：[`断点地图`](../part-00-guide/029-02-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/029-04-branch-decision-matrix.md)
 
 - 本章主题：**99. 自测题：你是否真的理解了 AOP？**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
@@ -73,7 +84,7 @@
 
 - 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopLabTest`
-- 建议命令：`mvn -pl spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

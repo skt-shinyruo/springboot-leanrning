@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 8 章：99 - Self Check（springboot-basics）](../docs/basics/springboot-basics/appendix/008-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 10 章：主线时间线：Spring Core Beans（IoC 容器）](../docs/beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md)
+上一章：[第 8 章：99 - Self Check（springboot-basics）](../basics/springboot-basics/appendix/008-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 10 章：主线时间线：Spring Core Beans（IoC 容器）](../beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 如果你把 Spring Boot 当成“启动一个应用”，那 **IoC 容器**就是“把应用装配成一个可运行系统”的核心：它决定了 Bean 从哪里来、什么时候创建、怎么注入、有哪些扩展点、为什么会出现各种“看起来很诡异”的边界行为。
@@ -49,8 +49,15 @@
 
 ## 深挖入口（模块 docs）
 
-- 模块目录页（超大模块，建议按入口顺读）：[`docs/beans/spring-core-beans/README.md`](../docs/beans/spring-core-beans/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/beans/spring-core-beans/part-00-guide/03-mainline-timeline.md`](../docs/beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md)
+### 进阶入口（排障/关键分支）
+
+- 断点地图：[`docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md`](../beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/beans/spring-core-beans/part-00-guide/011-04-branch-decision-matrix.md`](../beans/spring-core-beans/part-00-guide/011-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/beans/spring-core-beans/appendix/025-90-common-pitfalls.md`](../beans/spring-core-beans/appendix/025-90-common-pitfalls.md)
+- 自检清单：[`docs/beans/spring-core-beans/appendix/026-99-self-check.md`](../beans/spring-core-beans/appendix/026-99-self-check.md)
+
+- 模块目录页（超大模块，建议按入口顺读）：[`docs/beans/spring-core-beans/README.md`](../beans/spring-core-beans/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/beans/spring-core-beans/part-00-guide/03-mainline-timeline.md`](../beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md)
 
 建议先跑的最小闭环（从“看见容器”开始）：
 
@@ -60,8 +67,11 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`（`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`（`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`（`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - IoC 分支）：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansIocBranchMatrixLabTest test`（`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansIocBranchMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix - 内部机制分支）：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInternalsBranchMatrixLabTest test`（`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansInternalsBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java`
 
 ---
 

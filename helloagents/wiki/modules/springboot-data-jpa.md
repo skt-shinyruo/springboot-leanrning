@@ -37,11 +37,22 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/data-jpa/springboot-data-jpa/README.md`
-- **Docs Guide:** `docs/data-jpa/springboot-data-jpa/part-00-guide/00-deep-dive-guide.md`
-- **Lab:** `springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`
-- **Lab (Merge/Detach):** `springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaMergeAndDetachLabTest.java`
-- **Lab (Debug SQL):** `springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaDebugSqlLabTest.java`
-- **Exercise:** `springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
+- **Docs Guide:** `docs/data-jpa/springboot-data-jpa/part-00-guide/096-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/data-jpa/springboot-data-jpa/part-00-guide/096-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/data-jpa/springboot-data-jpa/part-00-guide/096-04-branch-decision-matrix.md`
+- **Playbook:** `docs/data-jpa/springboot-data-jpa/appendix/104-90-common-pitfalls.md`
+- **Self-check:** `docs/data-jpa/springboot-data-jpa/appendix/105-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBranchMatrixLabTest.java`
+- **Lab:** `spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`
+- **Lab (Merge/Detach):** `spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaMergeAndDetachLabTest.java`
+- **Lab (Debug SQL):** `spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaDebugSqlLabTest.java`
+- **Exercise:** `spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

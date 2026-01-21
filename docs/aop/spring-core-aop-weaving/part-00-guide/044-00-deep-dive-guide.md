@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）](043-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 45 章：01. 心智模型：Proxy vs Weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md)
+上一章：[第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）](043-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 45 章：01. 心智模型：Proxy vs Weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -52,7 +52,7 @@
 - JVM 参数确实带了 `-javaagent`：`AspectjLtwLabTest#ltw_testJvmIsStartedWithJavaAgent`
 - 普通对象（非 Spring bean）也会被织入：`AspectjLtwLabTest#ltw_canWeaveExecutionForNonSpringObjects`
 
-**本模块的 `aop.xml` 放在：**`spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`  
+**本模块的 `aop.xml` 放在：**`spring-core-modules/spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`  
 （这也是为什么本模块的 LTW 实验主要用 test scope 来验证：你需要“可控且可重复”的 classpath。）
 
 ### 2) 时间线：CTW（不带 agent）为什么也能拦截
@@ -68,7 +68,7 @@
 
 ### 3) 关键参与者（你应该能解释它们的作用）
 
-- `-javaagent:${project.build.directory}/aspectjweaver.jar`（LTW 开关，见 `spring-core-aop-weaving/pom.xml`）
+- `-javaagent:${project.build.directory}/aspectjweaver.jar`（LTW 开关，见 `spring-core-modules/spring-core-aop-weaving/pom.xml`）
 - `META-INF/aop.xml`（LTW 织入配置：要织谁、怎么织）
 - `aspectj-maven-plugin`（CTW 开关：构建期织入）
 - advice 的“证据载体”：本模块用 `InvocationLog` 把 advice 触发变成可断言事件
@@ -99,13 +99,13 @@
 - 织入是否触发：
   - 在 `LtwWeavingAspect`/对应 CTW aspect 的 advice 方法处下断点（最直观）
 - `aop.xml` 是否被加载：
-  - 确认 `spring-core-aop-weaving/src/test/resources/META-INF/aop.xml` 在 test classpath（否则 include 范围再对也不会织）
+  - 确认 `spring-core-modules/spring-core-aop-weaving/src/test/resources/META-INF/aop.xml` 在 test classpath（否则 include 范围再对也不会织）
 
 ## 最小可运行实验（Lab）
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
-- 建议命令：`mvn -pl spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -117,7 +117,7 @@
 2. **CTW（Compile-Time Weaving）**：通过编译期织入（更接近“构建期产物”）
 
 ```bash
-mvn -pl spring-core-aop-weaving test
+mvn -pl :spring-core-aop-weaving test
 ```
 
 你会看到两套 tests 都跑：

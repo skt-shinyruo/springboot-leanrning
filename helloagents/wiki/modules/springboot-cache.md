@@ -36,10 +36,21 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/cache/springboot-cache/README.md`
-- **Docs Guide:** `docs/cache/springboot-cache/part-00-guide/00-deep-dive-guide.md`
-- **Lab:** `springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
-- **Lab (SpEL Key):** `springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheSpelKeyLabTest.java`
-- **Exercise:** `springboot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseTest.java`
+- **Docs Guide:** `docs/cache/springboot-cache/part-00-guide/108-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md`
+- **Playbook:** `docs/cache/springboot-cache/appendix/114-90-common-pitfalls.md`
+- **Self-check:** `docs/cache/springboot-cache/appendix/115-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-cache -Dtest=BootCacheBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-cache -Dtest=BootCacheBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBranchMatrixLabTest.java`
+- **Lab:** `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
+- **Lab (SpEL Key):** `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheSpelKeyLabTest.java`
+- **Exercise:** `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

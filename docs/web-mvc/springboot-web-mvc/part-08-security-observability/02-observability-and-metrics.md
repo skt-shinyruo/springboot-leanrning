@@ -38,8 +38,8 @@
   - 访问 `/actuator/metrics/http.server.requests`，断言指标可读取
 
 对应源码：
-- `TimingInterceptor`：`springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part08_security_observability/TimingInterceptor.java`
-- `ObservabilityWebMvcConfig`：`springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part08_security_observability/ObservabilityWebMvcConfig.java`
+- `TimingInterceptor`：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part08_security_observability/TimingInterceptor.java`
+- `ObservabilityWebMvcConfig`：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part08_security_observability/ObservabilityWebMvcConfig.java`
 - `application.properties`：暴露 actuator 端点（教学最小集合）
 
 ## 常见坑与边界

@@ -36,10 +36,21 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/async-scheduling/springboot-async-scheduling/README.md`
-- **Docs Guide:** `docs/async-scheduling/springboot-async-scheduling/part-00-guide/00-deep-dive-guide.md`
-- **Lab:** `springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java`
-- **Lab (Scheduling):** `springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingSchedulingLabTest.java`
-- **Exercise:** `springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseTest.java`
+- **Docs Guide:** `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md`
+- **Playbook:** `docs/async-scheduling/springboot-async-scheduling/appendix/124-90-common-pitfalls.md`
+- **Self-check:** `docs/async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBranchMatrixLabTest.java`
+- **Lab:** `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java`
+- **Lab (Scheduling):** `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingSchedulingLabTest.java`
+- **Exercise:** `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

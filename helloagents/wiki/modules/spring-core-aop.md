@@ -10,13 +10,17 @@
 - **Status:** 🚧In Development
 - **Last Updated:** 2026-01-14
 
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
+  - 对应测试类：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopBookMatrixLabTest.java`
+
 ## Start Here（路线图 / 第一个可运行入口）
 
 - 路线图：`helloagents/wiki/learning-path.md`
 - Docs Index：`docs/aop/spring-core-aop/README.md`
 - 第一个可运行入口（3 分钟开跑）：
-  - `mvn -q -pl spring-core-aop -Dtest=SpringCoreAopLabTest#adviceIsAppliedToTracedMethod test`
-  - 对应测试类：`spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopLabTest.java`
+  - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopLabTest#adviceIsAppliedToTracedMethod test`
+  - 对应测试类：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopLabTest.java`
 
 ## Specifications
 
@@ -27,16 +31,24 @@
 - docs：`docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/`（AutoProxyCreator 主线/pointcut 系统）
 - docs：`docs/aop/spring-core-aop/part-03-proxy-stacking/`（多代理叠加/真实项目 playbook）
 - docs：`docs/aop/spring-core-aop/appendix/`（常见坑/自测题）
-- src(main)：`spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/SpringCoreAopApplication.java`（入口，包名保持不变）
-- src(main)：`spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/**`
-- src(main)：`spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part02_autoproxy_and_pointcuts/**`
-- src(test)：`spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part00_guide/**`
-- src(test)：`spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/**`
-- src(test)：`spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part02_autoproxy_and_pointcuts/**`
-- src(test)：`spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part03_proxy_stacking/**`
+- src(main)：`spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/SpringCoreAopApplication.java`（入口，包名保持不变）
+- src(main)：`spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/**`
+- src(main)：`spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part02_autoproxy_and_pointcuts/**`
+- src(test)：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part00_guide/**`
+- src(test)：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/**`
+- src(test)：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part02_autoproxy_and_pointcuts/**`
+- src(test)：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part03_proxy_stacking/**`
 
 ### Docs Index
 - 入口：`docs/aop/spring-core-aop/README.md`
+- 断点地图：`docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md`
+- 关键分支矩阵：`docs/aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md`
+- 排障 playbook：`docs/aop/spring-core-aop/appendix/040-90-common-pitfalls.md`
+- 自检清单：`docs/aop/spring-core-aop/appendix/041-99-self-check.md`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
+  - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
+  - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
 
 ### Requirement: AOP 学习闭环
 **Module:** spring-core-aop
@@ -68,8 +80,8 @@
 - 能说明常见工程解法（拆分 bean / 自注入 / exposeProxy）与风险
 - 对应可复现闭环入口：
   - `docs/aop/spring-core-aop/part-01-proxy-fundamentals/05-expose-proxy.md`
-  - `spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/ExposeProxyExampleService.java`
-  - `spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopExposeProxyLabTest.java`
+  - `spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/ExposeProxyExampleService.java`
+  - `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopExposeProxyLabTest.java`
 
 #### Scenario: 能解释并验证 advice 链顺序
 - 能解释多个切面嵌套关系与 `@Order` 的影响

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 45 章：01. 心智模型：Proxy vs Weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 47 章：03. CTW：Compile-Time Weaving（编译期织入）](../part-03-ctw/047-03-ctw-basics.md)
+上一章：[第 45 章：01. 心智模型：Proxy vs Weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 47 章：03. CTW：Compile-Time Weaving（编译期织入）](../part-03-ctw/047-03-ctw-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -46,7 +46,7 @@ LTW 的一句话定义：
 
 本模块的 `aop.xml` 放在：
 
-- `spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`
+- `spring-core-modules/spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`
 
 放在 test resources 的好处是：
 
@@ -79,14 +79,14 @@ LTW 的一句话定义：
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`AspectjLtwLabTest`
-- 建议命令：`mvn -pl spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 本模块通过 surefire 执行 `*Ltw*Test` 时自动附带：
 
-- agent jar：`spring-core-aop-weaving/target/aspectjweaver.jar`（由 `maven-dependency-plugin` 在 `process-test-classes` 复制）
-- JVM 参数：`-javaagent:${project.build.directory}/aspectjweaver.jar`（见 `spring-core-aop-weaving/pom.xml` 的 surefire execution）
+- agent jar：`spring-core-modules/spring-core-aop-weaving/target/aspectjweaver.jar`（由 `maven-dependency-plugin` 在 `process-test-classes` 复制）
+- JVM 参数：`-javaagent:${project.build.directory}/aspectjweaver.jar`（见 `spring-core-modules/spring-core-aop-weaving/pom.xml` 的 surefire execution）
 
 对应的 Lab 断言：
 
@@ -104,7 +104,7 @@ LTW 的一句话定义：
 - Root Cause：LTW 的前提没满足（缺 agent / 缺 aop.xml / include 范围没覆盖），pointcut 再对也没用
 - Verification：
   - JVM 是否带 agent：`AspectjLtwLabTest#ltw_testJvmIsStartedWithJavaAgent`
-  - aop.xml 是否在 classpath：确认 `spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`
+  - aop.xml 是否在 classpath：确认 `spring-core-modules/spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`
 - Fix：先按“三前提”分流确认 LTW 环境，再讨论 join point/pointcut
 
 ## 小结与下一章

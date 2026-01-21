@@ -28,6 +28,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
+from repo_paths import find_module_root
+
 
 @dataclass(frozen=True)
 class MappingRule:
@@ -130,7 +132,7 @@ def _mapping_rules() -> tuple[MappingRule, ...]:
         MappingRule(
             package_prefix="org.springframework.beans.factory.aot",
             domain="AOT（spring-beans）",
-            primary_chapter="part-05-aot-and-real-world/40-aot-and-native-overview.md",
+            primary_chapter="part-05-aot-and-real-world/024-40-aot-and-native-overview.md",
             primary_labs=(
                 "src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotFactoriesLabTest.java",
                 "src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java",
@@ -179,21 +181,21 @@ def _mapping_rules() -> tuple[MappingRule, ...]:
         MappingRule(
             package_prefix="org.springframework.beans.factory.annotation",
             domain="注解注入（@Autowired/@Qualifier/@Value 等）",
-            primary_chapter="part-01-ioc-container/03-dependency-injection-resolution.md",
+            primary_chapter="part-01-ioc-container/014-03-dependency-injection-resolution.md",
             primary_labs=("src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java",),
             coverage="core",
         ),
         MappingRule(
             package_prefix="org.springframework.beans.factory.config",
             domain="配置模型与扩展点（BFPP/BPP/Scope/FactoryBean 等）",
-            primary_chapter="part-01-ioc-container/06-post-processors.md",
+            primary_chapter="part-01-ioc-container/017-06-post-processors.md",
             primary_labs=("src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRegistryPostProcessorLabTest.java",),
             coverage="core",
         ),
         MappingRule(
             package_prefix="org.springframework.beans.factory.support",
             domain="容器内部实现（support）",
-            primary_chapter="part-03-container-internals/12-container-bootstrap-and-infrastructure.md",
+            primary_chapter="part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md",
             primary_labs=("src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java",),
             coverage="core",
         ),
@@ -247,9 +249,17 @@ def _rel_link_from_appendix_to_chapter(chapter_from_docs_root: str) -> str:
     return f"../{chapter_from_docs_root}"
 
 
-def _rel_link_from_appendix_to_lab(lab_from_module_root: str) -> str:
-    # docs/appendix/*.md → ../../<src/test/...>
-    return f"../../{lab_from_module_root}"
+def _rel_link_from_appendix_to_lab(*, out_path: Path, module_root: Path, lab_from_module_root: str) -> str:
+    """
+    生成从 appendix 文件到 Lab 源码文件的相对链接。
+
+    注意：
+    - docs 已迁移到仓库根 `docs/`，而 Lab 源码在 module 目录（已按分组聚合）。
+    - 因此不能再用固定的 `../../src/...` 假设，需要按文件实际位置计算 relpath。
+    """
+    lab_fs = (module_root / lab_from_module_root).resolve()
+    rel = os.path.relpath(lab_fs, start=out_path.parent)
+    return Path(rel).as_posix()
 
 
 def _render_index_md(
@@ -260,6 +270,10 @@ def _render_index_md(
     out_path: Path,
 ) -> str:
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    repo_root = Path(__file__).resolve().parent.parent
+    module_root = find_module_root(repo_root, "spring-core-beans")
+    if module_root is None:
+        raise FileNotFoundError("找不到模块目录：spring-core-beans（预期在 spring-core-modules/ 下）。")
 
     packages: dict[str, list[PublicType]] = {}
     for t in public_types:
@@ -318,7 +332,9 @@ def _render_index_md(
             lab_links: list[str] = []
             for lab in t.mapping.primary_labs:
                 lab_path = Path(lab)
-                lab_links.append(f"[`{lab_path.name}`]({_rel_link_from_appendix_to_lab(lab)})")
+                lab_links.append(
+                    f"[`{lab_path.name}`]({_rel_link_from_appendix_to_lab(out_path=out_path, module_root=module_root, lab_from_module_root=lab)})"
+                )
             lab_cell = "<br/>".join(lab_links) if lab_links else "-"
 
             coverage = "✅ core" if t.mapping.coverage == "core" else "🟡 partial"
@@ -378,15 +394,24 @@ def _render_gap_md(
     missing_lab: list[tuple[str, str]] = []
 
     repo_root = Path(__file__).resolve().parent.parent
+    module_root = find_module_root(repo_root, "spring-core-beans")
+    if module_root is None:
+        raise FileNotFoundError("找不到模块目录：spring-core-beans（预期在 spring-core-modules/ 下）。")
+
+    docs_module_candidates = sorted((repo_root / "docs").glob("*/spring-core-beans"))
+    if not docs_module_candidates:
+        raise FileNotFoundError("找不到 docs 目录：docs/*/spring-core-beans。")
+    docs_module_root = docs_module_candidates[0]
+
     for t in public_types:
         if not t.mapping:
             continue
         if t.mapping.primary_chapter:
-            chapter_fs = repo_root / "spring-core-beans" / "docs" / t.mapping.primary_chapter
+            chapter_fs = docs_module_root / t.mapping.primary_chapter
             if not chapter_fs.exists():
                 missing_chapter.append((t.fqcn, str(chapter_fs)))
         for lab in t.mapping.primary_labs:
-            lab_fs = repo_root / "spring-core-beans" / lab
+            lab_fs = module_root / lab
             if not lab_fs.exists():
                 missing_lab.append((t.fqcn, str(lab_fs)))
 

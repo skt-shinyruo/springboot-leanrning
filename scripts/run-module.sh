@@ -5,8 +5,13 @@ module="${1:-}"
 if [[ -z "${module}" ]]; then
   echo "Usage: scripts/run-module.sh <module>"
   echo "Example: scripts/run-module.sh springboot-basics"
+  echo "Example: scripts/run-module.sh :springboot-basics"
   exit 2
 fi
 
-mvn -pl "${module}" spring-boot:run
+selector="${module}"
+if [[ "${module}" != *":"* && "${module}" != */* && ! -d "${module}" ]]; then
+  selector=":${module}"
+fi
 
+mvn -pl "${selector}" spring-boot:run

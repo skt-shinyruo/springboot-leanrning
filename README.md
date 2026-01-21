@@ -67,13 +67,13 @@ mvn -q test
 - 只构建/测试某个模块（示例：`springboot-web-mvc`）：
 
 ```bash
-mvn -q -pl springboot-web-mvc test
+mvn -q -pl :springboot-web-mvc test
 ```
 
 - 运行某个模块（示例：`springboot-basics`）：
 
 ```bash
-mvn -pl springboot-basics spring-boot:run
+mvn -pl :springboot-basics spring-boot:run
 ```
 
 ## Debug 工具箱（遇到红测/异常时）
@@ -126,78 +126,78 @@ mvn -pl springboot-basics spring-boot:run
 
 ### 配置 / Profiles / 条件装配
 
-- ⭐ `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`：配置绑定 + 默认 profile
-- ⭐ `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java`：dev profile 覆盖与 Bean 切换
-- ⭐⭐ `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`：测试级 property override 优先级
-- ⭐⭐ `spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/SpringCoreProfilesLabTest.java`：`@Profile`/`@ConditionalOnProperty` + `ApplicationContextRunner`
-- （练习）`springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
-- （练习）`spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/SpringCoreProfilesExerciseTest.java`
+- ⭐ `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`：配置绑定 + 默认 profile
+- ⭐ `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java`：dev profile 覆盖与 Bean 切换
+- ⭐⭐ `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`：测试级 property override 优先级
+- ⭐⭐ `spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/SpringCoreProfilesLabTest.java`：`@Profile`/`@ConditionalOnProperty` + `ApplicationContextRunner`
+- （练习）`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
+- （练习）`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/SpringCoreProfilesExerciseTest.java`
 
 ### Web MVC / 错误处理
 
-- ⭐ `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`：`@WebMvcTest` 切片（更快、更聚焦）
-- ⭐ `springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`：`@SpringBootTest` 全量上下文（更接近集成）
-- ⭐⭐⭐ `springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`：综合链路（含 Validation/JPA/Tx/Events/AOP）
-- （练习）`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
-- （练习）`springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part00_guide/BootBusinessCaseExerciseTest.java`
+- ⭐ `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`：`@WebMvcTest` 切片（更快、更聚焦）
+- ⭐ `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`：`@SpringBootTest` 全量上下文（更接近集成）
+- ⭐⭐⭐ `spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`：综合链路（含 Validation/JPA/Tx/Events/AOP）
+- （练习）`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- （练习）`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part00_guide/BootBusinessCaseExerciseTest.java`
 
 ### 测试切片（Testing）
 
-- ⭐ `springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`：`@WebMvcTest` + `@MockBean`
-- ⭐ `springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`：`@SpringBootTest(webEnvironment=RANDOM_PORT)`
-- ⭐⭐ `springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`：full context 里用 `@MockBean` 覆盖真实 Bean
-- （练习）`springboot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
+- ⭐ `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`：`@WebMvcTest` + `@MockBean`
+- ⭐ `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`：`@SpringBootTest(webEnvironment=RANDOM_PORT)`
+- ⭐⭐ `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`：full context 里用 `@MockBean` 覆盖真实 Bean
+- （练习）`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
 
 ### JPA（Spring Data JPA）
 
-- ⭐⭐ `springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`：persistence context / flush / dirty checking
-- （练习）`springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
+- ⭐⭐ `spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`：persistence context / flush / dirty checking
+- （练习）`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
 
 ### Bean / IoC 容器
 
-- ⭐⭐⭐ `spring-core-beans/README.md`：IoC 容器与 Bean 机制总入口（含学习路线、Start Here、完整 Labs/Exercises 与 container internals 深潜）
-- ⭐⭐ `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansLabTest.java`：Start Here（最小闭环，建议命令：`mvn -pl spring-core-beans -Dtest=SpringCoreBeansLabTest test`）
-- ⭐⭐ `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansContainerLabTest.java`：容器机制闭环（定义层/实例层/BFPP/BPP/循环依赖，建议命令：`mvn -pl spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`）
+- ⭐⭐⭐ `spring-core-modules/spring-core-beans/README.md`：IoC 容器与 Bean 机制总入口（含学习路线、Start Here、完整 Labs/Exercises 与 container internals 深潜）
+- ⭐⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansLabTest.java`：Start Here（最小闭环，建议命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest test`）
+- ⭐⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansContainerLabTest.java`：容器机制闭环（定义层/实例层/BFPP/BPP/循环依赖，建议命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`）
 - ⭐⭐ `docs/beans/spring-core-beans/00-deep-dive-guide.md`：断点地图与深挖练习（从一个入口测试走完整主线）
-- ⭐⭐ `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansAutoConfigurationImportOrderingLabTest.java`：Boot 自动装配导入/排序主线（after/before 顺序 + 条件可见性）
-- ⭐⭐ `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansAutoConfigurationOverrideMatrixLabTest.java`：覆盖/back-off 场景矩阵（NoUnique → 两类修复路径）
-- ⭐ `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansBeanDefinitionOriginLabTest.java`：定位 Bean 来源（谁注册的/从哪来/工厂方法 vs 直接类）
+- ⭐⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansAutoConfigurationImportOrderingLabTest.java`：Boot 自动装配导入/排序主线（after/before 顺序 + 条件可见性）
+- ⭐⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansAutoConfigurationOverrideMatrixLabTest.java`：覆盖/back-off 场景矩阵（NoUnique → 两类修复路径）
+- ⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansBeanDefinitionOriginLabTest.java`：定位 Bean 来源（谁注册的/从哪来/工厂方法 vs 直接类）
 
 ### AOP / 代理
 
-- ⭐⭐ `spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/SpringCoreAopLabTest.java`：最小 advice 闭环 + 自调用陷阱
-- ⭐⭐⭐ `spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/SpringCoreAopProxyMechanicsLabTest.java`：JDK vs CGLIB、final 限制、`@Order`
-- （练习）`spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/SpringCoreAopExerciseTest.java`
+- ⭐⭐ `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/SpringCoreAopLabTest.java`：最小 advice 闭环 + 自调用陷阱
+- ⭐⭐⭐ `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/SpringCoreAopProxyMechanicsLabTest.java`：JDK vs CGLIB、final 限制、`@Order`
+- （练习）`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/SpringCoreAopExerciseTest.java`
 
 ### 事务（Tx）
 
-- ⭐⭐ `spring-core-tx/src/test/java/com/learning/springboot/springcoretx/SpringCoreTxLabTest.java`：边界/回滚/传播/模板
-- ⭐⭐ `spring-core-tx/src/test/java/com/learning/springboot/springcoretx/SpringCoreTxSelfInvocationPitfallLabTest.java`：自调用绕过事务最小复现 + 修复对比
-- （练习）`spring-core-tx/src/test/java/com/learning/springboot/springcoretx/SpringCoreTxExerciseTest.java`
+- ⭐⭐ `spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/SpringCoreTxLabTest.java`：边界/回滚/传播/模板
+- ⭐⭐ `spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/SpringCoreTxSelfInvocationPitfallLabTest.java`：自调用绕过事务最小复现 + 修复对比
+- （练习）`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/SpringCoreTxExerciseTest.java`
 
 ### 事件（Events）
 
-- ⭐⭐ `spring-core-events/src/test/java/com/learning/springboot/springcoreevents/SpringCoreEventsLabTest.java`：多监听器/顺序/condition/payload
-- ⭐⭐ `spring-core-events/src/test/java/com/learning/springboot/springcoreevents/SpringCoreEventsMechanicsLabTest.java`：异常传播 + `@Async`
-- （练习）`spring-core-events/src/test/java/com/learning/springboot/springcoreevents/SpringCoreEventsExerciseTest.java`
+- ⭐⭐ `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/SpringCoreEventsLabTest.java`：多监听器/顺序/condition/payload
+- ⭐⭐ `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/SpringCoreEventsMechanicsLabTest.java`：异常传播 + `@Async`
+- （练习）`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/SpringCoreEventsExerciseTest.java`
 
 ### Validation（校验）
 
-- ⭐⭐ `spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/SpringCoreValidationLabTest.java`：程序化校验 + Spring 集成
-- ⭐⭐ `spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/SpringCoreValidationMechanicsLabTest.java`：代理差异 + groups + 自定义约束
-- （练习）`spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/SpringCoreValidationExerciseTest.java`
+- ⭐⭐ `spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/SpringCoreValidationLabTest.java`：程序化校验 + Spring 集成
+- ⭐⭐ `spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/SpringCoreValidationMechanicsLabTest.java`：代理差异 + groups + 自定义约束
+- （练习）`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/SpringCoreValidationExerciseTest.java`
 
 ### Resources（资源）
 
-- ⭐⭐ `spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/SpringCoreResourcesLabTest.java`：读取/模式扫描
-- ⭐⭐ `spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/SpringCoreResourcesMechanicsLabTest.java`：handle/exists/description
-- （练习）`spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/SpringCoreResourcesExerciseTest.java`
+- ⭐⭐ `spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/SpringCoreResourcesLabTest.java`：读取/模式扫描
+- ⭐⭐ `spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/SpringCoreResourcesMechanicsLabTest.java`：handle/exists/description
+- （练习）`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/SpringCoreResourcesExerciseTest.java`
 
 ### Actuator（可观测性）
 
-- ⭐ `springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`：health/info + 自定义健康检查
-- ⭐⭐ `springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`：端点暴露配置与验证
-- （练习）`springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseTest.java`
+- ⭐ `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`：health/info + 自定义健康检查
+- ⭐⭐ `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`：端点暴露配置与验证
+- （练习）`spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseTest.java`
 
 ## 模块目录（Catalog）
 

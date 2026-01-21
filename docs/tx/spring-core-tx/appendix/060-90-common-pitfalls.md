@@ -10,10 +10,24 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？](../part-02-template-and-debugging/059-06-debugging.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 61 章：自测题（Spring Core Tx）](061-99-self-check.md)
+上一章：[第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？](../part-02-template-and-debugging/059-06-debugging.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 61 章：自测题（Spring Core Tx）](061-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+
+### 排障模板（统一结构）
+
+当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+
+1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
+   - Book Matrix：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
+   - Branch Matrix - 事务主分支：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
+   - Branch Matrix - 常见坑聚合：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
+3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[053-02-breakpoint-map.md](../part-00-guide/053-02-breakpoint-map.md)
+4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[053-04-branch-decision-matrix.md](../part-00-guide/053-04-branch-decision-matrix.md)
+5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
+6. 验证（Verify）：复跑入口 + 对照自检清单：[061-99-self-check.md](061-99-self-check.md)
 
 - 本章主题：**90. 常见坑清单（建议反复对照）**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
@@ -41,7 +55,7 @@
 
 - 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
 - Lab：`SpringCoreTxLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
-- 建议命令：`mvn -pl spring-core-tx test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
@@ -72,7 +86,7 @@
 
 - `final` 方法拦截不到（CGLIB 情况）
 - private 方法通常也不会被拦截
-- 对照：AOP 模块的 [04. final-and-proxy-limits](../../../docs/aop/spring-core-aop/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md)
+- 对照：AOP 模块的 [04. final-and-proxy-limits](../../../aop/spring-core-aop/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md)
 
 ## 坑 6：`MANDATORY`/`NEVER` 是“边界约束”，不是默认选择
 

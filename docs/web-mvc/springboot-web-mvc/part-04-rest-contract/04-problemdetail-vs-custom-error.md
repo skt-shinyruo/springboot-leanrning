@@ -25,7 +25,7 @@
 - 风险：语义需要你自定义并维护（例如 message 值、错误码体系）
 
 本模块示例：
-- `ApiError`：`springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part01_web_mvc/ApiError.java`
+- `ApiError`：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part01_web_mvc/ApiError.java`
 - `AdvancedApiExceptionHandler`：统一错误塑形（Part 04/05/06）
 
 ### 路线 2：ProblemDetail（更语义化/更标准）

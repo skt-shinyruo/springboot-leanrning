@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](../part-00-guide/029-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 31 章：02. JDK vs CGLIB：代理类型与“可注入类型”差异](031-02-jdk-vs-cglib.md)
+上一章：[第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](../part-00-guide/029-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 31 章：02. JDK vs CGLIB：代理类型与“可注入类型”差异](031-02-jdk-vs-cglib.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -70,10 +70,10 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 
 ## 对照代码（最小闭环）
 
-- `spring-core-aop/src/main/java/.../Traced.java`：标记注解
-- `spring-core-aop/src/main/java/.../TracingAspect.java`：`@Around("@annotation(...@Traced)")`
-- `spring-core-aop/src/main/java/.../TracedBusinessService.java`：被拦截的目标方法
-- `spring-core-aop/src/main/java/.../InvocationLog.java`：用来做“可断言的观察点”（比日志更稳定）
+- `spring-core-modules/spring-core-aop/src/main/java/.../Traced.java`：标记注解
+- `spring-core-modules/spring-core-aop/src/main/java/.../TracingAspect.java`：`@Around("@annotation(...@Traced)")`
+- `spring-core-modules/spring-core-aop/src/main/java/.../TracedBusinessService.java`：被拦截的目标方法
+- `spring-core-modules/spring-core-aop/src/main/java/.../InvocationLog.java`：用来做“可断言的观察点”（比日志更稳定）
 
 当你觉得 AOP “没生效”时，先不要怀疑注解/表达式，第一时间问自己：
 
@@ -100,7 +100,7 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopLabTest`
-- 建议命令：`mvn -pl spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -121,7 +121,7 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 运行测试：
 
 ```bash
-mvn -pl spring-core-aop test
+mvn -pl :spring-core-aop test
 ```
 
 - `SpringCoreAopLabTest#tracedBusinessServiceIsAnAopProxy`：证明注入的 bean 是代理

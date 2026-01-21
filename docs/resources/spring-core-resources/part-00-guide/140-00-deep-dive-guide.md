@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 139 章：主线时间线：Spring Resources](139-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？](../part-01-resource-abstraction/141-01-resource-abstraction.md)
+上一章：[第 139 章：主线时间线：Spring Resources](139-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？](../part-01-resource-abstraction/141-01-resource-abstraction.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -83,7 +83,7 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
-- 建议命令：`mvn -pl spring-core-resources test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

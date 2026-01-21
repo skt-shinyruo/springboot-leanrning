@@ -36,12 +36,23 @@ Spring Boot 基础：工程结构、配置、启动流程与最常用开发习�
 ## Docs & 复现入口
 
 - **Docs Index:** `docs/basics/springboot-basics/README.md`
-- **Docs Guide:** `docs/basics/springboot-basics/part-00-guide/00-deep-dive-guide.md`
+- **Docs Guide:** `docs/basics/springboot-basics/part-00-guide/004-00-deep-dive-guide.md`
+- **Breakpoint Map:** `docs/basics/springboot-basics/part-00-guide/004-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/basics/springboot-basics/part-00-guide/004-04-branch-decision-matrix.md`
+- **Playbook:** `docs/basics/springboot-basics/appendix/007-90-common-pitfalls.md`
+- **Self-check:** `docs/basics/springboot-basics/appendix/008-99-self-check.md`
+
+- **Book Matrix（进阶入口）：**
+  - `mvn -q -pl :springboot-basics -Dtest=BootBasicsBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java`
+- **Branch Matrix（关键分支入口）：**
+  - `mvn -q -pl :springboot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBranchMatrixLabTest.java`
 - **Labs:**
-  - `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
-  - `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java`
-  - `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
-- **Exercises:** `springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
+  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
+  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java`
+  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
+- **Exercises:** `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
 
 ## Source Layout（与 docs Part 对齐）
 

@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
-    - Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
 
 ## 机制主线
 
@@ -102,23 +102,23 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
-- 建议命令：`mvn -pl spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 0. 复现入口（可运行）
 
 - 入口测试（推荐先跑通再下断点）：
-  - `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
 - 推荐运行命令：
-  - `mvn -pl spring-core-beans -Dtest=SpringCoreBeansValuePlaceholderResolutionLabTest test`
+  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansValuePlaceholderResolutionLabTest test`
 
 对应实验（可运行 + 可断言）：
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
 
 ```bash
-mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansValuePlaceholderResolutionLabTest test
+mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansValuePlaceholderResolutionLabTest test
 ```
 
 这就解释了 Lab 里的现象：
@@ -144,7 +144,7 @@ Lab 里我们显式设置：
 
 ## 断点闭环（用本仓库 Lab/Test 跑一遍）
 
-- `spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
 
 建议断点：
 
@@ -152,7 +152,7 @@ Lab 里我们显式设置：
 - “启用 strict 后启动直接失败” → **定义层（BFPP 提前失败）**：`PropertySourcesPlaceholderConfigurer` 会在实例化前就 fail-fast（本章第 3 节）
 - “`@Value` 完全不生效/字段没被注入” → **优先定义层/基础设施问题**：是否具备注解处理能力？（回看 [12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)）
 - “值不对但不报错” → **先拆分路径**：确认 property source 是否包含 key，再确认 strict/non-strict（本章第 4 节 + `resolveEmbeddedValue`）
-对应 Lab/Test：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
+对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
 推荐断点：`PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`、`AbstractBeanFactory#resolveEmbeddedValue`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`
 
 ## 常见坑与边界
@@ -168,7 +168,7 @@ Lab 里我们显式设置：
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
-- Test file：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
 
 上一章：[33. 候选选择与优先级：@Primary/@Priority/@Order 的边界](33-autowire-candidate-selection-primary-priority-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[35. MergedBeanDefinition：合并后的 RootBeanDefinition](35-merged-bean-definition.md)
 

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 175 章：01：RestClient（同步）最小闭环](175-01-restclient-basics.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 177 章：03：错误处理：4xx/5xx → 领域异常](177-03-error-handling.md)
+上一章：[第 175 章：01：RestClient（同步）最小闭环](175-01-restclient-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 177 章：03：错误处理：4xx/5xx → 领域异常](177-03-error-handling.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebClientWebClientLabTest`
-    - Test file：`springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java`
+    - Test file：`spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java`
 
 ## 机制主线
 
@@ -47,7 +47,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebClientWebClientLabTest`
-- 建议命令：`mvn -pl springboot-web-client test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-web-client test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -79,7 +79,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootWebClientWebClientLabTest`
-- Test file：`springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java`
+- Test file：`spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java`
 
 上一章：[part-01-web-client/01-restclient-basics.md](175-01-restclient-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-client/03-error-handling.md](177-03-error-handling.md)
 

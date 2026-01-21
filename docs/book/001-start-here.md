@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Start Here（如何运行、如何读、如何调试）
-    - 怎么使用：先跑 `mvn -q test` 确认环境；再用 `mvn -q -pl <module> -Dtest=<LabTest> test` 跑一个最小闭环；阅读时优先按章节“上一章/下一章”顺读，遇到概念就用推荐的断点/源码入口验证。
+    - 怎么使用：先跑 `mvn -q test` 确认环境；再用 `mvn -q -pl :<artifactId> -Dtest=<LabTest> test` 跑一个最小闭环；阅读时优先按章节“上一章/下一章”顺读，遇到概念就用推荐的断点/源码入口验证。
     - 原理：本仓库采用“证据链驱动学习”：每章先给五问闭环（学什么/怎么用/为什么/看哪段源码/跑哪个 Lab），再把结论固化为可回归的 `*LabTest`，最后用断点把关键分支变成可观察事实。
     - 源码入口：`org.springframework.boot.SpringApplication#run`（启动入口）/ `org.springframework.context.support.AbstractApplicationContext#refresh`（容器刷新主线）/ 本仓库 `*LabTest.java`（可跑证据链入口）
     - 推荐 Lab：`SpringCoreBeansLabTest`
@@ -20,7 +20,7 @@
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：Start Here（如何运行、如何读、如何调试） —— 先跑 `mvn -q test` 确认环境；再用 `mvn -q -pl <module> -Dtest=<LabTest> test` 跑一个最小闭环；阅读时优先按章节“上一章/下一章”顺读，遇到概念就用推荐的断点/源码入口验证。
+- 一句话总结：Start Here（如何运行、如何读、如何调试） —— 先跑 `mvn -q test` 确认环境；再用 `mvn -q -pl :<artifactId> -Dtest=<LabTest> test` 跑一个最小闭环；阅读时优先按章节“上一章/下一章”顺读，遇到概念就用推荐的断点/源码入口验证。
 - 回到主线：本仓库采用“证据链驱动学习”：每章先给五问闭环（学什么/怎么用/为什么/看哪段源码/跑哪个 Lab），再把结论固化为可回归的 `*LabTest`，最后用断点把关键分支变成可观察事实。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
@@ -46,19 +46,19 @@ mvn -q test
 ### 2) 只跑某个模块（更快、更聚焦）
 
 ```bash
-mvn -q -pl <module> test
+mvn -q -pl :<artifactId> test
 ```
 
 例如：
 
 ```bash
-mvn -q -pl springboot-web-mvc test
+mvn -q -pl :springboot-web-mvc test
 ```
 
 ### 3) 运行某个模块（需要启动应用时）
 
 ```bash
-mvn -pl <module> spring-boot:run
+mvn -pl :<artifactId> spring-boot:run
 ```
 
 ---
@@ -93,12 +93,13 @@ mvn -pl <module> spring-boot:run
 
 ---
 
-## 如何使用站点（Book-only 导航）
+## 如何使用站点（导航说明）
 
-本书采用 **Book-only** 导航：侧边栏只展示“主线之书”的章节树。
+侧边栏提供两条入口：
 
-- 模块 docs 仍然会出现在站点里（作为素材库/搜索命中/书内引用目标）
-- 模块入口总览见：[模块文档总览](../modules/index.md)
+- **主线之书（Book）**：跨模块顺读主线（推荐入口）
+- **模块文档**：按主题 → 模块 → 章节浏览（素材库/边界条件/排障）
+- 主题索引（模块 docs 入口）：[`docs/topics/index.md`](../topics/index.md)
 
 如果你想本地预览文档站：
 
@@ -116,8 +117,8 @@ bash scripts/docs-site-build.sh
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl spring-core-beans -Dtest=SpringCoreBeansLabTest test`（`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java`
+- Lab：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest test`（`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java`
 
 ---
 

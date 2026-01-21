@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 114 章：90：常见坑清单（Cache）](../appendix/114-90-common-pitfalls.md)
+上一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 114 章：90：常见坑清单（Cache）](../appendix/114-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -48,7 +48,7 @@ Ticker 的核心价值是：让“时间推进”变成可控输入，从而写�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootCacheLabTest`
-- 建议命令：`mvn -pl springboot-cache test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-cache test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

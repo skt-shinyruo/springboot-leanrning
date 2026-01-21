@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 79 章：01：Servlet Async（Callable）与测试（asyncDispatch）](../part-06-async-sse/079-01-servlet-async-and-testing.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../part-08-security-observability/081-01-security-filterchain-and-mvc.md)
+上一章：[第 79 章：01：Servlet Async（Callable）与测试（asyncDispatch）](../part-06-async-sse/079-01-servlet-async-and-testing.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../part-08-security-observability/081-01-security-filterchain-and-mvc.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

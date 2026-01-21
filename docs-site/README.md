@@ -1,63 +1,69 @@
 # 文档站点（MkDocs）
 
-本目录用于把本仓库根目录的统一文档目录 `docs/` 构建成一个可搜索的静态站点，并提供一套跨主题可顺读的 **Book-only 主线之书**。
+本目录用于把仓库根目录的统一文档目录 `docs/` 构建成一个可搜索的静态站点（MkDocs Material）。
 
-## 目标
+## 1. 关键约定（SSOT）
 
-- **像书一样可顺读**：侧边栏以“主线之书”为唯一目录（Book-only），读者从 0 章开始顺读到 18 章完成跨模块主线。
-- **像专栏一样可深挖**：主题文档保留完整细节与边界案例（素材库），通过书内链接/站内搜索/附录入口访问。
-- **单一源文档（SSOT）**：所有文档以仓库根 `docs/` 为事实来源；站点仅做构建与发布。
+- **单一源文档（SSOT）**：所有内容以仓库根 `docs/` 为事实来源；站点仅做构建与发布。
+- **文档即目录（SSOT）**：站点导航/侧边栏目录以 `docs/SUMMARY.md` 为唯一事实来源（按该文件的顺序与层级展示）。
+  - 目录维护：只需要修改 `docs/SUMMARY.md`
+  - 站点配置：`docs-site/mkdocs.yml` 不再维护 `nav:` 大块 YAML
 
-## 使用方式（本地）
+实现方式：使用 `mkdocs-literate-nav` 插件读取 `SUMMARY.md`。
 
-### 1)（可选）生成 Book-only 侧边栏目录
+## 2. 本地使用
+
+### 2.1 安装依赖（MkDocs + 插件）
+
+依赖列表见：`docs-site/requirements.txt`。
+
+#### 方式 A（推荐）：使用 venv
+
+> `docs-site/.venv/` 已加入 `.gitignore`，不会被提交。
 
 ```bash
-python3 scripts/docs-site-sync.py
+python3 -m venv docs-site/.venv
+docs-site/.venv/bin/python -m pip install -r docs-site/requirements.txt
 ```
 
-### 2) 启动预览（需要安装 MkDocs 依赖）
+> ⚠️ 如果你的系统缺少 venv 支持（例如 Debian/Ubuntu 报 `python3-venv` 缺失），请先安装对应包后再创建 venv。
 
-> 依赖列表见：`docs-site/requirements.txt`
+#### 方式 B：安装到用户目录（不推荐，但更“省事”）
+
+> ⚠️ 仅建议在你理解 PEP 668/系统 Python 约束的前提下使用。
+
+```bash
+python3 -m pip install --user --break-system-packages -r docs-site/requirements.txt
+```
+
+### 2.2 启动预览
 
 ```bash
 bash scripts/docs-site-serve.sh
 ```
 
-### 3) 构建
+### 2.3 构建
 
 ```bash
 bash scripts/docs-site-build.sh
 ```
 
-## 目录说明
+## 3. 目录维护方式（文档即目录）
 
-- `docs-site/mkdocs.yml`：站点配置（主题/插件/基础导航；Book-only 目录可由脚本自动生成注入）
-- `docs/`：仓库统一文档目录（站点输入源）
-- `docs-site/.site/`：MkDocs build 输出目录（不提交）
+站点目录文件：`docs/SUMMARY.md`
 
-## 目录生成规则（Book-only）
+维护规则（建议）：
 
-Book-only 的侧边栏目录由 `scripts/docs-site-sync.py` 自动生成（注入到 `docs-site/mkdocs.yml` 的 AUTO BOOK NAV 区段），规则如下：
+- 目录只放“索引级入口”（模块 README + Guide + Pitfalls/Self-check），深挖页通过站内搜索与文内链接进入
+- 链接一律使用相对 `docs/` 根目录的路径（例如 `book/062-webmvc-mainline.md`）
+- 目录层级使用 Markdown 列表缩进表达
 
-- **主线章节**：放在 `docs/book/` 下，文件名为 `NN-*.md`（`NN` 为两位数字，例如 `06-webmvc-mainline.md`）
-  - 会按章节号排序，并按 Part 分卷分组（避免侧边栏变成长列表）
-  - 目录标题会“短化”（侧边栏显示短标题，正文 `#` 标题可以保持完整）
-- **附录页**：同目录下的其它 `.md`（例如 `labs-index.md`）会被收纳到“附录 → 其它”
-- **固定附录入口**：Labs 索引 / Debugger Pack / Exercises & Solutions / 迁移规则 / 写作指南 / 知识库 / 模块入口，会以固定顺序出现在附录里
-
-## GitHub Pages（自动构建 + 发布）
+## 4. GitHub Pages（自动构建 + 发布）
 
 本仓库已提供 GitHub Actions workflow，可在 GitHub 上自动构建并发布站点到 GitHub Pages：
 
 - Workflow 文件：`.github/workflows/docs-site-pages.yml`
 - 触发条件：
   - `push` 到 `main/master`：构建 + 发布
-  - `pull_request`：仅构建校验（不发布）
   - `workflow_dispatch`：手动触发
 
-启用方式（一次性）：
-
-1) 进入仓库 `Settings` → `Pages`
-2) `Build and deployment` → `Source` 选择 `GitHub Actions`
-3) 等待一次 workflow 成功执行后，在 `Pages` 页面可看到站点 URL

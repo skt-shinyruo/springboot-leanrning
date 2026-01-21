@@ -10,10 +10,19 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 82 章：90：常见坑清单（Web MVC）](082-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 84 章：Security 主线](/book/084-security-mainline/)
+上一章：[第 82 章：90：常见坑清单（Web MVC）](082-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 84 章：Security 主线](../../../book/084-security-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+
+## 从 Book Matrix 进入（主线最小集合）
+
+- `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
+
+## 从 Branch Matrix 进入（关键分支最小集合）
+
+- 错误分支矩阵 400/406/415：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+- 配套资料：[`断点地图`](../part-00-guide/066-02-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/064-04-branch-decision-matrix.md)
 
 - 本章主题：**99 - Self Check（springboot-web-mvc）**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
@@ -78,7 +87,7 @@
 - Lab：`BootWebMvcAdviceMatchingLabTest`
 - Lab：`BootWebMvcRealWorldHttpLabTest`
 - Lab：`BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
-- 建议命令：`mvn -pl springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

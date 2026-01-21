@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 73 章：03：请求绑定（Binding）与 Converter/Formatter](073-03-binding-and-converters.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](075-05-interceptor-async-lifecycle.md)
+上一章：[第 73 章：03：请求绑定（Binding）与 Converter/Formatter](073-03-binding-and-converters.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](075-05-interceptor-async-lifecycle.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
-    - Test file：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+    - Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 ## 机制主线
 
@@ -68,7 +68,7 @@
 - 本章用“事件序列”把顺序变成可断言证据：
 - Lab：`BootWebMvcTraceLabTest`（Filter vs Interceptor 的相对位置 + async lifecycle 对照）
 - 建议命令（方法级入口）：
-  - `mvn -q -pl springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFilterAndInterceptorOrder test`
+  - `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFilterAndInterceptorOrder test`
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -116,7 +116,7 @@
 - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
 - Lab：`BootWebMvcTraceLabTest`
 - Exercise：`BootWebMvcExerciseTest`
-- Test file：`springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 上一章：[part-01-web-mvc/03-binding-and-converters.md](073-03-binding-and-converters.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-mvc/05-interceptor-async-lifecycle.md](075-05-interceptor-async-lifecycle.md)
 

@@ -17,8 +17,17 @@
 - [异步 multicaster](part-02-async-and-transactional/134-06-async-multicaster.md)
 - [事务事件](part-02-async-and-transactional/135-07-transactional-event-listener.md)
 
+## 进阶入口（排障/关键分支）
+
+- 断点地图（排障优先）：[128-02-breakpoint-map.md](part-00-guide/128-02-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[128-04-branch-decision-matrix.md](part-00-guide/128-04-branch-decision-matrix.md)
+- 排障 playbook：[136-90-common-pitfalls.md](appendix/136-90-common-pitfalls.md)
+- 自检清单：[137-99-self-check.md](appendix/137-99-self-check.md)
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
+- 可跑入口（Branch Matrix - 基础事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
+- 可跑入口（Branch Matrix - 异步/事务事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
+
 ## 排坑与自检
 
 - [常见坑](appendix/136-90-common-pitfalls.md)
 - [自检](appendix/137-99-self-check.md)
-

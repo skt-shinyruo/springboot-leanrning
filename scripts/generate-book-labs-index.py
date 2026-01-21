@@ -19,9 +19,11 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from repo_paths import find_module_root
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUT = REPO_ROOT / "docs-site" / "content" / "book" / "labs-index.md"
+DEFAULT_OUT = REPO_ROOT / "docs" / "book" / "labs-index.md"
 
 PREFERRED_MODULE_ORDER = [
     "springboot-basics",
@@ -46,13 +48,25 @@ PREFERRED_MODULE_ORDER = [
 
 
 def discover_modules(repo_root: Path) -> list[str]:
+    """
+    发现“有模块目录页”的模块：以 docs/<topic>/<module>/README.md 为准，并要求代码模块目录存在。
+    """
+    docs_root = repo_root / "docs"
+    if not docs_root.is_dir():
+        return []
+
     modules: list[str] = []
-    for p in sorted(repo_root.iterdir()):
-        if not p.is_dir():
+    for readme in sorted(docs_root.glob("*/*/README.md")):
+        module = readme.parent.name
+        if find_module_root(repo_root, module) is None:
             continue
-        if (p / "docs" / "README.md").is_file():
-            modules.append(p.name)
+        modules.append(module)
     return modules
+
+
+def resolve_docs_readme(repo_root: Path, module: str) -> Path | None:
+    candidates = sorted((repo_root / "docs").glob(f"*/{module}/README.md"))
+    return candidates[0] if candidates else None
 
 
 def order_modules(modules: list[str]) -> list[str]:
@@ -78,7 +92,7 @@ def md_link(text: str, target: str) -> str:
 
 
 def mvn_run_cmd(module: str, test_class: str) -> str:
-    return f"mvn -q -pl {module} -Dtest={test_class} test"
+    return f"mvn -q -pl :{module} -Dtest={test_class} test"
 
 
 def build_markdown(modules: list[str]) -> str:
@@ -91,14 +105,17 @@ def build_markdown(modules: list[str]) -> str:
     lines.append("## 运行方式速记")
     lines.append("")
     lines.append("- 全仓库：`mvn -q test`")
-    lines.append("- 单模块：`mvn -q -pl <module> test`")
-    lines.append("- 单类：`mvn -q -pl <module> -Dtest=<SomeLabTest> test`")
+    lines.append("- 单模块：`mvn -q -pl :<artifactId> test`")
+    lines.append("- 单类：`mvn -q -pl :<artifactId> -Dtest=<SomeLabTest> test`")
     lines.append("")
     lines.append("## 按模块")
     lines.append("")
 
     for module in order_modules(modules):
-        module_root = REPO_ROOT / module
+        module_root = find_module_root(REPO_ROOT, module)
+        if module_root is None:
+            continue
+        docs_readme = resolve_docs_readme(REPO_ROOT, module)
         tests = iter_lab_tests(module_root)
         lines.append(f"### {module}")
         lines.append("")
@@ -108,13 +125,15 @@ def build_markdown(modules: list[str]) -> str:
             continue
 
         lines.append(f"- 数量：{len(tests)}")
-        lines.append(f"- 模块 docs：[`{module}/docs/README.md`](../{module}/docs/README.md)")
+        if docs_readme is not None:
+            docs_rel_from_docs_root = docs_readme.relative_to(REPO_ROOT / "docs").as_posix()
+            lines.append(f"- 模块 docs：[`docs/{docs_rel_from_docs_root}`](../{docs_rel_from_docs_root})")
         lines.append("")
 
         for p in tests:
             rel = p.relative_to(REPO_ROOT).as_posix()
             # labs-index 位于 book/ 下，因此链接到仓库根 docs 的相对路径需要 ../
-            href = f"../{rel}"
+            href = f"../../{rel}"
             cls = p.stem
             lines.append(f"- {md_link(cls, href)}")
             lines.append(f"  - 运行：`{mvn_run_cmd(module, cls)}`")
@@ -148,10 +167,13 @@ def main(argv: list[str]) -> int:
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(build_markdown(modules), encoding="utf-8")
-    print(f"[OK] Generated labs index: {out_path.relative_to(REPO_ROOT)} (modules={len(modules)})")
+    try:
+        display_path = out_path.relative_to(REPO_ROOT)
+    except ValueError:
+        display_path = out_path
+    print(f"[OK] Generated labs index: {display_path} (modules={len(modules)})")
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main(__import__("sys").argv))
-

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通](../part-00-guide/044-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](/book/) ｜ 下一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md)
+上一章：[第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通](../part-00-guide/044-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -82,7 +82,7 @@ weaving 的核心是：**修改目标类/调用点的字节码**，在编译期�
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
-- 建议命令：`mvn -pl spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
