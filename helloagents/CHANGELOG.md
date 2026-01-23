@@ -5,6 +5,10 @@
 ## [Unreleased]
 
 ### Changed
+- `docs/book/debugger-pack.md`：补充“模块深挖最小闭环（Doc/Test/Perf）”验收口径，并提供一键自检脚本入口（用于全模块 A–E 统一标准化）。
+- `docs/**`：为 `springboot-autoconfiguration` / `springboot-logging` / `springboot-observability` / `spring-core-events` 目录页补齐并发/性能 Lab 可跑入口命令。
+- `spring-boot-*/README.md`：修正部分模块 README 标题与并发/性能 Lab 索引，避免与 `spring-boot-*` artifactId 命名脱节。
+- `docs/book/labs-index.md`：新增/刷新 4 个并发/性能 Lab 的索引入口（确保 docs gate 可通过）。
 - `docs/SUMMARY.md`：补齐全量模块的“调用链”导航项，并将新增主题（AutoConfiguration/Logging/Observability/SpEL）接入站点目录（SSOT）。
 - `docs/topics/index.md`、`docs/README.md`：更新主题索引，纳入新增主题模块。
 - `docs`：将所有模块文档从 `<module>/docs/` 迁移到仓库根 `docs/`，并按主题分组为 `docs/<topic>/<module>/...`；Book 内容从 `docs-site/content/book/` 迁移到 `docs/book/`。
@@ -25,6 +29,8 @@
 - `docs-site`：移除 `mkdocs --strict` 构建门禁（保留 build 作为普通构建/发布步骤）。
 
 ### Added
+- `scripts/audit-module-deep-dive.sh`：从方案包 `task.md` 解析 22 个模块的 docs/tests/perf 入口清单，并输出缺失项（用于全模块深挖标准化的“可审计基线”）。
+- `spring-boot-autoconfiguration` / `spring-boot-logging` / `spring-boot-observability` / `spring-core-events`：新增并发/性能可复现实验 `*ConcurrencyLabTest`（无耗时阈值断言），并接入模块目录页与知识库模块页入口。
 - `docs/web-mvc/springboot-web-mvc`：新增“请求调用链速览”章节（FilterChain → DispatcherServlet#doDispatch），用于断点定位与证据链入口。
 - 新增主题模块：`springboot-autoconfiguration` / `springboot-logging` / `springboot-observability` / `spring-core-spel`（含代码 + Labs + docs 骨架），并纳入 docs-site/labs 索引。
 - `docs`：新增站点目录文件 `docs/SUMMARY.md`（Markdown 目录文件，作为站点导航 SSOT）。

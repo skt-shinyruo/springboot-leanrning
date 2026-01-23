@@ -8,7 +8,7 @@
 
 - **Responsibility:** 用测试固定 logging 行为（级别、category、输出捕获），并把关键断点入口收敛为 Debugger Pack。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-22
+- **Last Updated:** 2026-01-23
 
 ## Start Here（路线图 / 断点地图 / 第一个可运行入口）
 
@@ -17,8 +17,8 @@
 - 调用链（LoggingSystem 初始化与级别决策）：`docs/logging/springboot-logging/part-00-guide/200-01-logging-call-chain.md`
 - 断点地图：`docs/logging/springboot-logging/part-00-guide/200-02-breakpoint-map.md`
 - 第一个可运行入口（3 分钟开跑）：
-  - `mvn -q -pl :springboot-logging -Dtest=BootLoggingLabTest test`
-  - 对应测试类：`spring-boot-modules/springboot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java`
+  - `mvn -q -pl :spring-boot-logging -Dtest=BootLoggingLabTest test`
+  - 对应测试类：`spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java`
 
 ## Specifications
 
@@ -38,7 +38,8 @@
 - **Branch Decision Matrix:** `docs/logging/springboot-logging/part-00-guide/200-04-branch-decision-matrix.md`
 - **Playbook:** `docs/logging/springboot-logging/appendix/202-90-common-pitfalls.md`
 - **Self-check:** `docs/logging/springboot-logging/appendix/203-99-self-check.md`
-- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingExerciseSolutionTest.java`
+- **Lab（并发/性能：MDC ThreadLocal 隔离可断言复现）：** `spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part02_perf_concurrency/BootLoggingConcurrencyLabTest.java`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingExerciseSolutionTest.java`
 
 ## Change History
 

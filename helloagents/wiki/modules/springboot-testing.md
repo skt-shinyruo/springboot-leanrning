@@ -43,18 +43,18 @@
 - **Self-check:** `docs/testing/springboot-testing/appendix/187-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
-  - `mvn -q -pl :springboot-testing -Dtest=BootTestingBookMatrixLabTest test`
-  - 对应测试类：`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java`
+  - `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java`
 - **Branch Matrix（关键分支入口）：**
-  - `mvn -q -pl :springboot-testing -Dtest=BootTestingBranchMatrixLabTest test`
-  - 对应测试类：`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBranchMatrixLabTest.java`
+  - `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBranchMatrixLabTest.java`
 - **Labs:**
-  - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`
-  - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`
-  - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`
-- **Exercise:** `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
-- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseSolutionTest.java`
-- **Lab（并发/性能：TestContextCache 复用边界证据链）：** `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part02_perf_concurrency/BootTestingTestContextCacheLabTest.java`
+  - `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`
+  - `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`
+  - `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`
+- **Exercise:** `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseSolutionTest.java`
+- **Lab（并发/性能：TestContextCache 复用边界证据链）：** `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part02_perf_concurrency/BootTestingTestContextCacheLabTest.java`
 - **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）

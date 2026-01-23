@@ -43,18 +43,18 @@ Spring Boot 基础：工程结构、配置、启动流程与最常用开发习�
 - **Self-check:** `docs/basics/springboot-basics/appendix/008-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
-  - `mvn -q -pl :springboot-basics -Dtest=BootBasicsBookMatrixLabTest test`
-  - 对应测试类：`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java`
+  - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java`
 - **Branch Matrix（关键分支入口）：**
-  - `mvn -q -pl :springboot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
-  - 对应测试类：`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBranchMatrixLabTest.java`
+  - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBranchMatrixLabTest.java`
 - **Labs:**
-  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
-  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java`
-  - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
-- **Exercises:** `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
-- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseSolutionTest.java`
-- **Lab（并发/性能：Environment 并发读取一致性）：** `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part02_perf_concurrency/BootBasicsEnvironmentConcurrencyLabTest.java`
+  - `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
+  - `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java`
+  - `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
+- **Exercises:** `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseSolutionTest.java`
+- **Lab（并发/性能：Environment 并发读取一致性）：** `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part02_perf_concurrency/BootBasicsEnvironmentConcurrencyLabTest.java`
 - **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）

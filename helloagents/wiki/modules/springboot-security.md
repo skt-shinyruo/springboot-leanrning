@@ -43,17 +43,17 @@
 - **Self-check:** `docs/security/springboot-security/appendix/093-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
-  - `mvn -q -pl :springboot-security -Dtest=BootSecurityBookMatrixLabTest test`
-  - 对应测试类：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java`
+  - `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java`
 - **Branch Matrix（关键分支入口）：**
-  - `mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`
-  - 对应测试类：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java`
-- **Lab:** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
-- **Lab (Multi FilterChain):** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityMultiFilterChainOrderLabTest.java`
-- **Lab (Dev Profile):** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityDevProfileLabTest.java`
-- **Exercise:** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
-- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseSolutionTest.java`
-- **Lab（并发/性能：SecurityContext 并发隔离）：** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part02_perf_concurrency/BootSecuritySecurityContextIsolationLabTest.java`
+  - `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+  - 对应测试类：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java`
+- **Lab:** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+- **Lab (Multi FilterChain):** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityMultiFilterChainOrderLabTest.java`
+- **Lab (Dev Profile):** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityDevProfileLabTest.java`
+- **Exercise:** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseSolutionTest.java`
+- **Lab（并发/性能：SecurityContext 并发隔离）：** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part02_perf_concurrency/BootSecuritySecurityContextIsolationLabTest.java`
 - **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）

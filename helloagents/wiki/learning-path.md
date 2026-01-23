@@ -59,12 +59,12 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest#usesQualifierToResol
 
 - Start Here（文档）：`docs/web-mvc/springboot-web-mvc/README.md`
 - 第一个可运行入口（MockMvc 版本）：
-  - 命令：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test`
-  - 测试类：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
+  - 命令：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test`
+  - 测试类：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
 - 推荐下一步：
   1. 读 Part 01：校验/异常/绑定（`docs/web-mvc/springboot-web-mvc/part-01-web-mvc/README.md`）
   2. 再跑链路追踪：`BootWebMvcTraceLabTest#syncTraceRecordsFilterAndInterceptorOrder`
-  3. 做练习：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+  3. 做练习：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 ---
 
@@ -75,7 +75,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest#usesQualifierToResol
 ### 2.1 机制线第一个可运行入口（推荐）
 
 ```bash
-mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFilterAndInterceptorOrder test
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFilterAndInterceptorOrder test
 ```
 
 ### 2.2 机制线节点导航（建议顺序）
@@ -95,22 +95,22 @@ mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFil
 
 - Start Here（文档）：`docs/autoconfig/springboot-autoconfiguration/README.md`
 - 第一个可运行入口：
-  - 命令：`mvn -q -pl :springboot-autoconfiguration -Dtest=BootAutoConfigurationLabTest#autoConfigCreatesDefaultBeanWhenEnabled test`
-  - 测试类：`spring-boot-modules/springboot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationLabTest.java`
+  - 命令：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationLabTest#autoConfigCreatesDefaultBeanWhenEnabled test`
+  - 测试类：`spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationLabTest.java`
 
 ### 3.2 Logging（LoggingSystem/级别/输出）
 
 - Start Here（文档）：`docs/logging/springboot-logging/README.md`
 - 第一个可运行入口：
-  - 命令：`mvn -q -pl :springboot-logging -Dtest=BootLoggingLabTest test`
-  - 测试类：`spring-boot-modules/springboot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java`
+  - 命令：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingLabTest test`
+  - 测试类：`spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java`
 
 ### 3.3 Observability（HTTP 指标/观测）
 
 - Start Here（文档）：`docs/observability/springboot-observability/README.md`
 - 第一个可运行入口：
-  - 命令：`mvn -q -pl :springboot-observability -Dtest=BootObservabilityLabTest test`
-  - 测试类：`spring-boot-modules/springboot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityLabTest.java`
+  - 命令：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityLabTest test`
+  - 测试类：`spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityLabTest.java`
 
 ### 3.4 SpEL（parse → AST → evaluate）
 
@@ -125,8 +125,8 @@ mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFil
 
 - Book 专题页：`docs/book/performance-and-concurrency.md`
 - 推荐第一个可运行入口（线程池饱和/拒绝策略）：
-  - 命令：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
-  - 测试类：`spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java`
+  - 命令：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
+  - 测试类：`spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java`
 - 第二个可运行入口（SpEL 并发求值）：
   - 命令：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelConcurrencyLabTest test`
   - 测试类：`spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part02_perf_concurrency/SpringCoreSpelConcurrencyLabTest.java`

@@ -148,3 +148,4 @@
 - [202601221758_tutorials_style_deepen_all](2026-01/202601221758_tutorials_style_deepen_all/) - 深化 tutorials 对齐：补齐调用链导航、更新主题索引与 Labs 索引，并新增 4 个主题模块（autoconfig/logging/observability/spel）；通过全仓回归与 docs 闸门
 - [202601222034_solutions_perf_concurrency_batch01](2026-01/202601222034_solutions_perf_concurrency_batch01/) - Solutions 补齐 + 并发/性能可复现专题（新增 Solution Tests + 线程池饱和/SpEL 并发求值样板 + Book 专题页）；通过全仓回归与 docs 闸门
 - [202601222155_solutions_all_remaining_modules](2026-01/202601222155_solutions_all_remaining_modules/) - 全量补齐剩余模块：Solutions 可发现性（Book 工具页 + 模块目录页入口）+ 并发/性能可复现实验全量推广（每模块至少 1 个 Lab）+ 全仓回归与 docs 闸门通过
+- [202601231156_tutorials_format_alignment](2026-01/202601231156_tutorials_format_alignment/) - tutorials 风格对齐续作：补充全模块深挖“最小闭环”验收口径与审计脚本/基线；补齐 autoconfig/logging/observability/events 并发/性能可复现实验；通过 `mvn -q test` 与 docs gate

@@ -8,7 +8,7 @@
 
 - **Responsibility:** 通过最小示例与 Labs/Exercises 展示事件系统的机制与常见坑。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-22
+- **Last Updated:** 2026-01-23
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
@@ -59,6 +59,7 @@
 - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsListenerFilteringLabTest.java`
 - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
 - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsAsyncMulticasterLabTest.java`
+- `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part03_perf_concurrency/SpringCoreEventsConcurrencyLabTest.java`
 - Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part00_guide/SpringCoreEventsExerciseSolutionTest.java`
 - Book 专题页（并发/性能可复现范式）：`docs/book/performance-and-concurrency.md`
 
