@@ -56,8 +56,8 @@ class BootBusinessCaseExerciseTest {
                         3) 本测试通过后，再补一个“找不到 id 返回 404”的负向测试。
 
                         参考：
-                        - `spring-boot-modules/springboot-business-case/src/main/java/com/learning/springboot/bootbusinesscase/api/OrderController.java`
-                        - `spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
+                        - `spring-boot-modules/spring-boot-business-case/src/main/java/com/learning/springboot/bootbusinesscase/api/OrderController.java`
+                        - `spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
                         """)
                 .isEqualTo(200);
 

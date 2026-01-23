@@ -20,7 +20,7 @@ class BootSecurityExerciseTest {
                         3) 写一个 Lab 或在这里写断言：用 Basic Auth 登录后，响应体包含 username 与 roles。
 
                         参考：
-                        - `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+                        - `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
                         """)
                 .isFalse();
     }
@@ -135,7 +135,7 @@ class BootSecurityExerciseTest {
                         练习：增加一个 RANDOM_PORT 的端到端测试（TestRestTemplate），验证 401/403 的差异。
 
                         下一步：
-                        1) 参考 `spring-boot-modules/springboot-web-mvc` 或 `spring-boot-modules/springboot-testing` 的 full context 测试写法。
+                        1) 参考 `spring-boot-modules/spring-boot-web-mvc` 或 `spring-boot-modules/spring-boot-testing` 的 full context 测试写法。
                         2) 验证：
                            - 未登录访问 /api/secure/ping → 401
                            - 普通用户访问 /api/admin/ping → 403

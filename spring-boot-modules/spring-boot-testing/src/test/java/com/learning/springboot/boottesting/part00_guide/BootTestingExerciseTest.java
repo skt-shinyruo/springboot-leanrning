@@ -19,8 +19,8 @@ class BootTestingExerciseTest {
                         2) 用 `@WebMvcTest` + MockMvc 发送非法 JSON，断言 `400` 与字段错误结构。
 
                         参考：
-                        - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
-                        - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
+                        - `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`
 
                         常见坑：
                         - 忘了在 controller 入参上加 `@Valid`
@@ -42,8 +42,8 @@ class BootTestingExerciseTest {
                         3) 在 `@SpringBootTest` 中断言它存在。
 
                         参考：
-                        - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`
-                        - `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`
+                        - `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`
+                        - `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`
 
                         常见坑：
                         - `@WebMvcTest` 只加载 Controller/相关 MVC 组件，不会扫描你的所有 Bean

@@ -20,8 +20,8 @@ class BootWebMvcExerciseTest {
                         3) 设计一个最小可用的数据存储，让 POST 创建后可以被 GET 查到。
 
                         参考：
-                        - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
-                        - `spring-boot-modules/springboot-web-mvc/README.md`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/README.md`
 
                         常见坑：
                         - path variable 名称不匹配：`@PathVariable(\"id\") Long id`
@@ -43,8 +43,8 @@ class BootWebMvcExerciseTest {
                         3) 返回与校验失败一致的 ApiError 形状（至少包含 `message`）。
 
                         参考：
-                        - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
-                        - `spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part01_web_mvc/GlobalExceptionHandler.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part01_web_mvc/GlobalExceptionHandler.java`
 
                         常见坑：
                         - 只处理一种异常类型，导致某些 JSON 错误仍然走默认错误页/默认响应
@@ -104,8 +104,8 @@ class BootWebMvcExerciseTest {
                         3) 用断言固定响应字段（message/id 等）。
 
                         参考：
-                        - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
-                        - `spring-boot-modules/springboot-testing/README.md`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
+                        - `spring-boot-modules/spring-boot-testing/README.md`
                         """)
                 .isFalse();
     }
@@ -127,8 +127,8 @@ class BootWebMvcExerciseTest {
                            - 不带 `X-Forwarded-For` 时取 remoteAddr
 
                         参考：
-                        - `spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part03_internals/ClientIpArgumentResolver.java`
-                        - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcInternalsLabTest.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part03_internals/ClientIpArgumentResolver.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcInternalsLabTest.java`
                         """)
                 .isFalse();
     }
@@ -150,8 +150,8 @@ class BootWebMvcExerciseTest {
                         4) 为 strict 用例补充断言：`$.fieldErrors.extra` 存在。
 
                         参考：
-                        - `spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part04_contract/AdvancedApiExceptionHandler.java`
-                        - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part04_contract/BootWebMvcContractJacksonLabTest.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part04_contract/AdvancedApiExceptionHandler.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part04_contract/BootWebMvcContractJacksonLabTest.java`
                         """)
                 .isFalse();
     }
@@ -175,9 +175,9 @@ class BootWebMvcExerciseTest {
                         3) 确保不会影响现有上传/下载闭环测试。
 
                         参考：
-                        - `spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part05_real_world/InMemoryFileStore.java`
-                        - `spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part04_contract/AdvancedApiExceptionHandler.java`
-                        - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part05_real_world/BootWebMvcRealWorldHttpLabTest.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part05_real_world/InMemoryFileStore.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part04_contract/AdvancedApiExceptionHandler.java`
+                        - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part05_real_world/BootWebMvcRealWorldHttpLabTest.java`
                         """)
                 .isFalse();
     }

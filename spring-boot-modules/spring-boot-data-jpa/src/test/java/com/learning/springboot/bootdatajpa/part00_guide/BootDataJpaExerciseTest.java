@@ -21,7 +21,7 @@ class BootDataJpaExerciseTest {
                         2) 在测试里先插入 2 条数据，再调用方法并断言返回。
 
                         参考：
-                        - `spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`
+                        - `spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`
                         - `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/01-entity-states.md`
                         """)
                 .isFalse();

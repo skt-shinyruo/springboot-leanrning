@@ -21,7 +21,7 @@ class BootBasicsExerciseTest {
                         3) 在这里写断言：读取 `AppProperties`，验证新字段绑定结果。
 
                         参考：
-                        - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
+                        - `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
 
                         常见坑：
                         - 配置键的 kebab-case 映射：`featureEnabled` ↔ `feature-enabled`
@@ -43,10 +43,10 @@ class BootBasicsExerciseTest {
                         下一步：
                         1) 参考 `BootBasicsOverrideLabTest`：它已经演示了“测试级覆盖”的效果。
                         2) 再增加一种来源（例如 system properties / 命令行参数 / profile 文件），对比最终值。
-                        3) 用断言把结论固定下来，再把结论写进 `spring-boot-modules/springboot-basics/README.md`。
+                        3) 用断言把结论固定下来，再把结论写进 `spring-boot-modules/spring-boot-basics/README.md`。
 
                         参考：
-                        - `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
+                        - `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
 
                         常见坑：
                         - 只看控制台日志容易误判；优先用 `Environment#getProperty(...)` + 断言

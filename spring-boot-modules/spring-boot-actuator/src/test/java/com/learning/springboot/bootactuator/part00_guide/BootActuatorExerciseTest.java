@@ -20,8 +20,8 @@ class BootActuatorExerciseTest {
                         3) 写测试：分别覆盖 property，断言 `/actuator/health` 输出变化。
 
                         参考：
-                        - `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`
-                        - `spring-boot-modules/springboot-actuator/README.md`
+                        - `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`
+                        - `spring-boot-modules/spring-boot-actuator/README.md`
 
                         常见坑：
                         - health details 是否显示，取决于 `management.endpoint.health.show-details`
@@ -41,7 +41,7 @@ class BootActuatorExerciseTest {
                         2) 写测试：访问 `/actuator/info` 并断言包含该字段。
 
                         参考：
-                        - `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`
+                        - `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`
                         """)
                 .isFalse();
     }
@@ -58,7 +58,7 @@ class BootActuatorExerciseTest {
                         2) 写测试：对未暴露端点发请求，断言 404。
 
                         参考：
-                        - `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`
+                        - `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`
                         """)
                 .isFalse();
     }
