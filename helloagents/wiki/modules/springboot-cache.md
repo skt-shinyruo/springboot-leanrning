@@ -8,7 +8,7 @@
 
 - **Responsibility:** 用最小示例与测试覆盖缓存命中/失效/条件缓存。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-09
+- **Last Updated:** 2026-01-23
 
 ## Specifications
 
@@ -51,14 +51,18 @@
 - **Lab:** `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
 - **Lab (SpEL Key):** `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheSpelKeyLabTest.java`
 - **Exercise:** `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseTest.java`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseSolutionTest.java`
+- **Lab（并发/性能：缓存击穿（stampede）可断言复现）：** `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part02_perf_concurrency/BootCacheStampedeProtectionLabTest.java`
+- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 
 - `src/main/java`：入口类包名不变；cache 示例集中在 `com.learning.springboot.bootcache.part01_cache`
-- `src/test/java`：`part00_guide`（Exercises）/ `part01_cache`（Labs），并在 `part01_cache` 内提供 `ManualTicker`
+- `src/test/java`：`part00_guide`（Exercises/Solutions）/ `part01_cache`（Labs）/ `part02_perf_concurrency`（并发/性能 Labs），并在 `part01_cache` 内提供 `ManualTicker`
 
 ## Change History
 
+- [202601222155_solutions_all_remaining_modules](../../history/2026-01/202601222155_solutions_all_remaining_modules/) - ✅ 已执行：补齐 Solutions/Labs 文档入口，并新增并发/性能可复现实验（缓存击穿（stampede）可断言复现）
 - [202601091802_modules_depth_align_to_beans](../../history/2026-01/202601091802_modules_depth_align_to_beans/) - ✅ 已执行：对标 spring-core-beans 深挖升级（Guide 机制主线 + 每章可断言坑点 + 默认 Lab 关键分支覆盖校验）
 - [202601071034_all_modules_docs_ag_contract](../../history/2026-01/202601071034_all_modules_docs_ag_contract/) - ✅ 已执行：全模块 docs 章节结构整理（A–G 结构 + 对应 Lab/Test 入口块）；后续不再推荐 A–G 作为写作规范/闸门
 - [202601062218_all_modules_docs_bookify](../../history/2026-01/202601062218_all_modules_docs_bookify/) - ✅ 已执行：以 docs/<topic>/<module>/README.md 为 SSOT，对全部章节 upsert 统一尾部区块（### 对应 Lab/Test + 上一章｜目录｜下一章）

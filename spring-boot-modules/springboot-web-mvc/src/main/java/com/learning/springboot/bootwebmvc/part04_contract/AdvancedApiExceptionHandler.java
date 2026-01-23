@@ -3,6 +3,7 @@ package com.learning.springboot.bootwebmvc.part04_contract;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.learning.springboot.bootwebmvc.part01_web_mvc.ApiError;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestControllerAdvice(basePackages = {
         "com.learning.springboot.bootwebmvc.part03_internals",
@@ -43,12 +45,28 @@ public class AdvancedApiExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiError> handleMalformedJson(HttpMessageNotReadableException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError("malformed_json", Map.of()));
+        Map<String, String> fieldErrors = new LinkedHashMap<>();
+
+        Throwable cause = ex.getCause();
+        if (cause instanceof UnrecognizedPropertyException unrecognized) {
+            String field = unrecognized.getPropertyName();
+            if (field != null && !field.isBlank()) {
+                fieldErrors.put(field, "未知字段");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError("malformed_json", fieldErrors));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiError> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         Map<String, String> fieldErrors = Map.of(ex.getName(), "类型不匹配");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError("type_mismatch", fieldErrors));
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiError> handleResponseStatus(ResponseStatusException ex) {
+        String message = ex.getReason() != null && !ex.getReason().isBlank() ? ex.getReason() : "status_" + ex.getStatusCode().value();
+        return ResponseEntity.status(ex.getStatusCode()).body(new ApiError(message, Map.of()));
     }
 }

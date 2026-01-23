@@ -8,7 +8,7 @@
 
 - **Responsibility:** 用最小业务场景与测试实验理解事务传播/回滚，并能定位常见坑。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-14
+- **Last Updated:** 2026-01-23
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
@@ -35,6 +35,7 @@
 - src(main)：`spring-core-modules/spring-core-tx/src/main/java/com/learning/springboot/springcoretx/part02_template_and_debugging/**`
 - src(test)：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part00_guide/**`
 - src(test)：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/**`
+- src(test)：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part02_perf_concurrency/**`（并发/性能 Labs）
 - src(test)：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/appendix/**`
 
 ### Docs Index
@@ -46,6 +47,9 @@
 - Branch Matrix（关键分支入口）：
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
+- Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part00_guide/SpringCoreTxExerciseSolutionTest.java`
+- Lab（并发/性能：ThreadLocal 边界证据链）：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part02_perf_concurrency/SpringCoreTxThreadLocalBoundaryLabTest.java`
+- Book 专题页（方法论与样板索引）：`docs/book/performance-and-concurrency.md`
 
 ### Requirement: 事务学习闭环
 **Module:** spring-core-tx
@@ -64,6 +68,7 @@
 
 ## Change History
 
+- [202601222155_solutions_all_remaining_modules](../../history/2026-01/202601222155_solutions_all_remaining_modules/) - ✅ 已执行：补齐 Exercises 对应 Solutions（默认参与回归）+ 新增并发/性能可复现实验（ThreadLocal 边界证据链）+ 补齐 docs 目录页入口
 - [202601091802_modules_depth_align_to_beans](../../history/2026-01/202601091802_modules_depth_align_to_beans/) - ✅ 已执行：对标 spring-core-beans 深挖升级（Guide 机制主线 + 每章可断言坑点 + 调试入口统一）
 - [202601071034_all_modules_docs_ag_contract](../../history/2026-01/202601071034_all_modules_docs_ag_contract/) - ✅ 已执行：全模块 docs 章节结构整理（A–G 结构 + 对应 Lab/Test 入口块）；后续不再推荐 A–G 作为写作规范/闸门
 - [202601062218_all_modules_docs_bookify](../../history/2026-01/202601062218_all_modules_docs_bookify/) - ✅ 已执行：以 docs/<topic>/<module>/README.md 为 SSOT，对全部章节 upsert 统一尾部区块（### 对应 Lab/Test + 上一章｜目录｜下一章）

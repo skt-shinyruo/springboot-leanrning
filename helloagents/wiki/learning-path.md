@@ -85,3 +85,51 @@ mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFil
 3. 事务拦截器链路：`spring-core-tx`
 4. 请求分发链路（DispatcherServlet / HandlerMapping / HandlerAdapter）：`springboot-web-mvc`
 
+---
+
+## 3. 专题扩展（可选：把“机制节点”补成体系）
+
+> 这一组主题不强制跟主线顺序绑定：按你当前在做的事情选一个最小入口跑通即可。
+
+### 3.1 AutoConfiguration（imports/条件/backoff）
+
+- Start Here（文档）：`docs/autoconfig/springboot-autoconfiguration/README.md`
+- 第一个可运行入口：
+  - 命令：`mvn -q -pl :springboot-autoconfiguration -Dtest=BootAutoConfigurationLabTest#autoConfigCreatesDefaultBeanWhenEnabled test`
+  - 测试类：`spring-boot-modules/springboot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationLabTest.java`
+
+### 3.2 Logging（LoggingSystem/级别/输出）
+
+- Start Here（文档）：`docs/logging/springboot-logging/README.md`
+- 第一个可运行入口：
+  - 命令：`mvn -q -pl :springboot-logging -Dtest=BootLoggingLabTest test`
+  - 测试类：`spring-boot-modules/springboot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java`
+
+### 3.3 Observability（HTTP 指标/观测）
+
+- Start Here（文档）：`docs/observability/springboot-observability/README.md`
+- 第一个可运行入口：
+  - 命令：`mvn -q -pl :springboot-observability -Dtest=BootObservabilityLabTest test`
+  - 测试类：`spring-boot-modules/springboot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityLabTest.java`
+
+### 3.4 SpEL（parse → AST → evaluate）
+
+- Start Here（文档）：`docs/spel/spring-core-spel/README.md`
+- 第一个可运行入口：
+  - 命令：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelLabTest test`
+  - 测试类：`spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part00_guide/SpringCoreSpelLabTest.java`
+
+### 3.5 性能与并发（可复现实验范式）
+
+> 建议先把“可复现范式”建立成默认习惯：不要靠耗时阈值断言；用 latch/失败路径/线程边界做证据链。
+
+- Book 专题页：`docs/book/performance-and-concurrency.md`
+- 推荐第一个可运行入口（线程池饱和/拒绝策略）：
+  - 命令：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
+  - 测试类：`spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java`
+- 第二个可运行入口（SpEL 并发求值）：
+  - 命令：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelConcurrencyLabTest test`
+  - 测试类：`spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part02_perf_concurrency/SpringCoreSpelConcurrencyLabTest.java`
+- 全量模块入口（按模块选一个即可）：
+  - 优先从各模块目录页 `docs/<topic>/<module>/README.md` 的“进阶入口”复制命令
+  - 或直接从 Book 专题页索引进入：`docs/book/performance-and-concurrency.md`

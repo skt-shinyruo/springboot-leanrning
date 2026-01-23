@@ -1,0 +1,5 @@
+TODO: replace this placeholder with your own notes.
+
+Hint:
+- Keep this file in src/main/resources so both IDE run and packaged jar can locate it via classpath.
+

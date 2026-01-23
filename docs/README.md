@@ -17,6 +17,9 @@
 - Web Client：[`docs/web-client/`](web-client/)
 - Testing：[`docs/testing/`](testing/)
 - Business Case：[`docs/business-case/`](business-case/)
+- AutoConfiguration：[`docs/autoconfig/`](autoconfig/)
+- Logging：[`docs/logging/`](logging/)
+- Observability：[`docs/observability/`](observability/)
 
 ### Spring Core（底层机制）
 
@@ -27,6 +30,7 @@
 - Resources：[`docs/resources/`](resources/)
 - Profiles：[`docs/profiles/`](profiles/)
 - Validation：[`docs/validation/`](validation/)
+- SpEL：[`docs/spel/`](spel/)
 
 ### Book（主线之书）
 

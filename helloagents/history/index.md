@@ -67,6 +67,8 @@
 | 202601201248 | tutorials_style_reorg | Refactor | ✅Completed | [202601201248_tutorials_style_reorg](2026-01/202601201248_tutorials_style_reorg/) |
 | 202601201656 | rollout_book_matrix_all_modules | Enhancement | ✅Completed | [202601201656_rollout_book_matrix_all_modules](2026-01/202601201656_rollout_book_matrix_all_modules/) |
 | 202601201802 | rollout_branch_matrix_breakpoint_playbook_all_modules | Enhancement | ✅Completed | [202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules](2026-01/202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules/) |
+| 202601221758 | tutorials_style_deepen_all | Enhancement | ✅Completed | [202601221758_tutorials_style_deepen_all](2026-01/202601221758_tutorials_style_deepen_all/) |
+| 202601222034 | solutions_perf_concurrency_batch01 | Enhancement | ✅Completed | [202601222034_solutions_perf_concurrency_batch01](2026-01/202601222034_solutions_perf_concurrency_batch01/) |
 
 ---
 
@@ -143,3 +145,6 @@
 - [202601202238_topics-grouping-boot-core](2026-01/202601202238_topics-grouping-boot-core/) - docs-site：模块文档主题按 Spring Boot / Spring Core 分组展示，并以 `docs/README.md` 作为顺序与显示名 SSOT
 - [202601202318_docs_site_nav_ssot_links](2026-01/202601202318_docs_site_nav_ssot_links/) - docs-site：主题 SSOT（topics.yml）+ 模块导航收敛（索引级入口）+ `/book/` 绝对链接清理与门禁
 - [202601211049_docs-literate-nav](2026-01/202601211049_docs-literate-nav/) - docs-site：文档即目录（literate-nav），以 `docs/SUMMARY.md` 作为站点导航 SSOT，并下线旧的 topics.yml / nav 注入脚本
+- [202601221758_tutorials_style_deepen_all](2026-01/202601221758_tutorials_style_deepen_all/) - 深化 tutorials 对齐：补齐调用链导航、更新主题索引与 Labs 索引，并新增 4 个主题模块（autoconfig/logging/observability/spel）；通过全仓回归与 docs 闸门
+- [202601222034_solutions_perf_concurrency_batch01](2026-01/202601222034_solutions_perf_concurrency_batch01/) - Solutions 补齐 + 并发/性能可复现专题（新增 Solution Tests + 线程池饱和/SpEL 并发求值样板 + Book 专题页）；通过全仓回归与 docs 闸门
+- [202601222155_solutions_all_remaining_modules](2026-01/202601222155_solutions_all_remaining_modules/) - 全量补齐剩余模块：Solutions 可发现性（Book 工具页 + 模块目录页入口）+ 并发/性能可复现实验全量推广（每模块至少 1 个 Lab）+ 全仓回归与 docs 闸门通过

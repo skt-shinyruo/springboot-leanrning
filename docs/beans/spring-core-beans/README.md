@@ -8,7 +8,8 @@
 2. [深挖导读](part-00-guide/011-00-deep-dive-guide.md)
 3. [主线叙事：从 `refresh()` 到 `doCreateBean()`（源码级）](part-03-container-internals/18-refresh-to-bean-creation-mainline.md)
 4. [30 分钟快速闭环](part-00-guide/012-01-quickstart-30min.md)
-5. [断点图（排障优先）](part-00-guide/013-02-breakpoint-map.md)
+5. [refresh() 调用链（先把阶段感建立起来）](part-00-guide/013-01-applicationcontext-refresh-call-chain.md)
+6. [断点图（排障优先）](part-00-guide/013-02-breakpoint-map.md)
 
 ## 顺读主线（先把容器跑通）
 
@@ -32,12 +33,17 @@
 ## 进阶入口（排障/关键分支）
 
 - 断点地图（排障优先）：[013-02-breakpoint-map.md](part-00-guide/013-02-breakpoint-map.md)
+- refresh() 调用链（源码主线锚点）：[013-01-applicationcontext-refresh-call-chain.md](part-00-guide/013-01-applicationcontext-refresh-call-chain.md)
 - 关键分支矩阵（If/Then 收敛）：[011-04-branch-decision-matrix.md](part-00-guide/011-04-branch-decision-matrix.md)
 - 排障 playbook：[025-90-common-pitfalls.md](appendix/025-90-common-pitfalls.md)
 - 自检清单：[026-99-self-check.md](appendix/026-99-self-check.md)
 - 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
 - 可跑入口（Branch Matrix - IoC 分支）：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansIocBranchMatrixLabTest test`
 - 可跑入口（Branch Matrix - 内部机制分支）：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInternalsBranchMatrixLabTest test`
+- 练习与答案（Exercises/Solutions 约定）：[exercises-and-solutions.md](../../book/exercises-and-solutions.md)
+- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-core-beans -Dtest=*ExerciseSolutionTest test`
+- 并发/性能专题（可复现实验范式）：[performance-and-concurrency.md](../../book/performance-and-concurrency.md)
+- 可跑入口（并发/性能 Lab - 同一 BeanFactory 并发 getBean）：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansConcurrentGetBeanLabTest test`
 
 ## 排坑与自检
 

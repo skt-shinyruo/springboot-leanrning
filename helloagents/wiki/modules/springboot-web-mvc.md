@@ -11,7 +11,7 @@
 
 - **Responsibility:** 提供可运行 Web 示例与测试（MockMvc 等），帮助理解请求处理链路。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-18
+- **Last Updated:** 2026-01-23
 
 ## Start Here（路线图 / 断点地图 / 第一个可运行入口）
 
@@ -84,6 +84,9 @@
   - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part08_security_observability/BootWebMvcSecurityVsMvcExceptionBoundaryLabTest.java`
   - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part08_security_observability/BootWebMvcObservabilityLabTest.java`
 - **Exercises:** `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseSolutionTest.java`
+- **Lab（并发/性能：RequestScope 隔离 / 并发请求边界）：** `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_perf_concurrency/BootWebMvcRequestScopeIsolationLabTest.java`
+- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 
@@ -97,10 +100,11 @@
   - Security/Observability：`com.learning.springboot.bootwebmvc.part08_security_observability`
   - Advice 优先级：`com.learning.springboot.bootwebmvc.part09_advice_order`
   - Advice 匹配规则：`com.learning.springboot.bootwebmvc.part10_advice_matching`
-- `src/test/java`：按 `part00_guide`（Exercises）+ `part01_*`（Labs）+ `part07_testing`（排障）分包
+- `src/test/java`：按 `part00_guide`（Exercises/Solutions）+ `part01_*`（Labs）+ `part02_perf_concurrency`（并发/性能 Labs）+ `part07_testing`（排障）分包
 
 ## Change History
 
+- [202601222155_solutions_all_remaining_modules](../../history/2026-01/202601222155_solutions_all_remaining_modules/) - ✅ 已执行：补齐 Solutions/Labs 文档入口，并新增并发/性能可复现实验（RequestScope 隔离 / 并发请求边界）
 - [202601182033_beans_branch_decision_table_webmvc_error_async_deepen](../../history/2026-01/202601182033_beans_branch_decision_table_webmvc_error_async_deepen/) - ✅ 已执行：深化 DispatcherServlet 主链路：补齐“异常未被 resolver 处理 → 回落到 Boot `/error`”完整叙事；补齐 async 两次 dispatch 时间线与可断言证据链
 - [202601182117_beans_bootstrap_guide_webmvc_deepen](../../history/2026-01/202601182117_beans_bootstrap_guide_webmvc_deepen/) - ✅ 已执行：继续深化 067 主链路：补齐 ERROR dispatch（DispatcherType.ERROR）与 ASYNC dispatch 的对照时间线，并新增“现象→阶段→关键方法→证据链”分支决策表
 - [202601081505_springboot-web-mvc-deepen-v3](../../history/2026-01/202601081505_springboot-web-mvc-deepen-v3/) - ✅ 已执行：深化 v3：新增 `@ControllerAdvice` 匹配规则可复现 Labs（basePackages/annotations/assignableTypes + selector OR 语义 + @Order 叠加）、binder `suppressedFields` 证据链、HttpMessageConverter 选择可观测（selectedConverterType/selectedContentType 响应头），并新增 Part 03 章节与排障/自测升级

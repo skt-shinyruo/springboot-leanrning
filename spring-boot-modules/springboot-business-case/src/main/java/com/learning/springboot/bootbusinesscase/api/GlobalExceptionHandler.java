@@ -3,6 +3,7 @@ package com.learning.springboot.bootbusinesscase.api;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.learning.springboot.bootbusinesscase.app.CheckedOrderException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -26,5 +27,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleIllegalState(IllegalStateException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiError("internal_error", Map.of()));
     }
-}
 
+    @ExceptionHandler(CheckedOrderException.class)
+    public ResponseEntity<ApiError> handleCheckedOrderException(CheckedOrderException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiError("checked_error", Map.of()));
+    }
+}

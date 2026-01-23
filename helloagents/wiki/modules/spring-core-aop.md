@@ -8,7 +8,7 @@
 
 - **Responsibility:** 提供 AOP 的最小可运行示例与测试实验，帮助理解代理行为与切面生效边界。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-14
+- **Last Updated:** 2026-01-23
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
@@ -49,6 +49,10 @@
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
+- Solution（Exercises 对应答案回归）：
+  - `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part00_guide/SpringCoreAopExerciseSolutionTest.java`
+- Lab（并发/性能：同一 proxy 并发调用边界）：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part02_perf_concurrency/SpringCoreAopProxyConcurrencyLabTest.java`
+- Book 专题页（方法论与样板索引）：`docs/book/performance-and-concurrency.md`
 
 ### Requirement: AOP 学习闭环
 **Module:** spring-core-aop
@@ -107,6 +111,7 @@
 
 ## Change History
 
+- [202601222155_solutions_all_remaining_modules](../../history/2026-01/202601222155_solutions_all_remaining_modules/) - ✅ 已执行：补齐 Solutions/Labs 文档入口，并新增并发/性能可复现实验（同一 proxy 并发调用边界）
 - [202601091802_modules_depth_align_to_beans](../../history/2026-01/202601091802_modules_depth_align_to_beans/) - ✅ 已执行：对标 spring-core-beans 深挖升级（补齐 Guide 机制主线与章节可断言坑点，强化导航与排障入口）
 - [202601071034_all_modules_docs_ag_contract](../../history/2026-01/202601071034_all_modules_docs_ag_contract/) - ✅ 已执行：全模块 docs 章节结构整理（A–G 结构 + 对应 Lab/Test 入口块）；后续不再推荐 A–G 作为写作规范/闸门
 - [202601062218_all_modules_docs_bookify](../../history/2026-01/202601062218_all_modules_docs_bookify/) - ✅ 已执行：以 docs/<topic>/<module>/README.md 为 SSOT，对全部章节 upsert 统一尾部区块（### 对应 Lab/Test + 上一章｜目录｜下一章）

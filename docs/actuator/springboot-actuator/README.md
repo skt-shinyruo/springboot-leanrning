@@ -19,6 +19,10 @@
 - 自检清单：[171-99-self-check.md](appendix/171-99-self-check.md)
 - 可跑入口（Book Matrix）：`mvn -q -pl :springboot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
 - 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
+- 练习与答案（Exercises/Solutions 约定）：[exercises-and-solutions.md](../../book/exercises-and-solutions.md)
+- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :springboot-actuator -Dtest=*ExerciseSolutionTest test`
+- 并发/性能专题（可复现实验范式）：[performance-and-concurrency.md](../../book/performance-and-concurrency.md)
+- 可跑入口（并发/性能 Lab - 并发请求驱动 metrics 增量）：`mvn -q -pl :springboot-actuator -Dtest=BootActuatorMetricsConcurrencyLabTest test`
 
 ## 排坑与自检
 

@@ -23,5 +23,9 @@ public class OrderEventListeners {
     public void onOrderPlacedAfterCommit(OrderPlacedEvent event) {
         auditLog.add("afterCommit:orderPlaced:" + event.orderId());
     }
-}
 
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
+    public void onOrderPlacedAfterRollback(OrderPlacedEvent event) {
+        auditLog.add("afterRollback:orderPlaced:" + event.orderId());
+    }
+}

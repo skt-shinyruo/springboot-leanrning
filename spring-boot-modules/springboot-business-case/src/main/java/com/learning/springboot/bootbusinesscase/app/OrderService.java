@@ -37,5 +37,22 @@ public class OrderService {
         eventPublisher.publishEvent(new OrderPlacedEvent(saved.getId(), saved.getCustomer()));
         throw new IllegalStateException("boom");
     }
-}
 
+    @TracedOperation
+    @Transactional
+    public PurchaseOrder placeOrderThenFailChecked_defaultRule(PlaceOrderCommand command) throws CheckedOrderException {
+        PurchaseOrder saved = repository.save(new PurchaseOrder(command.customer(), command.sku(), command.quantity()));
+        repository.flush();
+        eventPublisher.publishEvent(new OrderPlacedEvent(saved.getId(), saved.getCustomer()));
+        throw new CheckedOrderException("boom_checked");
+    }
+
+    @TracedOperation
+    @Transactional(rollbackFor = CheckedOrderException.class)
+    public PurchaseOrder placeOrderThenFailChecked_rollbackFor(PlaceOrderCommand command) throws CheckedOrderException {
+        PurchaseOrder saved = repository.save(new PurchaseOrder(command.customer(), command.sku(), command.quantity()));
+        repository.flush();
+        eventPublisher.publishEvent(new OrderPlacedEvent(saved.getId(), saved.getCustomer()));
+        throw new CheckedOrderException("boom_checked");
+    }
+}

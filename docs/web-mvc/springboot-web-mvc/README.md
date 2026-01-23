@@ -6,8 +6,9 @@
 
 1. [主线时间线](part-00-guide/063-03-mainline-timeline.md)
 2. [深挖导读](part-00-guide/064-00-deep-dive-guide.md)
-3. [知识地图（先看全图）](part-00-guide/065-01-knowledge-map.md)
-4. [断点图（排障优先）](part-00-guide/066-02-breakpoint-map.md)
+3. [请求调用链速览（先知道断点该打在哪）](part-00-guide/064-01-webmvc-request-call-chain.md)
+4. [知识地图（先看全图）](part-00-guide/065-01-knowledge-map.md)
+5. [断点图（排障优先）](part-00-guide/066-02-breakpoint-map.md)
 
 ## 顺读主线（先把请求跑通）
 
@@ -36,11 +37,16 @@
 ## 进阶入口（排障/关键分支）
 
 - 断点地图（排障优先）：[066-02-breakpoint-map.md](part-00-guide/066-02-breakpoint-map.md)
+- 请求调用链速览（快速定位）：[064-01-webmvc-request-call-chain.md](part-00-guide/064-01-webmvc-request-call-chain.md)
 - 关键分支矩阵（If/Then 收敛）：[064-04-branch-decision-matrix.md](part-00-guide/064-04-branch-decision-matrix.md)
 - 排障 playbook：[082-90-common-pitfalls.md](appendix/082-90-common-pitfalls.md)
 - 自检清单：[083-99-self-check.md](appendix/083-99-self-check.md)
 - 可跑入口（Book Matrix）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
 - 可跑入口（Branch Matrix - 错误分支矩阵 400/406/415）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+- 练习与答案（Exercises/Solutions 约定）：[exercises-and-solutions.md](../../book/exercises-and-solutions.md)
+- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :springboot-web-mvc -Dtest=*ExerciseSolutionTest test`
+- 并发/性能专题（可复现实验范式）：[performance-and-concurrency.md](../../book/performance-and-concurrency.md)
+- 可跑入口（并发/性能 Lab - RequestScope 隔离 / 并发请求边界）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcRequestScopeIsolationLabTest test`
 
 ## 排坑与自检
 

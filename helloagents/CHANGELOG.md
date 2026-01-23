@@ -5,6 +5,8 @@
 ## [Unreleased]
 
 ### Changed
+- `docs/SUMMARY.md`：补齐全量模块的“调用链”导航项，并将新增主题（AutoConfiguration/Logging/Observability/SpEL）接入站点目录（SSOT）。
+- `docs/topics/index.md`、`docs/README.md`：更新主题索引，纳入新增主题模块。
 - `docs`：将所有模块文档从 `<module>/docs/` 迁移到仓库根 `docs/`，并按主题分组为 `docs/<topic>/<module>/...`；Book 内容从 `docs-site/content/book/` 迁移到 `docs/book/`。
 - `docs-site`：MkDocs 站点改为直接读取 `../docs`，并通过 `mkdocs-literate-nav` 以 `docs/SUMMARY.md` 作为站点导航 SSOT（文档即目录）。
 - `docs`：站点导航 SSOT 由 YAML/脚本注入切换为 `docs/SUMMARY.md`（Markdown 目录文件，顺序/显示名/层级都以此为准）。
@@ -14,6 +16,8 @@
 - 调整 Maven 工程结构：按 tutorials 风格分组聚合到 `spring-boot-modules/` 与 `spring-core-modules/`。
 - 修复 Book/模块文档跨目录引用的相对链接（避免 `docs/docs/...` 断链），并通过 docs gate。
 - 修复 `scripts/generate-book-labs-index.py` 生成的 `docs/book/labs-index.md` 外链前缀（从 `../` 修正为 `../../`）。
+- `docs/async-scheduling` / `docs/events` / `docs/spel`：在模块目录页增加“性能与并发（可复现实验范式）”入口与可跑样板命令（线程池饱和 / 异步分发线程边界 / SpEL 并发求值）。
+- `docs`：补齐剩余模块目录页的 Solutions 入口与并发/性能 Lab 入口，并互链到 Book 工具页（Exercises & Solutions / 性能与并发）。
 
 ### Removed
 - `docs`：删除旧的导航/主题 SSOT：`docs/topics/topics.yml`（避免与 `docs/SUMMARY.md` 双轨维护）。
@@ -21,6 +25,8 @@
 - `docs-site`：移除 `mkdocs --strict` 构建门禁（保留 build 作为普通构建/发布步骤）。
 
 ### Added
+- `docs/web-mvc/springboot-web-mvc`：新增“请求调用链速览”章节（FilterChain → DispatcherServlet#doDispatch），用于断点定位与证据链入口。
+- 新增主题模块：`springboot-autoconfiguration` / `springboot-logging` / `springboot-observability` / `spring-core-spel`（含代码 + Labs + docs 骨架），并纳入 docs-site/labs 索引。
 - `docs`：新增站点目录文件 `docs/SUMMARY.md`（Markdown 目录文件，作为站点导航 SSOT）。
 - `docs-site`：新增 `mkdocs-literate-nav` 依赖（固定版本），用于从 `docs/SUMMARY.md` 解析生成导航。
 - `scripts`：新增 `/book/` 绝对链接修复与门禁脚本 `scripts/fix-abs-book-links.py` / `scripts/check-abs-book-links.py`（保证 GitHub Pages 子路径部署跳转正确）。
@@ -29,6 +35,11 @@
 - `docs-site`：新增“写作指南”页面 `docs/book-style.md`，用于统一书籍化重排原则（主线时间线先行、提示框作为插入段、redirect 保留旧入口）。
 - `docs-site`：在写作指南中新增“章节学习卡片（五问闭环）”规范（知识点 / 怎么使用 / 原理 / 源码入口 / 推荐 Lab），用于把每章的学习目标、可运行入口与源码证据链收敛到第一屏。
 - `docs-site`：新增“主线之书（Book-only）”目录骨架（`docs/book/`），覆盖 18 模块的跨模块时间线章节树，并新增工具页（Labs 索引 / Debugger Pack / Exercises & Solutions / 迁移规则）。
+- `docs/book/performance-and-concurrency.md`：新增“性能与并发（可复现实验范式）”工具页（可复现套路 + 样板索引）。
+- `springboot-autoconfiguration` / `springboot-logging` / `springboot-observability` / `spring-core-spel` / `spring-core-events` / `springboot-async-scheduling`：新增 Exercises 对应 Solutions（默认参与回归）。
+- `springboot-async-scheduling`：新增并发/性能可复现实验（线程池饱和/拒绝策略）与测试辅助 `Waiter`。
+- `spring-core-spel`：新增并发求值 Lab（复用 parsed expression + per-thread EvaluationContext）。
+- `springboot-basics` / `springboot-web-mvc` / `springboot-data-jpa` / `springboot-actuator` / `springboot-testing` / `springboot-business-case` / `springboot-security` / `springboot-web-client` / `springboot-cache` / `spring-core-aop` / `spring-core-aop-weaving` / `spring-core-tx` / `spring-core-validation` / `spring-core-resources` / `spring-core-profiles` / `spring-core-beans`：补齐/接入并发与性能可复现实验（每模块至少 1 个 `part02_perf_concurrency/*LabTest`）并补齐缺失 Exercises 对应 Solutions（Tx/Validation/Resources/Profiles + Beans Part04）。
 - `scripts`：新增 Labs 索引生成脚本 `scripts/generate-book-labs-index.py`（扫描各模块 `src/test/java/*LabTest.java` 生成 `docs/book/labs-index.md`）。
 - `scripts`：新增“章节学习卡片（五问闭环）”批处理与自检脚本（`scripts/upsert-chapter-cards.py` / `scripts/check-chapter-cards.py` / `scripts/generate-docs-chapter-list.py`），并将检查接入 `scripts/check-docs.sh` 作为闸门，保证全量章节覆盖（198 页）。
 - GitHub Pages：新增自动构建与发布 workflow（`.github/workflows/docs-site-pages.yml`），在 `push main/master` 时构建并发布 `docs-site/.site/`。

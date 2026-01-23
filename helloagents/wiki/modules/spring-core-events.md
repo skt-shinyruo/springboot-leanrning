@@ -8,7 +8,7 @@
 
 - **Responsibility:** 通过最小示例与 Labs/Exercises 展示事件系统的机制与常见坑。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-09
+- **Last Updated:** 2026-01-22
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
@@ -59,6 +59,8 @@
 - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsListenerFilteringLabTest.java`
 - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
 - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsAsyncMulticasterLabTest.java`
+- Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part00_guide/SpringCoreEventsExerciseSolutionTest.java`
+- Book 专题页（并发/性能可复现范式）：`docs/book/performance-and-concurrency.md`
 
 ## Change History
 
@@ -69,6 +71,7 @@
 - [202601061556_spring_core_modules_teaching_rollout](../../history/2026-01/202601061556_spring_core_modules_teaching_rollout/) - ✅ 已执行：补齐 docs/07（TransactionalEventListener）可运行闭环（新增事务事件 Lab + docs 入口块），并对齐 docs 目录页/入口块规范与自检脚本
 - [202601021322_complete_spring_core_fundamentals_remaining](../../history/2026-01/202601021322_complete_spring_core_fundamentals_remaining/) - ✅ 已执行：补齐 `EventsDemoRunner` 结构化输出（线程/异常传播）与 throwing listener（特定输入触发）
 - [202601041046_spring-core-part-structure-sync](../../history/2026-01/202601041046_spring-core-part-structure-sync/) - ✅ 已执行：对齐 docs Part 目录结构与 src/main+src/test 分包结构（语义化 Part 命名），并修复 README/跨模块引用路径
+- [202601222034_solutions_perf_concurrency_batch01](../../history/2026-01/202601222034_solutions_perf_concurrency_batch01/) - ✅ 已执行：补齐 Exercises 对应 Solutions（多 listener/order/async/condition/async multicaster），并把“异步分发线程边界”纳入可回归证据链
 
 ## Dependencies
 

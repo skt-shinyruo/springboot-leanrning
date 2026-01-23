@@ -1,0 +1,34 @@
+# 第 199 章：03：主线时间线：springboot-logging
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：主线时间线：springboot-logging
+    - 怎么使用：本页是导航页。建议先跑 `BootLoggingLabTest` 固化“debug 级别是否生效”，再按“LoggingSystem 初始化 → logger level 决策”顺读。
+    - 原理：日志系统在启动早期初始化；之后每条日志是否输出取决于：logger category 的有效级别 + appender/encoder 输出形态。
+    - 源码入口：`org.springframework.boot.logging.LoggingSystem` / `org.slf4j.Logger` /（logback）`ch.qos.logback.classic.Logger`
+    - 推荐 Lab：`BootLoggingLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[Book TOC](../../../book/index.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 200 章：00. 深挖导读](200-00-deep-dive-guide.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+## 从 Book Matrix 进入（主线最小集合）
+
+- `mvn -q -pl :springboot-logging -Dtest=BootLoggingBookMatrixLabTest test`
+
+## 机制主线（你要建立的叙事）
+
+1. **日志系统何时初始化？**（LoggingSystem + logging config）
+2. **日志级别如何决策？**（category → effective level）
+3. **如何把日志变成可断言信号？**（capture/appender）
+
+<!-- BOOKIFY:START -->
+
+### 对应 Lab/Test
+
+- Lab：`BootLoggingLabTest`
+
+上一章：[Book TOC](../../../book/index.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/00-deep-dive-guide.md](200-00-deep-dive-guide.md)
+
+<!-- BOOKIFY:END -->

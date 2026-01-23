@@ -19,6 +19,9 @@
 - Web Client：[`springboot-web-client`](../web-client/springboot-web-client/README.md)
 - Testing：[`springboot-testing`](../testing/springboot-testing/README.md)
 - Business Case：[`springboot-business-case`](../business-case/springboot-business-case/README.md)
+- AutoConfiguration：[`springboot-autoconfiguration`](../autoconfig/springboot-autoconfiguration/README.md)
+- Logging：[`springboot-logging`](../logging/springboot-logging/README.md)
+- Observability：[`springboot-observability`](../observability/springboot-observability/README.md)
 
 ### Spring Core（底层机制）
 
@@ -31,6 +34,7 @@
 - Resources：[`spring-core-resources`](../resources/spring-core-resources/README.md)
 - Profiles：[`spring-core-profiles`](../profiles/spring-core-profiles/README.md)
 - Validation：[`spring-core-validation`](../validation/spring-core-validation/README.md)
+- SpEL：[`spring-core-spel`](../spel/spring-core-spel/README.md)
 
 ### Book（主线之书）
 

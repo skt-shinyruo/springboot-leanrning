@@ -27,6 +27,9 @@
 | `springboot-web-client` | WebClient/HTTP 客户端 | 🚧 | [modules/springboot-web-client.md](modules/springboot-web-client.md) |
 | `springboot-async-scheduling` | 异步与调度 | 🚧 | [modules/springboot-async-scheduling.md](modules/springboot-async-scheduling.md) |
 | `springboot-cache` | 缓存 | 🚧 | [modules/springboot-cache.md](modules/springboot-cache.md) |
+| `springboot-autoconfiguration` | Auto-Configuration（imports/条件/backoff） | 🚧 | [modules/springboot-autoconfiguration.md](modules/springboot-autoconfiguration.md) |
+| `springboot-logging` | LoggingSystem/日志级别/输出捕获 | 🚧 | [modules/springboot-logging.md](modules/springboot-logging.md) |
+| `springboot-observability` | Metrics/Observability（HTTP 指标） | 🚧 | [modules/springboot-observability.md](modules/springboot-observability.md) |
 | `spring-core-beans` | IoC 容器与 Bean | 🚧 | [modules/spring-core-beans.md](modules/spring-core-beans.md) |
 | `spring-core-aop` | AOP 与代理 | 🚧 | [modules/spring-core-aop.md](modules/spring-core-aop.md) |
 | `spring-core-aop-weaving` | AspectJ weaving（LTW/CTW） | 🚧 | [modules/spring-core-aop-weaving.md](modules/spring-core-aop-weaving.md) |
@@ -35,10 +38,12 @@
 | `spring-core-resources` | 资源抽象与加载 | 🚧 | [modules/spring-core-resources.md](modules/spring-core-resources.md) |
 | `spring-core-tx` | 事务 | 🚧 | [modules/spring-core-tx.md](modules/spring-core-tx.md) |
 | `spring-core-profiles` | Profiles/Environment | 🚧 | [modules/spring-core-profiles.md](modules/spring-core-profiles.md) |
+| `spring-core-spel` | SpEL（表达式解析/执行/边界） | 🚧 | [modules/spring-core-spel.md](modules/spring-core-spel.md) |
 
 ## 3. 快速链接
 
 - [学习路线图（主线 / 机制线）](learning-path.md)
+- [性能与并发（可复现实验范式）](../../docs/book/performance-and-concurrency.md)
 - [项目技术约定](../project.md)
 - [架构说明](arch.md)
 - [API 说明](api.md)

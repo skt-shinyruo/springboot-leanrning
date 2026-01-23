@@ -1,15 +1,14 @@
 package com.learning.springboot.bootbusinesscase.events;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class InMemoryAuditLog {
 
-    private final List<String> entries = new ArrayList<>();
+    private final CopyOnWriteArrayList<String> entries = new CopyOnWriteArrayList<>();
 
     public void add(String entry) {
         entries.add(entry);
@@ -20,7 +19,6 @@ public class InMemoryAuditLog {
     }
 
     public List<String> entries() {
-        return Collections.unmodifiableList(entries);
+        return List.copyOf(entries);
     }
 }
-

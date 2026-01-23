@@ -8,7 +8,7 @@
 
 - **Responsibility:** 用可运行示例与测试验证安全规则生效、端点访问控制。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-09
+- **Last Updated:** 2026-01-23
 
 ## Specifications
 
@@ -52,14 +52,18 @@
 - **Lab (Multi FilterChain):** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityMultiFilterChainOrderLabTest.java`
 - **Lab (Dev Profile):** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityDevProfileLabTest.java`
 - **Exercise:** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseSolutionTest.java`
+- **Lab（并发/性能：SecurityContext 并发隔离）：** `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part02_perf_concurrency/BootSecuritySecurityContextIsolationLabTest.java`
+- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 
 - `src/main/java`：入口类包名不变；Security 示例集中在 `com.learning.springboot.bootsecurity.part01_security`
-- `src/test/java`：`part00_guide`（Exercises）/ `part01_security`（Labs）
+- `src/test/java`：`part00_guide`（Exercises/Solutions）/ `part01_security`（Labs）/ `part02_perf_concurrency`（并发/性能 Labs）
 
 ## Change History
 
+- [202601222155_solutions_all_remaining_modules](../../history/2026-01/202601222155_solutions_all_remaining_modules/) - ✅ 已执行：补齐 Solutions/Labs 文档入口，并新增并发/性能可复现实验（SecurityContext 并发隔离）
 - [202601091802_modules_depth_align_to_beans](../../history/2026-01/202601091802_modules_depth_align_to_beans/) - ✅ 已执行：对标 spring-core-beans 深挖升级（Guide 机制主线 + 每章可断言坑点 + 默认 Lab 关键分支覆盖校验）
 - [202601092110_depth_align_v2_batch01_sec_jpa_events_client](../../history/2026-01/202601092110_depth_align_v2_batch01_sec_jpa_events_client/) - ✅ 已执行：batch01 深挖对齐 v2（补齐多 FilterChain 可断言 Lab + 章节坑点可回归 + 自测入口补齐）
 - [202601071034_all_modules_docs_ag_contract](../../history/2026-01/202601071034_all_modules_docs_ag_contract/) - ✅ 已执行：全模块 docs 章节结构整理（A–G 结构 + 对应 Lab/Test 入口块）；后续不再推荐 A–G 作为写作规范/闸门

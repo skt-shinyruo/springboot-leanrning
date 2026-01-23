@@ -72,6 +72,22 @@ mvn -q -pl :<artifactId> test
 - 它是“答案的回归验证”，不是让你直接复制粘贴答案
 - 推荐学习方式：先自己完成 Exercise，再用 Solution 对照差异
 
+### 运行方式（命令）
+
+- 只跑某个模块的所有 Solutions（推荐）：
+  - `mvn -q -pl :<artifactId> -Dtest=*ExerciseSolutionTest test`
+- 只跑某个模块的某一个 Solution 类（定位用）：
+  - `mvn -q -pl :<artifactId> -Dtest=<SomeExerciseSolutionTest> test`
+- 只跑某一个 Solution 的某个方法（最小回归/排障用）：
+  - `mvn -q -pl :<artifactId> -Dtest=<SomeExerciseSolutionTest>#<methodName> test`
+
+> 提示：你可以直接从每个模块的目录页（`docs/<topic>/<module>/README.md`）复制 `-pl :<artifactId>` 的命令，避免在多模块里误跑太多内容。
+
+### 命名约定（为什么这么命名）
+
+- Exercises：`*ExerciseTest.java`（通常带 `@Disabled`，需要你自己完成/启用）
+- Solutions：`*ExerciseSolutionTest.java`（默认参与 `mvn test` 回归，用于保证“答案与边界”不会悄悄退化）
+
 ---
 
 ## 常见坑

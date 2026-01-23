@@ -1,16 +1,21 @@
 package com.learning.springboot.bootwebclient.part01_web_client;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
-class RestClientGreetingClient {
+public class RestClientGreetingClient {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final RestClient restClient;
 
-    RestClientGreetingClient(String baseUrl, Duration readTimeout, String correlationId) {
+    public RestClientGreetingClient(String baseUrl, Duration readTimeout, String correlationId) {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(Duration.ofSeconds(2));
         requestFactory.setReadTimeout(readTimeout);
@@ -22,28 +27,28 @@ class RestClientGreetingClient {
                 .build();
     }
 
-    GreetingResponse getGreeting(String name) {
+    public GreetingResponse getGreeting(String name) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/api/greeting").queryParam("name", name).build())
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (request, response) -> {
-                    throw new DownstreamServiceException(response.getStatusCode().value(), "downstream_error");
+                    throw toDownstreamException(response.getStatusCode(), response.getBody());
                 })
                 .body(GreetingResponse.class);
     }
 
-    GreetingResponse createGreeting(String name) {
+    public GreetingResponse createGreeting(String name) {
         return restClient.post()
                 .uri("/api/greeting")
                 .body(new GreetingRequest(name))
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (request, response) -> {
-                    throw new DownstreamServiceException(response.getStatusCode().value(), "downstream_error");
+                    throw toDownstreamException(response.getStatusCode(), response.getBody());
                 })
                 .body(GreetingResponse.class);
     }
 
-    GreetingResponse getGreetingWithRetryOn5xx(String name, int maxAttempts) {
+    public GreetingResponse getGreetingWithRetryOn5xx(String name, int maxAttempts) {
         int attempts = 0;
         while (true) {
             attempts += 1;
@@ -61,6 +66,37 @@ class RestClientGreetingClient {
         }
     }
 
+    private static DownstreamServiceException toDownstreamException(HttpStatusCode statusCode, java.io.InputStream bodyStream) {
+        String body = readBody(bodyStream);
+        String message = parseMessage(body);
+        return new DownstreamServiceException(statusCode.value(), message, body);
+    }
+
+    private static String readBody(java.io.InputStream bodyStream) {
+        if (bodyStream == null) {
+            return "";
+        }
+        try {
+            return new String(bodyStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (Exception ignored) {
+            return "";
+        }
+    }
+
+    private static String parseMessage(String body) {
+        if (body == null || body.isBlank()) {
+            return "downstream_error";
+        }
+        try {
+            JsonNode root = OBJECT_MAPPER.readTree(body);
+            JsonNode message = root.get("message");
+            if (message != null && message.isTextual() && !message.asText().isBlank()) {
+                return message.asText();
+            }
+        } catch (Exception ignored) {
+        }
+        return "downstream_error";
+    }
+
     private record GreetingRequest(String name) {}
 }
-

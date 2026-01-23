@@ -1,0 +1,46 @@
+# springboot-logging
+
+## Purpose
+
+学习 Spring Boot 日志系统的初始化链路（LoggingSystem）、日志级别与 category 决策、以及“为什么我的 debug 不输出”的常见坑，并提供可断言的实验闭环。
+
+## Module Overview
+
+- **Responsibility:** 用测试固定 logging 行为（级别、category、输出捕获），并把关键断点入口收敛为 Debugger Pack。
+- **Status:** 🚧In Development
+- **Last Updated:** 2026-01-22
+
+## Start Here（路线图 / 断点地图 / 第一个可运行入口）
+
+- 路线图：`helloagents/wiki/learning-path.md`
+- Docs Start Here：`docs/logging/springboot-logging/README.md`
+- 调用链（LoggingSystem 初始化与级别决策）：`docs/logging/springboot-logging/part-00-guide/200-01-logging-call-chain.md`
+- 断点地图：`docs/logging/springboot-logging/part-00-guide/200-02-breakpoint-map.md`
+- 第一个可运行入口（3 分钟开跑）：
+  - `mvn -q -pl :springboot-logging -Dtest=BootLoggingLabTest test`
+  - 对应测试类：`spring-boot-modules/springboot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java`
+
+## Specifications
+
+### Requirement: 日志行为可被测试固化
+**Module:** springboot-logging
+覆盖：日志级别、category、不同 logger 的输出差异，避免用“看控制台”作为学习证据。
+
+#### Scenario: Debug 输出可被断言
+- 使用 `OutputCaptureExtension` 固定 DEBUG 级别输出是否出现
+
+## Docs & 复现入口
+
+- **Docs Index:** `docs/logging/springboot-logging/README.md`
+- **Deep Dive Guide:** `docs/logging/springboot-logging/part-00-guide/200-00-deep-dive-guide.md`
+- **Call Chain:** `docs/logging/springboot-logging/part-00-guide/200-01-logging-call-chain.md`
+- **Breakpoint Map:** `docs/logging/springboot-logging/part-00-guide/200-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `docs/logging/springboot-logging/part-00-guide/200-04-branch-decision-matrix.md`
+- **Playbook:** `docs/logging/springboot-logging/appendix/202-90-common-pitfalls.md`
+- **Self-check:** `docs/logging/springboot-logging/appendix/203-99-self-check.md`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingExerciseSolutionTest.java`
+
+## Change History
+
+- [202601221758_tutorials_style_deepen_all](../../history/2026-01/202601221758_tutorials_style_deepen_all/) - ✅ 已执行：新增 `springboot-logging` 模块（logging system/级别/输出捕获）+ docs 骨架 + Labs；并纳入 docs/SUMMARY 与 labs-index
+- [202601222034_solutions_perf_concurrency_batch01](../../history/2026-01/202601222034_solutions_perf_concurrency_batch01/) - ✅ 已执行：新增 Exercises 对应 Solution（MDC + Logback ListAppender 固化断言），默认参与回归验证

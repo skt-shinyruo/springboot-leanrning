@@ -8,7 +8,7 @@
 
 - **Responsibility:** 用最小示例与测试验证异步/调度行为与常见误区。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-09
+- **Last Updated:** 2026-01-22
 
 ## Specifications
 
@@ -51,11 +51,14 @@
 - **Lab:** `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java`
 - **Lab (Scheduling):** `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingSchedulingLabTest.java`
 - **Exercise:** `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseTest.java`
+- **Solution（Exercises 对应答案回归）：** `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseSolutionTest.java`
+- **Lab（并发/性能：线程池饱和/拒绝策略）：** `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java`
+- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 
 - `src/main/java`：入口类包名不变；async/scheduling 示例集中在 `com.learning.springboot.bootasyncscheduling.part01_async_scheduling`
-- `src/test/java`：`part00_guide`（Exercises）/ `part01_async_scheduling`（Labs）
+- `src/test/java`：`part00_guide`（Exercises/Solutions）/ `part01_async_scheduling`（Labs）/ `part02_perf_concurrency`（并发/性能 Labs）/ `testsupport`（稳定等待与断言工具）
 
 ## Change History
 
@@ -64,3 +67,4 @@
 - [202601062218_all_modules_docs_bookify](../../history/2026-01/202601062218_all_modules_docs_bookify/) - ✅ 已执行：以 docs/<topic>/<module>/README.md 为 SSOT，对全部章节 upsert 统一尾部区块（### 对应 Lab/Test + 上一章｜目录｜下一章）
 - [202601041358_springboot-part-structure-sync](../../history/2026-01/202601041358_springboot-part-structure-sync/) - ✅ 已执行：对齐 docs Part 与 src/main/src/test 分包，并修复 README/docs 引用
 - [202601062024_springboot_modules_teaching_rollout](../../history/2026-01/202601062024_springboot_modules_teaching_rollout/) - ✅ 已执行：docs/README 章节链接 SSOT 化 + guide/appendix 可跑入口块补齐 + 补齐 min-labs=2 + 自检闸门覆盖
+- [202601222034_solutions_perf_concurrency_batch01](../../history/2026-01/202601222034_solutions_perf_concurrency_batch01/) - ✅ 已执行：补齐 Exercises 对应 Solutions（默认参与回归）+ 新增并发/性能可复现 Lab（线程池饱和/拒绝策略）+ 提供稳定等待工具 `Waiter`

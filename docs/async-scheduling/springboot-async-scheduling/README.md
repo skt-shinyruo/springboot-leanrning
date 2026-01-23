@@ -23,6 +23,8 @@
 - 自检清单：[125-99-self-check.md](appendix/125-99-self-check.md)
 - 可跑入口（Book Matrix）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
 - 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
+- 并发/性能专题（可复现实验范式）：[performance-and-concurrency.md](../../book/performance-and-concurrency.md)
+- 可跑入口（线程池饱和/拒绝策略）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
 
 ## 排坑与自检
 

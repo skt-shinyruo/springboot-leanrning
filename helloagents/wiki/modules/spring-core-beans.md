@@ -23,7 +23,7 @@
   - 对应测试类：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 - **Highlights:** 在补齐类型转换/泛型匹配章节与 Labs 闭环的基础上，进一步统一 docs 的“上一章｜目录｜下一章”导航与“复现入口（可运行）”块；新增 JSR-330 `@Inject`/`Provider<T>` 对照 Lab，并增强 testsupport dumper 让排障输出更结构化；补齐 3 类易翻车边界机制 Labs（编程式注册差异 / allowRawInjectionDespiteWrapping / prototype 销毁语义），并将入口落位到 docs/04、docs/05、docs/16、docs/25；新增 Part 05（AOT/RuntimeHints/XML/容器外对象/SpEL/自定义 Qualifier）与对应 Labs，并新增面试复述模板与生产排障清单用于体系化复盘；同时为 Exercises 补齐对应 Solution（默认参与回归），并在 docs/README 收敛“章节↔Lab↔Exercise↔Solution”对照表与运行建议，补强 ImportSelector 等新手高频卡点的“源码主线/断点/观察点”；进一步补齐 Spring Framework `spring-beans` 体系的 5 组“真实世界常见但容易缺失”的机制闭环（docs 46–50：XML namespace 扩展 / Properties+Groovy Reader / replaced-method 方法注入 / 内置 FactoryBean / PropertyEditor+值解析），并新增对应 Labs（默认参与回归）；补齐 Spring Framework `BeanFactory API` 与 `Environment Abstraction` 两类常用但容易“只会用不会解释”的主题：新增 docs/38–39 与对应可断言 Labs（默认参与回归）；新增 spring-beans Public API 索引（docs Appendix 95/96）用于“按类型检索/可审计”，并补齐 aot.factories/AotServices 与 ServiceLoader*FactoryBean 的闭环，新增 Explore/Debug 用例（docs Appendix 97，显式开关启用，不影响默认回归）；并补齐 `org.springframework.beans.support`（ArgumentConvertingMethodInvoker/ResourceEditorRegistrar/PropertyComparator/PagedListHolder/SortDefinition）闭环，新增可运行 Lab，并将 Appendix 96 Gap 归零。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-18
+- **Last Updated:** 2026-01-23
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
@@ -35,6 +35,9 @@
   - 对应测试类：
     - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansIocBranchMatrixLabTest.java`
     - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansInternalsBranchMatrixLabTest.java`
+- **Solutions（Exercises 对应答案回归）：** `mvn -q -pl :spring-core-beans -Dtest=*ExerciseSolutionTest test`
+- **Lab（并发/性能：同一 BeanFactory 并发 getBean）：** `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansConcurrentGetBeanLabTest test`
+- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 
@@ -47,6 +50,7 @@
 - `docs/beans/spring-core-beans/part-05-aot-and-real-world/**` ⇔ `src/test/java/.../part05_aot_and_real_world/**`
 - `docs/beans/spring-core-beans/appendix/**` ⇔ `src/test/java/.../appendix/**`
 - 跨 Part 的测试支撑：`src/test/java/.../testsupport/**`
+- 并发/性能 Labs（可复现实验范式）：`src/test/java/.../part02_perf_concurrency/**`
 
 约束（必须遵守）：
 
@@ -131,6 +135,7 @@
 
 ## Change History
 
+- [202601222155_solutions_all_remaining_modules](../../history/2026-01/202601222155_solutions_all_remaining_modules/) - ✅ 已执行：补齐 Solutions/Labs 文档入口，并新增并发/性能可复现实验（同一 BeanFactory 并发 getBean）+ 补齐 Exercises 对应 Solution 缺口（part04）
 - [202601071034_all_modules_docs_ag_contract](../../history/2026-01/202601071034_all_modules_docs_ag_contract/) - ✅ 已执行：全模块 docs 章节结构整理（A–G 结构 + 对应 Lab/Test 入口块）；后续不再推荐 A–G 作为写作规范/闸门
 - [202601062218_all_modules_docs_bookify](../../history/2026-01/202601062218_all_modules_docs_bookify/) - ✅ 已执行：以 docs/<topic>/<module>/README.md 为 SSOT，对全部章节 upsert 统一尾部区块（### 对应 Lab/Test + 上一章｜目录｜下一章）
 - [202601061556_spring_core_modules_teaching_rollout](../../history/2026-01/202601061556_spring_core_modules_teaching_rollout/) - ✅ 已执行：清理 docs 正文残留的 `docs/NN` 缩写引用，统一替换为“章节名 + 真实相对路径”的 Markdown 链接，并通过断链检查与教学覆盖检查

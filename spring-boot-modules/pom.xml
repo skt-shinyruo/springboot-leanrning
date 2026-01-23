@@ -18,12 +18,15 @@
 
     <modules>
         <module>springboot-basics</module>
+        <module>springboot-autoconfiguration</module>
         <module>springboot-web-mvc</module>
         <module>springboot-data-jpa</module>
         <module>springboot-actuator</module>
         <module>springboot-testing</module>
         <module>springboot-business-case</module>
         <module>springboot-security</module>
+        <module>springboot-observability</module>
+        <module>springboot-logging</module>
         <module>springboot-web-client</module>
         <module>springboot-async-scheduling</module>
         <module>springboot-cache</module>
