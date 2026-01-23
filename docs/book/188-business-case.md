@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 187 章：99 - Self Check（springboot-testing）](../testing/springboot-testing/appendix/187-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 189 章：主线时间线：Business Case（综合案例）](../business-case/springboot-business-case/part-00-guide/189-03-mainline-timeline.md)
+上一章：[第 187 章：99 - Self Check（spring-boot-testing）](../testing/spring-boot-testing/appendix/187-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 189 章：主线时间线：Business Case（综合案例）](../business-case/spring-boot-business-case/part-00-guide/189-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 如果前面的章节让你“分别理解了机制”，这一章要解决的是：**把机制组合起来，形成一个真实的业务闭环，并且你能在红测/异常出现时定位到是哪一层机制出了问题**。
@@ -52,13 +52,13 @@
 
 ### 进阶入口（排障/关键分支）
 
-- 断点地图：[`docs/business-case/springboot-business-case/part-00-guide/190-02-breakpoint-map.md`](../business-case/springboot-business-case/part-00-guide/190-02-breakpoint-map.md)
-- 关键分支矩阵：[`docs/business-case/springboot-business-case/part-00-guide/190-04-branch-decision-matrix.md`](../business-case/springboot-business-case/part-00-guide/190-04-branch-decision-matrix.md)
-- 排障 playbook：[`docs/business-case/springboot-business-case/appendix/192-90-common-pitfalls.md`](../business-case/springboot-business-case/appendix/192-90-common-pitfalls.md)
-- 自检清单：[`docs/business-case/springboot-business-case/appendix/193-99-self-check.md`](../business-case/springboot-business-case/appendix/193-99-self-check.md)
+- 断点地图：[`docs/business-case/spring-boot-business-case/part-00-guide/190-02-breakpoint-map.md`](../business-case/spring-boot-business-case/part-00-guide/190-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/business-case/spring-boot-business-case/part-00-guide/190-04-branch-decision-matrix.md`](../business-case/spring-boot-business-case/part-00-guide/190-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/business-case/spring-boot-business-case/appendix/192-90-common-pitfalls.md`](../business-case/spring-boot-business-case/appendix/192-90-common-pitfalls.md)
+- 自检清单：[`docs/business-case/spring-boot-business-case/appendix/193-99-self-check.md`](../business-case/spring-boot-business-case/appendix/193-99-self-check.md)
 
-- 模块目录页：[`docs/business-case/springboot-business-case/README.md`](../business-case/springboot-business-case/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/business-case/springboot-business-case/part-00-guide/03-mainline-timeline.md`](../business-case/springboot-business-case/part-00-guide/189-03-mainline-timeline.md)
+- 模块目录页：[`docs/business-case/spring-boot-business-case/README.md`](../business-case/spring-boot-business-case/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/business-case/spring-boot-business-case/part-00-guide/03-mainline-timeline.md`](../business-case/spring-boot-business-case/part-00-guide/189-03-mainline-timeline.md)
 
 推荐先跑的最小闭环：
 

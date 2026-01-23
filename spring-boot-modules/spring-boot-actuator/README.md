@@ -1,4 +1,4 @@
-# springboot-actuator
+# spring-boot-actuator
 
 本模块用于学习 Spring Boot Actuator 的基础用法：暴露常用端点（例如 `/actuator/health`），以及编写一个自定义 `HealthIndicator`。
 
@@ -10,7 +10,7 @@
 
 ## 前置知识
 
-- 建议先完成 `springboot-basics`（理解配置加载与 profile 切换）
+- 建议先完成 `spring-boot-basics`（理解配置加载与 profile 切换）
 - 了解 HTTP/JSON 的基本概念
 
 ## 关键命令
@@ -39,7 +39,7 @@ mvn -pl :spring-boot-actuator test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](../../docs/actuator/springboot-actuator/README.md)）
+（docs 目录页：[`docs/README.md`](../../docs/actuator/spring-boot-actuator/README.md)）
 
 建议按“端点现象 → 配置开关 → 自定义指标 → 测试验证”的顺序学习：
 

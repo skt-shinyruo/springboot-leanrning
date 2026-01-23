@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 1 章：Start Here（如何运行、如何读、如何调试）](001-start-here.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）](../basics/springboot-basics/part-00-guide/003-03-mainline-timeline.md)
+上一章：[第 1 章：Start Here（如何运行、如何读、如何调试）](001-start-here.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）](../basics/spring-boot-basics/part-00-guide/003-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题很朴素：**一个 Spring Boot 应用启动时，“配置”到底从哪里来、最终值是什么、它怎么影响后续的 Bean 装配与运行期行为**。
@@ -52,20 +52,20 @@
 
 ### 进阶入口（排障/关键分支）
 
-- 断点地图：[`docs/basics/springboot-basics/part-00-guide/004-02-breakpoint-map.md`](../basics/springboot-basics/part-00-guide/004-02-breakpoint-map.md)
-- 关键分支矩阵：[`docs/basics/springboot-basics/part-00-guide/004-04-branch-decision-matrix.md`](../basics/springboot-basics/part-00-guide/004-04-branch-decision-matrix.md)
-- 排障 playbook：[`docs/basics/springboot-basics/appendix/007-90-common-pitfalls.md`](../basics/springboot-basics/appendix/007-90-common-pitfalls.md)
-- 自检清单：[`docs/basics/springboot-basics/appendix/008-99-self-check.md`](../basics/springboot-basics/appendix/008-99-self-check.md)
+- 断点地图：[`docs/basics/spring-boot-basics/part-00-guide/004-02-breakpoint-map.md`](../basics/spring-boot-basics/part-00-guide/004-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/basics/spring-boot-basics/part-00-guide/004-04-branch-decision-matrix.md`](../basics/spring-boot-basics/part-00-guide/004-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/basics/spring-boot-basics/appendix/007-90-common-pitfalls.md`](../basics/spring-boot-basics/appendix/007-90-common-pitfalls.md)
+- 自检清单：[`docs/basics/spring-boot-basics/appendix/008-99-self-check.md`](../basics/spring-boot-basics/appendix/008-99-self-check.md)
 
 这章在书里给你“主线”，细节与证据链建议下沉到模块文档：
 
-- 模块目录页（建议从这里顺读）：[`docs/basics/springboot-basics/README.md`](../basics/springboot-basics/README.md)
+- 模块目录页（建议从这里顺读）：[`docs/basics/spring-boot-basics/README.md`](../basics/spring-boot-basics/README.md)
 
 如果你想把“配置主线”进一步拆细成可回归的阅读顺序（推荐顺读）：
 
-1. 配置从哪里来、谁覆盖谁：[`配置源与 Profiles`](../basics/springboot-basics/part-01-boot-basics/005-01-property-sources-and-profiles.md)
-2. 配置如何绑定成对象：[`配置绑定（@ConfigurationProperties）`](../basics/springboot-basics/part-01-boot-basics/006-02-configuration-properties-binding.md)
-3. 最常见的坑一次性清掉：[`常见坑`](../basics/springboot-basics/appendix/007-90-common-pitfalls.md) / [`自检`](../basics/springboot-basics/appendix/008-99-self-check.md)
+1. 配置从哪里来、谁覆盖谁：[`配置源与 Profiles`](../basics/spring-boot-basics/part-01-boot-basics/005-01-property-sources-and-profiles.md)
+2. 配置如何绑定成对象：[`配置绑定（@ConfigurationProperties）`](../basics/spring-boot-basics/part-01-boot-basics/006-02-configuration-properties-binding.md)
+3. 最常见的坑一次性清掉：[`常见坑`](../basics/spring-boot-basics/appendix/007-90-common-pitfalls.md) / [`自检`](../basics/spring-boot-basics/appendix/008-99-self-check.md)
 
 如果你只跑一个最小闭环，优先从 Lab 入手：
 

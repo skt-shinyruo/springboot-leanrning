@@ -64,13 +64,13 @@ mvn -q test
 
 开启练习的方法：打开对应的 `*ExerciseTest`，移除/注释 `@Disabled`，根据测试提示完成实现（或改造），再运行模块测试验证。
 
-- 只构建/测试某个模块（示例：`springboot-web-mvc`）：
+- 只构建/测试某个模块（示例：`spring-boot-web-mvc`）：
 
 ```bash
 mvn -q -pl :spring-boot-web-mvc test
 ```
 
-- 运行某个模块（示例：`springboot-basics`）：
+- 运行某个模块（示例：`spring-boot-basics`）：
 
 ```bash
 mvn -pl :spring-boot-basics spring-boot:run
@@ -100,12 +100,12 @@ mvn -pl :spring-boot-basics spring-boot:run
 
 | 顺序 | 模块 | 建议耗时 | 你应该做到（能解释/能改写/能调试） |
 | --- | --- | --- | --- |
-| 1 | [`springboot-basics`](docs/basics/springboot-basics/README.md) | 0.5–1h | 配置绑定 + Profile；新增配置项并验证；能解释配置优先级 |
-| 2 | [`springboot-web-mvc`](docs/web-mvc/springboot-web-mvc/README.md) | 1–2h | Controller/校验/错误处理；扩展请求字段；能定位 400 的字段错误 |
-| 3 | [`springboot-testing`](docs/testing/springboot-testing/README.md) | 1–2h | slice vs full context；补一条测试；能解释为什么 `@WebMvcTest` 更快 |
-| 4 | [`springboot-data-jpa`](docs/data-jpa/springboot-data-jpa/README.md) | 2–3h | persistence context/flush/脏检查；加查询；能解释“一级缓存假象” |
-| 5 | [`springboot-actuator`](docs/actuator/springboot-actuator/README.md) | 0.5–1h | 暴露端点 + 自定义 health；加开关；能解释 exposure 与安全边界 |
-| 6 | [`springboot-business-case`](docs/business-case/springboot-business-case/README.md) | 2–4h | 串联 Web/JPA/Tx/AOP/Events；改一条链路；能定位代理/事务边界问题 |
+| 1 | [`spring-boot-basics`](docs/basics/spring-boot-basics/README.md) | 0.5–1h | 配置绑定 + Profile；新增配置项并验证；能解释配置优先级 |
+| 2 | [`spring-boot-web-mvc`](docs/web-mvc/spring-boot-web-mvc/README.md) | 1–2h | Controller/校验/错误处理；扩展请求字段；能定位 400 的字段错误 |
+| 3 | [`spring-boot-testing`](docs/testing/spring-boot-testing/README.md) | 1–2h | slice vs full context；补一条测试；能解释为什么 `@WebMvcTest` 更快 |
+| 4 | [`spring-boot-data-jpa`](docs/data-jpa/spring-boot-data-jpa/README.md) | 2–3h | persistence context/flush/脏检查；加查询；能解释“一级缓存假象” |
+| 5 | [`spring-boot-actuator`](docs/actuator/spring-boot-actuator/README.md) | 0.5–1h | 暴露端点 + 自定义 health；加开关；能解释 exposure 与安全边界 |
+| 6 | [`spring-boot-business-case`](docs/business-case/spring-boot-business-case/README.md) | 2–4h | 串联 Web/JPA/Tx/AOP/Events；改一条链路；能定位代理/事务边界问题 |
 
 ### 机制线（把底层原理补齐）
 
@@ -203,30 +203,34 @@ mvn -pl :spring-boot-basics spring-boot:run
 
 | 模块 | 主题 | 入口说明 |
 |---|---|---|
-| `springboot-basics` | 启动、配置属性、Profiles | [Docs TOC](docs/basics/springboot-basics/README.md) |
-| `springboot-web-mvc` | REST Controller、Validation、错误处理 | [Docs TOC](docs/web-mvc/springboot-web-mvc/README.md) |
-| `springboot-data-jpa` | Spring Data JPA + H2、Entity、Repository、CRUD | [Docs TOC](docs/data-jpa/springboot-data-jpa/README.md) |
-| `springboot-actuator` | Actuator 端点 + 自定义健康检查 | [Docs TOC](docs/actuator/springboot-actuator/README.md) |
-| `springboot-testing` | 测试基础：`@SpringBootTest`、`@WebMvcTest` 等 | [Docs TOC](docs/testing/springboot-testing/README.md) |
-| `springboot-business-case` | Capstone：MVC + Validation + JPA + Tx + Events + AOP | [Docs TOC](docs/business-case/springboot-business-case/README.md) |
-| `springboot-security` | Security：认证/授权/CSRF/method security/JWT | [Docs TOC](docs/security/springboot-security/README.md) |
-| `springboot-web-client` | Web Client：RestClient vs WebClient、超时/重试/错误处理 | [Docs TOC](docs/web-client/springboot-web-client/README.md) |
-| `springboot-async-scheduling` | 异步与调度：`@Async`、线程池、`@Scheduled` | [Docs TOC](docs/async-scheduling/springboot-async-scheduling/README.md) |
-| `springboot-cache` | 缓存：Spring Cache + Caffeine（key/evict/过期） | [Docs TOC](docs/cache/springboot-cache/README.md) |
+| `spring-boot-basics` | 启动、配置属性、Profiles | [Docs TOC](docs/basics/spring-boot-basics/README.md) |
+| `spring-boot-web-mvc` | REST Controller、Validation、错误处理 | [Docs TOC](docs/web-mvc/spring-boot-web-mvc/README.md) |
+| `spring-boot-security` | Security：认证/授权/CSRF/method security/JWT | [Docs TOC](docs/security/spring-boot-security/README.md) |
+| `spring-boot-data-jpa` | Spring Data JPA + H2、Entity、Repository、CRUD | [Docs TOC](docs/data-jpa/spring-boot-data-jpa/README.md) |
+| `spring-boot-cache` | 缓存：Spring Cache + Caffeine（key/evict/过期） | [Docs TOC](docs/cache/spring-boot-cache/README.md) |
+| `spring-boot-async-scheduling` | 异步与调度：`@Async`、线程池、`@Scheduled` | [Docs TOC](docs/async-scheduling/spring-boot-async-scheduling/README.md) |
+| `spring-boot-actuator` | Actuator 端点 + 自定义健康检查 | [Docs TOC](docs/actuator/spring-boot-actuator/README.md) |
+| `spring-boot-web-client` | Web Client：RestClient vs WebClient、超时/重试/错误处理 | [Docs TOC](docs/web-client/spring-boot-web-client/README.md) |
+| `spring-boot-testing` | 测试基础：`@SpringBootTest`、`@WebMvcTest` 等 | [Docs TOC](docs/testing/spring-boot-testing/README.md) |
+| `spring-boot-business-case` | Capstone：MVC + Validation + JPA + Tx + Events + AOP | [Docs TOC](docs/business-case/spring-boot-business-case/README.md) |
+| `spring-boot-autoconfiguration` | 自动装配：`@AutoConfiguration`/`@ImportAutoConfiguration`/条件装配 | [Docs TOC](docs/autoconfig/spring-boot-autoconfiguration/README.md) |
+| `spring-boot-logging` | 日志：logback 配置、MDC、日志级别与输出 | [Docs TOC](docs/logging/spring-boot-logging/README.md) |
+| `spring-boot-observability` | 可观测性：micrometer/observation/trace/metrics | [Docs TOC](docs/observability/spring-boot-observability/README.md) |
 | `spring-core-beans` | Spring Core：Bean、DI、`@Qualifier`、Scope、生命周期 | [Docs TOC](docs/beans/spring-core-beans/README.md) |
 | `spring-core-aop` | Spring AOP：代理、Advice、Pointcut、自调用陷阱 | [Docs TOC](docs/aop/spring-core-aop/README.md) |
 | `spring-core-aop-weaving` | AspectJ weaving：LTW/CTW、更多 join point（call/get/set/constructor） | [Docs TOC](docs/aop/spring-core-aop-weaving/README.md) |
-| `spring-core-events` | Spring 事件：发布事件、`@EventListener`、默认同步 | [Docs TOC](docs/events/spring-core-events/README.md) |
-| `spring-core-validation` | 校验：Bean Validation + Spring 集成 | [Docs TOC](docs/validation/spring-core-validation/README.md) |
-| `spring-core-resources` | 资源：`Resource` 抽象 + classpath pattern | [Docs TOC](docs/resources/spring-core-resources/README.md) |
 | `spring-core-tx` | 事务：`@Transactional` 提交/回滚（JDBC + H2） | [Docs TOC](docs/tx/spring-core-tx/README.md) |
+| `spring-core-events` | Spring 事件：发布事件、`@EventListener`、默认同步 | [Docs TOC](docs/events/spring-core-events/README.md) |
+| `spring-core-resources` | 资源：`Resource` 抽象 + classpath pattern | [Docs TOC](docs/resources/spring-core-resources/README.md) |
 | `spring-core-profiles` | Profiles/条件装配：`@Profile` + `@ConditionalOnProperty` | [Docs TOC](docs/profiles/spring-core-profiles/README.md) |
+| `spring-core-validation` | 校验：Bean Validation + Spring 集成 | [Docs TOC](docs/validation/spring-core-validation/README.md) |
+| `spring-core-spel` | SpEL：表达式解析/求值、类型转换、并发安全 | [Docs TOC](docs/spel/spring-core-spel/README.md) |
 
-> 端口说明：`springboot-web-mvc` 默认 `8081`，`springboot-actuator` 默认 `8082`，`springboot-testing` 默认 `8083`，`springboot-business-case` 默认 `8084`，`springboot-security` 默认 `8085`。非 Web 模块不监听端口。
+> 端口说明：`spring-boot-web-mvc` 默认 `8081`，`spring-boot-actuator` 默认 `8082`，`spring-boot-testing` 默认 `8083`，`spring-boot-business-case` 默认 `8084`，`spring-boot-security` 默认 `8085`。非 Web 模块不监听端口。
 
 ## 学习建议
 
-- 先从 `springboot-basics` 开始：理解应用启动、配置加载、Profile 切换。
+- 先从 `spring-boot-basics` 开始：理解应用启动、配置加载、Profile 切换。
 - 每个模块都尽量保持“可运行、可观察、有测试”，按模块 README 的步骤操作即可。
 
 ## 跨模块概念地图（把点连成网）
@@ -240,13 +244,13 @@ mvn -pl :spring-boot-basics spring-boot:run
 - **自调用（self-invocation）是代理世界第一大坑**：同一个类里用 `this.xxx()` 调用会绕过代理，因此 AOP/Tx 都可能“不生效”  
   - 对照：[AOP 自调用陷阱](docs/aop/spring-core-aop/part-01-proxy-fundamentals/032-03-self-invocation.md)、[Tx 常见坑清单](docs/tx/spring-core-tx/appendix/060-90-common-pitfalls.md)
 - **事务边界决定持久化行为**：JPA 的 flush / dirty checking 不是“魔法”，它强依赖事务与 persistence context  
-  - 对照：[JPA Persistence Context](docs/data-jpa/springboot-data-jpa/part-01-data-jpa/098-02-persistence-context.md)、[事务边界](docs/tx/spring-core-tx/part-01-transaction-basics/054-01-transaction-boundary.md)
+  - 对照：[JPA Persistence Context](docs/data-jpa/spring-boot-data-jpa/part-01-data-jpa/098-02-persistence-context.md)、[事务边界](docs/tx/spring-core-tx/part-01-transaction-basics/054-01-transaction-boundary.md)
 - **事件（Events）与事务（Tx）的时机关系**：同步事件 vs after-commit 事件（`@TransactionalEventListener`）能解释“回滚了但监听器为什么执行了/没执行”  
-  - 从现象入手：[spring-core-events](docs/events/spring-core-events/README.md)、[`@TransactionalEventListener`（after-commit）](docs/events/spring-core-events/part-02-async-and-transactional/135-07-transactional-event-listener.md)、[springboot-business-case](docs/business-case/springboot-business-case/README.md)
+  - 从现象入手：[spring-core-events](docs/events/spring-core-events/README.md)、[`@TransactionalEventListener`（after-commit）](docs/events/spring-core-events/part-02-async-and-transactional/135-07-transactional-event-listener.md)、[spring-boot-business-case](docs/business-case/spring-boot-business-case/README.md)
 - **资源（Resources）是很多能力的地基**：配置文件、classpath 扫描、jar/本地差异，最终都会回到 `Resource` 抽象  
   - 对照：[Resource 抽象](docs/resources/spring-core-resources/part-01-resource-abstraction/141-01-resource-abstraction.md)、[jar vs filesystem](docs/resources/spring-core-resources/part-01-resource-abstraction/146-06-jar-vs-filesystem.md)
 - **测试切片 vs 全量上下文**：`@DataJpaTest` / `@WebMvcTest` 用来快速验证机制，`@SpringBootTest` 更接近集成链路  
-  - 对照：[springboot-testing](docs/testing/springboot-testing/README.md)、[`@DataJpaTest` 切片](docs/data-jpa/springboot-data-jpa/part-01-data-jpa/102-06-datajpatest-slice.md)
+  - 对照：[spring-boot-testing](docs/testing/spring-boot-testing/README.md)、[`@DataJpaTest` 切片](docs/data-jpa/spring-boot-data-jpa/part-01-data-jpa/102-06-datajpatest-slice.md)
 
 ## 常见问题
 

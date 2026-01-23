@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 8 章：99 - Self Check（springboot-basics）](../basics/springboot-basics/appendix/008-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 10 章：主线时间线：Spring Core Beans（IoC 容器）](../beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md)
+上一章：[第 8 章：99 - Self Check（spring-boot-basics）](../basics/spring-boot-basics/appendix/008-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 10 章：主线时间线：Spring Core Beans（IoC 容器）](../beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 如果你把 Spring Boot 当成“启动一个应用”，那 **IoC 容器**就是“把应用装配成一个可运行系统”的核心：它决定了 Bean 从哪里来、什么时候创建、怎么注入、有哪些扩展点、为什么会出现各种“看起来很诡异”的边界行为。

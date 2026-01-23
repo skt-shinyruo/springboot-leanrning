@@ -9,19 +9,19 @@
 <!-- BEGIN AUTO TOPICS PAGE -->
 ### Spring Boot（应用层）
 
-- 基础入门：[`springboot-basics`](../basics/springboot-basics/README.md)
-- Web MVC：[`springboot-web-mvc`](../web-mvc/springboot-web-mvc/README.md)
-- Security：[`springboot-security`](../security/springboot-security/README.md)
-- Data JPA：[`springboot-data-jpa`](../data-jpa/springboot-data-jpa/README.md)
-- Cache：[`springboot-cache`](../cache/springboot-cache/README.md)
-- Async & Scheduling：[`springboot-async-scheduling`](../async-scheduling/springboot-async-scheduling/README.md)
-- Actuator：[`springboot-actuator`](../actuator/springboot-actuator/README.md)
-- Web Client：[`springboot-web-client`](../web-client/springboot-web-client/README.md)
-- Testing：[`springboot-testing`](../testing/springboot-testing/README.md)
-- Business Case：[`springboot-business-case`](../business-case/springboot-business-case/README.md)
-- AutoConfiguration：[`springboot-autoconfiguration`](../autoconfig/springboot-autoconfiguration/README.md)
-- Logging：[`springboot-logging`](../logging/springboot-logging/README.md)
-- Observability：[`springboot-observability`](../observability/springboot-observability/README.md)
+- 基础入门：[`spring-boot-basics`](../basics/spring-boot-basics/README.md)
+- Web MVC：[`spring-boot-web-mvc`](../web-mvc/spring-boot-web-mvc/README.md)
+- Security：[`spring-boot-security`](../security/spring-boot-security/README.md)
+- Data JPA：[`spring-boot-data-jpa`](../data-jpa/spring-boot-data-jpa/README.md)
+- Cache：[`spring-boot-cache`](../cache/spring-boot-cache/README.md)
+- Async & Scheduling：[`spring-boot-async-scheduling`](../async-scheduling/spring-boot-async-scheduling/README.md)
+- Actuator：[`spring-boot-actuator`](../actuator/spring-boot-actuator/README.md)
+- Web Client：[`spring-boot-web-client`](../web-client/spring-boot-web-client/README.md)
+- Testing：[`spring-boot-testing`](../testing/spring-boot-testing/README.md)
+- Business Case：[`spring-boot-business-case`](../business-case/spring-boot-business-case/README.md)
+- AutoConfiguration：[`spring-boot-autoconfiguration`](../autoconfig/spring-boot-autoconfiguration/README.md)
+- Logging：[`spring-boot-logging`](../logging/spring-boot-logging/README.md)
+- Observability：[`spring-boot-observability`](../observability/spring-boot-observability/README.md)
 
 ### Spring Core（底层机制）
 

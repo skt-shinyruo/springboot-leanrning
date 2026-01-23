@@ -1,4 +1,4 @@
-# springboot-web-mvc
+# spring-boot-web-mvc
 
 本模块用于学习 Spring MVC 的常见入门点，并覆盖两条主线：
 
@@ -17,7 +17,7 @@
 
 ## 前置知识
 
-- 建议先完成 `springboot-basics`（至少理解配置加载与启动过程）
+- 建议先完成 `spring-boot-basics`（至少理解配置加载与启动过程）
 - 了解 HTTP/JSON 的基本概念（状态码、请求体、响应体）
 - （可选）了解 Bean Validation 的基本注解（`@NotBlank`、`@Email`）
 
@@ -74,16 +74,16 @@ mvn -pl :spring-boot-web-mvc test
 
 建议按 “入口 → REST 主线 → 页面主线 → 常见坑/自测题” 的顺序学习：
 
-（docs 目录页：[`docs/README.md`](../../docs/web-mvc/springboot-web-mvc/README.md)）
+（docs 目录页：[`docs/README.md`](../../docs/web-mvc/spring-boot-web-mvc/README.md)）
 
-1. [校验与错误响应形状](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/01-validation-and-error-shaping.md)
-2. [统一异常处理与坏输入](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/02-exception-handling.md)
-3. [请求绑定与 Converter/Formatter](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/03-binding-and-converters.md)
-4. [Interceptor vs Filter：入口与顺序](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/04-interceptor-and-filter-ordering.md)
-5. [传统 MVC 页面渲染入门（Thymeleaf/ViewResolver）](../../docs/web-mvc/springboot-web-mvc/part-02-view-mvc/01-thymeleaf-and-view-resolver.md)
-6. [表单提交闭环（绑定/校验/回显/PRG）](../../docs/web-mvc/springboot-web-mvc/part-02-view-mvc/02-form-binding-validation-prg.md)
-7. [错误页与内容协商（Accept：HTML vs JSON）](../../docs/web-mvc/springboot-web-mvc/part-02-view-mvc/03-error-pages-and-content-negotiation.md)
-8. [常见坑清单](../../docs/web-mvc/springboot-web-mvc/appendix/90-common-pitfalls.md)
+1. [校验与错误响应形状](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/01-validation-and-error-shaping.md)
+2. [统一异常处理与坏输入](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/02-exception-handling.md)
+3. [请求绑定与 Converter/Formatter](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/03-binding-and-converters.md)
+4. [Interceptor vs Filter：入口与顺序](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/04-interceptor-and-filter-ordering.md)
+5. [传统 MVC 页面渲染入门（Thymeleaf/ViewResolver）](../../docs/web-mvc/spring-boot-web-mvc/part-02-view-mvc/01-thymeleaf-and-view-resolver.md)
+6. [表单提交闭环（绑定/校验/回显/PRG）](../../docs/web-mvc/spring-boot-web-mvc/part-02-view-mvc/02-form-binding-validation-prg.md)
+7. [错误页与内容协商（Accept：HTML vs JSON）](../../docs/web-mvc/spring-boot-web-mvc/part-02-view-mvc/03-error-pages-and-content-negotiation.md)
+8. [常见坑清单](../../docs/web-mvc/spring-boot-web-mvc/appendix/90-common-pitfalls.md)
 
 对应的可运行实验（先跑后读）：
 - `src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`（`@WebMvcTest` 切片）
@@ -96,14 +96,14 @@ mvn -pl :spring-boot-web-mvc test
 
 | 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
 | --- | --- | --- | --- |
-| 校验在边界触发 | [docs/part-01/01](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/01-validation-and-error-shaping.md) | `BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid` + `CreateUserRequest` | 为什么需要 `@Valid`，失败时异常从哪来 |
-| 统一错误响应形状 | [docs/part-01/01](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/01-validation-and-error-shaping.md) | `GlobalExceptionHandler` + `ApiError` | 为什么要自定义错误结构，结构由谁决定 |
-| malformed JSON vs 校验失败 | [docs/part-01/02](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/02-exception-handling.md) | `BootWebMvcLabTest#returnsBadRequestWhenJsonIsMalformed` + `BootWebMvcExerciseTest#exercise_handleMalformedJson` | 两类 400 的根因差异 |
-| Converter/Formatter 扩展绑定 | [docs/part-01/03](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/03-binding-and-converters.md) | `BootWebMvcExerciseTest#exercise_converterFormatter` | String 如何变成自定义类型 |
-| Interceptor 生效范围与顺序 | [docs/part-01/04](../../docs/web-mvc/springboot-web-mvc/part-01-web-mvc/04-interceptor-and-filter-ordering.md) | `BootWebMvcExerciseTest#exercise_interceptor` | 为什么它只对 `/api/**` 生效 |
-| `@Controller` 返回 viewName | [docs/part-02/01](../../docs/web-mvc/springboot-web-mvc/part-02-view-mvc/01-thymeleaf-and-view-resolver.md) | `MvcPingController` + `ping.html` | 为什么返回 String 却渲染了 HTML |
-| 表单校验回显（BindingResult） | [docs/part-02/02](../../docs/web-mvc/springboot-web-mvc/part-02-view-mvc/02-form-binding-validation-prg.md) | `MvcUserController` + `user-form.html` | 为什么校验失败不会抛异常，而是回到表单页 |
-| 错误页与 Accept | [docs/part-02/03](../../docs/web-mvc/springboot-web-mvc/part-02-view-mvc/03-error-pages-and-content-negotiation.md) | `templates/error/*` + `MvcExceptionHandler` | 为什么同一个错误在浏览器和脚本里长得不一样 |
+| 校验在边界触发 | [docs/part-01/01](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/01-validation-and-error-shaping.md) | `BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid` + `CreateUserRequest` | 为什么需要 `@Valid`，失败时异常从哪来 |
+| 统一错误响应形状 | [docs/part-01/01](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/01-validation-and-error-shaping.md) | `GlobalExceptionHandler` + `ApiError` | 为什么要自定义错误结构，结构由谁决定 |
+| malformed JSON vs 校验失败 | [docs/part-01/02](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/02-exception-handling.md) | `BootWebMvcLabTest#returnsBadRequestWhenJsonIsMalformed` + `BootWebMvcExerciseTest#exercise_handleMalformedJson` | 两类 400 的根因差异 |
+| Converter/Formatter 扩展绑定 | [docs/part-01/03](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/03-binding-and-converters.md) | `BootWebMvcExerciseTest#exercise_converterFormatter` | String 如何变成自定义类型 |
+| Interceptor 生效范围与顺序 | [docs/part-01/04](../../docs/web-mvc/spring-boot-web-mvc/part-01-web-mvc/04-interceptor-and-filter-ordering.md) | `BootWebMvcExerciseTest#exercise_interceptor` | 为什么它只对 `/api/**` 生效 |
+| `@Controller` 返回 viewName | [docs/part-02/01](../../docs/web-mvc/spring-boot-web-mvc/part-02-view-mvc/01-thymeleaf-and-view-resolver.md) | `MvcPingController` + `ping.html` | 为什么返回 String 却渲染了 HTML |
+| 表单校验回显（BindingResult） | [docs/part-02/02](../../docs/web-mvc/spring-boot-web-mvc/part-02-view-mvc/02-form-binding-validation-prg.md) | `MvcUserController` + `user-form.html` | 为什么校验失败不会抛异常，而是回到表单页 |
+| 错误页与 Accept | [docs/part-02/03](../../docs/web-mvc/spring-boot-web-mvc/part-02-view-mvc/03-error-pages-and-content-negotiation.md) | `templates/error/*` + `MvcExceptionHandler` | 为什么同一个错误在浏览器和脚本里长得不一样 |
 
 > 想从机制层理解“校验为什么有时不生效”，可进一步阅读 `docs/validation/spring-core-validation/part-01-validation-core/03-method-validation-proxy.md`（方法参数校验与代理）。
 

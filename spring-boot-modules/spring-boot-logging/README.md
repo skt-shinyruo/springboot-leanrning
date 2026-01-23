@@ -6,7 +6,7 @@
 - 为什么“日志要可断言”（避免只靠肉眼看控制台）
 - MDC/traceId 等上下文如何影响排障效率（本模块以最小示范为主）
 
-这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/logging/springboot-logging/)。
+这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/logging/spring-boot-logging/)。
 
 ## Start Here（5 分钟闭环）
 

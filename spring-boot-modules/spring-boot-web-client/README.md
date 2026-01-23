@@ -1,4 +1,4 @@
-# springboot-web-client
+# spring-boot-web-client
 
 本模块用于学习 Web Client（HTTP Client）相关主题：RestClient vs WebClient、错误处理、超时、重试、拦截器/Filter、以及可测试性。
 
@@ -12,14 +12,14 @@ mvn -pl :spring-boot-web-client test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](../../docs/web-client/springboot-web-client/README.md)）
+（docs 目录页：[`docs/README.md`](../../docs/web-client/spring-boot-web-client/README.md)）
 
-1. [RestClient 最小闭环](../../docs/web-client/springboot-web-client/part-01-web-client/01-restclient-basics.md)
-2. [WebClient 最小闭环](../../docs/web-client/springboot-web-client/part-01-web-client/02-webclient-basics.md)
-3. [错误处理：4xx/5xx → 异常](../../docs/web-client/springboot-web-client/part-01-web-client/03-error-handling.md)
-4. [超时与重试](../../docs/web-client/springboot-web-client/part-01-web-client/04-timeout-and-retry.md)
-5. [测试策略：MockWebServer](../../docs/web-client/springboot-web-client/part-01-web-client/05-testing-with-mockwebserver.md)
-6. [常见坑清单](../../docs/web-client/springboot-web-client/appendix/90-common-pitfalls.md)
+1. [RestClient 最小闭环](../../docs/web-client/spring-boot-web-client/part-01-web-client/01-restclient-basics.md)
+2. [WebClient 最小闭环](../../docs/web-client/spring-boot-web-client/part-01-web-client/02-webclient-basics.md)
+3. [错误处理：4xx/5xx → 异常](../../docs/web-client/spring-boot-web-client/part-01-web-client/03-error-handling.md)
+4. [超时与重试](../../docs/web-client/spring-boot-web-client/part-01-web-client/04-timeout-and-retry.md)
+5. [测试策略：MockWebServer](../../docs/web-client/spring-boot-web-client/part-01-web-client/05-testing-with-mockwebserver.md)
+6. [常见坑清单](../../docs/web-client/spring-boot-web-client/appendix/90-common-pitfalls.md)
 
 ## Labs / Exercises 索引
 

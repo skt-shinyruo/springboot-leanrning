@@ -26,24 +26,31 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = REPO_ROOT / "docs" / "book" / "labs-index.md"
 
 PREFERRED_MODULE_ORDER = [
-    "springboot-basics",
+    # Spring Boot（应用层）
+    "spring-boot-basics",
+    "spring-boot-web-mvc",
+    "spring-boot-security",
+    "spring-boot-data-jpa",
+    "spring-boot-cache",
+    "spring-boot-async-scheduling",
+    "spring-boot-actuator",
+    "spring-boot-web-client",
+    "spring-boot-testing",
+    "spring-boot-business-case",
+    "spring-boot-autoconfiguration",
+    "spring-boot-logging",
+    "spring-boot-observability",
+
+    # Spring Core（底层机制）
     "spring-core-beans",
     "spring-core-aop",
     "spring-core-aop-weaving",
     "spring-core-tx",
-    "springboot-web-mvc",
-    "springboot-security",
-    "springboot-data-jpa",
-    "springboot-cache",
-    "springboot-async-scheduling",
     "spring-core-events",
     "spring-core-resources",
     "spring-core-profiles",
     "spring-core-validation",
-    "springboot-actuator",
-    "springboot-web-client",
-    "springboot-testing",
-    "springboot-business-case",
+    "spring-core-spel",
 ]
 
 

@@ -6,7 +6,7 @@
 - backoff（用户自定义 bean 覆盖默认配置）
 - 顺序与叠加（多个 auto-config 如何组合）
 
-这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/autoconfig/springboot-autoconfiguration/)。
+这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/autoconfig/spring-boot-autoconfiguration/)。
 
 ## Start Here（5 分钟闭环）
 

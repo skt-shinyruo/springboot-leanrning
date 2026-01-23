@@ -6,7 +6,7 @@
 - 观测对象在哪里生成、如何被聚合（`MeterRegistry`/`ObservationRegistry`）
 - 为什么“可观测性”经常需要和 Web MVC / Logging / Security 联动理解
 
-这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/observability/springboot-observability/)。
+这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/observability/spring-boot-observability/)。
 
 ## Start Here（5 分钟闭环）
 

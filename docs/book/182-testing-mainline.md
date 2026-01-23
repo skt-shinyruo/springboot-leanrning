@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 181 章：99 - Self Check（springboot-web-client）](../web-client/springboot-web-client/appendix/181-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 183 章：主线时间线：Spring Boot Testing](../testing/springboot-testing/part-00-guide/183-03-mainline-timeline.md)
+上一章：[第 181 章：99 - Self Check（spring-boot-web-client）](../web-client/spring-boot-web-client/appendix/181-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 183 章：主线时间线：Spring Boot Testing](../testing/spring-boot-testing/part-00-guide/183-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**为什么 `@WebMvcTest` 更快、为什么 `@SpringBootTest` 更像集成测试、为什么上下文缓存会让你“以为自己修好了”**。
@@ -51,13 +51,13 @@
 
 ### 进阶入口（排障/关键分支）
 
-- 断点地图：[`docs/testing/springboot-testing/part-00-guide/184-02-breakpoint-map.md`](../testing/springboot-testing/part-00-guide/184-02-breakpoint-map.md)
-- 关键分支矩阵：[`docs/testing/springboot-testing/part-00-guide/184-04-branch-decision-matrix.md`](../testing/springboot-testing/part-00-guide/184-04-branch-decision-matrix.md)
-- 排障 playbook：[`docs/testing/springboot-testing/appendix/186-90-common-pitfalls.md`](../testing/springboot-testing/appendix/186-90-common-pitfalls.md)
-- 自检清单：[`docs/testing/springboot-testing/appendix/187-99-self-check.md`](../testing/springboot-testing/appendix/187-99-self-check.md)
+- 断点地图：[`docs/testing/spring-boot-testing/part-00-guide/184-02-breakpoint-map.md`](../testing/spring-boot-testing/part-00-guide/184-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/testing/spring-boot-testing/part-00-guide/184-04-branch-decision-matrix.md`](../testing/spring-boot-testing/part-00-guide/184-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/testing/spring-boot-testing/appendix/186-90-common-pitfalls.md`](../testing/spring-boot-testing/appendix/186-90-common-pitfalls.md)
+- 自检清单：[`docs/testing/spring-boot-testing/appendix/187-99-self-check.md`](../testing/spring-boot-testing/appendix/187-99-self-check.md)
 
-- 模块目录页：[`docs/testing/springboot-testing/README.md`](../testing/springboot-testing/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/testing/springboot-testing/part-00-guide/03-mainline-timeline.md`](../testing/springboot-testing/part-00-guide/183-03-mainline-timeline.md)
+- 模块目录页：[`docs/testing/spring-boot-testing/README.md`](../testing/spring-boot-testing/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/testing/spring-boot-testing/part-00-guide/03-mainline-timeline.md`](../testing/spring-boot-testing/part-00-guide/183-03-mainline-timeline.md)
 
 ---
 

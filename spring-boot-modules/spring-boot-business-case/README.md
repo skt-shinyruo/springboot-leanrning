@@ -1,4 +1,4 @@
-# springboot-business-case（Capstone 综合案例）
+# spring-boot-business-case（Capstone 综合案例）
 
 这是一个“综合/真实”一点的练习模块，用来把常见的 Spring Boot 能力串起来，并刻意暴露一些**机制层面的关键点**。
 
@@ -15,7 +15,7 @@
 
 ## 前置知识
 
-- 建议先完成：`springboot-web-mvc`、`springboot-data-jpa`、`spring-core-tx`、`spring-core-events`、`spring-core-aop`
+- 建议先完成：`spring-boot-web-mvc`、`spring-boot-data-jpa`、`spring-core-tx`、`spring-core-events`、`spring-core-aop`
 - 至少能解释：代理（proxy）、事务边界、同步事件与 after-commit 的差异
 
 ## 关键命令
@@ -42,7 +42,7 @@ mvn -pl :spring-boot-business-case test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](../../docs/business-case/springboot-business-case/README.md)）
+（docs 目录页：[`docs/README.md`](../../docs/business-case/spring-boot-business-case/README.md)）
 
 建议按“先跑通链路 → 再拆机制”的顺序：
 

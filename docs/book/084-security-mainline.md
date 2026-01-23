@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 83 章：99 - Self Check（springboot-web-mvc）](../web-mvc/springboot-web-mvc/appendix/083-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 85 章：主线时间线：Spring Boot Security](../security/springboot-security/part-00-guide/085-03-mainline-timeline.md)
+上一章：[第 83 章：99 - Self Check（spring-boot-web-mvc）](../web-mvc/spring-boot-web-mvc/appendix/083-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 85 章：主线时间线：Spring Boot Security](../security/spring-boot-security/part-00-guide/085-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**你没写安全框架代码，为什么请求就会被拦住、为什么会出现 401/403、为什么 CSRF 会影响表单提交**。
@@ -51,13 +51,13 @@
 
 ### 进阶入口（排障/关键分支）
 
-- 断点地图：[`docs/security/springboot-security/part-00-guide/086-02-breakpoint-map.md`](../security/springboot-security/part-00-guide/086-02-breakpoint-map.md)
-- 关键分支矩阵：[`docs/security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md`](../security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md)
-- 排障 playbook：[`docs/security/springboot-security/appendix/092-90-common-pitfalls.md`](../security/springboot-security/appendix/092-90-common-pitfalls.md)
-- 自检清单：[`docs/security/springboot-security/appendix/093-99-self-check.md`](../security/springboot-security/appendix/093-99-self-check.md)
+- 断点地图：[`docs/security/spring-boot-security/part-00-guide/086-02-breakpoint-map.md`](../security/spring-boot-security/part-00-guide/086-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/security/spring-boot-security/part-00-guide/086-04-branch-decision-matrix.md`](../security/spring-boot-security/part-00-guide/086-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/security/spring-boot-security/appendix/092-90-common-pitfalls.md`](../security/spring-boot-security/appendix/092-90-common-pitfalls.md)
+- 自检清单：[`docs/security/spring-boot-security/appendix/093-99-self-check.md`](../security/spring-boot-security/appendix/093-99-self-check.md)
 
-- 模块目录页：[`docs/security/springboot-security/README.md`](../security/springboot-security/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/security/springboot-security/part-00-guide/03-mainline-timeline.md`](../security/springboot-security/part-00-guide/085-03-mainline-timeline.md)
+- 模块目录页：[`docs/security/spring-boot-security/README.md`](../security/spring-boot-security/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/security/spring-boot-security/part-00-guide/03-mainline-timeline.md`](../security/spring-boot-security/part-00-guide/085-03-mainline-timeline.md)
 
 ---
 

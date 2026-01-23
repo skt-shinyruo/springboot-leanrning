@@ -1,4 +1,4 @@
-# springboot-security
+# spring-boot-security
 
 本模块用于学习 Spring Security 的高频入门与常见机制坑（从 AuthN → AuthZ → CSRF → Method Security → JWT/Stateless）。
 
@@ -15,7 +15,7 @@
 
 ## 前置知识
 
-- 建议先完成 `springboot-web-mvc`（更容易理解“边界校验/错误响应/MockMvc”）
+- 建议先完成 `spring-boot-web-mvc`（更容易理解“边界校验/错误响应/MockMvc”）
 - 基本 HTTP 概念（状态码、header、请求/响应体）
 
 ## 关键命令
@@ -70,14 +70,14 @@ mvn -pl :spring-boot-security test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-（docs 目录页：[`docs/README.md`](../../docs/security/springboot-security/README.md)）
+（docs 目录页：[`docs/README.md`](../../docs/security/spring-boot-security/README.md)）
 
-1. [401 vs 403：Basic Auth 与授权规则](../../docs/security/springboot-security/part-01-security/01-basic-auth-and-authorization.md)
-2. [CSRF：为什么 POST 会被拦？](../../docs/security/springboot-security/part-01-security/02-csrf.md)
-3. [Method Security 与代理：self-invocation 陷阱](../../docs/security/springboot-security/part-01-security/03-method-security-and-proxy.md)
-4. [FilterChain：多链路 + 顺序 + 自定义 Filter](../../docs/security/springboot-security/part-01-security/04-filter-chain-and-order.md)
-5. [JWT/Stateless：Bearer token + scope](../../docs/security/springboot-security/part-01-security/05-jwt-stateless.md)
-6. [常见坑清单](../../docs/security/springboot-security/appendix/90-common-pitfalls.md)
+1. [401 vs 403：Basic Auth 与授权规则](../../docs/security/spring-boot-security/part-01-security/087-01-basic-auth-and-authorization.md)
+2. [CSRF：为什么 POST 会被拦？](../../docs/security/spring-boot-security/part-01-security/088-02-csrf.md)
+3. [Method Security 与代理：self-invocation 陷阱](../../docs/security/spring-boot-security/part-01-security/089-03-method-security-and-proxy.md)
+4. [FilterChain：多链路 + 顺序 + 自定义 Filter](../../docs/security/spring-boot-security/part-01-security/090-04-filter-chain-and-order.md)
+5. [JWT/Stateless：Bearer token + scope](../../docs/security/spring-boot-security/part-01-security/091-05-jwt-stateless.md)
+6. [常见坑清单](../../docs/security/spring-boot-security/appendix/092-90-common-pitfalls.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 125 章：99 - Self Check（springboot-async-scheduling）](../async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 127 章：主线时间线：Spring Events](../events/spring-core-events/part-00-guide/127-03-mainline-timeline.md)
+上一章：[第 125 章：99 - Self Check（spring-boot-async-scheduling）](../async-scheduling/spring-boot-async-scheduling/appendix/125-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 127 章：主线时间线：Spring Events](../events/spring-core-events/part-00-guide/127-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**为什么发布一个事件就能触发多个监听器、异常怎么传播、事务提交后再发事件该怎么写**。

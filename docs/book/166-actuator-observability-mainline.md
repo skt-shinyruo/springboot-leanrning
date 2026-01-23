@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 165 章：自测题（Spring Core Validation）](../validation/spring-core-validation/appendix/165-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 167 章：主线时间线：Spring Boot Actuator](../actuator/springboot-actuator/part-00-guide/167-03-mainline-timeline.md)
+上一章：[第 165 章：自测题（Spring Core Validation）](../validation/spring-core-validation/appendix/165-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 167 章：主线时间线：Spring Boot Actuator](../actuator/spring-boot-actuator/part-00-guide/167-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**应用怎么暴露健康检查、指标、信息端点；为什么 exposure 配置与安全边界很关键；如何把“看不见的运行状态”变成可观测信号**。
@@ -49,13 +49,13 @@
 
 ### 进阶入口（排障/关键分支）
 
-- 断点地图：[`docs/actuator/springboot-actuator/part-00-guide/168-02-breakpoint-map.md`](../actuator/springboot-actuator/part-00-guide/168-02-breakpoint-map.md)
-- 关键分支矩阵：[`docs/actuator/springboot-actuator/part-00-guide/168-04-branch-decision-matrix.md`](../actuator/springboot-actuator/part-00-guide/168-04-branch-decision-matrix.md)
-- 排障 playbook：[`docs/actuator/springboot-actuator/appendix/170-90-common-pitfalls.md`](../actuator/springboot-actuator/appendix/170-90-common-pitfalls.md)
-- 自检清单：[`docs/actuator/springboot-actuator/appendix/171-99-self-check.md`](../actuator/springboot-actuator/appendix/171-99-self-check.md)
+- 断点地图：[`docs/actuator/spring-boot-actuator/part-00-guide/168-02-breakpoint-map.md`](../actuator/spring-boot-actuator/part-00-guide/168-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/actuator/spring-boot-actuator/part-00-guide/168-04-branch-decision-matrix.md`](../actuator/spring-boot-actuator/part-00-guide/168-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/actuator/spring-boot-actuator/appendix/170-90-common-pitfalls.md`](../actuator/spring-boot-actuator/appendix/170-90-common-pitfalls.md)
+- 自检清单：[`docs/actuator/spring-boot-actuator/appendix/171-99-self-check.md`](../actuator/spring-boot-actuator/appendix/171-99-self-check.md)
 
-- 模块目录页：[`docs/actuator/springboot-actuator/README.md`](../actuator/springboot-actuator/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/actuator/springboot-actuator/part-00-guide/03-mainline-timeline.md`](../actuator/springboot-actuator/part-00-guide/167-03-mainline-timeline.md)
+- 模块目录页：[`docs/actuator/spring-boot-actuator/README.md`](../actuator/spring-boot-actuator/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/actuator/spring-boot-actuator/part-00-guide/03-mainline-timeline.md`](../actuator/spring-boot-actuator/part-00-guide/167-03-mainline-timeline.md)
 
 ---
 

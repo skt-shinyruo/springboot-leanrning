@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 105 章：99 - Self Check（springboot-data-jpa）](../data-jpa/springboot-data-jpa/appendix/105-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 107 章：主线时间线：Spring Boot Cache](../cache/springboot-cache/part-00-guide/107-03-mainline-timeline.md)
+上一章：[第 105 章：99 - Self Check（spring-boot-data-jpa）](../data-jpa/spring-boot-data-jpa/appendix/105-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 107 章：主线时间线：Spring Boot Cache](../cache/spring-boot-cache/part-00-guide/107-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**为什么加上 `@Cacheable` 就能缓存、缓存 key 怎么算、为什么同一个方法有时命中有时不命中**。核心仍然是：AOP 代理 + Cache 抽象。
@@ -51,13 +51,13 @@
 
 ### 进阶入口（排障/关键分支）
 
-- 断点地图：[`docs/cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md`](../cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md)
-- 关键分支矩阵：[`docs/cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md`](../cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md)
-- 排障 playbook：[`docs/cache/springboot-cache/appendix/114-90-common-pitfalls.md`](../cache/springboot-cache/appendix/114-90-common-pitfalls.md)
-- 自检清单：[`docs/cache/springboot-cache/appendix/115-99-self-check.md`](../cache/springboot-cache/appendix/115-99-self-check.md)
+- 断点地图：[`docs/cache/spring-boot-cache/part-00-guide/108-02-breakpoint-map.md`](../cache/spring-boot-cache/part-00-guide/108-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/cache/spring-boot-cache/part-00-guide/108-04-branch-decision-matrix.md`](../cache/spring-boot-cache/part-00-guide/108-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/cache/spring-boot-cache/appendix/114-90-common-pitfalls.md`](../cache/spring-boot-cache/appendix/114-90-common-pitfalls.md)
+- 自检清单：[`docs/cache/spring-boot-cache/appendix/115-99-self-check.md`](../cache/spring-boot-cache/appendix/115-99-self-check.md)
 
-- 模块目录页：[`docs/cache/springboot-cache/README.md`](../cache/springboot-cache/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/cache/springboot-cache/part-00-guide/03-mainline-timeline.md`](../cache/springboot-cache/part-00-guide/107-03-mainline-timeline.md)
+- 模块目录页：[`docs/cache/spring-boot-cache/README.md`](../cache/spring-boot-cache/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/cache/spring-boot-cache/part-00-guide/03-mainline-timeline.md`](../cache/spring-boot-cache/part-00-guide/107-03-mainline-timeline.md)
 
 ---
 

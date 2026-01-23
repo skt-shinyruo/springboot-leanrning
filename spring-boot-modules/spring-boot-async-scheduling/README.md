@@ -1,4 +1,4 @@
-# springboot-async-scheduling
+# spring-boot-async-scheduling
 
 本模块用于学习异步与调度的高频机制点：
 
@@ -15,14 +15,14 @@ mvn -pl :spring-boot-async-scheduling test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](../../docs/async-scheduling/springboot-async-scheduling/README.md)）
+（docs 目录页：[`docs/README.md`](../../docs/async-scheduling/spring-boot-async-scheduling/README.md)）
 
-1. [`@Async` 心智模型：代理与线程切换](../../docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/01-async-proxy-mental-model.md)
-2. [Executor 与线程命名/并发边界](../../docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/02-executor-and-threading.md)
-3. [异常传播：Future vs void](../../docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/03-exceptions.md)
-4. [self-invocation：为什么异步有时不生效](../../docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/04-self-invocation.md)
-5. [`@Scheduled` 基础与可测试性](../../docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/05-scheduling-basics.md)
-6. [常见坑清单](../../docs/async-scheduling/springboot-async-scheduling/appendix/90-common-pitfalls.md)
+1. [`@Async` 心智模型：代理与线程切换](../../docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/01-async-proxy-mental-model.md)
+2. [Executor 与线程命名/并发边界](../../docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/02-executor-and-threading.md)
+3. [异常传播：Future vs void](../../docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/03-exceptions.md)
+4. [self-invocation：为什么异步有时不生效](../../docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/04-self-invocation.md)
+5. [`@Scheduled` 基础与可测试性](../../docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/05-scheduling-basics.md)
+6. [常见坑清单](../../docs/async-scheduling/spring-boot-async-scheduling/appendix/90-common-pitfalls.md)
 
 ## Labs / Exercises 索引
 

@@ -1,4 +1,4 @@
-# springboot-testing
+# spring-boot-testing
 
 本模块用于学习 Spring Boot 的测试入门：
 
@@ -14,7 +14,7 @@
 
 ## 前置知识
 
-- 建议先完成 `springboot-web-mvc`（更容易理解 Controller 测试）
+- 建议先完成 `spring-boot-web-mvc`（更容易理解 Controller 测试）
 - 了解 JUnit 的基本概念（断言、测试方法）
 
 ## 关键命令
@@ -41,7 +41,7 @@ mvn -pl :spring-boot-testing test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](../../docs/testing/springboot-testing/README.md)）
+（docs 目录页：[`docs/README.md`](../../docs/testing/spring-boot-testing/README.md)）
 
 1. 导读：`docs/part-00-guide/00-deep-dive-guide.md`
 2. Slice vs Full Context：`docs/part-01-testing/01-slice-and-mocking.md`

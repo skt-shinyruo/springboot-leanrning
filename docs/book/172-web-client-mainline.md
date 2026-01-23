@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 171 章：99 - Self Check（springboot-actuator）](../actuator/springboot-actuator/appendix/171-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 173 章：主线时间线：Spring Boot Web Client](../web-client/springboot-web-client/part-00-guide/173-03-mainline-timeline.md)
+上一章：[第 171 章：99 - Self Check（spring-boot-actuator）](../actuator/spring-boot-actuator/appendix/171-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 173 章：主线时间线：Spring Boot Web Client](../web-client/spring-boot-web-client/part-00-guide/173-03-mainline-timeline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 这一章解决的问题是：**为什么 WebClient 既能同步也能异步、过滤器链怎么工作、错误处理怎么写才不会“吞掉根因”**。
@@ -49,13 +49,13 @@
 
 ### 进阶入口（排障/关键分支）
 
-- 断点地图：[`docs/web-client/springboot-web-client/part-00-guide/174-02-breakpoint-map.md`](../web-client/springboot-web-client/part-00-guide/174-02-breakpoint-map.md)
-- 关键分支矩阵：[`docs/web-client/springboot-web-client/part-00-guide/174-04-branch-decision-matrix.md`](../web-client/springboot-web-client/part-00-guide/174-04-branch-decision-matrix.md)
-- 排障 playbook：[`docs/web-client/springboot-web-client/appendix/180-90-common-pitfalls.md`](../web-client/springboot-web-client/appendix/180-90-common-pitfalls.md)
-- 自检清单：[`docs/web-client/springboot-web-client/appendix/181-99-self-check.md`](../web-client/springboot-web-client/appendix/181-99-self-check.md)
+- 断点地图：[`docs/web-client/spring-boot-web-client/part-00-guide/174-02-breakpoint-map.md`](../web-client/spring-boot-web-client/part-00-guide/174-02-breakpoint-map.md)
+- 关键分支矩阵：[`docs/web-client/spring-boot-web-client/part-00-guide/174-04-branch-decision-matrix.md`](../web-client/spring-boot-web-client/part-00-guide/174-04-branch-decision-matrix.md)
+- 排障 playbook：[`docs/web-client/spring-boot-web-client/appendix/180-90-common-pitfalls.md`](../web-client/spring-boot-web-client/appendix/180-90-common-pitfalls.md)
+- 自检清单：[`docs/web-client/spring-boot-web-client/appendix/181-99-self-check.md`](../web-client/spring-boot-web-client/appendix/181-99-self-check.md)
 
-- 模块目录页：[`docs/web-client/springboot-web-client/README.md`](../web-client/springboot-web-client/README.md)
-- 模块主线时间线（含可跑入口）：[`docs/web-client/springboot-web-client/part-00-guide/03-mainline-timeline.md`](../web-client/springboot-web-client/part-00-guide/173-03-mainline-timeline.md)
+- 模块目录页：[`docs/web-client/spring-boot-web-client/README.md`](../web-client/spring-boot-web-client/README.md)
+- 模块主线时间线（含可跑入口）：[`docs/web-client/spring-boot-web-client/part-00-guide/03-mainline-timeline.md`](../web-client/spring-boot-web-client/part-00-guide/173-03-mainline-timeline.md)
 
 ---
 

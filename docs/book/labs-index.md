@@ -10,11 +10,10 @@
 
 ## 按模块
 
-### springboot-basics
+### spring-boot-basics
 
 - 数量：6
-- artifactId：`spring-boot-basics`
-- 模块 docs：[`docs/basics/springboot-basics/README.md`](../basics/springboot-basics/README.md)
+- 模块 docs：[`docs/basics/spring-boot-basics/README.md`](../basics/spring-boot-basics/README.md)
 
 - [`BootBasicsBookMatrixLabTest`](../../spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java)
   - 运行：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`
@@ -28,6 +27,236 @@
   - 运行：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsOverrideLabTest test`
 - [`BootBasicsEnvironmentConcurrencyLabTest`](../../spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part02_perf_concurrency/BootBasicsEnvironmentConcurrencyLabTest.java)
   - 运行：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsEnvironmentConcurrencyLabTest test`
+
+### spring-boot-web-mvc
+
+- 数量：23
+- 模块 docs：[`docs/web-mvc/spring-boot-web-mvc/README.md`](../web-mvc/spring-boot-web-mvc/README.md)
+
+- [`BootWebMvcBindingDeepDiveLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest test`
+- [`BootWebMvcBookMatrixLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
+- [`BootWebMvcLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest test`
+- [`BootWebMvcSpringBootLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcSpringBootLabTest test`
+- [`BootWebMvcRequestScopeIsolationLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_perf_concurrency/BootWebMvcRequestScopeIsolationLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcRequestScopeIsolationLabTest test`
+- [`BootWebMvcErrorViewLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorViewLabTest test`
+- [`BootWebMvcViewLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcViewLabTest test`
+- [`BootWebMvcViewSpringBootLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcViewSpringBootLabTest test`
+- [`BootWebMvcExceptionResolverChainLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcExceptionResolverChainLabTest test`
+- [`BootWebMvcInternalsLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcInternalsLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcInternalsLabTest test`
+- [`BootWebMvcMessageConverterTraceLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcMessageConverterTraceLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcMessageConverterTraceLabTest test`
+- [`BootWebMvcTraceLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcTraceLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest test`
+- [`BootWebMvcContractJacksonLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part04_contract/BootWebMvcContractJacksonLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcContractJacksonLabTest test`
+- [`BootWebMvcProblemDetailLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part04_contract/BootWebMvcProblemDetailLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcProblemDetailLabTest test`
+- [`BootWebMvcRealWorldHttpLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part05_real_world/BootWebMvcRealWorldHttpLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcRealWorldHttpLabTest test`
+- [`BootWebMvcAsyncSseLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part06_async_sse/BootWebMvcAsyncSseLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcAsyncSseLabTest test`
+- [`BootWebMvcErrorBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part07_testing/BootWebMvcErrorBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+- [`BootWebMvcTestingDebuggingLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part07_testing/BootWebMvcTestingDebuggingLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTestingDebuggingLabTest test`
+- [`BootWebMvcObservabilityLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part08_security_observability/BootWebMvcObservabilityLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcObservabilityLabTest test`
+- [`BootWebMvcSecurityLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part08_security_observability/BootWebMvcSecurityLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcSecurityLabTest test`
+- [`BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part08_security_observability/BootWebMvcSecurityVsMvcExceptionBoundaryLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcSecurityVsMvcExceptionBoundaryLabTest test`
+- [`BootWebMvcAdviceOrderLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part09_advice_order/BootWebMvcAdviceOrderLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcAdviceOrderLabTest test`
+- [`BootWebMvcAdviceMatchingLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part10_advice_matching/BootWebMvcAdviceMatchingLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcAdviceMatchingLabTest test`
+
+### spring-boot-security
+
+- 数量：6
+- 模块 docs：[`docs/security/spring-boot-security/README.md`](../security/spring-boot-security/README.md)
+
+- [`BootSecurityBookMatrixLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
+- [`BootSecurityBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+- [`BootSecurityDevProfileLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityDevProfileLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityDevProfileLabTest test`
+- [`BootSecurityLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityLabTest test`
+- [`BootSecurityMultiFilterChainOrderLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityMultiFilterChainOrderLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityMultiFilterChainOrderLabTest test`
+- [`BootSecuritySecurityContextIsolationLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part02_perf_concurrency/BootSecuritySecurityContextIsolationLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecuritySecurityContextIsolationLabTest test`
+
+### spring-boot-data-jpa
+
+- 数量：6
+- 模块 docs：[`docs/data-jpa/spring-boot-data-jpa/README.md`](../data-jpa/spring-boot-data-jpa/README.md)
+
+- [`BootDataJpaBookMatrixLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
+- [`BootDataJpaBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
+- [`BootDataJpaDebugSqlLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaDebugSqlLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaDebugSqlLabTest test`
+- [`BootDataJpaLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaLabTest test`
+- [`BootDataJpaMergeAndDetachLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaMergeAndDetachLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaMergeAndDetachLabTest test`
+- [`BootDataJpaEntityManagerConcurrencyLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part02_perf_concurrency/BootDataJpaEntityManagerConcurrencyLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaEntityManagerConcurrencyLabTest test`
+
+### spring-boot-cache
+
+- 数量：5
+- 模块 docs：[`docs/cache/spring-boot-cache/README.md`](../cache/spring-boot-cache/README.md)
+
+- [`BootCacheBookMatrixLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`
+- [`BootCacheBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheBranchMatrixLabTest test`
+- [`BootCacheLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheLabTest test`
+- [`BootCacheSpelKeyLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheSpelKeyLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheSpelKeyLabTest test`
+- [`BootCacheStampedeProtectionLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part02_perf_concurrency/BootCacheStampedeProtectionLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheStampedeProtectionLabTest test`
+
+### spring-boot-async-scheduling
+
+- 数量：5
+- 模块 docs：[`docs/async-scheduling/spring-boot-async-scheduling/README.md`](../async-scheduling/spring-boot-async-scheduling/README.md)
+
+- [`BootAsyncSchedulingBookMatrixLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
+- [`BootAsyncSchedulingBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
+- [`BootAsyncSchedulingLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingLabTest test`
+- [`BootAsyncSchedulingSchedulingLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingSchedulingLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingSchedulingLabTest test`
+- [`BootAsyncSchedulingExecutorSaturationLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
+
+### spring-boot-actuator
+
+- 数量：5
+- 模块 docs：[`docs/actuator/spring-boot-actuator/README.md`](../actuator/spring-boot-actuator/README.md)
+
+- [`BootActuatorBookMatrixLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
+- [`BootActuatorBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
+- [`BootActuatorExposureOverrideLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorExposureOverrideLabTest test`
+- [`BootActuatorLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorLabTest test`
+- [`BootActuatorMetricsConcurrencyLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part02_perf_concurrency/BootActuatorMetricsConcurrencyLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorMetricsConcurrencyLabTest test`
+
+### spring-boot-web-client
+
+- 数量：6
+- 模块 docs：[`docs/web-client/spring-boot-web-client/README.md`](../web-client/spring-boot-web-client/README.md)
+
+- [`BootWebClientBookMatrixLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
+- [`BootWebClientBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
+- [`BootWebClientRestClientLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientRestClientLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientRestClientLabTest test`
+- [`BootWebClientWebClientFilterOrderLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientFilterOrderLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientWebClientFilterOrderLabTest test`
+- [`BootWebClientWebClientLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientWebClientLabTest test`
+- [`BootWebClientRestClientConcurrencyLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part02_perf_concurrency/BootWebClientRestClientConcurrencyLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientRestClientConcurrencyLabTest test`
+
+### spring-boot-testing
+
+- 数量：6
+- 模块 docs：[`docs/testing/spring-boot-testing/README.md`](../testing/spring-boot-testing/README.md)
+
+- [`BootTestingBookMatrixLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
+- [`BootTestingBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
+- [`BootTestingMockBeanLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingMockBeanLabTest test`
+- [`GreetingControllerSpringBootLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=GreetingControllerSpringBootLabTest test`
+- [`GreetingControllerWebMvcLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=GreetingControllerWebMvcLabTest test`
+- [`BootTestingTestContextCacheLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part02_perf_concurrency/BootTestingTestContextCacheLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingTestContextCacheLabTest test`
+
+### spring-boot-business-case
+
+- 数量：5
+- 模块 docs：[`docs/business-case/spring-boot-business-case/README.md`](../business-case/spring-boot-business-case/README.md)
+
+- [`BootBusinessCaseBookMatrixLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
+- [`BootBusinessCaseBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
+- [`BootBusinessCaseLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseLabTest test`
+- [`BootBusinessCaseServiceLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseServiceLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseServiceLabTest test`
+- [`BootBusinessCaseConcurrentOrderPlacementLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part02_perf_concurrency/BootBusinessCaseConcurrentOrderPlacementLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseConcurrentOrderPlacementLabTest test`
+
+### spring-boot-autoconfiguration
+
+- 数量：4
+- 模块 docs：[`docs/autoconfig/spring-boot-autoconfiguration/README.md`](../autoconfig/spring-boot-autoconfiguration/README.md)
+
+- [`BootAutoConfigurationBookMatrixLabTest`](../../spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationBookMatrixLabTest test`
+- [`BootAutoConfigurationBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationBranchMatrixLabTest test`
+- [`BootAutoConfigurationLabTest`](../../spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationLabTest test`
+- [`BootAutoConfigurationConcurrencyLabTest`](../../spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part02_perf_concurrency/BootAutoConfigurationConcurrencyLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationConcurrencyLabTest test`
+
+### spring-boot-logging
+
+- 数量：4
+- 模块 docs：[`docs/logging/spring-boot-logging/README.md`](../logging/spring-boot-logging/README.md)
+
+- [`BootLoggingBookMatrixLabTest`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
+- [`BootLoggingBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBranchMatrixLabTest test`
+- [`BootLoggingLabTest`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingLabTest test`
+- [`BootLoggingConcurrencyLabTest`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part02_perf_concurrency/BootLoggingConcurrencyLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingConcurrencyLabTest test`
+
+### spring-boot-observability
+
+- 数量：4
+- 模块 docs：[`docs/observability/spring-boot-observability/README.md`](../observability/spring-boot-observability/README.md)
+
+- [`BootObservabilityBookMatrixLabTest`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityBookMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
+- [`BootObservabilityBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityBranchMatrixLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBranchMatrixLabTest test`
+- [`BootObservabilityLabTest`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityLabTest test`
+- [`BootObservabilityConcurrencyLabTest`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part02_perf_concurrency/BootObservabilityConcurrencyLabTest.java)
+  - 运行：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityConcurrencyLabTest test`
 
 ### spring-core-beans
 
@@ -251,131 +480,6 @@
 - [`SpringCoreTxThreadLocalBoundaryLabTest`](../../spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part02_perf_concurrency/SpringCoreTxThreadLocalBoundaryLabTest.java)
   - 运行：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxThreadLocalBoundaryLabTest test`
 
-### springboot-web-mvc
-
-- 数量：23
-- artifactId：`spring-boot-web-mvc`
-- 模块 docs：[`docs/web-mvc/springboot-web-mvc/README.md`](../web-mvc/springboot-web-mvc/README.md)
-
-- [`BootWebMvcBindingDeepDiveLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest test`
-- [`BootWebMvcBookMatrixLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
-- [`BootWebMvcLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest test`
-- [`BootWebMvcSpringBootLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcSpringBootLabTest test`
-- [`BootWebMvcRequestScopeIsolationLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_perf_concurrency/BootWebMvcRequestScopeIsolationLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcRequestScopeIsolationLabTest test`
-- [`BootWebMvcErrorViewLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorViewLabTest test`
-- [`BootWebMvcViewLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcViewLabTest test`
-- [`BootWebMvcViewSpringBootLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcViewSpringBootLabTest test`
-- [`BootWebMvcExceptionResolverChainLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcExceptionResolverChainLabTest test`
-- [`BootWebMvcInternalsLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcInternalsLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcInternalsLabTest test`
-- [`BootWebMvcMessageConverterTraceLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcMessageConverterTraceLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcMessageConverterTraceLabTest test`
-- [`BootWebMvcTraceLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcTraceLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest test`
-- [`BootWebMvcContractJacksonLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part04_contract/BootWebMvcContractJacksonLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcContractJacksonLabTest test`
-- [`BootWebMvcProblemDetailLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part04_contract/BootWebMvcProblemDetailLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcProblemDetailLabTest test`
-- [`BootWebMvcRealWorldHttpLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part05_real_world/BootWebMvcRealWorldHttpLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcRealWorldHttpLabTest test`
-- [`BootWebMvcAsyncSseLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part06_async_sse/BootWebMvcAsyncSseLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcAsyncSseLabTest test`
-- [`BootWebMvcErrorBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part07_testing/BootWebMvcErrorBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
-- [`BootWebMvcTestingDebuggingLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part07_testing/BootWebMvcTestingDebuggingLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTestingDebuggingLabTest test`
-- [`BootWebMvcObservabilityLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part08_security_observability/BootWebMvcObservabilityLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcObservabilityLabTest test`
-- [`BootWebMvcSecurityLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part08_security_observability/BootWebMvcSecurityLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcSecurityLabTest test`
-- [`BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part08_security_observability/BootWebMvcSecurityVsMvcExceptionBoundaryLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcSecurityVsMvcExceptionBoundaryLabTest test`
-- [`BootWebMvcAdviceOrderLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part09_advice_order/BootWebMvcAdviceOrderLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcAdviceOrderLabTest test`
-- [`BootWebMvcAdviceMatchingLabTest`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part10_advice_matching/BootWebMvcAdviceMatchingLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcAdviceMatchingLabTest test`
-
-### springboot-security
-
-- 数量：6
-- artifactId：`spring-boot-security`
-- 模块 docs：[`docs/security/springboot-security/README.md`](../security/springboot-security/README.md)
-
-- [`BootSecurityBookMatrixLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
-- [`BootSecurityBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
-- [`BootSecurityDevProfileLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityDevProfileLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityDevProfileLabTest test`
-- [`BootSecurityLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityLabTest test`
-- [`BootSecurityMultiFilterChainOrderLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityMultiFilterChainOrderLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityMultiFilterChainOrderLabTest test`
-- [`BootSecuritySecurityContextIsolationLabTest`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part02_perf_concurrency/BootSecuritySecurityContextIsolationLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-security -Dtest=BootSecuritySecurityContextIsolationLabTest test`
-
-### springboot-data-jpa
-
-- 数量：6
-- artifactId：`spring-boot-data-jpa`
-- 模块 docs：[`docs/data-jpa/springboot-data-jpa/README.md`](../data-jpa/springboot-data-jpa/README.md)
-
-- [`BootDataJpaBookMatrixLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
-- [`BootDataJpaBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
-- [`BootDataJpaDebugSqlLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaDebugSqlLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaDebugSqlLabTest test`
-- [`BootDataJpaLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaLabTest test`
-- [`BootDataJpaMergeAndDetachLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaMergeAndDetachLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaMergeAndDetachLabTest test`
-- [`BootDataJpaEntityManagerConcurrencyLabTest`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part02_perf_concurrency/BootDataJpaEntityManagerConcurrencyLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaEntityManagerConcurrencyLabTest test`
-
-### springboot-cache
-
-- 数量：5
-- artifactId：`spring-boot-cache`
-- 模块 docs：[`docs/cache/springboot-cache/README.md`](../cache/springboot-cache/README.md)
-
-- [`BootCacheBookMatrixLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`
-- [`BootCacheBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheBranchMatrixLabTest test`
-- [`BootCacheLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheLabTest test`
-- [`BootCacheSpelKeyLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheSpelKeyLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheSpelKeyLabTest test`
-- [`BootCacheStampedeProtectionLabTest`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part02_perf_concurrency/BootCacheStampedeProtectionLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheStampedeProtectionLabTest test`
-
-### springboot-async-scheduling
-
-- 数量：5
-- artifactId：`spring-boot-async-scheduling`
-- 模块 docs：[`docs/async-scheduling/springboot-async-scheduling/README.md`](../async-scheduling/springboot-async-scheduling/README.md)
-
-- [`BootAsyncSchedulingBookMatrixLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
-- [`BootAsyncSchedulingBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
-- [`BootAsyncSchedulingLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingLabTest test`
-- [`BootAsyncSchedulingSchedulingLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingSchedulingLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingSchedulingLabTest test`
-- [`BootAsyncSchedulingExecutorSaturationLabTest`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
-
 ### spring-core-events
 
 - 数量：9
@@ -448,78 +552,6 @@
 - [`SpringCoreValidationValidatorConcurrencyLabTest`](../../spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part02_perf_concurrency/SpringCoreValidationValidatorConcurrencyLabTest.java)
   - 运行：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationValidatorConcurrencyLabTest test`
 
-### springboot-actuator
-
-- 数量：5
-- artifactId：`spring-boot-actuator`
-- 模块 docs：[`docs/actuator/springboot-actuator/README.md`](../actuator/springboot-actuator/README.md)
-
-- [`BootActuatorBookMatrixLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
-- [`BootActuatorBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
-- [`BootActuatorExposureOverrideLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorExposureOverrideLabTest test`
-- [`BootActuatorLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorLabTest test`
-- [`BootActuatorMetricsConcurrencyLabTest`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part02_perf_concurrency/BootActuatorMetricsConcurrencyLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorMetricsConcurrencyLabTest test`
-
-### springboot-web-client
-
-- 数量：6
-- artifactId：`spring-boot-web-client`
-- 模块 docs：[`docs/web-client/springboot-web-client/README.md`](../web-client/springboot-web-client/README.md)
-
-- [`BootWebClientBookMatrixLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
-- [`BootWebClientBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
-- [`BootWebClientRestClientLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientRestClientLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientRestClientLabTest test`
-- [`BootWebClientWebClientFilterOrderLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientFilterOrderLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientWebClientFilterOrderLabTest test`
-- [`BootWebClientWebClientLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientWebClientLabTest test`
-- [`BootWebClientRestClientConcurrencyLabTest`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part02_perf_concurrency/BootWebClientRestClientConcurrencyLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientRestClientConcurrencyLabTest test`
-
-### springboot-testing
-
-- 数量：6
-- artifactId：`spring-boot-testing`
-- 模块 docs：[`docs/testing/springboot-testing/README.md`](../testing/springboot-testing/README.md)
-
-- [`BootTestingBookMatrixLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
-- [`BootTestingBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
-- [`BootTestingMockBeanLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingMockBeanLabTest test`
-- [`GreetingControllerSpringBootLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=GreetingControllerSpringBootLabTest test`
-- [`GreetingControllerWebMvcLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=GreetingControllerWebMvcLabTest test`
-- [`BootTestingTestContextCacheLabTest`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part02_perf_concurrency/BootTestingTestContextCacheLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingTestContextCacheLabTest test`
-
-### springboot-business-case
-
-- 数量：5
-- artifactId：`spring-boot-business-case`
-- 模块 docs：[`docs/business-case/springboot-business-case/README.md`](../business-case/springboot-business-case/README.md)
-
-- [`BootBusinessCaseBookMatrixLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
-- [`BootBusinessCaseBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
-- [`BootBusinessCaseLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseLabTest test`
-- [`BootBusinessCaseServiceLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseServiceLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseServiceLabTest test`
-- [`BootBusinessCaseConcurrentOrderPlacementLabTest`](../../spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part02_perf_concurrency/BootBusinessCaseConcurrentOrderPlacementLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseConcurrentOrderPlacementLabTest test`
-
 ### spring-core-spel
 
 - 数量：4
@@ -533,48 +565,3 @@
   - 运行：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelLabTest test`
 - [`SpringCoreSpelConcurrencyLabTest`](../../spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part01_perf_concurrency/SpringCoreSpelConcurrencyLabTest.java)
   - 运行：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelConcurrencyLabTest test`
-
-### springboot-autoconfiguration
-
-- 数量：4
-- artifactId：`spring-boot-autoconfiguration`
-- 模块 docs：[`docs/autoconfig/springboot-autoconfiguration/README.md`](../autoconfig/springboot-autoconfiguration/README.md)
-
-- [`BootAutoConfigurationBookMatrixLabTest`](../../spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationBookMatrixLabTest test`
-- [`BootAutoConfigurationBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationBranchMatrixLabTest test`
-- [`BootAutoConfigurationLabTest`](../../spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationLabTest test`
-- [`BootAutoConfigurationConcurrencyLabTest`](../../spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part02_perf_concurrency/BootAutoConfigurationConcurrencyLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationConcurrencyLabTest test`
-
-### springboot-logging
-
-- 数量：4
-- artifactId：`spring-boot-logging`
-- 模块 docs：[`docs/logging/springboot-logging/README.md`](../logging/springboot-logging/README.md)
-
-- [`BootLoggingBookMatrixLabTest`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
-- [`BootLoggingBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBranchMatrixLabTest test`
-- [`BootLoggingLabTest`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingLabTest test`
-- [`BootLoggingConcurrencyLabTest`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part02_perf_concurrency/BootLoggingConcurrencyLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingConcurrencyLabTest test`
-
-### springboot-observability
-
-- 数量：4
-- artifactId：`spring-boot-observability`
-- 模块 docs：[`docs/observability/springboot-observability/README.md`](../observability/springboot-observability/README.md)
-
-- [`BootObservabilityBookMatrixLabTest`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityBookMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
-- [`BootObservabilityBranchMatrixLabTest`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityBranchMatrixLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBranchMatrixLabTest test`
-- [`BootObservabilityLabTest`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityLabTest test`
-- [`BootObservabilityConcurrencyLabTest`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part02_perf_concurrency/BootObservabilityConcurrencyLabTest.java)
-  - 运行：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityConcurrencyLabTest test`

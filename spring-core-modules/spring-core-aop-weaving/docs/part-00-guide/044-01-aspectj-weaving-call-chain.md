@@ -1,0 +1,44 @@
+# 第 44 章：01：AspectJ Weaving 调用链（CTW/LTW：织入发生在哪里）
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：01：AspectJ Weaving 调用链（CTW/LTW：织入发生在哪里）
+    - 怎么使用：先跑 `AspectjLtwLabTest` / `AspectjCtwLabTest`，把“哪些 join point 能/不能被织入”固化为断言，再按本文理解 CTW 与 LTW 的织入入口。
+    - 原理：代理只能拦截“走代理入口”的调用；织入是“改字节码”。LTW 通过 javaagent + Instrumentation 在类加载时改字节码；CTW 在编译期/构建期改字节码。
+    - 源码入口：（LTW）`java.lang.instrument.Instrumentation` / `ClassFileTransformer` /（AspectJ）weaver
+    - 推荐 Lab：`AspectjLtwLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[第 44 章：00. 深挖导读](044-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 44 章：02：断点地图](044-02-breakpoint-map.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+## 最短调用链（你要能复述）
+
+### 1) CTW（Compile-Time Weaving）
+
+1. 构建阶段由 AspectJ 编译器/织入器处理 class
+2. 输出的 class 已经包含织入后的字节码
+3. 运行期不需要代理也能命中 `call/get/set/constructor` 等 join point
+
+### 2) LTW（Load-Time Weaving）
+
+1. JVM 启动加载 javaagent（`-javaagent:...`）
+2. agent 注册 `ClassFileTransformer`
+3. 类加载时 transformer 接到原始字节码并执行织入
+4. JVM 定义类（defineClass）时使用“织入后的字节码”
+
+证据链入口：
+
+- `AspectjLtwLabTest` / `AspectjCtwLabTest`
+
+<!-- BOOKIFY:START -->
+
+### 对应 Lab/Test
+
+- Lab：`AspectjLtwLabTest`
+- Lab：`AspectjCtwLabTest`
+
+上一章：[part-00-guide/00-deep-dive-guide.md](044-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](044-02-breakpoint-map.md)
+
+<!-- BOOKIFY:END -->
