@@ -19,7 +19,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from repo_paths import find_module_root
+from repo_paths import find_module_root, to_maven_artifact_id
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -92,7 +92,8 @@ def md_link(text: str, target: str) -> str:
 
 
 def mvn_run_cmd(module: str, test_class: str) -> str:
-    return f"mvn -q -pl :{module} -Dtest={test_class} test"
+    artifact_id = to_maven_artifact_id(module)
+    return f"mvn -q -pl :{artifact_id} -Dtest={test_class} test"
 
 
 def build_markdown(modules: list[str]) -> str:
@@ -115,6 +116,7 @@ def build_markdown(modules: list[str]) -> str:
         module_root = find_module_root(REPO_ROOT, module)
         if module_root is None:
             continue
+        artifact_id = to_maven_artifact_id(module)
         docs_readme = resolve_docs_readme(REPO_ROOT, module)
         tests = iter_lab_tests(module_root)
         lines.append(f"### {module}")
@@ -125,6 +127,8 @@ def build_markdown(modules: list[str]) -> str:
             continue
 
         lines.append(f"- 数量：{len(tests)}")
+        if artifact_id != module:
+            lines.append(f"- artifactId：`{artifact_id}`")
         if docs_readme is not None:
             docs_rel_from_docs_root = docs_readme.relative_to(REPO_ROOT / "docs").as_posix()
             lines.append(f"- 模块 docs：[`docs/{docs_rel_from_docs_root}`](../{docs_rel_from_docs_root})")

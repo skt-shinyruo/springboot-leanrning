@@ -17,18 +17,18 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>springboot-basics</module>
-        <module>springboot-autoconfiguration</module>
-        <module>springboot-web-mvc</module>
-        <module>springboot-data-jpa</module>
-        <module>springboot-actuator</module>
-        <module>springboot-testing</module>
-        <module>springboot-business-case</module>
-        <module>springboot-security</module>
-        <module>springboot-observability</module>
-        <module>springboot-logging</module>
-        <module>springboot-web-client</module>
-        <module>springboot-async-scheduling</module>
-        <module>springboot-cache</module>
+        <module>spring-boot-basics</module>
+        <module>spring-boot-autoconfiguration</module>
+        <module>spring-boot-web-mvc</module>
+        <module>spring-boot-data-jpa</module>
+        <module>spring-boot-actuator</module>
+        <module>spring-boot-testing</module>
+        <module>spring-boot-business-case</module>
+        <module>spring-boot-security</module>
+        <module>spring-boot-observability</module>
+        <module>spring-boot-logging</module>
+        <module>spring-boot-web-client</module>
+        <module>spring-boot-async-scheduling</module>
+        <module>spring-boot-cache</module>
     </modules>
 </project>

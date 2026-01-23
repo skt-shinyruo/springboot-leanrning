@@ -4,8 +4,8 @@ set -euo pipefail
 module="${1:-}"
 if [[ -z "${module}" ]]; then
   echo "Usage: scripts/test-module.sh <module>"
-  echo "Example: scripts/test-module.sh springboot-web-mvc"
-  echo "Example: scripts/test-module.sh :springboot-web-mvc"
+  echo "Example: scripts/test-module.sh spring-boot-web-mvc"
+  echo "Example: scripts/test-module.sh :spring-boot-web-mvc"
   exit 2
 fi
 

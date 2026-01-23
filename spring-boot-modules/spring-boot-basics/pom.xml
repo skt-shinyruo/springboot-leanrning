@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>com.learning.springboot</groupId>
-        <artifactId>springboot-learning</artifactId>
+        <artifactId>spring-boot-modules</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>springboot-basics</artifactId>
-    <name>springboot-basics</name>
+    <artifactId>spring-boot-basics</artifactId>
+    <name>spring-boot-basics</name>
     <description>Spring Boot basics: startup, configuration properties, profiles</description>
 
     <dependencies>

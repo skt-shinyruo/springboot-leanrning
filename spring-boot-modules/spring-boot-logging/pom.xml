@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>com.learning.springboot</groupId>
-        <artifactId>springboot-learning</artifactId>
+        <artifactId>spring-boot-modules</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>springboot-logging</artifactId>
-    <name>springboot-logging</name>
+    <artifactId>spring-boot-logging</artifactId>
+    <name>spring-boot-logging</name>
     <description>Spring Boot logging basics: levels, categories, and testable logs</description>
 
     <dependencies>

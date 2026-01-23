@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>com.learning.springboot</groupId>
-        <artifactId>springboot-learning</artifactId>
+        <artifactId>spring-boot-modules</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>springboot-observability</artifactId>
-    <name>springboot-observability</name>
+    <artifactId>spring-boot-observability</artifactId>
+    <name>spring-boot-observability</name>
     <description>Observability with Spring Boot: metrics, observations, and HTTP instrumentation</description>
 
     <dependencies>
