@@ -22,7 +22,7 @@
 ### 运行
 
 ```bash
-mvn -pl :springboot-testing spring-boot:run
+mvn -pl :spring-boot-testing spring-boot:run
 ```
 
 默认端口：`8083`
@@ -36,7 +36,7 @@ curl 'http://localhost:8083/api/greeting?name=Bob'
 ### 测试
 
 ```bash
-mvn -pl :springboot-testing test
+mvn -pl :spring-boot-testing test
 ```
 
 ## 推荐 docs 阅读顺序

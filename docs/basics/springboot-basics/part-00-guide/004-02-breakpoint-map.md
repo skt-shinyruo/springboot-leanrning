@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
 
 ## 入口断点（从“现象”回到“绑定”）
 

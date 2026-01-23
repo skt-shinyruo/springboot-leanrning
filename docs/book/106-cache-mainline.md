@@ -63,10 +63,10 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl :springboot-cache -Dtest=BootCacheLabTest test`（`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`）
-- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-cache -Dtest=BootCacheBookMatrixLabTest test`（`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java`）
-- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-cache -Dtest=BootCacheBranchMatrixLabTest test`（`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBranchMatrixLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseTest.java`
+- Lab：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheLabTest test`（`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`（`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheBranchMatrixLabTest test`（`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseTest.java`
 
 ---
 

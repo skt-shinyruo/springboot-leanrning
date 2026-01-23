@@ -23,7 +23,7 @@
 ### 运行
 
 ```bash
-mvn -pl :springboot-security spring-boot:run
+mvn -pl :spring-boot-security spring-boot:run
 ```
 
 默认端口：`8085`
@@ -65,7 +65,7 @@ curl -u admin:password http://localhost:8085/api/admin/ping
 ### 测试
 
 ```bash
-mvn -pl :springboot-security test
+mvn -pl :spring-boot-security test
 ```
 
 ## 推荐 docs 阅读顺序（从现象到机制）

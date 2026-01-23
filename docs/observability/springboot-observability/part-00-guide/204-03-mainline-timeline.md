@@ -15,7 +15,7 @@
 
 ## 从 Book Matrix 进入（主线最小集合）
 
-- `mvn -q -pl :springboot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
+- `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
 
 ## 机制主线（你要建立的叙事）
 

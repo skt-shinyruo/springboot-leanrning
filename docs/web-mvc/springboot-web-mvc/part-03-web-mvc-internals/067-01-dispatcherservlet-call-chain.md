@@ -356,7 +356,7 @@ T1: DispatcherType=ERROR（容器触发错误派发，进入 /error）
 - Lab：`BootWebMvcInternalsLabTest`
 - Lab：`BootWebMvcLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
-- 建议命令：`mvn -pl :springboot-web-mvc test`
+- 建议命令：`mvn -pl :spring-boot-web-mvc test`
 
 ## 常见坑与边界
 

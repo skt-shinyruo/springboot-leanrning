@@ -26,7 +26,7 @@
 ### 运行
 
 ```bash
-mvn -pl :springboot-web-mvc spring-boot:run
+mvn -pl :spring-boot-web-mvc spring-boot:run
 ```
 
 默认端口：`8081`
@@ -67,7 +67,7 @@ curl -H 'Accept: text/html' http://localhost:8081/pages/ping
 ### 测试
 
 ```bash
-mvn -pl :springboot-web-mvc test
+mvn -pl :spring-boot-web-mvc test
 ```
 
 ## 推荐 docs 阅读顺序

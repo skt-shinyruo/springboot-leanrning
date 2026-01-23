@@ -41,12 +41,12 @@
 - 关键分支矩阵（If/Then 收敛）：[064-04-branch-decision-matrix.md](part-00-guide/064-04-branch-decision-matrix.md)
 - 排障 playbook：[082-90-common-pitfalls.md](appendix/082-90-common-pitfalls.md)
 - 自检清单：[083-99-self-check.md](appendix/083-99-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
-- 可跑入口（Branch Matrix - 错误分支矩阵 400/406/415）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
+- 可跑入口（Branch Matrix - 错误分支矩阵 400/406/415）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 - 练习与答案（Exercises/Solutions 约定）：[exercises-and-solutions.md](../../book/exercises-and-solutions.md)
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :springboot-web-mvc -Dtest=*ExerciseSolutionTest test`
+- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-boot-web-mvc -Dtest=*ExerciseSolutionTest test`
 - 并发/性能专题（可复现实验范式）：[performance-and-concurrency.md](../../book/performance-and-concurrency.md)
-- 可跑入口（并发/性能 Lab - RequestScope 隔离 / 并发请求边界）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcRequestScopeIsolationLabTest test`
+- 可跑入口（并发/性能 Lab - RequestScope 隔离 / 并发请求边界）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcRequestScopeIsolationLabTest test`
 
 ## 排坑与自检
 

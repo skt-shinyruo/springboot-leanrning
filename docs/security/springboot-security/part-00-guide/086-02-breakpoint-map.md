@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
 
 ## 入口断点（链路分段）
 

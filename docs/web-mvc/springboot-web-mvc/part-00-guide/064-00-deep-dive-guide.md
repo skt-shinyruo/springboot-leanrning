@@ -28,7 +28,7 @@
     先跑通一个最小入口，保证环境与依赖没问题：
 
     ```bash
-    mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test
+    mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test
     ```
 
     然后把断点放在“分支发生处”（而不是满屏日志）：
@@ -118,7 +118,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-- 建议命令：`mvn -pl :springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -131,7 +131,7 @@
 6. 能写出最小 async/SSE 示例，并避免 flaky（asyncDispatch、有限事件）
 
 ## 如何跑实验
-- 运行本模块测试：`mvn -pl :springboot-web-mvc test`
+- 运行本模块测试：`mvn -pl :spring-boot-web-mvc test`
 
 ## 对应 Lab（可运行）
 

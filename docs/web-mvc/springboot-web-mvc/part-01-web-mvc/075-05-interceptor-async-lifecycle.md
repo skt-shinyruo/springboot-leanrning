@@ -72,7 +72,7 @@
 建议命令（方法级入口）：
 
 ```bash
-mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcTraceLabTest#asyncTraceRecordsAfterConcurrentHandlingStartedAndAsyncDispatchCallbacks test
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#asyncTraceRecordsAfterConcurrentHandlingStartedAndAsyncDispatchCallbacks test
 ```
 
 你在测试里会看到两类证据：

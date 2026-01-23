@@ -7,7 +7,7 @@
 ## 关键命令
 
 ```bash
-mvn -pl :springboot-cache test
+mvn -pl :spring-boot-cache test
 ```
 
 ## 推荐 docs 阅读顺序

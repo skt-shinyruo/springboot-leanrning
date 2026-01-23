@@ -63,10 +63,10 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl :springboot-testing -Dtest=GreetingControllerWebMvcLabTest test`（`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`）
-- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-testing -Dtest=BootTestingBookMatrixLabTest test`（`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java`）
-- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-testing -Dtest=BootTestingBranchMatrixLabTest test`（`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBranchMatrixLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
+- Lab：`mvn -q -pl :spring-boot-testing -Dtest=GreetingControllerWebMvcLabTest test`（`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`（`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`（`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
 
 ---
 

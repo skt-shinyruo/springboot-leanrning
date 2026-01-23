@@ -84,7 +84,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest` / `BootDataJpaMergeAndDetachLabTest`
-- 建议命令：`mvn -pl :springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -105,7 +105,7 @@
 9. [99-self-check](../appendix/105-99-self-check.md)
 
 ## 如何跑实验
-- 运行本模块测试：`mvn -pl :springboot-data-jpa test`
+- 运行本模块测试：`mvn -pl :spring-boot-data-jpa test`
 
 ## 对应 Lab（可运行）
 

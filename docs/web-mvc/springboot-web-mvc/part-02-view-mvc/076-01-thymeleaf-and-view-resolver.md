@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-    - Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 ## 机制主线
 
@@ -49,9 +49,9 @@
 
 在本模块里可以直接对照：
 
-- 页面 Controller：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcPingController.java`
-- 页面模板：`spring-boot-modules/springboot-web-mvc/src/main/resources/templates/pages/ping.html`
-- 静态资源（CSS）：`spring-boot-modules/springboot-web-mvc/src/main/resources/static/css/app.css`
+- 页面 Controller：`spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcPingController.java`
+- 页面模板：`spring-boot-modules/spring-boot-web-mvc/src/main/resources/templates/pages/ping.html`
+- 静态资源（CSS）：`spring-boot-modules/spring-boot-web-mvc/src/main/resources/static/css/app.css`
 
 `MvcPingController` 里同时提供两种写法：
 - 返回 view name：`GET /pages/ping`
@@ -71,7 +71,7 @@
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
 - 建议命令（方法级入口）：
-  - `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcViewLabTest#rendersPingPage test`
+  - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcViewLabTest#rendersPingPage test`
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -140,7 +140,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-- Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 上一章：[part-01-web-mvc/05-interceptor-async-lifecycle.md](../part-01-web-mvc/075-05-interceptor-async-lifecycle.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-02-view-mvc/02-form-binding-validation-prg.md](02-form-binding-validation-prg.md)
 

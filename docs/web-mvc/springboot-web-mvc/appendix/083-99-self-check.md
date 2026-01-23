@@ -17,11 +17,11 @@
 
 ## 从 Book Matrix 进入（主线最小集合）
 
-- `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
+- `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
 
 ## 从 Branch Matrix 进入（关键分支最小集合）
 
-- 错误分支矩阵 400/406/415：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+- 错误分支矩阵 400/406/415：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 - 配套资料：[`断点地图`](../part-00-guide/066-02-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/064-04-branch-decision-matrix.md)
 
 - 本章主题：**99 - Self Check（springboot-web-mvc）**
@@ -87,7 +87,7 @@
 - Lab：`BootWebMvcAdviceMatchingLabTest`
 - Lab：`BootWebMvcRealWorldHttpLabTest`
 - Lab：`BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
-- 建议命令：`mvn -pl :springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

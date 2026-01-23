@@ -22,13 +22,13 @@
 - 默认配置（不指定 profile）：
 
 ```bash
-mvn -pl :springboot-basics spring-boot:run
+mvn -pl :spring-boot-basics spring-boot:run
 ```
 
 - 启用 `dev` profile：
 
 ```bash
-mvn -pl :springboot-basics spring-boot:run -Dspring-boot.run.profiles=dev
+mvn -pl :spring-boot-basics spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 运行后观察控制台输出：
@@ -40,7 +40,7 @@ mvn -pl :springboot-basics spring-boot:run -Dspring-boot.run.profiles=dev
 ### 测试
 
 ```bash
-mvn -pl :springboot-basics test
+mvn -pl :spring-boot-basics test
 ```
 
 ## 推荐 docs 阅读顺序

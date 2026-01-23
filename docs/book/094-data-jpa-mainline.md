@@ -98,10 +98,10 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaLabTest test`（`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`）
-- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`（`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java`）
-- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`（`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBranchMatrixLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
+- Lab：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaLabTest test`（`spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`（`spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`（`spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
 
 ---
 

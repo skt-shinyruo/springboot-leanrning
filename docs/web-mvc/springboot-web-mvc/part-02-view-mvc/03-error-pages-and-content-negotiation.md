@@ -14,7 +14,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-    - Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 ## 机制主线
 
@@ -54,12 +54,12 @@
 ## 在本模块里去哪里看
 
 - 错误页模板：
-  - `spring-boot-modules/springboot-web-mvc/src/main/resources/templates/error/404.html`
-  - `spring-boot-modules/springboot-web-mvc/src/main/resources/templates/error/4xx.html`
-  - `spring-boot-modules/springboot-web-mvc/src/main/resources/templates/error/5xx.html`
+  - `spring-boot-modules/spring-boot-web-mvc/src/main/resources/templates/error/404.html`
+  - `spring-boot-modules/spring-boot-web-mvc/src/main/resources/templates/error/4xx.html`
+  - `spring-boot-modules/spring-boot-web-mvc/src/main/resources/templates/error/5xx.html`
 - 示例 Controller / 异常处理：
-  - `spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcErrorDemoController.java`
-  - `spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcExceptionHandler.java`
+  - `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcErrorDemoController.java`
+  - `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part02_view_mvc/MvcExceptionHandler.java`
 
 ## 源码与断点
 
@@ -70,19 +70,19 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-- 建议命令：`mvn -pl :springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 实验入口（先跑再看）
 
 - MockMvc（固定行为，最直观）：
-  - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java`
+  - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java`
     - `returnsCustom404HtmlPageForUnknownRoute`
     - `renders5xxHtmlPageWhenControllerThrows`
     - `returnsJsonWhenAcceptIsJson`
 - 端到端（真实端口验证错误页模板生效）：
-  - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+  - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 ## 常见坑与边界
 
@@ -131,7 +131,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-- Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 上一章：[part-02-view-mvc/02-form-binding-validation-prg.md](02-form-binding-validation-prg.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/082-90-common-pitfalls.md)
 

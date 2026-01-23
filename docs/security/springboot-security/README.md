@@ -26,12 +26,12 @@
 - 关键分支矩阵（If/Then 收敛）：[086-04-branch-decision-matrix.md](part-00-guide/086-04-branch-decision-matrix.md)
 - 排障 playbook：[092-90-common-pitfalls.md](appendix/092-90-common-pitfalls.md)
 - 自检清单：[093-99-self-check.md](appendix/093-99-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-security -Dtest=BootSecurityBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
 - 练习与答案（Exercises/Solutions 约定）：[exercises-and-solutions.md](../../book/exercises-and-solutions.md)
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :springboot-security -Dtest=*ExerciseSolutionTest test`
+- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-boot-security -Dtest=*ExerciseSolutionTest test`
 - 并发/性能专题（可复现实验范式）：[performance-and-concurrency.md](../../book/performance-and-concurrency.md)
-- 可跑入口（并发/性能 Lab - SecurityContext 并发隔离）：`mvn -q -pl :springboot-security -Dtest=BootSecuritySecurityContextIsolationLabTest test`
+- 可跑入口（并发/性能 Lab - SecurityContext 并发隔离）：`mvn -q -pl :spring-boot-security -Dtest=BootSecuritySecurityContextIsolationLabTest test`
 
 ## 排坑与自检
 

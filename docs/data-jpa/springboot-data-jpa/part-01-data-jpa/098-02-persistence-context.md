@@ -54,7 +54,7 @@ Persistence Context（持久化上下文）是 JPA/Hibernate 的核心：
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootDataJpaLabTest`
-- 建议命令：`mvn -pl :springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

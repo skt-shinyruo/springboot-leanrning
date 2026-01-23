@@ -7,7 +7,7 @@
 ## 关键命令
 
 ```bash
-mvn -pl :springboot-web-client test
+mvn -pl :spring-boot-web-client test
 ```
 
 ## 推荐 docs 阅读顺序

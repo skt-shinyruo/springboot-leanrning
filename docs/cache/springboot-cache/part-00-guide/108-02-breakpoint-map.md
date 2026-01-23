@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-cache -Dtest=BootCacheBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBranchMatrixLabTest test`
 
 ## 框架侧断点（优先）
 

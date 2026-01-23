@@ -23,7 +23,7 @@
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-testing -Dtest=BootTestingBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
 
 ## 排障 Playbook（对应模块）
 

@@ -1,4 +1,4 @@
-# springboot-autoconfiguration
+# spring-boot-autoconfiguration
 
 本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”讲透 **Spring Boot 自动配置（Auto-Configuration）**的核心机制：
 
@@ -11,7 +11,7 @@
 ## Start Here（5 分钟闭环）
 
 ```bash
-mvn -pl :springboot-autoconfiguration -Dtest=BootAutoConfigurationLabTest test
+mvn -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationLabTest test
 ```
 
 你应该能解释清楚：
@@ -25,13 +25,13 @@ mvn -pl :springboot-autoconfiguration -Dtest=BootAutoConfigurationLabTest test
 ### 测试
 
 ```bash
-mvn -pl :springboot-autoconfiguration test
+mvn -pl :spring-boot-autoconfiguration test
 ```
 
 ### 运行
 
 ```bash
-mvn -pl :springboot-autoconfiguration spring-boot:run
+mvn -pl :spring-boot-autoconfiguration spring-boot:run
 ```
 
 ## Labs / Exercises 索引
@@ -41,4 +41,5 @@ mvn -pl :springboot-autoconfiguration spring-boot:run
 | 类型 | 入口 | 知识点 | 难度 |
 | --- | --- | --- | --- |
 | Lab | `src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationLabTest.java` | 条件装配 + backoff + 顺序叠加（最小闭环） | ⭐⭐ |
+| Lab（Perf/Concurrency） | `src/test/java/com/learning/springboot/bootautoconfiguration/part02_perf_concurrency/BootAutoConfigurationConcurrencyLabTest.java` | 并发读取容器产物一致性（Primary/Backoff 的结果不可漂移） | ⭐⭐ |
 | Exercise | `src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationExerciseTest.java` | 增加 1 个条件分支并固化为断言 | ⭐⭐–⭐⭐⭐ |

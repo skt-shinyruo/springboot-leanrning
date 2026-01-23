@@ -18,7 +18,7 @@
 ### 运行
 
 ```bash
-mvn -pl :springboot-actuator spring-boot:run
+mvn -pl :spring-boot-actuator spring-boot:run
 ```
 
 默认端口：`8082`
@@ -34,7 +34,7 @@ curl http://localhost:8082/actuator/health
 ### 测试
 
 ```bash
-mvn -pl :springboot-actuator test
+mvn -pl :spring-boot-actuator test
 ```
 
 ## 推荐 docs 阅读顺序

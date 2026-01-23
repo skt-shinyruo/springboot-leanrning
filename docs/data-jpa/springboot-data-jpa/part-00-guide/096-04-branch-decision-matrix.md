@@ -31,7 +31,7 @@ JPA 的大多数“怪现象”都能用两条线解释：
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
 
 ## 调试路线（建议）
 

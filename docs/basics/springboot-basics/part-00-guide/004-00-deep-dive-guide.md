@@ -104,12 +104,12 @@ Profile 很容易被误解为“只影响配置文件”。实际上它至少影
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootBasicsDefaultLabTest` / `BootBasicsDevLabTest` / `BootBasicsOverrideLabTest`
-- 建议命令：`mvn -pl :springboot-basics test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-basics test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 如何跑实验（建议）
-- 运行本模块全部测试：`mvn -pl :springboot-basics test`
+- 运行本模块全部测试：`mvn -pl :spring-boot-basics test`
 
 ## Labs & Exercises 快速入口
 - Labs（观察点 + 断言）：见 `docs/README.md` 的 “Labs & Exercises”

@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
 
 ## 入口断点（业务与事务）
 

@@ -23,7 +23,7 @@
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
 
 ## 排障 Playbook（对应模块）
 

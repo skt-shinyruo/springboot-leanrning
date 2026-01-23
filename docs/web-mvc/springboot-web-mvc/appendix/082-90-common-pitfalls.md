@@ -21,8 +21,8 @@
 
 1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
-   - Book Matrix：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
-   - Branch Matrix（错误分支矩阵 400/406/415）：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+   - Book Matrix：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
+   - Branch Matrix（错误分支矩阵 400/406/415）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[066-02-breakpoint-map.md](../part-00-guide/066-02-breakpoint-map.md)
 4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[064-04-branch-decision-matrix.md](../part-00-guide/064-04-branch-decision-matrix.md)
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
@@ -78,7 +78,7 @@
 - Lab：`BootWebMvcRealWorldHttpLabTest` / `BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
 - Lab：`BootWebMvcAsyncSseLabTest`（含 DeferredResult）
 - Lab：`BootWebMvcTraceLabTest`（Filter/Interceptor 顺序 + async lifecycle）
-- 建议命令：`mvn -pl :springboot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 

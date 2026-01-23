@@ -29,7 +29,7 @@
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-cache -Dtest=BootCacheBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBranchMatrixLabTest test`
 
 ## 调试路线（建议）
 

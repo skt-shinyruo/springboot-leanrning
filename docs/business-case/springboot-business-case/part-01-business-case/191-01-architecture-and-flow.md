@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootBusinessCaseLabTest`
-    - Test file：`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
+    - Test file：`spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
 
 ## 机制主线
 
@@ -51,7 +51,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootBusinessCaseLabTest`
-- 建议命令：`mvn -pl :springboot-business-case test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-business-case test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -59,7 +59,7 @@
 本章把业务主线串起来，并明确每个边界点“应该观察什么、如何用测试复现”。
 
 ## 最小可复现入口
-- `BootBusinessCaseLabTest`：`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
+- `BootBusinessCaseLabTest`：`spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
 
 ## 常见坑与边界
 
@@ -81,7 +81,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootBusinessCaseLabTest`
-- Test file：`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
+- Test file：`spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`
 
 上一章：[part-00-guide/00-deep-dive-guide.md](../part-00-guide/190-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/192-90-common-pitfalls.md)
 

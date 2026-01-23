@@ -25,7 +25,7 @@
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
 
 ## 排障 Playbook（对应模块）
 

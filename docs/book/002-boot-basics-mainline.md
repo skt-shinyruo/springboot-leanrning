@@ -75,10 +75,10 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl :springboot-basics -Dtest=BootBasicsOverrideLabTest test`（`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`）
-- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-basics -Dtest=BootBasicsBookMatrixLabTest test`（`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java`）
-- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-basics -Dtest=BootBasicsBranchMatrixLabTest test`（`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBranchMatrixLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
+- Lab：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsOverrideLabTest test`（`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`（`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBranchMatrixLabTest test`（`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
 
 ---
 

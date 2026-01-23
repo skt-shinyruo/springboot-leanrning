@@ -10,7 +10,7 @@
 ## 关键命令
 
 ```bash
-mvn -pl :springboot-async-scheduling test
+mvn -pl :spring-boot-async-scheduling test
 ```
 
 ## 推荐 docs 阅读顺序

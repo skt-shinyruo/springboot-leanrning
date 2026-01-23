@@ -85,19 +85,19 @@
 推荐先跑一个最小请求，把“路由 → handler → 返回值”跑通：
 
 ```bash
-mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test
 ```
 
 然后跑“内部机制”证据链，把参数解析阶段变成可观测对象：
 
 ```bash
-mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcInternalsLabTest test
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcInternalsLabTest test
 ```
 
 最后再用“追踪链路”把 Filter/Interceptor/async 的生命周期看清楚：
 
 ```bash
-mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcTraceLabTest test
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest test
 ```
 
 ## 小结与下一章

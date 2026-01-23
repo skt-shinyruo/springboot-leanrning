@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest`
-    - Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 ## 机制主线
 
@@ -122,19 +122,19 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 - Lab：`BootWebMvcLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
 - 建议命令（方法级入口）：
-  - `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest#returnsTypeMismatchWhenRequestParamCannotConvert test`
-  - `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest#returnsValidationFailedWhenModelAttributeIsInvalid test`
+  - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest#returnsTypeMismatchWhenRequestParamCannotConvert test`
+  - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest#returnsValidationFailedWhenModelAttributeIsInvalid test`
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 实验入口
 
 - 绑定基础（JSON → DTO）：
-  - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
+  - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
     - `createsUserWhenRequestIsValid`
     - `ignoresUnknownJsonFieldsByDefault`
 - 练习：path variable + 自定义类型绑定：
-  - `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+  - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
     - `exercise_pathVariables`
     - `exercise_converterFormatter`
 
@@ -176,7 +176,7 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 - Lab：`BootWebMvcLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
 - Exercise：`BootWebMvcExerciseTest`
-- Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 上一章：[part-01-web-mvc/02-exception-handling.md](072-02-exception-handling.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-mvc/04-interceptor-and-filter-ordering.md](074-04-interceptor-and-filter-ordering.md)
 

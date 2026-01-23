@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
 
 ## 入口断点（先证明“是不是代理”）
 

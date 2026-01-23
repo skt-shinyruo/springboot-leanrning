@@ -63,10 +63,10 @@
 
 ## 本章可跑入口（最小闭环）
 
-- Lab：`mvn -q -pl :springboot-security -Dtest=BootSecurityLabTest test`（`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`）
-- Lab（进阶：Book Matrix）：`mvn -q -pl :springboot-security -Dtest=BootSecurityBookMatrixLabTest test`（`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java`）
-- Lab（进阶：Branch Matrix）：`mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`（`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java`）
-- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
+- Lab：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityLabTest test`（`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`）
+- Lab（进阶：Book Matrix）：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`（`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java`）
+- Lab（进阶：Branch Matrix）：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`（`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java`）
+- Exercise（动手练习，默认 `@Disabled`）：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
 
 ---
 

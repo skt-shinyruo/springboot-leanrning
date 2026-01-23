@@ -81,7 +81,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
-- 建议命令：`mvn -pl :springboot-web-client test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -92,7 +92,7 @@
 4. 能用 MockWebServer 写出“可复现”的客户端测试
 
 ## 如何跑实验
-- 运行本模块测试：`mvn -pl :springboot-web-client test`
+- 运行本模块测试：`mvn -pl :spring-boot-web-client test`
 
 ## 对应 Lab（可运行）
 

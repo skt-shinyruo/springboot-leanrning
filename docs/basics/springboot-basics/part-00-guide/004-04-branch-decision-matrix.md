@@ -31,7 +31,7 @@
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
 
 ## 调试路线（建议）
 

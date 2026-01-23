@@ -16,8 +16,9 @@
 
 ## 进阶入口（可跑入口/关键分支）
 
-- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-logging -Dtest=BootLoggingBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-logging -Dtest=BootLoggingBranchMatrixLabTest test`
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBranchMatrixLabTest test`
+- 可跑入口（Perf/Concurrency Lab）：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingConcurrencyLabTest test`
 
 ## 排坑与自检
 

@@ -23,7 +23,7 @@
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
 
 ## 排障 Playbook（对应模块）
 

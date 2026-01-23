@@ -16,8 +16,9 @@
 
 ## 进阶入口（可跑入口/关键分支）
 
-- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-autoconfiguration -Dtest=BootAutoConfigurationBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-autoconfiguration -Dtest=BootAutoConfigurationBranchMatrixLabTest test`
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationBranchMatrixLabTest test`
+- 可跑入口（Perf/Concurrency Lab）：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationConcurrencyLabTest test`
 
 ## 排坑与自检
 

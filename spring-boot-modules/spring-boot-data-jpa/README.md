@@ -23,7 +23,7 @@
 ### 运行
 
 ```bash
-mvn -pl :springboot-data-jpa spring-boot:run
+mvn -pl :spring-boot-data-jpa spring-boot:run
 ```
 
 启动后会在控制台打印一段简单的“写入/查询”示例日志（示例数据写入 H2 内存库）。
@@ -31,7 +31,7 @@ mvn -pl :springboot-data-jpa spring-boot:run
 ### 测试
 
 ```bash
-mvn -pl :springboot-data-jpa test
+mvn -pl :spring-boot-data-jpa test
 ```
 
 ## 推荐 docs 阅读顺序（从现象到机制）

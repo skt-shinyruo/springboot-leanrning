@@ -52,7 +52,7 @@ mvn -q -pl :<artifactId> test
 例如：
 
 ```bash
-mvn -q -pl :springboot-web-mvc test
+mvn -q -pl :spring-boot-web-mvc test
 ```
 
 ### 3) 运行某个模块（需要启动应用时）

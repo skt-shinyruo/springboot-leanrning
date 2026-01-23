@@ -33,7 +33,7 @@
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 
 ## 推荐断点（从错误分支回到机制）
 

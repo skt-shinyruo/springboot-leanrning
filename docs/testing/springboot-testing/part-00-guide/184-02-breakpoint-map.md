@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-testing -Dtest=BootTestingBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
 
 ## 断点（上下文创建与 mock 注入）
 

@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityLabTest`
-    - Test file：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+    - Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 ## 机制主线
 
@@ -60,7 +60,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootSecurityLabTest`
-- 建议命令：`mvn -pl :springboot-security test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -108,7 +108,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootSecurityLabTest`
-- Test file：`spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+- Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 上一章：[part-01-security/03-method-security-and-proxy.md](089-03-method-security-and-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-security/05-jwt-stateless.md](091-05-jwt-stateless.md)
 

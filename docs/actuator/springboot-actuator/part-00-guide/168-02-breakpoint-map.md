@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
 
 ## 断点（Endpoint 注册与暴露）
 

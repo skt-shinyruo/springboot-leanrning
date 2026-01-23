@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootCacheLabTest`
-    - Test file：`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
+    - Test file：`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
 
 ## 机制主线
 
@@ -46,7 +46,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootCacheLabTest`
-- 建议命令：`mvn -pl :springboot-cache test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-cache test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -74,7 +74,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootCacheLabTest`
-- Test file：`spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
+- Test file：`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
 
 上一章：[part-00-guide/00-deep-dive-guide.md](../part-00-guide/108-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-cache/02-cacheput-and-evict.md](110-02-cacheput-and-evict.md)
 

@@ -96,7 +96,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
-- 建议命令：`mvn -pl :springboot-actuator test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-actuator test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -106,7 +106,7 @@
 3. 能定位 Actuator 相关排障的第一现场：`/actuator`、条件报告、日志与配置来源
 
 ## 如何跑实验
-- 运行本模块测试：`mvn -pl :springboot-actuator test`
+- 运行本模块测试：`mvn -pl :spring-boot-actuator test`
 
 ## 对应 Lab（可运行）
 

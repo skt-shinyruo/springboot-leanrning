@@ -92,8 +92,8 @@
   - 403（CSRF）：认证后 POST `/api/advanced/secure/update` 不带 token
 
 对应源码：
-- `SecurityConfig`：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part08_security_observability/SecurityConfig.java`
-- `SecureDemoController`：`spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part08_security_observability/SecureDemoController.java`
+- `SecurityConfig`：`spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part08_security_observability/SecurityConfig.java`
+- `SecureDemoController`：`spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part08_security_observability/SecureDemoController.java`
 
 ## 常见坑与边界
 

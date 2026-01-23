@@ -23,7 +23,7 @@
 ### 运行
 
 ```bash
-mvn -pl :springboot-business-case spring-boot:run
+mvn -pl :spring-boot-business-case spring-boot:run
 ```
 
 ### 快速验证（创建订单）
@@ -37,7 +37,7 @@ curl -s -X POST 'http://localhost:8084/api/orders' \
 ### 测试
 
 ```bash
-mvn -pl :springboot-business-case test
+mvn -pl :spring-boot-business-case test
 ```
 
 ## 推荐 docs 阅读顺序

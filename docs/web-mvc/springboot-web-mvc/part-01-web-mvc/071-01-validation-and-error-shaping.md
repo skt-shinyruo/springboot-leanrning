@@ -27,7 +27,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-    - Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
+    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
 
 ## 机制主线
 
@@ -45,7 +45,7 @@
 可以把 Web MVC 的请求处理分成三段：
 
 在本模块里，错误形状由：
-- `spring-boot-modules/springboot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part01_web_mvc/GlobalExceptionHandler.java`
+- `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part01_web_mvc/GlobalExceptionHandler.java`
 控制。
 
 - 看到 400：先看响应体的 `fieldErrors`，定位是哪一个字段失败，再回到 DTO 的注解。
@@ -94,7 +94,7 @@
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
 - 建议命令（方法级入口）：
-  - `mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
+  - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -110,7 +110,7 @@
 
 1) **校验是否触发（@Valid 分支）**
 - 入口测试：`BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid`
-- 建议命令：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
+- 建议命令：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
 - 对照用例（故意省略 `@Valid`，证明“写了注解但没触发”）：`BootWebMvcLabTest#createUserSucceedsWhenControllerOmitsValidAnnotation`
 - 断点建议：
   - `RequestResponseBodyMethodProcessor#resolveArgument`
@@ -154,7 +154,7 @@
 ### 对应 Lab/Test
 
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-- Test file：`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
+- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
 
 上一章：[part-00-guide/00-deep-dive-guide.md](../part-00-guide/064-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-mvc/02-exception-handling.md](072-02-exception-handling.md)
 

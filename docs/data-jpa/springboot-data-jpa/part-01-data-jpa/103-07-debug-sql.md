@@ -34,7 +34,7 @@
 
 ## 本模块的默认配置
 
-`spring-boot-modules/springboot-data-jpa/src/main/resources/application.properties` 已经开启：
+`spring-boot-modules/spring-boot-data-jpa/src/main/resources/application.properties` 已经开启：
 
 - `spring.jpa.show-sql=true`
 
@@ -56,7 +56,7 @@
 
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootDataJpaDebugSqlLabTest`
-- 建议命令：`mvn -pl :springboot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

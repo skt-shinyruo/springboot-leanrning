@@ -17,11 +17,11 @@
 
 ## 从 Book Matrix 进入（主线最小集合）
 
-- `mvn -q -pl :springboot-testing -Dtest=BootTestingBookMatrixLabTest test`
+- `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
 
 ## 从 Branch Matrix 进入（关键分支最小集合）
 
-- `mvn -q -pl :springboot-testing -Dtest=BootTestingBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
 - 配套资料：[`断点地图`](../part-00-guide/184-02-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/184-04-branch-decision-matrix.md)
 
 - 本章主题：**99 - Self Check（springboot-testing）**
@@ -54,7 +54,7 @@
 
 - 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
 - Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest`
-- 建议命令：`mvn -pl :springboot-testing test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-boot-testing test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

@@ -67,13 +67,13 @@ mvn -q test
 - 只构建/测试某个模块（示例：`springboot-web-mvc`）：
 
 ```bash
-mvn -q -pl :springboot-web-mvc test
+mvn -q -pl :spring-boot-web-mvc test
 ```
 
 - 运行某个模块（示例：`springboot-basics`）：
 
 ```bash
-mvn -pl :springboot-basics spring-boot:run
+mvn -pl :spring-boot-basics spring-boot:run
 ```
 
 ## Debug 工具箱（遇到红测/异常时）
@@ -126,32 +126,32 @@ mvn -pl :springboot-basics spring-boot:run
 
 ### 配置 / Profiles / 条件装配
 
-- ⭐ `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`：配置绑定 + 默认 profile
-- ⭐ `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java`：dev profile 覆盖与 Bean 切换
-- ⭐⭐ `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`：测试级 property override 优先级
+- ⭐ `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`：配置绑定 + 默认 profile
+- ⭐ `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java`：dev profile 覆盖与 Bean 切换
+- ⭐⭐ `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`：测试级 property override 优先级
 - ⭐⭐ `spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/SpringCoreProfilesLabTest.java`：`@Profile`/`@ConditionalOnProperty` + `ApplicationContextRunner`
-- （练习）`spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
+- （练习）`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
 - （练习）`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/SpringCoreProfilesExerciseTest.java`
 
 ### Web MVC / 错误处理
 
-- ⭐ `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`：`@WebMvcTest` 切片（更快、更聚焦）
-- ⭐ `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`：`@SpringBootTest` 全量上下文（更接近集成）
-- ⭐⭐⭐ `spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`：综合链路（含 Validation/JPA/Tx/Events/AOP）
-- （练习）`spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
-- （练习）`spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part00_guide/BootBusinessCaseExerciseTest.java`
+- ⭐ `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`：`@WebMvcTest` 切片（更快、更聚焦）
+- ⭐ `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`：`@SpringBootTest` 全量上下文（更接近集成）
+- ⭐⭐⭐ `spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseLabTest.java`：综合链路（含 Validation/JPA/Tx/Events/AOP）
+- （练习）`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- （练习）`spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part00_guide/BootBusinessCaseExerciseTest.java`
 
 ### 测试切片（Testing）
 
-- ⭐ `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`：`@WebMvcTest` + `@MockBean`
-- ⭐ `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`：`@SpringBootTest(webEnvironment=RANDOM_PORT)`
-- ⭐⭐ `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`：full context 里用 `@MockBean` 覆盖真实 Bean
-- （练习）`spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
+- ⭐ `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`：`@WebMvcTest` + `@MockBean`
+- ⭐ `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`：`@SpringBootTest(webEnvironment=RANDOM_PORT)`
+- ⭐⭐ `spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`：full context 里用 `@MockBean` 覆盖真实 Bean
+- （练习）`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part00_guide/BootTestingExerciseTest.java`
 
 ### JPA（Spring Data JPA）
 
-- ⭐⭐ `spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`：persistence context / flush / dirty checking
-- （练习）`spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
+- ⭐⭐ `spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaLabTest.java`：persistence context / flush / dirty checking
+- （练习）`spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
 
 ### Bean / IoC 容器
 
@@ -195,9 +195,9 @@ mvn -pl :springboot-basics spring-boot:run
 
 ### Actuator（可观测性）
 
-- ⭐ `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`：health/info + 自定义健康检查
-- ⭐⭐ `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`：端点暴露配置与验证
-- （练习）`spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseTest.java`
+- ⭐ `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorLabTest.java`：health/info + 自定义健康检查
+- ⭐⭐ `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`：端点暴露配置与验证
+- （练习）`spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseTest.java`
 
 ## 模块目录（Catalog）
 

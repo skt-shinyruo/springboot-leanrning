@@ -15,11 +15,11 @@
 
 ## 从 Book Matrix 进入（主线最小集合）
 
-- `mvn -q -pl :springboot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
+- `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
 
 ## 从 Branch Matrix 进入（关键分支最小集合）
 
-- `mvn -q -pl :springboot-observability -Dtest=BootObservabilityBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBranchMatrixLabTest test`
 - 配套资料：[`断点地图`](../part-00-guide/205-02-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/205-04-branch-decision-matrix.md)
 
 ## 自检问题

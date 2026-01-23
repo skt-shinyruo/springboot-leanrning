@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
 
 ## Filter 顺序断点（最常见误解点）
 

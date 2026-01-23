@@ -77,13 +77,13 @@
 
 ### 复现/验证补充说明（来自原文迁移）
 
-- 代码入口：`spring-boot-modules/springboot-business-case/src/main/java/com/learning/springboot/bootbusinesscase/events/OrderEventListeners.java`
+- 代码入口：`spring-boot-modules/spring-boot-business-case/src/main/java/com/learning/springboot/bootbusinesscase/events/OrderEventListeners.java`
 - 行为断言：`BootBusinessCaseLabTest` 里有两类断言
   - 成功提交：既有 `sync:` 也有 `afterCommit:` 日志
   - 回滚失败：只有 `sync:`，不会出现 `afterCommit:`
 
 ```bash
-mvn -pl :springboot-business-case test
+mvn -pl :spring-boot-business-case test
 ```
 
 - `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot`

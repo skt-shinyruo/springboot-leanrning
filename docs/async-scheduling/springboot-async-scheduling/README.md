@@ -21,10 +21,10 @@
 - 关键分支矩阵（If/Then 收敛）：[118-04-branch-decision-matrix.md](part-00-guide/118-04-branch-decision-matrix.md)
 - 排障 playbook：[124-90-common-pitfalls.md](appendix/124-90-common-pitfalls.md)
 - 自检清单：[125-99-self-check.md](appendix/125-99-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
+- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
+- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
 - 并发/性能专题（可复现实验范式）：[performance-and-concurrency.md](../../book/performance-and-concurrency.md)
-- 可跑入口（线程池饱和/拒绝策略）：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
+- 可跑入口（线程池饱和/拒绝策略）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
 
 ## 排坑与自检
 

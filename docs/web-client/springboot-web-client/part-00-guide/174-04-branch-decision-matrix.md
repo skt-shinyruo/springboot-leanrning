@@ -25,7 +25,7 @@
 
 ## 推荐运行命令
 
-- `mvn -q -pl :springboot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
 
 ## 排障 Playbook（对应模块）
 

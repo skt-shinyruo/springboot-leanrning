@@ -25,7 +25,7 @@
 
 推荐命令：
 
-- `mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
+- `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
 
 ## JPA API 断点（优先）
 

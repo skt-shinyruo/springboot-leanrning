@@ -1,4 +1,4 @@
-# springboot-observability
+# spring-boot-observability
 
 本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”讲透 **Spring Boot 可观测性（Observability）**在工程里的落点：
 
@@ -11,7 +11,7 @@
 ## Start Here（5 分钟闭环）
 
 ```bash
-mvn -pl :springboot-observability -Dtest=BootObservabilityLabTest test
+mvn -pl :spring-boot-observability -Dtest=BootObservabilityLabTest test
 ```
 
 你应该能解释清楚：
@@ -25,13 +25,13 @@ mvn -pl :springboot-observability -Dtest=BootObservabilityLabTest test
 ### 运行
 
 ```bash
-mvn -pl :springboot-observability spring-boot:run
+mvn -pl :spring-boot-observability spring-boot:run
 ```
 
 ### 测试
 
 ```bash
-mvn -pl :springboot-observability test
+mvn -pl :spring-boot-observability test
 ```
 
 ## Labs / Exercises 索引
@@ -41,4 +41,5 @@ mvn -pl :springboot-observability test
 | 类型 | 入口 | 知识点 | 难度 |
 | --- | --- | --- | --- |
 | Lab | `src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityLabTest.java` | HTTP → metrics/observations 的最小闭环 | ⭐⭐ |
+| Lab（Perf/Concurrency） | `src/test/java/com/learning/springboot/bootobservability/part02_perf_concurrency/BootObservabilityConcurrencyLabTest.java` | Observation scope（ThreadLocal）隔离与“并发不串 scope”验证 | ⭐⭐ |
 | Exercise | `src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityExerciseTest.java` | 增加自定义 tag 并固化断言 | ⭐⭐–⭐⭐⭐ |
