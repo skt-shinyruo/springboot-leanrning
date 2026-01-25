@@ -35,12 +35,12 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/async-scheduling/springboot-async-scheduling/README.md`
-- **Docs Guide:** `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md`
-- **Playbook:** `docs/async-scheduling/springboot-async-scheduling/appendix/124-90-common-pitfalls.md`
-- **Self-check:** `docs/async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-async-scheduling/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-async-scheduling/docs/appendix/124-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-async-scheduling/docs/appendix/125-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
@@ -53,7 +53,6 @@
 - **Exercise:** `spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseSolutionTest.java`
 - **Lab（并发/性能：线程池饱和/拒绝策略）：** `spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

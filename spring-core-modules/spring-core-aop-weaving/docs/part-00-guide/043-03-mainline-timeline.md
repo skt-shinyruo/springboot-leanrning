@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 42 章：织入主线（LTW/CTW）](../../../book/042-aop-weaving-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通](044-00-deep-dive-guide.md)
+上一章：[第 42 章：织入主线（LTW/CTW）](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通](044-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

@@ -17,10 +17,10 @@
 ## Specifications
 
 ### Source Layout
-- docs：`docs/resources/spring-core-resources/README.md`（目录页）
-- docs：`docs/resources/spring-core-resources/part-00-guide/`（深挖指南）
-- docs：`docs/resources/spring-core-resources/part-01-resource-abstraction/`（Resource 抽象与定位规则）
-- docs：`docs/resources/spring-core-resources/appendix/`（常见坑/自测题）
+- docs：`spring-core-modules/spring-core-resources/docs/README.md`（目录页）
+- docs：`spring-core-modules/spring-core-resources/docs/part-00-guide/`（深挖指南）
+- docs：`spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/`（Resource 抽象与定位规则）
+- docs：`spring-core-modules/spring-core-resources/docs/appendix/`（常见坑/自测题）
 - src(main)：`spring-core-modules/spring-core-resources/src/main/java/com/learning/springboot/springcoreresources/SpringCoreResourcesApplication.java`（入口，包名保持不变）
 - src(main)：`spring-core-modules/spring-core-resources/src/main/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/**`
 - src(test)：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part00_guide/**`
@@ -28,15 +28,14 @@
 - src(test)：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part02_perf_concurrency/**`（并发/性能 Labs）
 
 ### Docs Index
-- 入口：`docs/resources/spring-core-resources/README.md`
-- 断点地图：`docs/resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md`
-- 关键分支矩阵：`docs/resources/spring-core-resources/part-00-guide/140-04-branch-decision-matrix.md`
-- 排障 playbook：`docs/resources/spring-core-resources/appendix/147-90-common-pitfalls.md`
-- 自检清单：`docs/resources/spring-core-resources/appendix/148-99-self-check.md`
+- 入口：`spring-core-modules/spring-core-resources/docs/README.md`
+- 断点地图：`spring-core-modules/spring-core-resources/docs/part-00-guide/140-02-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-resources/docs/part-00-guide/140-04-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-resources/docs/appendix/147-90-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-resources/docs/appendix/148-99-self-check.md`
 - Branch Matrix（关键分支入口）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
 - Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part00_guide/SpringCoreResourcesExerciseSolutionTest.java`
 - Lab（并发/性能：PathMatchingResourcePatternResolver 并发解析）：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part02_perf_concurrency/SpringCoreResourcesPatternResolverConcurrencyLabTest.java`
-- Book 专题页（方法论与样板索引）：`docs/book/performance-and-concurrency.md`
 
 ### Requirement: Resource 学习闭环
 **Module:** spring-core-resources

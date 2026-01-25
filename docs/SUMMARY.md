@@ -1,235 +1,457 @@
 # 站点目录（SSOT）
-> 这份文件就是文档站的“目录/导航”本身：按这里的顺序与层级展示侧边栏。
+> 这份文件是文档站的“目录/导航”本身：按这里的顺序与层级展示侧边栏。
+> 文档内容以各模块 `*/docs/` 为准；仓库根 `docs/` 仅保留本文件。
+> 目录维护：直接编辑本文件（仓库已移除 `scripts/` 批处理脚本；链接使用相对本文件所在目录的路径（指向仓库根请以 `../` 开头））。
 <!--nav-->
-- [封面](index.md)
+- [封面](../README.md)
 - 模块文档
-  - [主题索引](topics/index.md)
   - Spring Boot（应用层）
-    - 基础入门
-      - [spring-boot-basics](basics/spring-boot-basics/README.md)
-      - [主线时间线](basics/spring-boot-basics/part-00-guide/003-03-mainline-timeline.md)
-      - [深挖导读](basics/spring-boot-basics/part-00-guide/004-00-deep-dive-guide.md)
-      - [SpringApplication.run() 调用链](basics/spring-boot-basics/part-00-guide/004-01-springapplication-run-call-chain.md)
-      - [断点地图](basics/spring-boot-basics/part-00-guide/004-02-breakpoint-map.md)
-      - [关键分支矩阵](basics/spring-boot-basics/part-00-guide/004-04-branch-decision-matrix.md)
-      - [常见坑](basics/spring-boot-basics/appendix/007-90-common-pitfalls.md)
-      - [自检](basics/spring-boot-basics/appendix/008-99-self-check.md)
-    - Web MVC
-      - [spring-boot-web-mvc](web-mvc/spring-boot-web-mvc/README.md)
-      - [主线时间线](web-mvc/spring-boot-web-mvc/part-00-guide/063-03-mainline-timeline.md)
-      - [深挖导读](web-mvc/spring-boot-web-mvc/part-00-guide/064-00-deep-dive-guide.md)
-      - [请求调用链速览](web-mvc/spring-boot-web-mvc/part-00-guide/064-01-webmvc-request-call-chain.md)
-      - [关键分支矩阵](web-mvc/spring-boot-web-mvc/part-00-guide/064-04-branch-decision-matrix.md)
-      - [知识地图](web-mvc/spring-boot-web-mvc/part-00-guide/065-01-knowledge-map.md)
-      - [断点地图](web-mvc/spring-boot-web-mvc/part-00-guide/066-02-breakpoint-map.md)
-      - [常见坑](web-mvc/spring-boot-web-mvc/appendix/082-90-common-pitfalls.md)
-      - [自检](web-mvc/spring-boot-web-mvc/appendix/083-99-self-check.md)
-    - Security
-      - [spring-boot-security](security/spring-boot-security/README.md)
-      - [主线时间线](security/spring-boot-security/part-00-guide/085-03-mainline-timeline.md)
-      - [深挖导读](security/spring-boot-security/part-00-guide/086-00-deep-dive-guide.md)
-      - [Security 调用链](security/spring-boot-security/part-00-guide/086-01-security-filterchain-call-chain.md)
-      - [断点地图](security/spring-boot-security/part-00-guide/086-02-breakpoint-map.md)
-      - [关键分支矩阵](security/spring-boot-security/part-00-guide/086-04-branch-decision-matrix.md)
-      - [常见坑](security/spring-boot-security/appendix/092-90-common-pitfalls.md)
-      - [自检](security/spring-boot-security/appendix/093-99-self-check.md)
-    - Data JPA
-      - [spring-boot-data-jpa](data-jpa/spring-boot-data-jpa/README.md)
-      - [主线时间线](data-jpa/spring-boot-data-jpa/part-00-guide/095-03-mainline-timeline.md)
-      - [深挖导读](data-jpa/spring-boot-data-jpa/part-00-guide/096-00-deep-dive-guide.md)
-      - [Repository 调用链](data-jpa/spring-boot-data-jpa/part-00-guide/096-01-repository-call-chain.md)
-      - [断点地图](data-jpa/spring-boot-data-jpa/part-00-guide/096-02-breakpoint-map.md)
-      - [关键分支矩阵](data-jpa/spring-boot-data-jpa/part-00-guide/096-04-branch-decision-matrix.md)
-      - [常见坑](data-jpa/spring-boot-data-jpa/appendix/104-90-common-pitfalls.md)
-      - [自检](data-jpa/spring-boot-data-jpa/appendix/105-99-self-check.md)
-    - Cache
-      - [spring-boot-cache](cache/spring-boot-cache/README.md)
-      - [主线时间线](cache/spring-boot-cache/part-00-guide/107-03-mainline-timeline.md)
-      - [深挖导读](cache/spring-boot-cache/part-00-guide/108-00-deep-dive-guide.md)
-      - [Cache 调用链](cache/spring-boot-cache/part-00-guide/108-01-cache-interceptor-call-chain.md)
-      - [断点地图](cache/spring-boot-cache/part-00-guide/108-02-breakpoint-map.md)
-      - [关键分支矩阵](cache/spring-boot-cache/part-00-guide/108-04-branch-decision-matrix.md)
-      - [常见坑](cache/spring-boot-cache/appendix/114-90-common-pitfalls.md)
-      - [自检](cache/spring-boot-cache/appendix/115-99-self-check.md)
-    - Async & Scheduling
-      - [spring-boot-async-scheduling](async-scheduling/spring-boot-async-scheduling/README.md)
-      - [主线时间线](async-scheduling/spring-boot-async-scheduling/part-00-guide/117-03-mainline-timeline.md)
-      - [深挖导读](async-scheduling/spring-boot-async-scheduling/part-00-guide/118-00-deep-dive-guide.md)
-      - [Async/Scheduling 调用链](async-scheduling/spring-boot-async-scheduling/part-00-guide/118-01-async-and-scheduling-call-chain.md)
-      - [断点地图](async-scheduling/spring-boot-async-scheduling/part-00-guide/118-02-breakpoint-map.md)
-      - [关键分支矩阵](async-scheduling/spring-boot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md)
-      - [常见坑](async-scheduling/spring-boot-async-scheduling/appendix/124-90-common-pitfalls.md)
-      - [自检](async-scheduling/spring-boot-async-scheduling/appendix/125-99-self-check.md)
-    - Actuator
-      - [spring-boot-actuator](actuator/spring-boot-actuator/README.md)
-      - [主线时间线](actuator/spring-boot-actuator/part-00-guide/167-03-mainline-timeline.md)
-      - [深挖导读](actuator/spring-boot-actuator/part-00-guide/168-00-deep-dive-guide.md)
-      - [Actuator 调用链](actuator/spring-boot-actuator/part-00-guide/168-01-actuator-endpoint-call-chain.md)
-      - [断点地图](actuator/spring-boot-actuator/part-00-guide/168-02-breakpoint-map.md)
-      - [关键分支矩阵](actuator/spring-boot-actuator/part-00-guide/168-04-branch-decision-matrix.md)
-      - [常见坑](actuator/spring-boot-actuator/appendix/170-90-common-pitfalls.md)
-      - [自检](actuator/spring-boot-actuator/appendix/171-99-self-check.md)
-    - Web Client
-      - [spring-boot-web-client](web-client/spring-boot-web-client/README.md)
-      - [主线时间线](web-client/spring-boot-web-client/part-00-guide/173-03-mainline-timeline.md)
-      - [深挖导读](web-client/spring-boot-web-client/part-00-guide/174-00-deep-dive-guide.md)
-      - [Web Client 调用链](web-client/spring-boot-web-client/part-00-guide/174-01-webclient-call-chain.md)
-      - [断点地图](web-client/spring-boot-web-client/part-00-guide/174-02-breakpoint-map.md)
-      - [关键分支矩阵](web-client/spring-boot-web-client/part-00-guide/174-04-branch-decision-matrix.md)
-      - [常见坑](web-client/spring-boot-web-client/appendix/180-90-common-pitfalls.md)
-      - [自检](web-client/spring-boot-web-client/appendix/181-99-self-check.md)
-    - Testing
-      - [spring-boot-testing](testing/spring-boot-testing/README.md)
-      - [主线时间线](testing/spring-boot-testing/part-00-guide/183-03-mainline-timeline.md)
-      - [深挖导读](testing/spring-boot-testing/part-00-guide/184-00-deep-dive-guide.md)
-      - [Testing 调用链](testing/spring-boot-testing/part-00-guide/184-01-test-bootstrap-and-slicing-call-chain.md)
-      - [断点地图](testing/spring-boot-testing/part-00-guide/184-02-breakpoint-map.md)
-      - [关键分支矩阵](testing/spring-boot-testing/part-00-guide/184-04-branch-decision-matrix.md)
-      - [常见坑](testing/spring-boot-testing/appendix/186-90-common-pitfalls.md)
-      - [自检](testing/spring-boot-testing/appendix/187-99-self-check.md)
-    - Business Case
-      - [spring-boot-business-case](business-case/spring-boot-business-case/README.md)
-      - [主线时间线](business-case/spring-boot-business-case/part-00-guide/189-03-mainline-timeline.md)
-      - [深挖导读](business-case/spring-boot-business-case/part-00-guide/190-00-deep-dive-guide.md)
-      - [业务链路调用链](business-case/spring-boot-business-case/part-00-guide/190-01-business-request-call-chain.md)
-      - [断点地图](business-case/spring-boot-business-case/part-00-guide/190-02-breakpoint-map.md)
-      - [关键分支矩阵](business-case/spring-boot-business-case/part-00-guide/190-04-branch-decision-matrix.md)
-      - [常见坑](business-case/spring-boot-business-case/appendix/192-90-common-pitfalls.md)
-      - [自检](business-case/spring-boot-business-case/appendix/193-99-self-check.md)
-    - AutoConfiguration
-      - [spring-boot-autoconfiguration](autoconfig/spring-boot-autoconfiguration/README.md)
-      - [主线时间线](autoconfig/spring-boot-autoconfiguration/part-00-guide/194-03-mainline-timeline.md)
-      - [深挖导读](autoconfig/spring-boot-autoconfiguration/part-00-guide/195-00-deep-dive-guide.md)
-      - [AutoConfiguration 调用链](autoconfig/spring-boot-autoconfiguration/part-00-guide/195-01-autoconfiguration-import-call-chain.md)
-      - [断点地图](autoconfig/spring-boot-autoconfiguration/part-00-guide/195-02-breakpoint-map.md)
-      - [关键分支矩阵](autoconfig/spring-boot-autoconfiguration/part-00-guide/195-04-branch-decision-matrix.md)
-      - [常见坑](autoconfig/spring-boot-autoconfiguration/appendix/197-90-common-pitfalls.md)
-      - [自检](autoconfig/spring-boot-autoconfiguration/appendix/198-99-self-check.md)
-    - Logging
-      - [spring-boot-logging](logging/spring-boot-logging/README.md)
-      - [主线时间线](logging/spring-boot-logging/part-00-guide/199-03-mainline-timeline.md)
-      - [深挖导读](logging/spring-boot-logging/part-00-guide/200-00-deep-dive-guide.md)
-      - [Logging 调用链](logging/spring-boot-logging/part-00-guide/200-01-logging-call-chain.md)
-      - [断点地图](logging/spring-boot-logging/part-00-guide/200-02-breakpoint-map.md)
-      - [关键分支矩阵](logging/spring-boot-logging/part-00-guide/200-04-branch-decision-matrix.md)
-      - [常见坑](logging/spring-boot-logging/appendix/202-90-common-pitfalls.md)
-      - [自检](logging/spring-boot-logging/appendix/203-99-self-check.md)
-    - Observability
-      - [spring-boot-observability](observability/spring-boot-observability/README.md)
-      - [主线时间线](observability/spring-boot-observability/part-00-guide/204-03-mainline-timeline.md)
-      - [深挖导读](observability/spring-boot-observability/part-00-guide/205-00-deep-dive-guide.md)
-      - [Observability 调用链](observability/spring-boot-observability/part-00-guide/205-01-http-observation-call-chain.md)
-      - [断点地图](observability/spring-boot-observability/part-00-guide/205-02-breakpoint-map.md)
-      - [关键分支矩阵](observability/spring-boot-observability/part-00-guide/205-04-branch-decision-matrix.md)
-      - [常见坑](observability/spring-boot-observability/appendix/207-90-common-pitfalls.md)
-      - [自检](observability/spring-boot-observability/appendix/208-99-self-check.md)
-  - Spring Core（底层机制）
-    - IoC / Bean
-      - [spring-core-beans](beans/spring-core-beans/README.md)
-      - [主线时间线](beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md)
-      - [深挖导读](beans/spring-core-beans/part-00-guide/011-00-deep-dive-guide.md)
-      - [关键分支矩阵](beans/spring-core-beans/part-00-guide/011-04-branch-decision-matrix.md)
-      - [快速闭环（30min）](beans/spring-core-beans/part-00-guide/012-01-quickstart-30min.md)
-      - [refresh() 调用链](beans/spring-core-beans/part-00-guide/013-01-applicationcontext-refresh-call-chain.md)
-      - [断点地图](beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md)
-      - [常见坑](beans/spring-core-beans/appendix/025-90-common-pitfalls.md)
-      - [自检](beans/spring-core-beans/appendix/026-99-self-check.md)
-    - AOP / Weaving
-      - [spring-core-aop](aop/spring-core-aop/README.md)
-      - [主线时间线](aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md)
-      - [深挖导读](aop/spring-core-aop/part-00-guide/029-00-deep-dive-guide.md)
-      - [AOP 调用链](aop/spring-core-aop/part-00-guide/029-01-aop-invocation-call-chain.md)
-      - [断点地图](aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md)
-      - [关键分支矩阵](aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md)
-      - [常见坑](aop/spring-core-aop/appendix/040-90-common-pitfalls.md)
-      - [自检](aop/spring-core-aop/appendix/041-99-self-check.md)
-      - [spring-core-aop-weaving](aop/spring-core-aop-weaving/README.md)
-      - [主线时间线](aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md)
-      - [深挖导读](aop/spring-core-aop-weaving/part-00-guide/044-00-deep-dive-guide.md)
-      - [AspectJ Weaving 调用链](aop/spring-core-aop-weaving/part-00-guide/044-01-aspectj-weaving-call-chain.md)
-      - [断点地图](aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md)
-      - [关键分支矩阵](aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md)
-      - [常见坑](aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md)
-      - [自检](aop/spring-core-aop-weaving/appendix/050-99-self-check.md)
-    - 事务（Tx）
-      - [spring-core-tx](tx/spring-core-tx/README.md)
-      - [主线时间线](tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md)
-      - [深挖导读](tx/spring-core-tx/part-00-guide/053-00-deep-dive-guide.md)
-      - [事务拦截器调用链](tx/spring-core-tx/part-00-guide/053-01-transaction-interceptor-call-chain.md)
-      - [断点地图](tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md)
-      - [关键分支矩阵](tx/spring-core-tx/part-00-guide/053-04-branch-decision-matrix.md)
-      - [常见坑](tx/spring-core-tx/appendix/060-90-common-pitfalls.md)
-      - [自检](tx/spring-core-tx/appendix/061-99-self-check.md)
-    - Events
-      - [spring-core-events](events/spring-core-events/README.md)
-      - [主线时间线](events/spring-core-events/part-00-guide/127-03-mainline-timeline.md)
-      - [深挖导读](events/spring-core-events/part-00-guide/128-00-deep-dive-guide.md)
-      - [Events 调用链](events/spring-core-events/part-00-guide/128-01-events-call-chain.md)
-      - [断点地图](events/spring-core-events/part-00-guide/128-02-breakpoint-map.md)
-      - [关键分支矩阵](events/spring-core-events/part-00-guide/128-04-branch-decision-matrix.md)
-      - [常见坑](events/spring-core-events/appendix/136-90-common-pitfalls.md)
-      - [自检](events/spring-core-events/appendix/137-99-self-check.md)
-    - Resources
-      - [spring-core-resources](resources/spring-core-resources/README.md)
-      - [主线时间线](resources/spring-core-resources/part-00-guide/139-03-mainline-timeline.md)
-      - [深挖导读](resources/spring-core-resources/part-00-guide/140-00-deep-dive-guide.md)
-      - [Resources 调用链](resources/spring-core-resources/part-00-guide/140-01-resource-loading-call-chain.md)
-      - [断点地图](resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md)
-      - [关键分支矩阵](resources/spring-core-resources/part-00-guide/140-04-branch-decision-matrix.md)
-      - [常见坑](resources/spring-core-resources/appendix/147-90-common-pitfalls.md)
-      - [自检](resources/spring-core-resources/appendix/148-99-self-check.md)
-    - Profiles
-      - [spring-core-profiles](profiles/spring-core-profiles/README.md)
-      - [主线时间线](profiles/spring-core-profiles/part-00-guide/150-03-mainline-timeline.md)
-      - [深挖导读](profiles/spring-core-profiles/part-00-guide/151-00-deep-dive-guide.md)
-      - [Profiles 调用链](profiles/spring-core-profiles/part-00-guide/151-01-profile-activation-call-chain.md)
-      - [断点地图](profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md)
-      - [关键分支矩阵](profiles/spring-core-profiles/part-00-guide/151-04-branch-decision-matrix.md)
-      - [常见坑](profiles/spring-core-profiles/appendix/153-90-common-pitfalls.md)
-      - [自检](profiles/spring-core-profiles/appendix/154-99-self-check.md)
-    - Validation
-      - [spring-core-validation](validation/spring-core-validation/README.md)
-      - [主线时间线](validation/spring-core-validation/part-00-guide/156-03-mainline-timeline.md)
-      - [深挖导读](validation/spring-core-validation/part-00-guide/157-00-deep-dive-guide.md)
-      - [Validation 调用链](validation/spring-core-validation/part-00-guide/157-01-validation-call-chain.md)
-      - [断点地图](validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md)
-      - [关键分支矩阵](validation/spring-core-validation/part-00-guide/157-04-branch-decision-matrix.md)
-      - [常见坑](validation/spring-core-validation/appendix/164-90-common-pitfalls.md)
-      - [自检](validation/spring-core-validation/appendix/165-99-self-check.md)
-    - SpEL
-      - [spring-core-spel](spel/spring-core-spel/README.md)
-      - [主线时间线](spel/spring-core-spel/part-00-guide/209-03-mainline-timeline.md)
-      - [深挖导读](spel/spring-core-spel/part-00-guide/210-00-deep-dive-guide.md)
-      - [SpEL 调用链](spel/spring-core-spel/part-00-guide/210-01-spel-call-chain.md)
-      - [断点地图](spel/spring-core-spel/part-00-guide/210-02-breakpoint-map.md)
-      - [关键分支矩阵](spel/spring-core-spel/part-00-guide/210-04-branch-decision-matrix.md)
-      - [常见坑](spel/spring-core-spel/appendix/212-90-common-pitfalls.md)
-      - [自检](spel/spring-core-spel/appendix/213-99-self-check.md)
-- 主线之书（Book）
-  - [目录与阅读方法](book/index.md)
-  - [第 1 章：Start Here（如何运行、如何读、如何调试）](book/001-start-here.md)
-  - [第 2 章：Boot 启动与配置主线](book/002-boot-basics-mainline.md)
-  - [第 9 章：IoC 容器主线（Beans）](book/009-ioc-container-mainline.md)
-  - [第 27 章：AOP/代理主线](book/027-aop-proxy-mainline.md)
-  - [第 42 章：织入主线（LTW/CTW）](book/042-aop-weaving-mainline.md)
-  - [第 51 章：事务主线（Tx）](book/051-tx-mainline.md)
-  - [第 62 章：Web MVC 请求主线](book/062-webmvc-mainline.md)
-  - [第 84 章：Security 主线](book/084-security-mainline.md)
-  - [第 94 章：Data JPA 主线](book/094-data-jpa-mainline.md)
-  - [第 106 章：Cache 主线](book/106-cache-mainline.md)
-  - [第 116 章：Async/Scheduling 主线](book/116-async-scheduling-mainline.md)
-  - [第 126 章：Events 主线](book/126-events-mainline.md)
-  - [第 138 章：Resources 主线](book/138-resources-mainline.md)
-  - [第 149 章：Profiles 主线](book/149-profiles-mainline.md)
-  - [第 155 章：Validation 主线](book/155-validation-mainline.md)
-  - [第 166 章：Actuator/Observability 主线](book/166-actuator-observability-mainline.md)
-  - [第 172 章：Web Client 主线](book/172-web-client-mainline.md)
-  - [第 182 章：Testing 主线](book/182-testing-mainline.md)
-  - [第 188 章：Business Case 收束](book/188-business-case.md)
- - 附录
-    - [Labs 索引](book/labs-index.md)
-    - [Debugger Pack](book/debugger-pack.md)
-    - [Exercises & Solutions](book/exercises-and-solutions.md)
-    - [性能与并发（可复现实验范式）](book/performance-and-concurrency.md)
-    - [迁移规则](book/migration-rules.md)
-    - [写作指南](book/book-style.md)
+    - spring-boot-basics
+      - [spring-boot-basics](../spring-boot-modules/spring-boot-basics/docs/README.md)
+      - part-00-guide
+        - [第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）](../spring-boot-modules/spring-boot-basics/docs/part-00-guide/003-03-mainline-timeline.md)
+        - [第 4 章：00 - Deep Dive Guide（springboot-basics）](../spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-00-deep-dive-guide.md)
+        - [第 4 章：01：`SpringApplication#run` 调用链（启动 → 环境 → 容器）](../spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-01-springapplication-run-call-chain.md)
+        - [第 4 章：02：断点地图（Boot Basics Debugger Pack）](../spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-02-breakpoint-map.md)
+        - [第 4 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-04-branch-decision-matrix.md)
+      - part-01-boot-basics
+        - [第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](../spring-boot-modules/spring-boot-basics/docs/part-01-boot-basics/005-01-property-sources-and-profiles.md)
+        - [第 6 章：02：`@ConfigurationProperties` 绑定与类型转换](../spring-boot-modules/spring-boot-basics/docs/part-01-boot-basics/006-02-configuration-properties-binding.md)
+      - appendix
+        - [第 7 章：90：常见坑清单（建议反复对照）](../spring-boot-modules/spring-boot-basics/docs/appendix/007-90-common-pitfalls.md)
+        - [第 8 章：99 - Self Check（springboot-basics）](../spring-boot-modules/spring-boot-basics/docs/appendix/008-99-self-check.md)
+    - spring-boot-web-mvc
+      - [spring-boot-web-mvc](../spring-boot-modules/spring-boot-web-mvc/docs/README.md)
+      - part-00-guide
+        - [第 63 章：主线时间线：Spring Boot Web MVC](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/063-03-mainline-timeline.md)
+        - [第 64 章：00 - Deep Dive Guide（springboot-web-mvc）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/064-00-deep-dive-guide.md)
+        - [第 64 章：01：请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/064-01-webmvc-request-call-chain.md)
+        - [第 64 章：04：关键分支矩阵（Web MVC Branch Decision Matrix）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/064-04-branch-decision-matrix.md)
+        - [第 65 章：01：知识地图（Web MVC Deep Dive Map）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/065-01-knowledge-map.md)
+        - [第 66 章：02：断点地图（Part 01 Debugger Pack）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/066-02-breakpoint-map.md)
+      - part-01-web-mvc
+        - [第 71 章：01：校验（Validation）与错误响应形状（Error Shape）](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/071-01-validation-and-error-shaping.md)
+        - [第 72 章：02：统一异常处理（ControllerAdvice）与“坏输入”](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/072-02-exception-handling.md)
+        - [第 73 章：03：请求绑定（Binding）与 Converter/Formatter](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/073-03-binding-and-converters.md)
+        - [第 74 章：04：Interceptor 与 Filter：入口在哪里、顺序怎么理解](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/074-04-interceptor-and-filter-ordering.md)
+        - [第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/075-05-interceptor-async-lifecycle.md)
+      - part-02-view-mvc
+        - [02：表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](../spring-boot-modules/spring-boot-web-mvc/docs/part-02-view-mvc/02-form-binding-validation-prg.md)
+        - [03：错误页（error/*.html）与内容协商（Accept：HTML vs JSON）](../spring-boot-modules/spring-boot-web-mvc/docs/part-02-view-mvc/03-error-pages-and-content-negotiation.md)
+        - [第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../spring-boot-modules/spring-boot-web-mvc/docs/part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md)
+      - part-03-web-mvc-internals
+        - [02：ArgumentResolver 与 Binder（已合并）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/02-argument-resolver-and-binder.md)
+        - [第 67 章：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md)
+        - [第 68 章：03：HttpMessageConverter 与返回值处理（序列化发生在哪里）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/068-03-message-converters-and-return-values.md)
+        - [第 69 章：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/069-04-exception-resolvers-and-error-flow.md)
+        - [第 70 章：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/070-05-controlleradvice-matching-and-ordering.md)
+      - part-04-rest-contract
+        - [02：Jackson ObjectMapper 可控（严格模式、未知字段、时间）](../spring-boot-modules/spring-boot-web-mvc/docs/part-04-rest-contract/02-jackson-objectmapper-controls.md)
+        - [03：错误契约加固（解析失败 vs 校验失败 vs 类型不匹配）](../spring-boot-modules/spring-boot-web-mvc/docs/part-04-rest-contract/03-error-contract-hardening.md)
+        - [04：ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](../spring-boot-modules/spring-boot-web-mvc/docs/part-04-rest-contract/04-problemdetail-vs-custom-error.md)
+        - [第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../spring-boot-modules/spring-boot-web-mvc/docs/part-04-rest-contract/077-01-content-negotiation-406-415.md)
+      - part-05-real-world-http
+        - [02：Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/02-multipart-upload.md)
+        - [03：下载与 Header（Content-Disposition / Content-Type / bytes）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/03-download-and-streaming.md)
+        - [04：静态资源与缓存（Static Resources / Cache-Control）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/04-static-resources-and-cache.md)
+        - [05：条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/05-conditional-requests-last-modified-etag-filter.md)
+        - [第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/078-01-cors-preflight.md)
+      - part-06-async-sse
+        - [02：SSE（SseEmitter：text/event-stream 最小闭环）](../spring-boot-modules/spring-boot-web-mvc/docs/part-06-async-sse/02-sse-emitter.md)
+        - [03：DeferredResult（回调式异步）与 timeout/fallback（可控分支）](../spring-boot-modules/spring-boot-web-mvc/docs/part-06-async-sse/03-deferredresult-and-timeout.md)
+        - [第 79 章：01：Servlet Async（Callable）与测试（asyncDispatch）](../spring-boot-modules/spring-boot-web-mvc/docs/part-06-async-sse/079-01-servlet-async-and-testing.md)
+      - part-07-testing-debugging
+        - [第 80 章：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）](../spring-boot-modules/spring-boot-web-mvc/docs/part-07-testing-debugging/080-01-webmvc-testing-and-troubleshooting.md)
+      - part-08-security-observability
+        - [02：Observability（Interceptor 计时 vs Actuator 指标）](../spring-boot-modules/spring-boot-web-mvc/docs/part-08-security-observability/02-observability-and-metrics.md)
+        - [第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../spring-boot-modules/spring-boot-web-mvc/docs/part-08-security-observability/081-01-security-filterchain-and-mvc.md)
+      - appendix
+        - [第 82 章：90：常见坑清单（Web MVC）](../spring-boot-modules/spring-boot-web-mvc/docs/appendix/082-90-common-pitfalls.md)
+        - [第 83 章：99 - Self Check（springboot-web-mvc）](../spring-boot-modules/spring-boot-web-mvc/docs/appendix/083-99-self-check.md)
+    - spring-boot-testing
+      - [spring-boot-testing](../spring-boot-modules/spring-boot-testing/docs/README.md)
+      - part-00-guide
+        - [第 183 章：主线时间线：Spring Boot Testing](../spring-boot-modules/spring-boot-testing/docs/part-00-guide/183-03-mainline-timeline.md)
+        - [第 184 章：00 - Deep Dive Guide（springboot-testing）](../spring-boot-modules/spring-boot-testing/docs/part-00-guide/184-00-deep-dive-guide.md)
+        - [第 184 章：01：Testing 调用链（Test Bootstrap → Slice → Context Cache）](../spring-boot-modules/spring-boot-testing/docs/part-00-guide/184-01-test-bootstrap-and-slicing-call-chain.md)
+        - [第 184 章：02：断点地图（Testing Debugger Pack）](../spring-boot-modules/spring-boot-testing/docs/part-00-guide/184-02-breakpoint-map.md)
+        - [第 184 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-testing/docs/part-00-guide/184-04-branch-decision-matrix.md)
+      - part-01-testing
+        - [第 185 章：01 - Slice 与 Mock（Testing）](../spring-boot-modules/spring-boot-testing/docs/part-01-testing/185-01-slice-and-mocking.md)
+      - appendix
+        - [第 186 章：90 - Common Pitfalls（springboot-testing）](../spring-boot-modules/spring-boot-testing/docs/appendix/186-90-common-pitfalls.md)
+        - [第 187 章：99 - Self Check（springboot-testing）](../spring-boot-modules/spring-boot-testing/docs/appendix/187-99-self-check.md)
+    - spring-boot-data-jpa
+      - [spring-boot-data-jpa](../spring-boot-modules/spring-boot-data-jpa/docs/README.md)
+      - part-00-guide
+        - [第 95 章：主线时间线：Spring Boot Data JPA](../spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/095-03-mainline-timeline.md)
+        - [第 96 章：00 - Deep Dive Guide（springboot-data-jpa）](../spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-00-deep-dive-guide.md)
+        - [第 96 章：01：Repository 调用链（RepositoryProxy → SimpleJpaRepository → EntityManager）](../spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-01-repository-call-chain.md)
+        - [第 96 章：02：断点地图（Data JPA Debugger Pack）](../spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-02-breakpoint-map.md)
+        - [第 96 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-04-branch-decision-matrix.md)
+      - part-01-data-jpa
+        - [第 97 章：01. Entity 状态机：transient / managed / detached / removed](../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/097-01-entity-states.md)
+        - [第 98 章：02. Persistence Context：JPA 的“一级缓存”与事务绑定](../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/098-02-persistence-context.md)
+        - [第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？](../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/099-03-flush-and-visibility.md)
+        - [第 100 章：04. Dirty Checking（脏检查）：为什么改字段不用 save 也能落库？](../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/100-04-dirty-checking.md)
+        - [第 101 章：05. Fetching 与 N+1：为什么查一次会变成查很多次？](../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/101-05-fetching-and-n-plus-one.md)
+        - [第 102 章：06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）](../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/102-06-datajpatest-slice.md)
+        - [第 103 章：07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/103-07-debug-sql.md)
+      - appendix
+        - [第 104 章：90. 常见坑清单（建议反复对照）](../spring-boot-modules/spring-boot-data-jpa/docs/appendix/104-90-common-pitfalls.md)
+        - [第 105 章：99 - Self Check（springboot-data-jpa）](../spring-boot-modules/spring-boot-data-jpa/docs/appendix/105-99-self-check.md)
+    - spring-boot-actuator
+      - [spring-boot-actuator](../spring-boot-modules/spring-boot-actuator/docs/README.md)
+      - part-00-guide
+        - [第 167 章：主线时间线：Spring Boot Actuator](../spring-boot-modules/spring-boot-actuator/docs/part-00-guide/167-03-mainline-timeline.md)
+        - [第 168 章：00 - Deep Dive Guide（springboot-actuator）](../spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-00-deep-dive-guide.md)
+        - [第 168 章：01：Actuator 调用链（端点发现 → 映射 → 执行）](../spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-01-actuator-endpoint-call-chain.md)
+        - [第 168 章：02：断点地图（Actuator Debugger Pack）](../spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-02-breakpoint-map.md)
+        - [第 168 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-04-branch-decision-matrix.md)
+      - part-01-actuator
+        - [第 169 章：01 - Actuator 基础与暴露](../spring-boot-modules/spring-boot-actuator/docs/part-01-actuator/169-01-actuator-basics.md)
+      - appendix
+        - [第 170 章：90 - Common Pitfalls（springboot-actuator）](../spring-boot-modules/spring-boot-actuator/docs/appendix/170-90-common-pitfalls.md)
+        - [第 171 章：99 - Self Check（springboot-actuator）](../spring-boot-modules/spring-boot-actuator/docs/appendix/171-99-self-check.md)
+    - spring-boot-business-case
+      - [spring-boot-business-case](../spring-boot-modules/spring-boot-business-case/docs/README.md)
+      - part-00-guide
+        - [第 189 章：主线时间线：Business Case（综合案例）](../spring-boot-modules/spring-boot-business-case/docs/part-00-guide/189-03-mainline-timeline.md)
+        - [第 190 章：00 - Deep Dive Guide（springboot-business-case）](../spring-boot-modules/spring-boot-business-case/docs/part-00-guide/190-00-deep-dive-guide.md)
+        - [第 190 章：01：业务链路调用链（MVC → Security → Tx → JPA → Events）](../spring-boot-modules/spring-boot-business-case/docs/part-00-guide/190-01-business-request-call-chain.md)
+        - [第 190 章：02：断点地图（Business Case Debugger Pack）](../spring-boot-modules/spring-boot-business-case/docs/part-00-guide/190-02-breakpoint-map.md)
+        - [第 190 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-business-case/docs/part-00-guide/190-04-branch-decision-matrix.md)
+      - part-01-business-case
+        - [第 191 章：01 - 架构与主流程（Business Case）](../spring-boot-modules/spring-boot-business-case/docs/part-01-business-case/191-01-architecture-and-flow.md)
+      - appendix
+        - [第 192 章：90 - Common Pitfalls（springboot-business-case）](../spring-boot-modules/spring-boot-business-case/docs/appendix/192-90-common-pitfalls.md)
+        - [第 193 章：99 - Self Check（springboot-business-case）](../spring-boot-modules/spring-boot-business-case/docs/appendix/193-99-self-check.md)
+    - spring-boot-cache
+      - [spring-boot-cache](../spring-boot-modules/spring-boot-cache/docs/README.md)
+      - part-00-guide
+        - [第 107 章：主线时间线：Spring Boot Cache](../spring-boot-modules/spring-boot-cache/docs/part-00-guide/107-03-mainline-timeline.md)
+        - [第 108 章：00 - Deep Dive Guide（springboot-cache）](../spring-boot-modules/spring-boot-cache/docs/part-00-guide/108-00-deep-dive-guide.md)
+        - [第 108 章：01：Cache 调用链（@Cacheable → CacheInterceptor → CacheManager）](../spring-boot-modules/spring-boot-cache/docs/part-00-guide/108-01-cache-interceptor-call-chain.md)
+        - [第 108 章：02：断点地图（Cache Debugger Pack）](../spring-boot-modules/spring-boot-cache/docs/part-00-guide/108-02-breakpoint-map.md)
+        - [第 108 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-cache/docs/part-00-guide/108-04-branch-decision-matrix.md)
+      - part-01-cache
+        - [第 109 章：01：`@Cacheable` 最小闭环](../spring-boot-modules/spring-boot-cache/docs/part-01-cache/109-01-cacheable-basics.md)
+        - [第 110 章：02：`@CachePut/@CacheEvict`：更新与失效](../spring-boot-modules/spring-boot-cache/docs/part-01-cache/110-02-cacheput-and-evict.md)
+        - [第 111 章：03：key / condition / unless：缓存边界](../spring-boot-modules/spring-boot-cache/docs/part-01-cache/111-03-key-condition-unless.md)
+        - [第 112 章：04：`sync=true`：防缓存击穿（stampede）](../spring-boot-modules/spring-boot-cache/docs/part-01-cache/112-04-sync-stampede.md)
+        - [第 113 章：05：过期与可测性：用 Ticker 控制时间](../spring-boot-modules/spring-boot-cache/docs/part-01-cache/113-05-expiry-with-ticker.md)
+      - appendix
+        - [第 114 章：90：常见坑清单（Cache）](../spring-boot-modules/spring-boot-cache/docs/appendix/114-90-common-pitfalls.md)
+        - [第 115 章：99 - Self Check（springboot-cache）](../spring-boot-modules/spring-boot-cache/docs/appendix/115-99-self-check.md)
+    - spring-boot-async-scheduling
+      - [spring-boot-async-scheduling](../spring-boot-modules/spring-boot-async-scheduling/docs/README.md)
+      - part-00-guide
+        - [第 117 章：主线时间线：Spring Boot Async & Scheduling](../spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/117-03-mainline-timeline.md)
+        - [第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）](../spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-00-deep-dive-guide.md)
+        - [第 118 章：01：Async/Scheduling 调用链（@Async / @Scheduled 的生效时机）](../spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-01-async-and-scheduling-call-chain.md)
+        - [第 118 章：02：断点地图（Async & Scheduling Debugger Pack）](../spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-02-breakpoint-map.md)
+        - [第 118 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-04-branch-decision-matrix.md)
+      - part-01-async-scheduling
+        - [第 119 章：01：`@Async` 心智模型：代理与线程切换](../spring-boot-modules/spring-boot-async-scheduling/docs/part-01-async-scheduling/119-01-async-proxy-mental-model.md)
+        - [第 120 章：02：Executor 与线程命名/并发边界](../spring-boot-modules/spring-boot-async-scheduling/docs/part-01-async-scheduling/120-02-executor-and-threading.md)
+        - [第 121 章：03：异常传播：Future vs void](../spring-boot-modules/spring-boot-async-scheduling/docs/part-01-async-scheduling/121-03-exceptions.md)
+        - [第 122 章：04：self-invocation：为什么异步有时不生效](../spring-boot-modules/spring-boot-async-scheduling/docs/part-01-async-scheduling/122-04-self-invocation.md)
+        - [第 123 章：05：`@Scheduled` 基础与可测试性](../spring-boot-modules/spring-boot-async-scheduling/docs/part-01-async-scheduling/123-05-scheduling-basics.md)
+      - appendix
+        - [第 124 章：90：常见坑清单（Async & Scheduling）](../spring-boot-modules/spring-boot-async-scheduling/docs/appendix/124-90-common-pitfalls.md)
+        - [第 125 章：99 - Self Check（springboot-async-scheduling）](../spring-boot-modules/spring-boot-async-scheduling/docs/appendix/125-99-self-check.md)
+    - spring-boot-web-client
+      - [spring-boot-web-client](../spring-boot-modules/spring-boot-web-client/docs/README.md)
+      - part-00-guide
+        - [第 173 章：主线时间线：Spring Boot Web Client](../spring-boot-modules/spring-boot-web-client/docs/part-00-guide/173-03-mainline-timeline.md)
+        - [第 174 章：00 - Deep Dive Guide（springboot-web-client）](../spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-00-deep-dive-guide.md)
+        - [第 174 章：01：Web Client 调用链（RestClient/WebClient：过滤器/拦截器在哪里生效）](../spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-01-webclient-call-chain.md)
+        - [第 174 章：02：断点地图（Web Client Debugger Pack）](../spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-02-breakpoint-map.md)
+        - [第 174 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-04-branch-decision-matrix.md)
+      - part-01-web-client
+        - [第 175 章：01：RestClient（同步）最小闭环](../spring-boot-modules/spring-boot-web-client/docs/part-01-web-client/175-01-restclient-basics.md)
+        - [第 176 章：02：WebClient（响应式）最小闭环](../spring-boot-modules/spring-boot-web-client/docs/part-01-web-client/176-02-webclient-basics.md)
+        - [第 177 章：03：错误处理：4xx/5xx → 领域异常](../spring-boot-modules/spring-boot-web-client/docs/part-01-web-client/177-03-error-handling.md)
+        - [第 178 章：04：超时与重试（确定性实验）](../spring-boot-modules/spring-boot-web-client/docs/part-01-web-client/178-04-timeout-and-retry.md)
+        - [第 179 章：05：测试策略：为什么用 MockWebServer？](../spring-boot-modules/spring-boot-web-client/docs/part-01-web-client/179-05-testing-with-mockwebserver.md)
+      - appendix
+        - [第 180 章：90：常见坑清单（Web Client）](../spring-boot-modules/spring-boot-web-client/docs/appendix/180-90-common-pitfalls.md)
+        - [第 181 章：99 - Self Check（springboot-web-client）](../spring-boot-modules/spring-boot-web-client/docs/appendix/181-99-self-check.md)
+    - spring-boot-security
+      - [spring-boot-security](../spring-boot-modules/spring-boot-security/docs/README.md)
+      - part-00-guide
+        - [第 85 章：主线时间线：Spring Boot Security](../spring-boot-modules/spring-boot-security/docs/part-00-guide/085-03-mainline-timeline.md)
+        - [第 86 章：00 - Deep Dive Guide（springboot-security）](../spring-boot-modules/spring-boot-security/docs/part-00-guide/086-00-deep-dive-guide.md)
+        - [第 86 章：01：Security 调用链（FilterChainProxy → Authentication → Authorization）](../spring-boot-modules/spring-boot-security/docs/part-00-guide/086-01-security-filterchain-call-chain.md)
+        - [第 86 章：02：断点地图（Security Debugger Pack）](../spring-boot-modules/spring-boot-security/docs/part-00-guide/086-02-breakpoint-map.md)
+        - [第 86 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-boot-modules/spring-boot-security/docs/part-00-guide/086-04-branch-decision-matrix.md)
+      - part-01-security
+        - [第 87 章：01：401 vs 403：Basic Auth 与授权规则](../spring-boot-modules/spring-boot-security/docs/part-01-security/087-01-basic-auth-and-authorization.md)
+        - [第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](../spring-boot-modules/spring-boot-security/docs/part-01-security/088-02-csrf.md)
+        - [第 89 章：03：Method Security 与代理：self-invocation 陷阱](../spring-boot-modules/spring-boot-security/docs/part-01-security/089-03-method-security-and-proxy.md)
+        - [第 90 章：04：FilterChain：多链路 + 顺序 + 自定义 Filter](../spring-boot-modules/spring-boot-security/docs/part-01-security/090-04-filter-chain-and-order.md)
+        - [第 91 章：05：JWT/Stateless：Bearer token + scope（最小闭环）](../spring-boot-modules/spring-boot-security/docs/part-01-security/091-05-jwt-stateless.md)
+      - appendix
+        - [第 92 章：90：常见坑清单（Security）](../spring-boot-modules/spring-boot-security/docs/appendix/092-90-common-pitfalls.md)
+        - [第 93 章：99 - Self Check（springboot-security）](../spring-boot-modules/spring-boot-security/docs/appendix/093-99-self-check.md)
+    - spring-boot-autoconfiguration
+      - [spring-boot-autoconfiguration](../spring-boot-modules/spring-boot-autoconfiguration/docs/README.md)
+      - part-00-guide
+        - [第 194 章：03：主线时间线：springboot-autoconfiguration](../spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/194-03-mainline-timeline.md)
+        - [第 195 章：00. 深挖导读：把“自动配置导入 + 条件决策”落到源码与断点](../spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-00-deep-dive-guide.md)
+        - [第 195 章：01：AutoConfiguration 调用链（imports → 条件决策 → 产出 bean）](../spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-01-autoconfiguration-import-call-chain.md)
+        - [第 195 章：02：断点地图（AutoConfiguration Debugger Pack）](../spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-02-breakpoint-map.md)
+        - [第 195 章：04：关键分支矩阵（AutoConfiguration）](../spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-04-branch-decision-matrix.md)
+      - part-01-autoconfig-basics
+        - [第 196 章：01：条件装配与 backoff（为什么它“有时生效、有时不生效”）](../spring-boot-modules/spring-boot-autoconfiguration/docs/part-01-autoconfig-basics/196-01-conditional-and-backoff.md)
+      - appendix
+        - [第 197 章：90 - Common Pitfalls（springboot-autoconfiguration）](../spring-boot-modules/spring-boot-autoconfiguration/docs/appendix/197-90-common-pitfalls.md)
+        - [第 198 章：99 - Self Check（springboot-autoconfiguration）](../spring-boot-modules/spring-boot-autoconfiguration/docs/appendix/198-99-self-check.md)
+    - spring-boot-logging
+      - [spring-boot-logging](../spring-boot-modules/spring-boot-logging/docs/README.md)
+      - part-00-guide
+        - [第 199 章：03：主线时间线：springboot-logging](../spring-boot-modules/spring-boot-logging/docs/part-00-guide/199-03-mainline-timeline.md)
+        - [第 200 章：00. 深挖导读：把“日志级别生效”落到源码与断点](../spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-00-deep-dive-guide.md)
+        - [第 200 章：01：Logging 调用链（LoggingSystem 初始化与级别决策）](../spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-01-logging-call-chain.md)
+        - [第 200 章：02：断点地图（Logging Debugger Pack）](../spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-02-breakpoint-map.md)
+        - [第 200 章：04：关键分支矩阵（Logging）](../spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-04-branch-decision-matrix.md)
+      - part-01-logging-basics
+        - [第 201 章：01：日志级别与分类（为什么 debug 有时出现、有时不出现）](../spring-boot-modules/spring-boot-logging/docs/part-01-logging-basics/201-01-logging-levels-and-categories.md)
+      - appendix
+        - [第 202 章：90 - Common Pitfalls（springboot-logging）](../spring-boot-modules/spring-boot-logging/docs/appendix/202-90-common-pitfalls.md)
+        - [第 203 章：99 - Self Check（springboot-logging）](../spring-boot-modules/spring-boot-logging/docs/appendix/203-99-self-check.md)
+    - spring-boot-observability
+      - [spring-boot-observability](../spring-boot-modules/spring-boot-observability/docs/README.md)
+      - part-00-guide
+        - [第 204 章：03：主线时间线：springboot-observability](../spring-boot-modules/spring-boot-observability/docs/part-00-guide/204-03-mainline-timeline.md)
+        - [第 205 章：00. 深挖导读：把“HTTP → metrics/observations”落到源码与断点](../spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-00-deep-dive-guide.md)
+        - [第 205 章：01：Observability 调用链（请求 → observation → meter）](../spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-01-http-observation-call-chain.md)
+        - [第 205 章：02：断点地图（Observability Debugger Pack）](../spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-02-breakpoint-map.md)
+        - [第 205 章：04：关键分支矩阵（Observability）](../spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-04-branch-decision-matrix.md)
+      - part-01-observability-basics
+        - [第 206 章：01：HTTP metrics（`http.server.requests` 从哪里来）](../spring-boot-modules/spring-boot-observability/docs/part-01-observability-basics/206-01-http-metrics-and-observations.md)
+      - appendix
+        - [第 207 章：90 - Common Pitfalls（springboot-observability）](../spring-boot-modules/spring-boot-observability/docs/appendix/207-90-common-pitfalls.md)
+        - [第 208 章：99 - Self Check（springboot-observability）](../spring-boot-modules/spring-boot-observability/docs/appendix/208-99-self-check.md)
+  - Spring Core（基础/机制）
+    - spring-core-beans
+      - [spring-core-beans](../spring-core-modules/spring-core-beans/docs/README.md)
+      - part-00-guide
+        - [第 10 章：主线时间线：Spring Core Beans（IoC 容器）](../spring-core-modules/spring-core-beans/docs/part-00-guide/010-03-mainline-timeline.md)
+        - [第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点](../spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md)
+        - [第 11 章：04：关键分支矩阵（Beans Branch Decision Matrix）](../spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md)
+        - [第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](../spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md)
+        - [第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）](../spring-core-modules/spring-core-beans/docs/part-00-guide/013-01-applicationcontext-refresh-call-chain.md)
+        - [第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）](../spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md)
+      - part-01-ioc-container
+        - [第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md)
+        - [第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md)
+        - [第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md)
+        - [第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md)
+        - [第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/018-07-configuration-enhancement.md)
+        - [02. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md)
+        - [第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md)
+        - [08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-factorybean.md)
+        - [09. 循环依赖：现象、原因与规避（constructor vs setter）](../spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md)
+      - part-02-boot-autoconfig
+        - [第 19 章：11. 调试与自检：如何“看见”容器正在做什么](../spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md)
+        - [020-09 Auto-Config Ordering（自动配置顺序）](../spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md)
+        - [第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
+      - part-03-container-internals
+        - [第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？](../spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
+        - [13. BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义](../spring-core-modules/spring-core-beans/docs/part-03-container-internals/13-bdrpp-definition-registration.md)
+        - [14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序](../spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md)
+        - [15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行](../spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md)
+        - [16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](../spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md)
+        - [17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）](../spring-core-modules/spring-core-beans/docs/part-03-container-internals/17-lifecycle-callback-order.md)
+        - [从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）](../spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md)
+      - part-04-wiring-and-boundaries
+        - [第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
+        - [19. dependsOn：强制初始化顺序（即使没有显式依赖）](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-depends-on.md)
+        - [20. registerResolvableDependency：能注入，但它不是 Bean](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md)
+        - [21. 父子 ApplicationContext：可见性与覆盖边界](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-context-hierarchy.md)
+        - [22. Bean 名称与 alias：同一个实例，多一个名字](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)
+        - [23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)
+        - [24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md)
+        - [25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)
+        - [26. SmartInitializingSingleton：所有单例都创建完之后再做事](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md)
+        - [27. SmartLifecycle：start/stop 时机与 phase 顺序](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md)
+        - [28. 自定义 Scope + scoped proxy：thread scope 的真实语义](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md)
+        - [29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md)
+        - [30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)
+        - [31. 代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
+        - [32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md)
+        - [33. 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` 到底各管什么？](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
+        - [34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)
+        - [35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md)
+        - [36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)
+        - [37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
+        - [38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/38-environment-and-propertysource.md)
+        - [39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md)
+      - part-05-aot-and-real-world
+        - [第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
+        - [41. RuntimeHints 入门：把构建期契约跑通](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md)
+        - [42. XML → BeanDefinitionReader：定义层解析与错误分型](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md)
+        - [43. 容器外对象注入：AutowireCapableBeanFactory](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md)
+        - [44. SpEL 与 `@Value("#{...}")`：表达式解析链路](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md)
+        - [45. 自定义 Qualifier：meta-annotation 与候选收敛](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md)
+        - [46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/46-xml-namespace-extension.md)
+        - [47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/47-beandefinitionreader-other-inputs-properties-groovy.md)
+        - [48. 方法注入（Method Injection）：replaced-method / MethodReplacer](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/48-method-injection-replaced-method.md)
+        - [49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/49-built-in-factorybeans-gallery.md)
+        - [50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象](../spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md)
+      - appendix
+        - [第 25 章：90. 常见坑清单（建议反复对照）](../spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md)
+        - [第 26 章：99. 自测题：你是否真的理解了？](../spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md)
+        - [91. 术语表（Glossary）](../spring-core-modules/spring-core-beans/docs/appendix/91-glossary.md)
+        - [92. 知识点地图（Concept → Chapter → Lab）](../spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md)
+        - [93. 面试复述模板（决策树 → Lab → 断点入口）](../spring-core-modules/spring-core-beans/docs/appendix/93-interview-playbook.md)
+        - [94. 生产排障清单（异常分型 → 入口 → 观察点 → 修复策略）](../spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md)
+        - [95. spring-beans Public API 索引（Spring Framework 6.2.15）](../spring-core-modules/spring-core-beans/docs/appendix/95-spring-beans-public-api-index.md)
+        - [96. spring-beans Public API 覆盖差距（Gap）清单（Spring Framework 6.2.15）](../spring-core-modules/spring-core-beans/docs/appendix/96-spring-beans-public-api-gap.md)
+        - [97. Explore/Debug 用例（可选启用，不影响默认回归）](../spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md)
+        - [Debugger Pack（断点包总入口）](../spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md)
+    - spring-core-profiles
+      - [spring-core-profiles](../spring-core-modules/spring-core-profiles/docs/README.md)
+      - part-00-guide
+        - [第 150 章：主线时间线：Spring Profiles](../spring-core-modules/spring-core-profiles/docs/part-00-guide/150-03-mainline-timeline.md)
+        - [第 151 章：深挖指南（Spring Core Profiles）](../spring-core-modules/spring-core-profiles/docs/part-00-guide/151-00-deep-dive-guide.md)
+        - [第 151 章：01：Profiles 调用链（Environment → activeProfiles → 条件生效）](../spring-core-modules/spring-core-profiles/docs/part-00-guide/151-01-profile-activation-call-chain.md)
+        - [第 151 章：02：断点地图（Profiles Debugger Pack）](../spring-core-modules/spring-core-profiles/docs/part-00-guide/151-02-breakpoint-map.md)
+        - [第 151 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-profiles/docs/part-00-guide/151-04-branch-decision-matrix.md)
+      - part-01-profiles
+        - [第 152 章：Profile 激活与 Bean 选择](../spring-core-modules/spring-core-profiles/docs/part-01-profiles/152-01-profile-activation-and-bean-selection.md)
+      - appendix
+        - [第 153 章：常见坑（Spring Core Profiles）](../spring-core-modules/spring-core-profiles/docs/appendix/153-90-common-pitfalls.md)
+        - [第 154 章：自测题（Spring Core Profiles）](../spring-core-modules/spring-core-profiles/docs/appendix/154-99-self-check.md)
+    - spring-core-validation
+      - [spring-core-validation](../spring-core-modules/spring-core-validation/docs/README.md)
+      - part-00-guide
+        - [第 156 章：主线时间线：Spring Validation](../spring-core-modules/spring-core-validation/docs/part-00-guide/156-03-mainline-timeline.md)
+        - [第 157 章：深挖指南（Spring Core Validation）](../spring-core-modules/spring-core-validation/docs/part-00-guide/157-00-deep-dive-guide.md)
+        - [第 157 章：01：Validation 调用链（@Valid → Validator → violations）](../spring-core-modules/spring-core-validation/docs/part-00-guide/157-01-validation-call-chain.md)
+        - [第 157 章：02：断点地图（Validation Debugger Pack）](../spring-core-modules/spring-core-validation/docs/part-00-guide/157-02-breakpoint-map.md)
+        - [第 157 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-validation/docs/part-00-guide/157-04-branch-decision-matrix.md)
+      - part-01-validation-core
+        - [第 158 章：01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/158-01-constraint-mental-model.md)
+        - [第 159 章：02. 程序化校验：为什么直接用 `Validator` 仍然很重要？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/159-02-programmatic-validator.md)
+        - [第 160 章：03. 方法参数校验：为什么它必须依赖 Spring 代理？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/160-03-method-validation-proxy.md)
+        - [第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/161-04-groups.md)
+        - [第 162 章：05. 自定义约束：如何写一个最小可用的 `@Constraint`？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/162-05-custom-constraint.md)
+        - [第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/163-06-debugging.md)
+      - appendix
+        - [第 164 章：90. 常见坑清单（建议反复对照）](../spring-core-modules/spring-core-validation/docs/appendix/164-90-common-pitfalls.md)
+        - [第 165 章：自测题（Spring Core Validation）](../spring-core-modules/spring-core-validation/docs/appendix/165-99-self-check.md)
+    - spring-core-aop
+      - [spring-core-aop](../spring-core-modules/spring-core-aop/docs/README.md)
+      - part-00-guide
+        - [第 28 章：主线时间线：Spring Core AOP](../spring-core-modules/spring-core-aop/docs/part-00-guide/028-03-mainline-timeline.md)
+        - [第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](../spring-core-modules/spring-core-aop/docs/part-00-guide/029-00-deep-dive-guide.md)
+        - [第 29 章：01：AOP 调用链（从代理入口到 Advice 链执行）](../spring-core-modules/spring-core-aop/docs/part-00-guide/029-01-aop-invocation-call-chain.md)
+        - [第 29 章：02：断点地图（Spring AOP Debugger Pack）](../spring-core-modules/spring-core-aop/docs/part-00-guide/029-02-breakpoint-map.md)
+        - [第 29 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-aop/docs/part-00-guide/029-04-branch-decision-matrix.md)
+      - part-01-proxy-fundamentals
+        - [第 30 章：01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+        - [第 31 章：02. JDK vs CGLIB：代理类型与“可注入类型”差异](../spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/031-02-jdk-vs-cglib.md)
+        - [第 32 章：03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？](../spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md)
+        - [第 33 章：04. `final` 与代理限制：为什么 final method 拦截不到？](../spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md)
+        - [第 34 章：05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](../spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/034-05-expose-proxy.md)
+        - [第 35 章：06. Debug / 观察：如何“看见”代理与切点](../spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/035-06-debugging.md)
+      - part-02-autoproxy-and-pointcuts
+        - [第 36 章：07. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）](../spring-core-modules/spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)
+        - [第 37 章：08. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](../spring-core-modules/spring-core-aop/docs/part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md)
+      - part-03-proxy-stacking
+        - [第 38 章：09. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](../spring-core-modules/spring-core-aop/docs/part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
+        - [第 39 章：10 real world stacking playbook](../spring-core-modules/spring-core-aop/docs/part-03-proxy-stacking/039-10-real-world-stacking-playbook.md)
+      - appendix
+        - [第 40 章：90. 常见坑清单（建议反复对照）](../spring-core-modules/spring-core-aop/docs/appendix/040-90-common-pitfalls.md)
+        - [第 41 章：99. 自测题：你是否真的理解了 AOP？](../spring-core-modules/spring-core-aop/docs/appendix/041-99-self-check.md)
+    - spring-core-aop-weaving
+      - [spring-core-aop-weaving](../spring-core-modules/spring-core-aop-weaving/docs/README.md)
+      - part-00-guide
+        - [第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）](../spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/043-03-mainline-timeline.md)
+        - [第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通](../spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-00-deep-dive-guide.md)
+        - [第 44 章：01：AspectJ Weaving 调用链（CTW/LTW：织入发生在哪里）](../spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-01-aspectj-weaving-call-chain.md)
+        - [第 44 章：02：断点地图（AspectJ Weaving Debugger Pack）](../spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-02-breakpoint-map.md)
+        - [第 44 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-04-branch-decision-matrix.md)
+      - part-01-mental-model
+        - [第 45 章：01. 心智模型：Proxy vs Weaving](../spring-core-modules/spring-core-aop-weaving/docs/part-01-mental-model/045-01-proxy-vs-weaving.md)
+      - part-02-ltw
+        - [第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../spring-core-modules/spring-core-aop-weaving/docs/part-02-ltw/046-02-ltw-basics.md)
+      - part-03-ctw
+        - [第 47 章：03. CTW：Compile-Time Weaving（编译期织入）](../spring-core-modules/spring-core-aop-weaving/docs/part-03-ctw/047-03-ctw-basics.md)
+      - part-04-join-points
+        - [第 48 章：04. Join Point & Pointcut Cookbook（速查）](../spring-core-modules/spring-core-aop-weaving/docs/part-04-join-points/048-04-join-point-cookbook.md)
+      - appendix
+        - [第 49 章：90. 常见坑清单（LTW/CTW）](../spring-core-modules/spring-core-aop-weaving/docs/appendix/049-90-common-pitfalls.md)
+        - [第 50 章：99. 自测题：你是否真的理解了 weaving？](../spring-core-modules/spring-core-aop-weaving/docs/appendix/050-99-self-check.md)
+    - spring-core-tx
+      - [spring-core-tx](../spring-core-modules/spring-core-tx/docs/README.md)
+      - part-00-guide
+        - [第 52 章：主线时间线：Spring Core Tx（事务）](../spring-core-modules/spring-core-tx/docs/part-00-guide/052-03-mainline-timeline.md)
+        - [第 53 章：深挖指南（Spring Core Tx）](../spring-core-modules/spring-core-tx/docs/part-00-guide/053-00-deep-dive-guide.md)
+        - [第 53 章：01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）](../spring-core-modules/spring-core-tx/docs/part-00-guide/053-01-transaction-interceptor-call-chain.md)
+        - [第 53 章：02：断点地图（Spring Tx Debugger Pack）](../spring-core-modules/spring-core-tx/docs/part-00-guide/053-02-breakpoint-map.md)
+        - [第 53 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-tx/docs/part-00-guide/053-04-branch-decision-matrix.md)
+      - part-01-transaction-basics
+        - [第 54 章：01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/054-01-transaction-boundary.md)
+        - [第 55 章：02. `@Transactional` 如何生效：它也是 AOP（也是代理）](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md)
+        - [第 56 章：03. 回滚规则：为什么 checked exception 默认不回滚？](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/056-03-rollback-rules.md)
+        - [第 57 章：04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/057-04-propagation.md)
+      - part-02-template-and-debugging
+        - [第 58 章：05. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？](../spring-core-modules/spring-core-tx/docs/part-02-template-and-debugging/058-05-transaction-template.md)
+        - [第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？](../spring-core-modules/spring-core-tx/docs/part-02-template-and-debugging/059-06-debugging.md)
+      - appendix
+        - [第 60 章：90. 常见坑清单（建议反复对照）](../spring-core-modules/spring-core-tx/docs/appendix/060-90-common-pitfalls.md)
+        - [第 61 章：自测题（Spring Core Tx）](../spring-core-modules/spring-core-tx/docs/appendix/061-99-self-check.md)
+    - spring-core-events
+      - [spring-core-events](../spring-core-modules/spring-core-events/docs/README.md)
+      - part-00-guide
+        - [第 127 章：主线时间线：Spring Events](../spring-core-modules/spring-core-events/docs/part-00-guide/127-03-mainline-timeline.md)
+        - [第 128 章：深挖指南（Spring Core Events）](../spring-core-modules/spring-core-events/docs/part-00-guide/128-00-deep-dive-guide.md)
+        - [第 128 章：01：Events 调用链（publish → multicaster → listener）](../spring-core-modules/spring-core-events/docs/part-00-guide/128-01-events-call-chain.md)
+        - [第 128 章：02：断点地图（Spring Events Debugger Pack）](../spring-core-modules/spring-core-events/docs/part-00-guide/128-02-breakpoint-map.md)
+        - [第 128 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-events/docs/part-00-guide/128-04-branch-decision-matrix.md)
+      - part-01-event-basics
+        - [第 129 章：01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？](../spring-core-modules/spring-core-events/docs/part-01-event-basics/129-01-event-mental-model.md)
+        - [第 130 章：02. 多监听器与顺序：为什么 `@Order` 值得你认真对待？](../spring-core-modules/spring-core-events/docs/part-01-event-basics/130-02-multiple-listeners-and-order.md)
+        - [第 131 章：03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？](../spring-core-modules/spring-core-events/docs/part-01-event-basics/131-03-condition-and-payload.md)
+        - [第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](../spring-core-modules/spring-core-events/docs/part-01-event-basics/132-04-sync-and-exceptions.md)
+      - part-02-async-and-transactional
+        - [第 133 章：05. 异步监听器：`@Async` 生效需要什么？线程会怎么变？](../spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/133-05-async-listener.md)
+        - [第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](../spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/134-06-async-multicaster.md)
+        - [第 135 章：07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](../spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/135-07-transactional-event-listener.md)
+      - appendix
+        - [第 136 章：90. 常见坑清单（建议反复对照）](../spring-core-modules/spring-core-events/docs/appendix/136-90-common-pitfalls.md)
+        - [第 137 章：自测题（Spring Core Events）](../spring-core-modules/spring-core-events/docs/appendix/137-99-self-check.md)
+    - spring-core-resources
+      - [spring-core-resources](../spring-core-modules/spring-core-resources/docs/README.md)
+      - part-00-guide
+        - [第 139 章：主线时间线：Spring Resources](../spring-core-modules/spring-core-resources/docs/part-00-guide/139-03-mainline-timeline.md)
+        - [第 140 章：深挖指南（Spring Core Resources）](../spring-core-modules/spring-core-resources/docs/part-00-guide/140-00-deep-dive-guide.md)
+        - [第 140 章：01：Resources 调用链（ResourceLoader → Resource → 读取）](../spring-core-modules/spring-core-resources/docs/part-00-guide/140-01-resource-loading-call-chain.md)
+        - [第 140 章：02：断点地图（Resources Debugger Pack）](../spring-core-modules/spring-core-resources/docs/part-00-guide/140-02-breakpoint-map.md)
+        - [第 140 章：04：关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-resources/docs/part-00-guide/140-04-branch-decision-matrix.md)
+      - part-01-resource-abstraction
+        - [第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？](../spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/141-01-resource-abstraction.md)
+        - [第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？](../spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/142-02-classpath-locations.md)
+        - [第 143 章：03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？](../spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/143-03-classpath-star-and-pattern.md)
+        - [第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](../spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/144-04-exists-and-handles.md)
+        - [第 145 章：05. 读取资源：InputStream、编码与“可观察性”](../spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/145-05-reading-and-encoding.md)
+        - [第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](../spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/146-06-jar-vs-filesystem.md)
+      - appendix
+        - [第 147 章：90. 常见坑清单（建议反复对照）](../spring-core-modules/spring-core-resources/docs/appendix/147-90-common-pitfalls.md)
+        - [第 148 章：自测题（Spring Core Resources）](../spring-core-modules/spring-core-resources/docs/appendix/148-99-self-check.md)
+    - spring-core-spel
+      - [spring-core-spel](../spring-core-modules/spring-core-spel/docs/README.md)
+      - part-00-guide
+        - [第 209 章：03：主线时间线：spring-core-spel](../spring-core-modules/spring-core-spel/docs/part-00-guide/209-03-mainline-timeline.md)
+        - [第 210 章：00. 深挖导读：把“表达式求值”落到源码与断点](../spring-core-modules/spring-core-spel/docs/part-00-guide/210-00-deep-dive-guide.md)
+        - [第 210 章：01：SpEL 调用链（parse → AST → evaluate）](../spring-core-modules/spring-core-spel/docs/part-00-guide/210-01-spel-call-chain.md)
+        - [第 210 章：02：断点地图（SpEL Debugger Pack）](../spring-core-modules/spring-core-spel/docs/part-00-guide/210-02-breakpoint-map.md)
+        - [第 210 章：04：关键分支矩阵（SpEL）](../spring-core-modules/spring-core-spel/docs/part-00-guide/210-04-branch-decision-matrix.md)
+      - part-01-spel-basics
+        - [第 211 章：01：SpEL 入门（root/variables/property access）](../spring-core-modules/spring-core-spel/docs/part-01-spel-basics/211-01-spel-basics.md)
+      - appendix
+        - [第 212 章：90 - Common Pitfalls（spring-core-spel）](../spring-core-modules/spring-core-spel/docs/appendix/212-90-common-pitfalls.md)
+        - [第 213 章：99 - Self Check（spring-core-spel）](../spring-core-modules/spring-core-spel/docs/appendix/213-99-self-check.md)

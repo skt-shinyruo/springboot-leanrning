@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？](161-04-groups.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](163-06-debugging.md)
+上一章：[第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？](161-04-groups.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](163-06-debugging.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

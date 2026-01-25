@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 70 章：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](../part-03-web-mvc-internals/070-05-controlleradvice-matching-and-ordering.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 72 章：02：统一异常处理（ControllerAdvice）与“坏输入”](072-02-exception-handling.md)
+上一章：[第 70 章：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](../part-03-web-mvc-internals/070-05-controlleradvice-matching-and-ordering.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 72 章：02：统一异常处理（ControllerAdvice）与“坏输入”](072-02-exception-handling.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

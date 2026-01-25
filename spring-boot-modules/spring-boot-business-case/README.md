@@ -42,7 +42,7 @@ mvn -pl :spring-boot-business-case test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](../../docs/business-case/spring-boot-business-case/README.md)）
+（docs 目录页：[`docs/README.md`](docs/README.md)）
 
 建议按“先跑通链路 → 再拆机制”的顺序：
 

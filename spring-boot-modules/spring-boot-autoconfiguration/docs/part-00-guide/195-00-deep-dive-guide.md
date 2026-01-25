@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 194 章：03：主线时间线](194-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 195 章：01：AutoConfiguration 调用链](195-01-autoconfiguration-import-call-chain.md)
+上一章：[第 194 章：03：主线时间线](194-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 195 章：01：AutoConfiguration 调用链](195-01-autoconfiguration-import-call-chain.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

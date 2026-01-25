@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 89 章：03：Method Security 与代理：self-invocation 陷阱](089-03-method-security-and-proxy.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 91 章：05：JWT/Stateless：Bearer token + scope（最小闭环）](091-05-jwt-stateless.md)
+上一章：[第 89 章：03：Method Security 与代理：self-invocation 陷阱](089-03-method-security-and-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 91 章：05：JWT/Stateless：Bearer token + scope（最小闭环）](091-05-jwt-stateless.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -18,7 +18,6 @@
 
 - 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBookMatrixLabTest test`
 - 可跑入口（Branch Matrix）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBranchMatrixLabTest test`
-- 并发/性能专题（可复现实验范式）：[performance-and-concurrency.md](../../book/performance-and-concurrency.md)
 - 可跑入口（并发求值 Lab）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelConcurrencyLabTest test`
 
 ## 排坑与自检

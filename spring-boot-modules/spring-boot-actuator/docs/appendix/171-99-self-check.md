@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 170 章：90 - Common Pitfalls（springboot-actuator）](170-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 172 章：Web Client 主线](../../../book/172-web-client-mainline.md)
+上一章：[第 170 章：90 - Common Pitfalls（springboot-actuator）](170-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 172 章：Web Client 主线](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

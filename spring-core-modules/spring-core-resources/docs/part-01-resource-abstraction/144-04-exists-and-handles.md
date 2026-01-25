@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 143 章：03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？](143-03-classpath-star-and-pattern.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 145 章：05. 读取资源：InputStream、编码与“可观察性”](145-05-reading-and-encoding.md)
+上一章：[第 143 章：03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？](143-03-classpath-star-and-pattern.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 145 章：05. 读取资源：InputStream、编码与“可观察性”](145-05-reading-and-encoding.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

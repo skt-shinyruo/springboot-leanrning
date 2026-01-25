@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 195 章：04：关键分支矩阵](../part-00-guide/195-04-branch-decision-matrix.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 197 章：90 - Common Pitfalls（springboot-autoconfiguration）](../appendix/197-90-common-pitfalls.md)
+上一章：[第 195 章：04：关键分支矩阵](../part-00-guide/195-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 197 章：90 - Common Pitfalls（springboot-autoconfiguration）](../appendix/197-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 1. 条件装配：它不是魔法，是“启动期 if”

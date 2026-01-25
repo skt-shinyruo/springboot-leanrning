@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 177 章：03：错误处理：4xx/5xx → 领域异常](177-03-error-handling.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 179 章：05：测试策略：为什么用 MockWebServer？](179-05-testing-with-mockwebserver.md)
+上一章：[第 177 章：03：错误处理：4xx/5xx → 领域异常](177-03-error-handling.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 179 章：05：测试策略：为什么用 MockWebServer？](179-05-testing-with-mockwebserver.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

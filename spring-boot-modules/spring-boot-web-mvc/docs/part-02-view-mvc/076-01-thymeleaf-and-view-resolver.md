@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](../part-01-web-mvc/075-05-interceptor-async-lifecycle.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../part-04-rest-contract/077-01-content-negotiation-406-415.md)
+上一章：[第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](../part-01-web-mvc/075-05-interceptor-async-lifecycle.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../part-04-rest-contract/077-01-content-negotiation-406-415.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

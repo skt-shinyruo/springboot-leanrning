@@ -2,7 +2,7 @@
 
 本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”学习 **Bean Validation（Jakarta Validation）**，以及它在 Spring 应用中的常见用法。
 
-这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/validation/spring-core-validation/)。
+这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
 ## 你将学到什么
 
@@ -39,13 +39,13 @@ mvn -pl :spring-core-validation test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-1. [约束心智模型：你在校验什么？校验结果是什么？](../../docs/validation/spring-core-validation/part-01-validation-core/01-constraint-mental-model.md)
-2. [程序化校验：为什么直接用 `Validator` 仍然很重要？](../../docs/validation/spring-core-validation/part-01-validation-core/02-programmatic-validator.md)
-3. [方法参数校验：为什么它必须依赖 Spring 代理？](../../docs/validation/spring-core-validation/part-01-validation-core/03-method-validation-proxy.md)
-4. [Groups：按场景启用不同规则](../../docs/validation/spring-core-validation/part-01-validation-core/04-groups.md)
-5. [自定义约束：写一个最小可用的 `@Constraint`](../../docs/validation/spring-core-validation/part-01-validation-core/05-custom-constraint.md)
-6. [Debug / 观察：如何排查“校验为什么没生效？”](../../docs/validation/spring-core-validation/part-01-validation-core/06-debugging.md)
-7. [常见坑清单（建议反复对照）](../../docs/validation/spring-core-validation/appendix/90-common-pitfalls.md)
+1. [约束心智模型：你在校验什么？校验结果是什么？](docs/part-01-validation-core/158-01-constraint-mental-model.md)
+2. [程序化校验：为什么直接用 `Validator` 仍然很重要？](docs/part-01-validation-core/159-02-programmatic-validator.md)
+3. [方法参数校验：为什么它必须依赖 Spring 代理？](docs/part-01-validation-core/160-03-method-validation-proxy.md)
+4. [Groups：按场景启用不同规则](docs/part-01-validation-core/161-04-groups.md)
+5. [自定义约束：写一个最小可用的 `@Constraint`](docs/part-01-validation-core/162-05-custom-constraint.md)
+6. [Debug / 观察：如何排查“校验为什么没生效？”](docs/part-01-validation-core/163-06-debugging.md)
+7. [常见坑清单（建议反复对照）](docs/appendix/164-90-common-pitfalls.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -61,11 +61,11 @@ mvn -pl :spring-core-validation test
 
 | 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
 | --- | --- | --- | --- |
-| violations 的结构化信息 | [docs/01](../../docs/validation/spring-core-validation/part-01-validation-core/01-constraint-mental-model.md) | `SpringCoreValidationLabTest#programmaticValidationFindsViolations` | `propertyPath/message` 分别代表什么 |
-| 程序化校验 | [docs/02](../../docs/validation/spring-core-validation/part-01-validation-core/02-programmatic-validator.md) | `ProgrammaticValidationService` + `SpringCoreValidationLabTest#programmaticValidationReturnsNoViolationsForValidInput` | 不依赖 MVC 也能做校验与断言 |
-| 方法参数校验依赖代理 | [docs/03](../../docs/validation/spring-core-validation/part-01-validation-core/03-method-validation-proxy.md) | `SpringCoreValidationMechanicsLabTest#methodValidationDoesNotRunWhenCallingAServiceDirectly_withoutSpringProxy` | 没有代理就没有拦截器 |
-| groups 的选择逻辑 | [docs/04](../../docs/validation/spring-core-validation/part-01-validation-core/04-groups.md) | `SpringCoreValidationMechanicsLabTest#groupsControlWhichConstraintsApply` | 同一个对象，不同 group 触发不同约束 |
-| 自定义约束 | [docs/05](../../docs/validation/spring-core-validation/part-01-validation-core/05-custom-constraint.md) | `SpringCoreValidationMechanicsLabTest#customConstraintsCanBeDefinedWithConstraintValidator` | `ConstraintValidator` 如何被调用 |
+| violations 的结构化信息 | [docs/01](docs/part-01-validation-core/158-01-constraint-mental-model.md) | `SpringCoreValidationLabTest#programmaticValidationFindsViolations` | `propertyPath/message` 分别代表什么 |
+| 程序化校验 | [docs/02](docs/part-01-validation-core/159-02-programmatic-validator.md) | `ProgrammaticValidationService` + `SpringCoreValidationLabTest#programmaticValidationReturnsNoViolationsForValidInput` | 不依赖 MVC 也能做校验与断言 |
+| 方法参数校验依赖代理 | [docs/03](docs/part-01-validation-core/160-03-method-validation-proxy.md) | `SpringCoreValidationMechanicsLabTest#methodValidationDoesNotRunWhenCallingAServiceDirectly_withoutSpringProxy` | 没有代理就没有拦截器 |
+| groups 的选择逻辑 | [docs/04](docs/part-01-validation-core/161-04-groups.md) | `SpringCoreValidationMechanicsLabTest#groupsControlWhichConstraintsApply` | 同一个对象，不同 group 触发不同约束 |
+| 自定义约束 | [docs/05](docs/part-01-validation-core/162-05-custom-constraint.md) | `SpringCoreValidationMechanicsLabTest#customConstraintsCanBeDefinedWithConstraintValidator` | `ConstraintValidator` 如何被调用 |
 
 ## 常见 Debug 路径
 

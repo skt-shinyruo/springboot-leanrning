@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 152 章：Profile 激活与 Bean 选择](../part-01-profiles/152-01-profile-activation-and-bean-selection.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 154 章：自测题（Spring Core Profiles）](154-99-self-check.md)
+上一章：[第 152 章：Profile 激活与 Bean 选择](../part-01-profiles/152-01-profile-activation-and-bean-selection.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 154 章：自测题（Spring Core Profiles）](154-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

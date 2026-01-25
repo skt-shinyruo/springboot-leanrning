@@ -74,8 +74,8 @@
 
 ## 6. 延伸阅读（把点连成线）
 
-- AOP（代理心智模型）：`docs/aop/spring-core-aop/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md`
-- 事务也是代理：`docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md`
+- AOP（代理心智模型）：[spring-core-aop：AOP Proxy 心智模型](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+- 事务也是代理：[spring-core-tx：`@Transactional` 代理](../../../spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md)
 
 入口：
 

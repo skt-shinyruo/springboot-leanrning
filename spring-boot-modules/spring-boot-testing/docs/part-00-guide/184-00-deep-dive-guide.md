@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 183 章：主线时间线：Spring Boot Testing](183-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 185 章：01 - Slice 与 Mock（Testing）](../part-01-testing/185-01-slice-and-mocking.md)
+上一章：[第 183 章：主线时间线：Spring Boot Testing](183-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 185 章：01 - Slice 与 Mock（Testing）](../part-01-testing/185-01-slice-and-mocking.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

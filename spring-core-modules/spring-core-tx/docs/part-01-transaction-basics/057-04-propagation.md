@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 56 章：03. 回滚规则：为什么 checked exception 默认不回滚？](056-03-rollback-rules.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 58 章：05. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？](../part-02-template-and-debugging/058-05-transaction-template.md)
+上一章：[第 56 章：03. 回滚规则：为什么 checked exception 默认不回滚？](056-03-rollback-rules.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 58 章：05. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？](../part-02-template-and-debugging/058-05-transaction-template.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

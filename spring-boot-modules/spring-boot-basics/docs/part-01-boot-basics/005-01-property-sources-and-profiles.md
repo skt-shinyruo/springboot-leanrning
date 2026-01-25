@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 4 章：00 - Deep Dive Guide（springboot-basics）](../part-00-guide/004-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 6 章：02：`@ConfigurationProperties` 绑定与类型转换](006-02-configuration-properties-binding.md)
+上一章：[第 4 章：00 - Deep Dive Guide（springboot-basics）](../part-00-guide/004-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 6 章：02：`@ConfigurationProperties` 绑定与类型转换](006-02-configuration-properties-binding.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

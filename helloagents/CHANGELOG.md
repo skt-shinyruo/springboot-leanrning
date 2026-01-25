@@ -10,10 +10,13 @@
 - spring-core-beans：新增 Debugger Pack 文档与主线/断点/排障/性能入口测试套件
 
 ### Removed
-- 移除 docs 相关的检查脚本与 docs-site 发布 workflow，并清理文档/知识库中的引用
+- 删除仓库根 `scripts/` 目录（包含测试/运行快捷脚本与文档批处理脚本），并清理文档/知识库中的引用
 
 ### Changed
+- 文档结构调整：以各模块 `*/docs/` 为唯一事实来源（SSOT），仓库根 `docs/` 收敛为仅保留 `docs/SUMMARY.md`（全站目录/导航 SSOT），并删除 `docs/book/` 与旧 `docs/<topic>/...` 内容副本。
 - spring-core-beans：docs 目录入口补充 Debugger Pack 链接，同步知识库入口索引
+- spring-core-beans：重写 09/16/97 三章（循环依赖 / early reference / Explore/Debug），补齐“可跑实验 + 断点/观察点 + 常见坑/工程策略”的教程闭环
+- spring-core-beans：重写 Part-04 的 25/32/34/36 四章（programmatic BPP / @Resource / @Value 占位符 / 类型转换），并修复全站目录 `docs/SUMMARY.md` 的相对链接（统一 `../` 前缀）
 
 ### Changed
 - `docs/book/debugger-pack.md`：补充“模块深挖最小闭环（Doc/Test/Perf）”验收口径（用于全模块 A–E 统一标准化）。

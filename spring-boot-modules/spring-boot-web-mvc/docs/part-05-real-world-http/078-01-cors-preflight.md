@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../part-04-rest-contract/077-01-content-negotiation-406-415.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 79 章：01：Servlet Async（Callable）与测试（asyncDispatch）](../part-06-async-sse/079-01-servlet-async-and-testing.md)
+上一章：[第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../part-04-rest-contract/077-01-content-negotiation-406-415.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 79 章：01：Servlet Async（Callable）与测试（asyncDispatch）](../part-06-async-sse/079-01-servlet-async-and-testing.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

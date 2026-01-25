@@ -17,7 +17,7 @@
 ## Start Here（路线图 / 第一个可运行入口）
 
 - 路线图：`helloagents/wiki/learning-path.md`
-- Docs Index：`docs/tx/spring-core-tx/README.md`
+- Docs Index：`spring-core-modules/spring-core-tx/docs/README.md`
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxLabTest#transactionsAreActiveInsideTransactionalMethods test`
   - 对应测试类：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxLabTest.java`
@@ -25,11 +25,11 @@
 ## Specifications
 
 ### Source Layout
-- docs：`docs/tx/spring-core-tx/README.md`（目录页）
-- docs：`docs/tx/spring-core-tx/part-00-guide/`（深挖指南）
-- docs：`docs/tx/spring-core-tx/part-01-transaction-basics/`（边界/代理/回滚/传播）
-- docs：`docs/tx/spring-core-tx/part-02-template-and-debugging/`（TransactionTemplate/调试）
-- docs：`docs/tx/spring-core-tx/appendix/`（常见坑/自测题）
+- docs：`spring-core-modules/spring-core-tx/docs/README.md`（目录页）
+- docs：`spring-core-modules/spring-core-tx/docs/part-00-guide/`（深挖指南）
+- docs：`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/`（边界/代理/回滚/传播）
+- docs：`spring-core-modules/spring-core-tx/docs/part-02-template-and-debugging/`（TransactionTemplate/调试）
+- docs：`spring-core-modules/spring-core-tx/docs/appendix/`（常见坑/自测题）
 - src(main)：`spring-core-modules/spring-core-tx/src/main/java/com/learning/springboot/springcoretx/SpringCoreTxApplication.java`（入口，包名保持不变）
 - src(main)：`spring-core-modules/spring-core-tx/src/main/java/com/learning/springboot/springcoretx/part01_transaction_basics/**`
 - src(main)：`spring-core-modules/spring-core-tx/src/main/java/com/learning/springboot/springcoretx/part02_template_and_debugging/**`
@@ -39,17 +39,16 @@
 - src(test)：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/appendix/**`
 
 ### Docs Index
-- 入口：`docs/tx/spring-core-tx/README.md`
-- 断点地图：`docs/tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md`
-- 关键分支矩阵：`docs/tx/spring-core-tx/part-00-guide/053-04-branch-decision-matrix.md`
-- 排障 playbook：`docs/tx/spring-core-tx/appendix/060-90-common-pitfalls.md`
-- 自检清单：`docs/tx/spring-core-tx/appendix/061-99-self-check.md`
+- 入口：`spring-core-modules/spring-core-tx/docs/README.md`
+- 断点地图：`spring-core-modules/spring-core-tx/docs/part-00-guide/053-02-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-tx/docs/part-00-guide/053-04-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-tx/docs/appendix/060-90-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-tx/docs/appendix/061-99-self-check.md`
 - Branch Matrix（关键分支入口）：
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
 - Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part00_guide/SpringCoreTxExerciseSolutionTest.java`
 - Lab（并发/性能：ThreadLocal 边界证据链）：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part02_perf_concurrency/SpringCoreTxThreadLocalBoundaryLabTest.java`
-- Book 专题页（方法论与样板索引）：`docs/book/performance-and-concurrency.md`
 
 ### Requirement: 事务学习闭环
 **Module:** spring-core-tx
@@ -61,9 +60,9 @@
 - 自调用绕过 `@Transactional` 的陷阱可最小复现并对比修复（Lab）
 - `spring-boot:run` 可观察事务活跃状态与回滚/提交差异（结构化前缀 `TX:`）
 - 对应可复现闭环入口：
-  - `docs/tx/spring-core-tx/part-01-transaction-basics/04-propagation.md`
+  - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/04-propagation.md`
   - `spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxPropagationMatrixLabTest.java`
-  - `docs/tx/spring-core-tx/part-01-transaction-basics/03-rollback-rules.md`
+  - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/03-rollback-rules.md`
   - `spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxRollbackRulesLabTest.java`
 
 ## Change History

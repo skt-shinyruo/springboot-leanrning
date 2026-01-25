@@ -14,7 +14,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest#usesQualifierToResol
 
 你接下来应该做：
 
-1. 先读：`docs/beans/spring-core-beans/part-00-guide/01-quickstart-30min.md`
+1. 先读：`spring-core-modules/spring-core-beans/docs/part-00-guide/01-quickstart-30min.md`
 2. 再做：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java`
 
 ---
@@ -25,18 +25,18 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest#usesQualifierToResol
 
 ### 1.1 Beans（IoC 容器与依赖注入）
 
-- Start Here（文档）：`docs/beans/spring-core-beans/part-00-guide/01-quickstart-30min.md`
+- Start Here（文档）：`spring-core-modules/spring-core-beans/docs/part-00-guide/01-quickstart-30min.md`
 - 第一个可运行入口：
   - 命令：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans test`
   - 测试类：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 - 推荐下一步：
-  1. 读完 Part 00 guide（`docs/beans/spring-core-beans/part-00-guide/README.md`）
-  2. 进入 Part 01：注册 → 注入解析 → 生命周期（`docs/beans/spring-core-beans/part-01-ioc-container/README.md`）
+  1. 读完 Part 00 guide（`spring-core-modules/spring-core-beans/docs/part-00-guide/README.md`）
+  2. 进入 Part 01：注册 → 注入解析 → 生命周期（`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/README.md`）
   3. 做练习：`SpringCoreBeansExerciseTest`（默认存在 Solution 对照）
 
 ### 1.2 AOP（代理与切面）
 
-- Start Here（文档）：`docs/aop/spring-core-aop/README.md`
+- Start Here（文档）：`spring-core-modules/spring-core-aop/docs/README.md`
 - 第一个可运行入口：
   - 命令：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopLabTest#adviceIsAppliedToTracedMethod test`
   - 测试类：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopLabTest.java`
@@ -46,23 +46,23 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest#usesQualifierToResol
 
 ### 1.3 Tx（事务：边界/传播/回滚）
 
-- Start Here（文档）：`docs/tx/spring-core-tx/README.md`
+- Start Here（文档）：`spring-core-modules/spring-core-tx/docs/README.md`
 - 第一个可运行入口：
   - 命令：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxLabTest#transactionsAreActiveInsideTransactionalMethods test`
   - 测试类：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxLabTest.java`
 - 推荐下一步：
-  1. 读：`docs/tx/spring-core-tx/part-01-transaction-basics/04-propagation.md`
+  1. 读：`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/04-propagation.md`
   2. 跑矩阵：`SpringCoreTxPropagationMatrixLabTest`
   3. 做练习：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part00_guide/SpringCoreTxExerciseTest.java`
 
 ### 1.4 Web MVC（请求处理链路：绑定/校验/异常/拦截器）
 
-- Start Here（文档）：`docs/web-mvc/springboot-web-mvc/README.md`
+- Start Here（文档）：`spring-boot-modules/spring-boot-web-mvc/docs/README.md`
 - 第一个可运行入口（MockMvc 版本）：
   - 命令：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test`
   - 测试类：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
 - 推荐下一步：
-  1. 读 Part 01：校验/异常/绑定（`docs/web-mvc/springboot-web-mvc/part-01-web-mvc/README.md`）
+  1. 读 Part 01：校验/异常/绑定（`spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/README.md`）
   2. 再跑链路追踪：`BootWebMvcTraceLabTest#syncTraceRecordsFilterAndInterceptorOrder`
   3. 做练习：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
@@ -93,28 +93,28 @@ mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFi
 
 ### 3.1 AutoConfiguration（imports/条件/backoff）
 
-- Start Here（文档）：`docs/autoconfig/springboot-autoconfiguration/README.md`
+- Start Here（文档）：`spring-boot-modules/spring-boot-autoconfiguration/docs/README.md`
 - 第一个可运行入口：
   - 命令：`mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationLabTest#autoConfigCreatesDefaultBeanWhenEnabled test`
   - 测试类：`spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationLabTest.java`
 
 ### 3.2 Logging（LoggingSystem/级别/输出）
 
-- Start Here（文档）：`docs/logging/springboot-logging/README.md`
+- Start Here（文档）：`spring-boot-modules/spring-boot-logging/docs/README.md`
 - 第一个可运行入口：
   - 命令：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingLabTest test`
   - 测试类：`spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java`
 
 ### 3.3 Observability（HTTP 指标/观测）
 
-- Start Here（文档）：`docs/observability/springboot-observability/README.md`
+- Start Here（文档）：`spring-boot-modules/spring-boot-observability/docs/README.md`
 - 第一个可运行入口：
   - 命令：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityLabTest test`
   - 测试类：`spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityLabTest.java`
 
 ### 3.4 SpEL（parse → AST → evaluate）
 
-- Start Here（文档）：`docs/spel/spring-core-spel/README.md`
+- Start Here（文档）：`spring-core-modules/spring-core-spel/docs/README.md`
 - 第一个可运行入口：
   - 命令：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelLabTest test`
   - 测试类：`spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part00_guide/SpringCoreSpelLabTest.java`
@@ -123,7 +123,6 @@ mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFi
 
 > 建议先把“可复现范式”建立成默认习惯：不要靠耗时阈值断言；用 latch/失败路径/线程边界做证据链。
 
-- Book 专题页：`docs/book/performance-and-concurrency.md`
 - 推荐第一个可运行入口（线程池饱和/拒绝策略）：
   - 命令：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
   - 测试类：`spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java`
@@ -132,4 +131,3 @@ mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFi
   - 测试类：`spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part02_perf_concurrency/SpringCoreSpelConcurrencyLabTest.java`
 - 全量模块入口（按模块选一个即可）：
   - 优先从各模块目录页 `docs/<topic>/<module>/README.md` 的“进阶入口”复制命令
-  - 或直接从 Book 专题页索引进入：`docs/book/performance-and-concurrency.md`

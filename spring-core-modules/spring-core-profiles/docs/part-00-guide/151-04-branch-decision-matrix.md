@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 151 章：02：断点地图（Profiles Debugger Pack）](151-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 152 章：01：Profile 激活与 Bean 选择（最小可复现主线）](../part-01-profiles/152-01-profile-activation-and-bean-selection.md)
+上一章：[第 151 章：02：断点地图（Profiles Debugger Pack）](151-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 152 章：01：Profile 激活与 Bean 选择（最小可复现主线）](../part-01-profiles/152-01-profile-activation-and-bean-selection.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

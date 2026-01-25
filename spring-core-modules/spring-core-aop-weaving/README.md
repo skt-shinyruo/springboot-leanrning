@@ -41,13 +41,13 @@ mvn -pl :spring-core-aop-weaving spring-boot:run
 
 ## 推荐 docs 阅读顺序
 
-0. [深挖指南：如何跑通 LTW/CTW + 常见排障路径](../../docs/aop/spring-core-aop-weaving/part-00-guide/00-deep-dive-guide.md)
-1. [心智模型：Proxy vs Weaving（为什么 weaving 不依赖 call path）](../../docs/aop/spring-core-aop-weaving/part-01-mental-model/01-proxy-vs-weaving.md)
-2. [LTW：`-javaagent` + `META-INF/aop.xml`（最小闭环与边界）](../../docs/aop/spring-core-aop-weaving/part-02-ltw/02-ltw-basics.md)
-3. [CTW：编译期织入（无 agent 也能拦截）](../../docs/aop/spring-core-aop-weaving/part-03-ctw/03-ctw-basics.md)
-4. [Join Point & 表达式速查：call/execution/get/set/withincode/cflow](../../docs/aop/spring-core-aop-weaving/part-04-join-points/04-join-point-cookbook.md)
-5. [常见坑清单（建议反复对照）](../../docs/aop/spring-core-aop-weaving/appendix/90-common-pitfalls.md)
-6. [自测题：你是否真的理解了 weaving？](../../docs/aop/spring-core-aop-weaving/appendix/99-self-check.md)
+0. [深挖指南：如何跑通 LTW/CTW + 常见排障路径](docs/part-00-guide/044-00-deep-dive-guide.md)
+1. [心智模型：Proxy vs Weaving（为什么 weaving 不依赖 call path）](docs/part-01-mental-model/045-01-proxy-vs-weaving.md)
+2. [LTW：`-javaagent` + `META-INF/aop.xml`（最小闭环与边界）](docs/part-02-ltw/046-02-ltw-basics.md)
+3. [CTW：编译期织入（无 agent 也能拦截）](docs/part-03-ctw/047-03-ctw-basics.md)
+4. [Join Point & 表达式速查：call/execution/get/set/withincode/cflow](docs/part-04-join-points/048-04-join-point-cookbook.md)
+5. [常见坑清单（建议反复对照）](docs/appendix/049-90-common-pitfalls.md)
+6. [自测题：你是否真的理解了 weaving？](docs/appendix/050-99-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

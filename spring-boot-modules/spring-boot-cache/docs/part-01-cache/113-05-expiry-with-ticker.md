@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 114 章：90：常见坑清单（Cache）](../appendix/114-90-common-pitfalls.md)
+上一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 114 章：90：常见坑清单（Cache）](../appendix/114-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericApplicationContext;
 
-class SpringCoreBeansBootstrapInternalsLabTest {
+public class SpringCoreBeansBootstrapInternalsLabTest {
 
     @Test
     void withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied() {

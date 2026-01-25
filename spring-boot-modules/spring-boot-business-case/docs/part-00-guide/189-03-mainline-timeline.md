@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 188 章：Business Case 收束](../../../book/188-business-case.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 190 章：00 - Deep Dive Guide（springboot-business-case）](190-00-deep-dive-guide.md)
+上一章：[第 188 章：Business Case 收束](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 190 章：00 - Deep Dive Guide（springboot-business-case）](190-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

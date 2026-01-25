@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 60 章：90. 常见坑清单（建议反复对照）](060-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 62 章：Web MVC 请求主线](../../../book/062-webmvc-mainline.md)
+上一章：[第 60 章：90. 常见坑清单（建议反复对照）](060-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 62 章：Web MVC 请求主线](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

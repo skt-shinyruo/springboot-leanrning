@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 140 章：02：断点地图（Resources Debugger Pack）](140-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 141 章：01：Resource 抽象：你拿到的到底是什么](../part-01-resource-abstraction/141-01-resource-abstraction.md)
+上一章：[第 140 章：02：断点地图（Resources Debugger Pack）](140-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 141 章：01：Resource 抽象：你拿到的到底是什么](../part-01-resource-abstraction/141-01-resource-abstraction.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

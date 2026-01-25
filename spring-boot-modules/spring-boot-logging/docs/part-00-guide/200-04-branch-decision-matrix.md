@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 200 章：02：断点地图](200-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 201 章：01：日志级别与分类](../part-01-logging-basics/201-01-logging-levels-and-categories.md)
+上一章：[第 200 章：02：断点地图](200-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 201 章：01：日志级别与分类](../part-01-logging-basics/201-01-logging-levels-and-categories.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 分支矩阵（最小闭环）

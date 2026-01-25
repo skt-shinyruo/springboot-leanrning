@@ -16,7 +16,7 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.annotation.Order;
 import org.springframework.context.support.GenericApplicationContext;
 
-class SpringCoreBeansPostProcessorOrderingLabTest {
+public class SpringCoreBeansPostProcessorOrderingLabTest {
 
     @Test
     void beanFactoryPostProcessors_areInvokedInPriorityOrderedThenOrderedThenUnorderedOrder() {

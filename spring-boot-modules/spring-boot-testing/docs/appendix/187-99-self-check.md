@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 186 章：90 - Common Pitfalls（springboot-testing）](186-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 188 章：Business Case 收束](../../../book/188-business-case.md)
+上一章：[第 186 章：90 - Common Pitfalls（springboot-testing）](186-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 188 章：Business Case 收束](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -16,9 +16,9 @@
 ## Start Here（路线图 / 断点地图 / 第一个可运行入口）
 
 - 路线图：`helloagents/wiki/learning-path.md`
-- Docs Start Here：`docs/web-mvc/springboot-web-mvc/README.md`
-- 断点地图（Part 01 Debugger Pack）：`docs/web-mvc/springboot-web-mvc/part-00-guide/066-02-breakpoint-map.md`
-- 机制内核主线（建议先读这一章再扩展分支）：`docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md`（FilterChain → DispatcherServlet → ExceptionResolvers → Boot `/error`；async 两次 dispatch 时间线 + 证据链；ERROR vs ASYNC 对照 + 分支决策表）
+- Docs Start Here：`spring-boot-modules/spring-boot-web-mvc/docs/README.md`
+- 断点地图（Part 01 Debugger Pack）：`spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/066-02-breakpoint-map.md`
+- 机制内核主线（建议先读这一章再扩展分支）：`spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md`（FilterChain → DispatcherServlet → ExceptionResolvers → Boot `/error`；async 两次 dispatch 时间线 + 证据链；ERROR vs ASYNC 对照 + 分支决策表）
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test`
   - 对应测试类：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
@@ -49,12 +49,12 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/web-mvc/springboot-web-mvc/README.md`
-- **Docs Guide:** `docs/web-mvc/springboot-web-mvc/part-00-guide/064-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/web-mvc/springboot-web-mvc/part-00-guide/066-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/web-mvc/springboot-web-mvc/part-00-guide/064-04-branch-decision-matrix.md`
-- **Playbook:** `docs/web-mvc/springboot-web-mvc/appendix/082-90-common-pitfalls.md`
-- **Self-check:** `docs/web-mvc/springboot-web-mvc/appendix/083-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-web-mvc/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/064-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/066-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/064-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-web-mvc/docs/appendix/082-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-web-mvc/docs/appendix/083-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
@@ -86,7 +86,6 @@
 - **Exercises:** `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseSolutionTest.java`
 - **Lab（并发/性能：RequestScope 隔离 / 并发请求边界）：** `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_perf_concurrency/BootWebMvcRequestScopeIsolationLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

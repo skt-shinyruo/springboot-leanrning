@@ -36,12 +36,12 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/actuator/springboot-actuator/README.md`
-- **Docs Guide:** `docs/actuator/springboot-actuator/part-00-guide/168-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/actuator/springboot-actuator/part-00-guide/168-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/actuator/springboot-actuator/part-00-guide/168-04-branch-decision-matrix.md`
-- **Playbook:** `docs/actuator/springboot-actuator/appendix/170-90-common-pitfalls.md`
-- **Self-check:** `docs/actuator/springboot-actuator/appendix/171-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-actuator/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-actuator/docs/appendix/170-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-actuator/docs/appendix/171-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
@@ -55,7 +55,6 @@
 - **Exercise:** `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseSolutionTest.java`
 - **Lab（并发/性能：并发请求驱动 metrics 增量）：** `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part02_perf_concurrency/BootActuatorMetricsConcurrencyLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

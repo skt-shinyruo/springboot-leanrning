@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 85 章：主线时间线：Spring Boot Security](085-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 87 章：01：401 vs 403：Basic Auth 与授权规则](../part-01-security/087-01-basic-auth-and-authorization.md)
+上一章：[第 85 章：主线时间线：Spring Boot Security](085-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 87 章：01：401 vs 403：Basic Auth 与授权规则](../part-01-security/087-01-basic-auth-and-authorization.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

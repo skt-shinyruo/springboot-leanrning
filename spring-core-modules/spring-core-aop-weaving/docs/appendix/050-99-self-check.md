@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 49 章：90. 常见坑清单（LTW/CTW）](049-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 51 章：事务主线（Tx）](../../../book/051-tx-mainline.md)
+上一章：[第 49 章：90. 常见坑清单（LTW/CTW）](049-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 51 章：事务主线（Tx）](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

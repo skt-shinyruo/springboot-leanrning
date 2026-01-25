@@ -98,8 +98,8 @@ JDK 代理的本质是：
 
 > 对应完整版本（AOP 模块）：
 >
-> - AOP 容器主线（AutoProxyCreator/Advisor/Advice/Pointcut）：`docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/07-autoproxy-creator-mainline.md`
-> - 多切面/多代理叠加与顺序：`docs/aop/spring-core-aop/part-03-proxy-stacking/09-multi-proxy-stacking.md`
+> - AOP 容器主线（AutoProxyCreator/Advisor/Advice/Pointcut）：[spring-core-aop：AutoProxyCreator 主线](../../../spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)
+> - 多切面/多代理叠加与顺序：[spring-core-aop：多代理叠加与顺序](../../../spring-core-aop/docs/part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
 
 - **优先面向接口编程**：按接口注入比按实现类注入更稳
 - 遇到 AOP/事务“不生效”，先问一句：
@@ -269,10 +269,10 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test
 
 ## 6. 常见坑与实践建议
 
-- AOP 心智模型（入口 + 代理）：`docs/aop/spring-core-aop/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md`
-- JDK vs CGLIB（为什么有时能按实现类注入）：`docs/aop/spring-core-aop/part-01-proxy-fundamentals/02-jdk-vs-cglib.md`
-- 自调用陷阱（AOP 版本）：`docs/aop/spring-core-aop/part-01-proxy-fundamentals/03-self-invocation.md`
-- 事务也是代理（Tx 版本）：`docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md`
+- AOP 心智模型（入口 + 代理）：[spring-core-aop：AOP Proxy 心智模型](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+- JDK vs CGLIB（为什么有时能按实现类注入）：[spring-core-aop：JDK vs CGLIB](../../../spring-core-aop/docs/part-01-proxy-fundamentals/031-02-jdk-vs-cglib.md)
+- 自调用陷阱（AOP 版本）：[spring-core-aop：self-invocation](../../../spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md)
+- 事务也是代理（Tx 版本）：[spring-core-tx：`@Transactional` 代理](../../../spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md)
 
 ## 小结与下一章
 

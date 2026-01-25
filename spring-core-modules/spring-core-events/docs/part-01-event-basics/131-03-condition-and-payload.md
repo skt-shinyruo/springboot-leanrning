@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 130 章：02. 多监听器与顺序：为什么 `@Order` 值得你认真对待？](130-02-multiple-listeners-and-order.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](132-04-sync-and-exceptions.md)
+上一章：[第 130 章：02. 多监听器与顺序：为什么 `@Order` 值得你认真对待？](130-02-multiple-listeners-and-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](132-04-sync-and-exceptions.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

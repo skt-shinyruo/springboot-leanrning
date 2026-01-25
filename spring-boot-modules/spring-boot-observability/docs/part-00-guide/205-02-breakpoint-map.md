@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 205 章：01：调用链](205-01-http-observation-call-chain.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 205 章：04：关键分支矩阵](205-04-branch-decision-matrix.md)
+上一章：[第 205 章：01：调用链](205-01-http-observation-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 205 章：04：关键分支矩阵](205-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## A. 先确认请求链路（MVC 主线）

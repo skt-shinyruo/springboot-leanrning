@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 151 章：深挖指南（Spring Core Profiles）](../part-00-guide/151-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 153 章：常见坑（Spring Core Profiles）](../appendix/153-90-common-pitfalls.md)
+上一章：[第 151 章：深挖指南（Spring Core Profiles）](../part-00-guide/151-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 153 章：常见坑（Spring Core Profiles）](../appendix/153-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

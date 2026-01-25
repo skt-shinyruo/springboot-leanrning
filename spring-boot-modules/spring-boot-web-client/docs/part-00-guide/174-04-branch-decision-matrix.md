@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 174 章：02：断点地图（Web Client Debugger Pack）](174-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 175 章：01：RestClient 基础：请求构造与错误处理](../part-01-web-client/175-01-restclient-basics.md)
+上一章：[第 174 章：02：断点地图（Web Client Debugger Pack）](174-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 175 章：01：RestClient 基础：请求构造与错误处理](../part-01-web-client/175-01-restclient-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

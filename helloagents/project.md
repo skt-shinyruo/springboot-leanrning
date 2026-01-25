@@ -44,9 +44,7 @@
 - **单测试类：** `mvn -q -pl :<artifactId> -Dtest=SomeTest test`
 - **单测试方法：** `mvn -q -pl :<artifactId> -Dtest=SomeTest#someMethod test`
 - **调试（attach 5005）：** `mvn -q -pl :<artifactId> -Dtest=SomeTest#someMethod -Dmaven.surefire.debug test`
-- **脚本优先（便于统一）：**
-  - `bash scripts/test-module.sh <artifactId>`（会自动补齐 `:<artifactId>`）
-  - `bash scripts/test-all.sh`
+- **脚本约定：**本仓库已移除 `scripts/` 快捷脚本，统一使用上面的 Maven 命令即可。
 
 ---
 
@@ -56,34 +54,31 @@
 
 ### 1) 章节学习卡片（五问闭环）
 
-- 全量补齐：`python3 scripts/upsert-chapter-cards.py`
-- 只跑子集：`python3 scripts/upsert-chapter-cards.py --module <module>`
-- 只看影响范围：`python3 scripts/upsert-chapter-cards.py --dry-run`
+（历史上由 `scripts/` 下的批处理脚本统一维护；当前仓库已移除 `scripts/`，因此这些操作以手工维护为准。）
 
 ### 2) 正文二次书籍化（Intro/Evidence/Summary 骨架）
 
-- 全量改写：`python3 scripts/rewrite-chapters-booklike-v2.py`
-- 输出报告：`python3 scripts/rewrite-chapters-booklike-v2.py --dry-run --report helloagents/plan/.../booklike-v2-report.md`
+（同上：当前以手工维护为准。）
 
-### 3) 章节尾部入口块（Bookify：对应 Lab/Test + 上一章/目录/下一章）
+### 3) 章节尾部入口块（测试入口 + 上一章/目录/下一章）
 
-- 全量 upsert：`python3 scripts/bookify-docs.py`
-- 幂等验证：连续运行两次应 `changed=0`
-- 只跑子集：`python3 scripts/bookify-docs.py --module <module>`
+（同上：当前以手工维护为准。）
 
 ### 4) 文档质量门禁（建议在批处理后运行）
 
-- 相对链接断链检查（必须为 0）：`python3 scripts/check-md-relative-links.py --root docs`
-- 章节契约检查（error=0）：`python3 scripts/check-chapter-contract.py --root docs`
+最小验证建议改为：
+
+- 本地构建文档站：`cd docs-site && mkdocs build -f mkdocs.yml`
+  - 目的：确保全站目录 `docs/SUMMARY.md` 可解析、页面可渲染
+  - 说明：MkDocs 不保证覆盖所有 Markdown 相对链接的“文件存在性”校验，但能覆盖导航与页面渲染的基本正确性
 
 ### 5) 深挖基线审计（docs/tests 入口清单）
 
-- 生成审计报告（建议放到方案包目录）：  
-  `bash scripts/audit-module-deep-dive.sh --task helloagents/plan/.../task.md --format md --out helloagents/plan/.../module-deep-dive-audit.md`
+（仓库已移除 `scripts/`，该审计脚本入口不再提供。）
 
 ### 文档 ↔ 测试入口绑定约定
 
-- `docs/**.md` 章节的末尾应包含 `### 对应 Lab/Test` 区块（由 BOOKIFY 机制统一维护）。
+- `*/docs/**.md` 章节的末尾应包含 `### 对应 Lab/Test` 区块（建议手工维护；历史上由批处理脚本生成）。
 - 文档引用一律使用可解析的 Markdown 相对链接（避免 `docs/NN` 这种缩写引用造成断链）。
 - 如果文档结论依赖某个可复现分支，必须在文档中显式写出：
   - 推荐测试入口（类名/方法名）
@@ -106,6 +101,7 @@
 > 目标：让每章都能做到“可导航 + 可验证 + 可断点 + 可排障”，避免出现只有标题没有落地内容的空块。
 
 建议每个 `docs/**.md` 章节至少包含以下信息（可按 A–G 结构组织，也可按更适合的方式组织，但契约点要齐）：
+（注：当前仓库文档实际位于各模块的 `*/docs/**.md` 下。）
 
 1. **本章输出（What you get）**
    - 读完本章你应该能回答的 2–3 个问题（可复述）
@@ -121,7 +117,7 @@
    - 至少 2 条“现象 → 根因 → 如何验证”的排障分流
 6. **一句话自检（Self-check）**
    - 至少 3 个自检问题（概念/边界/排障），并尽量绑定到可跑入口
-7. **章节末尾入口块（Bookify）**
+7. **章节末尾入口块（测试入口 + 导航）**
    - `### 对应 Lab/Test`（测试类路径）
    - `上一章｜目录｜下一章`（稳定导航）
 
@@ -135,7 +131,7 @@
    - 文档内部与知识库一律使用 Markdown 相对链接（仓库内可解析）。
 2. **索引集中、入口收敛**
    - 模块入口以 `helloagents/wiki/modules/<module>.md` 为“知识库侧索引”。
-   - 模块内部入口以 `docs/<topic>/<module>/README.md` 为“模块侧索引（目录页）”。
+   - 模块内部入口以 `<module>/docs/README.md` 为“模块侧索引（目录页）”。
    - 全局主线入口以 `helloagents/wiki/learning-path.md` 为“路线图索引”。
 3. **避免 `docs/NN` 缩写引用**
    - 章节引用必须写成真实相对路径链接，避免读者误解与断链。

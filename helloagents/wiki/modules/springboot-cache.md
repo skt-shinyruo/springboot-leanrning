@@ -35,12 +35,12 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/cache/springboot-cache/README.md`
-- **Docs Guide:** `docs/cache/springboot-cache/part-00-guide/108-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md`
-- **Playbook:** `docs/cache/springboot-cache/appendix/114-90-common-pitfalls.md`
-- **Self-check:** `docs/cache/springboot-cache/appendix/115-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-cache/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-cache/docs/part-00-guide/108-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-cache/docs/part-00-guide/108-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-cache/docs/part-00-guide/108-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-cache/docs/appendix/114-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-cache/docs/appendix/115-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`
@@ -53,7 +53,6 @@
 - **Exercise:** `spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part00_guide/BootCacheExerciseSolutionTest.java`
 - **Lab（并发/性能：缓存击穿（stampede）可断言复现）：** `spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part02_perf_concurrency/BootCacheStampedeProtectionLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

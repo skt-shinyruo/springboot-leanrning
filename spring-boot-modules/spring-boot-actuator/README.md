@@ -39,7 +39,7 @@ mvn -pl :spring-boot-actuator test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](../../docs/actuator/spring-boot-actuator/README.md)）
+（docs 目录页：[`docs/README.md`](docs/README.md)）
 
 建议按“端点现象 → 配置开关 → 自定义指标 → 测试验证”的顺序学习：
 

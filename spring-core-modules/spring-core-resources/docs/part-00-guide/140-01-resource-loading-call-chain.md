@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 140 章：00. 深挖导读](140-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 140 章：02：断点地图](140-02-breakpoint-map.md)
+上一章：[第 140 章：00. 深挖导读](140-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 140 章：02：断点地图](140-02-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 最短调用链

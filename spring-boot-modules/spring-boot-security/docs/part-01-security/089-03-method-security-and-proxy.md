@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 90 章：04：FilterChain：多链路 + 顺序 + 自定义 Filter](090-04-filter-chain-and-order.md)
+上一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 90 章：04：FilterChain：多链路 + 顺序 + 自定义 Filter](090-04-filter-chain-and-order.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

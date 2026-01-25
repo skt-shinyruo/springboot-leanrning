@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 185 章：01 - Slice 与 Mock（Testing）](../part-01-testing/185-01-slice-and-mocking.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 187 章：99 - Self Check（springboot-testing）](187-99-self-check.md)
+上一章：[第 185 章：01 - Slice 与 Mock（Testing）](../part-01-testing/185-01-slice-and-mocking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 187 章：99 - Self Check（springboot-testing）](187-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](005-01-property-sources-and-profiles.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 7 章：90：常见坑清单（建议反复对照）](../appendix/007-90-common-pitfalls.md)
+上一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](005-01-property-sources-and-profiles.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 7 章：90：常见坑清单（建议反复对照）](../appendix/007-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -13,9 +13,9 @@
 ## Start Here（路线图 / 断点地图 / 第一个可运行入口）
 
 - 路线图：`helloagents/wiki/learning-path.md`
-- Docs Start Here：`docs/spel/spring-core-spel/README.md`
-- 调用链（parse → AST → evaluate）：`docs/spel/spring-core-spel/part-00-guide/210-01-spel-call-chain.md`
-- 断点地图：`docs/spel/spring-core-spel/part-00-guide/210-02-breakpoint-map.md`
+- Docs Start Here：`spring-core-modules/spring-core-spel/docs/README.md`
+- 调用链（parse → AST → evaluate）：`spring-core-modules/spring-core-spel/docs/part-00-guide/210-01-spel-call-chain.md`
+- 断点地图：`spring-core-modules/spring-core-spel/docs/part-00-guide/210-02-breakpoint-map.md`
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelLabTest test`
   - 对应测试类：`spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part00_guide/SpringCoreSpelLabTest.java`
@@ -28,16 +28,15 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/spel/spring-core-spel/README.md`
-- **Deep Dive Guide:** `docs/spel/spring-core-spel/part-00-guide/210-00-deep-dive-guide.md`
-- **Call Chain:** `docs/spel/spring-core-spel/part-00-guide/210-01-spel-call-chain.md`
-- **Breakpoint Map:** `docs/spel/spring-core-spel/part-00-guide/210-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/spel/spring-core-spel/part-00-guide/210-04-branch-decision-matrix.md`
-- **Playbook:** `docs/spel/spring-core-spel/appendix/212-90-common-pitfalls.md`
-- **Self-check:** `docs/spel/spring-core-spel/appendix/213-99-self-check.md`
+- **Docs Index:** `spring-core-modules/spring-core-spel/docs/README.md`
+- **Deep Dive Guide:** `spring-core-modules/spring-core-spel/docs/part-00-guide/210-00-deep-dive-guide.md`
+- **Call Chain:** `spring-core-modules/spring-core-spel/docs/part-00-guide/210-01-spel-call-chain.md`
+- **Breakpoint Map:** `spring-core-modules/spring-core-spel/docs/part-00-guide/210-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-core-modules/spring-core-spel/docs/part-00-guide/210-04-branch-decision-matrix.md`
+- **Playbook:** `spring-core-modules/spring-core-spel/docs/appendix/212-90-common-pitfalls.md`
+- **Self-check:** `spring-core-modules/spring-core-spel/docs/appendix/213-99-self-check.md`
 - **Solution（Exercises 对应答案回归）：** `spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part00_guide/SpringCoreSpelExerciseSolutionTest.java`
 - **Lab（并发/性能：可复现范式）：** `spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part02_perf_concurrency/SpringCoreSpelConcurrencyLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Change History
 

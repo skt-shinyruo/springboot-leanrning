@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[Book TOC](../../../book/index.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 200 章：00. 深挖导读](200-00-deep-dive-guide.md)
+上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 200 章：00. 深挖导读](200-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
@@ -29,6 +29,6 @@
 
 - Lab：`BootLoggingLabTest`
 
-上一章：[Book TOC](../../../book/index.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/00-deep-dive-guide.md](200-00-deep-dive-guide.md)
+上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/00-deep-dive-guide.md](200-00-deep-dive-guide.md)
 
 <!-- BOOKIFY:END -->

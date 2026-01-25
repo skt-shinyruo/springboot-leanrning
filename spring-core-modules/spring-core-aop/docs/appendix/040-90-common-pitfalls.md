@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 39 章：10 real world stacking playbook](../part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](041-99-self-check.md)
+上一章：[第 39 章：10 real world stacking playbook](../part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](041-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

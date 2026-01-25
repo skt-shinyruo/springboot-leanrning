@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 55 章：02. `@Transactional` 如何生效：它也是 AOP（也是代理）](055-02-transactional-proxy.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 57 章：04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？](057-04-propagation.md)
+上一章：[第 55 章：02. `@Transactional` 如何生效：它也是 AOP（也是代理）](055-02-transactional-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 57 章：04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？](057-04-propagation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 31 章：02. JDK vs CGLIB：代理类型与“可注入类型”差异](031-02-jdk-vs-cglib.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 33 章：04. `final` 与代理限制：为什么 final method 拦截不到？](033-04-final-and-proxy-limits.md)
+上一章：[第 31 章：02. JDK vs CGLIB：代理类型与“可注入类型”差异](031-02-jdk-vs-cglib.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 33 章：04. `final` 与代理限制：为什么 final method 拦截不到？](033-04-final-and-proxy-limits.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

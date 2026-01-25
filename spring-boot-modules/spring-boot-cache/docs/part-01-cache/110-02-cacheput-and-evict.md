@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 109 章：01：`@Cacheable` 最小闭环](109-01-cacheable-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 111 章：03：key / condition / unless：缓存边界](111-03-key-condition-unless.md)
+上一章：[第 109 章：01：`@Cacheable` 最小闭环](109-01-cacheable-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 111 章：03：key / condition / unless：缓存边界](111-03-key-condition-unless.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

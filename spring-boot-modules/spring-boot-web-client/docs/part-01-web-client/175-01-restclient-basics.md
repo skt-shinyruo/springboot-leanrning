@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 174 章：00 - Deep Dive Guide（springboot-web-client）](../part-00-guide/174-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 176 章：02：WebClient（响应式）最小闭环](176-02-webclient-basics.md)
+上一章：[第 174 章：00 - Deep Dive Guide（springboot-web-client）](../part-00-guide/174-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 176 章：02：WebClient（响应式）最小闭环](176-02-webclient-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

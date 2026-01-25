@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 108 章：02：断点地图（Cache Debugger Pack）](108-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 109 章：01：@Cacheable 基础与命中语义](../part-01-cache/109-01-cacheable-basics.md)
+上一章：[第 108 章：02：断点地图（Cache Debugger Pack）](108-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 109 章：01：@Cacheable 基础与命中语义](../part-01-cache/109-01-cacheable-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

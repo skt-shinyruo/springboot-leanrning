@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](../part-01-validation-core/163-06-debugging.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 165 章：自测题（Spring Core Validation）](165-99-self-check.md)
+上一章：[第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](../part-01-validation-core/163-06-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 165 章：自测题（Spring Core Validation）](165-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

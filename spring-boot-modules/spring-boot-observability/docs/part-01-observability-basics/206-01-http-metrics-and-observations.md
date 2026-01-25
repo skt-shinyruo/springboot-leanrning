@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 205 章：04：关键分支矩阵](../part-00-guide/205-04-branch-decision-matrix.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 207 章：90 - Common Pitfalls（springboot-observability）](../appendix/207-90-common-pitfalls.md)
+上一章：[第 205 章：04：关键分支矩阵](../part-00-guide/205-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 207 章：90 - Common Pitfalls（springboot-observability）](../appendix/207-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 1. 先把“存在性”证明出来

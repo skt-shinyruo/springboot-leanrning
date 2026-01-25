@@ -18,7 +18,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-class SpringCoreBeansEarlyReferenceLabTest {
+public class SpringCoreBeansEarlyReferenceLabTest {
 
     @Test
     void getEarlyBeanReference_canProvideEarlyProxyDuringCircularDependencyResolution() {

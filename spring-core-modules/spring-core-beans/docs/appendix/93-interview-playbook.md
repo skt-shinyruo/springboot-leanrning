@@ -1,269 +1,263 @@
-# 93. 面试复述模板（决策树 → Lab → 断点入口）
+# 93. 面试复述模板：用“可证明的主线”回答 Spring Beans
 
-## 导读
-
-- 本章主题：**93. 面试复述模板（决策树 → Lab → 断点入口）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Lab：`SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansAutoConfigurationOverrideMatrixLabTest` / `SpringCoreBeansXmlBeanDefinitionReaderLabTest` / `SpringCoreBeansAutowireCapableBeanFactoryLabTest` / `SpringCoreBeansSpelValueLabTest` / `SpringCoreBeansCustomQualifierLabTest`
-
-## 机制主线
-
-本章目标：把 `spring-core-beans` 变成你的“面试答题脚本”。
+> 本章目标：把 `spring-core-beans` 变成你的“答题脚本”，但不是靠背诵——而是靠**可运行证据 + 可断点证明**。  
+> 面试里你只要能把“现象 → 主线阶段 → 关键分支 → 证据链入口（Lab）”说清楚，就已经超过大多数候选人。
 
 ---
 
-## 0. 一句话总纲（通用开场）
+## 0. 一句话总纲（通用开场，建议背下来）
 
-> Spring 的 Bean 机制可以用“三层模型”统一：**定义层（BeanDefinition）→ 实例层（create/populate/initialize）→ 最终暴露对象（可能是 proxy/early reference）**。  
-> 面试里所有“为什么注入的是它/为什么会 proxy/为什么循环依赖有时能救”，都能落到这三层的某个阶段。
+> Spring 的 Bean 机制可以用“三层模型”统一：  
+> **定义层（BeanDefinition）→ 实例层（create/populate/initialize）→ 最终暴露对象（可能是 proxy/early reference）**。  
+> 面试里所有“为什么注入的是它/为什么会 proxy/为什么循环依赖有时能救”，都能落在这三层的某个阶段。
 
-对应入口：
+你可以顺手补一句“可证明”：
 
-- 建议先跑：`docs/part-00-guide/01-quickstart-30min.md`（3 个最小闭环，把“可复述”变成“可证明”）
-- definition vs instance（定义层 vs 实例层）：`SpringCoreBeansContainerLabTest#beanDefinitionIsNotTheBeanInstance`
-- final exposed object（最终暴露对象可能被替换）：`SpringCoreBeansBeanCreationTraceLabTest#beanCreationTrace_recordsPhases_andExposesProxyReplacement`
-
----
-
-## 1) 依赖解析（DI）：候选收集 → 候选收敛 → 最终注入
-
-### 复述模板（可背）
-
-1. 先按类型收集候选（Map<beanName, candidate>）  
-2. 再按规则收敛候选：Qualifier → name 匹配 → Primary → Priority/Ordered（部分场景）  
-3. 收敛成 1 个就注入；收敛不下来就 fail-fast（NoUnique）  
-
-- `DefaultListableBeanFactory#doResolveDependency`
-- `DefaultListableBeanFactory#findAutowireCandidates`
-- `DefaultListableBeanFactory#determineAutowireCandidate`
-- `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
+> 我一般会用一个最小可跑测试把现象复现出来，然后从 `refresh → doCreateBean` 的调用链下断点确认分支条件。
 
 ---
 
-## 2) BFPP / BDRPP / BPP：改定义 vs 改实例（以及它们能/不能做什么）
+## 1. 通用答题结构（30 秒 / 2 分钟 / 深挖加分）
 
-### 复述模板（可背）
+### 1.1 30 秒版本（先把框架立住）
 
-- **BDRPP**：可以“注册/修改 BeanDefinition”（定义层入口更早）  
-- **BFPP**：可以“修改 BeanDefinition”（仍在定义层）  
-- **BPP**：可以“处理实例”甚至“替换成 proxy”（实例层/最终暴露对象）  
+1) 先落到三层模型（你在定义层/实例层/最终对象层）  
+2) 给出关键术语（BeanDefinition / BPP / resolveDependency / proxy / early reference）  
+3) 给出一个典型坑（让面试官相信你踩过坑）  
+
+### 1.2 2 分钟版本（把主线跑通）
+
+1) 给出主线阶段：refresh 的哪一段？createBean 的哪一段？  
+2) 给出关键分支：候选收敛/排序/early reference/是否被 BPP 包装  
+3) 给出 2 个断点 + 3 个 watchpoints（“我能证明我说的”）  
+
+### 1.3 深挖加分（你能说源码名，而不是说“源码很复杂”）
+
+- 指出 1 个“算法级入口”：例如 `PostProcessorRegistrationDelegate` 的排序/分段  
+- 指出 1 个“数据结构”：例如三级缓存三表  
+- 指出 1 个“边界”：例如 `@Order` 解决不了单依赖歧义  
 
 ---
 
-## 3) 生命周期：创建/注入/初始化/销毁（以及回调顺序）
+## 2. 高频题库（按主题直接套用）
 
-### 复述模板（可背）
+### 2.1 依赖注入（DI）：为什么注入的是它？
+
+**30 秒版本**
+
+- 先按类型收集候选（Map<beanName, candidate>）  
+- 再按规则收敛候选：Qualifier → name 匹配 → Primary → Priority/Ordered（部分场景）  
+- 收敛成 1 个就注入；收敛不下来就 fail-fast（NoUnique）
+
+**2 分钟版本（源码主线）**
+
+- 入口：`DefaultListableBeanFactory#resolveDependency`  
+- 候选收集：`findAutowireCandidates`  
+- 收敛规则：`determineAutowireCandidate` + `QualifierAnnotationAutowireCandidateResolver`
+
+**你可以怎么证明（Lab + 断点）**
+
+- 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest`
+- 推荐断点：
+  - `DefaultListableBeanFactory#resolveDependency`
+  - `DefaultListableBeanFactory#determineAutowireCandidate`
+- 推荐观察点：
+  - 候选集合（beanName → candidate）
+  - 触发收敛的注解（Qualifier/Primary）
+  - `DependencyDescriptor`（注入点类型/泛型/required）
+
+对应章节：
+- DI 主线：[`014-03-dependency-injection-resolution.md`](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
+- 候选收敛边界：[`33-autowire-candidate-selection-primary-priority-order.md`](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
+
+---
+
+### 2.2 BFPP / BDRPP / BPP：为什么 `@Autowired/@PostConstruct` 能生效？为什么有时不生效？
+
+**30 秒版本**
+
+- **BDRPP/BFPP** 发生在定义层：能改 BeanDefinition（甚至注册新的定义）  
+- **BPP** 发生在实例层：能改实例，甚至替换成 proxy（最终暴露对象层）  
+- 很多“注解为什么生效”的答案是：**对应 processor 是否被注册、何时注册、是否执行到了**
+
+**2 分钟版本（主线定位）**
+
+- `refresh()` 里先 invoke BFPP/BDRPP，再 register BPP，再开始创建单例  
+- 所以“processor 的注册时机”决定了“注解是否生效”
+
+**你可以怎么证明（Lab + 断点）**
+
+- 推荐 Lab：`SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest`
+- 推荐断点：
+  - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
+  - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
+- 推荐观察点：
+  - PriorityOrdered/Ordered/Unordered 三段列表
+  - 哪些 processor 是 infrastructure role
+
+对应章节：
+- Post-Processors：[`017-06-post-processors.md`](../part-01-ioc-container/017-06-post-processors.md)
+- 排序算法：[`14-post-processor-ordering.md`](../part-03-container-internals/14-post-processor-ordering.md)
+
+---
+
+### 2.3 生命周期：创建/注入/初始化/销毁（以及回调顺序）
+
+**30 秒版本**
 
 - 创建主线：instantiate → populate → initialize  
-- 注入发生在 populate（而不是构造器之后“自然发生”）  
-- `@PostConstruct` 属于初始化阶段（依赖 BPP）  
-- prototype 默认不走容器销毁（除非你显式 destroy）  
+- `@PostConstruct` 属于 initialize 阶段（依赖 BPP）  
+- prototype 默认不走容器销毁（除非你显式 destroy）
+
+**2 分钟版本（主线与边界）**
+
+- populate 里做依赖注入（字段/Setter/`@Value` 等）  
+- initialize 里做 Aware/BeforeInit/Init/AfterInit（并且这里可能被 BPP 换壳）
+
+**你可以怎么证明**
+
+- 推荐 Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest`
+- 推荐断点：
+  - `AbstractAutowireCapableBeanFactory#populateBean`
+  - `AbstractAutowireCapableBeanFactory#initializeBean`
+- 推荐观察点：
+  - init method 选择（接口 vs 注解 vs 自定义）
+  - Before/After init BPP 链
+
+对应章节：
+- 生命周期与回调：[`016-05-lifecycle-and-callbacks.md`](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)
+- 回调顺序对照：[`17-lifecycle-callback-order.md`](../part-03-container-internals/17-lifecycle-callback-order.md)
 
 ---
 
-## 4) 循环依赖：为什么 constructor 无解、setter 有时能救？
+### 2.4 循环依赖：为什么 constructor 无解、setter 有时能救？
 
-### 复述模板（可背）
+**30 秒版本**
 
 - constructor 循环：需要“先有对象才能注入”，因此无解  
 - setter 循环：单例创建时存在 early exposure 窗口（三级缓存），可能救回来  
-- 一旦代理/包装介入，early reference 可能变成 proxy，行为会变化  
+- 代理介入时 early reference 可能变成 proxy，行为会变
+
+**2 分钟版本（给出缓存三表）**
+
+- singletonObjects：完成品  
+- earlySingletonObjects：早期引用  
+- singletonFactories：提供早期引用的工厂（是否返回 proxy 是关键边界）
+
+**你可以怎么证明**
+
+- 推荐 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
+- 推荐断点：
+  - `DefaultSingletonBeanRegistry#getSingleton`
+  - `DefaultSingletonBeanRegistry#addSingletonFactory`
+- 推荐观察点：
+  - 三表内容变化
+  - 何时触发 early reference
+
+对应章节：
+- 循环依赖概览：[`09-circular-dependencies.md`](../part-01-ioc-container/09-circular-dependencies.md)
+- early reference 深挖：[`16-early-reference-and-circular.md`](../part-03-container-internals/16-early-reference-and-circular.md)
 
 ---
 
-## 5) Spring Boot 自动装配：为什么有/为什么没有/为什么没退让？
+### 2.5 Spring Boot 自动装配：为什么有/为什么没有/为什么没退让？
 
-### 复述模板（可背）
+**30 秒版本**
 
-- auto-config 本质是：配置导入（@Import）+ 条件评估（@Conditional...）+ bean 注册  
+- auto-config 本质是：配置导入（`@Import`）+ 条件评估（`@Conditional...`）+ bean 注册  
 - 条件评估发生在注册阶段（refresh 前半段），不是看“最终容器状态”  
-- 覆盖/back-off 要求“覆盖 bean 在条件评估时可见”，否则会出现重复候选/注入失败  
+- back-off 要求“覆盖 bean 在评估时可见”，否则会出现重复候选/注入失败
 
-- `ConditionEvaluator#shouldSkip`
-- `OnBeanCondition#getMatchOutcome`
-- `AbstractApplicationContext#refresh`
+**你可以怎么证明**
 
----
+- 推荐 Lab：`SpringCoreBeansAutoConfigurationOrderingLabTest`（顺序）/ `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`（退让时机）
+- 推荐断点：
+  - `AutoConfigurationImportSelector#getAutoConfigurationEntry`
+  - `ConditionEvaluator#shouldSkip`
+- 推荐观察点：
+  - 候选列表（排序/过滤前后）
+  - 条件匹配结果（match/mismatch）
 
-## 6) AOT/Native：RuntimeHints（构建期契约）
-
-### 复述模板（可背）
-
-- `RuntimeHintsRegistrar#registerHints`
-
----
-
-## 7) 真实世界补齐（面试加分：你能解释“容器外对象/SpEL/自定义 Qualifier”）
+对应章节：
+- 自动配置主线：[`021-10-spring-boot-auto-configuration.md`](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
+- 顺序：[`020-09-auto-config-ordering.md`](../part-02-boot-autoconfig/020-09-auto-config-ordering.md)
 
 ---
 
-## 源码与断点
+### 2.6 AOT/Native：RuntimeHints（构建期契约）
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-约束：**不靠背概念**，而是靠“可复述的决策树 + 可运行的 Lab + 可下断点证明”。
-
-- 深挖指南：`docs/part-00-guide/00-deep-dive-guide.md`
-- 排障主入口：`docs/part-02-boot-autoconfig/11-debugging-and-observability.md`
-
-### 对应 Lab（可证明）
-
-- `SpringCoreBeansInjectionAmbiguityLabTest`
-- `SpringCoreBeansAutowireCandidateSelectionLabTest`
-
-### 推荐断点（够用版）
-
-推荐断点（按“候选收集 → 候选收敛 → 最终注入”顺序）：
-
-1) `DefaultListableBeanFactory#doResolveDependency`（依赖解析总入口）
-2) `DefaultListableBeanFactory#findAutowireCandidates`（候选集合：Map<beanName, candidate>）
-3) `DefaultListableBeanFactory#determineAutowireCandidate`（候选收敛：最终 winner）
-4) `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`（Qualifier/meta-annotation 过滤）
-
-固定观察点（watch list）：
-
-- `descriptor`（注入点抽象：类型/required/注解/名称）
-- `matchingBeans` / `candidates`（候选集合）
-- `autowiredBeanName` / `candidateName`（最终命中者）
-
-### 对应 Lab（可证明）
-
-- `SpringCoreBeansRegistryPostProcessorLabTest`
-- `SpringCoreBeansPostProcessorOrderingLabTest`
-- `SpringCoreBeansProxyingPhaseLabTest`
-
-### 推荐断点
-
-推荐断点（把“改定义 vs 改实例”落到 refresh 主线）：
-
-1) `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`（BDRPP/BFPP 执行：定义层）
-2) `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（BPP 注册：实例层拦截链）
-3) `AbstractBeanFactory#addBeanPostProcessor`（最终进入 bpp list 的时机与顺序）
-
-固定观察点（watch list）：
-
-- `postProcessorNames`（候选集合）
-- `beanFactory.getBeanPostProcessors()`（最终执行顺序）
-
-### 对应 Lab（可证明）
-
-- `SpringCoreBeansLifecycleCallbackOrderLabTest`
-- `SpringCoreBeansBeanCreationTraceLabTest`
-
-### 推荐断点
-
-推荐断点（把回调顺序跑成“断点证据链”）：
-
-1) `AbstractAutowireCapableBeanFactory#doCreateBean`（创建主线）
-2) `AbstractAutowireCapableBeanFactory#populateBean`（注入发生点）
-3) `AbstractAutowireCapableBeanFactory#initializeBean`（Aware + init callbacks 串联点）
-4) `CommonAnnotationBeanPostProcessor#postProcessBeforeInitialization`（`@PostConstruct` 触发点之一）
-5) `DisposableBeanAdapter#destroy`（销毁回调入口）
-
-### 对应 Lab（可证明）
-
-- `SpringCoreBeansContainerLabTest`
-- `SpringCoreBeansEarlyReferenceLabTest`
-
-### 推荐断点
-
-推荐断点（把“constructor 无解 / setter 可救”落到三层缓存语义）：
-
-1) `DefaultSingletonBeanRegistry#getSingleton`（三层缓存命中路径）
-2) `DefaultSingletonBeanRegistry#addSingletonFactory`（early exposure：注册 ObjectFactory）
-3) `AbstractAutowireCapableBeanFactory#doCreateBean`（创建窗口期：什么时候允许 early reference）
-4) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`（early reference 是否变成 proxy 的分支）
-
-### 对应 Lab（可证明）
-
-- `SpringCoreBeansConditionEvaluationReportLabTest`
-- `SpringCoreBeansAutoConfigurationOrderingLabTest`
-- `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`
-- `SpringCoreBeansAutoConfigurationOverrideMatrixLabTest`
-
-### 推荐断点
-
-推荐断点（把“为什么有/为什么没有/为什么没退让”落到条件评估时机）：
-
-1) `AutoConfigurationImportSelector#selectImports`（自动配置导入入口之一）
-2) `ConditionEvaluator#shouldSkip`（条件评估总入口）
-3) `OnBeanCondition#getMatchOutcome`（`@ConditionalOnBean/@ConditionalOnMissingBean` 等匹配）
-4) `ConditionEvaluationReport#get`（把条件报告当成数据结构查询，而不是日志）
+**30 秒版本**
 
 - AOT/Native 的关键是把“运行期反射/代理/资源需求”前移为“构建期契约”  
 - Spring 用 RuntimeHints 表达这种契约：reflection/proxy/resource 等  
-- 你可以在 JVM 单测里验证 hints 的存在性（不必构建 native image）  
+- 你可以在 JVM 单测里验证 hints 的存在性（不必构建 native image）
 
-### 对应章节 + Lab（可证明）
+**你可以怎么证明**
 
-- 章节：`docs/part-05-aot-and-real-world/40-aot-and-native-overview.md`
-- 章节：`docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
-- Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
+- 推荐 Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
+- 推荐断点：`RuntimeHintsRegistrar#registerHints`
 
-### 推荐断点
+对应章节：
+- AOT/Native：[`024-40-aot-and-native-overview.md`](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
+- RuntimeHints：[`41-runtimehints-basics.md`](../part-05-aot-and-real-world/41-runtimehints-basics.md)
 
-真实世界补齐（XML / 容器外对象 / SpEL / 自定义 Qualifier）常用断点：
+---
+
+### 2.7 真实世界加分：XML / 容器外对象 / SpEL / 自定义 Qualifier
+
+你可以用一句话把它们归类：
+
+> 它们都在“定义层输入”与“实例层托管边界”上：XML/Properties/Groovy 是定义来源；AutowireCapableBeanFactory 是容器外对象托管；SpEL/Qualifier 则直接影响注入解析。
+
+常用断点：
 
 - XML（定义层输入）：`XmlBeanDefinitionReader#loadBeanDefinitions`、`DefaultListableBeanFactory#registerBeanDefinition`
-- 容器外对象：`AutowireCapableBeanFactory#autowireBean`、`AutowireCapableBeanFactory#initializeBean`、`AutowireCapableBeanFactory#destroyBean`
+- 容器外对象：`AutowireCapableBeanFactory#autowireBean`、`initializeBean`、`destroyBean`
 - SpEL / `@Value("#{...}")`：`StandardBeanExpressionResolver#evaluate`、`AbstractBeanFactory#resolveEmbeddedValue`
 - 自定义 Qualifier：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
 
-- XML → BeanDefinitionReader：`docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md` + `SpringCoreBeansXmlBeanDefinitionReaderLabTest`
-- 容器外对象注入：`docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md` + `SpringCoreBeansAutowireCapableBeanFactoryLabTest`
-- SpEL：`docs/part-05-aot-and-real-world/44-spel-and-value-expression.md` + `SpringCoreBeansSpelValueLabTest`
-- 自定义 Qualifier：`docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md` + `SpringCoreBeansCustomQualifierLabTest`
+对应章节：
+- XML → BeanDefinitionReader：[`42-xml-bean-definition-reader.md`](../part-05-aot-and-real-world/42-xml-bean-definition-reader.md)
+- 容器外对象注入：[`43-autowirecapablebeanfactory-external-objects.md`](../part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md)
+- SpEL：[`44-spel-and-value-expression.md`](../part-05-aot-and-real-world/44-spel-and-value-expression.md)
+- 自定义 Qualifier：[`45-custom-qualifier-meta-annotation.md`](../part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md)
 
-## 常见坑与边界
+---
 
-1) **误区：`@Order` 能解决单依赖歧义**
-   - `@Order` 主要影响集合注入/链路顺序；单依赖收敛主要看 `@Qualifier/@Primary/name` 等规则（见 `03/33`）。
-2) **误区：`@PostConstruct` 是“Java 自带回调”**
-   - `@PostConstruct` 依赖 BPP（例如 CommonAnnotationBeanPostProcessor）；BPP 没注册/没执行时它不会发生（见 `12/17`）。
-3) **误区：循环依赖就是“三级缓存技巧”**
-   - 三级缓存承载的是 early reference 的时机与语义；代理介入时 early reference 可能变成 proxy（见 `09/16`）。
-4) **误区：条件装配是看“最终容器状态”**
-   - 条件评估发生在注册阶段（refresh 前半段）；back-off 要求“覆盖 bean 在评估时可见”（见 `10/11`）。
+## 3. 面试常见误区（你说出来就很加分）
 
-## 小结与下一章
+1) **误区：`@Order` 能解决单依赖歧义**  
+   - `@Order` 主要影响集合注入/链路顺序；单依赖收敛主要看 `@Qualifier/@Primary/name` 等规则。
+2) **误区：`@PostConstruct` 是“Java 自带回调”**  
+   - `@PostConstruct` 依赖 BPP（例如 CommonAnnotationBeanPostProcessor）；BPP 没注册/没执行时它不会发生。
+3) **误区：循环依赖就是“三级缓存技巧”**  
+   - 三表承载的是 early reference 的时机与语义；代理介入时 early reference 可能变成 proxy。
+4) **误区：条件装配是看“最终容器状态”**  
+   - 条件评估发生在注册阶段；back-off 要求“覆盖 bean 在评估时可见”。
 
-- `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
-- `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
-- `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`
-- `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+---
 
+## 4. 最小断点背诵清单（背 6 个就够）
+
+- `AbstractApplicationContext#refresh`
+- `AbstractBeanFactory#doGetBean`
 - `AbstractAutowireCapableBeanFactory#doCreateBean`
 - `AbstractAutowireCapableBeanFactory#populateBean`
 - `AbstractAutowireCapableBeanFactory#initializeBean`
-- `DisposableBeanAdapter#destroy`
-
-- `DefaultSingletonBeanRegistry#getSingleton`
-- `DefaultSingletonBeanRegistry#addSingletonFactory`
-- `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+- `DefaultListableBeanFactory#resolveDependency`
 
 <!-- BOOKIFY:START -->
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansAutoConfigurationOverrideMatrixLabTest` / `SpringCoreBeansXmlBeanDefinitionReaderLabTest` / `SpringCoreBeansAutowireCapableBeanFactoryLabTest` / `SpringCoreBeansSpelValueLabTest` / `SpringCoreBeansCustomQualifierLabTest`
+- Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
+- Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest`
+- Lab：`SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest`
+- Lab：`SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest`
+- Lab：`SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
+- Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
+- Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest` / `SpringCoreBeansAutowireCapableBeanFactoryLabTest`
+- Lab：`SpringCoreBeansSpelValueLabTest` / `SpringCoreBeansCustomQualifierLabTest`
 
 上一章：[92. 知识点地图（Concept → Chapter → Lab）](92-knowledge-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[94. 生产排障清单（异常分型 → 入口 → 观察点 → 修复策略）](94-production-troubleshooting-checklist.md)
 

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 95 章：主线时间线：Spring Boot Data JPA](095-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 97 章：01. Entity 状态机：transient / managed / detached / removed](../part-01-data-jpa/097-01-entity-states.md)
+上一章：[第 95 章：主线时间线：Spring Boot Data JPA](095-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 97 章：01. Entity 状态机：transient / managed / detached / removed](../part-01-data-jpa/097-01-entity-states.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

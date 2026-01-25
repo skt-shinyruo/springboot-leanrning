@@ -35,12 +35,12 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/security/springboot-security/README.md`
-- **Docs Guide:** `docs/security/springboot-security/part-00-guide/086-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/security/springboot-security/part-00-guide/086-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md`
-- **Playbook:** `docs/security/springboot-security/appendix/092-90-common-pitfalls.md`
-- **Self-check:** `docs/security/springboot-security/appendix/093-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-security/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-security/docs/part-00-guide/086-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-security/docs/part-00-guide/086-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-security/docs/part-00-guide/086-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-security/docs/appendix/092-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-security/docs/appendix/093-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
@@ -54,7 +54,6 @@
 - **Exercise:** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part00_guide/BootSecurityExerciseSolutionTest.java`
 - **Lab（并发/性能：SecurityContext 并发隔离）：** `spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part02_perf_concurrency/BootSecuritySecurityContextIsolationLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

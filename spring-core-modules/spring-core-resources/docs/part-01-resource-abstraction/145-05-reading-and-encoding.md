@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](146-06-jar-vs-filesystem.md)
+上一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](146-06-jar-vs-filesystem.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 124 章：90：常见坑清单（Async & Scheduling）](../appendix/124-90-common-pitfalls.md)
+上一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 124 章：90：常见坑清单（Async & Scheduling）](../appendix/124-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

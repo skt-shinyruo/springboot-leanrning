@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 72 章：02：统一异常处理（ControllerAdvice）与“坏输入”](072-02-exception-handling.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 74 章：04：Interceptor 与 Filter：入口在哪里、顺序怎么理解](074-04-interceptor-and-filter-ordering.md)
+上一章：[第 72 章：02：统一异常处理（ControllerAdvice）与“坏输入”](072-02-exception-handling.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 74 章：04：Interceptor 与 Filter：入口在哪里、顺序怎么理解](074-04-interceptor-and-filter-ordering.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

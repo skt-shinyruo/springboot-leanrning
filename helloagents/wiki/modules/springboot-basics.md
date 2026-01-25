@@ -35,12 +35,12 @@ Spring Boot 基础：工程结构、配置、启动流程与最常用开发习�
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/basics/springboot-basics/README.md`
-- **Docs Guide:** `docs/basics/springboot-basics/part-00-guide/004-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/basics/springboot-basics/part-00-guide/004-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/basics/springboot-basics/part-00-guide/004-04-branch-decision-matrix.md`
-- **Playbook:** `docs/basics/springboot-basics/appendix/007-90-common-pitfalls.md`
-- **Self-check:** `docs/basics/springboot-basics/appendix/008-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-basics/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-basics/docs/appendix/007-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-basics/docs/appendix/008-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`
@@ -55,7 +55,6 @@ Spring Boot 基础：工程结构、配置、启动流程与最常用开发习�
 - **Exercises:** `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseSolutionTest.java`
 - **Lab（并发/性能：Environment 并发读取一致性）：** `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part02_perf_concurrency/BootBasicsEnvironmentConcurrencyLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

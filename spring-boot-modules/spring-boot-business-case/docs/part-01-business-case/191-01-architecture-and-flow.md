@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 190 章：00 - Deep Dive Guide（springboot-business-case）](../part-00-guide/190-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 192 章：90 - Common Pitfalls（springboot-business-case）](../appendix/192-90-common-pitfalls.md)
+上一章：[第 190 章：00 - Deep Dive Guide（springboot-business-case）](../part-00-guide/190-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 192 章：90 - Common Pitfalls（springboot-business-case）](../appendix/192-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

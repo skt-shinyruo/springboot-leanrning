@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 202 章：90 - Common Pitfalls（springboot-logging）](202-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[Book TOC](../../../book/index.md)
+上一章：[第 202 章：90 - Common Pitfalls（springboot-logging）](202-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
@@ -34,6 +34,6 @@
 
 - Lab：`BootLoggingLabTest`
 
-上一章：[appendix/90-common-pitfalls.md](202-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Book TOC](../../../book/index.md)
+上一章：[appendix/90-common-pitfalls.md](202-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

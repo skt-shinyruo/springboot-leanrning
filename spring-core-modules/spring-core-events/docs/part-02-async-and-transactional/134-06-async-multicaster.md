@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 133 章：05. 异步监听器：`@Async` 生效需要什么？线程会怎么变？](133-05-async-listener.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 135 章：07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](135-07-transactional-event-listener.md)
+上一章：[第 133 章：05. 异步监听器：`@Async` 生效需要什么？线程会怎么变？](133-05-async-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 135 章：07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](135-07-transactional-event-listener.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

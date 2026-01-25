@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 120 章：02：Executor 与线程命名/并发边界](120-02-executor-and-threading.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md)
+上一章：[第 120 章：02：Executor 与线程命名/并发边界](120-02-executor-and-threading.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

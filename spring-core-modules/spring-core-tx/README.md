@@ -2,7 +2,7 @@
 
 本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”讲透 **Spring 事务管理**。
 
-这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/tx/spring-core-tx/)。
+这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
 ## 你将学到什么
 
@@ -38,13 +38,13 @@ mvn -pl :spring-core-tx test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-1. [事务边界：你到底在“保护”哪一段代码？](../../docs/tx/spring-core-tx/part-01-transaction-basics/01-transaction-boundary.md)
-2. [`@Transactional` 如何生效：它也是 AOP（也是代理）](../../docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md)
-3. [回滚规则：为什么 checked exception 默认不回滚？](../../docs/tx/spring-core-tx/part-01-transaction-basics/03-rollback-rules.md)
-4. [传播行为：`REQUIRED` vs `REQUIRES_NEW`](../../docs/tx/spring-core-tx/part-01-transaction-basics/04-propagation.md)
-5. [程序化事务：`TransactionTemplate` 的价值](../../docs/tx/spring-core-tx/part-02-template-and-debugging/05-transaction-template.md)
-6. [Debug / 观察：如何判断“当前是否真的有事务”？](../../docs/tx/spring-core-tx/part-02-template-and-debugging/06-debugging.md)
-7. [常见坑清单（建议反复对照）](../../docs/tx/spring-core-tx/appendix/90-common-pitfalls.md)
+1. [事务边界：你到底在“保护”哪一段代码？](docs/part-01-transaction-basics/054-01-transaction-boundary.md)
+2. [`@Transactional` 如何生效：它也是 AOP（也是代理）](docs/part-01-transaction-basics/055-02-transactional-proxy.md)
+3. [回滚规则：为什么 checked exception 默认不回滚？](docs/part-01-transaction-basics/056-03-rollback-rules.md)
+4. [传播行为：`REQUIRED` vs `REQUIRES_NEW`](docs/part-01-transaction-basics/057-04-propagation.md)
+5. [程序化事务：`TransactionTemplate` 的价值](docs/part-02-template-and-debugging/058-05-transaction-template.md)
+6. [Debug / 观察：如何判断“当前是否真的有事务”？](docs/part-02-template-and-debugging/059-06-debugging.md)
+7. [常见坑清单（建议反复对照）](docs/appendix/060-90-common-pitfalls.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -60,12 +60,12 @@ mvn -pl :spring-core-tx test
 
 | 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
 | --- | --- | --- | --- |
-| commit / rollback 的最小闭环 | [docs/01](../../docs/tx/spring-core-tx/part-01-transaction-basics/01-transaction-boundary.md) | `SpringCoreTxLabTest#commitsOnSuccess` / `#rollsBackOnRuntimeException` + `AccountService` | 为什么“抛异常”会导致不落库 |
-| `@Transactional` 也是 AOP（代理） | [docs/02](../../docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md) | `SpringCoreTxLabTest#transactionalBeansAreProxied` | 事务拦截器在调用链的哪里 |
-| 自调用绕过事务（同类内部调用） | [docs/02](../../docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md) | `SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod` | 为什么 `this.inner()` 不走代理、如何做最小规避 |
-| checked exception 回滚规则 | [docs/03](../../docs/tx/spring-core-tx/part-01-transaction-basics/03-rollback-rules.md) | `SpringCoreTxLabTest#checkedExceptionsDoNotRollbackByDefault` | 为什么默认不回滚、如何用 `rollbackFor` 改 |
-| `REQUIRES_NEW` 的独立事务边界 | [docs/04](../../docs/tx/spring-core-tx/part-01-transaction-basics/04-propagation.md) | `SpringCoreTxLabTest#requiresNewCanCommitEvenIfOuterTransactionRollsBack` | 外层回滚时内层为何还能提交 |
-| 程序化事务与 rollback-only | [docs/05](../../docs/tx/spring-core-tx/part-02-template-and-debugging/05-transaction-template.md) | `SpringCoreTxLabTest#transactionTemplateAllowsProgrammaticCommitOrRollback` | `setRollbackOnly()` 的真实效果 |
+| commit / rollback 的最小闭环 | [docs/01](docs/part-01-transaction-basics/054-01-transaction-boundary.md) | `SpringCoreTxLabTest#commitsOnSuccess` / `#rollsBackOnRuntimeException` + `AccountService` | 为什么“抛异常”会导致不落库 |
+| `@Transactional` 也是 AOP（代理） | [docs/02](docs/part-01-transaction-basics/055-02-transactional-proxy.md) | `SpringCoreTxLabTest#transactionalBeansAreProxied` | 事务拦截器在调用链的哪里 |
+| 自调用绕过事务（同类内部调用） | [docs/02](docs/part-01-transaction-basics/055-02-transactional-proxy.md) | `SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod` | 为什么 `this.inner()` 不走代理、如何做最小规避 |
+| checked exception 回滚规则 | [docs/03](docs/part-01-transaction-basics/056-03-rollback-rules.md) | `SpringCoreTxLabTest#checkedExceptionsDoNotRollbackByDefault` | 为什么默认不回滚、如何用 `rollbackFor` 改 |
+| `REQUIRES_NEW` 的独立事务边界 | [docs/04](docs/part-01-transaction-basics/057-04-propagation.md) | `SpringCoreTxLabTest#requiresNewCanCommitEvenIfOuterTransactionRollsBack` | 外层回滚时内层为何还能提交 |
+| 程序化事务与 rollback-only | [docs/05](docs/part-02-template-and-debugging/058-05-transaction-template.md) | `SpringCoreTxLabTest#transactionTemplateAllowsProgrammaticCommitOrRollback` | `setRollbackOnly()` 的真实效果 |
 
 ## 常见 Debug 路径
 

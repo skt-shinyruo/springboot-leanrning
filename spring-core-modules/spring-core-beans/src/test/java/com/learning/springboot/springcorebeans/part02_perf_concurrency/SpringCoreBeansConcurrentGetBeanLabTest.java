@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Primary;
 /**
  * 并发/性能实验：context refresh 之后，并发 getBean() 是安全的；候选选择（@Primary）保持一致。
  */
-class SpringCoreBeansConcurrentGetBeanLabTest {
+public class SpringCoreBeansConcurrentGetBeanLabTest {
 
     @Test
     void concurrentGetBean_resolvesSamePrimaryCandidate_consistently() throws Exception {
@@ -85,4 +85,3 @@ class SpringCoreBeansConcurrentGetBeanLabTest {
         }
     }
 }
-

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 201 章：01：日志级别与分类](../part-01-logging-basics/201-01-logging-levels-and-categories.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 203 章：99 - Self Check（springboot-logging）](203-99-self-check.md)
+上一章：[第 201 章：01：日志级别与分类](../part-01-logging-basics/201-01-logging-levels-and-categories.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 203 章：99 - Self Check（springboot-logging）](203-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 坑 1：写了 debug 日志，但永远看不到

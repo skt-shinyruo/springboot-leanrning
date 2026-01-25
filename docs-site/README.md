@@ -1,10 +1,10 @@
 # 文档站点（MkDocs）
 
-本目录用于把仓库根目录的统一文档目录 `docs/` 构建成一个可搜索的静态站点（MkDocs Material）。
+本目录用于把“模块内文档（`*/docs/`）+ 全站目录（`docs/SUMMARY.md`）”构建成一个可搜索的静态站点（MkDocs Material）。
 
 ## 1. 关键约定（SSOT）
 
-- **单一源文档（SSOT）**：所有内容以仓库根 `docs/` 为事实来源；站点仅做构建与发布。
+- **单一源文档（SSOT）**：模块文档以各模块目录内的 `*/docs/` 为事实来源；仓库根 `docs/` 仅保留 `docs/SUMMARY.md` 作为全站导航目录。
 - **文档即目录（SSOT）**：站点导航/侧边栏目录以 `docs/SUMMARY.md` 为唯一事实来源（按该文件的顺序与层级展示）。
   - 目录维护：只需要修改 `docs/SUMMARY.md`
   - 站点配置：`docs-site/mkdocs.yml` 不再维护 `nav:` 大块 YAML
@@ -39,11 +39,15 @@ python3 -m pip install --user --break-system-packages -r docs-site/requirements.
 ### 2.2 启动预览
 
 ```bash
+cd docs-site
+mkdocs serve -f mkdocs.yml
 ```
 
 ### 2.3 构建
 
 ```bash
+cd docs-site
+mkdocs build -f mkdocs.yml
 ```
 
 ## 3. 目录维护方式（文档即目录）

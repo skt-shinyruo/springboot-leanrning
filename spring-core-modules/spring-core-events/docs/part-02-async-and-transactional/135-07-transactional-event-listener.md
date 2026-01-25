@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](134-06-async-multicaster.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 136 章：90. 常见坑清单（建议反复对照）](../appendix/136-90-common-pitfalls.md)
+上一章：[第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](134-06-async-multicaster.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 136 章：90. 常见坑清单（建议反复对照）](../appendix/136-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

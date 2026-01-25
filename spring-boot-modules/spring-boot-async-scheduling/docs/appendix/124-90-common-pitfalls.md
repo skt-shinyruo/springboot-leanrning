@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 123 章：05：`@Scheduled` 基础与可测试性](../part-01-async-scheduling/123-05-scheduling-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 125 章：99 - Self Check（springboot-async-scheduling）](125-99-self-check.md)
+上一章：[第 123 章：05：`@Scheduled` 基础与可测试性](../part-01-async-scheduling/123-05-scheduling-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 125 章：99 - Self Check（springboot-async-scheduling）](125-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

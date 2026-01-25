@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 169 章：01 - Actuator 基础与暴露](../part-01-actuator/169-01-actuator-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 171 章：99 - Self Check（springboot-actuator）](171-99-self-check.md)
+上一章：[第 169 章：01 - Actuator 基础与暴露](../part-01-actuator/169-01-actuator-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 171 章：99 - Self Check（springboot-actuator）](171-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

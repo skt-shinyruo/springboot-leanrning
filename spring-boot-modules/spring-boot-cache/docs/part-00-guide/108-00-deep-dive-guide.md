@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 107 章：主线时间线：Spring Boot Cache](107-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 109 章：01：`@Cacheable` 最小闭环](../part-01-cache/109-01-cacheable-basics.md)
+上一章：[第 107 章：主线时间线：Spring Boot Cache](107-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 109 章：01：`@Cacheable` 最小闭环](../part-01-cache/109-01-cacheable-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

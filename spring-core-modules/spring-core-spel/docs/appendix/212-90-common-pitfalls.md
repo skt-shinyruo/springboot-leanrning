@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 211 章：01：SpEL 入门](../part-01-spel-basics/211-01-spel-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 213 章：99 - Self Check（spring-core-spel）](213-99-self-check.md)
+上一章：[第 211 章：01：SpEL 入门](../part-01-spel-basics/211-01-spel-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 213 章：99 - Self Check（spring-core-spel）](213-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 坑 1：以为表达式“读的是变量”，实际读的是 root

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 179 章：05：测试策略：为什么用 MockWebServer？](../part-01-web-client/179-05-testing-with-mockwebserver.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 181 章：99 - Self Check（springboot-web-client）](181-99-self-check.md)
+上一章：[第 179 章：05：测试策略：为什么用 MockWebServer？](../part-01-web-client/179-05-testing-with-mockwebserver.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 181 章：99 - Self Check（springboot-web-client）](181-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

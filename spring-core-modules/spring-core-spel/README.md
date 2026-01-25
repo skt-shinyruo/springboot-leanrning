@@ -6,7 +6,7 @@
 - 变量、根对象、属性访问（`#root`、`#var`、property access）
 - 为什么 SpEL 既强大也需要安全边界（尤其是在可控输入场景）
 
-这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](../../docs/spel/spring-core-spel/)。
+这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
 ## Start Here（5 分钟闭环）
 

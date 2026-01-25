@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 64 章：00 - Deep Dive Guide（springboot-web-mvc）](064-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 66 章：02：断点地图（Part 01 Debugger Pack）](066-02-breakpoint-map.md)
+上一章：[第 64 章：00 - Deep Dive Guide（springboot-web-mvc）](064-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 66 章：02：断点地图（Part 01 Debugger Pack）](066-02-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

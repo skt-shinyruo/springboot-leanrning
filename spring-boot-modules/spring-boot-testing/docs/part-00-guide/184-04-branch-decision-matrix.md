@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 184 章：02：断点地图（Testing Debugger Pack）](184-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 185 章：01：Slice Test 与 Mocking：把边界变成可断言](../part-01-testing/185-01-slice-and-mocking.md)
+上一章：[第 184 章：02：断点地图（Testing Debugger Pack）](184-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 185 章：01：Slice Test 与 Mocking：把边界变成可断言](../part-01-testing/185-01-slice-and-mocking.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

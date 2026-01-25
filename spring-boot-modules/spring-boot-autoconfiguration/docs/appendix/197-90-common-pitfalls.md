@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 196 章：01：条件装配与 backoff](../part-01-autoconfig-basics/196-01-conditional-and-backoff.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 198 章：99 - Self Check（springboot-autoconfiguration）](198-99-self-check.md)
+上一章：[第 196 章：01：条件装配与 backoff](../part-01-autoconfig-basics/196-01-conditional-and-backoff.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 198 章：99 - Self Check（springboot-autoconfiguration）](198-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 坑 1：以为“没生效”就是 property 没配对

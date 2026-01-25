@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 205 章：00. 深挖导读](205-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 205 章：02：断点地图](205-02-breakpoint-map.md)
+上一章：[第 205 章：00. 深挖导读](205-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 205 章：02：断点地图](205-02-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 你要能复述的“最短链路”

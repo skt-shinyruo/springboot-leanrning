@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 44 章：02：断点地图（AspectJ Weaving Debugger Pack）](044-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 45 章：01：代理 vs 织入：边界、能力与成本](../part-01-mental-model/045-01-proxy-vs-weaving.md)
+上一章：[第 44 章：02：断点地图（AspectJ Weaving Debugger Pack）](044-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 45 章：01：代理 vs 织入：边界、能力与成本](../part-01-mental-model/045-01-proxy-vs-weaving.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

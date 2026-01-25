@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 210 章：04：关键分支矩阵](../part-00-guide/210-04-branch-decision-matrix.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 212 章：90 - Common Pitfalls（spring-core-spel）](../appendix/212-90-common-pitfalls.md)
+上一章：[第 210 章：04：关键分支矩阵](../part-00-guide/210-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 212 章：90 - Common Pitfalls（spring-core-spel）](../appendix/212-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 1. root object

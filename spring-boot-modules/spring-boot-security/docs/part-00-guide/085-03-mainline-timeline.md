@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 84 章：Security 主线](../../../book/084-security-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 86 章：00 - Deep Dive Guide（springboot-security）](086-00-deep-dive-guide.md)
+上一章：[第 84 章：Security 主线](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 86 章：00 - Deep Dive Guide（springboot-security）](086-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary

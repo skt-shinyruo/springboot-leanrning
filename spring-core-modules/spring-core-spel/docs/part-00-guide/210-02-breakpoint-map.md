@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 210 章：01：SpEL 调用链](210-01-spel-call-chain.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 210 章：04：关键分支矩阵](210-04-branch-decision-matrix.md)
+上一章：[第 210 章：01：SpEL 调用链](210-01-spel-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 210 章：04：关键分支矩阵](210-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## A. parser：表达式字符串怎么变成 AST？

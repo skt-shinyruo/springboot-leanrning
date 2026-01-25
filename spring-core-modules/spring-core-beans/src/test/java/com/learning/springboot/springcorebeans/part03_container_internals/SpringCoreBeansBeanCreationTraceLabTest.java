@@ -17,7 +17,7 @@ import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.PriorityOrdered;
 
-class SpringCoreBeansBeanCreationTraceLabTest {
+public class SpringCoreBeansBeanCreationTraceLabTest {
 
     @Test
     void beanCreationTrace_recordsPhases_andExposesProxyReplacement() {

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 195 章：02：断点地图](195-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 196 章：01：条件装配与 backoff](../part-01-autoconfig-basics/196-01-conditional-and-backoff.md)
+上一章：[第 195 章：02：断点地图](195-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 196 章：01：条件装配与 backoff](../part-01-autoconfig-basics/196-01-conditional-and-backoff.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 分支矩阵（最小闭环）

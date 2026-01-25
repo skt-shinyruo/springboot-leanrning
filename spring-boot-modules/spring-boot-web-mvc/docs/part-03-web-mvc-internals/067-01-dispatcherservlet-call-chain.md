@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 66 章：02：断点地图（Part 01 Debugger Pack）](../part-00-guide/066-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 68 章：03：HttpMessageConverter 与返回值处理（序列化发生在哪里）](068-03-message-converters-and-return-values.md)
+上一章：[第 66 章：02：断点地图（Part 01 Debugger Pack）](../part-00-guide/066-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 68 章：03：HttpMessageConverter 与返回值处理（序列化发生在哪里）](068-03-message-converters-and-return-values.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

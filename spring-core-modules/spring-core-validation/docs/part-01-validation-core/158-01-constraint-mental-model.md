@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 157 章：深挖指南（Spring Core Validation）](../part-00-guide/157-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 159 章：02. 程序化校验：为什么直接用 `Validator` 仍然很重要？](159-02-programmatic-validator.md)
+上一章：[第 157 章：深挖指南（Spring Core Validation）](../part-00-guide/157-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 159 章：02. 程序化校验：为什么直接用 `Validator` 仍然很重要？](159-02-programmatic-validator.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

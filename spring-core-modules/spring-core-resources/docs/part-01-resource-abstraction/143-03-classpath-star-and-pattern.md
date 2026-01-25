@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？](142-02-classpath-locations.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md)
+上一章：[第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？](142-02-classpath-locations.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 157 章：00 - Deep Dive Guide（spring-core-validation）](157-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 157 章：04：关键分支矩阵（Branch Decision Matrix）](157-04-branch-decision-matrix.md)
+上一章：[第 157 章：00 - Deep Dive Guide（spring-core-validation）](157-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 157 章：04：关键分支矩阵（Branch Decision Matrix）](157-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 运行入口（建议先跑）

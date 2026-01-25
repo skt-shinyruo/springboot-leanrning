@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](../part-01-resource-abstraction/146-06-jar-vs-filesystem.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 148 章：自测题（Spring Core Resources）](148-99-self-check.md)
+上一章：[第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](../part-01-resource-abstraction/146-06-jar-vs-filesystem.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 148 章：自测题（Spring Core Resources）](148-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

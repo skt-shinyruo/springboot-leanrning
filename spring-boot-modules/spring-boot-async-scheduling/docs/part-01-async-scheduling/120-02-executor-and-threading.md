@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 119 章：01：`@Async` 心智模型：代理与线程切换](119-01-async-proxy-mental-model.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 121 章：03：异常传播：Future vs void](121-03-exceptions.md)
+上一章：[第 119 章：01：`@Async` 心智模型：代理与线程切换](119-01-async-proxy-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 121 章：03：异常传播：Future vs void](121-03-exceptions.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

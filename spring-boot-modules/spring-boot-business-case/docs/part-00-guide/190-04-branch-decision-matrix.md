@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 190 章：02：断点地图（Business Case Debugger Pack）](190-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 191 章：01：业务架构与调用链（从入口到事务与持久化）](../part-01-business-case/191-01-architecture-and-flow.md)
+上一章：[第 190 章：02：断点地图（Business Case Debugger Pack）](190-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 191 章：01：业务架构与调用链（从入口到事务与持久化）](../part-01-business-case/191-01-architecture-and-flow.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

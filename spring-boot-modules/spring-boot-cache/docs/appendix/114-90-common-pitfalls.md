@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 113 章：05：过期与可测性：用 Ticker 控制时间](../part-01-cache/113-05-expiry-with-ticker.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 115 章：99 - Self Check（springboot-cache）](115-99-self-check.md)
+上一章：[第 113 章：05：过期与可测性：用 Ticker 控制时间](../part-01-cache/113-05-expiry-with-ticker.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 115 章：99 - Self Check（springboot-cache）](115-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

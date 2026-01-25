@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 117 章：主线时间线：Spring Boot Async & Scheduling](117-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 119 章：01：`@Async` 心智模型：代理与线程切换](../part-01-async-scheduling/119-01-async-proxy-mental-model.md)
+上一章：[第 117 章：主线时间线：Spring Boot Async & Scheduling](117-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 119 章：01：`@Async` 心智模型：代理与线程切换](../part-01-async-scheduling/119-01-async-proxy-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

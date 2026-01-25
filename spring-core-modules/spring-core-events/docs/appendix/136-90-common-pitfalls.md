@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 135 章：07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](../part-02-async-and-transactional/135-07-transactional-event-listener.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 137 章：自测题（Spring Core Events）](137-99-self-check.md)
+上一章：[第 135 章：07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](../part-02-async-and-transactional/135-07-transactional-event-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 137 章：自测题（Spring Core Events）](137-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

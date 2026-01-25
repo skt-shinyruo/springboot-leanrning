@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 139 章：主线时间线：Spring Resources](139-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？](../part-01-resource-abstraction/141-01-resource-abstraction.md)
+上一章：[第 139 章：主线时间线：Spring Resources](139-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？](../part-01-resource-abstraction/141-01-resource-abstraction.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

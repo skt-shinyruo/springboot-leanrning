@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 184 章：00 - Deep Dive Guide（springboot-testing）](../part-00-guide/184-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 186 章：90 - Common Pitfalls（springboot-testing）](../appendix/186-90-common-pitfalls.md)
+上一章：[第 184 章：00 - Deep Dive Guide（springboot-testing）](../part-00-guide/184-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 186 章：90 - Common Pitfalls（springboot-testing）](../appendix/186-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

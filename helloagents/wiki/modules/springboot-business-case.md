@@ -35,12 +35,12 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/business-case/springboot-business-case/README.md`
-- **Docs Guide:** `docs/business-case/springboot-business-case/part-00-guide/190-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/business-case/springboot-business-case/part-00-guide/190-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/business-case/springboot-business-case/part-00-guide/190-04-branch-decision-matrix.md`
-- **Playbook:** `docs/business-case/springboot-business-case/appendix/192-90-common-pitfalls.md`
-- **Self-check:** `docs/business-case/springboot-business-case/appendix/193-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-business-case/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-business-case/docs/part-00-guide/190-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-business-case/docs/part-00-guide/190-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-business-case/docs/part-00-guide/190-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-business-case/docs/appendix/192-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-business-case/docs/appendix/193-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
@@ -53,7 +53,6 @@
 - **Exercise:** `spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part00_guide/BootBusinessCaseExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part00_guide/BootBusinessCaseExerciseSolutionTest.java`
 - **Lab（并发/性能：并发下的业务边界证据链）：** `spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part02_perf_concurrency/BootBusinessCaseConcurrentOrderPlacementLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

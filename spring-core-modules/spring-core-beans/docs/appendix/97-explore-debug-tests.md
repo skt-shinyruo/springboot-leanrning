@@ -2,112 +2,172 @@
 
 ## 导读
 
-- 本章主题：**97. Explore/Debug 用例（可选启用，不影响默认回归）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 本章主题：**Explore/Debug 用例：如何开启、看什么、怎么把观察结果“用回主线”**
+- 阅读方式建议：先按本章命令跑一次 Explore 用例（让它真正执行起来），再带着“入口 → 观察点 → 断点/Watch List”去看源码与数据结构变化。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - Explore 用例的定位：**学习期的“显微镜”**——把 Spring 内部数据结构（缓存/表/映射）变化变成你能在调试器里看见的东西。
+    - 它们默认不运行：用 `@EnabledIfSystemProperty(named = "springcorebeans.explore", matches = "true")` 保护，避免 CI/回归因为“观察型断言”而不稳定。
+    - 它们不是“生产诊断方案”：测试会用反射访问内部字段、依赖实现细节；Spring 升级后可能需要同步调整。
+    - 正确使用方式：先用 Core Labs 固化结论（可断言、稳定），再用 Explore 用例补齐“我想看见缓存怎么变”的证据链。
 
+!!! example "本章 Explore 用例（先跑再读）"
 
-!!! example "本章配套实验（先跑再读）"
+    - Explore Test（默认不参与回归）：
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansSingletonCacheExploreTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansCachedIntrospectionExploreTest.java`
 
-    - Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansSingletonCacheExploreTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansCachedIntrospectionExploreTest.java`
+## 0. 为什么需要 Explore 用例？
 
-## 机制主线
+在这个仓库里，“教程闭环”的基座是两类东西：
 
-## 0. 你为什么需要它？
+1) **Core Labs（默认参与回归）**：用断言把机制结论固化下来，保证“你学到的结论能稳定复现”。  
+2) **Explore/Debug 用例（可选启用）**：用断点 + 内部状态读取，把“你脑子里想象的容器内部结构”变成可观察事实。
 
-这一章只做一件事：把 Explore 用例的**开启方式**与**观察点**写成显式规则。
+这两类用例的关系是：
 
----
-
-- 开启 Explore：`-Dspringcorebeans.explore=true`
-
-示例：只跑 Explore 用例里的某个测试类：
-
-如果你想“在不改任何代码的前提下”跑一轮完整深挖（会包含核心回归测试）：
-
----
-
-## 2. Explore 用例清单（入口与观察点）
-
-### 2.1 单例缓存：`DefaultSingletonBeanRegistry` 的核心缓存表
-
-### 2.2 JavaBeans 内省缓存：`CachedIntrospectionResults` 的缓存行为
+- Core Labs：回答“结论对不对（能不能稳定复现）？”
+- Explore 用例：回答“为什么（内部结构到底怎么变）？”
 
 ---
 
-## 源码与断点
+## 1. 如何开启 Explore 用例？
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
+Explore 用例默认被系统属性 gate 掉，你需要显式开启：
 
-## 最小可运行实验（Lab）
+- 系统属性：`-Dspringcorebeans.explore=true`
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
-- Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-`spring-core-beans` 的 Labs 有两类：
-
-1. **Core Labs（默认参与回归）**：用于保证“主线机制可复现/可断言”，CI 默认会跑。  
-2. **Explore/Debug 用例（可选启用）**：用于“更深一层的断点观察/内部状态验证”，默认不影响 CI 稳定性与耗时。
-
-## 1. 运行方式（显式开关）
-
-Explore 用例默认不运行。你需要显式打开系统属性：
+### 1.1 只跑某一个 Explore 测试类（推荐）
 
 ```bash
 mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeansSingletonCacheExploreTest test
 ```
 
 ```bash
+mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeansCachedIntrospectionExploreTest test
+```
+
+### 1.2 只跑 Explore 测试集合（两个一起跑）
+
+```bash
+mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans*ExploreTest test
+```
+
+### 1.3 跑全量测试（包含 Core Labs + Explore）
+
+```bash
 mvn -pl :spring-core-beans -Dspringcorebeans.explore=true test
 ```
 
-- 入口测试：
-  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansSingletonCacheExploreTest.java`
-- 你要观察的点：
-  - singleton 与 prototype 在缓存层面的差异（prototype 不会进 `singletonObjects`）
-- 断点建议：
-  - `DefaultSingletonBeanRegistry#getSingleton`
-  - `DefaultSingletonBeanRegistry#addSingleton`
+### 1.4 IDE 运行方式
 
-- 入口测试：
-  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansCachedIntrospectionExploreTest.java`
-- 你要观察的点：
-  - 为什么 BeanWrapper/属性注入不会每次都重新 `Introspector.getBeanInfo`
-  - 缓存如何与 ClassLoader 绑定（`acceptClassLoader` / `clearClassLoader`）
-- 断点建议：
-  - `CachedIntrospectionResults`（查看缓存命中）
-  - `BeanWrapperImpl` / `AbstractNestablePropertyAccessor`（调用链入口）
+在 IDE 的 Run/Debug 配置里加 JVM 参数：
 
-## 常见坑与边界
+- `-Dspringcorebeans.explore=true`
 
-1) **误区：为什么 tests 没跑/IDE 里看不到用例？**
-   - Explore 用例默认不启用：它们用 `@EnabledIfSystemProperty(named = "springcorebeans.explore", matches = "true")` 保护。
-   - 需要显式开启：`-Dspringcorebeans.explore=true`（见本章命令）。
-2) **边界：这些用例可能随 Spring 版本变化而失效**
-   - Explore 测试会用反射读取内部字段（例如 `DefaultSingletonBeanRegistry` 的缓存字段），属于“观察型断点材料”，不是稳定 API。
-   - 因此它们默认不参与回归，避免版本升级时误伤主线测试。
-3) **误区：把 Explore 输出当成“生产诊断手段”**
-   - Explore 的目标是帮助你在学习阶段“看见容器内部数据结构变化”，生产排障仍以主线章节（尤其是 [11](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)）的方法论为主。
+然后直接运行 Explore 测试类即可。
+
+---
+
+## 2. Explore 用例清单：入口 & 观察点
+
+### 2.1 单例缓存：`DefaultSingletonBeanRegistry` 三层缓存
+
+入口测试：
+
+- `SpringCoreBeansSingletonCacheExploreTest`
+
+你要观察的点（建议按这个顺序看）：
+
+1) **final / early / factory 的语义差异**：
+   - `singletonObjects`：final（完全初始化后的单例）
+   - `earlySingletonObjects`：early（循环依赖窗口期的 early reference）
+   - `singletonFactories`：factory（按需生成 early reference 的工厂）
+2) **prototype 不进入 singleton 缓存**：不要用“缓存行为”去推断 prototype 生命周期（两套语义）
+3) **循环依赖窗口期缓存变化**：结合 [09](../part-01-ioc-container/09-circular-dependencies.md)、[16](../part-03-container-internals/16-early-reference-and-circular.md) 对照观察
+
+推荐断点（按收益排序）：
+
+1) `DefaultSingletonBeanRegistry#getSingleton`
+2) `DefaultSingletonBeanRegistry#addSingleton`
+3) `DefaultSingletonBeanRegistry#addSingletonFactory`
+4) `DefaultSingletonBeanRegistry#beforeSingletonCreation` / `afterSingletonCreation`
+5) `AbstractAutowireCapableBeanFactory#doCreateBean`（把缓存变化放回 bean 创建主线）
+
+Watch List（最小够用版）：
+
+- `beanName`
+- `allowEarlyReference`
+- `isSingletonCurrentlyInCreation(beanName)`
+- `singletonObjects` / `earlySingletonObjects` / `singletonFactories` 的 `containsKey(beanName)` 与 `size()`
+
+你应该能用 2–3 句话复述：
+
+- “setter 循环依赖为什么可能成功？”（early exposure 窗口期 + getSingleton 的 early 分支）
+- “为什么要三层而不是一层？”（factory 延迟决定 early 形态；early 与 final 的角色不同）
+
+### 2.2 JavaBeans 内省缓存：`CachedIntrospectionResults` 的缓存行为
+
+入口测试：
+
+- `SpringCoreBeansCachedIntrospectionExploreTest`
+
+你要观察的点：
+
+1) 为什么属性注入/BeanWrapper 不会每次都重新 `Introspector.getBeanInfo(...)`
+2) `CachedIntrospectionResults` 如何做缓存（按 Class/ClassLoader 维度绑定）
+3) “缓存命中/失效”在源码里出现在哪里（你能否找到稳定入口）
+
+推荐断点（按收益排序）：
+
+1) `CachedIntrospectionResults#forClass`
+2) `CachedIntrospectionResults#acceptClassLoader` / `clearClassLoader`
+3) `java.beans.Introspector#getBeanInfo`（想确认“到底有没有真正做 JDK 内省”时再下）
+4) `BeanWrapperImpl` / `AbstractNestablePropertyAccessor`（把内省缓存放回“属性访问/注入”的调用链）
+
+Watch List（建议盯“缓存容器的 key/size”，不要依赖具体字段名）：
+
+- 缓存 Map 的 `size()` / `keySet()`
+- 目标 `beanClass` 与对应的 `ClassLoader`
+
+---
+
+## 3. 如何把 Explore 结果“用回主线”（让它真的变成教程）
+
+推荐一个最省时间的学习闭环：
+
+1) 先跑一遍 Core Labs（不加 explore 开关）：`mvn -pl :spring-core-beans test`
+2) 再跑 Explore（加开关）：`mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans*ExploreTest test`
+3) 对照章节回主线：
+   - 缓存/循环依赖：看 [09](../part-01-ioc-container/09-circular-dependencies.md) 与 [16](../part-03-container-internals/16-early-reference-and-circular.md)
+   - 更系统的“从异常到断点入口”：看 [11. 调试与可观察性](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
+
+你会发现：Explore 用例的价值不是“多了一堆测试”，而是“你终于能在调试器里看见那个一直被口述的内部结构”。
+
+---
+
+## 常见坑
+
+1) **用例没跑 / IDE 里看不到执行**
+   - 大概率是你没加 `-Dspringcorebeans.explore=true`；这些用例默认是被 gate 掉的。
+2) **把 Explore 用例当成生产诊断手段**
+   - Explore 用例依赖内部实现细节（反射读取字段等），生产排障请回到主线方法论与可观测性工具。
+3) **升级 Spring 后 Explore 用例失败**
+   - 这是预期风险：它们本来就是“观察型材料”；修复方式通常是更新反射字段/断言口径，而不是把开关常态化打开。
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- Explore 用例的目标是“看见”，不是“保证稳定结论”；稳定结论以 Core Labs 为准。
+- 跑通本章后，你应该能在调试器里把“三级缓存”与“内省缓存”的变化看出来，并能把观察点准确复述给别人。
 
 <!-- BOOKIFY:START -->
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansSingletonCacheExploreTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansCachedIntrospectionExploreTest.java`
+- Explore Test：
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansSingletonCacheExploreTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansCachedIntrospectionExploreTest.java`
 
 上一章：[96. spring-beans Public API Gap 清单（按包/机制域分批深化）](96-spring-beans-public-api-gap.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99. 自测题（Self Check）](026-99-self-check.md)
 

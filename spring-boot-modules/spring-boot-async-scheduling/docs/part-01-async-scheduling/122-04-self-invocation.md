@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 121 章：03：异常传播：Future vs void](121-03-exceptions.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 123 章：05：`@Scheduled` 基础与可测试性](123-05-scheduling-basics.md)
+上一章：[第 121 章：03：异常传播：Future vs void](121-03-exceptions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 123 章：05：`@Scheduled` 基础与可测试性](123-05-scheduling-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

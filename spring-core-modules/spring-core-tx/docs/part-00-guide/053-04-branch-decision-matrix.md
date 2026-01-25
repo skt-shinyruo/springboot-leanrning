@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 53 章：02：断点地图（Spring Tx Debugger Pack）](053-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 54 章：01：事务边界：什么情况下“算在一个事务里”](../part-01-transaction-basics/054-01-transaction-boundary.md)
+上一章：[第 53 章：02：断点地图（Spring Tx Debugger Pack）](053-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 54 章：01：事务边界：什么情况下“算在一个事务里”](../part-01-transaction-basics/054-01-transaction-boundary.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

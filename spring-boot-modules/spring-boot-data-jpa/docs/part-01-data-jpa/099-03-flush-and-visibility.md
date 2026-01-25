@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 98 章：02. Persistence Context：JPA 的“一级缓存”与事务绑定](098-02-persistence-context.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 100 章：04. Dirty Checking（脏检查）：为什么改字段不用 save 也能落库？](100-04-dirty-checking.md)
+上一章：[第 98 章：02. Persistence Context：JPA 的“一级缓存”与事务绑定](098-02-persistence-context.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 100 章：04. Dirty Checking（脏检查）：为什么改字段不用 save 也能落库？](100-04-dirty-checking.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

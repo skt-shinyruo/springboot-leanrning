@@ -41,7 +41,7 @@ mvn -pl :spring-boot-testing test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](../../docs/testing/spring-boot-testing/README.md)）
+（docs 目录页：[`docs/README.md`](docs/README.md)）
 
 1. 导读：`docs/part-00-guide/00-deep-dive-guide.md`
 2. Slice vs Full Context：`docs/part-01-testing/01-slice-and-mocking.md`

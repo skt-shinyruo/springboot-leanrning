@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 47 章：03. CTW：Compile-Time Weaving（编译期织入）](../part-03-ctw/047-03-ctw-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 49 章：90. 常见坑清单（LTW/CTW）](../appendix/049-90-common-pitfalls.md)
+上一章：[第 47 章：03. CTW：Compile-Time Weaving（编译期织入）](../part-03-ctw/047-03-ctw-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 49 章：90. 常见坑清单（LTW/CTW）](../appendix/049-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

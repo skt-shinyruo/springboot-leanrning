@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](../part-01-ioc-container/018-07-configuration-enhancement.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md)
+上一章：[第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](../part-01-ioc-container/018-07-configuration-enhancement.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

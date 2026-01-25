@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-class SpringCoreBeansContainerLabTest {
+public class SpringCoreBeansContainerLabTest {
 
     @Test
     void beanDefinitionIsNotTheBeanInstance() {

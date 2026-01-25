@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 67 章：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](067-01-dispatcherservlet-call-chain.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 69 章：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](069-04-exception-resolvers-and-error-flow.md)
+上一章：[第 67 章：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](067-01-dispatcherservlet-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 69 章：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](069-04-exception-resolvers-and-error-flow.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

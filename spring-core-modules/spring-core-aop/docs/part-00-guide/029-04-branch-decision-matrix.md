@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 29 章：02：断点地图（Spring AOP Debugger Pack）](029-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 30 章：01：代理心智模型：你拿到的到底是不是“那个对象”】【From Proxy to Target】](../part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+上一章：[第 29 章：02：断点地图（Spring AOP Debugger Pack）](029-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 30 章：01：代理心智模型：你拿到的到底是不是“那个对象”】【From Proxy to Target】](../part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

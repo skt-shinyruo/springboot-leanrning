@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../part-08-security-observability/081-01-security-filterchain-and-mvc.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 83 章：99 - Self Check（springboot-web-mvc）](083-99-self-check.md)
+上一章：[第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../part-08-security-observability/081-01-security-filterchain-and-mvc.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 83 章：99 - Self Check（springboot-web-mvc）](083-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

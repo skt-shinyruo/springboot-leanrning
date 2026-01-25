@@ -17,10 +17,10 @@
 ## Specifications
 
 ### Source Layout
-- docs：`docs/validation/spring-core-validation/README.md`（目录页）
-- docs：`docs/validation/spring-core-validation/part-00-guide/`（深挖指南）
-- docs：`docs/validation/spring-core-validation/part-01-validation-core/`（Validation 核心机制）
-- docs：`docs/validation/spring-core-validation/appendix/`（常见坑/自测题）
+- docs：`spring-core-modules/spring-core-validation/docs/README.md`（目录页）
+- docs：`spring-core-modules/spring-core-validation/docs/part-00-guide/`（深挖指南）
+- docs：`spring-core-modules/spring-core-validation/docs/part-01-validation-core/`（Validation 核心机制）
+- docs：`spring-core-modules/spring-core-validation/docs/appendix/`（常见坑/自测题）
 - src(main)：`spring-core-modules/spring-core-validation/src/main/java/com/learning/springboot/springcorevalidation/SpringCoreValidationApplication.java`（入口，包名保持不变）
 - src(main)：`spring-core-modules/spring-core-validation/src/main/java/com/learning/springboot/springcorevalidation/part01_validation_core/**`
 - src(test)：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part00_guide/**`
@@ -28,15 +28,14 @@
 - src(test)：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part02_perf_concurrency/**`（并发/性能 Labs）
 
 ### Docs Index
-- 入口：`docs/validation/spring-core-validation/README.md`
-- 断点地图：`docs/validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md`
-- 关键分支矩阵：`docs/validation/spring-core-validation/part-00-guide/157-04-branch-decision-matrix.md`
-- 排障 playbook：`docs/validation/spring-core-validation/appendix/164-90-common-pitfalls.md`
-- 自检清单：`docs/validation/spring-core-validation/appendix/165-99-self-check.md`
+- 入口：`spring-core-modules/spring-core-validation/docs/README.md`
+- 断点地图：`spring-core-modules/spring-core-validation/docs/part-00-guide/157-02-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-validation/docs/part-00-guide/157-04-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-validation/docs/appendix/164-90-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-validation/docs/appendix/165-99-self-check.md`
 - Branch Matrix（关键分支入口）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
 - Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part00_guide/SpringCoreValidationExerciseSolutionTest.java`
 - Lab（并发/性能：Validator 并发使用边界）：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part02_perf_concurrency/SpringCoreValidationValidatorConcurrencyLabTest.java`
-- Book 专题页（方法论与样板索引）：`docs/book/performance-and-concurrency.md`
 
 ### Requirement: Validation 学习闭环
 **Module:** spring-core-validation

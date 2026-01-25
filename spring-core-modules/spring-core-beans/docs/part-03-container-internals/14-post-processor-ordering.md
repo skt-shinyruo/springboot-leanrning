@@ -296,8 +296,8 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 >
 > AOP/事务/缓存/安全这类能力内部还有另一套“链条顺序”（advisor/interceptor 顺序），不要混在一起：
 >
-> - advisor 顺序与 `proceed()` 嵌套：见 `docs/aop/spring-core-aop/part-01-proxy-fundamentals/06-debugging.md`
-> - 多切面/多代理叠加与顺序（两套顺序分流）：见 `docs/aop/spring-core-aop/part-03-proxy-stacking/09-multi-proxy-stacking.md`
+> - advisor 顺序与 `proceed()` 嵌套：见 [spring-core-aop：debugging](../../../spring-core-aop/docs/part-01-proxy-fundamentals/035-06-debugging.md)
+> - 多切面/多代理叠加与顺序（两套顺序分流）：见 [spring-core-aop：multi-proxy stacking](../../../spring-core-aop/docs/part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
 >
 > 对应可运行闭环：
 >

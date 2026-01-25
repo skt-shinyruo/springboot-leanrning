@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 7 章：90：常见坑清单（建议反复对照）](007-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 9 章：IoC 容器主线（Beans）](../../../book/009-ioc-container-mainline.md)
+上一章：[第 7 章：90：常见坑清单（建议反复对照）](007-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 9 章：IoC 容器主线（Beans）](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

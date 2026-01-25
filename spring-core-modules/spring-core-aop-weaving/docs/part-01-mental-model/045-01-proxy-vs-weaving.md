@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通](../part-00-guide/044-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md)
+上一章：[第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通](../part-00-guide/044-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

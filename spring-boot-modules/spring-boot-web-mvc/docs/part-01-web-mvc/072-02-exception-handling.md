@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 71 章：01：校验（Validation）与错误响应形状（Error Shape）](071-01-validation-and-error-shaping.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 73 章：03：请求绑定（Binding）与 Converter/Formatter](073-03-binding-and-converters.md)
+上一章：[第 71 章：01：校验（Validation）与错误响应形状（Error Shape）](071-01-validation-and-error-shaping.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 73 章：03：请求绑定（Binding）与 Converter/Formatter](073-03-binding-and-converters.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

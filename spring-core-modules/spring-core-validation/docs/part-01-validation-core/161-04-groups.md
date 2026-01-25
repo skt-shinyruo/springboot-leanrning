@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 160 章：03. 方法参数校验：为什么它必须依赖 Spring 代理？](160-03-method-validation-proxy.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 162 章：05. 自定义约束：如何写一个最小可用的 `@Constraint`？](162-05-custom-constraint.md)
+上一章：[第 160 章：03. 方法参数校验：为什么它必须依赖 Spring 代理？](160-03-method-validation-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 162 章：05. 自定义约束：如何写一个最小可用的 `@Constraint`？](162-05-custom-constraint.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

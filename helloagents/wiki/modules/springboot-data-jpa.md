@@ -36,12 +36,12 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/data-jpa/springboot-data-jpa/README.md`
-- **Docs Guide:** `docs/data-jpa/springboot-data-jpa/part-00-guide/096-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/data-jpa/springboot-data-jpa/part-00-guide/096-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/data-jpa/springboot-data-jpa/part-00-guide/096-04-branch-decision-matrix.md`
-- **Playbook:** `docs/data-jpa/springboot-data-jpa/appendix/104-90-common-pitfalls.md`
-- **Self-check:** `docs/data-jpa/springboot-data-jpa/appendix/105-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-data-jpa/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-data-jpa/docs/appendix/104-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-data-jpa/docs/appendix/105-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
@@ -55,7 +55,6 @@
 - **Exercise:** `spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part00_guide/BootDataJpaExerciseSolutionTest.java`
 - **Lab（并发/性能：EntityManager/事务边界隔离）：** `spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part02_perf_concurrency/BootDataJpaEntityManagerConcurrencyLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

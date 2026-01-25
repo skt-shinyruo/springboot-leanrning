@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 209 章：03：主线时间线](209-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 210 章：01：SpEL 调用链](210-01-spel-call-chain.md)
+上一章：[第 209 章：03：主线时间线](209-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 210 章：01：SpEL 调用链](210-01-spel-call-chain.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 <!-- BOOKIFY:START -->

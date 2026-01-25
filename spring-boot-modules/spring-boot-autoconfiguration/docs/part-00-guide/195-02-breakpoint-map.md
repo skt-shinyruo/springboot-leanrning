@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 195 章：01：AutoConfiguration 调用链](195-01-autoconfiguration-import-call-chain.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 195 章：04：关键分支矩阵](195-04-branch-decision-matrix.md)
+上一章：[第 195 章：01：AutoConfiguration 调用链](195-01-autoconfiguration-import-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 195 章：04：关键分支矩阵](195-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## A. 导入链（imports）：有没有被导入？

@@ -35,12 +35,12 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/web-client/springboot-web-client/README.md`
-- **Docs Guide:** `docs/web-client/springboot-web-client/part-00-guide/174-00-deep-dive-guide.md`
-- **Breakpoint Map:** `docs/web-client/springboot-web-client/part-00-guide/174-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/web-client/springboot-web-client/part-00-guide/174-04-branch-decision-matrix.md`
-- **Playbook:** `docs/web-client/springboot-web-client/appendix/180-90-common-pitfalls.md`
-- **Self-check:** `docs/web-client/springboot-web-client/appendix/181-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-web-client/docs/README.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-00-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-web-client/docs/appendix/180-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-web-client/docs/appendix/181-99-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
@@ -55,7 +55,6 @@
 - **Exercise:** `spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part00_guide/BootWebClientExerciseTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part00_guide/BootWebClientExerciseSolutionTest.java`
 - **Lab（并发/性能：RestClient 并发请求隔离）：** `spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part02_perf_concurrency/BootWebClientRestClientConcurrencyLabTest.java`
-- **Book 专题页（方法论与样板索引）：** `docs/book/performance-and-concurrency.md`
 
 ## Source Layout（与 docs Part 对齐）
 

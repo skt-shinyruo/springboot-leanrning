@@ -18,13 +18,13 @@
 
 ### Source Layout
 
-- docs：`docs/aop/spring-core-aop-weaving/README.md`（目录页）
-- docs：`docs/aop/spring-core-aop-weaving/part-00-guide/`（跑通指南：LTW/CTW）
-- docs：`docs/aop/spring-core-aop-weaving/part-01-mental-model/`（Proxy vs Weaving 心智模型）
-- docs：`docs/aop/spring-core-aop-weaving/part-02-ltw/`（LTW：agent + aop.xml + include 范围）
-- docs：`docs/aop/spring-core-aop-weaving/part-03-ctw/`（CTW：编译期织入与范围控制）
-- docs：`docs/aop/spring-core-aop-weaving/part-04-join-points/`（Join Point/Pointcut Cookbook）
-- docs：`docs/aop/spring-core-aop-weaving/appendix/`（常见坑/自测题）
+- docs：`spring-core-modules/spring-core-aop-weaving/docs/README.md`（目录页）
+- docs：`spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/`（跑通指南：LTW/CTW）
+- docs：`spring-core-modules/spring-core-aop-weaving/docs/part-01-mental-model/`（Proxy vs Weaving 心智模型）
+- docs：`spring-core-modules/spring-core-aop-weaving/docs/part-02-ltw/`（LTW：agent + aop.xml + include 范围）
+- docs：`spring-core-modules/spring-core-aop-weaving/docs/part-03-ctw/`（CTW：编译期织入与范围控制）
+- docs：`spring-core-modules/spring-core-aop-weaving/docs/part-04-join-points/`（Join Point/Pointcut Cookbook）
+- docs：`spring-core-modules/spring-core-aop-weaving/docs/appendix/`（常见坑/自测题）
 - src(main)：`spring-core-modules/spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/SpringCoreAopWeavingApplication.java`（入口）
 - src(main)：`spring-core-modules/spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/support/**`（可断言观察点：InvocationLog/JoinPointEvent）
 - src(main)：`spring-core-modules/spring-core-aop-weaving/src/main/java/com/learning/springboot/springcoreaopweaving/ctwtargets/**`（CTW 目标对象）
@@ -38,17 +38,16 @@
 
 ### Docs Index
 
-- 入口：`docs/aop/spring-core-aop-weaving/README.md`
-- 断点地图：`docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md`
-- 关键分支矩阵：`docs/aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md`
-- 排障 playbook：`docs/aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md`
-- 自检清单：`docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md`
+- 入口：`spring-core-modules/spring-core-aop-weaving/docs/README.md`
+- 断点地图：`spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-02-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-04-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-aop-weaving/docs/appendix/049-90-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-aop-weaving/docs/appendix/050-99-self-check.md`
 - Branch Matrix（关键分支入口，建议直接跑模块以分流 LTW/CTW）：`mvn -q -pl :spring-core-aop-weaving test`
   - LTW：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
   - CTW：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`
 - Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part00_guide/SpringCoreAopWeavingExerciseSolutionTest.java`
 - Lab（并发/性能：LTW 并发织入边界）：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_perf_concurrency/AspectjLtwConcurrencyLabTest.java`
-- Book 专题页（方法论与样板索引）：`docs/book/performance-and-concurrency.md`
 
 ### Requirement: LTW/CTW 可验证闭环
 

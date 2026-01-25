@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 128 章：02：断点地图（Spring Events Debugger Pack）](128-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 129 章：01：事件心智模型：publish/subscribe 的真实语义](../part-01-event-basics/129-01-event-mental-model.md)
+上一章：[第 128 章：02：断点地图（Spring Events Debugger Pack）](128-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 129 章：01：事件心智模型：publish/subscribe 的真实语义](../part-01-event-basics/129-01-event-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

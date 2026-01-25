@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 102 章：06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）](102-06-datajpatest-slice.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 104 章：90. 常见坑清单（建议反复对照）](../appendix/104-90-common-pitfalls.md)
+上一章：[第 102 章：06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）](102-06-datajpatest-slice.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 104 章：90. 常见坑清单（建议反复对照）](../appendix/104-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

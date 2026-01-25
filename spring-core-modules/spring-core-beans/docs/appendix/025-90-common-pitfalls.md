@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 26 章：99. 自测题：你是否真的理解了？](026-99-self-check.md)
+上一章：[第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 26 章：99. 自测题：你是否真的理解了？](026-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 69 章：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](069-04-exception-resolvers-and-error-flow.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 71 章：01：校验（Validation）与错误响应形状（Error Shape）](../part-01-web-mvc/071-01-validation-and-error-shaping.md)
+上一章：[第 69 章：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](069-04-exception-resolvers-and-error-flow.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 71 章：01：校验（Validation）与错误响应形状（Error Shape）](../part-01-web-mvc/071-01-validation-and-error-shaping.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

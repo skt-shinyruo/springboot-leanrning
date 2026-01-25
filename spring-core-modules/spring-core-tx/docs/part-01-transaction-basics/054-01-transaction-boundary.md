@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 53 章：深挖指南（Spring Core Tx）](../part-00-guide/053-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 55 章：02. `@Transactional` 如何生效：它也是 AOP（也是代理）](055-02-transactional-proxy.md)
+上一章：[第 53 章：深挖指南（Spring Core Tx）](../part-00-guide/053-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 55 章：02. `@Transactional` 如何生效：它也是 AOP（也是代理）](055-02-transactional-proxy.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

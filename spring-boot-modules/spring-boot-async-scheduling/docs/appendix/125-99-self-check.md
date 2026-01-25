@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 124 章：90：常见坑清单（Async & Scheduling）](124-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 126 章：Events 主线](../../../book/126-events-mainline.md)
+上一章：[第 124 章：90：常见坑清单（Async & Scheduling）](124-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 126 章：Events 主线](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

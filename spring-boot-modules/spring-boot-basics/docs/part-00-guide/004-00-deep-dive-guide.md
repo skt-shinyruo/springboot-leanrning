@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）](003-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](../part-01-boot-basics/005-01-property-sources-and-profiles.md)
+上一章：[第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）](003-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](../part-01-boot-basics/005-01-property-sources-and-profiles.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

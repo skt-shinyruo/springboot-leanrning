@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 206 章：01：HTTP metrics](../part-01-observability-basics/206-01-http-metrics-and-observations.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 208 章：99 - Self Check（springboot-observability）](208-99-self-check.md)
+上一章：[第 206 章：01：HTTP metrics](../part-01-observability-basics/206-01-http-metrics-and-observations.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 208 章：99 - Self Check（springboot-observability）](208-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 坑 1：以为“没指标”就是没引入依赖

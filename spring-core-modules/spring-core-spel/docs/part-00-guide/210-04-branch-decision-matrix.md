@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 210 章：02：断点地图](210-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 211 章：01：SpEL 入门](../part-01-spel-basics/211-01-spel-basics.md)
+上一章：[第 210 章：02：断点地图](210-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 211 章：01：SpEL 入门](../part-01-spel-basics/211-01-spel-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 分支矩阵（最小闭环）

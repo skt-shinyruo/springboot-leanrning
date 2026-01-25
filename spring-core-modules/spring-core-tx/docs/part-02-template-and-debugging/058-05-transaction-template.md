@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 57 章：04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？](../part-01-transaction-basics/057-04-propagation.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？](059-06-debugging.md)
+上一章：[第 57 章：04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？](../part-01-transaction-basics/057-04-propagation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？](059-06-debugging.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

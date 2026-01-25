@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 157 章：02：断点地图（Validation Debugger Pack）](157-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 158 章：01：约束心智模型：annotation → ConstraintValidator](../part-01-validation-core/158-01-constraint-mental-model.md)
+上一章：[第 157 章：02：断点地图（Validation Debugger Pack）](157-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 158 章：01：约束心智模型：annotation → ConstraintValidator](../part-01-validation-core/158-01-constraint-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

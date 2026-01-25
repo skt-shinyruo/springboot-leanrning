@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 97 章：01. Entity 状态机：transient / managed / detached / removed](097-01-entity-states.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？](099-03-flush-and-visibility.md)
+上一章：[第 97 章：01. Entity 状态机：transient / managed / detached / removed](097-01-entity-states.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？](099-03-flush-and-visibility.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

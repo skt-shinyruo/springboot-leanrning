@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 82 章：90：常见坑清单（Web MVC）](082-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 84 章：Security 主线](../../../book/084-security-mainline.md)
+上一章：[第 82 章：90：常见坑清单（Web MVC）](082-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 84 章：Security 主线](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

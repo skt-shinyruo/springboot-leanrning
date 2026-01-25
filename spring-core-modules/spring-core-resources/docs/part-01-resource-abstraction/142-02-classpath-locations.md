@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？](141-01-resource-abstraction.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 143 章：03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？](143-03-classpath-star-and-pattern.md)
+上一章：[第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？](141-01-resource-abstraction.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 143 章：03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？](143-03-classpath-star-and-pattern.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

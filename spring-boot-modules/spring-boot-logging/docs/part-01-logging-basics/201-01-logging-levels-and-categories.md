@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 200 章：04：关键分支矩阵](../part-00-guide/200-04-branch-decision-matrix.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 202 章：90 - Common Pitfalls（springboot-logging）](../appendix/202-90-common-pitfalls.md)
+上一章：[第 200 章：04：关键分支矩阵](../part-00-guide/200-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 202 章：90 - Common Pitfalls（springboot-logging）](../appendix/202-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 1. category 是什么？

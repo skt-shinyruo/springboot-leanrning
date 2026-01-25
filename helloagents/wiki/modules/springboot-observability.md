@@ -13,9 +13,9 @@
 ## Start Here（路线图 / 断点地图 / 第一个可运行入口）
 
 - 路线图：`helloagents/wiki/learning-path.md`
-- Docs Start Here：`docs/observability/springboot-observability/README.md`
-- 调用链（请求 → observation → meter）：`docs/observability/springboot-observability/part-00-guide/205-01-http-observation-call-chain.md`
-- 断点地图：`docs/observability/springboot-observability/part-00-guide/205-02-breakpoint-map.md`
+- Docs Start Here：`spring-boot-modules/spring-boot-observability/docs/README.md`
+- 调用链（请求 → observation → meter）：`spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-01-http-observation-call-chain.md`
+- 断点地图：`spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-02-breakpoint-map.md`
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityLabTest test`
   - 对应测试类：`spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityLabTest.java`
@@ -31,13 +31,13 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/observability/springboot-observability/README.md`
-- **Deep Dive Guide:** `docs/observability/springboot-observability/part-00-guide/205-00-deep-dive-guide.md`
-- **Call Chain:** `docs/observability/springboot-observability/part-00-guide/205-01-http-observation-call-chain.md`
-- **Breakpoint Map:** `docs/observability/springboot-observability/part-00-guide/205-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/observability/springboot-observability/part-00-guide/205-04-branch-decision-matrix.md`
-- **Playbook:** `docs/observability/springboot-observability/appendix/207-90-common-pitfalls.md`
-- **Self-check:** `docs/observability/springboot-observability/appendix/208-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-observability/docs/README.md`
+- **Deep Dive Guide:** `spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-00-deep-dive-guide.md`
+- **Call Chain:** `spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-01-http-observation-call-chain.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-observability/docs/part-00-guide/205-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-observability/docs/appendix/207-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-observability/docs/appendix/208-99-self-check.md`
 - **Lab（并发/性能：Observation scope ThreadLocal 隔离可断言复现）：** `spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part02_perf_concurrency/BootObservabilityConcurrencyLabTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityExerciseSolutionTest.java`
 

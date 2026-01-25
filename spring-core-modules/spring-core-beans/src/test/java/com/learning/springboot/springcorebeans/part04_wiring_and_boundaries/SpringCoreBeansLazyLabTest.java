@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Lazy;
 
-class SpringCoreBeansLazyLabTest {
+public class SpringCoreBeansLazyLabTest {
 
     private static final AtomicInteger serviceConstructorCalls = new AtomicInteger();
 

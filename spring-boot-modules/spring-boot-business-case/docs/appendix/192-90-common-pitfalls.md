@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 191 章：01 - 架构与主流程（Business Case）](../part-01-business-case/191-01-architecture-and-flow.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 193 章：99 - Self Check（springboot-business-case）](193-99-self-check.md)
+上一章：[第 191 章：01 - 架构与主流程（Business Case）](../part-01-business-case/191-01-architecture-and-flow.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 193 章：99 - Self Check（springboot-business-case）](193-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

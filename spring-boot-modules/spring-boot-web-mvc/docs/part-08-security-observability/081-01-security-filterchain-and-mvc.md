@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 80 章：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）](../part-07-testing-debugging/080-01-webmvc-testing-and-troubleshooting.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 82 章：90：常见坑清单（Web MVC）](../appendix/082-90-common-pitfalls.md)
+上一章：[第 80 章：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）](../part-07-testing-debugging/080-01-webmvc-testing-and-troubleshooting.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 82 章：90：常见坑清单（Web MVC）](../appendix/082-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

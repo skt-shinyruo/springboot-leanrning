@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？](../part-02-template-and-debugging/059-06-debugging.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 61 章：自测题（Spring Core Tx）](061-99-self-check.md)
+上一章：[第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？](../part-02-template-and-debugging/059-06-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 61 章：自测题（Spring Core Tx）](061-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -86,7 +86,7 @@
 
 - `final` 方法拦截不到（CGLIB 情况）
 - private 方法通常也不会被拦截
-- 对照：AOP 模块的 [04. final-and-proxy-limits](../../../aop/spring-core-aop/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md)
+- 对照：AOP 模块的 [04. final-and-proxy-limits](../../../spring-core-aop/docs/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md)
 
 ## 坑 6：`MANDATORY`/`NEVER` 是“边界约束”，不是默认选择
 

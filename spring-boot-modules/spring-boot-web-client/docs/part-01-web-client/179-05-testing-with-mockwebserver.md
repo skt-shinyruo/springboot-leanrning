@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 178 章：04：超时与重试（确定性实验）](178-04-timeout-and-retry.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 180 章：90：常见坑清单（Web Client）](../appendix/180-90-common-pitfalls.md)
+上一章：[第 178 章：04：超时与重试（确定性实验）](178-04-timeout-and-retry.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 180 章：90：常见坑清单（Web Client）](../appendix/180-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

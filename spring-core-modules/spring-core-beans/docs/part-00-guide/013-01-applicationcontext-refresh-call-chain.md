@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](012-01-quickstart-30min.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 13 章：02：断点地图（容器主线可复用断点/观察点清单）](013-02-breakpoint-map.md)
+上一章：[第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 13 章：02：断点地图（容器主线可复用断点/观察点清单）](013-02-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

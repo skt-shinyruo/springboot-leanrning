@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
-class SpringCoreBeansInjectionAmbiguityLabTest {
+public class SpringCoreBeansInjectionAmbiguityLabTest {
 
     @Test
     void singleInjectionFailsFast_whenMultipleCandidatesExist_andNoPrimaryOrQualifierIsPresent() {
@@ -111,4 +111,3 @@ class SpringCoreBeansInjectionAmbiguityLabTest {
         }
     }
 }
-

@@ -1,7 +1,9 @@
 site_name: Spring Boot Learning（文档站）
-site_description: 文档统一入口（docs/）+ 模块文档 + 主线之书（Book）
-site_dir: .site
-docs_dir: ../docs
+site_description: 文档总目录（docs/SUMMARY.md）+ 模块文档（*/docs）
+# docs_dir 指向仓库根时，site_dir 必须位于 docs_dir 之外（否则会触发“输出目录复制进自身”的错误）
+site_dir: ../../.site-springboot-learning
+# 以仓库根作为 docs_dir，便于直接引用各模块的 `*/docs/**.md`
+docs_dir: ..
 
 theme:
   name: material
@@ -19,7 +21,7 @@ plugins:
   - search
   - literate-nav:
       # 站点目录（SSOT）：`docs/SUMMARY.md`（相对 docs_dir 的路径）
-      nav_file: SUMMARY.md
+      nav_file: docs/SUMMARY.md
 
 markdown_extensions:
   - toc:

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 176 章：02：WebClient（响应式）最小闭环](176-02-webclient-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 178 章：04：超时与重试（确定性实验）](178-04-timeout-and-retry.md)
+上一章：[第 176 章：02：WebClient（响应式）最小闭环](176-02-webclient-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 178 章：04：超时与重试（确定性实验）](178-04-timeout-and-retry.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

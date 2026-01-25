@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 4 章：02：断点地图（Boot Basics Debugger Pack）](004-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](../part-01-boot-basics/005-01-property-sources-and-profiles.md)
+上一章：[第 4 章：02：断点地图（Boot Basics Debugger Pack）](004-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](../part-01-boot-basics/005-01-property-sources-and-profiles.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

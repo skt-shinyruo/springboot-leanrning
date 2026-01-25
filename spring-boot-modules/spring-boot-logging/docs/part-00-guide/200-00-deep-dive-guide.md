@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 199 章：03：主线时间线](199-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 200 章：01：Logging 调用链](200-01-logging-call-chain.md)
+上一章：[第 199 章：03：主线时间线](199-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 200 章：01：Logging 调用链](200-01-logging-call-chain.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

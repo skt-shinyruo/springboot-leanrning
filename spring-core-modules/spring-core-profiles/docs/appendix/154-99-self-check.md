@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 153 章：常见坑（Spring Core Profiles）](153-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 155 章：Validation 主线](../../../book/155-validation-mainline.md)
+上一章：[第 153 章：常见坑（Spring Core Profiles）](153-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 155 章：Validation 主线](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

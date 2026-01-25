@@ -8,6 +8,9 @@
 
 | 时间戳 | 变更名称 | 类型 | 状态 | 方案包路径 |
 | --- | --- | --- | --- | --- |
+| 202601252331 | beans_docs_part04_tutorial_deepen | Enhancement | ✅Completed | [202601252331_beans_docs_part04_tutorial_deepen](2026-01/202601252331_beans_docs_part04_tutorial_deepen/) |
+| 202601252255 | beans_docs_tutorial_deepen | Enhancement | ✅Completed | [202601252255_beans_docs_tutorial_deepen](2026-01/202601252255_beans_docs_tutorial_deepen/) |
+| 202601251755 | docs_modularize_nav | Refactor | ✅Completed | [202601251755_docs_modularize_nav](2026-01/202601251755_docs_modularize_nav/) |
 | 202601010649 | spring-core-beans-deep-dive | Refactor | ✅Completed | [202601010649_spring-core-beans-deep-dive](2026-01/202601010649_spring-core-beans-deep-dive/) |
 | 202601010804 | spring-core-aop-deep-dive | Refactor | ✅Completed | [202601010804_spring-core-aop-deep-dive](2026-01/202601010804_spring-core-aop-deep-dive/) |
 | 202601010845 | beans-aop-deep-dive-v2 | Refactor | ✅Completed | [202601010845_beans-aop-deep-dive-v2](2026-01/202601010845_beans-aop-deep-dive-v2/) |
@@ -77,6 +80,7 @@
 
 ### 2026-01
 
+- [202601251755_docs_modularize_nav](2026-01/202601251755_docs_modularize_nav/) - 文档归并：以模块 `*/docs/` 为 SSOT，根 `docs/` 收敛为 `docs/SUMMARY.md`，并移除 `docs/book/` 与旧 `docs/<topic>/...` 副本
 - [202601232320_beans_docs_refactor](2026-01/202601232320_beans_docs_refactor/) - spring-core-beans 文档与测试入口补齐（断点包/主线/排障/性能）
 - [202601010649_spring-core-beans-deep-dive](2026-01/202601010649_spring-core-beans-deep-dive/) - 深化 spring-core-beans 核心章节与坑点/自测题闭环
 - [202601010804_spring-core-aop-deep-dive](2026-01/202601010804_spring-core-aop-deep-dive/) - 深化 spring-core-aop 核心章节与断点/排障闭环
@@ -145,6 +149,8 @@
 ## Index
 | Timestamp | Feature Name | Type | Status | Solution Package Path |
 |-----------|--------------|------|--------|----------------------|
+| 202601252331 | beans_docs_part04_tutorial_deepen | Enhancement | ✅Completed | history/2026-01/202601252331_beans_docs_part04_tutorial_deepen/ |
+| 202601252255 | beans_docs_tutorial_deepen | Enhancement | ✅Completed | history/2026-01/202601252255_beans_docs_tutorial_deepen/ |
 | 202601232320 | beans_docs_refactor | Refactor | ✅Completed | history/2026-01/202601232320_beans_docs_refactor/ |
 | 202601240941 | beans_docs_refactor | Refactor | ✅Completed | history/2026-01/202601240941_beans_docs_refactor/ |
 | 202601242148 | tutorials_style_deepen_all | Enhancement | [-]Not Executed | history/2026-01/202601242148_tutorials_style_deepen_all/ |

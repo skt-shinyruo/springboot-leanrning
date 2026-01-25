@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 103 章：07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](../part-01-data-jpa/103-07-debug-sql.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 105 章：99 - Self Check（springboot-data-jpa）](105-99-self-check.md)
+上一章：[第 103 章：07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](../part-01-data-jpa/103-07-debug-sql.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 105 章：99 - Self Check（springboot-data-jpa）](105-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

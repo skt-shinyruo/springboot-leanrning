@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 204 章：03：主线时间线](204-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 205 章：01：调用链](205-01-http-observation-call-chain.md)
+上一章：[第 204 章：03：主线时间线](204-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 205 章：01：调用链](205-01-http-observation-call-chain.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

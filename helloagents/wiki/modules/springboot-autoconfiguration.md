@@ -13,9 +13,9 @@
 ## Start Here（路线图 / 断点地图 / 第一个可运行入口）
 
 - 路线图：`helloagents/wiki/learning-path.md`
-- Docs Start Here：`docs/autoconfig/springboot-autoconfiguration/README.md`
-- 调用链（导入/条件/产出 bean）：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-01-autoconfiguration-import-call-chain.md`
-- 断点地图：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-02-breakpoint-map.md`
+- Docs Start Here：`spring-boot-modules/spring-boot-autoconfiguration/docs/README.md`
+- 调用链（导入/条件/产出 bean）：`spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-01-autoconfiguration-import-call-chain.md`
+- 断点地图：`spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-02-breakpoint-map.md`
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationLabTest#autoConfigCreatesDefaultBeanWhenEnabled test`
   - 对应测试类：`spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationLabTest.java`
@@ -32,13 +32,13 @@
 
 ## Docs & 复现入口
 
-- **Docs Index:** `docs/autoconfig/springboot-autoconfiguration/README.md`
-- **Deep Dive Guide:** `docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-00-deep-dive-guide.md`
-- **Call Chain:** `docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-01-autoconfiguration-import-call-chain.md`
-- **Breakpoint Map:** `docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-04-branch-decision-matrix.md`
-- **Playbook:** `docs/autoconfig/springboot-autoconfiguration/appendix/197-90-common-pitfalls.md`
-- **Self-check:** `docs/autoconfig/springboot-autoconfiguration/appendix/198-99-self-check.md`
+- **Docs Index:** `spring-boot-modules/spring-boot-autoconfiguration/docs/README.md`
+- **Deep Dive Guide:** `spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-00-deep-dive-guide.md`
+- **Call Chain:** `spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-01-autoconfiguration-import-call-chain.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-02-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-autoconfiguration/docs/part-00-guide/195-04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-autoconfiguration/docs/appendix/197-90-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-autoconfiguration/docs/appendix/198-99-self-check.md`
 - **Lab（并发/性能：容器产物一致性/隔离性可断言复现）：** `spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part02_perf_concurrency/BootAutoConfigurationConcurrencyLabTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationExerciseSolutionTest.java`
 

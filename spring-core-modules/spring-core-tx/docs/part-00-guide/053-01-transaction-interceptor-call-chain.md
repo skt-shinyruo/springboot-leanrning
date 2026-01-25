@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 53 章：00. 深挖指南：把“事务边界/传播/回滚规则”落到源码与断点](053-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 53 章：02：断点地图（Tx Debugger Pack）](053-02-breakpoint-map.md)
+上一章：[第 53 章：00. 深挖指南：把“事务边界/传播/回滚规则”落到源码与断点](053-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 53 章：02：断点地图（Tx Debugger Pack）](053-02-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

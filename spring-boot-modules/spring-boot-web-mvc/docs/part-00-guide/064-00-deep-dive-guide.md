@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 63 章：主线时间线：Spring Boot Web MVC](063-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 65 章：01：知识地图（Web MVC Deep Dive Map）](065-01-knowledge-map.md)
+上一章：[第 63 章：主线时间线：Spring Boot Web MVC](063-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 65 章：01：知识地图（Web MVC Deep Dive Map）](065-01-knowledge-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

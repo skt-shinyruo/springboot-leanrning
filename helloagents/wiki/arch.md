@@ -24,10 +24,10 @@ flowchart TD
     BootGroup --> BootM[springboot-* modules]
     CoreGroup --> CoreM[spring-core-* modules]
 
-    BootM --> Docs1[docs/**.md]
+    BootM --> Docs1[<module>/docs/**.md]
     BootM --> Code1[src/main/java]
     BootM --> Tests1[src/test/java]
-    CoreM --> Docs2[docs/**.md]
+    CoreM --> Docs2[<module>/docs/**.md]
     CoreM --> Code2[src/main/java]
     CoreM --> Tests2[src/test/java]
 ```

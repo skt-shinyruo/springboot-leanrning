@@ -43,7 +43,6 @@
 ## 3. 快速链接
 
 - [学习路线图（主线 / 机制线）](learning-path.md)
-- [性能与并发（可复现实验范式）](../../docs/book/performance-and-concurrency.md)
 - [项目技术约定](../project.md)
 - [架构说明](arch.md)
 - [API 说明](api.md)
@@ -52,10 +51,8 @@
 
 ## 4. 文档站点（MkDocs）
 
-> 目标：基于仓库根 `docs/` 构建可搜索的静态站点；并遵循“文档即目录”，用一份 Markdown 目录文件统一维护站点导航。
+> 目标：基于“模块文档（`*/docs/`）+ 全站目录（`docs/SUMMARY.md`）”构建可搜索的静态站点；并遵循“文档即目录”，用一份 Markdown 目录文件统一维护站点导航。
 
 - 站点目录（SSOT）：`docs/SUMMARY.md`（目录本身就是文档，按其顺序/层级展示）
-- 主题索引页（可发现性）：`docs/topics/index.md`
-- Book（主线之书）：`docs/book/index.md`（目录与阅读说明）
-- 站点配置：`docs-site/mkdocs.yml`（`docs_dir: ../docs`）
+- 站点配置：`docs-site/mkdocs.yml`（`docs_dir: ..`，`nav_file: docs/SUMMARY.md`）
 - GitHub Pages 发布：不再提供内置 workflow（如需发布请自行配置）

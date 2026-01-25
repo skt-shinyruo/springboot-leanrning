@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 108 章：00 - Deep Dive Guide（springboot-cache）](../part-00-guide/108-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 110 章：02：`@CachePut/@CacheEvict`：更新与失效](110-02-cacheput-and-evict.md)
+上一章：[第 108 章：00 - Deep Dive Guide（springboot-cache）](../part-00-guide/108-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 110 章：02：`@CachePut/@CacheEvict`：更新与失效](110-02-cacheput-and-evict.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

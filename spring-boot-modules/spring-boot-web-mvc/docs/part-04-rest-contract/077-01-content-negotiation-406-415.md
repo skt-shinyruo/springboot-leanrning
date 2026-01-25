@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../part-05-real-world-http/078-01-cors-preflight.md)
+上一章：[第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../part-05-real-world-http/078-01-cors-preflight.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

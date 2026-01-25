@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 86 章：02：断点地图（Security Debugger Pack）](086-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 87 章：01：Basic Auth 与授权（最小可跑主线）](../part-01-security/087-01-basic-auth-and-authorization.md)
+上一章：[第 86 章：02：断点地图（Security Debugger Pack）](086-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 87 章：01：Basic Auth 与授权（最小可跑主线）](../part-01-security/087-01-basic-auth-and-authorization.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 关键分支矩阵（最小集合）

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-class SpringCoreBeansFactoryBeanDeepDiveLabTest {
+public class SpringCoreBeansFactoryBeanDeepDiveLabTest {
 
     @Test
     void factoryBeanProductParticipatesInTypeMatching_andIsRetrievedByProductType() {

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 147 章：90. 常见坑清单（建议反复对照）](147-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 149 章：Profiles 主线](../../../book/149-profiles-mainline.md)
+上一章：[第 147 章：90. 常见坑清单（建议反复对照）](147-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 149 章：Profiles 主线](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -21,7 +21,7 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         - 把 scoped bean 注入 singleton 时必须通过 ObjectProvider 或 scoped proxy 才能按 conversation 解析。
 
                         推荐步骤：
-                        1) 先阅读：`docs/beans/spring-core-beans/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+                        1) 先阅读：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
                         2) 写一个最小 scope 实现：get/remove/registerDestructionCallback/getConversationId
                         3) 用 `beanFactory.registerScope("conversation", new YourScope())` 注册
                         4) 写一个 lab 风格的小测试：两个不同 conversationId 断言两个不同实例
@@ -41,7 +41,7 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         练习：扩展 SmartLifecycle：增加 3 个不同 phase 的组件，并验证 start/stop 全序列。
 
                         推荐步骤：
-                        1) 先读：`docs/beans/spring-core-beans/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
+                        1) 先读：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
                         2) 在 `SpringCoreBeansSmartLifecycleLabTest` 的基础上增加更多组件：phase=-1/0/1
                         3) 写断言验证：start 升序、stop 反序
                         4) 同 phase 的顺序如果不稳定：
@@ -59,7 +59,7 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         练习：FactoryBean 进阶：实现一个 getObjectType 返回 null 的场景，并总结它会影响哪些 type-based 机制。
 
                         推荐步骤：
-                        1) 先读：`docs/beans/spring-core-beans/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md`
+                        1) 先读：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md`
                         2) 试着把一个真实业务场景抽象成 FactoryBean（例如动态创建 client）
                         3) 让 `getObjectType()` 在某些情况下返回 null
                         4) 观察并总结：
@@ -85,8 +85,8 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         推荐步骤：
                         1) 先跑并读懂 Labs：
                            - `SpringCoreBeansProxyingPhaseLabTest`
-                           - 对照 AOP：`docs/aop/spring-core-aop/part-01-proxy-fundamentals/03-self-invocation.md`
-                           - 对照 Tx：`docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md`
+                           - 对照 AOP：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md`
+                           - 对照 Tx：`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md`
                         2) 自己实现一个 `BeanPostProcessor#postProcessAfterInitialization(...)`：
                            - 仅对一个接口类型（例如 `WorkService`）进行 proxying
                            - 在 InvocationHandler 里记录被拦截的方法名（不要只靠日志）
@@ -113,7 +113,7 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         推荐步骤：
                         1) 先跑并读懂 Labs：
                            - `SpringCoreBeansInjectionPhaseLabTest`
-                           - `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md`
+                           - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md`
                         2) 设计 3 种“可选依赖”写法并对照验证：
                            - `@Autowired(required=false)`（field 或 setter）
                            - `ObjectProvider<T>`（constructor 注入 provider，再 `getIfAvailable()`）

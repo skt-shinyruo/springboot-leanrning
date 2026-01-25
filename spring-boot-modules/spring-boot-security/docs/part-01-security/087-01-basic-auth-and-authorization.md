@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 86 章：00 - Deep Dive Guide（springboot-security）](../part-00-guide/086-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md)
+上一章：[第 86 章：00 - Deep Dive Guide（springboot-security）](../part-00-guide/086-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

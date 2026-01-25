@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 64 章：00 - Deep Dive Guide（springboot-web-mvc）](064-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 64 章：04 - Branch/Decision Matrix（springboot-web-mvc）](064-04-branch-decision-matrix.md)
+上一章：[第 64 章：00 - Deep Dive Guide（springboot-web-mvc）](064-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 64 章：04 - Branch/Decision Matrix（springboot-web-mvc）](064-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

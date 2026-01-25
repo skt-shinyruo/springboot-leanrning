@@ -8,7 +8,7 @@ import org.springframework.beans.factory.support.BeanDefinitionOverrideException
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.support.GenericApplicationContext;
 
-class SpringCoreBeansBeanDefinitionOverridingLabTest {
+public class SpringCoreBeansBeanDefinitionOverridingLabTest {
 
     @Test
     void whenBeanDefinitionOverridingIsAllowed_lastDefinitionWins() {

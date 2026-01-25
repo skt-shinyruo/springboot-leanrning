@@ -17,7 +17,7 @@
 ## Start Here（路线图 / 第一个可运行入口）
 
 - 路线图：`helloagents/wiki/learning-path.md`
-- Docs Index：`docs/aop/spring-core-aop/README.md`
+- Docs Index：`spring-core-modules/spring-core-aop/docs/README.md`
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopLabTest#adviceIsAppliedToTracedMethod test`
   - 对应测试类：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopLabTest.java`
@@ -25,12 +25,12 @@
 ## Specifications
 
 ### Source Layout
-- docs：`docs/aop/spring-core-aop/README.md`（目录页）
-- docs：`docs/aop/spring-core-aop/part-00-guide/`（深挖指南）
-- docs：`docs/aop/spring-core-aop/part-01-proxy-fundamentals/`（代理基础/自调用/限制/调试）
-- docs：`docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/`（AutoProxyCreator 主线/pointcut 系统）
-- docs：`docs/aop/spring-core-aop/part-03-proxy-stacking/`（多代理叠加/真实项目 playbook）
-- docs：`docs/aop/spring-core-aop/appendix/`（常见坑/自测题）
+- docs：`spring-core-modules/spring-core-aop/docs/README.md`（目录页）
+- docs：`spring-core-modules/spring-core-aop/docs/part-00-guide/`（深挖指南）
+- docs：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/`（代理基础/自调用/限制/调试）
+- docs：`spring-core-modules/spring-core-aop/docs/part-02-autoproxy-and-pointcuts/`（AutoProxyCreator 主线/pointcut 系统）
+- docs：`spring-core-modules/spring-core-aop/docs/part-03-proxy-stacking/`（多代理叠加/真实项目 playbook）
+- docs：`spring-core-modules/spring-core-aop/docs/appendix/`（常见坑/自测题）
 - src(main)：`spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/SpringCoreAopApplication.java`（入口，包名保持不变）
 - src(main)：`spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/**`
 - src(main)：`spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part02_autoproxy_and_pointcuts/**`
@@ -40,11 +40,11 @@
 - src(test)：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part03_proxy_stacking/**`
 
 ### Docs Index
-- 入口：`docs/aop/spring-core-aop/README.md`
-- 断点地图：`docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md`
-- 关键分支矩阵：`docs/aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md`
-- 排障 playbook：`docs/aop/spring-core-aop/appendix/040-90-common-pitfalls.md`
-- 自检清单：`docs/aop/spring-core-aop/appendix/041-99-self-check.md`
+- 入口：`spring-core-modules/spring-core-aop/docs/README.md`
+- 断点地图：`spring-core-modules/spring-core-aop/docs/part-00-guide/029-02-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-aop/docs/part-00-guide/029-04-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-aop/docs/appendix/040-90-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-aop/docs/appendix/041-99-self-check.md`
 - Branch Matrix（关键分支入口）：
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
@@ -52,7 +52,6 @@
 - Solution（Exercises 对应答案回归）：
   - `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part00_guide/SpringCoreAopExerciseSolutionTest.java`
 - Lab（并发/性能：同一 proxy 并发调用边界）：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part02_perf_concurrency/SpringCoreAopProxyConcurrencyLabTest.java`
-- Book 专题页（方法论与样板索引）：`docs/book/performance-and-concurrency.md`
 
 ### Requirement: AOP 学习闭环
 **Module:** spring-core-aop
@@ -83,7 +82,7 @@
 - 能解释 why：call path 必须走 proxy
 - 能说明常见工程解法（拆分 bean / 自注入 / exposeProxy）与风险
 - 对应可复现闭环入口：
-  - `docs/aop/spring-core-aop/part-01-proxy-fundamentals/05-expose-proxy.md`
+  - `spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/05-expose-proxy.md`
   - `spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/ExposeProxyExampleService.java`
   - `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopExposeProxyLabTest.java`
 

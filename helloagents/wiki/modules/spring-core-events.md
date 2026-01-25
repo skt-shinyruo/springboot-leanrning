@@ -17,22 +17,22 @@
 ## Specifications
 
 ### Source Layout
-- docs：`docs/events/spring-core-events/README.md`（目录页）
-- docs：`docs/events/spring-core-events/part-00-guide/`（深挖指南）
-- docs：`docs/events/spring-core-events/part-01-event-basics/`（事件基础）
-- docs：`docs/events/spring-core-events/part-02-async-and-transactional/`（异步与事务事件）
-- docs：`docs/events/spring-core-events/appendix/`（常见坑/自测题）
+- docs：`spring-core-modules/spring-core-events/docs/README.md`（目录页）
+- docs：`spring-core-modules/spring-core-events/docs/part-00-guide/`（深挖指南）
+- docs：`spring-core-modules/spring-core-events/docs/part-01-event-basics/`（事件基础）
+- docs：`spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/`（异步与事务事件）
+- docs：`spring-core-modules/spring-core-events/docs/appendix/`（常见坑/自测题）
 - src(main)：`spring-core-modules/spring-core-events/src/main/java/com/learning/springboot/springcoreevents/SpringCoreEventsApplication.java`（入口，包名保持不变）
 - src(main)：`spring-core-modules/spring-core-events/src/main/java/com/learning/springboot/springcoreevents/part01_event_basics/**`
 - src(test)：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part00_guide/**`
 - src(test)：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/**`
 
 ### Docs Index
-- 入口：`docs/events/spring-core-events/README.md`
-- 断点地图：`docs/events/spring-core-events/part-00-guide/128-02-breakpoint-map.md`
-- 关键分支矩阵：`docs/events/spring-core-events/part-00-guide/128-04-branch-decision-matrix.md`
-- 排障 playbook：`docs/events/spring-core-events/appendix/136-90-common-pitfalls.md`
-- 自检清单：`docs/events/spring-core-events/appendix/137-99-self-check.md`
+- 入口：`spring-core-modules/spring-core-events/docs/README.md`
+- 断点地图：`spring-core-modules/spring-core-events/docs/part-00-guide/128-02-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-events/docs/part-00-guide/128-04-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-events/docs/appendix/136-90-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-events/docs/appendix/137-99-self-check.md`
 - Branch Matrix（关键分支入口）：
   - `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
@@ -61,7 +61,6 @@
 - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsAsyncMulticasterLabTest.java`
 - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part03_perf_concurrency/SpringCoreEventsConcurrencyLabTest.java`
 - Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part00_guide/SpringCoreEventsExerciseSolutionTest.java`
-- Book 专题页（并发/性能可复现范式）：`docs/book/performance-and-concurrency.md`
 
 ## Change History
 

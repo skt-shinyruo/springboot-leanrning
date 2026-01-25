@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 101 章：05. Fetching 与 N+1：为什么查一次会变成查很多次？](101-05-fetching-and-n-plus-one.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 103 章：07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](103-07-debug-sql.md)
+上一章：[第 101 章：05. Fetching 与 N+1：为什么查一次会变成查很多次？](101-05-fetching-and-n-plus-one.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 103 章：07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](103-07-debug-sql.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）](043-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 45 章：01. 心智模型：Proxy vs Weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md)
+上一章：[第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）](043-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 45 章：01. 心智模型：Proxy vs Weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

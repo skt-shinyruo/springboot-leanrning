@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 91 章：05：JWT/Stateless：Bearer token + scope（最小闭环）](../part-01-security/091-05-jwt-stateless.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 93 章：99 - Self Check（springboot-security）](093-99-self-check.md)
+上一章：[第 91 章：05：JWT/Stateless：Bearer token + scope（最小闭环）](../part-01-security/091-05-jwt-stateless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 93 章：99 - Self Check（springboot-security）](093-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

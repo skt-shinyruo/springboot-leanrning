@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
-class SpringCoreBeansCircularDependencyBoundaryLabTest {
+public class SpringCoreBeansCircularDependencyBoundaryLabTest {
 
     @Test
     void constructorCycleFailsFast() {

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）](../part-00-guide/118-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 120 章：02：Executor 与线程命名/并发边界](120-02-executor-and-threading.md)
+上一章：[第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）](../part-00-guide/118-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 120 章：02：Executor 与线程命名/并发边界](120-02-executor-and-threading.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

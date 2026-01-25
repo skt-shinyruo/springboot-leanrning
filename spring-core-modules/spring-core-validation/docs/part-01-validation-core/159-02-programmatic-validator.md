@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 158 章：01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？](158-01-constraint-mental-model.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 160 章：03. 方法参数校验：为什么它必须依赖 Spring 代理？](160-03-method-validation-proxy.md)
+上一章：[第 158 章：01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？](158-01-constraint-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 160 章：03. 方法参数校验：为什么它必须依赖 Spring 代理？](160-03-method-validation-proxy.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

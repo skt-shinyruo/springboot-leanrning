@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 110 章：02：`@CachePut/@CacheEvict`：更新与失效](110-02-cacheput-and-evict.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md)
+上一章：[第 110 章：02：`@CachePut/@CacheEvict`：更新与失效](110-02-cacheput-and-evict.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

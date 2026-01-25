@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 6 章：02：`@ConfigurationProperties` 绑定与类型转换](../part-01-boot-basics/006-02-configuration-properties-binding.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 8 章：99 - Self Check（springboot-basics）](008-99-self-check.md)
+上一章：[第 6 章：02：`@ConfigurationProperties` 绑定与类型转换](../part-01-boot-basics/006-02-configuration-properties-binding.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 8 章：99 - Self Check（springboot-basics）](008-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

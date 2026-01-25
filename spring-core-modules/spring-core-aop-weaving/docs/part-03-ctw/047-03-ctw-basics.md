@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 48 章：04. Join Point & Pointcut Cookbook（速查）](../part-04-join-points/048-04-join-point-cookbook.md)
+上一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 48 章：04. Join Point & Pointcut Cookbook（速查）](../part-04-join-points/048-04-join-point-cookbook.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

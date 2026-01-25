@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](../part-01-event-basics/132-04-sync-and-exceptions.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](134-06-async-multicaster.md)
+上一章：[第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](../part-01-event-basics/132-04-sync-and-exceptions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](134-06-async-multicaster.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
