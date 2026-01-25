@@ -13,7 +13,7 @@
 注意：
 - 本脚本不会尝试“合并/拆章/重排主线时间线”（那是第二层，人工为主）。
 - 变更较大，建议在执行后自行做一次站点构建预览（可选）：
-  - bash scripts/docs-site-build.sh
+  - mkdocs build -f docs-site/mkdocs.yml
 
 用法：
   python3 scripts/rewrite-docs-book-style.py

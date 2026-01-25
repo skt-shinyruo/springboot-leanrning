@@ -16,7 +16,6 @@
       - API 显式 ETag：controller 自己计算并返回 `ETag`，自己判断是否 304
       - Filter 计算 ETag：controller 只返回 body，`ShallowEtagHeaderFilter` 负责 ETag/304
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

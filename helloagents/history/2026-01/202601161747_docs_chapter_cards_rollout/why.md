@@ -32,9 +32,6 @@
 3. “源码入口”至少包含：
    - Spring/Spring Boot 关键类或关键方法（可作为断点锚点）
    - 本仓库对应的示例代码/测试入口（便于把机制落到可复现证据）
-4. 通过仓库闸门：
-   - `bash scripts/check-docs.sh`
-   - `bash scripts/docs-site-build.sh`（`mkdocs build --strict`）
 
 ## 非目标
 

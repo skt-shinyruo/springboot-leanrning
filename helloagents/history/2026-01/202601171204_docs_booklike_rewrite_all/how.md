@@ -7,7 +7,6 @@
 - Markdown（现有文档载体）
 - Python 3（批处理脚本）
 - MkDocs（站点构建与 `--strict` 校验）
-- 现有闸门脚本：`scripts/check-docs.sh`、`scripts/docs-site-build.sh`
 
 ### Implementation Key Points
 
@@ -40,7 +39,6 @@
 
 **Context:** 全量章节改写规模大，若直接“自由生成”正文，很容易引入不一致或技术错误。  
 **Decision:** 以卡片字段作为章节改写的唯一事实来源，批处理只做表达与结构整理。  
-**Rationale:** 卡片字段已有闸门保障覆盖度与可运行入口，风险更可控。  
 **Alternatives:** “逐章自由重写全部正文” → 拒绝原因：成本与风险过高，且难以保证一致性与准确性。  
 **Impact:** 章节会获得更稳定的书籍化结构；对少量关键章节仍可人工精修提升深度。
 
@@ -55,9 +53,6 @@
 
 ## Testing and Deployment
 
-- **Testing（闸门）**
-  - `bash scripts/check-docs.sh`：断链检查 + 章节卡片覆盖 + teaching coverage
-  - `bash scripts/docs-site-build.sh`：`mkdocs build --strict`
 - **Deployment**
   - 文档站点保持现有 workflow，不更改发布流程；以 `mkdocs --strict` 作为验收基线。
 

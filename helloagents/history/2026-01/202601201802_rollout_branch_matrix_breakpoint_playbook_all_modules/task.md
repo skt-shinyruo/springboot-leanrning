@@ -281,7 +281,6 @@
 
 - [√] 逐模块 spot-check：按上面每个模块的 `mvn -q -pl ... -Dtest=... test` 执行（至少覆盖所有新增 Branch Matrix 入口）。
 - [√] 全仓回归：`mvn -q test`
-- [√] 文档：`python3 scripts/generate-book-labs-index.py` + `bash scripts/check-docs.sh` + `bash scripts/docs-site-build.sh`
 - [√] 安全与一致性自检：确认未引入新的敏感信息、未破坏模块边界、文档入口与测试入口一致（SSOT）
 
 ## 5. 收尾（方案包生命周期）

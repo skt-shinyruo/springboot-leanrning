@@ -16,7 +16,6 @@
 1. **以 docs/README.md 为 SSOT 扩展目录结构**
    - `docs/web-mvc/springboot-web-mvc/README.md` 继续作为文档入口与索引。
    - 新增 Part 08 的目录链接，并补齐“Start Here”中的知识地图入口。
-   - 每个新增/修改章节必须有明确“可跑入口块”（Lab/Test 文件或类名），以通过 `scripts/check-docs.sh`。
 
 2. **知识地图：用“主轴 + 证据链”组织知识点**
    - 主轴：DispatcherServlet → HandlerMapping/Adapter → ArgumentResolver/Binder/Validator → ExceptionResolver → ReturnValueHandler/MessageConverter → write response
@@ -73,6 +72,5 @@
 
 - **Testing:**
   - `mvn -pl springboot-web-mvc test`
-  - `scripts/check-docs.sh`
 - **Deployment:** 本仓库为学习型工程，不提供生产部署流程；文档中如涉及生产建议，会显式标注。
 

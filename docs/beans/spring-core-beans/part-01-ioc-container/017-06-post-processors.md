@@ -23,7 +23,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` / `SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
@@ -229,7 +228,6 @@ BFPP 本该在“定义层”工作，如果你在里面直接拿 bean（实例�
 学习阶段建议把 BPP 当作“理解容器机制”的窗口，而不是“解决业务问题的日常手段”。
 
 ## 面试常问（BFPP / BPP / BDRPP）
-
 
 ## 源码与断点
 

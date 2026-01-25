@@ -2,7 +2,6 @@
 
 > Note(2026-01-14): 本方案包剩余未执行任务已在后续 Beans 系列方案包中拆分/覆盖，统一标记为 [-]；具体落地请以后续 history 方案包与当前仓库代码为准（见 helloagents/history/index.md）。
 
-
 Directory: `helloagents/plan/202601051050_spring_core_beans_deepen/`
 
 ---

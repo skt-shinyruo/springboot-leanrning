@@ -13,7 +13,6 @@
     - 教学实现里，为了让 MockMvc 回归稳定，本模块用“可控延迟回退”来模拟 timeout 分支（不依赖真实 Servlet 容器的 timeout 事件）。
     - 对测试来说：只要返回的是 async 类型（Callable/DeferredResult/SseEmitter），就要用 MockMvc 的 `asyncDispatch` 固定最终响应。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcAsyncSseLabTest`

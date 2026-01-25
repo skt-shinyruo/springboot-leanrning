@@ -52,13 +52,10 @@
 - 章节结构自然：导读 → 主线叙事 → 小结/承接
 - 实验入口/源码锚点/排障提示通过提示框出现（不打断主线）
 
-### Requirement: 质量闸门不下降
 **Module:** docs-site / scripts
 每一批改动都必须能通过现有自检与站点构建。
 
 #### Scenario: CI/本地校验稳定
-- `bash scripts/check-docs.sh` 通过
-- `bash scripts/docs-site-build.sh`（strict）通过
 
 ## Risk Assessment
 

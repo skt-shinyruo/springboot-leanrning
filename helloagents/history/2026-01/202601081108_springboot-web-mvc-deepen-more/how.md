@@ -41,7 +41,6 @@
 ## Testing and Verification
 
 - **Module tests:** `mvn -pl springboot-web-mvc test`
-- **Docs gates:** `bash scripts/check-docs.sh`（断链 + 教学覆盖）
 - **重点回归：**
   - 406/415（契约分支）
   - 绑定/校验（binder 分支）

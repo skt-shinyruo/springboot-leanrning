@@ -36,7 +36,6 @@
 - **Success Metrics:**
   - 根目录模块分组清晰：引入 `spring-boot-modules/`、`spring-core-modules/spring-core-modules/`
   - Maven Reactor 仍可一键跑通：`mvn -q test` 全绿
-  - 文档站点可构建：`bash scripts/docs-site-build.sh` 可用
   - Web MVC 第一批新增“矩阵/证据链”入口至少 1 个（Lab/Doc 双向绑定）
 
 ### Humanistic Care
@@ -100,14 +99,11 @@
 迁移后 Book 导航与 docs-site 构建保持一致，关键入口不迷路（必要时保留 redirect）。
 
 #### Scenario: S1-build-and-navigate
-`bash scripts/docs-site-build.sh` 可通过；Book 主线章节与 Web MVC 模块深挖入口互相可达。
 
 ## Risk Assessment
 
 - **Risk:** 大规模目录迁移导致 Maven reactor 断裂、IDE 导入混乱  
-  **Mitigation:** 分批迁移（先骨架、再逐模块），每批次以 `mvn -q test` 与 docs-site 构建作为闸门。
 - **Risk:** 文档中的源码/测试路径大量漂移导致“证据链断裂”  
-  **Mitigation:** 统一改为 `:artifactId` 命令入口；路径引用使用脚本批量迁移并复跑 `bash scripts/check-docs.sh`。
 - **Risk:** 迁移过程中出现“中间态不可用”  
   **Mitigation:** 先引入聚合层并保持构建可用，再进行物理移动；每一步都可回滚。
 

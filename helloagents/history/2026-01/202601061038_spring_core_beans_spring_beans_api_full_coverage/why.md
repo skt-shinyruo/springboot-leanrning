@@ -58,7 +58,6 @@
 
 ### Requirement: 逐步补齐（可持续迭代、不爆炸）
 **Module:** spring-core-beans
-按批次推进（每批都有验收门禁），保持回归可用与文档一致性。
 
 #### Scenario: 每一批次都能独立通过 tests + docs 链接检查
 - 期望：每批次结束都能 `mvn -pl spring-core-beans test` 通过，并且 docs 0 断链

@@ -55,10 +55,7 @@
 - JPA：用 `flush()` + `clear()` 避免“一级缓存假象”；必要时用 SQL 计数/日志作为辅助（断言以行为为准）
 - Security/MVC：优先用 MockMvc 固定 `resolvedException`/status/header（避免只看日志）
 
-#### 5) 一致性闸门与知识库同步
-
 - 每批修改后跑：
-  - `bash scripts/check-docs.sh`
   - `mvn -pl <module> test`（模块级）
   - 最终 `mvn test`（全仓库）
 - 同步更新：
@@ -106,6 +103,5 @@
 - **Testing:**
   - 模块级：`mvn -pl <module> test`
   - 全仓库：`mvn test`
-  - 文档闸门：`bash scripts/check-docs.sh`
 - **Deployment:** 无（学习仓库，非生产交付）
 

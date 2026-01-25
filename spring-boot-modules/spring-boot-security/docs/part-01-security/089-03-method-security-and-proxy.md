@@ -96,7 +96,7 @@ Method Security 的本质仍然是 **代理**：
 - Breakpoints：
   - `SelfInvocationPitfallService#outerCallsAdminOnly`（自调用入口）
   - `SelfInvocationPitfallService#adminOnly`（被绕过的注解方法）
-- Fix：把受保护方法拆到另一个 bean，通过依赖注入跨 bean 调用，确保走代理；并用默认 Lab 把“是否抛 AccessDeniedException”锁成回归门禁
+- Fix：把受保护方法拆到另一个 bean，通过依赖注入跨 bean 调用，确保走代理；并用默认 Lab 把“是否抛 AccessDeniedException”锁成回归断言
 
 ### 坑点 2：roles vs authorities 的前缀差异，导致规则误判（ROLE_ 边界）
 

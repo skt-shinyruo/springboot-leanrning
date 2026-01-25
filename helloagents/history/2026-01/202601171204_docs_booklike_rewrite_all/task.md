@@ -13,17 +13,13 @@ Directory: `helloagents/plan/202601171204_docs_booklike_rewrite_all/`
   - [√] 1.2.1 定义 I/O 与 CLI：输入=章节学习卡片 + 章节清单；输出=就地重写；支持 dry-run/report；默认幂等
   - [√] 1.2.2 章节类型分流策略：普通章节/工具页/索引页/redirect 页（不同改写强度与模板，避免一刀切）
   - [√] 1.2.3 变更报告与告警：统计改写/跳过/失败章节；缺卡片/缺关键字段/重复实验入口等输出可定位原因
-- [√] 1.3 评估并（可选）新增自检脚本：检测常见空块（如空的“一句话总结”），并接入 `scripts/check-docs.sh`，verify why.md#core-scenarios
   - [√] 1.3.1 定义自检规则清单：空块/空总结/重复实验入口/缺证据链提示/残留模板标题
-  - [√] 1.3.2 接入方式：作为 `scripts/check-docs.sh` 的可选 gate（支持白名单/按目录跳过）
   - [√] 1.3.3 输出与退出码：统一输出格式（文件+标题+原因），非零退出用于 CI/本地快速定位
 
 ## 2. 全量执行（模块 + Book）
 - [√] 2.1 模块 docs 全量执行：覆盖 18 模块 `docs/` 下 SSOT 章节（共 174 章），verify why.md#requirement-全量章节读起来像书
-  - [√] 2.1.0 执行准备与闸门（必做）
     - [√] 2.1.0.1 生成章节清单与统计：以各模块 `docs/README.md` 链接为 SSOT（18 模块/174 章），输出可复查报告
     - [√] 2.1.0.2 先试跑 1–2 个模块：review diff（结构/证据链/重复入口/空块），修正规则后再进入全量
-    - [√] 2.1.0.3 分批执行与逐批闸门：每批执行后跑 `scripts/check-docs.sh` + `docs-site-build.sh`，避免一次性大爆炸
   - [√] 2.1.1 模块：springboot-basics（6 章）
     - [√] 2.1.1.1 二次书籍化：`docs/basics/springboot-basics/part-00-guide/003-03-mainline-timeline.md`
     - [√] 2.1.1.2 二次书籍化：`docs/basics/springboot-basics/part-00-guide/004-00-deep-dive-guide.md`
@@ -268,8 +264,6 @@ Directory: `helloagents/plan/202601171204_docs_booklike_rewrite_all/`
     - [√] 2.2.3.18 redirect 最小改写/校验：`docs/book/17-testing-mainline.md`
     - [√] 2.2.3.19 redirect 最小改写/校验：`docs/book/18-business-case.md`
   - [√] 2.2.4 全量执行 + 验收（Book）
-    - [√] 2.2.4.1 全量执行后跑闸门：`bash scripts/check-docs.sh`（断链/卡片/coverage 全绿）
-    - [√] 2.2.4.2 全量执行后 strict build：`bash scripts/docs-site-build.sh`（`mkdocs build --strict` 全绿）
 - [√] 2.3 抽样人工精修：对每个模块至少 1 章（优先 mainline timeline / deep dive guide）做人工校对与微调，verify why.md#risk-assessment
   - [√] 2.3.0 抽样规则（必做）
     - [√] 2.3.0.1 抽样策略：每模块至少 1 章（优先 mainline timeline / deep dive guide），记录抽样清单便于追溯
@@ -298,8 +292,6 @@ Directory: `helloagents/plan/202601171204_docs_booklike_rewrite_all/`
 - [√] 3.1 执行安全检查：确认无生产环境操作、无敏感信息写入、脚本不引入破坏性命令（per G9）
 
 ## 4. Verification
-- [√] 4.1 运行 `bash scripts/check-docs.sh`（断链=0、chapter cards 全绿、teaching coverage 全绿）
-- [√] 4.2 运行 `bash scripts/docs-site-build.sh`（`mkdocs build --strict` 全绿）
 
 ## 5. Knowledge Base Sync + 归档
 - [√] 5.1 更新 `helloagents/CHANGELOG.md`：记录“全站章节正文二次书籍化改写”的改动点

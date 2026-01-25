@@ -23,7 +23,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebClientRestClientLabTest`
@@ -64,7 +63,6 @@
 - Symptom：测试只验证返回值，后来有人改了 path/header/query 参数，线上集成才暴雷
 - Root Cause：下游调用的“契约”不仅是响应结构，还包括请求路径、查询参数与 headers
 - Verification：`BootWebClientRestClientLabTest#restClientSendsExpectedPathAndHeaders`
-- Fix：用 MockWebServer 固定下游，并把 path/header/body 写成断言（把契约变成回归门禁）
 
 ## 小结与下一章
 

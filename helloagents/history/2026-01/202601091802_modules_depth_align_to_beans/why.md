@@ -21,7 +21,6 @@
 1. **统一补齐模块 Guide 的机制主线**：把“时间线 / 关键参与者 / 关键分支 / 推荐断点 / 最小可运行实验”写实，并绑定可运行入口。
 2. **每章补齐至少 1 个可断言坑点/边界**：坑点必须能回到默认 Lab 的测试方法（或在补齐后新增默认 Lab）。
 3. **每模块提炼 2–5 个关键分支并确保默认 Lab 覆盖**：优先覆盖“最容易误判、且能稳定断言”的机制分支。
-4. **一致性闸门**：确保 `scripts/check-docs.sh` 通过；文档导航/引用一致；默认回归（`mvn test`）全绿。
 5. **知识库同步**：更新 `helloagents/wiki/modules/*.md` 与 `helloagents/CHANGELOG.md`，记录模块深化进度与变更索引。
 
 ## Impact Scope
@@ -81,21 +80,17 @@
 
 ### Requirement: Consistency Gates
 **Module:** All target modules
-保证“文档可连续阅读 + 可跑入口可复现 + 回归闸门可持续”。
 
 #### Scenario: Repo Gates Stay Green
 - `mvn -q test` 全绿
-- `bash scripts/check-docs.sh` 通过（断链=0、教学覆盖通过）
 - 不再出现 “契约骨架兜底 / 坑点待补齐” 等占位内容
 
 ## Risk Assessment
 
 - **Risk:** 工作量大，容易出现“模块间深度不均衡、风格不一致”。  
-  **Mitigation:** 分模块分批推进；每个模块完成后立即跑 `mvn -pl <module> test` + `scripts/check-docs.sh`。
 - **Risk:** 异步/并发/缓存相关新增测试可能 flaky。  
   **Mitigation:** 使用稳定观察点（线程名、CountDownLatch、手动 Ticker、固定超时）避免 sleep；必要时把复杂场景放到非默认 Exercise。
 - **Risk:** 文档标题/导航调整导致断链。  
-  **Mitigation:** 保持 BOOKIFY 区块与章节路径稳定；每批修改后跑 `scripts/check-docs.sh`。
 - **Risk:** “深入程度”变成主观叙述而非可验证结论。  
   **Mitigation:** 以测试断言与可复现实验为事实来源；文档结论必须绑定可跑入口。
 

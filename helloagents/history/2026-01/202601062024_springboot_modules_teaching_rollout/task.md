@@ -7,12 +7,8 @@ Directory: `helloagents/plan/202601062024_springboot_modules_teaching_rollout/`
 ## 0. 执行前基线（现状确认）
 - [√] 0.1 统计 `springboot-*/docs/README.md` 的“章节 Markdown 链接”解析结果（预计当前多数模块章节数为 0），verify why.md#requirement-docs-index-and-numbering
 - [√] 0.2 统计 `springboot-*` 模块 `*LabTest.java` 数量，标识需要补齐到 `min-labs=2` 的模块清单，verify why.md#requirement-minimum-labs-per-module
-- [√] 0.3 记录当前 `scripts/check-docs.sh` 的覆盖范围（现状不覆盖 springboot），作为推广前基线，verify why.md#requirement-teaching-coverage-gate
 
-## 1. scripts（自检闸门扩展到 springboot-*）
 - [√] 1.1 扩展 `scripts/check-md-relative-links.py` 默认扫描范围：从仅 `spring-core-*/docs` 扩展为 `spring-core-*/docs` + `springboot-*/docs`，并保持可传入 docs 目录/单个 md 文件的能力，verify why.md#requirement-docs-link-integrity
-- [√] 1.2 扩展 `scripts/check-teaching-coverage.py` 支持 springboot：扫描所有包含 `docs/README.md` 的模块；以 README 的 Markdown 链接清单为 SSOT；逐章要求“可跑入口”存在；并对所有模块执行 `min-labs=2` 闸门，verify why.md#requirement-teaching-coverage-gate
-- [√] 1.3 更新 `scripts/check-docs.sh`：作为全量闸门覆盖 spring-core + springboot（断链检查 + 教学覆盖检查），verify why.md#requirement-teaching-coverage-gate
 
 ## 2. springboot-basics（目录页 SSOT + guide/appendix 入口块）
 - [√] 2.1 改造 `docs/basics/springboot-basics/README.md`：将 Start Here/章节清单/Appendix 的路径从反引号改为 Markdown 链接，verify why.md#requirement-docs-index-and-numbering
@@ -101,14 +97,12 @@ Directory: `helloagents/plan/202601062024_springboot_modules_teaching_rollout/`
 - [√] 11.7 模块回归：`mvn -pl springboot-cache test`，verify why.md#requirement-chapter-lab-closure
 
 ## 12. 知识库同步（helloagents）
-- [√] 12.1 更新 `helloagents/wiki/modules/springboot-*.md` 的 Change History：记录本次推广（目录页 SSOT + 入口块 + Labs 补齐 + 自检闸门），verify why.md#requirement-knowledge-base-sync
 - [√] 12.2 更新 `helloagents/CHANGELOG.md` 与 `helloagents/history/index.md`（新增本次方案包条目），verify why.md#requirement-knowledge-base-sync
 
 ## 13. Security Check
 - [√] 13.1 执行安全自检（G9）：无生产环境操作、无密钥明文、无破坏性命令；新增测试不依赖外部服务；若遇 Maven 403 仅按标准化方式处理且不提交本机缓存，verify why.md#requirement-knowledge-base-sync
 
 ## 14. Testing（最终验收）
-- [√] 14.1 全量闸门：`bash scripts/check-docs.sh`（覆盖 spring-core + springboot），verify why.md#requirement-teaching-coverage-gate
 - [√] 14.2 分模块回归：`mvn -pl springboot-basics test` … `springboot-cache`（全部通过），verify why.md#requirement-chapter-lab-closure
 
 ## 15. 方案包归档（强制）

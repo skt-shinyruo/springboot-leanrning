@@ -10,5 +10,4 @@
 - [√] 扩展 `scripts/docs-site-sync.py`：生成模块文档导航（按主题→模块→章节）并与 Book 导航一起注入到 mkdocs.yml。
 - [√] 新增 `docs/topics/index.md` 作为站点可用的主题索引页，避免根目录 `README.md` 与 `index.md` 冲突导致的 nav/link 问题。
 - [√] 同步更新站点入口文案与知识库说明（docs/index.md、docs/book/001-start-here.md、docs-site/README.md、helloagents/wiki/overview.md、helloagents/CHANGELOG.md）。
-- [√] 验证：`bash scripts/docs-site-build.sh` 构建通过（mkdocs build 成功）。
 

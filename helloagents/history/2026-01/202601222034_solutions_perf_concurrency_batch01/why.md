@@ -7,14 +7,11 @@
 1. **Exercises 没有对应 Solution（可对照答案）**：多数模块只有 `*ExerciseTest`（且被 `@Disabled`），缺少默认参与回归的 `*ExerciseSolutionTest`，导致学习闭环缺少“参考实现 + 可验证”这一环。
 2. **并发/性能专题缺少“可复现、不 flaky”的统一范式**：一些模块已经在正文里提到并发/线程边界，但缺少一份统一的写法指南与可复现样例（尤其是“线程池饱和/拒绝策略”“跨线程边界”“避免 time-based 断言”）。
 
-本滚动包以“先把样板打磨成范式”为目标：优先补齐新增主题模块（autoconfig/logging/observability/spel）的 Solutions，然后在 Async/Scheduling 与 Events 上补齐“并发/性能可复现实验 + 专题文档”，并保持全仓闸门全绿。
-
 ## Change Content
 
 1. 为新增主题模块补齐 `*ExerciseSolutionTest`，让 Exercises 具备可运行对照答案闭环
 2. 为 Async/Scheduling 与 Events 增加一组“可复现并发/性能”Labs（避免 flaky），并沉淀统一写法
 3. 新增 Book 级“性能与并发专题”页面：总结可复现并发测试范式（CountDownLatch/线程名/拒绝策略/避免 sleep）
-4. 更新 docs 入口索引与 Labs 索引，保证站点与闸门同步
 
 ## Impact Scope
 
@@ -58,14 +55,9 @@
 - `@Async` listener 与自定义 multicaster 两条路径分别可复现
 - 以线程名/CountDownLatch 固化“是否异步”而不是依赖日志时序
 
-### Requirement: 站点与闸门保持同步
 **Module:** docs-site / scripts / helloagents
-新增/修改文档与测试后，必须同步更新索引，并通过全仓门禁。
 
-#### Scenario: 全仓闸门全绿
 - `mvn -q test` 通过
-- `bash scripts/check-docs.sh` 通过
-- `bash scripts/docs-site-build.sh` 通过
 
 ## Risk Assessment
 

@@ -24,7 +24,6 @@
     - 400/404/405/406/415 这类“看起来像 controller 的问题”，大量其实发生在 controller 之前/之后。
     - 最省时间的证据链：**测试断言 → resolvedException（异常类型）→ 断点（分支发生点）→ 观察字段（关键数据结构）**。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest`

@@ -15,8 +15,6 @@ Directory: `helloagents/plan/202601151647_docs-book-rewrite-all-modules/`
 - [√] 2.4 更新模块/知识库中对 A–G 的说明（例如 `docs/beans/spring-core-beans/README.md`）
 
 ## 3. 校验（自动化迁移后）
-- [√] 3.1 `bash scripts/check-docs.sh` 通过
-- [√] 3.2 `bash scripts/docs-site-build.sh` 通过（strict）
 
 ## 4. 主线时间线重排（第二层：逐模块分批）
 - [ ] 4.1 定义每个模块的“主线时间线”与章节边界（拆/合策略）

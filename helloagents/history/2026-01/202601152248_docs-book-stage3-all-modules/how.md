@@ -7,9 +7,7 @@
 - Markdown（书章节与索引页）
 - MkDocs + Material（站点生成、搜索、侧边栏导航）
 - Python（导航/索引生成脚本）
-- 现有仓库脚本（作为闸门与构建入口）：
   - `scripts/docs-site-sync.py`
-  - `scripts/check-docs.sh`
   - `scripts/check-teaching-coverage.py`
 
 ### 关键实现点
@@ -64,10 +62,6 @@
 
 ## 测试与发布
 
-- **Testing（闸门）**
-  - `bash scripts/check-docs.sh`
-  - `bash scripts/docs-site-build.sh`（strict）
-  - （可选）新增 book 级闸门：确保书章节也具备“可跑入口”与关键链接完整性
 - **Deployment**
   - push 到 GitHub 后由 Pages workflow 构建并发布
   - 如失败，优先检查 Pages Source 配置与 Actions 权限配置

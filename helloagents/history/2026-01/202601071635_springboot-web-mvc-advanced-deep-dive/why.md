@@ -13,7 +13,6 @@
 3. 统一约束：
    - 默认不引入新依赖（优先用现有 `spring-boot-starter-web` + `spring-boot-starter-test` 能覆盖的方式）。
    - 尽量只做“增量/可并存”的改动，避免破坏现有 `/api/ping`、`/api/users`、页面路由与 `ApiError` 形状。
-4. 通过自检：`mvn -pl springboot-web-mvc test` 与 `scripts/check-docs.sh`。
 
 ## Impact Scope
 

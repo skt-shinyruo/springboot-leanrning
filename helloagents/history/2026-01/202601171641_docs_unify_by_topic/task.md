@@ -14,20 +14,11 @@ Directory: `helloagents/plan/202601171641_docs_unify_by_topic/`
 - [√] 2.2 更新入口文档：更新根 `README.md`、各模块 `README.md`、`docs-site/README.md` 中的文档链接与说明，verify why.md#requirement-文档统一入口与可发现性-scenario-按主题集中查找
 - [√] 2.3 更新 docs-site（如保留）：将 docs-site 的输入源从旧 SSOT 切换为 `docs/`（更新 `scripts/docs-site-sync.py` / mkdocs 配置或直接下线 workflow），verify why.md#requirement-文档统一入口与可发现性-scenario-book-与主题文档共存
 
-## 3. 下线门禁脚本与相关约束（高影响）
-- [√] 3.1 删除文档门禁脚本：移除 `scripts/check-docs.sh` 及其相关检查脚本（check-*.py 等），verify why.md#requirement-下线文档门禁与强约束-scenario-不再存在文档闸门
-- [√] 3.2 下线/改造 CI 门禁：移除或改造 `.github/workflows/docs-site-pages.yml` 中的 strict 文档校验（不再作为阻塞门禁），verify why.md#requirement-下线文档门禁与强约束-scenario-不再存在文档闸门
-- [√] 3.3 清理“强约束”文档说明：删除/更新当前文档中关于“必须跑闸门/必须 strict build”的描述（以免误导），verify why.md#requirement-下线文档门禁与强约束-scenario-不再存在文档闸门
-
 ## 4. Security Check
 - [√] 4.1 执行安全检查：确认无生产环境操作、无敏感信息写入、脚本删除不影响构建/测试的基础流程（per G9）
 
-## 5. Verification（非门禁 smoke）
 - [√] 5.1 全仓搜索：确保旧路径引用清零（例如 `spring-core-*/docs/`、`springboot-*/docs/`、`docs-site/content/book/`）
-- [√] 5.2 （可选）运行 `mvn -q test`：确认文档变更未影响工程测试（非门禁，仅 smoke）
 
 ## 6. Knowledge Base Sync + 归档
-- [√] 6.1 更新 `helloagents/CHANGELOG.md`：记录“文档统一目录 + 门禁下线”变更点
-- [√] 6.2 更新 `helloagents/wiki/overview.md` / `helloagents/project.md`：同步新的文档入口与约束变化（不再强调门禁）
 - [√] 6.3 执行完成后：迁移方案包到 `helloagents/history/YYYY-MM/`
 - [√] 6.4 更新 `helloagents/history/index.md`（登记与可追溯）

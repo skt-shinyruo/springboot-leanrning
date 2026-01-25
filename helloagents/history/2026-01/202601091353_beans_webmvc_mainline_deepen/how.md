@@ -55,8 +55,6 @@
 - 单模块回归：
   - `bash scripts/test-module.sh spring-core-beans`
   - `bash scripts/test-module.sh springboot-web-mvc`
-- 文档闸门：
-  - `bash scripts/check-docs.sh`
 - 全量回归（阶段收尾）：
   - `bash scripts/test-all.sh`
 

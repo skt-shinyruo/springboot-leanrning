@@ -37,5 +37,4 @@
 ## Testing and Verification
 
 - `mvn -pl springboot-web-mvc test`
-- `bash scripts/check-docs.sh`
 

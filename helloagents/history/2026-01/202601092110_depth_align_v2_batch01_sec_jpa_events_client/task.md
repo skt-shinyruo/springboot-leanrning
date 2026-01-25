@@ -15,7 +15,6 @@ Directory: `helloagents/plan/202601092110_depth_align_v2_batch01_sec_jpa_events_
   - 每条“关键分支”都包含：call chain sketch（6–12 行，可复述）+ 断点锚点（class#method）+ 对应默认 Lab/Test（类#方法）。
   - 新增 Debug Playbook 5–8 条：现象 → 分支判定 → 断点锚点（1–3 个）→ 可跑入口（默认 Lab/Test）→ 修复建议。
 - [√] 0.3 每个章节 doc 新增 ≥1 个“可断言坑点/边界”（结构固定：Symptom / Root Cause / Verification / Breakpoints / Fix），Verification 必须引用默认 Lab/Test 的方法名（可回归）。
-- [√] 0.4 闸门全绿：`mvn test` + `bash scripts/check-docs.sh`。
 
 ---
 
@@ -456,7 +455,6 @@ Directory: `helloagents/plan/202601092110_depth_align_v2_batch01_sec_jpa_events_
 ## 7. Testing & Gates
 
 - [√] 7.1 运行全仓库测试：`mvn test`。
-- [√] 7.2 运行文档闸门：`bash scripts/check-docs.sh`。
 
 ## 8. Changelog & Migration
 

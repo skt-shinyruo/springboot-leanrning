@@ -39,8 +39,6 @@
 
 ## Testing and Deployment
 
-- **Docs Gate:** `bash scripts/check-docs.sh`
-- **Docs Site Build:** `bash scripts/docs-site-build.sh`
 - **Repo Regression:** `mvn -q test`
 - **Spot-check:** 对任意 2–3 个模块运行其 `*BookMatrixLabTest` 单测命令，验证 suite 发现与聚合正确。
 

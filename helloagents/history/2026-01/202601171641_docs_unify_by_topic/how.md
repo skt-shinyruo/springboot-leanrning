@@ -50,11 +50,8 @@
      - 对少数复杂相对链接，按文件所在目录重新计算相对路径
      - 对站点绝对链接（如 `/book/...`）保持不动（属于站点路径而非仓库路径）
 
-5. **彻底下线文档门禁**
    - 删除/移除：
-     - `scripts/check-docs.sh` 及其依赖的检查脚本（属于“硬门禁”）
      - GitHub Actions 中用于文档“严格校验/阻塞”的步骤（例如 `mkdocs --strict`）
-   - 允许保留 docs-site 站点能力，但不再以 strict 模式作为门禁。
 
 ## Architecture Decision ADR
 
@@ -79,7 +76,6 @@
 
 ## Testing and Deployment
 
-- **Testing:** 不再强制任何文档门禁；仅做基本 smoke：
   - 全仓搜索确保旧路径引用清零
   - （可选）`mvn -q test` 确保文档改动未影响构建流程
 - **Deployment:** 若保留 docs-site Pages，需将 workflow 从 strict 改为非严格构建或改为手动触发；否则下线该 workflow。

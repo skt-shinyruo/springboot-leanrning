@@ -14,7 +14,6 @@
 
 1. **以 docs/README.md 为 SSOT 扩展章节结构**
    - 在 `docs/web-mvc/springboot-web-mvc/README.md` 增加新 Part 的目录链接。
-   - 每个新增章节必须包含至少一个可跑入口（`*LabTest` 类名或测试文件路径），以通过 `scripts/check-docs.sh` 的覆盖度检查。
 
 2. **机制内核（DispatcherServlet 全链路）用“可观察点 + 最小实验”讲清楚**
    - 通过自定义 `HandlerMethodArgumentResolver`、（可选）自定义 `HttpMessageConverter` 或 return value handler，提供“能被测试断言”的证据链。
@@ -80,4 +79,3 @@
 ## Testing and Deployment
 
 - 单模块测试：`mvn -pl springboot-web-mvc test`
-- 文档自检：`scripts/check-docs.sh`

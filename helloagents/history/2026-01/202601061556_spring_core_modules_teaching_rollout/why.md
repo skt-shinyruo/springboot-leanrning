@@ -95,7 +95,6 @@
 ## Risk Assessment
 
 - **Risk:** 多模块同时移动/重排文件，容易引入断链与阅读路径混乱
-  - **Mitigation:** 以脚本校验为闸门：每完成一个模块/一批文件变更就跑一轮自检
 - **Risk:** 新增/调整测试可能导致整体回归变慢或失败
   - **Mitigation:** 优先用 `ApplicationContextRunner` 等轻量方式写 Lab；按模块逐个 `mvn -pl <module> test` 验证
 - **Risk:** 工作区当前存在未提交改动，可能与本次变更混杂

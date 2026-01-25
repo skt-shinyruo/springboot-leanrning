@@ -112,8 +112,6 @@
 - [202601081108_springboot-web-mvc-deepen-more](../../history/2026-01/202601081108_springboot-web-mvc-deepen-more/) - ✅ 已执行：补齐 ExceptionResolvers 主线、Interceptor/Filter sync+async lifecycle Lab、条件请求（Last-Modified + ETag filter）与 DeferredResult（timeout/fallback），并把坑点清单与测试入口强绑定
 - [202601080925_springboot-web-mvc-deep-dive-part08-security-observability](../../history/2026-01/202601080925_springboot-web-mvc-deep-dive-part08-security-observability/) - ✅ 已执行：新增知识地图、ProblemDetail 对照、ETag/304、Part 08（Security/Observability）与对应 Labs/排障升级
 - [202601071635_springboot-web-mvc-advanced-deep-dive](../../history/2026-01/202601071635_springboot-web-mvc-advanced-deep-dive/) - ✅ 已执行：扩展 advanced deep dive（机制内核/契约与 Jackson/真实 HTTP/Async/SSE/排障），新增 docs Part 03–07 与对应 Labs
-- [202601071034_all_modules_docs_ag_contract](../../history/2026-01/202601071034_all_modules_docs_ag_contract/) - ✅ 已执行：全模块 docs 章节结构整理（A–G 结构 + 对应 Lab/Test 入口块）；后续不再推荐 A–G 作为写作规范/闸门
 - [202601062218_all_modules_docs_bookify](../../history/2026-01/202601062218_all_modules_docs_bookify/) - ✅ 已执行：以 docs/<topic>/<module>/README.md 为 SSOT，对全部章节 upsert 统一尾部区块（### 对应 Lab/Test + 上一章｜目录｜下一章）
 - [202601041358_springboot-part-structure-sync](../../history/2026-01/202601041358_springboot-part-structure-sync/) - ✅ 已执行：对齐 docs Part 与 src/main/src/test 分包，并修复 README/docs 引用
 - [202601061309_springboot-web-mvc-thymeleaf-view-rendering](../../history/2026-01/202601061309_springboot-web-mvc-thymeleaf-view-rendering/) - ✅ 已执行：补齐传统 MVC（Thymeleaf/表单/错误页/Accept）+ docs 与 tests 闭环
-- [202601062024_springboot_modules_teaching_rollout](../../history/2026-01/202601062024_springboot_modules_teaching_rollout/) - ✅ 已执行：docs/README 章节链接 SSOT 化 + guide/appendix 可跑入口块补齐 + 自检闸门覆盖

@@ -8,7 +8,6 @@ Directory: `helloagents/plan/202601131039_teaching-experience-webmvc-beans/`
 - [√] 0.1 新读者路径：能在 1 次跳转内找到路线图 → Start Here → 第一个可运行入口（命令 + 测试类 + 测试方法），验证 why.md#requirement-教学入口收敛学习路线图#scenario-新读者-3-分钟开跑
 - [√] 0.2 Web MVC 样板：Part 01 至少 4 章补齐 Debugger Pack（Entrypoints≥2 + Watchpoints≥3 + DecisiveBranch≥1），且章节内链/导航不退化，验证 why.md#requirement-web-mvc-part-01-debugger-pack可断点可验证
 - [√] 0.3 Beans 样板：新增 30 分钟快启章节，并在模块 docs/README 置顶 Start Here，同时与深潜指南互链，验证 why.md#requirement-spring-core-beans-30-分钟快速闭环
-- [-] 0.4 （非知识点，暂不在本次范围）门禁：CI tests job 与 docs job 均通过；docs job 能拦截断链/覆盖不足/入口缺失
 - [√] 0.5 新增知识点闭环：至少补齐 3 个“当前仓库缺失”的 Web MVC 关键知识点，并提供可运行证据链（Lab/断言/可观察输出），验证 why.md#requirement-web-mvc-part-01-debugger-pack可断点可验证
 - [√] 0.6 完善现有知识点：已存在章节中出现“标题存在但内容空洞/过于抽象”的部分（例如 `## Debug 建议` 空块、deep-dive guide 的空洞段落）必须补齐为“可执行的断点与观察点”，验证 why.md#requirement-web-mvc-part-01-debugger-pack可断点可验证 与 why.md#requirement-spring-core-beans-30-分钟快速闭环
 
@@ -108,8 +107,6 @@ Directory: `helloagents/plan/202601131039_teaching-experience-webmvc-beans/`
 ## 4. 非知识点（暂不在本次范围，可后续单独开包）
 - [-] 4.1 更新根 `README.md`：将“从这里开始”的入口指向路线图与样板模块的 Start Here，并统一推荐使用脚本命令（例如 `./scripts/test-module.sh`）
 - [-] 4.2 调整脚本可执行性（使 `scripts/*.sh` 可直接执行），并确保 README/文档中的命令示例与实际一致，depends on 4.1
-- [-] 4.3 更新 `.github/workflows/ci.yml`：新增 docs 检查 job（执行 `bash scripts/check-docs.sh`）并与 tests job 分离
-- [-] 4.4 （可选）新增 docs 章节契约检查脚本（检测样板模块章节是否包含最小实验入口 + Debugger Pack），并纳入 `scripts/check-docs.sh`
 - [-] 4.5 （增强）新增 `scripts/help.sh`：输出“常用命令/模块列表/推荐起步模块”，并在根 `README.md` 引用
 
 ## 5. Security Check
@@ -117,7 +114,6 @@ Directory: `helloagents/plan/202601131039_teaching-experience-webmvc-beans/`
 - [√] 5.2 扫描潜在敏感信息：检查是否意外写入本机路径、token、账号信息（可用 `rg -n \"token|secret|password\"` 辅助），并确认示例代码/文档不包含真实凭据
 
 ## 6. Verification
-- [-] 6.1 （非知识点，暂不在本次范围）运行 `bash scripts/check-docs.sh`（相对链接 + teaching coverage）
 - [-] 6.2 运行 `mvn -q -pl springboot-web-mvc test`
   > Note: 本次仅执行 `spring-core-beans` 的知识点补齐，未修改 `springboot-web-mvc`，因此跳过该回归。
 - [√] 6.3 运行 `mvn -q -pl spring-core-beans test`

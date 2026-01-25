@@ -32,7 +32,6 @@ Directory: `helloagents/plan/202601152248_docs-book-stage3-all-modules/`
 
 ## 3. 教学体验增强（A/B/C/D）
 - [√] 3.1 Labs 索引页（A）：新增 `docs/book/labs-index.md`（按模块/主题/命令索引），verify why.md#教学体验增强abcd
-- [√] 3.2 Labs 索引生成脚本（A）：新增 `scripts/generate-book-labs-index.py`（扫描 `src/test/java/*LabTest.java` 生成 md），verify why.md#教学体验增强abcd
 - [√] 3.3 Debugger Pack 索引页（B）：新增 `docs/book/debugger-pack.md`（入口断点/观察点/关键分支索引），verify why.md#教学体验增强abcd
 - [√] 3.4 Exercises/Solutions 指南（C）：新增 `docs/book/exercises-and-solutions.md`（启用方式/运行方式/不破坏 CI），verify why.md#教学体验增强abcd
 - [√] 3.5 站点阅读体验（D）：优化 `docs/index.md`（首页更像“书的封面/目录入口”），verify why.md#全站以书为唯一目录book-only
@@ -43,10 +42,6 @@ Directory: `helloagents/plan/202601152248_docs-book-stage3-all-modules/`
 
 ## 5. Security Check
 - [√] 5.1 安全自检：确认不引入 secrets/token；确认脚本不包含高风险命令（rm -rf / prod 连接等）
-
-## 6. Verification（每阶段都要过闸门）
-- [√] 6.1 运行 `bash scripts/check-docs.sh`
-- [√] 6.2 运行 `bash scripts/docs-site-build.sh`（strict）
 
 ## 7. Knowledge Base Update
 - [√] 7.1 更新知识库：`helloagents/wiki/overview.md`（补充“主线之书”的阅读方式与入口）

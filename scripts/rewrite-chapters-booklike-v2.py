@@ -533,7 +533,7 @@ def rewrite_redirect_page(*, original: str, path: Path, card: ChapterCard | None
         warnings.append(RewriteWarning(kind="redirect_missing_dest", message="redirect 页未找到新位置链接"))
         dest = "/book/"
 
-    # 保留可跑入口（如果存在），用于 teaching gate
+    # 保留可跑入口（如果存在），用于教学回归
     preamble, sections = split_h2_sections(original)
     kept: list[H2Section] = []
     for s in sections:

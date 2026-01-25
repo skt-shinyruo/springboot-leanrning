@@ -6,12 +6,10 @@ Directory: `helloagents/history/2026-01/202601231156_tutorials_format_alignment/
 
 ## 1. Maven 结构与命名对齐（核心改造）
 
-- [√] 1.1 产出模块命名映射表（`springboot-*` → `spring-boot-*`），并确认 13 个 Boot 模块的最终 artifactId（用于全仓库替换与回归闸门）
 - [√] 1.2 调整 `spring-boot-modules/pom.xml`：modules 列表与目录名对齐映射表（保证聚合可构建）
 - [√] 1.3 调整 `spring-core-modules/pom.xml`：确认 core 模块 modules 列表与目录一致（如无需重命名，则仅做 parent 分层准备）
 - [√] 1.4 批量调整 Boot 子模块 `pom.xml`：parent 指向 `spring-boot-modules`，修正 `relativePath`，并更新 artifactId（与目录一致）
 - [√] 1.5 批量调整 Core 子模块 `pom.xml`：parent 指向 `spring-core-modules`，修正 `relativePath`（artifactId 保持不变或按规则最小调整）
-- [√] 1.6 执行一次全量回归闸门：`mvn -q test`（失败则停止进入下一阶段，先修复引用/构建问题）
 
 ## 2. 全仓库引用同步（docs / scripts / wiki）
 
@@ -19,7 +17,6 @@ Directory: `helloagents/history/2026-01/202601231156_tutorials_format_alignment/
 - [√] 2.2 批量更新 `docs/**` 中所有可运行命令与模块链接（重点：`mvn -q -pl :<artifactId>` 与模块路径）
 - [ ] 2.3 批量更新各模块 `README.md`：命令、docs 路径、测试入口类名保持一致
 - [ ] 2.4 更新 `helloagents/wiki/**`：模块页与学习路线中的 artifactId/路径引用与新命名一致
-- [√] 2.5 回归闸门：`mvn -q test`（确保“改名 + 引用同步”不引入红测）
 
 ## 3. 全模块深挖标准化（A–E）
 
@@ -349,10 +346,6 @@ Directory: `helloagents/history/2026-01/202601231156_tutorials_format_alignment/
   - 新增：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part03_perf_concurrency/SpringCoreEventsConcurrencyLabTest.java`
   - 同步：`docs/events/spring-core-events/README.md` 增加“并发/性能入口”与可运行命令
 - [ ] 3.3.5 全量并发/性能用例稳定性审计：扫描所有 `*Concurrency*`/`*Perf*`/`*Saturation*` 测试，移除耗时阈值断言并统一为稳定信号（latch/可控时钟/失败路径计数等）
-
-### 3.4 回归闸门
-
-- [√] 3.4.1 执行一次全量回归闸门：`mvn -q test`
 
 ## 4. 质量与一致性验证
 

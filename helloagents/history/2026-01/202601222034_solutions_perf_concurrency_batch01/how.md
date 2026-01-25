@@ -41,9 +41,6 @@
 
 - **Testing（本滚动包）**
   - 新增 Solution/LabTest 后：
-    - 运行 `python3 scripts/generate-book-labs-index.py` 更新 `docs/book/labs-index.md`
     - 运行全仓：`mvn -q test`
-    - 文档门禁：`bash scripts/check-docs.sh`
-    - 站点构建：`bash scripts/docs-site-build.sh`
 - **Deployment:** 无部署动作（学习工程）
 

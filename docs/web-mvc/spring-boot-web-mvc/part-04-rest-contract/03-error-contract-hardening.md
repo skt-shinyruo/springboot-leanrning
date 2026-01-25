@@ -11,7 +11,6 @@
     - 校验失败（@Valid）：通常是 `MethodArgumentNotValidException`
     - 类型不匹配（query/path 无法转型）：通常是 `MethodArgumentTypeMismatchException`
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest` / `BootWebMvcContractJacksonLabTest`

@@ -23,7 +23,6 @@
     - controller 返回 `Callable` 时，请求通常会进入 async 模式：这意味着“发起请求”和“得到最终响应”不在同一个同步链路里完成。
     - 测试异步请求不要靠 sleep：用 `asyncStarted` + `asyncDispatch` 固定行为。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcAsyncSseLabTest`

@@ -32,7 +32,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
@@ -59,7 +58,6 @@
 - `BootBusinessCaseExerciseTest`
 
 ## 常见坑与边界
-
 
 ## 自测题
 1. 业务流里有哪些天然的边界（输入校验/领域状态变更/事件发布/横切）？

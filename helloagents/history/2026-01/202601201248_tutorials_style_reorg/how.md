@@ -52,7 +52,6 @@
      - 模块根目录 `README.md` 内部的相对链接：随模块物理位置变化更新
    - 执行方式：
      - 通过脚本批量替换常见前缀（例如 `spring-boot-modules/springboot-web-mvc/src/...` → `spring-boot-modules/springboot-web-mvc/src/...`）
-     - 用 `bash scripts/check-docs.sh` 与 docs-site build 作为闸门
 
 5. **Web MVC 第一批深度示范（可复制模板）**
    - 新增/强化重点：
@@ -87,9 +86,6 @@
 
 ## Testing and Deployment
 
-- 构建/回归闸门（迁移过程中多次执行）：
-  - `bash scripts/check-docs.sh`
   - `mvn -q test`
 - 站点构建验证：
-  - `bash scripts/docs-site-build.sh`
 

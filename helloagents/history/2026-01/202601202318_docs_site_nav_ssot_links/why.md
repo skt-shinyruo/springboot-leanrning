@@ -58,7 +58,6 @@
 - 给定：文档中存在形如 `](/book/)`、`](/book/172-web-client-mainline/)` 的绝对链接
 - 期望：
   - 全部替换为相对链接（指向 `docs/book/*.md`）
-  - `bash scripts/check-docs.sh` 与 `bash scripts/docs-site-build.sh` 可通过
 
 ## Risk Assessment
 

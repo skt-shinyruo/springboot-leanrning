@@ -58,7 +58,4 @@
 - 主题索引页（可发现性）：`docs/topics/index.md`
 - Book（主线之书）：`docs/book/index.md`（目录与阅读说明）
 - 站点配置：`docs-site/mkdocs.yml`（`docs_dir: ../docs`）
-- 本地预览：`bash scripts/docs-site-serve.sh`
-- 构建：`bash scripts/docs-site-build.sh`
-- 文档门禁（自检）：`bash scripts/check-docs.sh`
-- GitHub Pages 发布：workflow `.github/workflows/docs-site-pages.yml`（push 到 main/master 或 `workflow_dispatch`）
+- GitHub Pages 发布：不再提供内置 workflow（如需发布请自行配置）

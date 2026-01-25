@@ -71,7 +71,7 @@
 
 - Spot-check：逐模块运行 `*BranchMatrixLabTest`（以及必要的 Book Matrix）
 - 全仓：`mvn -q test`
-- 文档：生成 labs index、跑 docs gate、build docs-site（mkdocs strict）
+- 文档：构建 docs-site。
 
 ## 交付与知识库同步
 

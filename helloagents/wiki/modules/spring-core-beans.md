@@ -9,7 +9,9 @@
 - **Responsibility:** 提供 Bean 机制的系统文档与可运行 Labs/Exercises，用于建立源码级心智模型与排障能力。
 - **Docs Reading:** 推荐从 `docs/beans/spring-core-beans/README.md` 开始（书本目录 + Part 划分）；主线可按 Part 顺读，每章顶部提供“上一章｜目录｜下一章”导航，降低章节切换成本。
 - **Start Here（30 分钟快启）:** 先跑 3 个最小实验建立容器主线直觉，再进入深潜：`docs/beans/spring-core-beans/part-00-guide/012-01-quickstart-30min.md`。
+- **Auto-Config 顺序（Boot/容器交汇点）:** `docs/beans/spring-core-beans/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
 - **断点地图（可复用清单）:** `docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md`
+- **Debugger Pack（断点包总入口）:** `docs/beans/spring-core-beans/appendix/98-debugger-pack.md`（聚合主线/分支/排障/性能并发入口）
 - **关键分支矩阵（If/Then 决策表）:** `docs/beans/spring-core-beans/part-00-guide/011-04-branch-decision-matrix.md`
 - **排障 playbook:** `docs/beans/spring-core-beans/appendix/025-90-common-pitfalls.md`
 - **自检清单:** `docs/beans/spring-core-beans/appendix/026-99-self-check.md`
@@ -51,6 +53,10 @@
 - `docs/beans/spring-core-beans/appendix/**` ⇔ `src/test/java/.../appendix/**`
 - 跨 Part 的测试支撑：`src/test/java/.../testsupport/**`
 - 并发/性能 Labs（可复现实验范式）：`src/test/java/.../part02_perf_concurrency/**`
+- 断点包入口（聚合回归）：`src/test/java/.../part00_guide/SpringCoreBeansBreakpointPackLabTest.java`
+- 主线调用链入口：`src/test/java/.../part00_guide/SpringCoreBeansMainlineCallChainLabTest.java`
+- 排障 Playbook 入口：`src/test/java/.../appendix/SpringCoreBeansTroubleshootingPlaybookLabTest.java`
+- 性能/并发入口：`src/test/java/.../appendix/SpringCoreBeansPerformanceConcurrencyLabTest.java`
 
 约束（必须遵守）：
 
@@ -136,7 +142,6 @@
 ## Change History
 
 - [202601222155_solutions_all_remaining_modules](../../history/2026-01/202601222155_solutions_all_remaining_modules/) - ✅ 已执行：补齐 Solutions/Labs 文档入口，并新增并发/性能可复现实验（同一 BeanFactory 并发 getBean）+ 补齐 Exercises 对应 Solution 缺口（part04）
-- [202601071034_all_modules_docs_ag_contract](../../history/2026-01/202601071034_all_modules_docs_ag_contract/) - ✅ 已执行：全模块 docs 章节结构整理（A–G 结构 + 对应 Lab/Test 入口块）；后续不再推荐 A–G 作为写作规范/闸门
 - [202601062218_all_modules_docs_bookify](../../history/2026-01/202601062218_all_modules_docs_bookify/) - ✅ 已执行：以 docs/<topic>/<module>/README.md 为 SSOT，对全部章节 upsert 统一尾部区块（### 对应 Lab/Test + 上一章｜目录｜下一章）
 - [202601061556_spring_core_modules_teaching_rollout](../../history/2026-01/202601061556_spring_core_modules_teaching_rollout/) - ✅ 已执行：清理 docs 正文残留的 `docs/NN` 缩写引用，统一替换为“章节名 + 真实相对路径”的 Markdown 链接，并通过断链检查与教学覆盖检查
 - [202601010649_spring-core-beans-deep-dive](../../history/2026-01/202601010649_spring-core-beans-deep-dive/) - ✅ 已执行：深化 DI/生命周期/PostProcessor/循环依赖/@Configuration/FactoryBean，并补齐坑点与自测题的闭环指引

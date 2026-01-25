@@ -23,14 +23,12 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootCacheLabTest`
     - Test file：`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
 
 ## 机制主线
-
 
 ## 你应该观察到什么
 

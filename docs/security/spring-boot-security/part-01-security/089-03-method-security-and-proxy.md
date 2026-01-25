@@ -23,7 +23,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityLabTest`
@@ -96,7 +95,6 @@ Method Security 的本质仍然是 **代理**：
 - Breakpoints：
   - `SelfInvocationPitfallService#outerCallsAdminOnly`（自调用入口）
   - `SelfInvocationPitfallService#adminOnly`（被绕过的注解方法）
-- Fix：把受保护方法拆到另一个 bean，通过依赖注入跨 bean 调用，确保走代理；并用默认 Lab 把“是否抛 AccessDeniedException”锁成回归门禁
 
 ### 坑点 2：roles vs authorities 的前缀差异，导致规则误判（ROLE_ 边界）
 

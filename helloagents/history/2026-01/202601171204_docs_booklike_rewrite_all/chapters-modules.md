@@ -2,7 +2,6 @@
 
 > 本文件用于追踪“章节学习卡片（五问闭环）”覆盖进度。
 
-
 - [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md` - 第 28 章：主线时间线：Spring Core AOP
 - [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-00-guide/029-00-deep-dive-guide.md` - 第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点
 - [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md` - 第 30 章：01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）

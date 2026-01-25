@@ -38,12 +38,9 @@
     - `/book/` → `../../..../book/index.md`（按文件深度自动计算）
     - `/book/<slug>/` → `../../..../book/<slug>.md`
     - 保留 `#anchor`（如存在）
-- 新增 `scripts/check-abs-book-links.py`（门禁）：
   - 扫描 `docs/**/*.md`，发现 `/book/` 绝对链接即失败
-  - 接入 `scripts/check-docs.sh`，防止回归
 
 4) **构建/预览脚本顺序**
-- 调整 `scripts/docs-site-build.sh` 与 `scripts/docs-site-serve.sh`：
   - 先执行 `python3 scripts/docs-topics-sync.py`
   - 再执行 `python3 scripts/docs-site-sync.py`
   - 最后执行 mkdocs build/serve
@@ -60,12 +57,9 @@
 ## Security and Performance
 
 - **Security:** 仅处理仓库内 Markdown 文本，不引入外部网络访问；避免在脚本中执行不受控 shell；不写入敏感信息。
-- **Performance:** 侧边栏不再展开所有章节，MkDocs nav 规模显著降低；链接修复脚本为一次性批处理，不进入每次 build 的热路径（门禁脚本为线性扫描）。
 
 ## Testing and Deployment
 
 - **Testing:**
-  - `bash scripts/check-docs.sh`（新增绝对链接门禁后仍需全绿）
-  - `bash scripts/docs-site-build.sh`（mkdocs build 成功）
 - **Deployment:** GitHub Pages workflow 保持不变；绝对链接修复后在子路径部署下跳转正确。
 

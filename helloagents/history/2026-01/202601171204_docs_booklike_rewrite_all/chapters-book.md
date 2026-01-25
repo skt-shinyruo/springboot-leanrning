@@ -2,7 +2,6 @@
 
 > 本文件用于追踪“章节学习卡片（五问闭环）”覆盖进度。
 
-
 - [ ] (book) `docs/book/00-start-here.md` - （Redirect）Start Here（旧入口）
 - [ ] (book) `docs/book/001-start-here.md` - 第 1 章：Start Here（如何运行、如何读、如何调试）
 - [ ] (book) `docs/book/002-boot-basics-mainline.md` - 第 2 章：Boot 启动与配置主线

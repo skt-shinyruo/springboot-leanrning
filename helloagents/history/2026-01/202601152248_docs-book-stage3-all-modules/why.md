@@ -40,7 +40,6 @@
   - `docs-site/mkdocs.yml`
   - `docs/book/**.md`（新增）
   - `scripts/docs-site-sync.py`（导航生成逻辑调整）
-  - `scripts/check-docs.sh` / `scripts/check-teaching-coverage.py`（如引入 book 级闸门）
   - 各模块 `docs/README.md` 与部分章节（当进入“物理迁移/合并拆章”阶段）
 
 ## 核心场景
@@ -78,8 +77,5 @@
 
 ## 风险评估
 
-- **风险：** 变更面巨大（目录 SSOT、导航结构、跨模块引用、脚本闸门），容易产生断链与阅读入口混乱。
-  - **缓解：** 以“书目录 SSOT + 分阶段迁移”为主；关键入口保留少量 redirect；每阶段都要求 `check-docs` 与 `docs-site-build --strict` 通过。
+  - **缓解：** 以“书目录 SSOT + 分阶段迁移”为主；关键入口保留少量 redirect；每阶段完成后进行文档与站点构建的人工验证。
 - **风险：** 未先 commit Stage2，可能导致后续回滚与对比困难。
-  - **缓解：** 在 Stage3 方案内显式规划“阶段性验收点”，每阶段执行前先跑闸门并记录结果；必要时建议你在合并大迁移前单独建分支或补一次 commit（可选）。
-

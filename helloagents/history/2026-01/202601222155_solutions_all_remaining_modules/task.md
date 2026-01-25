@@ -59,8 +59,6 @@ Directory: `helloagents/plan/202601222155_solutions_all_remaining_modules/`
 
 - [√] 6.1 安全自检（G9）：无生产环境操作、无明文密钥/Token、无破坏性脚本命令；WebClient/HTTP 不访问外网
 
-## 7. Verification（逐模块 checkpoint + 闸门回归）
-
 - [√] 7.1 单模块回归：`mvn -q -pl :springboot-basics test`
 - [√] 7.2 单模块回归：`mvn -q -pl :springboot-web-mvc test`
 - [√] 7.3 单模块回归：`mvn -q -pl :springboot-data-jpa test`
@@ -78,9 +76,6 @@ Directory: `helloagents/plan/202601222155_solutions_all_remaining_modules/`
 - [√] 7.15 单模块回归：`mvn -q -pl :spring-core-profiles test`
 - [√] 7.16 单模块回归：`mvn -q -pl :spring-core-beans test`
 - [√] 7.17 全仓回归：运行 `mvn -q test`
-- [√] 7.18 更新 Labs 索引：运行 `python3 scripts/generate-book-labs-index.py`
-- [√] 7.19 文档门禁：运行 `bash scripts/check-docs.sh`
-- [√] 7.20 站点构建：运行 `bash scripts/docs-site-build.sh`
 
 ## 8. Knowledge Base Sync + Archive（强制）
 

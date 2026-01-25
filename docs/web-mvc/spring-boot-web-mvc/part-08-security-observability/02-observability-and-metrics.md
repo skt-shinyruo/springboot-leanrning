@@ -11,7 +11,6 @@
     - **Actuator 指标（Micrometer）**：更贴近运行时观测（聚合/统计），适合回答“总体趋势/分布/标签维度”的问题。
     - 两者不是互斥关系：教学目标是理解“观测点在哪里”以及“为什么它们看到的东西不完全相同”。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcObservabilityLabTest`

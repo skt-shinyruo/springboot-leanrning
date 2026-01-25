@@ -47,7 +47,6 @@
 - **脚本优先（便于统一）：**
   - `bash scripts/test-module.sh <artifactId>`（会自动补齐 `:<artifactId>`）
   - `bash scripts/test-all.sh`
-  - `bash scripts/docs-site-build.sh`（可选：本地构建文档站点预览）
 
 ### 文档 ↔ 测试入口绑定约定
 

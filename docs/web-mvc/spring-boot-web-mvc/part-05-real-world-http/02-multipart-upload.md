@@ -10,7 +10,6 @@
     - multipart 是“一个请求里有多个 part”，不是 JSON body；常见写法是 `@RequestParam("file") MultipartFile file`。
     - 上传接口要明确：文件名、content-type、大小、返回的 id；否则很难测试/排障。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

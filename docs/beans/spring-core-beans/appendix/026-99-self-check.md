@@ -77,7 +77,6 @@
     5) `ImportSelector` 与 `ImportBeanDefinitionRegistrar` 的角色差异是什么？
     6) 你如何解释 Spring Boot 自动装配“从哪里拿到要导入的配置类列表”？
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansBeanGraphDebugLabTest`

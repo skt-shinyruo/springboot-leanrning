@@ -33,7 +33,6 @@
       - selector 没匹配到 controller（包范围/注解/可赋值类型）
       - 你处理的异常类型不对（异常发生在 converter/binder 阶段）
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcAdviceMatchingLabTest`

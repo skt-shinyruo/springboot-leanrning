@@ -26,7 +26,6 @@
       - **403**：已认证但不允许（权限不足）或 **CSRF 缺失**（常见于 POST/PUT/DELETE）
     - 工程落地建议：把“教学安全端点”与“既有教学主线端点”隔离，避免影响现有 Labs（本模块采用只保护 `/api/advanced/secure/**` 的策略）。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcSecurityLabTest`

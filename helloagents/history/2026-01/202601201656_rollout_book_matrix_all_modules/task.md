@@ -39,9 +39,6 @@ Directory: `helloagents/plan/202601201656_rollout_book_matrix_all_modules/`
 - [√] 6.1 安全自检（G9）：确认无敏感信息写入、无危险脚本/命令、无生产环境操作
 
 ## 7. Documentation / Index Regeneration
-- [√] 7.1 重新生成 `docs/book/labs-index.md`：`python3 scripts/generate-book-labs-index.py`
-- [√] 7.2 运行 docs gate：`bash scripts/check-docs.sh`
-- [√] 7.3 运行 docs-site 构建：`bash scripts/docs-site-build.sh`
 
 ## 8. Testing
 - [√] 8.1 全仓回归：`mvn -q test`

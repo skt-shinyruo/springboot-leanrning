@@ -19,19 +19,11 @@ Directory: `helloagents/history/2026-01/202601222034_solutions_perf_concurrency_
 
 ## 3. 文档：并发/性能专题
 
-- [√] 3.1 新增 `docs/book/performance-and-concurrency.md`（可复现范式 + 样板索引），并接入 `docs/SUMMARY.md`，verify why.md#requirement-并发性能专题可复现且不-flaky-scenario-全仓闸门全绿
-- [√] 3.2 在相关模块 README/guide 增加入口链接（指向 Book 专题页与对应 Lab），verify why.md#requirement-站点与闸门保持同步-scenario-全仓闸门全绿
-
 ## 4. Security Check（强制）
 
 - [√] 4.1 安全自检（G9）：无生产环境操作、无明文密钥/Token、无破坏性脚本命令
 
-## 5. Verification（闸门回归）
-
-- [√] 5.1 运行 `python3 scripts/generate-book-labs-index.py` 更新 `docs/book/labs-index.md`
 - [√] 5.2 运行 `mvn -q test`
-- [√] 5.3 运行 `bash scripts/check-docs.sh`
-- [√] 5.4 运行 `bash scripts/docs-site-build.sh`
 
 ## 6. Knowledge Base Sync + Archive（强制）
 

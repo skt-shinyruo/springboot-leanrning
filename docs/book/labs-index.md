@@ -1,7 +1,5 @@
 # Labs 索引（可跑入口）
 
-> 本页由 `scripts/generate-book-labs-index.py` 生成。新增/移动 `*LabTest.java` 后请重新生成。
-
 ## 运行方式速记
 
 - 全仓库：`mvn -q test`

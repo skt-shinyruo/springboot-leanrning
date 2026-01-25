@@ -33,6 +33,7 @@
 ## 进阶入口（排障/关键分支）
 
 - 断点地图（排障优先）：[013-02-breakpoint-map.md](part-00-guide/013-02-breakpoint-map.md)
+- Debugger Pack（断点包总入口）：[98-debugger-pack.md](appendix/98-debugger-pack.md)
 - refresh() 调用链（源码主线锚点）：[013-01-applicationcontext-refresh-call-chain.md](part-00-guide/013-01-applicationcontext-refresh-call-chain.md)
 - 关键分支矩阵（If/Then 收敛）：[011-04-branch-decision-matrix.md](part-00-guide/011-04-branch-decision-matrix.md)
 - 排障 playbook：[025-90-common-pitfalls.md](appendix/025-90-common-pitfalls.md)

@@ -225,7 +225,7 @@ while (还能发现新的 BDRPP) {
 - 触发 `DefaultListableBeanFactory#preInstantiateSingletons`
 - 也就是“把绝大多数非懒加载的单例 Bean 先创建出来”
 
-你可以把它理解为：**从“定义阶段”切换到“创建阶段”的总闸门**。
+你可以把它理解为：**从“定义阶段”切换到“创建阶段”的关键切换点**。
 
 ### 4.1 关键分支：哪些 Bean 会在这里被创建（而不是在第一次 `getBean` 时）
 

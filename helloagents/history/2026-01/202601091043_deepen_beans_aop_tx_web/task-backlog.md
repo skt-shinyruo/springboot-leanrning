@@ -101,7 +101,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ### 1.7 Beans 阶段性验证（避免做大后爆炸）
 - [ ] 1.7.1 运行 Beans 模块测试：`bash scripts/test-module.sh spring-core-beans`，确保新增/强化用例稳定
-- [ ] 1.7.2 运行文档检查脚本（如适用）：`bash scripts/check-docs.sh`，确保新增链接/索引可用
 
 ---
 
@@ -149,7 +148,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ### 2.7 AOP 阶段性验证
 - [ ] 2.7.1 运行 AOP 模块测试：`bash scripts/test-module.sh spring-core-aop`
-- [ ] 2.7.2 运行文档检查脚本（如适用）：`bash scripts/check-docs.sh`
 
 ---
 
@@ -190,7 +188,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ### 3.6 Tx 阶段性验证
 - [ ] 3.6.1 运行 Tx 模块测试：`bash scripts/test-module.sh spring-core-tx`
-- [ ] 3.6.2 运行文档检查脚本（如适用）：`bash scripts/check-docs.sh`
 
 ---
 
@@ -245,7 +242,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ### 4.8 Web MVC 阶段性验证
 - [ ] 4.8.1 运行 Web MVC 模块测试：`bash scripts/test-module.sh springboot-web-mvc`
-- [ ] 4.8.2 运行文档检查脚本（如适用）：`bash scripts/check-docs.sh`
 
 ---
 
@@ -276,7 +272,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 - [ ] 7.3 跑四模块单测回归：`bash scripts/test-module.sh spring-core-tx`
 - [ ] 7.4 跑四模块单测回归：`bash scripts/test-module.sh springboot-web-mvc`
 - [ ] 7.5 跑全量测试并记录结论：`bash scripts/test-all.sh`
-- [ ] 7.6 跑文档一致性检查：`bash scripts/check-docs.sh`（如脚本覆盖到本次新增内容）
 
 ---
 

@@ -5,7 +5,6 @@
 ### Core Technologies
 
 - Markdown（GitHub Flavored Markdown）
-- Python 3（批处理 Markdown + 自检闸门脚本）
 - Maven + JUnit（既有 Labs/Exercises 作为“可复现入口”约束）
 
 ### Implementation Key Points
@@ -49,14 +48,12 @@
      - 机制线：`spring-core-*`（从 beans 到 aop/tx/events/resources…）
    - 入口链接统一指向：`<module>/docs/README.md`
 
-6. **新增契约闸门（硬性验收）**
    - 新增 `scripts/check-chapter-contract.py`：
      - 以每模块 `docs/README.md` 的章节列表为检查范围（排除 README 本身）
      - 校验每章：
        - A–G 七个二级标题存在
        - “对应 Lab/Test”存在
        - 至少 1 个 `*LabTest` 引用能解析到 `src/test/java/**/**LabTest.java`
-   - 更新 `scripts/check-docs.sh`：串联现有断链检查、教学覆盖检查与新契约检查。
 
 ## Architecture Design
 
@@ -72,9 +69,7 @@ flowchart TD
 
 ## Architecture Decision ADR
 
-### ADR-001: 采用“脚本驱动全量重写 + 闸门强制验收”的路线
 **Context:** 章节数量大（约 190），纯人工难以保证一致性与可回归。  
-**Decision:** 用脚本批处理完成第一轮全量重写/重排，并新增闸门强制 A–G 与 LabTest 合规。  
 **Rationale:** 保证一致性、可重复执行、可回归；对大规模文本改动风险最低。  
 **Alternatives:**  
 - 方案 A：纯人工逐章重写 → 拒绝原因：成本极高且一致性不可控  
@@ -96,11 +91,6 @@ flowchart TD
 
 ## Testing and Deployment
 
-- **Docs Gate（必须全绿）：**
-  - `python3 scripts/check-md-relative-links.py`
-  - `python3 scripts/check-teaching-coverage.py --min-labs 2`
-  - `python3 scripts/check-chapter-contract.py`
-  - `bash scripts/check-docs.sh`
 - **Regression（抽样）：**
   - `mvn -pl spring-core-beans test`
   - `mvn -pl springboot-web-mvc test`

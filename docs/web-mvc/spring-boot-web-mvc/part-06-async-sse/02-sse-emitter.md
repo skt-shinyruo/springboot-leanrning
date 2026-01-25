@@ -10,7 +10,6 @@
     - SSE 是基于 HTTP 的单向推送：响应的 `Content-Type` 通常是 `text/event-stream`，body 由多条 `data:` 事件组成。
     - 教学示例里不要做“无限流”：测试会变得 flaky 或挂死。用 1–2 条事件后 `complete()` 更适合教学与回归。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcAsyncSseLabTest`

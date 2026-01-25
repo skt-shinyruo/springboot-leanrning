@@ -16,8 +16,6 @@ Directory: `helloagents/plan/202601151209_docs-site-mkdocs/`
 - [√] 2.3 同步 `helloagents/wiki` 与各模块 `docs/`，并保留 `<module>/docs` ↔ `<module>/src` 相对结构
 
 ## 3. 本地命令入口
-- [√] 3.1 新增 `scripts/docs-site-serve.sh`（sync + mkdocs serve）
-- [√] 3.2 新增 `scripts/docs-site-build.sh`（sync + mkdocs build --strict）
 
 ## 4. 仓库级维护
 - [√] 4.1 更新 `.gitignore` 忽略 `docs-site/.generated/` 与 `docs-site/.site/`
@@ -26,4 +24,3 @@ Directory: `helloagents/plan/202601151209_docs-site-mkdocs/`
 
 ## 5. 验证
 - [√] 5.1 运行 `python3 scripts/docs-site-sync.py`，确认生成目录与模块复制成功
-- [√] 5.2 安装 MkDocs 依赖并运行 `bash scripts/docs-site-build.sh` 做一次构建验证（`mkdocs build --strict` 通过）

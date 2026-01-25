@@ -23,7 +23,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityDevProfileLabTest` / `BootSecurityLabTest`
@@ -207,7 +206,6 @@
 - `BootSecurityExerciseTest`
 
 ## 常见坑与边界
-
 
 ## 推荐学习目标
 1. 能按“Filter Chain → Authentication → Authorization”讲清主线

@@ -10,5 +10,4 @@
 - [√] 调整 `docs/topics/index.md`：对齐同样的 Boot/Core 分组与入口链接。
 - [√] 更新 `scripts/docs-site-sync.py`：在 AUTO MODULE NAV 输出中引入 Boot/Core 两级分组（组 → 主题 → 模块 → 章节）。
 - [√] 运行 `python3 scripts/docs-site-sync.py` 更新 `docs-site/mkdocs.yml` 的 AUTO MODULE NAV。
-- [√] 验证：`bash scripts/docs-site-build.sh` 构建通过。
 

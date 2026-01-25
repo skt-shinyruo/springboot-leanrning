@@ -35,7 +35,6 @@
 6. **并发/性能可复现实验（全量推广）**
    - 每个模块新增至少 1 个并发/性能样板 Lab（建议放入 `part02_perf_concurrency`），并保持“可断言、可复现、不 flaky”。
    - 断言优先级：异常路径（拒绝/超时） > 线程边界（线程名前缀/切换） > 指标/日志（MeterRegistry/ListAppender） > 耗时（禁止用耗时阈值做主断言）。
-   - 汇总入口：更新 `docs/book/performance-and-concurrency.md` 增加样板索引，并通过 `scripts/generate-book-labs-index.py` 纳入全局 Labs 索引。
 
 ## Security and Performance
 
@@ -52,6 +51,4 @@
 - **Testing:**
   - 逐模块验证（优先）：`mvn -q -pl :<artifactId> test`
   - 全仓回归（必须）：`mvn -q test`
-  - 文档门禁（保持同步）：`bash scripts/check-docs.sh`
-  - 站点构建（可用性验证）：`bash scripts/docs-site-build.sh`
 - **Deployment:** N/A（教学仓库，不涉及部署发布流程）

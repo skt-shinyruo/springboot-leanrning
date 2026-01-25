@@ -64,8 +64,6 @@ Directory: `helloagents/history/2026-01/202601061038_spring_core_beans_spring_be
 
 - [√] 7.1 执行安全自查：不引入明文密钥、不触碰生产环境、不做破坏性命令；脚本仅用于本地生成 docs 索引
 
-## 8. 验证门禁（每批次都要跑）
-
 - [√] 8.1 运行 `mvn -pl spring-core-beans test`
 - [√] 8.2 运行 `python3 scripts/check-md-relative-links.py docs/beans/spring-core-beans`
 - [√] 8.3（可选）运行 API 索引再生，并确认仓库索引无漂移

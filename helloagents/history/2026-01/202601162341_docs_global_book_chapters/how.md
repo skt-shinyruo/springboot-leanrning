@@ -6,13 +6,11 @@
 
 - Python 脚本：用于解析目录 SSOT、生成全书顺序、批量 upsert 导航块（保持幂等）。
 - MkDocs（Material）：以生成的 `docs-site/.generated/mkdocs.yml` 为入口，统一侧边栏导航与站点构建。
-- 现有自检脚本：`scripts/check-docs.sh`（断链 + 教学化覆盖 + chapter cards）作为质量闸门。
 
 ### Implementation Key Points
 
 1) **全书顺序的 SSOT 设计**
 
-- 模块内章节顺序：继续使用各模块 `docs/README.md` 的 Markdown 链接清单（这是现有闸门脚本的 SSOT，必须保留）。
 - 模块顺序：新增一个“全书模块顺序配置”（建议放在 `scripts/` 下，便于被生成脚本读取），作为“最合理学习顺序”的唯一来源。
 - 全书章节顺序：由“模块顺序 + 模块内章节顺序 + Book-only 主线章节（作为每个模块的主线节点）”拼接生成。
 
@@ -58,7 +56,6 @@
 你希望“一个 doc 就是一章”，不仅在站点导航里有顺序，也希望在仓库层面（文件名/链接）就能看见并自然排序。当前章节分散在 18 个模块目录与 `docs/book/` 下，且大量相对链接依赖现有路径，直接手工改会导致断链与顺序漂移。
 
 **Decision:**  
-采用“全书章节清单生成器”分配全局唯一 Chapter ID（例如 `001`–`XYZ`），并批量重命名 Markdown 文件（将 Chapter ID 前缀固化到文件名），同时批量重写 Markdown 相对链接，最终通过闸门验收断链=0。
 
 **Rationale:**  
 - 章节顺序不仅体现在 nav，也体现在文件系统与 IDE 浏览体验（按文件名自然排序就是阅读顺序）；
@@ -70,9 +67,7 @@
 - 方案：把所有模块 docs 搬迁到统一目录（例如 `docs/chapters/`） → 拒绝原因：会推翻现有模块边界与自检脚本假设，影响更大。
 
 **Impact:**  
-- 会产生一次性的大规模重命名与链接重写变更（影响面大，但可通过闸门验证）。
 - 需要同步更新各模块 `docs/README.md` 的链接目标（SSOT 本身也会变更）。
-- 需要对跨文档链接进行批量修复（以映射表为准），并以断链闸门兜底。
 
 ## Security and Performance
 
@@ -82,6 +77,4 @@
 ## Testing and Deployment
 
 - **Testing:**
-  - `bash scripts/check-docs.sh`（断链=0 + teaching coverage + chapter cards）
-  - `bash scripts/docs-site-build.sh`（`mkdocs build --strict`）
 - **Deployment:** 复用现有 GitHub Pages workflow（若启用），确保生成的站点在 CI 中仍可构建通过。

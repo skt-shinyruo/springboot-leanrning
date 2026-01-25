@@ -16,9 +16,6 @@ Directory: `helloagents/plan/202601161709_readme-bookify-mainline-entrypoints/`
 
 ## 3. 验证
 
-- [√] 3.1 运行 `bash scripts/check-docs.sh`
-- [√] 3.2 运行 `bash scripts/docs-site-build.sh`（strict）
-
 ## 4. 知识库同步
 
 - [√] 4.1 更新 `helloagents/CHANGELOG.md` 记录本次入口增强

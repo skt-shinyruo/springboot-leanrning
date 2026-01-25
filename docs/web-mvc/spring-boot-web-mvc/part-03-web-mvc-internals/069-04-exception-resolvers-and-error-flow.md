@@ -27,7 +27,6 @@
       3. **`DefaultHandlerExceptionResolver`**：Spring MVC 内置异常（405/415/406/400 等）的默认翻译器
     - 排障黄金路线：**先用测试把现象固化 → 再用 `resolvedException` 确定异常类型 → 再定位它来自链路的哪一段 → 最后用断点看 resolver 选择分支**。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcTestingDebuggingLabTest`

@@ -37,7 +37,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
@@ -59,7 +58,6 @@
 
 ## 常见坑与边界
 
-
 ## 坑 1：误以为事件默认异步
 
 - 事实：事件默认同步（见 `SpringCoreEventsLabTest#eventsAreSynchronousByDefault`）
@@ -80,7 +78,6 @@
 - 事实：没有 `@EnableAsync` 时 `@Async` 会被忽略（见 mechanics lab）
 
 ## 坑 5：事件对象可变导致监听器互相污染
-
 
 ## 坑 6：监听器“没触发”其实是被过滤掉了（参数类型/条件不匹配）
 

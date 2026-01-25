@@ -39,13 +39,11 @@ python3 -m pip install --user --break-system-packages -r docs-site/requirements.
 ### 2.2 启动预览
 
 ```bash
-bash scripts/docs-site-serve.sh
 ```
 
 ### 2.3 构建
 
 ```bash
-bash scripts/docs-site-build.sh
 ```
 
 ## 3. 目录维护方式（文档即目录）
@@ -62,8 +60,7 @@ bash scripts/docs-site-build.sh
 
 本仓库已提供 GitHub Actions workflow，可在 GitHub 上自动构建并发布站点到 GitHub Pages：
 
-- Workflow 文件：`.github/workflows/docs-site-pages.yml`
+- Workflow 文件：不再提供（如需发布请自行配置）
 - 触发条件：
   - `push` 到 `main/master`：构建 + 发布
   - `workflow_dispatch`：手动触发
-

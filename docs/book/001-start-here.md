@@ -104,13 +104,11 @@ mvn -pl :<artifactId> spring-boot:run
 如果你想本地预览文档站：
 
 ```bash
-bash scripts/docs-site-serve.sh
 ```
 
 严格构建（用于 CI/验收）：
 
 ```bash
-bash scripts/docs-site-build.sh
 ```
 
 ---

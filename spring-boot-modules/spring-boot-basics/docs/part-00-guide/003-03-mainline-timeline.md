@@ -13,7 +13,7 @@
 ## 已迁移
 本页为旧入口兼容页，正文已迁移到：[新位置](../../../book/002-boot-basics-mainline.md)。
 
-## 可跑入口（保留以通过教学闸门）
+## 可跑入口（保留用于教学回归）
 
 - Lab：`BootBasicsOverrideLabTest`
 

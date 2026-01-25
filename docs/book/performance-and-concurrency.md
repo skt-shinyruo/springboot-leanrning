@@ -9,7 +9,6 @@
     - 推荐 Lab：`BootAsyncSchedulingExecutorSaturationLabTest` / `SpringCoreSpelConcurrencyLabTest`
 <!-- CHAPTER-CARD:END -->
 
-
 本页目标：把“并发/性能问题”从主观体验（偶发、难复现）变成可断言的证据链：**用稳定的并发编排 + 明确的可观测点**，复现关键边界，再用断点走读源码主线。
 
 > 说明：本仓库的“性能/并发”更多是机制边界与并发语义验证，而不是微基准跑分。需要真实性能数据时，建议独立引入 JMH，而不是把耗时阈值塞进单测。

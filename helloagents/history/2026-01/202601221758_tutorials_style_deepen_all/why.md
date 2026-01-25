@@ -12,7 +12,6 @@
 - **命名与结构对齐不彻底**：已按 Boot/Core 分组，但模块命名、目录与文档引用仍可能存在风格不统一/路径耦合残留。
 - **模板一致性仍可加强**：模块 README 与 docs 的“章节契约/入口契约”需要进一步统一（Start Here、推荐入口、断点地图、分支矩阵、Labs/Exercises 索引等）。
 - **深度资产覆盖不均**：Web MVC 已有较多深挖资产，但 AOP/Tx 等模块仍缺少“调用链可视化 + 关键分支矩阵化 + 性能/并发专题化”的统一范式。
-- **主题扩展需要工程化支撑**：如果要把主题规模向 tutorials 靠拢，需要“脚手架 + 质量闸门 + 文档索引自动化”避免质量参差与漂移。
 
 <!-- ⚠️ G8 触发：本次属于“重大结构改造/重构”，因此包含 Product Analysis -->
 ## Product Analysis
@@ -21,7 +20,6 @@
 
 - **User Groups:**
   - 学习者：希望“按主线顺读”或“按现象排障”快速定位到可运行入口与关键断点
-  - 维护者：希望新增主题模块时有统一模板与闸门，避免 docs/测试/站点漂移
 - **Usage Scenarios:**
   - Book 顺读主线（Beans → AOP → Tx → Web MVC → …），每章一屏进入可验证闭环
   - 按主题进入：先跑 `*LabTest` 观察现象，再结合断点地图理解机制
@@ -29,14 +27,12 @@
 - **Core Pain Points:**
   - 命名与模板不统一导致“入口心智模型”不稳定
   - 深挖内容缺少统一的“证据链表达”（call-chain / branch-matrix / debugger-pack）
-  - 扩展主题时缺少脚手架与质量闸门，容易产生“写了但跑不通/不一致/不可回归”的内容
 
 ### Value Proposition and Success Metrics
 
 - **Value Proposition:**
   - 结构更像 tutorials：分组清晰、扩展友好
   - 内容更像“可验证的教材”：关键机制都能被测试断言固化，且能通过断点快速定位
-  - 维护更像“产品工程”：引入模板、脚本与闸门，让质量可以持续滚动升级
 - **Success Metrics:**
   - `mvn -q test` 全绿（全仓库回归基线）
   - 每个主题模块：
@@ -45,7 +41,6 @@
     - 断点/观察点清单可一跳定位（Breakpoint Map）
     - 关键分支矩阵可一跳定位（Branch Decision Matrix）
     - 至少 1 条“机制调用链”文档（Call Chain）
-  - 文档闸门可用：`bash scripts/check-docs.sh` / `bash scripts/docs-site-build.sh` 可通过
   - 新增主题模块可通过脚手架生成并一键纳入 docs/book 与 docs-site
 
 ### Humanistic Care
@@ -69,9 +64,7 @@
 4. **（扩展）新增主题模块（向 tutorials 的主题广度靠拢）**
    - 引入一批高价值新主题（优先补齐主线缺口/高频排障点）
    - 新模块从 Day 1 起具备模板化资产与可回归测试
-5. **（工程化）脚本与闸门增强**
    - 自动生成索引（Book/Labs/Debugger Pack/Exercises）
-   - 增强一致性检查（断链/路径漂移/入口缺失）并作为闸门
 
 ## Impact Scope
 
@@ -81,7 +74,6 @@
 - **Files:**
   - Maven：根/分组 `pom.xml`、各子模块 `pom.xml`
   - 文档：`docs/**`、`docs/book/**`、`docs-site/**`
-  - 脚本：`scripts/**`（索引生成/一致性闸门/新模块脚手架）
   - SSOT：`helloagents/wiki/**`、`helloagents/CHANGELOG.md`、`helloagents/history/index.md`
 - **APIs/Data:** 教学用端点/测试为主；不引入生产数据依赖；不做破坏性数据操作
 
@@ -120,7 +112,6 @@
 
 ### Requirement: R5-expand-topics-with-scaffold-and-gates
 **Module:** new modules
-新增主题模块必须从第一天起满足模板与闸门要求（不引入“写了但跑不通”的模块）。
 
 #### Scenario: S1-new-module-ready-from-day1
 新增模块具备：可运行入口（至少 1 个 LabTest）、可练习入口（ExerciseTest）、docs 结构（part-00-guide + breakpoint-map + branch-matrix + call-chain），并纳入 docs-site/Book 索引。
@@ -128,7 +119,6 @@
 ## Risk Assessment
 
 - **Risk:** 大规模重命名/迁移导致路径断链、IDE 导入混乱、Maven reactor 失败  
-  **Mitigation:** 分批迁移 + 每批次闸门回归（`mvn -q test`、`bash scripts/check-docs.sh`、`bash scripts/docs-site-build.sh`）；并提供迁移映射/redirect。
 - **Risk:** 深挖内容越写越多，风格与质量不一致  
   **Mitigation:** 固化“模块契约 + 章节契约”，并用脚本检查缺失项（入口/断点地图/分支矩阵/调用链）。
 - **Risk:** 性能/并发实验引入不稳定（flaky）测试，破坏 CI  

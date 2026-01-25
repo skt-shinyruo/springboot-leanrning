@@ -25,7 +25,6 @@
 
 3) **构建链路简化**
 
-- `scripts/docs-site-build.sh` / `scripts/docs-site-serve.sh`：
   - 不再运行 nav 注入脚本
   - 直接执行 `mkdocs build/serve`
 
@@ -35,9 +34,7 @@
   - `docs/topics/topics.yml`
   - `scripts/docs-topics-sync.py`
   - `scripts/docs-site-sync.py`（或至少从构建链路中移除）
-- `scripts/check-docs.sh`：
   - 移除对上述脚本的依赖
-  - 保留/增强：相对链接检查、Labs 索引过期检查、/book/ 绝对链接门禁
 
 ## Security and Performance
 
@@ -45,7 +42,4 @@
 - **Performance:** 侧边栏目录规模收敛；MkDocs 构建 nav 规模降低。
 
 ## Testing and Deployment
-
-- `bash scripts/check-docs.sh`（门禁应全绿）
-- `bash scripts/docs-site-build.sh`（mkdocs build 成功）
 

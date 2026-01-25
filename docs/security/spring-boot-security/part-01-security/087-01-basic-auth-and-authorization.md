@@ -23,14 +23,12 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityLabTest`
     - Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 ## 机制主线
-
 
 ## 你应该观察到什么
 
@@ -75,7 +73,6 @@
 <!-- BOOKLIKE-V2:EVIDENCE:END -->
 
 ## Debug 建议
-
 
 ## 常见坑与边界
 

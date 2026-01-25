@@ -32,4 +32,3 @@ Directory: `helloagents/plan/202601081308_springboot-web-mvc-deepen-even-more/`
 
 ## 6. Testing
 - [√] 6.1 运行：`mvn -pl springboot-web-mvc test`
-- [√] 6.2 运行：`bash scripts/check-docs.sh`

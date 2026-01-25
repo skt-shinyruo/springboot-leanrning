@@ -18,9 +18,6 @@
 
 ## 构建/预览方式
 
-- `bash scripts/docs-site-serve.sh`：同步后启动本地预览
-- `bash scripts/docs-site-build.sh`：同步后以严格模式构建（用于 CI）
-
 ## 风险与规避
 
 - 风险：站点输入目录与 build 输出被误提交

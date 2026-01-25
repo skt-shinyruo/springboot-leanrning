@@ -23,7 +23,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationImportOrderingLabTest` / `SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutoConfigurationOverrideMatrixLabTest` / `SpringCoreBeansBeanDefinitionOriginLabTest`
@@ -184,7 +183,6 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 学完本章，你至少要能把下面这句话解释清楚：
 
 ## 面试常问（自动配置与条件装配怎么定位）
-
 
 ## 源码与断点
 

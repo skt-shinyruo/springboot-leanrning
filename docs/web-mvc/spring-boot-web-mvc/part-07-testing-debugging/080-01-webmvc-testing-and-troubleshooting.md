@@ -26,7 +26,6 @@
       - 证据链建议：用 `MvcResult#getHandler()` / `MvcResult#getResolvedException()` 先证明“是否进入了 HandlerMethod”（见 `BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`）。
     - 当你需要“确认到底选了哪个 HttpMessageConverter”：可以用 `ResponseBodyAdvice#beforeBodyWrite` 把 `selectedConverterType/selectedContentType` 写进响应头，再用测试固化它（证据链优先）。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcTestingDebuggingLabTest`

@@ -63,8 +63,6 @@
 - **安全：**不接触生产环境，不引入明文密钥，不做破坏性数据操作；所有脚本仅用于本地生成 docs 索引。
 - **性能：**索引生成脚本需可在秒级/可接受时间完成；Explore 用例默认不进回归，避免拉长 CI。
 
-## 测试与交付门禁
-
 每批次必须通过：
 - `mvn -pl spring-core-beans test`
 - `python3 scripts/check-md-relative-links.py docs/beans/spring-core-beans`

@@ -63,5 +63,4 @@
 - **Risk:** 新增 demo 组件影响既有行为
   - **Mitigation:** 新增端点与 advice 采用独立 package + 限定 basePackages/路径；并用回归测试验证不影响既有 Labs。
 - **Risk:** 文档链接断裂/导航错误
-  - **Mitigation:** `bash scripts/check-docs.sh` 全量自检（断链=0）。
 

@@ -1,7 +1,6 @@
 # Boot 模块命名映射表（`springboot-*` → `spring-boot-*`）
 
 > 用途：
-> - 作为改名阶段的 SSOT（批量替换 / 回归闸门）
 > - 避免“目录名、artifactId、文档命令”出现不一致
 
 | 旧模块名（目录 / artifactId） | 新模块名（目录 / artifactId） |

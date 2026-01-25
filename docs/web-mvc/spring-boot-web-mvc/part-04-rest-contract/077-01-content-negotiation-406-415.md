@@ -24,7 +24,6 @@
     - 406：客户端的 `Accept` 要求服务端无法满足（`produces` 或 converter 不匹配）
     - 解决问题的第一步不是改业务代码，而是把 **请求头与方法映射约束** 对齐。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcErrorBranchMatrixLabTest`（同一视角对照 400/406/415 分支）

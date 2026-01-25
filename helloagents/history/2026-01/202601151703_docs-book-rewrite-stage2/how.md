@@ -8,7 +8,6 @@
 - MkDocs + Material（聚合站点、搜索、侧边栏目录）
 - 仓库内脚本：
   - `scripts/docs-site-sync.py`（聚合与目录自动生成）
-  - `scripts/check-docs.sh`（断链 + teaching coverage 闸门）
 
 ### Implementation Key Points
 
@@ -25,7 +24,6 @@
 
 3. **合并/拆章与叙事重写（分批推进）**
    - 优先模块：主线 5 模块（Basics/Beans/AOP/Tx/Web MVC）
-   - 每批只处理少量章节（控制风险），每个改动批次都要通过闸门
 
 4. **链接稳定策略（避免破坏性重排）**
    - 尽量不移动文件路径；必要的合并/拆章用“redirect 页面”保留旧入口
@@ -62,9 +60,6 @@
 
 ## Testing and Deployment
 
-- **Testing（文档闸门）**
-  - `bash scripts/check-docs.sh`
-  - `bash scripts/docs-site-build.sh`（strict）
 - **Deployment**
   - push 到 GitHub 触发 Pages workflow（构建 + 发布）
   - 若 Pages deploy 失败，优先检查：Pages 是否启用、Actions workflow 权限是否为 read/write

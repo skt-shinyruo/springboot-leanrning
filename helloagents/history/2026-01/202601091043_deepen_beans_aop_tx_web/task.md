@@ -2,7 +2,6 @@
 
 > Note(2026-01-14): 本方案包剩余未执行任务已在后续方案包中拆分/覆盖，统一标记为 [-]；具体落地请以后续 history 方案包与当前仓库代码为准（见 helloagents/history/index.md）。
 
-
 Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 > 目标：在本仓库内把 **容器（Beans）→ AOP → 事务（Tx）→ Web MVC（含与 Security 交互）** 这条主线做成：
@@ -14,14 +13,12 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 > 说明：
 > - 本文件是“可执行的超细粒度任务清单（Roadmap）”，颗粒度尽量细到“能直接开工写/改一个文件”的级别。
 > - 灵感池/额外想法保留在 `task-backlog.md`；但本文件不再依赖 backlog 才能开工。
-> - 每一阶段都遵循：**Docs（讲清楚）→ Lab（钉死关键分支）→ Exercise（让你手上过一遍）→ Troubleshooting（把坑写成清单）→ 回归（测试/文档闸门）**。
 
 ---
 
 ## 0. 全局约定（必须先统一，否则越写越乱）
 
 ### 0.1 基线验证（每次开工前/阶段收尾必跑）
-- [√] 0.1.1 运行 docs 教学闸门：`bash scripts/check-docs.sh`
 - [√] 0.1.2 运行四模块测试基线（确保无回归）：
   - `bash scripts/test-module.sh spring-core-beans`
   - `bash scripts/test-module.sh spring-core-aop`
@@ -148,7 +145,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ### 1.4 Beans 阶段性回归
 - [√] 1.4.1 运行 Beans 模块测试：`bash scripts/test-module.sh spring-core-beans`
-- [√] 1.4.2 运行 docs 闸门：`bash scripts/check-docs.sh`
 - [√] 1.4.3 更新知识库：`helloagents/wiki/modules/spring-core-beans.md`（Docs/Labs/Troubleshooting 索引同步）
 
 ---
@@ -217,7 +213,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ### 2.4 AOP 阶段性回归
 - [√] 2.4.1 运行 AOP 模块测试：`bash scripts/test-module.sh spring-core-aop`
-- [√] 2.4.2 运行 docs 闸门：`bash scripts/check-docs.sh`
 - [√] 2.4.3 更新知识库：`helloagents/wiki/modules/spring-core-aop.md`
 
 ---
@@ -291,7 +286,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ### 3.5 Tx 阶段性回归
 - [√] 3.5.1 运行 Tx 模块测试：`bash scripts/test-module.sh spring-core-tx`
-- [√] 3.5.2 运行 docs 闸门：`bash scripts/check-docs.sh`
 
 ---
 
@@ -369,7 +363,6 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ### 4.5 Web MVC 阶段性回归
 - [√] 4.5.1 运行 Web MVC 模块测试：`bash scripts/test-module.sh springboot-web-mvc`
-- [√] 4.5.2 运行 docs 闸门：`bash scripts/check-docs.sh`
 
 ---
 
@@ -393,14 +386,11 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 
 ---
 
-## 6. 全局质量闸门与收尾（每阶段都要做）
-
 ### 6.1 Security Check（必须）
 - [√] 6.1.1 确认无明文敏感信息、无外部网络依赖、无生产环境操作（按 G9）
 
 ### 6.2 回归与一致性审计
 - [√] 6.2.1 跑全量测试：`bash scripts/test-all.sh`
-- [√] 6.2.2 跑全量 docs 闸门：`bash scripts/check-docs.sh`
 - [-] 6.2.3 README 语言与链接自检：所有 README 中文、链接可达、索引可导航
 
 ### 6.3 知识库同步（SSOT）

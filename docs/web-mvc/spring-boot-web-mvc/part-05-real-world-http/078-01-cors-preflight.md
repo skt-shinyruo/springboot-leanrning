@@ -23,7 +23,6 @@
     - CORS 是浏览器约束：服务端必须用 `Access-Control-*` 响应头“授权”跨域访问。
     - 预检（preflight）是浏览器在某些请求条件下先发的 OPTIONS，用来确认方法/headers 是否被允许。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

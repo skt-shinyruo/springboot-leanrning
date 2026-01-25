@@ -25,7 +25,6 @@
     - 异步（async）请求的**第二次 dispatch（asyncDispatch）**：会再次进入 `preHandle → postHandle → afterCompletion`，但 handler 方法通常不会再次执行（结果已由 async 线程产生）。
     - 这也是为什么：你把“计时/埋点/日志”写在 `postHandle`，在 async 场景下可能会“少打一半日志”——你需要同时理解 `afterConcurrentHandlingStarted` 与二次 dispatch。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcTraceLabTest`

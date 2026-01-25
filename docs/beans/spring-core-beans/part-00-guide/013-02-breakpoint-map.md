@@ -26,7 +26,6 @@
       2. **哪个分支决定了后续行为**（排序 / 短路 / early reference / candidate 收敛）
       3. **你拿到的对象到底是谁**（raw instance vs proxy）
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansLabTest`

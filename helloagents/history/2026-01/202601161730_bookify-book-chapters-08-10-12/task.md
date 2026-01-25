@@ -16,9 +16,6 @@ Directory: `helloagents/plan/202601161730_bookify-book-chapters-08-10-12/`
 
 ## 3. 验证
 
-- [√] 3.1 运行 `bash scripts/check-docs.sh`
-- [√] 3.2 运行 `bash scripts/docs-site-build.sh`（strict）
-
 ## 4. 方案包迁移
 
 - [√] 4.1 更新 `helloagents/CHANGELOG.md`

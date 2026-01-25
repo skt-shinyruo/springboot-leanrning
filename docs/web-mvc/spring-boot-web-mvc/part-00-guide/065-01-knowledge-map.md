@@ -24,7 +24,6 @@
     - 学习路径建议：**先跑 Lab 看到现象 → 再看 `resolvedException`/handler 证据 → 再打断点看调用链**。
     - 推荐搭配：断点地图（Part 01 Debugger Pack）`part-00-guide/02-breakpoint-map.md`（把断点从“散点”收敛成“按阶段可复用清单”）。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`

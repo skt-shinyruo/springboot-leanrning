@@ -53,6 +53,5 @@
 - **Testing:**
   - 单模块：`bash scripts/test-module.sh <module>`
   - 全量：`bash scripts/test-all.sh`
-  - 文档一致性/链接检查（如仓库已有脚本）：`bash scripts/check-docs.sh`
 - **Run (optional observation):**
   - 单模块运行：`bash scripts/run-module.sh <module>`（或 `mvn -pl <module> spring-boot:run`）

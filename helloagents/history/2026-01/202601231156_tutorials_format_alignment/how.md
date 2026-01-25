@@ -52,7 +52,6 @@ flowchart TD
 - 引入 `parent-boot-*` / `parent-spring-*` 多级父工程 → 拒绝原因：当前模块规模不需要，改造与维护成本更高  
 **Impact:**  
 - 需要批量更新 artifactId 引用（docs/scripts/wiki）  
-- 必须通过全量测试作为闸门（`mvn -q test`）  
 
 ## Security and Performance
 - **Security:** 不接入生产环境、不引入明文密钥；所有示例配置保持本地可复现与最小权限。  

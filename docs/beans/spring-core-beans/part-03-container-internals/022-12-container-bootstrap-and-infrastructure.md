@@ -24,7 +24,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest`
@@ -211,7 +210,6 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
-
 ## 源码最短路径（call chain）
 
 > 目标：当你怀疑“注解没生效”时，用最短调用链回答两个问题：
@@ -371,7 +369,6 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 这是一个非常高频的误区：很多人看到 registry 里有这些 internal processors，就以为注解已经“能用”。
 
 ## 3. 常见坑
-
 
 ## 小结与下一章
 

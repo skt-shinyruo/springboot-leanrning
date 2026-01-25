@@ -18,11 +18,11 @@ import org.springframework.context.annotation.Bean;
 class SpringCoreBeansAutoConfigurationExerciseTest {
 
     @Test
-    @Disabled("练习：给 DemoGreeting 增加一个 @ConditionalOnProperty 门禁，并用 ApplicationContextRunner 断言 matchIfMissing 行为")
+    @Disabled("练习：给 DemoGreeting 增加一个 @ConditionalOnProperty 约束，并用 ApplicationContextRunner 断言 matchIfMissing 行为")
     void exercise_addPropertyGateToGreeting() {
         assertThat(true)
                 .as("""
-                        练习：给 DemoGreeting 增加一个 @ConditionalOnProperty 门禁，并用 ApplicationContextRunner 断言 matchIfMissing 行为。
+                        练习：给 DemoGreeting 增加一个 @ConditionalOnProperty 约束，并用 ApplicationContextRunner 断言 matchIfMissing 行为。
 
                         下一步：
                         1) 在自动装配/配置类中为某个 Bean 增加 `@ConditionalOnProperty`。

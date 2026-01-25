@@ -3,12 +3,23 @@
 本文件记录本仓库的重要变更，格式参考 Keep a Changelog，版本号遵循语义化版本（SemVer）。
 
 ## [Unreleased]
+### Added
+- `spring-core-beans` 补齐缺失章节：`020-09-auto-config-ordering.md`
+
+### Added
+- spring-core-beans：新增 Debugger Pack 文档与主线/断点/排障/性能入口测试套件
+
+### Removed
+- 移除 docs 相关的检查脚本与 docs-site 发布 workflow，并清理文档/知识库中的引用
 
 ### Changed
-- `docs/book/debugger-pack.md`：补充“模块深挖最小闭环（Doc/Test/Perf）”验收口径，并提供一键自检脚本入口（用于全模块 A–E 统一标准化）。
+- spring-core-beans：docs 目录入口补充 Debugger Pack 链接，同步知识库入口索引
+
+### Changed
+- `docs/book/debugger-pack.md`：补充“模块深挖最小闭环（Doc/Test/Perf）”验收口径（用于全模块 A–E 统一标准化）。
 - `docs/**`：为 `springboot-autoconfiguration` / `springboot-logging` / `springboot-observability` / `spring-core-events` 目录页补齐并发/性能 Lab 可跑入口命令。
 - `spring-boot-*/README.md`：修正部分模块 README 标题与并发/性能 Lab 索引，避免与 `spring-boot-*` artifactId 命名脱节。
-- `docs/book/labs-index.md`：新增/刷新 4 个并发/性能 Lab 的索引入口（确保 docs gate 可通过）。
+- `docs/book/labs-index.md`：新增/刷新 4 个并发/性能 Lab 的索引入口。
 - `docs/SUMMARY.md`：补齐全量模块的“调用链”导航项，并将新增主题（AutoConfiguration/Logging/Observability/SpEL）接入站点目录（SSOT）。
 - `docs/topics/index.md`、`docs/README.md`：更新主题索引，纳入新增主题模块。
 - `docs`：将所有模块文档从 `<module>/docs/` 迁移到仓库根 `docs/`，并按主题分组为 `docs/<topic>/<module>/...`；Book 内容从 `docs-site/content/book/` 迁移到 `docs/book/`。
@@ -16,17 +27,14 @@
 - `docs`：站点导航 SSOT 由 YAML/脚本注入切换为 `docs/SUMMARY.md`（Markdown 目录文件，顺序/显示名/层级都以此为准）。
 - `docs-site`：侧边栏目录收敛为“索引级入口”（README + Guide + Pitfalls/Self-check），避免展开全部章节导致导航爆炸。
 - `docs`：清理文档中的 `/book/` 绝对链接，统一改为相对链接，兼容 GitHub Pages 子路径部署。
-- `GitHub Pages`：`.github/workflows/docs-site-pages.yml` 调整为仅在 push/main(master) 或手动触发时构建发布（不再在 PR 中作为门禁）。
 - 调整 Maven 工程结构：按 tutorials 风格分组聚合到 `spring-boot-modules/` 与 `spring-core-modules/`。
-- 修复 Book/模块文档跨目录引用的相对链接（避免 `docs/docs/...` 断链），并通过 docs gate。
-- 修复 `scripts/generate-book-labs-index.py` 生成的 `docs/book/labs-index.md` 外链前缀（从 `../` 修正为 `../../`）。
+- 修复 Book/模块文档跨目录引用的相对链接（避免 `docs/docs/...` 断链）。
 - `docs/async-scheduling` / `docs/events` / `docs/spel`：在模块目录页增加“性能与并发（可复现实验范式）”入口与可跑样板命令（线程池饱和 / 异步分发线程边界 / SpEL 并发求值）。
 - `docs`：补齐剩余模块目录页的 Solutions 入口与并发/性能 Lab 入口，并互链到 Book 工具页（Exercises & Solutions / 性能与并发）。
 
 ### Removed
 - `docs`：删除旧的导航/主题 SSOT：`docs/topics/topics.yml`（避免与 `docs/SUMMARY.md` 双轨维护）。
 - `scripts`：删除旧的导航同步/注入脚本：`scripts/docs-topics-sync.py`、`scripts/docs-site-sync.py`。
-- `docs-site`：移除 `mkdocs --strict` 构建门禁（保留 build 作为普通构建/发布步骤）。
 
 ### Added
 - `scripts/audit-module-deep-dive.sh`：从方案包 `task.md` 解析 22 个模块的 docs/tests/perf 入口清单，并输出缺失项（用于全模块深挖标准化的“可审计基线”）。
@@ -35,7 +43,6 @@
 - 新增主题模块：`springboot-autoconfiguration` / `springboot-logging` / `springboot-observability` / `spring-core-spel`（含代码 + Labs + docs 骨架），并纳入 docs-site/labs 索引。
 - `docs`：新增站点目录文件 `docs/SUMMARY.md`（Markdown 目录文件，作为站点导航 SSOT）。
 - `docs-site`：新增 `mkdocs-literate-nav` 依赖（固定版本），用于从 `docs/SUMMARY.md` 解析生成导航。
-- `scripts`：新增 `/book/` 绝对链接修复与门禁脚本 `scripts/fix-abs-book-links.py` / `scripts/check-abs-book-links.py`（保证 GitHub Pages 子路径部署跳转正确）。
 - 全模块补齐 Book Matrix（每章最小可运行测试入口），并在 Book 主线章节与知识库模块页统一入口。
 - `docs-site`：新增 MkDocs 文档站点骨架（`docs-site/mkdocs.yml` + serve/build 脚本），将仓库根 `docs/` 构建为可搜索、可侧边栏导航的静态站点；build 输出已加入 `.gitignore`。
 - `docs-site`：新增“写作指南”页面 `docs/book-style.md`，用于统一书籍化重排原则（主线时间线先行、提示框作为插入段、redirect 保留旧入口）。
@@ -46,9 +53,7 @@
 - `springboot-async-scheduling`：新增并发/性能可复现实验（线程池饱和/拒绝策略）与测试辅助 `Waiter`。
 - `spring-core-spel`：新增并发求值 Lab（复用 parsed expression + per-thread EvaluationContext）。
 - `springboot-basics` / `springboot-web-mvc` / `springboot-data-jpa` / `springboot-actuator` / `springboot-testing` / `springboot-business-case` / `springboot-security` / `springboot-web-client` / `springboot-cache` / `spring-core-aop` / `spring-core-aop-weaving` / `spring-core-tx` / `spring-core-validation` / `spring-core-resources` / `spring-core-profiles` / `spring-core-beans`：补齐/接入并发与性能可复现实验（每模块至少 1 个 `part02_perf_concurrency/*LabTest`）并补齐缺失 Exercises 对应 Solutions（Tx/Validation/Resources/Profiles + Beans Part04）。
-- `scripts`：新增 Labs 索引生成脚本 `scripts/generate-book-labs-index.py`（扫描各模块 `src/test/java/*LabTest.java` 生成 `docs/book/labs-index.md`）。
-- `scripts`：新增“章节学习卡片（五问闭环）”批处理与自检脚本（`scripts/upsert-chapter-cards.py` / `scripts/check-chapter-cards.py` / `scripts/generate-docs-chapter-list.py`），并将检查接入 `scripts/check-docs.sh` 作为闸门，保证全量章节覆盖（198 页）。
-- GitHub Pages：新增自动构建与发布 workflow（`.github/workflows/docs-site-pages.yml`），在 `push main/master` 时构建并发布 `docs-site/.site/`。
+- GitHub Pages：不再提供自动构建与发布 workflow（如需发布请自行配置）。
 - `helloagents`：新增学习路线图 `helloagents/wiki/learning-path.md`，并在 `helloagents/wiki/overview.md` 与四模块页（Beans/AOP/Tx/Web MVC）增加 Start Here/路线图入口，收敛新读者的“先跑什么/再读什么”路径。
 - `spring-core-beans`：新增 30 分钟快启章节（Start Here），并系统补齐/强化 docs（容器主线、BPP 顺序、FactoryBean、循环依赖、AOT/真实世界等）与可运行证据链；同时更新 `scripts/generate-spring-beans-public-api-index.py` 并重新生成 Appendix 95/96（补齐“坑点与排障”）。
 - `spring-core-beans`：新增“主线叙事”章节：从 `AbstractApplicationContext#refresh` 走到 `AbstractAutowireCapableBeanFactory#doCreateBean`，聚焦关键方法与关键分支，并在导读/目录页增加入口：`docs/beans/spring-core-beans/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`。
@@ -57,7 +62,6 @@
 - `springboot-web-mvc`：深化“DispatcherServlet 主链路”章节：补齐 `doDispatch` → `processDispatchResult` 的关键方法/关键分支（multipart/async/exception/afterCompletion），并补齐“FilterChain → ExceptionResolvers → Spring Boot `/error`”完整叙事（含 async 两次 dispatch 时间线 + 证据链）；进一步补齐 ERROR vs ASYNC dispatch 对照（DispatcherType=ERROR/ASYNC）与分支决策表，降低排障误判成本。
 - `spring-core-events`：新增异步 multicaster 默认 Lab `SpringCoreEventsAsyncMulticasterLabTest`，用于可断言验证自定义 `ApplicationEventMulticaster` + `TaskExecutor` 的异步分发主线。
 - `springboot-data-jpa`：新增用于 N+1/EntityGraph 验证的示例实体与仓库（`LibraryAuthor/LibraryBook`），并增强 `BootDataJpaLabTest` 覆盖 `getReferenceById` 懒代理与 N+1/EntityGraph 边界的可断言证据链。
-- `scripts`：新增教学化覆盖度自检脚本 `scripts/check-teaching-coverage.py`（面向所有包含 `docs/README.md` 的模块：`spring-core-*` + `springboot-*`），并提供聚合闸门脚本 `scripts/check-docs.sh`（断链检查 + 教学覆盖），用于验收“每章至少 1 个可跑入口 + 每模块至少 N 个 LabTest”。
 - `scripts`：新增 docs 书本化批处理脚本 `scripts/bookify-docs.py`：以 `docs/README.md` 为 SSOT，对每章 upsert 统一尾部区块（`### 对应 Lab/Test` + `上一章｜目录｜下一章`），确保可重复执行。
 - `spring-core-events`：补齐事务事件最小闭环（`@TransactionalEventListener` AFTER_COMMIT/rollback）Lab，并在 docs/07 增加对应入口块；测试依赖补齐 `spring-tx`。
 - `springboot-web-mvc`：补齐传统 MVC（HTML）页面渲染主线（Thymeleaf/表单提交/校验回显/PRG/错误页/Accept 内容协商），新增对应 docs 与 MockMvc + 端到端 Labs，并补齐 API 侧 malformed JSON/type mismatch 的统一错误体。
@@ -86,12 +90,10 @@
 - 新增并迁移方案包：`helloagents/history/2026-01/202601201248_tutorials_style_reorg/`（记录 tutorials 风格重排与首批示范落地）。
 
 ### Removed
-- `scripts`：移除章节契约相关脚本：`scripts/check-chapter-contract.py`、`scripts/ag-contract-docs.py`（不再推荐 A–G 作为写作规范，也不再提供相关闸门/自检工具）。
 ### Changed
 - 根 `README.md`：前置“主线之书（Book）”入口（Book TOC + 两条阅读路径），并按推荐学习顺序串起模块与主线节点，降低新读者找路成本。
 - `docs/book/`：为主线节点章节补齐“本章可跑入口（最小闭环）”（Lab 命令 + Exercise 路径），让章节具备“读 → 跑 → 改”的独立闭环。
 - `docs/book/094/116/138`：改写正文为更“像书”的叙事结构（开场问题 → 心智模型 → 主线时间线 → 读者检查点 → 证据链观察点），减少“像说明书”的条目感。
-- `docs-site`：修复 MkDocs 入口脚本参数顺序（`python3 -m mkdocs build/serve -f ...`），并在同步时补齐复制 `helloagents/project.md` 与 `helloagents/history/index.md`，使 `bash scripts/docs-site-build.sh` 在 `--strict` 下可通过。
 - `docs-site`：站点导航新增“写作指南”入口（`docs-site/mkdocs.yml`），并在模块侧边栏目录中自动聚合新增的“主线时间线”章节。
 - `docs-site`：站点导航切换为 Book-only（侧边栏仅展示“主线之书”章节树）；`scripts/docs-site-sync.py` 改为注入书目录，模块 docs 作为素材库/搜索命中入口保留。
 - `docs-site`：Book-only 的“附录”导航补齐知识库入口（overview/learning-path/history）与模块快速入口（模块 README 列表），提升在“书目录”下的跳转效率。
@@ -100,8 +102,6 @@
 - `springboot-basics`：试点将模块主线时间线章节迁移到书第 1 章，并保留旧入口作为 redirect（避免断链）。
 - 全模块 docs：停止使用 A–G（A.本章定位…G.小结）“契约式”章节骨架；统一去除字母前缀，并将“核心结论”转换为 summary 提示框，同时将 BOOKIFY 的实验入口提炼为章首提示框（更接近书籍阅读体验）；新增批处理脚本 `scripts/rewrite-docs-book-style.py`。
 - `docs/book-style.md`：补齐“正文二次书籍化（第二层）”规范：统一叙事节奏（导读→主线推进→关键分支/坑点→证据链→小结与下一章承接），并给出最小模板片段与常见反例修复方式。
-- `scripts`：新增正文二次书籍化批处理脚本 `scripts/rewrite-chapters-booklike-v2.py`（以章节学习卡片为 SSOT，支持 dry-run/report/按模块执行，默认幂等）；并新增可选自检脚本 `scripts/check-booklike-v2.py`，通过 env 开关接入 `scripts/check-docs.sh` 作为可选闸门。
-- 全站章节（modules + book）：对模块 docs SSOT 174 章与 Book 43 页全量执行二次书籍化批处理（补齐导读/证据链/小结承接，清理空块与重复实验入口，redirect 页保持最小形态），并通过 `bash scripts/check-docs.sh` 与 `bash scripts/docs-site-build.sh`（`mkdocs --strict`）验收。
 - 全模块 docs：重排 `<module>/docs/README.md` 为书籍化目录页（第一屏给出主线时间线/导读入口；README 的 Markdown 链接清单作为 teaching coverage 的章节 SSOT）。
 - `spring-core-beans`：试点合并 Part 01 的前两章（原 02 章合并进 01 章），保留 `02-bean-registration.md` 作为 redirect 入口。
 - `springboot-web-mvc`：试点合并 Internals 章节（原 02 章合并进 01 章），保留 `02-argument-resolver-and-binder.md` 作为 redirect 入口。

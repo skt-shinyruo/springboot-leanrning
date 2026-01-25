@@ -64,7 +64,7 @@
 - Symptom：测试只验证返回值，后来有人改了 path/header/query 参数，线上集成才暴雷
 - Root Cause：下游调用的“契约”不仅是响应结构，还包括请求路径、查询参数与 headers
 - Verification：`BootWebClientRestClientLabTest#restClientSendsExpectedPathAndHeaders`
-- Fix：用 MockWebServer 固定下游，并把 path/header/body 写成断言（把契约变成回归门禁）
+- Fix：用 MockWebServer 固定下游，并把 path/header/body 写成断言（把契约变成回归断言）
 
 ## 小结与下一章
 

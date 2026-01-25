@@ -8,14 +8,12 @@
 - Spring Boot / Spring Framework（教学用最小可复现工程）
 - JUnit 5 + AssertJ（Labs/Exercises/Solutions 的断言体系）
 - MkDocs（`docs-site/`）与 Book（`docs/book/`）
-- Shell/Python scripts（索引生成、一致性检查、构建闸门）
 
 ### Implementation Key Points
 
 1. **结构与命名策略（优先入口稳定）**
    - 原则：入口稳定优先于“完全改名”  
    - 默认策略：保持 Maven `artifactId` 稳定（命令统一用 `mvn -pl :artifactId`），目录命名/文档标题允许滚动升级  
-   - 如确需更强 tutorials 对齐（重命名模块目录/模块名）：采用“分批迁移 + 映射表 + redirect 页面 + 闸门回归”策略
 
 2. **模块契约（Module Contract）作为 SSOT**
    - 定义每个模块必须具备的最小资产集合：
@@ -34,14 +32,9 @@
 
 4. **性能与并发：两层策略避免 flaky**
    - 第一层（默认启用）：稳定断言（例如超时边界、线程切换、传播/回滚等“可判定”行为）
-   - 第二层（默认禁用）：压力/基准/长耗时实验（`@Disabled` 或独立 profile），用于教学观察而非 CI 闸门
 
-5. **脚手架与闸门**
    - 脚手架：新增模块时自动生成“pom/README/docs 骨架/test 骨架”
-   - 闸门：
      - `mvn -q test`（代码回归）
-     - `bash scripts/check-docs.sh`（链接/引用/一致性）
-     - `bash scripts/docs-site-build.sh`（站点可构建）
    - 增强一致性检查：模块契约缺失项（无推荐入口/无断点地图/无分支矩阵/无调用链）应被脚本检测出来
 
 ## Architecture Design
@@ -76,8 +69,6 @@ springboot-learning/
 **Alternatives:** 以目录名作为入口 → 拒绝原因：迁移即断链，维护成本过高。  
 **Impact:** 迁移过程中必须维护 `artifactId` 不轻易变更；如确需变更，需要提供映射与过渡期策略。
 
-### ADR-002: 模块契约（Module Contract）与脚本闸门绑定
-**Context:** 内容更深入意味着资产更多，若无契约与闸门，容易出现“有文无测/有测无入口/有入口无索引”。  
 **Decision:** 固化模块契约，并以脚本进行自动化检查；缺失项视为“未完成”。  
 **Rationale:** 把“质量要求”工程化，避免依赖人工记忆与审阅。  
 **Alternatives:** 仅靠 README 约定 → 拒绝原因：难以持续与规模化。  
@@ -94,10 +85,7 @@ springboot-learning/
 
 ## Testing and Deployment
 
-- **Testing（闸门）**
   - 全仓库：`mvn -q test`
   - 单模块：`mvn -q -pl :<artifactId> test`
-  - 文档一致性：`bash scripts/check-docs.sh`
-  - 站点构建：`bash scripts/docs-site-build.sh`
 - **Deployment**
   - 本仓库以本地学习与 GitHub Pages/静态站点为主；发布流程以 docs-site 构建产物为准（若启用）

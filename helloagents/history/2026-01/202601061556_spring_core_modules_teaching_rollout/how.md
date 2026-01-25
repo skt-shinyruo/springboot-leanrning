@@ -53,7 +53,6 @@
 - **Performance:** 自检脚本应保持线性扫描与快速失败；每个模块单独输出失败条目，便于定位
 
 ## Testing and Deployment
-- 自检（强制闸门）：
   - `python3 scripts/check-md-relative-links.py`（覆盖全部 `spring-core-*` docs）
   - `python3 scripts/check-teaching-coverage.py --min-labs 2`（新增）
 - 回归测试（按模块逐个验证）：

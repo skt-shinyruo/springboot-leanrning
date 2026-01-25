@@ -60,5 +60,3 @@ Directory: `helloagents/plan/202601151703_docs-book-rewrite-stage2/`
 - [√] 5.2 更新变更记录：`helloagents/CHANGELOG.md`
 
 ## 6. Verification
-- [√] 6.1 运行 `bash scripts/check-docs.sh`
-- [√] 6.2 运行 `bash scripts/docs-site-build.sh`（strict）

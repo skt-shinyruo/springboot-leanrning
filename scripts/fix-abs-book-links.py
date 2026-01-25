@@ -6,7 +6,7 @@
 
 目标：
 - GitHub Pages 子路径部署下仍可正确跳转
-- 与 scripts/check-abs-book-links.py 门禁配套使用
+- 与 scripts/check-abs-book-links.py 配套使用
 
 注意：
 - 仅修改“Markdown 链接/引用定义/HTML href”中的 /book/...；不会替换代码块中的示例文本
@@ -212,4 +212,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv))
-

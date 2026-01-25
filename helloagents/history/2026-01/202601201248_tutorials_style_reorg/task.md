@@ -5,7 +5,6 @@ Directory: `helloagents/plan/202601201248_tutorials_style_reorg/`
 > 本方案包聚焦两件事：  
 > 1) **工程结构**对齐 `/home/feng/code/temp/tutorials` 的“分组聚合 + 层级目录”；  
 > 2) 以 **Web MVC** 为第一批示范，补齐更深入的“矩阵/证据链/排障入口”。  
-> 原则：入口稳定优先（`:artifactId`）→ 分批迁移 → 闸门回归（tests/docs/site）。
 
 ---
 
@@ -13,8 +12,6 @@ Directory: `helloagents/plan/202601201248_tutorials_style_reorg/`
 
 - [√] 0.0.1 Maven：根 `pom.xml` 仅聚合分组模块（Boot/Core），verify why.md#requirement-r1-tutorials-style-grouping
 - [√] 0.0.2 构建：`mvn -q test` 全绿（迁移收尾验收），verify why.md#requirement-r1-tutorials-style-grouping
-- [√] 0.0.3 文档闸门：`bash scripts/check-docs.sh` 通过，verify why.md#requirement-r4-docs-site-and-book-consistency
-- [√] 0.0.4 站点：`bash scripts/docs-site-build.sh` 通过，verify why.md#requirement-r4-docs-site-and-book-consistency
 - [√] 0.0.5 Web MVC：新增 1 个“矩阵/证据链”入口（Lab + Doc 绑定），verify why.md#requirement-r3-webmvc-deepen-batch01
 - [√] 0.0.6 SSOT：同步更新 `helloagents/wiki/**` + `helloagents/CHANGELOG.md` + 方案包迁移到 `helloagents/history/`，verify why.md#requirement-r2-stable-entrypoints
 
@@ -22,7 +19,6 @@ Directory: `helloagents/plan/202601201248_tutorials_style_reorg/`
 
 ## 1. 基线回归（开工前）
 
-- [√] 1.1 运行 `bash scripts/check-docs.sh`（记录基线输出），verify why.md#requirement-r4-docs-site-and-book-consistency
 - [√] 1.2 运行 `mvn -q test`（记录基线输出），verify why.md#requirement-r1-tutorials-style-grouping
 
 ---
@@ -41,7 +37,6 @@ Directory: `helloagents/plan/202601201248_tutorials_style_reorg/`
 
 ## 3. 子模块迁移（物理目录重排）
 
-> 迁移策略：逐模块迁移，批次闸门回归；每个模块迁移至少包含：目录移动 + pom 适配 + README 链接/命令适配。  
 > 目标结构最终为：`spring-boot-modules/<springboot-*>` 与 `spring-core-modules/spring-core-modules/<spring-core-*>`。
 
 ### 3.1 springboot-* → spring-boot-modules/
@@ -136,8 +131,6 @@ Directory: `helloagents/plan/202601201248_tutorials_style_reorg/`
 
 ## 7. 验证（阶段收尾）
 
-- [√] 7.1 运行 `bash scripts/check-docs.sh`
-- [√] 7.2 运行 `bash scripts/docs-site-build.sh`
 - [√] 7.3 运行 `mvn -q test`
 
 ---

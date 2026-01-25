@@ -10,7 +10,6 @@
     - 下载是否触发“另存为”，核心看 `Content-Disposition: attachment; filename="..."`。
     - `Content-Type` 决定浏览器如何解释 bytes；缺失时通常退化为 `application/octet-stream`。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

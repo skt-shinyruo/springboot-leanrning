@@ -31,8 +31,6 @@ Directory: `helloagents/plan/202601162341_docs_global_book_chapters/`
 - [√] 6.1 执行安全检查（仅脚本与文档改造）：确认无生产环境操作、无敏感信息写入、无破坏性命令引入（per G9）
 
 ## 7. Verification
-- [√] 7.1 运行 `bash scripts/check-docs.sh`（断链=0、teaching coverage、chapter cards 全绿）
-- [√] 7.2 运行 `bash scripts/docs-site-build.sh`（`mkdocs build --strict` 全绿）
 
 ## 8. Knowledge Base Sync + 归档
 - [√] 8.1 更新 `helloagents/CHANGELOG.md`：记录“全书统一章节顺序/模块顺序/全书 nav/全书 prev-next”改造

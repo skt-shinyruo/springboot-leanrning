@@ -11,14 +11,11 @@
 
 同时，`spring-core-beans` 已经有较深的“源码级深潜”体系，但仍需要一条更短的“30 分钟可闭环”快启路线，帮助读者先建立正反馈，再进入深挖。
 
-本变更以“教学体验优先”为目标，先把 `springboot-web-mvc` 与 `spring-core-beans` 作为双样板模块，沉淀可复用的闭环写法与门禁机制，后续可推广到其它模块。
-
 ## Change Content
 
 1. 新增统一学习入口（学习路线图），把“从哪里开始/按什么顺序/先跑哪些 Lab/再做哪些 Exercise”收敛到一个 SSOT 页面。
 2. 提升 `springboot-web-mvc` Part 01 的“可调试性”：为核心章节补齐 Debugger Pack（断点入口 + 观察点 + 关键分支证据链）。
 3. 为 `spring-core-beans` 增加 “30 分钟快速闭环”快启章节，并强化 `Start Here` 导航。
-4. 增强教学质量门禁：在 CI 中增加 docs 检查（相对链接 + 教学覆盖），并将常用脚本固化为可记忆的执行路径。
 
 ## Impact Scope
 
@@ -26,7 +23,6 @@
   - `springboot-web-mvc`
   - `spring-core-beans`
   - `helloagents/wiki/*`（知识库与导航）
-  - `.github/workflows/*`、`scripts/*`、根 `README.md`（教学入口与门禁）
 - **Files:**
   - 新增：学习路线图、断点地图、快启章节等文档文件
   - 更新：若干现有章节补齐 Debugger Pack
@@ -60,7 +56,6 @@
 - 读者能跑通 3 个精选 Lab，并能用断点观察到关键对象/状态变化
 - 快启章节与现有深潜指南形成“先快后深”的阅读闭环
 
-### Requirement: 教学质量门禁（docs 可用性与覆盖率）
 **Module:** root/CI/scripts
 把教学质量要求固化为自动检查：避免断链、入口缺失、章节空洞化，保证 PR 合并后仍能“开箱即学”。
 

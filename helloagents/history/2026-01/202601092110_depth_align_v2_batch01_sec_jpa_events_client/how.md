@@ -9,7 +9,6 @@
 - Java 17 / Maven 多模块
 - Spring Boot Test / JUnit 5 / AssertJ
 -（按需）Spring Security Test、Spring Data JPA、Hibernate（通过 Statistics 做可断言证据链）
-- 文档闸门：`bash scripts/check-docs.sh`（断链 + 教学覆盖）
 
 ### Implementation Key Points
 
@@ -81,5 +80,4 @@
   - `mvn -pl spring-core-events test`
   - `mvn -pl springboot-web-client test`
 - **全仓库回归：** `mvn test`
-- **文档闸门：** `bash scripts/check-docs.sh`
 

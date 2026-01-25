@@ -35,10 +35,9 @@
 
 ## Testing and Deployment
 
-- **Verification Gate (Docs):**
+- **Verification (Docs):**
   - `python3 scripts/check-md-relative-links.py`
   - `python3 scripts/check-teaching-coverage.py --min-labs 2`
-  - `bash scripts/check-docs.sh`
 - **Optional Regression (Code):**
   - 由于本次主要为 docs 改动，回归可抽样跑关键模块 `mvn -pl <module> test`
 

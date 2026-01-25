@@ -34,7 +34,6 @@
     然后把断点放在“分支发生处”（而不是满屏日志）：
     - 断点地图（Part 01 Debugger Pack）：`part-00-guide/066-02-breakpoint-map.md`
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`

@@ -18,7 +18,6 @@
 4. 扩展“常见坑 + 排障清单 + 对应可复现测试用例”，形成“遇到问题先写测试固化现象 → 看 resolvedException/handler → 再打断点”的可执行套路。
 5. 自检与验收：
    - `mvn -pl springboot-web-mvc test` 全绿
-   - `scripts/check-docs.sh` 通过（docs 目录链接与“可跑入口块”一致性）
 
 ## Impact Scope
 

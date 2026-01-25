@@ -36,7 +36,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
@@ -58,7 +57,6 @@
 
 ## 常见坑与边界
 
-
 ## 只测 happy path
 
 - 只测 200 会让你在线上第一次遇到 400/500 才知道怎么处理。
@@ -72,7 +70,6 @@
 - 建议优先用“延迟响应”复现 read/response timeout
 
 ## 幂等性没想清楚
-
 
 ## Filter 顺序误判：request 顺序 ≠ response 顺序
 

@@ -158,6 +158,5 @@ Directory: `helloagents/plan/202601091802_modules_depth_align_to_beans/`
 
 ## 19. Testing & Gates
 - [√] 19.1 运行全仓库测试：`mvn test`
-- [√] 19.2 运行文档闸门：`bash scripts/check-docs.sh`
 - [√] 19.3 更新 `helloagents/CHANGELOG.md` 记录本次“全模块深挖对齐（对标 spring-core-beans）”
 

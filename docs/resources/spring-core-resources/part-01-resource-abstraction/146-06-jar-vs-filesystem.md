@@ -23,7 +23,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
@@ -36,7 +35,6 @@
 - `new File("classpath:...")`（根本不是文件路径）
 
 ## 在本模块的练习入口
-
 
 ## 学习建议
 

@@ -103,4 +103,3 @@ Directory: `helloagents/plan/202601071635_springboot-web-mvc-advanced-deep-dive/
 
 ## 9. Verification
 - [√] 9.1 运行 `mvn -pl springboot-web-mvc test` 并修复红测
-- [√] 9.2 运行 `scripts/check-docs.sh`，确保教学覆盖度与链接校验通过

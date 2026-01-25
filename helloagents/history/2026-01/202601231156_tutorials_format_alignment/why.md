@@ -66,7 +66,6 @@
 ## Risk Assessment
 
 - **Risk:** 模块目录与 artifactId 重命名导致构建/文档/脚本引用失效  
-  **Mitigation:** 先建立映射表与批量替换策略；分两步执行（先 Maven 再 docs）；每步后跑 `mvn -q test` 作为闸门。
 - **Risk:** 文档链接/站点导航出现断链  
   **Mitigation:** 批量校验 `docs-site` 构建；对 `docs/**` 相对链接做自动化检查与修复。
 - **Risk:** 并发/性能测试变得 flaky  

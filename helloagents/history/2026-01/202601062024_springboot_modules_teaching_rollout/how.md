@@ -6,7 +6,6 @@
 
 - 文档结构：Markdown（以 `docs/README.md` 为章节清单 SSOT）
 - 自检脚本：Python（`scripts/check-md-relative-links.py`、`scripts/check-teaching-coverage.py`）
-- 聚合闸门：Bash（`scripts/check-docs.sh`）
 - 可运行入口：JUnit 5 + Spring Boot Test（`src/test/java/**/*LabTest.java` / `*ExerciseTest.java`）
 
 ### Implementation Key Points
@@ -14,7 +13,6 @@
 1. **脚本覆盖范围扩展（从 spring-core → 全模块）**
    - `scripts/check-md-relative-links.py`：默认扫描从“仅 `spring-core-*/docs`”扩展为“`spring-core-*/docs` + `springboot-*/docs`”。
    - `scripts/check-teaching-coverage.py`：从“仅 spring-core”扩展为支持 springboot（建议：扫描所有包含 `docs/README.md` 的模块作为候选集合）。
-   - `scripts/check-docs.sh`：保持为全量验收入口，确保断链检查与教学覆盖检查同时通过。
 
 2. **统一 docs/README.md（章节清单 SSOT）**
    - 将 `springboot-*/docs/README.md` 中的“反引号路径”改为 Markdown 链接（`[title](relative/path.md)`）。
@@ -64,5 +62,4 @@
     - `python3 scripts/check-md-relative-links.py <module>/docs`
     - `python3 scripts/check-teaching-coverage.py --min-labs 2 --module <module>`
     - `mvn -pl <module> test`
-  - 全量验收：`bash scripts/check-docs.sh` + `mvn -pl <each springboot-*> test`
 - **Deployment：** 无（教学工程，无部署动作）

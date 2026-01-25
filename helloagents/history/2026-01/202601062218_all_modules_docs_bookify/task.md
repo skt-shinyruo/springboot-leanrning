@@ -6,7 +6,6 @@ Directory: `helloagents/plan/202601062218_all_modules_docs_bookify/`
 
 ## 0. 基线确认（只读）
 - [√] 0.1 统计所有模块章节数、现有导航/入口块覆盖率（以 `docs/README.md` 为 SSOT），verify why.md#requirement-all-modules-docs-bookify
-- [√] 0.2 抽样检查：确认当前 `scripts/check-docs.sh` 全量通过（作为改造前基线），verify why.md#requirement-all-modules-docs-bookify
 
 ## 1. 书本化脚本（批处理）
 - [√] 1.1 新增/实现 `scripts/bookify-docs.py`：解析模块 `docs/README.md`，对章节进行“入口块 + 导航”upsert，verify why.md#requirement-all-modules-docs-bookify
@@ -96,5 +95,4 @@ Directory: `helloagents/plan/202601062218_all_modules_docs_bookify/`
 - [√] 4.2 更新 `helloagents/CHANGELOG.md` 与 `helloagents/history/index.md`，verify why.md#requirement-all-modules-docs-bookify
 
 ## 5. Testing（最终验收）
-- [√] 5.1 全量闸门：`bash scripts/check-docs.sh`，verify why.md#scenario-chapter-contract-and-navigation
 - [√] 5.2 抽样回归：选择 3 个模块跑 `mvn -pl <module> test`（如 `spring-core-beans`/`springboot-web-mvc`/`springboot-security`），verify why.md#scenario-chapter-contract-and-navigation

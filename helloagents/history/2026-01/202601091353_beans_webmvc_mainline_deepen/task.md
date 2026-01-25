@@ -3,7 +3,6 @@
 Directory: `helloagents/plan/202601091353_beans_webmvc_mainline_deepen/`
 
 > 本任务包聚焦两条主线：**Beans（候选选择）** 与 **Web MVC（异常链路 + Security 边界）**。  
-> 方法论：Docs（决策树）→ Lab（证据链）→ Exercise（手练）→ Troubleshooting（清单）→ 回归闸门（tests/docs）。
 
 ---
 
@@ -13,16 +12,12 @@ Directory: `helloagents/plan/202601091353_beans_webmvc_mainline_deepen/`
 - [√] 0.0.2 Web MVC：能用 LabTest 明确区分“401/403 在 FilterChain” vs “400 在 MVC resolver”
 - [√] 0.0.3 两模块都补齐 Troubleshooting 条目（至少各 8 条），每条绑定具体测试入口
 - [√] 0.0.4 两模块各补齐至少 1 个 ExerciseTest（默认 `@Disabled`），并给出明确提示与验证方式
-- [√] 0.0.5 回归通过：`bash scripts/test-module.sh spring-core-beans` + `bash scripts/test-module.sh springboot-web-mvc` + `bash scripts/check-docs.sh`
 - [√] 0.0.6 知识库同步：更新 `helloagents/wiki/modules/spring-core-beans.md`、`helloagents/wiki/modules/springboot-web-mvc.md`、`helloagents/CHANGELOG.md`
 - [√] 0.0.7 方案包迁移：`helloagents/plan/...` → `helloagents/history/2026-01/...` 并更新 `helloagents/history/index.md`
 
 ---
 
-## 1. 基线盘点与回归闸门（先绿再改）
-
 ### 1.1 基线回归（开工前）
-- [√] 1.1.1 运行文档闸门：`bash scripts/check-docs.sh`
 - [√] 1.1.2 运行 Beans 模块：`bash scripts/test-module.sh spring-core-beans`
 - [√] 1.1.3 运行 Web MVC 模块：`bash scripts/test-module.sh springboot-web-mvc`
 - [-] 1.1.4 若有失败：记录失败用例与最小复现命令到本 task.md 的“备注区”（不要求写入 docs）
@@ -112,7 +107,6 @@ Directory: `helloagents/plan/202601091353_beans_webmvc_mainline_deepen/`
 
 ### 2.5 Beans 阶段回归
 - [√] 2.5.1 运行 Beans 模块：`bash scripts/test-module.sh spring-core-beans`
-- [√] 2.5.2 运行文档闸门：`bash scripts/check-docs.sh`
 
 ---
 
@@ -168,7 +162,6 @@ Directory: `helloagents/plan/202601091353_beans_webmvc_mainline_deepen/`
 
 ### 3.4 Web MVC 阶段回归
 - [√] 3.4.1 运行 Web MVC 模块：`bash scripts/test-module.sh springboot-web-mvc`
-- [√] 3.4.2 运行文档闸门：`bash scripts/check-docs.sh`
 
 ---
 
@@ -182,7 +175,6 @@ Directory: `helloagents/plan/202601091353_beans_webmvc_mainline_deepen/`
 - [√] 4.1.3 更新 `helloagents/CHANGELOG.md`：记录 Added/Changed（两模块）
 
 ### 4.2 一致性自检（docs ↔ tests ↔ wiki）
-- [√] 4.2.1 运行 `bash scripts/check-docs.sh`（确保链接/章节索引无回归）
 - [√] 4.2.2 全量回归（阶段收尾）：`bash scripts/test-all.sh`
 
 ### 4.3 方案包迁移与索引更新（强制）

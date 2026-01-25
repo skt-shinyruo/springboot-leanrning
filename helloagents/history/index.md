@@ -76,6 +76,7 @@
 
 ### 2026-01
 
+- [202601232320_beans_docs_refactor](2026-01/202601232320_beans_docs_refactor/) - spring-core-beans 文档与测试入口补齐（断点包/主线/排障/性能）
 - [202601010649_spring-core-beans-deep-dive](2026-01/202601010649_spring-core-beans-deep-dive/) - 深化 spring-core-beans 核心章节与坑点/自测题闭环
 - [202601010804_spring-core-aop-deep-dive](2026-01/202601010804_spring-core-aop-deep-dive/) - 深化 spring-core-aop 核心章节与断点/排障闭环
 - [202601010845_beans-aop-deep-dive-v2](2026-01/202601010845_beans-aop-deep-dive-v2/) - 二次深化 AOP 主线/pointcut/多代理叠加，并在 beans 模块补齐承接与跨模块闭环
@@ -109,10 +110,6 @@
 - [202601061309_springboot-web-mvc-thymeleaf-view-rendering](2026-01/202601061309_springboot-web-mvc-thymeleaf-view-rendering/) - springboot-web-mvc：补齐传统 MVC（Thymeleaf/表单/错误页/Accept）+ docs 与 tests 闭环
 - [202601061341_spring-core-aop-weaving](2026-01/202601061341_spring-core-aop-weaving/) - spring-core-aop-weaving：新增 weaving 深挖模块（AspectJ LTW/CTW + join point/pointcut cookbook + Labs/Exercises 闭环）
 - [202601061359_spring_core_beans_beans_support_utils](2026-01/202601061359_spring_core_beans_beans_support_utils/) - spring-core-beans：补齐 `org.springframework.beans.support` support 工具类闭环（ArgumentConvertingMethodInvoker/ResourceEditorRegistrar/PropertyComparator/PagedListHolder/SortDefinition）并新增可运行 Lab，Appendix 96 Gap 归零
-- [202601061556_spring_core_modules_teaching_rollout](2026-01/202601061556_spring_core_modules_teaching_rollout/) - spring-core-*：推广教学化文档规范（目录页/Part 编号/章节入口块/清理 docs/NN 缩写引用）并新增自检闸门脚本，保证全量断链=0、min-labs=2
-- [202601062024_springboot_modules_teaching_rollout](2026-01/202601062024_springboot_modules_teaching_rollout/) - springboot-*：推广教学化文档规范（docs/README Markdown 链接目录页 SSOT + guide/appendix 可跑入口块），并扩展自检闸门覆盖 springboot，同时补齐 min-labs=2（新增 5 个 LabTest）
-- [202601062218_all_modules_docs_bookify](2026-01/202601062218_all_modules_docs_bookify/) - 全模块：以 docs/README.md 为 SSOT，对全部章节 upsert 统一尾部区块（### 对应 Lab/Test + 上一章｜目录｜下一章），并通过闸门与抽样回归
-- [202601071034_all_modules_docs_ag_contract](2026-01/202601071034_all_modules_docs_ag_contract/) - 全模块：整理 docs 章节结构（A–G + 对应 Lab/Test 入口块）；后续不再推荐 A–G 作为写作规范/闸门
 - [202601071635_springboot-web-mvc-advanced-deep-dive](2026-01/202601071635_springboot-web-mvc-advanced-deep-dive/) - springboot-web-mvc：新增 advanced deep dive（机制内核/契约与 Jackson/真实 HTTP/Async/SSE/排障）+ 对应 docs Part 03–07 与 Labs
 - [202601080925_springboot-web-mvc-deep-dive-part08-security-observability](2026-01/202601080925_springboot-web-mvc-deep-dive-part08-security-observability/) - springboot-web-mvc：新增知识地图、ProblemDetail 对照、ETag/304、Part 08（Security/Observability）与对应 Labs/排障升级
 - [202601081108_springboot-web-mvc-deepen-more](2026-01/202601081108_springboot-web-mvc-deepen-more/) - springboot-web-mvc：再深化一层（ExceptionResolvers 主线、Trace：Filter/Interceptor sync+async lifecycle、条件请求对照（Last-Modified/ETag Filter）、DeferredResult timeout/fallback、坑点清单与测试入口绑定）
@@ -121,9 +118,7 @@
 - [202601091043_deepen_beans_aop_tx_web](2026-01/202601091043_deepen_beans_aop_tx_web/) - Beans/AOP/Tx/Web：补齐循环依赖边界、exposeProxy 自调用、传播/回滚、MVC 异常链路等可验证入口（Labs + docs + 知识库同步）
 - [202601091353_beans_webmvc_mainline_deepen](2026-01/202601091353_beans_webmvc_mainline_deepen/) - Beans/Web MVC：候选收敛（by-name fallback/ObjectProvider/泛型）与 Security↔MVC 边界证据链（handler/resolvedException）深化（Labs + docs + wiki）
 - [202601091802_modules_depth_align_to_beans](2026-01/202601091802_modules_depth_align_to_beans/) - 全模块：对标 spring-core-beans 深挖升级（Guide 主线/章节坑点证据链/关键分支默认 Lab 入口 + wiki 同步）
-- [202601092110_depth_align_v2_batch01_sec_jpa_events_client](2026-01/202601092110_depth_align_v2_batch01_sec_jpa_events_client/) - Batch01：Security/JPA/Events/WebClient 深挖对齐 v2（新增默认 Labs + 坑点可回归 + 自检闸门全绿 + wiki 同步）
 - [202601131039_teaching-experience-webmvc-beans](2026-01/202601131039_teaching-experience-webmvc-beans/) - spring-core-beans：新增 30 分钟快启 + 全模块知识点补齐（Start Here/断点观察点/自检/索引坑点）
-- [202601141547_finish-unfinished-tasks](2026-01/202601141547_finish-unfinished-tasks/) - 收敛新读者学习入口（learning-path）+ Web MVC Part 01 Debugger Pack + Beans 断点地图/空块补齐；通过 docs 闸门与全仓回归
 - [202601151209_docs-site-mkdocs](2026-01/202601151209_docs-site-mkdocs/) - docs-site：MkDocs 文档站点落地（聚合各模块 docs + helloagents/wiki，提供侧边栏导航与搜索）
 - [202601151259_docs-site-github-pages](2026-01/202601151259_docs-site-github-pages/) - docs-site：新增 GitHub Pages workflow（构建 + 发布）
 - [202601151647_docs-book-rewrite-all-modules](2026-01/202601151647_docs-book-rewrite-all-modules/) - 全模块 docs：书籍化第一层迁移（去 A–G 契约式骨架：章首要点 summary + 实验入口提示框 + 保留 BOOKIFY 尾部导航）
@@ -131,21 +126,24 @@
 - [202601152248_docs-book-stage3-all-modules](2026-01/202601152248_docs-book-stage3-all-modules/) - docs-site：全站书籍化 Stage 3（Book-only 导航 + 主线之书章节树 + 教学体验索引页）
 - [202601161709_readme-bookify-mainline-entrypoints](2026-01/202601161709_readme-bookify-mainline-entrypoints/) - README：前置“主线之书”入口，并为主线之书 0–18 章补齐可跑 Lab + Exercise 入口
 - [202601161730_bookify-book-chapters-08-10-12](2026-01/202601161730_bookify-book-chapters-08-10-12/) - 主线之书：改写第 8/10/12 章为更像书的叙事结构（开场问题→主线→检查点→证据链）
-- [202601161747_docs_chapter_cards_rollout](2026-01/202601161747_docs_chapter_cards_rollout/) - 全量 docs：为全部章节 upsert “章节学习卡片（五问闭环）”，并新增批处理/自检脚本与闸门，保证每章第一屏包含知识点/使用/原理/源码入口/Lab 推荐
 - [202601162341_docs_global_book_chapters](2026-01/202601162341_docs_global_book_chapters/) - 全站：以模块 docs/README.md 为 SSOT，固化全局章节编号（001- 前缀）与全书顺读导航（分卷→模块→章节 + prev/next），并补齐旧 Book 主线 00–18 redirect 兼容入口
-- [202601171204_docs_booklike_rewrite_all](2026-01/202601171204_docs_booklike_rewrite_all/) - 全站：章节正文二次书籍化（V2）全量改写（modules 174 章 + Book 43 页），补齐导读/证据链/收束承接并清理空块与重复入口；通过 docs 闸门与 mkdocs strict build
-- [202601171641_docs_unify_by_topic](2026-01/202601171641_docs_unify_by_topic/) - 全站 docs：文档迁移到仓库根 `docs/` 并按主题归档；下线 docs 门禁脚本与 strict 校验，docs-site 改为直接读取 `docs/` 构建发布
 - [202601181724_spring_core_beans_refresh_mainline_deepen](2026-01/202601181724_spring_core_beans_refresh_mainline_deepen/) - spring-core-beans：加深 “refresh → doCreateBean” 源码主线叙事，并与现有 Part 结构与 Labs/索引串联
 - [202601182033_beans_branch_decision_table_webmvc_error_async_deepen](2026-01/202601182033_beans_branch_decision_table_webmvc_error_async_deepen/) - beans：新增“分支决策表”排障套路；web-mvc：补齐 error/async 主链路证据链叙事，并同步知识库/测试
 - [202601182117_beans_bootstrap_guide_webmvc_deepen](2026-01/202601182117_beans_bootstrap_guide_webmvc_deepen/) - beans：补齐 bootstrap 处理器表/时间线与主线关键分支；web-mvc：补齐 ERROR vs ASYNC dispatch 对照，并同步知识库/测试
-- [202601201248_tutorials_style_reorg](2026-01/202601201248_tutorials_style_reorg/) - 工程结构：对齐 tutorials 风格（模块分组聚合 + 目录重排），并以 springboot-web-mvc + Book 主线作为首批深度示范落地（矩阵 Lab + docs gate）
+- [202601201248_tutorials_style_reorg](2026-01/202601201248_tutorials_style_reorg/) - 工程结构：对齐 tutorials 风格（模块分组聚合 + 目录重排），并以 springboot-web-mvc + Book 主线作为首批深度示范落地（矩阵 Lab）
 - [202601201656_rollout_book_matrix_all_modules](2026-01/202601201656_rollout_book_matrix_all_modules/) - 全模块：推广 Book Matrix 聚合入口（JUnit Platform Suite），统一每章主线的最小可运行测试入口；同步 Book 主线章节与知识库模块页，并通过全仓 `mvn test` 与 docs-site build 验证
-- [202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules](2026-01/202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules/) - 全模块：推广“关键分支矩阵”体系（Branch Matrix + Breakpoint Map + Branch Decision Matrix + Playbook + Self-check），并在 Book 主线/模块 README/知识库模块页统一入口；通过 docs 闸门与全仓 `mvn test` 验证
 - [202601202226_docs-site-modules-nav](2026-01/202601202226_docs-site-modules-nav/) - docs-site：侧边栏扩展为“模块文档 + 主线之书（Book）”双入口（AUTO MODULE NAV / AUTO BOOK NAV），并新增站点主题索引页
 - [202601202238_topics-grouping-boot-core](2026-01/202601202238_topics-grouping-boot-core/) - docs-site：模块文档主题按 Spring Boot / Spring Core 分组展示，并以 `docs/README.md` 作为顺序与显示名 SSOT
-- [202601202318_docs_site_nav_ssot_links](2026-01/202601202318_docs_site_nav_ssot_links/) - docs-site：主题 SSOT（topics.yml）+ 模块导航收敛（索引级入口）+ `/book/` 绝对链接清理与门禁
 - [202601211049_docs-literate-nav](2026-01/202601211049_docs-literate-nav/) - docs-site：文档即目录（literate-nav），以 `docs/SUMMARY.md` 作为站点导航 SSOT，并下线旧的 topics.yml / nav 注入脚本
-- [202601221758_tutorials_style_deepen_all](2026-01/202601221758_tutorials_style_deepen_all/) - 深化 tutorials 对齐：补齐调用链导航、更新主题索引与 Labs 索引，并新增 4 个主题模块（autoconfig/logging/observability/spel）；通过全仓回归与 docs 闸门
-- [202601222034_solutions_perf_concurrency_batch01](2026-01/202601222034_solutions_perf_concurrency_batch01/) - Solutions 补齐 + 并发/性能可复现专题（新增 Solution Tests + 线程池饱和/SpEL 并发求值样板 + Book 专题页）；通过全仓回归与 docs 闸门
-- [202601222155_solutions_all_remaining_modules](2026-01/202601222155_solutions_all_remaining_modules/) - 全量补齐剩余模块：Solutions 可发现性（Book 工具页 + 模块目录页入口）+ 并发/性能可复现实验全量推广（每模块至少 1 个 Lab）+ 全仓回归与 docs 闸门通过
-- [202601231156_tutorials_format_alignment](2026-01/202601231156_tutorials_format_alignment/) - tutorials 风格对齐续作：补充全模块深挖“最小闭环”验收口径与审计脚本/基线；补齐 autoconfig/logging/observability/events 并发/性能可复现实验；通过 `mvn -q test` 与 docs gate
+- [202601240941_beans_docs_refactor](2026-01/202601240941_beans_docs_refactor/) - spring-core-beans 文档分批重构与测试闭环
+- [202601242148_tutorials_style_deepen_all](2026-01/202601242148_tutorials_style_deepen_all/) - tutorials 风格对齐改造方案包（未执行，已归档）
+- [202601251025_remove_gates_everywhere](2026-01/202601251025_remove_gates_everywhere/) - 移除 docs 检查脚本与 docs-site workflow，并清理文档/知识库引用
+- [202601231156_tutorials_format_alignment](2026-01/202601231156_tutorials_format_alignment/) - tutorials 风格对齐续作：补充全模块深挖“最小闭环”验收口径与审计脚本/基线；补齐 autoconfig/logging/observability/events 并发/性能可复现实验；通过 `mvn -q test`
+
+## Index
+| Timestamp | Feature Name | Type | Status | Solution Package Path |
+|-----------|--------------|------|--------|----------------------|
+| 202601232320 | beans_docs_refactor | Refactor | ✅Completed | history/2026-01/202601232320_beans_docs_refactor/ |
+| 202601240941 | beans_docs_refactor | Refactor | ✅Completed | history/2026-01/202601240941_beans_docs_refactor/ |
+| 202601242148 | tutorials_style_deepen_all | Enhancement | [-]Not Executed | history/2026-01/202601242148_tutorials_style_deepen_all/ |
+| 202601251025 | remove_gates_everywhere | Refactor | ✅Completed | history/2026-01/202601251025_remove_gates_everywhere/ |

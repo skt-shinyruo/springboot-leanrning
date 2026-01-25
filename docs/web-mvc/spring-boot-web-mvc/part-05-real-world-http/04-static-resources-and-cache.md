@@ -10,7 +10,6 @@
     - 默认情况下，Spring Boot 会从 `classpath:/static/` 提供静态资源（如 `/css/app.css`）。
     - 静态资源一旦纳入教学示例，就要用测试断言它确实能被访问到，否则前端页面示例会“偶尔坏”。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

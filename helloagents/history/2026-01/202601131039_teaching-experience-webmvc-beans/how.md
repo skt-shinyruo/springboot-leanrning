@@ -52,9 +52,6 @@
 
 同时在 `docs/beans/spring-core-beans/README.md` 强化 Start Here，把快启路线放到最前面，降低第一次进入的心理负担。
 
-#### 4) 教学质量门禁：把“体验要求”固化成自动检查
-
-- 在 CI 增加 docs 检查 job：执行 `bash scripts/check-docs.sh`（包含相对链接与教学覆盖）。
 - 让仓库提供可记忆的固定命令入口（脚本可直接执行；README 使用脚本示例）。
 - 可选：增加“章节契约检查”脚本，检测新增章节是否包含最小实验入口块与 Debugger Pack（优先对样板模块启用）。
 
@@ -70,7 +67,6 @@
 ## Testing and Deployment
 
 - **Testing:**
-  - `bash scripts/check-docs.sh`
   - `mvn -q -pl springboot-web-mvc test`
   - `mvn -q -pl spring-core-beans test`
   - （可选）`mvn -q test` 做全仓回归

@@ -36,7 +36,6 @@
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootBasicsDefaultLabTest` / `BootBasicsDevLabTest` / `BootBasicsOverrideLabTest`
@@ -57,7 +56,6 @@
 - 建议命令：`mvn -pl :spring-boot-basics test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
-
 
 ## 配置没生效
 

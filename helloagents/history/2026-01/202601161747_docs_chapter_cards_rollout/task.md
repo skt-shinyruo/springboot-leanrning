@@ -25,13 +25,10 @@ Directory: `helloagents/plan/202601161747_docs_chapter_cards_rollout/`
 
 ---
 
-## 2. 自动化与闸门（让 174 章可管理）
-
 - [√] 2.1 新增“章节清单生成”脚本（从 docs/README SSOT 生成 checklist）
   - 输出：方案包内的 `chapters.md` 或 `chapters.csv`（用于进度追踪）
 - [√] 2.2 新增“学习卡片完整性检查”脚本
   - 规则：SSOT 章节集合内，每章都必须包含五问字段（可允许 N/A）
-- [√] 2.3 将检查脚本接入 `scripts/check-docs.sh`（作为文档改写闸门的一部分）
 - [√] 2.4 新增“学习卡片 upsert”脚本：为全量章节批量 upsert 章节学习卡片（可重复执行）
 
 ---
@@ -47,7 +44,6 @@ Directory: `helloagents/plan/202601161747_docs_chapter_cards_rollout/`
 ## 4. 模块 docs 全量推进（按批次）
 
 > 章节数统计（docs/README.md 链接数）：共 174 章  
-> 每批完成后都要跑：`bash scripts/check-docs.sh` + `bash scripts/docs-site-build.sh`
 
 ### Batch A：主线地基（配置 → 容器 → AOP → 事务）
 
@@ -88,10 +84,6 @@ Directory: `helloagents/plan/202601161747_docs_chapter_cards_rollout/`
 ---
 
 ## 5. 验证与发布
-
-- [√] 5.1 每批次完成后：运行 `bash scripts/check-docs.sh`
-- [√] 5.2 每批次完成后：运行 `bash scripts/docs-site-build.sh`（strict）
-- [-] 5.3 全量完成后：本地 `bash scripts/docs-site-serve.sh` 抽样验收（Book-only 顺读体验）
 
 ---
 

@@ -8,7 +8,6 @@ Directory: `helloagents/plan/202601061556_spring_core_modules_teaching_rollout/`
 - [√] 0.1 全量链接自检：`python3 scripts/check-md-relative-links.py`（当前基线：`[OK] Checked 129 markdown files, missing targets: 0`），verify why.md#requirement-docs-link-integrity
 - [√] 0.2 全量教学覆盖自检：`python3 scripts/check-teaching-coverage.py --min-labs 2`（当前基线：仅 `docs/events/spring-core-events/part-02-async-and-transactional/07-transactional-event-listener.md` 缺可跑入口），verify why.md#requirement-chapter-lab-closure
   > Note: 执行前该缺口会导致全量 check fail；已在任务 5.2 修复，当前全量已通过。
-- [√] 0.3 聚合闸门：`bash scripts/check-docs.sh`（作为最终验收入口），verify why.md#requirement-docs-link-integrity
 
 ## 1. 全局规范（书本化最小统一口径）
 - [√] 1.1 目录页（SSOT）统一：每个模块 `spring-core-*/docs/README.md` 必须满足，verify why.md#requirement-docs-index-and-numbering

@@ -16,8 +16,6 @@
 2. **默认 Lab 的覆盖仍偏“主线”**：很多结论能跑，但关键分支的“对照实验”不足（尤其是选择/匹配/顺序/回退等分支），不利于形成稳定的排障能力。
 3. **章节坑点需要“第二层对照”**：每章 1 个坑点是底线；更深一层需要再补 1 个“可断言对照坑点/边界”，形成更稳的知识网（同章内对比更清晰）。
 
-本批次（Batch 01）的目标是先在 4 个高频模块中把方法论落到更深一层，并保持闸门全绿：
-
 - 每模块新增 ≥1 个默认 Lab（默认参与回归、可断言、尽量不 flaky）
 - Guide 内每个关键分支都补齐“源码级断点锚点 + call chain sketch”
 - 每章新增 ≥1 个可断言坑点/边界（对照实验），绑定默认 Lab/Test 证据链
@@ -29,7 +27,6 @@
 2. **默认 Lab 增量**：每个目标模块新增 ≥1 个默认 Lab，用于覆盖一个“更深分支”的稳定断言闭环。
 3. **章节对照坑点**：每个章节新增 ≥1 条可断言坑点/边界（对照实验），并绑定到默认 Lab/Test 入口与断点锚点。
 4. **Debug Playbook**：在 Guide 中补齐“排障分流地图”，让读者从现象快速定位到机制分支与断点。
-5. **一致性闸门**：确保 `mvn test` 与 `bash scripts/check-docs.sh` 全绿；并同步 `helloagents/wiki/modules/*.md` 与 `helloagents/CHANGELOG.md`。
 
 ## Impact Scope
 
@@ -86,12 +83,10 @@
 
 ### Requirement: Repo Gates Stay Green
 **Module:** Batch 01 target modules
-保证本批次改动后闸门持续可用。
 
 #### Scenario: Repo Gates Stay Green
 - `mvn -pl <module> test`（批次内模块）通过
 - `mvn test` 全绿
-- `bash scripts/check-docs.sh` 通过（断链=0、教学覆盖通过）
 
 ## Risk Assessment
 

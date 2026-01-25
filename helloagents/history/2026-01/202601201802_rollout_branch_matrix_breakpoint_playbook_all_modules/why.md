@@ -35,9 +35,6 @@
   - `common-pitfalls` 中包含统一的“排障 Playbook”结构块（或与其等价的可复制排障结构）
 - 工具链验证通过：
   - `mvn -q test`
-  - `python3 scripts/generate-book-labs-index.py`
-  - `bash scripts/check-docs.sh`
-  - `bash scripts/docs-site-build.sh`
 
 ## 风险与约束（Risks & Constraints）
 

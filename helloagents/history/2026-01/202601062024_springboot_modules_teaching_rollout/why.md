@@ -6,20 +6,15 @@
 
 - `docs/README.md` 作为章节清单（SSOT）：按 Part 分组、编号稳定、链接可解析；
 - 每章至少有 1 个“可跑入口”（真实 `src/test/java/.../*Test.java` 路径或 `*LabTest` 类名）；
-- 自检闸门脚本可一键验收：断链检查 + 教学覆盖检查（min-labs）。
 
 但 `springboot-*` 模块仍存在未对齐的差异，导致“同一套标准无法对全仓库落地、也无法被脚本持续验收”：
 
 1. 多数 `springboot-*/docs/README.md` 使用反引号展示路径（不是 Markdown 链接），无法作为“章节清单=SSOT”被脚本解析；
 2. `part-00-guide/00-deep-dive-guide.md` 与 `appendix/90/99` 普遍缺少可跑入口引用（只能间接指向 README），无法稳定满足“逐章可运行闭环”的要求；
 3. 少数 `springboot-*` 模块仅有 1 个 `*LabTest.java`，不满足统一的 `min-labs=2`；
-4. 当前 `scripts/check-docs.sh`、`check-md-relative-links.py`、`check-teaching-coverage.py` 主要覆盖 `spring-core-*`，未将 `springboot-*` 纳入一致性验收范围。
-
-因此需要把相同的教学化规范推广到 **全部 `springboot-*` 模块**，并把自检闸门升级为“覆盖 spring-core + springboot”的统一入口。
 
 ## Change Content
 
-1. 扩展自检脚本与闸门：支持 `springboot-*`（断链检查 + 教学覆盖检查）。
 2. 统一 `springboot-*/docs/README.md`：用 Markdown 链接列出章节，作为“章节清单（SSOT）”。
 3. 统一章节“可跑入口”块：为导读与附录补齐 `### 对应 Lab/Test（可运行）`，并确保每章至少 1 个入口可解析到真实测试类。
 4. 补齐最小 Labs：将 `springboot-*` 每模块 `*LabTest.java` 数量补齐到 `min-labs=2`。
@@ -39,7 +34,6 @@
   - `springboot-async-scheduling`
   - `springboot-cache`
 - **Files:**
-  - `scripts/*`（自检脚本与闸门）
   - `springboot-*/docs/**`（目录页与章节入口块）
   - `springboot-*/src/test/java/**`（补齐最小 Labs）
   - `helloagents/wiki/**`、`helloagents/CHANGELOG.md`、`helloagents/history/index.md`
@@ -83,9 +77,8 @@
 - 能扫描到 `spring-core-*/docs` 与 `springboot-*/docs`
 - 输出断链为 0（missing targets: 0）
 
-### Requirement: teaching-coverage-gate
+### Requirement: teaching-coverage
 **Module:** scripts
-教学覆盖检查需要覆盖 `spring-core-*` 与 `springboot-*`，并对每个模块执行 `min-labs=2` 的闸门。
 
 #### Scenario: check-teaching-coverage-passes-for-all-modules
 执行 `python3 scripts/check-teaching-coverage.py --min-labs 2`：
@@ -107,4 +100,3 @@
 - **Risk:** Maven 依赖下载偶发 403 导致回归失败（受本机网络/代理/镜像影响）
   - **Mitigation:** 任务中记录标准化处理方式（清理 `~/.m2/**/.lastUpdated`，必要时使用 `mvn -U`），并确保仓库不引入任何本机缓存文件
 - **Risk:** 文档重排/改链导致 README 与正文引用不一致
-  - **Mitigation:** 以 `scripts/check-docs.sh` 作为唯一验收入口；每完成一个模块就执行模块级自检，最后跑全量闸门

@@ -8,7 +8,7 @@
 - GitHub Pages 往往部署在子路径（/repo/），/book/ 绝对路径会跳到错误位置
 - 文档内部链接建议使用相对路径（指向 docs/book/*.md）
 
-本脚本用于门禁（CI/gate）：发现即失败。
+本脚本用于本地检查：发现即返回非零状态。
 """
 
 from __future__ import annotations
@@ -86,7 +86,7 @@ def scan_file(path: Path) -> list[tuple[int, str]]:
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="检查 docs 中 /book/ 绝对链接（门禁）。")
+    parser = argparse.ArgumentParser(description="检查 docs 中 /book/ 绝对链接。")
     parser.add_argument("--root", default=str(DOCS_DIR), help="扫描根目录（默认 docs/）")
     parser.add_argument("--max", type=int, default=20, help="最多输出多少条命中样本（默认 20）")
     return parser.parse_args(argv)
@@ -126,4 +126,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv))
-

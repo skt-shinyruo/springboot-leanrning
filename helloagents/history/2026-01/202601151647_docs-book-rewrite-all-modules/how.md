@@ -34,6 +34,4 @@
 
 - 不做“一次性大规模移动文件路径”：先完成写作形态迁移，再进入重排/合并/拆章
 - 每批次改动都必须通过：
-  - `bash scripts/check-docs.sh`
-  - `bash scripts/docs-site-build.sh`
 

@@ -101,7 +101,6 @@
 #### Scenario: 每个模块新增至少 1 个不 flaky 的并发与性能 Lab 并接入 Book 专题页
 - 每个模块新增至少 1 个 `*LabTest.java`（建议放入 `part02_perf_concurrency`），以 latch/线程边界/异常路径/指标等“可观测事实”作为断言
 - `docs/book/performance-and-concurrency.md` 增加这些 Lab 的入口索引
-- `python3 scripts/generate-book-labs-index.py` 生成的 `docs/book/labs-index.md` 纳入新增 Lab
 - `mvn -q test` 全绿
 
 ## Risk Assessment

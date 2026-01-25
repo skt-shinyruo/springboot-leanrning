@@ -13,5 +13,3 @@ Directory: `helloagents/plan/202601151259_docs-site-github-pages/`
 - [√] 2.2 更新 `helloagents/wiki/overview.md`：补充 Pages 入口说明
 
 ## 3. 验证
-- [√] 3.1 本地运行 `bash scripts/docs-site-build.sh` 通过
-- [√] 3.2 `bash scripts/check-docs.sh` 通过（断链 + 教学覆盖）

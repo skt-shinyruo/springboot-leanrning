@@ -17,12 +17,8 @@
 
 ## 验证
 
-- 运行 `bash scripts/check-docs.sh`（断链检查 + 教学覆盖检查）
-- 运行 `bash scripts/docs-site-build.sh`（`mkdocs build --strict`）
-
 ## 风险与规避
 
 - 风险：在书章节中新增指向源码/测试的 Markdown 链接，可能造成站内断链或构建失败。
   - 规避：只使用 inline code 展示路径与命令，不新增源码链接。
 - 风险：README 新增链接目标不存在。
-  - 规避：使用 `python3 scripts/check-md-relative-links.py README.md` 进行路径存在性校验（已由 `scripts/check-docs.sh` 覆盖）。

@@ -5,7 +5,7 @@
 当前仓库已经完成：
 
 - Maven 模块按 `tutorials` 风格分组（`spring-boot-modules/` + `spring-core-modules/`）
-- 文档体系（`docs/` + `docs/book/` + docs gate + docs-site）与模块 Labs/Exercises 的闭环
+- 文档体系（`docs/` + `docs/book/` + docs-site）与模块 Labs/Exercises 的闭环
 - 以 `springboot-web-mvc` 为首批示范：新增“错误分支矩阵”Lab，并绑定到 Book 主线章节
 
 但在“可执行入口”的一致性上仍有一个明显缺口：**每个模块缺少一个统一、可一键运行的“关键分支矩阵入口”**（尤其在 Book 主线中更需要一个稳定的“进阶入口”）。
@@ -49,4 +49,3 @@
   - **Mitigation:** 依赖使用 Spring Boot Parent 的版本管理；在全仓 `mvn -q test` 回归验证。
 - **Risk:** Book Matrix 聚合过多 Labs 导致运行时间变长。
   - **Mitigation:** 每模块只挑“最小集合”（2–4 个），并把其定位为“进阶入口”，不替代默认推荐 Lab。
-

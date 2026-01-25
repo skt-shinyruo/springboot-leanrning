@@ -23,7 +23,6 @@
     - `HttpMessageConverter` 是“HTTP body ↔ Java 对象”的关键桥梁；它同时影响入站（read）与出站（write）。
     - 406/415 通常不是你的业务逻辑问题，而是 **媒体类型与 converter 匹配失败**：`Accept`/`Content-Type`/`produces`/`consumes` 不一致。
 
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcContractJacksonLabTest`
