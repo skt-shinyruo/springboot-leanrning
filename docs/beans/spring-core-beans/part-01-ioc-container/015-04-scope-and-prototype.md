@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary](014-03-dependency-injection-resolution.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](016-05-lifecycle-and-callbacks.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -212,6 +213,7 @@
 
 ## 面试常问（prototype 注入陷阱）
 
+
 ## 小结与下一章
 
 - 你希望调用 `consumer.next()` 时每次都要一个新 prototype
@@ -229,6 +231,6 @@
 - Solution：`SpringCoreBeansExerciseSolutionTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
 
-上一章：[03. 依赖注入解析：类型/名称/@Qualifier/@Primary](014-03-dependency-injection-resolution.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](016-05-lifecycle-and-callbacks.md)
+上一章：[依赖解析与注入](014-03-dependency-injection-resolution.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[生命周期与回调](016-05-lifecycle-and-callbacks.md)
 
 <!-- BOOKIFY:END -->

@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Events 主线
-    - 怎么使用：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
-    - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
-    - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
-    - 推荐 Lab：`SpringCoreEventsLabTest`
+    - 怎么使用：本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+    - 原理：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+    - 源码入口：N/A（本页为索引/工具页）
+    - 推荐 Lab：N/A
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 125 章：99 - Self Check（spring-boot-async-scheduling）](../async-scheduling/spring-boot-async-scheduling/appendix/125-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 127 章：主线时间线：Spring Events](../events/spring-core-events/part-00-guide/127-03-mainline-timeline.md)
@@ -20,8 +21,9 @@
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：Events 主线 —— 通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
-- 回到主线：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
+- 一句话总结：Events 主线 —— 本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+- 回到主线：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -32,7 +34,7 @@
 
 阅读建议：
 - 先看章首的“章节学习卡片/本章要点”，建立预期；
-- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+- 建议先带着问题顺读一遍正文，再按证据链回到源码/断点验证。
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 主线（按时间线顺读）
@@ -78,8 +80,7 @@
 ## 证据链（如何验证你真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「Events 主线」的生效时机/顺序/边界；断点/入口：`org.springframework.context.event.SimpleApplicationEventMulticaster`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「Events 主线」的生效时机/顺序/边界；断点/入口：`org.springframework.context.event.ApplicationListenerMethodAdapter`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「Events 主线」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.support.TransactionSynchronizationManager`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``SpringCoreEventsLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「Events 主线」的生效时机/顺序/边界；断点/入口：N；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「Events 主线」的生效时机/顺序/边界；断点/入口：A（本页为索引；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「Events 主线」的生效时机/顺序/边界；断点/入口：工具页）；断言：你能解释“为什么此处生效/为什么此处不生效”。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

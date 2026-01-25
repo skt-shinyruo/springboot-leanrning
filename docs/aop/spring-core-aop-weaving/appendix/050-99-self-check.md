@@ -9,11 +9,24 @@
     - 推荐 Lab：`AspectjCtwLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 49 章：90. 常见坑清单（LTW/CTW）](049-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 51 章：事务主线（Tx）](../../../book/051-tx-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「自测题：你是否真的理解了 weaving？」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwLabTest test
+```
+<!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -36,6 +49,7 @@
 
 ## 机制主线
 
+
 ## 心智模型
 
 - 你能用一句话解释：proxy AOP 与 weaving 的根本差异是什么？
@@ -51,6 +65,7 @@
 - CTW 的主要代价是什么？你会如何控制织入范围？
 
 ## join point / pointcut
+
 
 ## 排障
 
@@ -98,8 +113,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
+- Lab：`AspectjCtwLabTest` / `AspectjWeavingBookMatrixLabTest` / `AspectjLtwBranchMatrixLabTest` / `AspectjCtwBranchMatrixLabTest` / `AspectjLtwLabTest`
 
-上一章：[90-common-pitfalls](049-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑](049-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

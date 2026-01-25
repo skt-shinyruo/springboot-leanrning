@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](017-06-post-processors.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 19 章：11. 调试与自检：如何“看见”容器正在做什么](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -193,6 +194,6 @@ ConfigB configB(ConfigA a) {
 - Lab：`SpringCoreBeansContainerLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
-上一章：[06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](017-06-post-processors.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08. FactoryBean：product vs factory（& 前缀）](08-factorybean.md)
+上一章：[扩展点：Post-Processor](017-06-post-processors.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[调试与观测](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 
 <!-- BOOKIFY:END -->

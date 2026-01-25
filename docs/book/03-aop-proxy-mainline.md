@@ -3,15 +3,16 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：Redirect（旧路径兼容）
-    - 怎么使用：本页为旧路径保留；请跳转到新章节继续阅读与运行。
-    - 原理：通过 redirect 页面保留历史入口，避免断链与读者迷路；正文与可跑入口统一在新章节维护。
-    - 源码入口：见新章节
-    - 推荐 Lab：见新章节
+    - 知识点：（Redirect）AOP/代理主线（旧入口）
+    - 怎么使用：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+    - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
+    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
+    - 推荐 Lab：`SpringCoreAopLabTest`
 <!-- CHAPTER-CARD:END -->
 
 ## 已迁移
 本页为旧入口兼容页，正文已迁移到：[新位置](027-aop-proxy-mainline.md)。
 
 ## 返回
-- [全书目录](/)
+- [模块目录](../README.md)
+- [全书目录](/book/)

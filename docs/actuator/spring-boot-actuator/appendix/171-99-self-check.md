@@ -3,17 +3,30 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Self Check（springboot-actuator）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 Actuator endpoints 暴露健康检查/信息/指标；用 exposure 控制可见范围，并在生产环境结合鉴权与安全边界。
-    - 原理：引入 Actuator → 端点注册与 discover → exposure 决定暴露 → Web 层映射为 HTTP 端点 → 结合安全策略与可观测信号使用。
-    - 源码入口：`org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration` / `org.springframework.boot.actuate.endpoint.annotation.Endpoint` / `org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootActuatorExposureOverrideLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 170 章：90 - Common Pitfalls（springboot-actuator）](170-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 172 章：Web Client 主线](../../../book/172-web-client-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「Self Check（springboot-actuator）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorExposureOverrideLabTest test
+```
+<!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -85,9 +98,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
+- Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorBookMatrixLabTest` / `BootActuatorBranchMatrixLabTest` / `BootActuatorLabTest`
 - Exercise：`BootActuatorExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](170-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑](170-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

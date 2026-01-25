@@ -9,6 +9,7 @@
     - 推荐 Lab：N/A
 <!-- CHAPTER-CARD:END -->
 
+
 本页目标：解释本仓库“练习题”的启用方式与运行方式，并保证默认情况下不会破坏 CI（默认 `mvn -q test` 全绿）。
 
 ---
@@ -18,6 +19,7 @@
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：Exercises & Solutions（练习与答案） —— 本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
 - 回到主线：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -93,3 +95,13 @@ mvn -q -pl :<artifactId> test
 
 - 只改了业务实现但没理解代理/事务边界：建议回到书的 [Debugger Pack](debugger-pack.md) 把断点装在关键入口上
 - 多模块联动导致你以为“改对了”：建议缩小范围，先用 `-pl :<artifactId>` 只跑单模块
+
+<!-- BOOKIFY:START -->
+
+### 对应 Lab/Test
+
+- （本章入口请参考正文中的 Lab/Test 引用）
+
+上一章：[064-04-branch-decision-matrix.md](../web-mvc/spring-boot-web-mvc/part-00-guide/064-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../web-mvc/spring-boot-web-mvc/README.md) ｜ 下一章：[performance-and-concurrency.md](performance-and-concurrency.md)
+
+<!-- BOOKIFY:END -->

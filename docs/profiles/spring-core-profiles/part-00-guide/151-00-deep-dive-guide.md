@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreProfilesLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 150 章：主线时间线：Spring Profiles](150-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 152 章：Profile 激活与 Bean 选择](../part-01-profiles/152-01-profile-activation-and-bean-selection.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -104,8 +105,8 @@ Profiles 的“深挖主线”是把“我以为激活了 dev”为何没生效�
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreProfilesLabTest`
+- Lab：`SpringCoreProfilesLabTest` / `SpringCoreProfilesProfilePrecedenceLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-profile-activation-and-bean-selection](../part-01-profiles/152-01-profile-activation-and-bean-selection.md)
+上一章：[主线时间线](150-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Profile 激活与 Bean 选择](../part-01-profiles/152-01-profile-activation-and-bean-selection.md)
 
 <!-- BOOKIFY:END -->

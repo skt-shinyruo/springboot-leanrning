@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcTestingDebuggingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 79 章：01：Servlet Async（Callable）与测试（asyncDispatch）](../part-06-async-sse/079-01-servlet-async-and-testing.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../part-08-security-observability/081-01-security-filterchain-and-mvc.md)
@@ -82,10 +83,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcTestingDebuggingLabTest`
-- Lab：`BootWebMvcMessageConverterTraceLabTest`
-- Lab：`BootWebMvcExceptionResolverChainLabTest`
+- Lab：`BootWebMvcTestingDebuggingLabTest` / `BootWebMvcSecurityVsMvcExceptionBoundaryLabTest` / `BootWebMvcExceptionResolverChainLabTest` / `BootWebMvcMessageConverterTraceLabTest`
 
-上一章：[part-06-async-sse/03-deferredresult-and-timeout.md](../part-06-async-sse/03-deferredresult-and-timeout.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-08-security-observability/01-security-filterchain-and-mvc.md](../part-08-security-observability/081-01-security-filterchain-and-mvc.md)
+上一章：[01](../part-06-async-sse/079-01-servlet-async-and-testing.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01](../part-08-security-observability/081-01-security-filterchain-and-mvc.md)
 
 <!-- BOOKIFY:END -->

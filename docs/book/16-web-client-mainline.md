@@ -3,15 +3,16 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：Redirect（旧路径兼容）
-    - 怎么使用：本页为旧路径保留；请跳转到新章节继续阅读与运行。
-    - 原理：通过 redirect 页面保留历史入口，避免断链与读者迷路；正文与可跑入口统一在新章节维护。
-    - 源码入口：见新章节
-    - 推荐 Lab：见新章节
+    - 知识点：（Redirect）Web Client 主线（旧入口）
+    - 怎么使用：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
+    - 原理：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
+    - 源码入口：`org.springframework.web.reactive.function.client.WebClient` / `org.springframework.web.reactive.function.client.ExchangeFilterFunction` / `org.springframework.web.reactive.function.client.ExchangeFunction`
+    - 推荐 Lab：`BootWebClientWebClientLabTest`
 <!-- CHAPTER-CARD:END -->
 
 ## 已迁移
 本页为旧入口兼容页，正文已迁移到：[新位置](172-web-client-mainline.md)。
 
 ## 返回
-- [全书目录](/)
+- [模块目录](../README.md)
+- [全书目录](/book/)

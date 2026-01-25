@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreValidationMechanicsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？](161-04-groups.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](163-06-debugging.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -88,6 +89,6 @@
 
 - Lab：`SpringCoreValidationMechanicsLabTest`
 
-上一章：[04-groups](161-04-groups.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06-debugging](163-06-debugging.md)
+上一章：[Groups](161-04-groups.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[调试](163-06-debugging.md)
 
 <!-- BOOKIFY:END -->

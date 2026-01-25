@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcTestingDebuggingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 68 章：03：HttpMessageConverter 与返回值处理（序列化发生在哪里）](068-03-message-converters-and-return-values.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 70 章：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](070-05-controlleradvice-matching-and-ordering.md)
@@ -108,14 +109,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcTestingDebuggingLabTest`
-- Lab：`BootWebMvcBindingDeepDiveLabTest`
-- Lab：`BootWebMvcExceptionResolverChainLabTest`
-- Lab：`BootWebMvcProblemDetailLabTest`
-- Lab：`BootWebMvcAdviceMatchingLabTest`
-- Lab：`BootWebMvcAdviceOrderLabTest`
-- Lab：`BootWebMvcSecurityLabTest`
+- Lab：`BootWebMvcTestingDebuggingLabTest` / `BootWebMvcBindingDeepDiveLabTest` / `BootWebMvcExceptionResolverChainLabTest` / `BootWebMvcProblemDetailLabTest` / `BootWebMvcSecurityLabTest` / `BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`
 
-上一章：[part-03-web-mvc-internals/03-message-converters-and-return-values.md](068-03-message-converters-and-return-values.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-03-web-mvc-internals/05-controlleradvice-matching-and-ordering.md](070-05-controlleradvice-matching-and-ordering.md)
+上一章：[消息转换与返回值](068-03-message-converters-and-return-values.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[@ControllerAdvice 匹配与顺序](070-05-controlleradvice-matching-and-ordering.md)
 
 <!-- BOOKIFY:END -->

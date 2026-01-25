@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）](../part-00-guide/013-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](015-04-scope-and-prototype.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -460,6 +461,6 @@ resolveDependency(descriptor):
 - Exercise：`SpringCoreBeansExerciseTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansOptionalInjectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansJsr330InjectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
 
-上一章：[02. Bean 注册入口：扫描、@Bean、@Import、registrar](02-bean-registration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](015-04-scope-and-prototype.md)
+上一章：[30 分钟快速闭环](../part-00-guide/012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[作用域与 prototype](015-04-scope-and-prototype.md)
 
 <!-- BOOKIFY:END -->

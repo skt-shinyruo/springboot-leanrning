@@ -69,6 +69,7 @@
 | 202601201802 | rollout_branch_matrix_breakpoint_playbook_all_modules | Enhancement | ✅Completed | [202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules](2026-01/202601201802_rollout_branch_matrix_breakpoint_playbook_all_modules/) |
 | 202601221758 | tutorials_style_deepen_all | Enhancement | ✅Completed | [202601221758_tutorials_style_deepen_all](2026-01/202601221758_tutorials_style_deepen_all/) |
 | 202601222034 | solutions_perf_concurrency_batch01 | Enhancement | ✅Completed | [202601222034_solutions_perf_concurrency_batch01](2026-01/202601222034_solutions_perf_concurrency_batch01/) |
+| 202601251209 | docs-deepen-all | Enhancement | ✅Completed | [202601251209_docs-deepen-all](2026-01/202601251209_docs-deepen-all/) |
 
 ---
 
@@ -138,6 +139,7 @@
 - [202601240941_beans_docs_refactor](2026-01/202601240941_beans_docs_refactor/) - spring-core-beans 文档分批重构与测试闭环
 - [202601242148_tutorials_style_deepen_all](2026-01/202601242148_tutorials_style_deepen_all/) - tutorials 风格对齐改造方案包（未执行，已归档）
 - [202601251025_remove_gates_everywhere](2026-01/202601251025_remove_gates_everywhere/) - 移除 docs 检查脚本与 docs-site workflow，并清理文档/知识库引用
+- [202601251209_docs-deepen-all](2026-01/202601251209_docs-deepen-all/) - 全量文档加深：章节契约/Bookify/Booklike V2 门禁与批处理（面试复习 / 源码级）
 - [202601231156_tutorials_format_alignment](2026-01/202601231156_tutorials_format_alignment/) - tutorials 风格对齐续作：补充全模块深挖“最小闭环”验收口径与审计脚本/基线；补齐 autoconfig/logging/observability/events 并发/性能可复现实验；通过 `mvn -q test`
 
 ## Index
@@ -147,3 +149,4 @@
 | 202601240941 | beans_docs_refactor | Refactor | ✅Completed | history/2026-01/202601240941_beans_docs_refactor/ |
 | 202601242148 | tutorials_style_deepen_all | Enhancement | [-]Not Executed | history/2026-01/202601242148_tutorials_style_deepen_all/ |
 | 202601251025 | remove_gates_everywhere | Refactor | ✅Completed | history/2026-01/202601251025_remove_gates_everywhere/ |
+| 202601251209 | docs-deepen-all | Enhancement | ✅Completed | history/2026-01/202601251209_docs-deepen-all/ |

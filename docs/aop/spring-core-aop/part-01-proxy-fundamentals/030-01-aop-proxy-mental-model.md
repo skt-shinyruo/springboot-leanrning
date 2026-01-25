@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](../part-00-guide/029-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 31 章：02. JDK vs CGLIB：代理类型与“可注入类型”差异](031-02-jdk-vs-cglib.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -149,6 +150,7 @@ mvn -pl :spring-core-aop test
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：AOP 心智模型：代理（Proxy）+ 入口（Call Path） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
 - 回到主线：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -164,6 +166,6 @@ AOP 心智模型：代理（Proxy）+ 入口（Call Path） —— 建议先跑�
 
 - Lab：`SpringCoreAopLabTest`
 
-上一章：[00-deep-dive-guide](../part-00-guide/029-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-jdk-vs-cglib](031-02-jdk-vs-cglib.md)
+上一章：[深挖导读](../part-00-guide/029-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[JDK vs CGLIB](031-02-jdk-vs-cglib.md)
 
 <!-- BOOKIFY:END -->

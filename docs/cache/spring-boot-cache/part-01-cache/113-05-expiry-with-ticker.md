@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：05：过期与可测性：用 Ticker 控制时间
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Cacheable/@CachePut/@CacheEvict` 声明缓存意图；根据 key/condition/unless 设计缓存命中与一致性策略。
-    - 原理：方法调用 → AOP 代理 → CacheInterceptor → key 计算（KeyGenerator/SpEL）→ 命中短路/不命中回源 → 回写/失效。
-    - 源码入口：`org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport` / `org.springframework.cache.interceptor.KeyGenerator` / `org.springframework.cache.CacheManager`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootCacheLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 114 章：90：常见坑清单（Cache）](../appendix/114-90-common-pitfalls.md)
@@ -28,6 +29,7 @@
     - Lab：`BootCacheLabTest`
 
 ## 机制主线
+
 
 ## 你应该观察到什么
 
@@ -75,6 +77,6 @@ Ticker 的核心价值是：让“时间推进”变成可控输入，从而写�
 
 - Lab：`BootCacheLabTest`
 
-上一章：[part-01-cache/04-sync-stampede.md](112-04-sync-stampede.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/114-90-common-pitfalls.md)
+上一章：[sync 与击穿](112-04-sync-stampede.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[108-02-breakpoint-map.md](../part-00-guide/108-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

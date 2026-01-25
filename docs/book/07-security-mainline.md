@@ -3,15 +3,16 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：Redirect（旧路径兼容）
-    - 怎么使用：本页为旧路径保留；请跳转到新章节继续阅读与运行。
-    - 原理：通过 redirect 页面保留历史入口，避免断链与读者迷路；正文与可跑入口统一在新章节维护。
-    - 源码入口：见新章节
-    - 推荐 Lab：见新章节
+    - 知识点：（Redirect）Security 主线（旧入口）
+    - 怎么使用：将认证/授权配置为 FilterChain；区分 401/403 与 CSRF 场景；方法级安全依赖代理与拦截器链。
+    - 原理：HTTP 请求 → `FilterChainProxy` 选择 SecurityFilterChain → 认证（Authentication）→ 授权（Authorization）→ 异常处理（401/403）→ 继续进入 MVC。
+    - 源码入口：`org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain` / `org.springframework.security.web.access.intercept.AuthorizationFilter`
+    - 推荐 Lab：`BootSecurityLabTest`
 <!-- CHAPTER-CARD:END -->
 
 ## 已迁移
 本页为旧入口兼容页，正文已迁移到：[新位置](084-security-mainline.md)。
 
 ## 返回
-- [全书目录](/)
+- [模块目录](../README.md)
+- [全书目录](/book/)

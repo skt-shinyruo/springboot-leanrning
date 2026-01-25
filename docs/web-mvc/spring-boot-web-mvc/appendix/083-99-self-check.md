@@ -3,17 +3,30 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Self Check（springboot-web-mvc）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcErrorViewLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 82 章：90：常见坑清单（Web MVC）](082-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 84 章：Security 主线](../../../book/084-security-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「Self Check（springboot-web-mvc）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorViewLabTest test
+```
+<!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -37,6 +50,7 @@
     - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
 
 ## 机制主线
+
 
 ## 自测题
 1. `@Valid` 触发校验发生在 MVC 的哪个阶段？异常如何被塑形为统一响应？
@@ -105,17 +119,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
-- Lab：`BootWebMvcBindingDeepDiveLabTest`
-- Lab：`BootWebMvcTestingDebuggingLabTest`
-- Lab：`BootWebMvcMessageConverterTraceLabTest`
-- Lab：`BootWebMvcTraceLabTest`
-- Lab：`BootWebMvcAdviceOrderLabTest`
-- Lab：`BootWebMvcAdviceMatchingLabTest`
-- Lab：`BootWebMvcRealWorldHttpLabTest`
-- Lab：`BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
+- Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcBookMatrixLabTest` / `BootWebMvcErrorBranchMatrixLabTest` / `BootWebMvcLabTest` / `BootWebMvcBindingDeepDiveLabTest` / `BootWebMvcAdviceMatchingLabTest` / `BootWebMvcAdviceOrderLabTest` / `BootWebMvcTraceLabTest` / `BootWebMvcTestingDebuggingLabTest` / `BootWebMvcMessageConverterTraceLabTest` / `BootWebMvcSecurityLabTest` / `BootWebMvcSecurityVsMvcExceptionBoundaryLabTest` / `BootWebMvcRealWorldHttpLabTest` / `BootWebMvcAsyncSseLabTest` / `BootWebMvcObservabilityLabTest`
 - Exercise：`BootWebMvcExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](082-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑](082-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

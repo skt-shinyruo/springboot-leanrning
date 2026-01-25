@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Web Client Debugger Pack）
-    - 怎么使用：先跑 `BootWebClientBranchMatrixLabTest` 固化“请求路径/headers/错误映射/超时/重试/Filter 顺序”的断言，再用断点把每个分支对应到 WebClient/RestClient 的关键拦截点。
-    - 原理：Client 构建（baseUrl/filters）→ 编码/发请求 → 解码/错误映射 → 超时/重试策略影响控制流。
-    - 源码入口：`org.springframework.web.reactive.function.client.WebClient` / `ExchangeFilterFunction` / Reactor operators（timeout/retry）
-    - 推荐 Lab：`BootWebClientBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
+    - 推荐 Lab：`BootWebClientWebClientLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 174 章：00 - Deep Dive Guide（springboot-web-client）](174-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 174 章：04：关键分支矩阵（Branch Decision Matrix）](174-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Web Client Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+- 回到主线：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -53,10 +63,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`BootWebClientBranchMatrixLabTest`
-- Lab：`BootWebClientWebClientLabTest` / `BootWebClientRestClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
+- Lab：`BootWebClientWebClientLabTest` / `BootWebClientBookMatrixLabTest` / `BootWebClientBranchMatrixLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](174-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](174-04-branch-decision-matrix.md)
+上一章：[MockWebServer 测试](../part-01-web-client/179-05-testing-with-mockwebserver.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[174-04-branch-decision-matrix.md](174-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

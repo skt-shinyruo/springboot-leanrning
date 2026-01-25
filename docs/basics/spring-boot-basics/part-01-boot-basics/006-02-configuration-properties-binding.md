@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：`@ConfigurationProperties` 绑定与类型转换
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `application.yml`/环境变量/命令行等配置进入 `Environment`，用 `@ConfigurationProperties` 做类型安全绑定，并将最终值用于条件装配或业务逻辑。
-    - 原理：配置源（PropertySource）→ `Environment` 聚合与覆盖 → Binder 绑定 → Profile/优先级分流 → 影响条件装配与运行期行为。
-    - 源码入口：`org.springframework.core.env.ConfigurableEnvironment` / `org.springframework.core.env.PropertySource` / `org.springframework.boot.context.properties.bind.Binder` / `org.springframework.boot.context.properties.ConfigurationPropertiesBinder`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootBasicsDefaultLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](005-01-property-sources-and-profiles.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 7 章：90：常见坑清单（建议反复对照）](../appendix/007-90-common-pitfalls.md)
@@ -34,9 +35,8 @@
 
 ## 你应该观察到什么（What to observe）
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「02：`@ConfigurationProperties` 绑定与类型转换」的生效时机/顺序/边界；断点/入口：`org.springframework.core.env.ConfigurableEnvironment`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「02：`@ConfigurationProperties` 绑定与类型转换」的生效时机/顺序/边界；断点/入口：`org.springframework.core.env.PropertySource`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「02：`@ConfigurationProperties` 绑定与类型转换」的生效时机/顺序/边界；断点/入口：`org.springframework.boot.context.properties.bind.Binder`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 1：运行本章推荐入口后，聚焦「02：`@ConfigurationProperties` 绑定与类型转换」的生效时机/顺序/边界；断点/入口：（以本章正文“源码；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「02：`@ConfigurationProperties` 绑定与类型转换」的生效时机/顺序/边界；断点/入口：断点”小节为准）；断言：你能解释“为什么此处生效/为什么此处不生效”。
 - 建议：跑完 ``BootBasicsDefaultLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->
 
@@ -87,7 +87,9 @@
 
 ## 常见坑与边界
 
+
 ## 常见坑
+
 
 ## 小结与下一章
 
@@ -101,6 +103,6 @@
 - Exercise：`BootBasicsExerciseTest`
 - Test file：`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java` / `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java` / `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part00_guide/BootBasicsExerciseTest.java`
 
-上一章：[part-01-boot-basics/01-property-sources-and-profiles.md](005-01-property-sources-and-profiles.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/007-90-common-pitfalls.md)
+上一章：[配置源与 Profiles](005-01-property-sources-and-profiles.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[004-02-breakpoint-map.md](../part-00-guide/004-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

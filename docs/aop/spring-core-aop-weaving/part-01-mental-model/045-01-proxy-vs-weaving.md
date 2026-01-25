@@ -9,6 +9,7 @@
     - 推荐 Lab：`AspectjCtwLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通](../part-00-guide/044-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 46 章：02. LTW：Load-Time Weaving（-javaagent）](../part-02-ltw/046-02-ltw-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -109,6 +110,6 @@ weaving 的核心是：**修改目标类/调用点的字节码**，在编译期�
 
 - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
 
-上一章：[00-deep-dive-guide](../part-00-guide/044-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-ltw-basics](../part-02-ltw/046-02-ltw-basics.md)
+上一章：[深挖导读](../part-00-guide/044-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[LTW 基础](../part-02-ltw/046-02-ltw-basics.md)
 
 <!-- BOOKIFY:END -->

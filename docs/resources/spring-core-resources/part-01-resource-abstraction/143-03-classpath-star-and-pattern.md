@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreResourcesLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？](142-02-classpath-locations.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](144-04-exists-and-handles.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -89,6 +90,7 @@ pattern 扫描返回的资源数组顺序不一定稳定（与 classpath 顺序�
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：`classpath*:` 与 pattern：为什么它能“扫到多个资源”？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
 - 回到主线：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -104,6 +106,6 @@ pattern 扫描返回的资源数组顺序不一定稳定（与 classpath 顺序�
 
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 
-上一章：[02-classpath-locations](142-02-classpath-locations.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04-exists-and-handles](144-04-exists-and-handles.md)
+上一章：[classpath 定位](142-02-classpath-locations.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[exists 与 handles](144-04-exists-and-handles.md)
 
 <!-- BOOKIFY:END -->

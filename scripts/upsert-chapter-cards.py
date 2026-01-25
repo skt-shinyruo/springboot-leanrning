@@ -385,9 +385,13 @@ def extract_first_lab(text: str, module_test_classes: set[str]) -> str | None:
 
 
 def default_module_lab(repo_root: Path, module_root: Path, module_test_classes: set[str]) -> str | None:
-    timeline = module_root / "docs" / "part-00-guide" / "03-mainline-timeline.md"
-    if not timeline.is_file():
+    guide = module_root / "docs" / "part-00-guide"
+    if not guide.is_dir():
         return None
+    candidates = sorted(guide.glob("*mainline-timeline.md"))
+    if not candidates:
+        return None
+    timeline = candidates[0]
     text = timeline.read_text(encoding="utf-8", errors="replace")
     return extract_first_lab(text, module_test_classes)
 

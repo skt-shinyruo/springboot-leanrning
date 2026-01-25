@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：性能与并发（可复现实验范式）
-    - 怎么使用：先读“可复现范式”，再选一个样板实验（线程池饱和 / 异步事件 / SpEL 并发求值）跑通并打断点，最后回到对应模块的断点地图深挖。
-    - 原理：本页不主讲某个模块机制；它收敛“如何写不 flaky 的并发/性能实验”的方法论与入口索引。
-    - 源码入口：见“样板索引（本仓库可跑入口）”中的每个 Lab/Test。
-    - 推荐 Lab：`BootAsyncSchedulingExecutorSaturationLabTest` / `SpringCoreSpelConcurrencyLabTest`
+    - 怎么使用：本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+    - 原理：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+    - 源码入口：N/A（本页为索引/工具页）
+    - 推荐 Lab：N/A
 <!-- CHAPTER-CARD:END -->
+
 
 本页目标：把“并发/性能问题”从主观体验（偶发、难复现）变成可断言的证据链：**用稳定的并发编排 + 明确的可观测点**，复现关键边界，再用断点走读源码主线。
 
@@ -15,12 +16,23 @@
 
 ---
 
+## 导读
+
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「性能与并发（可复现实验范式）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 建议先带着问题顺读一遍正文，再按证据链回到源码/断点验证。
+<!-- BOOKLIKE-V2:INTRO:END -->
+
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：性能与并发（可复现实验范式） —— 用 latch/屏障 + 明确观测点（拒绝/异常/线程边界/指标）把并发问题做成可回归实验，而不是靠“运气复现”。
-- 回到主线：当你在任一模块读到“异步/并发/性能边界”时，先回到本页选择一个可跑样板，再带着断点回到模块的调用链与断点地图。
-- 下一章：建议回到书的 [Labs 索引](labs-index.md) 或对应模块 README，按主题进入具体机制章节。
+- 一句话总结：性能与并发（可复现实验范式） —— 本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+- 回到主线：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 怎么用这页
@@ -153,3 +165,23 @@
 | `spring-core-resources` | `mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesPatternResolverConcurrencyLabTest test` | `spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part02_perf_concurrency/SpringCoreResourcesPatternResolverConcurrencyLabTest.java` |
 | `spring-core-profiles` | `mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesEnvironmentConcurrencyLabTest test` | `spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part02_perf_concurrency/SpringCoreProfilesEnvironmentConcurrencyLabTest.java` |
 | `spring-core-beans` | `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansConcurrentGetBeanLabTest test` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_perf_concurrency/SpringCoreBeansConcurrentGetBeanLabTest.java` |
+
+## 证据链（如何验证你真的理解了）
+
+<!-- BOOKLIKE-V2:EVIDENCE:START -->
+- 观察点 1：运行本章推荐入口后，聚焦「性能与并发（可复现实验范式）」的生效时机/顺序/边界；断点/入口：N；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「性能与并发（可复现实验范式）」的生效时机/顺序/边界；断点/入口：A（本页为索引；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「性能与并发（可复现实验范式）」的生效时机/顺序/边界；断点/入口：工具页）；断言：你能解释“为什么此处生效/为什么此处不生效”。
+<!-- BOOKLIKE-V2:EVIDENCE:END -->
+
+<!-- BOOKIFY:START -->
+
+### 对应 Lab/Test
+
+- Lab：`BootWebMvcRequestScopeIsolationLabTest`
+- Test file：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part00_guide/SpringCoreEventsExerciseSolutionTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_perf_concurrency/BootWebMvcRequestScopeIsolationLabTest.java` / `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part02_perf_concurrency/SpringCoreAopProxyConcurrencyLabTest.java` / `spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_perf_concurrency/AspectjLtwConcurrencyLabTest.java` / `spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part02_perf_concurrency/SpringCoreTxThreadLocalBoundaryLabTest.java` / `spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part02_perf_concurrency/SpringCoreValidationValidatorConcurrencyLabTest.java`
+- （另有 3 个 test file 路径引用，略）
+
+上一章：[exercises-and-solutions.md](exercises-and-solutions.md) ｜ 目录：[Docs TOC](../web-mvc/spring-boot-web-mvc/README.md) ｜ 下一章：[常见坑](../web-mvc/spring-boot-web-mvc/appendix/082-90-common-pitfalls.md)
+
+<!-- BOOKIFY:END -->

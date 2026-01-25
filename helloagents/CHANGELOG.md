@@ -38,6 +38,16 @@
 
 ### Added
 - `scripts/audit-module-deep-dive.sh`：从方案包 `task.md` 解析 22 个模块的 docs/tests/perf 入口清单，并输出缺失项（用于全模块深挖标准化的“可审计基线”）。
+
+### Added
+- `scripts/check-chapter-contract.py`：新增“章节契约（Chapter Contract）”检查脚本（默认 SSOT 模式：只检查目录页引用的章节 + `docs/book`）。
+
+### Changed
+- `scripts/bookify-docs.py`：修复跨模块公共页（`docs/book`）被重复改写导致的非幂等，并新增 `--list-changed` 便于排查。
+- `scripts/upsert-chapter-cards.py`：默认 Lab 发现逻辑兼容当前编号文件名（`*mainline-timeline.md`），降低推荐入口退化为 N/A 的概率。
+- `scripts/rewrite-chapters-booklike-v2.py`：导读区块补充“可直接跑”命令（基于推荐 Lab 与 Maven artifactId）。
+- `scripts/audit-module-deep-dive.sh`：新增 `--include-docs-quality/--docs-root/--docs-max-report`，可把契约/断链结果附加到审计报告。
+- `docs/**`：批量补齐章节卡片、书籍化骨架与 Bookify 尾部块（可跑入口 + 导航）。
 - `spring-boot-autoconfiguration` / `spring-boot-logging` / `spring-boot-observability` / `spring-core-events`：新增并发/性能可复现实验 `*ConcurrencyLabTest`（无耗时阈值断言），并接入模块目录页与知识库模块页入口。
 - `docs/web-mvc/springboot-web-mvc`：新增“请求调用链速览”章节（FilterChain → DispatcherServlet#doDispatch），用于断点定位与证据链入口。
 - 新增主题模块：`springboot-autoconfiguration` / `springboot-logging` / `springboot-observability` / `spring-core-spel`（含代码 + Labs + docs 骨架），并纳入 docs-site/labs 索引。

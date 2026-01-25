@@ -3,17 +3,30 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Self Check（springboot-async-scheduling）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootAsyncSchedulingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 124 章：90：常见坑清单（Async & Scheduling）](124-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 126 章：Events 主线](../../../book/126-events-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「Self Check（springboot-async-scheduling）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingLabTest test
+```
+<!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -82,9 +95,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
+- Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingBookMatrixLabTest` / `BootAsyncSchedulingBranchMatrixLabTest` / `BootAsyncSchedulingSchedulingLabTest`
 - Exercise：`BootAsyncSchedulingExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](124-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑](124-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

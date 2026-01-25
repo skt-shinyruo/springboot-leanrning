@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 39 章：10 real world stacking playbook](../part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](041-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -58,6 +59,7 @@
 - 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
+
 
 ## 坑 1：自调用绕过代理
 
@@ -182,9 +184,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProxyMechanicsLabTest`
+- Lab：`SpringCoreAopLabTest` / `SpringCoreAopBookMatrixLabTest` / `SpringCoreAopProxyBranchMatrixLabTest` / `SpringCoreAopAutoProxyBranchMatrixLabTest` / `SpringCoreAopStackingBranchMatrixLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProxyMechanicsLabTest` / `SpringCoreAopExposeProxyLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[10-real-world-stacking-playbook](../part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](041-99-self-check.md)
+上一章：[029-04-branch-decision-matrix.md](../part-00-guide/029-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](041-99-self-check.md)
 
 <!-- BOOKIFY:END -->

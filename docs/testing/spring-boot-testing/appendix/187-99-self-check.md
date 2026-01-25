@@ -3,17 +3,30 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Self Check（springboot-testing）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：按目标选择测试切片（如 `@WebMvcTest`）或全量上下文（`@SpringBootTest`）；用 mock/替身把外部依赖固定成可断言证据。
-    - 原理：测试注解决定上下文装配范围 → TestContext 缓存与复用 → slice/full context 的权衡 → 断言固化机制结论 → 快速定位失败。
-    - 源码入口：`org.springframework.boot.test.context.SpringBootTest` / `org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest` / `org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootTestingMockBeanLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 186 章：90 - Common Pitfalls（springboot-testing）](186-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 188 章：Business Case 收束](../../../book/188-business-case.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「Self Check（springboot-testing）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-boot-testing -Dtest=BootTestingMockBeanLabTest test
+```
+<!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -86,9 +99,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest`
+- Lab：`BootTestingMockBeanLabTest` / `BootTestingBookMatrixLabTest` / `BootTestingBranchMatrixLabTest` / `GreetingControllerSpringBootLabTest` / `GreetingControllerWebMvcLabTest`
 - Exercise：`BootTestingExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](186-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑](186-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

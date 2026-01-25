@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Actuator Debugger Pack）
-    - 怎么使用：先跑 `BootActuatorBranchMatrixLabTest` 固化“exposure include 能否生效”的断言，再用断点确认 endpoint 的注册、暴露与 handler mapping 的分支。
-    - 原理：Actuator endpoint 注册（discover）→ exposure 配置决定是否暴露 → web handler mapping 映射到 `/actuator/**`。
-    - 源码入口：`org.springframework.boot.actuate.endpoint.web.annotation.WebEndpointDiscoverer` / `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping`
-    - 推荐 Lab：`BootActuatorBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
+    - 推荐 Lab：`BootActuatorExposureOverrideLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 168 章：00 - Deep Dive Guide（springboot-actuator）](168-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 168 章：04：关键分支矩阵（Branch Decision Matrix）](168-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Actuator Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+- 回到主线：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -48,10 +58,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`BootActuatorBranchMatrixLabTest`
-- Lab：`BootActuatorExposureOverrideLabTest`
+- Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorBookMatrixLabTest` / `BootActuatorBranchMatrixLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](168-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](168-04-branch-decision-matrix.md)
+上一章：[Actuator 基础](../part-01-actuator/169-01-actuator-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[168-04-branch-decision-matrix.md](168-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopExposeProxyLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 33 章：04. `final` 与代理限制：为什么 final method 拦截不到？](033-04-final-and-proxy-limits.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 35 章：06. Debug / 观察：如何“看见”代理与切点](035-06-debugging.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -128,6 +129,6 @@
 - Lab：`SpringCoreAopExposeProxyLabTest` / `SpringCoreAopLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[04-final-and-proxy-limits](033-04-final-and-proxy-limits.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06-debugging](035-06-debugging.md)
+上一章：[代理限制（final 等）](033-04-final-and-proxy-limits.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[代理调试](035-06-debugging.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：`AspectjCtwLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 48 章：04. Join Point & Pointcut Cookbook（速查）](../part-04-join-points/048-04-join-point-cookbook.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 50 章：99. 自测题：你是否真的理解了 weaving？](050-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -94,8 +95,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
+- Lab：`AspectjCtwLabTest` / `AspectjWeavingBookMatrixLabTest` / `AspectjLtwBranchMatrixLabTest` / `AspectjCtwBranchMatrixLabTest` / `AspectjLtwLabTest`
 
-上一章：[04-join-point-cookbook](../part-04-join-points/048-04-join-point-cookbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](050-99-self-check.md)
+上一章：[044-04-branch-decision-matrix.md](../part-00-guide/044-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](050-99-self-check.md)
 
 <!-- BOOKIFY:END -->

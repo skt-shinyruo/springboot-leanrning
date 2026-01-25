@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
-    - 原理：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
-    - 源码入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository` / `org.springframework.data.jpa.repository.support.JpaRepositoryFactory` / `jakarta.persistence.EntityManager` / `org.springframework.orm.jpa.JpaTransactionManager`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootDataJpaDebugSqlLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 102 章：06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）](102-06-datajpatest-slice.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 104 章：90. 常见坑清单（建议反复对照）](../appendix/104-90-common-pitfalls.md)
@@ -44,6 +45,7 @@
 如果你希望看到更详细的 SQL 与参数（学习用即可），可以考虑在本模块的 `application.properties` 里增加：
 
 ## 建议的学习姿势
+
 
 ## 源码与断点
 
@@ -90,6 +92,6 @@
 
 - Lab：`BootDataJpaDebugSqlLabTest`
 
-上一章：[part-01-data-jpa/06-datajpatest-slice.md](102-06-datajpatest-slice.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/104-90-common-pitfalls.md)
+上一章：[@DataJpaTest](102-06-datajpatest-slice.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[096-02-breakpoint-map.md](../part-00-guide/096-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

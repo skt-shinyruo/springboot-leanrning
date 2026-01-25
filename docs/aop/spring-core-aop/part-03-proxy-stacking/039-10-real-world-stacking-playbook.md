@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 38 章：09. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](038-09-multi-proxy-stacking.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 40 章：90. 常见坑清单（建议反复对照）](../appendix/040-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -158,6 +159,7 @@
 
 ## 7. 下一步推荐
 
+
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
@@ -276,6 +278,6 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopRealWorldStackingLabTest` / `SpringCoreAopProceedNestingLabTest`
 
-上一章：[09-multi-proxy-stacking](038-09-multi-proxy-stacking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](../appendix/040-90-common-pitfalls.md)
+上一章：[多层代理叠加](038-09-multi-proxy-stacking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[029-02-breakpoint-map.md](../part-00-guide/029-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

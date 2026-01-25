@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopProxyMechanicsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 30 章：01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](030-01-aop-proxy-mental-model.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 32 章：03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？](032-03-self-invocation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -135,6 +136,6 @@ Spring AOP 最容易让人困惑的一点是：**代理类型不同，会直接�
 
 - Lab：`SpringCoreAopProxyMechanicsLabTest`
 
-上一章：[01-aop-proxy-mental-model](030-01-aop-proxy-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03-self-invocation](032-03-self-invocation.md)
+上一章：[代理心智模型](030-01-aop-proxy-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[self-invocation](032-03-self-invocation.md)
 
 <!-- BOOKIFY:END -->

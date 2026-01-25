@@ -3,15 +3,40 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Observability Debugger Pack）
-    - 怎么使用：遇到“指标没出现/标签不对/观测不到位”时，用本页断点把问题收敛到链路节点。
-    - 原理：先确认请求是否真的走到了 MVC，再确认观测信号是否被记录到 registry。
-    - 源码入口：`MeterRegistry` / `Timer` / `DispatcherServlet#doDispatch`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootObservabilityLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 205 章：01：调用链](205-01-http-observation-call-chain.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 205 章：04：关键分支矩阵](205-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Observability Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+- 回到主线：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
+
+## 怎么用这页
+
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「02：断点地图（Observability Debugger Pack）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityLabTest test
+```
+<!-- BOOKLIKE-V2:INTRO:END -->
 
 ## A. 先确认请求链路（MVC 主线）
 
@@ -34,6 +59,6 @@
 
 - Lab：`BootObservabilityLabTest`
 
-上一章：[part-00-guide/01-call-chain.md](205-01-http-observation-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](205-04-branch-decision-matrix.md)
+上一章：[Observability 调用链（请求 → observation → meter）](205-01-http-observation-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[关键分支矩阵（If/Then 收敛）](205-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->

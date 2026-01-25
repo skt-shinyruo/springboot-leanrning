@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Common Pitfalls（springboot-actuator）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 Actuator endpoints 暴露健康检查/信息/指标；用 exposure 控制可见范围，并在生产环境结合鉴权与安全边界。
-    - 原理：引入 Actuator → 端点注册与 discover → exposure 决定暴露 → Web 层映射为 HTTP 端点 → 结合安全策略与可观测信号使用。
-    - 源码入口：`org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration` / `org.springframework.boot.actuate.endpoint.annotation.Endpoint` / `org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootActuatorExposureOverrideLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 169 章：01 - Actuator 基础与暴露](../part-01-actuator/169-01-actuator-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 171 章：99 - Self Check（springboot-actuator）](171-99-self-check.md)
@@ -57,6 +58,7 @@
 
 ## 常见坑与边界
 
+
 ## 常见坑
 1. 端点存在但未暴露：只配置了 endpoint，忘了 exposure（或被覆盖）
 2. 环境差异：不同 profile/不同配置来源导致“我本地可以，线上不行”
@@ -75,8 +77,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
+- Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorBookMatrixLabTest` / `BootActuatorBranchMatrixLabTest` / `BootActuatorLabTest`
 
-上一章：[part-01-actuator/01-actuator-basics.md](../part-01-actuator/169-01-actuator-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](171-99-self-check.md)
+上一章：[168-04-branch-decision-matrix.md](../part-00-guide/168-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](171-99-self-check.md)
 
 <!-- BOOKIFY:END -->

@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
-    - 怎么使用：建议先跑本章推荐 Lab，把“容器阶段”固化为可观察现象，再按本文的调用链从 `refresh()` 走到 `doCreateBean()`；最后回到断点地图把断点收敛成“可复用清单”。
-    - 原理：`AbstractApplicationContext#refresh` 按阶段推进：准备环境 → 生成 BeanFactory → 注册/执行 BFPP/BDRPP（改定义）→ 注册 BPP（改实例/可换成 proxy）→ 单例预实例化 → 容器就绪。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.context.support.PostProcessorRegistrationDelegate` / `org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](012-01-quickstart-30min.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 13 章：02：断点地图（容器主线可复用断点/观察点清单）](013-02-breakpoint-map.md)
@@ -109,15 +110,21 @@
 
 - 本章把 `refresh()` 变成可复述的时间线与可下断点的锚点；下一章把锚点收敛成一份可复用断点清单。
 
+## 证据链（如何验证你真的理解了）
+
+<!-- BOOKLIKE-V2:EVIDENCE:START -->
+- 观察点 1：运行本章推荐入口后，聚焦「01：`refresh()` 调用链（容器从“定义”到“实例”的主线）」的生效时机/顺序/边界；断点/入口：`org.springframework.context.support.AbstractApplicationContext#refresh`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「01：`refresh()` 调用链（容器从“定义”到“实例”的主线）」的生效时机/顺序/边界；断点/入口：`org.springframework.beans.factory.support.DefaultListableBeanFactory`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「01：`refresh()` 调用链（容器从“定义”到“实例”的主线）」的生效时机/顺序/边界；断点/入口：`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``SpringCoreBeansContainerLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+<!-- BOOKLIKE-V2:EVIDENCE:END -->
+
 <!-- BOOKIFY:START -->
 
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansContainerLabTest`
-- Lab：`SpringCoreBeansBootstrapInternalsLabTest`
-- Lab：`SpringCoreBeansPostProcessorOrderingLabTest`
-- Lab：`SpringCoreBeansBeanCreationTraceLabTest`
 
-上一章：[part-00-guide/01-quickstart-30min.md](012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](013-02-breakpoint-map.md)
+上一章：[98-debugger-pack.md](../appendix/98-debugger-pack.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[011-04-branch-decision-matrix.md](011-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->

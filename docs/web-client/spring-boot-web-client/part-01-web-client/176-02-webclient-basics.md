@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：WebClient（响应式）最小闭环
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
-    - 原理：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
-    - 源码入口：`org.springframework.web.reactive.function.client.WebClient` / `org.springframework.web.reactive.function.client.ExchangeFilterFunction` / `org.springframework.web.reactive.function.client.ExchangeFunction`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebClientWebClientLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 175 章：01：RestClient（同步）最小闭环](175-01-restclient-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 177 章：03：错误处理：4xx/5xx → 领域异常](177-03-error-handling.md)
@@ -80,6 +81,6 @@
 - Lab：`BootWebClientWebClientLabTest`
 - Test file：`spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientWebClientLabTest.java`
 
-上一章：[part-01-web-client/01-restclient-basics.md](175-01-restclient-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-client/03-error-handling.md](177-03-error-handling.md)
+上一章：[RestClient](175-01-restclient-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[错误处理](177-03-error-handling.md)
 
 <!-- BOOKIFY:END -->

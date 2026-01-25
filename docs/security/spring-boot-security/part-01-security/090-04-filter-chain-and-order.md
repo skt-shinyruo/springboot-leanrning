@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：04：FilterChain：多链路 + 顺序 + 自定义 Filter
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：将认证/授权配置为 FilterChain；区分 401/403 与 CSRF 场景；方法级安全依赖代理与拦截器链。
-    - 原理：HTTP 请求 → `FilterChainProxy` 选择 SecurityFilterChain → 认证（Authentication）→ 授权（Authorization）→ 异常处理（401/403）→ 继续进入 MVC。
-    - 源码入口：`org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain` / `org.springframework.security.web.access.intercept.AuthorizationFilter`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootSecurityLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 89 章：03：Method Security 与代理：self-invocation 陷阱](089-03-method-security-and-proxy.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 91 章：05：JWT/Stateless：Bearer token + scope（最小闭环）](091-05-jwt-stateless.md)
@@ -106,9 +107,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootSecurityLabTest`
+- Lab：`BootSecurityLabTest` / `BootSecurityMultiFilterChainOrderLabTest`
 - Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
-上一章：[part-01-security/03-method-security-and-proxy.md](089-03-method-security-and-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-security/05-jwt-stateless.md](091-05-jwt-stateless.md)
+上一章：[方法安全与代理](089-03-method-security-and-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[JWT 无状态](091-05-jwt-stateless.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansBootstrapInternalsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -210,6 +211,7 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+
 ## 源码最短路径（call chain）
 
 > 目标：当你怀疑“注解没生效”时，用最短调用链回答两个问题：
@@ -370,6 +372,7 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 ## 3. 常见坑
 
+
 ## 小结与下一章
 
 - `AbstractApplicationContext#refresh`
@@ -395,9 +398,9 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest`
+- Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
-上一章：[11. 调试与可观察性：从异常到断点入口](../part-02-boot-autoconfig/019-11-debugging-and-observability.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[13. BeanDefinitionRegistryPostProcessor：定义注册再推进](13-bdrpp-definition-registration.md)
+上一章：[10](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[18](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
 
 <!-- BOOKIFY:END -->

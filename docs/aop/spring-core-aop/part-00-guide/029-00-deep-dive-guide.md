@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 28 章：主线时间线：Spring Core AOP](028-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 30 章：01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -158,6 +159,7 @@
 
 ## 5. 读完本章你应该获得什么
 
+
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
@@ -285,6 +287,6 @@ Spring AOP 相关断点会被非常频繁地命中（尤其是 BPP 与匹配逻�
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopProxyMechanicsLabTest` / `SpringCoreAopProceedNestingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopRealWorldStackingLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-aop-proxy-mental-model](../part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+上一章：[主线时间线](028-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[代理心智模型](../part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
 
 <!-- BOOKIFY:END -->

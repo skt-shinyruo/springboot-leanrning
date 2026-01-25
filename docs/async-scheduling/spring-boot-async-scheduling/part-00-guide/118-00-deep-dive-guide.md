@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Deep Dive Guide（springboot-async-scheduling）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootAsyncSchedulingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 117 章：主线时间线：Spring Boot Async & Scheduling](117-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 119 章：01：`@Async` 心智模型：代理与线程切换](../part-01-async-scheduling/119-01-async-proxy-mental-model.md)
@@ -102,6 +103,7 @@
 
 ## 常见坑与边界
 
+
 ## 推荐学习目标
 1. 能解释 `@Async` 为什么依赖代理（以及它和 AOP 的共性）
 2. 能把“线程在哪里切换”的证据写进测试或日志
@@ -119,6 +121,6 @@
 - Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
 - Exercise：`BootAsyncSchedulingExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-async-scheduling/01-async-proxy-mental-model.md](../part-01-async-scheduling/119-01-async-proxy-mental-model.md)
+上一章：[主线时间线](117-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[@Async 心智模型](../part-01-async-scheduling/119-01-async-proxy-mental-model.md)
 
 <!-- BOOKIFY:END -->

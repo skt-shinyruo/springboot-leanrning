@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：04：`sync=true`：防缓存击穿（stampede）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Cacheable/@CachePut/@CacheEvict` 声明缓存意图；根据 key/condition/unless 设计缓存命中与一致性策略。
-    - 原理：方法调用 → AOP 代理 → CacheInterceptor → key 计算（KeyGenerator/SpEL）→ 命中短路/不命中回源 → 回写/失效。
-    - 源码入口：`org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport` / `org.springframework.cache.interceptor.KeyGenerator` / `org.springframework.cache.CacheManager`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootCacheLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 111 章：03：key / condition / unless：缓存边界](111-03-key-condition-unless.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 113 章：05：过期与可测性：用 Ticker 控制时间](113-05-expiry-with-ticker.md)
@@ -28,6 +29,7 @@
     - Lab：`BootCacheLabTest`
 
 ## 机制主线
+
 
 ## 你应该观察到什么
 
@@ -76,6 +78,6 @@
 
 - Lab：`BootCacheLabTest`
 
-上一章：[part-01-cache/03-key-condition-unless.md](111-03-key-condition-unless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-cache/05-expiry-with-ticker.md](113-05-expiry-with-ticker.md)
+上一章：[key/condition/unless](111-03-key-condition-unless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[过期语义](113-05-expiry-with-ticker.md)
 
 <!-- BOOKIFY:END -->

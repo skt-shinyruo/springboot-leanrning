@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 34 章：05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](034-05-expose-proxy.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 36 章：07. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）](../part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -173,9 +174,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProceedNestingLabTest`
+- Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProceedNestingLabTest` / `SpringCoreAopProxyMechanicsLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[05-expose-proxy](034-05-expose-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07-autoproxy-creator-mainline](../part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)
+上一章：[exposeProxy](034-05-expose-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[AutoProxyCreator 主线](../part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)
 
 <!-- BOOKIFY:END -->

@@ -9,11 +9,24 @@
     - 推荐 Lab：`SpringCoreResourcesLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 147 章：90. 常见坑清单（建议反复对照）](147-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 149 章：Profiles 主线](../../../book/149-profiles-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「自测题（Spring Core Resources）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesLabTest test
+```
+<!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -81,8 +94,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
+- Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesBookMatrixLabTest` / `SpringCoreResourcesBranchMatrixLabTest` / `SpringCoreResourcesMechanicsLabTest`
 
-上一章：[90-common-pitfalls](147-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑](147-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

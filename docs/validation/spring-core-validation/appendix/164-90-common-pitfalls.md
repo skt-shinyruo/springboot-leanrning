@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreValidationLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”](../part-01-validation-core/163-06-debugging.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 165 章：自测题（Spring Core Validation）](165-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -90,8 +91,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
+- Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationBookMatrixLabTest` / `SpringCoreValidationBranchMatrixLabTest` / `SpringCoreValidationMechanicsLabTest`
 
-上一章：[06-debugging](../part-01-validation-core/163-06-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](165-99-self-check.md)
+上一章：[157-04-branch-decision-matrix.md](../part-00-guide/157-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](165-99-self-check.md)
 
 <!-- BOOKIFY:END -->

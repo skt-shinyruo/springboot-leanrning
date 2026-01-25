@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansAotFactoriesLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 25 章：90. 常见坑清单（建议反复对照）](../appendix/025-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -166,12 +167,15 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 
 ## 常见坑与边界
 
+
 ## 6. 常见误区
+
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑” —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
 - 回到主线：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -184,6 +188,6 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 - Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotFactoriesLabTest.java`
 
-上一章：[39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](../part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[41. RuntimeHints 入门：把构建期契约跑通](41-runtimehints-basics.md)
+上一章：[18](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[013-02-breakpoint-map.md](../part-00-guide/013-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：90：常见坑清单（Async & Scheduling）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootAsyncSchedulingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 123 章：05：`@Scheduled` 基础与可测试性](../part-01-async-scheduling/123-05-scheduling-basics.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 125 章：99 - Self Check（springboot-async-scheduling）](125-99-self-check.md)
@@ -57,6 +58,7 @@
 
 ## 常见坑与边界
 
+
 ## `@Async` 不生效
 
 - 忘了 `@EnableAsync`
@@ -85,8 +87,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
+- Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingBookMatrixLabTest` / `BootAsyncSchedulingBranchMatrixLabTest` / `BootAsyncSchedulingSchedulingLabTest`
 
-上一章：[part-01-async-scheduling/05-scheduling-basics.md](../part-01-async-scheduling/123-05-scheduling-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](125-99-self-check.md)
+上一章：[118-04-branch-decision-matrix.md](../part-00-guide/118-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](125-99-self-check.md)
 
 <!-- BOOKIFY:END -->

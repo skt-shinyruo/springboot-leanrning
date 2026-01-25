@@ -3,15 +3,16 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：Redirect（旧路径兼容）
-    - 怎么使用：本页为旧路径保留；请跳转到新章节继续阅读与运行。
-    - 原理：通过 redirect 页面保留历史入口，避免断链与读者迷路；正文与可跑入口统一在新章节维护。
-    - 源码入口：见新章节
-    - 推荐 Lab：见新章节
+    - 知识点：（Redirect）IoC 容器主线（Beans）（旧入口）
+    - 怎么使用：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
+    - 推荐 Lab：`SpringCoreBeansContainerLabTest`
 <!-- CHAPTER-CARD:END -->
 
 ## 已迁移
 本页为旧入口兼容页，正文已迁移到：[新位置](009-ioc-container-mainline.md)。
 
 ## 返回
-- [全书目录](/)
+- [模块目录](../README.md)
+- [全书目录](/book/)

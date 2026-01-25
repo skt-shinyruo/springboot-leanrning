@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：01：知识地图（Web MVC Deep Dive Map）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 64 章：00 - Deep Dive Guide（springboot-web-mvc）](064-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 66 章：02：断点地图（Part 01 Debugger Pack）](066-02-breakpoint-map.md)
@@ -132,20 +133,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-- Lab：`BootWebMvcInternalsLabTest`
-- Lab：`BootWebMvcTraceLabTest`
-- Lab：`BootWebMvcMessageConverterTraceLabTest`
-- Lab：`BootWebMvcContractJacksonLabTest`
-- Lab：`BootWebMvcRealWorldHttpLabTest`
-- Lab：`BootWebMvcAsyncSseLabTest`
-- Lab：`BootWebMvcTestingDebuggingLabTest`
-- Lab：`BootWebMvcBindingDeepDiveLabTest`
-- Lab：`BootWebMvcAdviceOrderLabTest`
-- Lab：`BootWebMvcAdviceMatchingLabTest`
-- Lab：`BootWebMvcSecurityLabTest`
-- Lab：`BootWebMvcObservabilityLabTest`
+- Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest` / `BootWebMvcViewLabTest` / `BootWebMvcErrorViewLabTest` / `BootWebMvcInternalsLabTest` / `BootWebMvcTraceLabTest` / `BootWebMvcMessageConverterTraceLabTest` / `BootWebMvcContractJacksonLabTest` / `BootWebMvcRealWorldHttpLabTest` / `BootWebMvcAsyncSseLabTest` / `BootWebMvcTestingDebuggingLabTest` / `BootWebMvcBindingDeepDiveLabTest` / `BootWebMvcAdviceOrderLabTest` / `BootWebMvcAdviceMatchingLabTest` / `BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](064-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-mvc/01-validation-and-error-shaping.md](../part-01-web-mvc/071-01-validation-and-error-shaping.md)
+上一章：[深挖导读](064-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[DispatcherServlet 调用链（含参数解析/绑定）](../part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md)
 
 <!-- BOOKIFY:END -->

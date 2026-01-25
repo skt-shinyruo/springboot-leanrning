@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Business Case Debugger Pack）
-    - 怎么使用：先跑 `BootBusinessCaseBranchMatrixLabTest` 固化“成功/失败路径、事务回滚、观测证据”的断言，再沿 Service/Tx 断点把业务流与基础设施（Tx/JPA/日志）串起来。
-    - 原理：业务入口（Controller/Service）→ 事务边界 → Repository/JPA → 异常触发回滚 → 观测/日志作为证据链。
-    - 源码入口：`TransactionInterceptor` / `JpaTransactionManager` / 业务 Service 方法
-    - 推荐 Lab：`BootBusinessCaseBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
+    - 推荐 Lab：`BootBusinessCaseLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 190 章：00 - Deep Dive Guide（springboot-business-case）](190-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 190 章：04：关键分支矩阵（Branch Decision Matrix）](190-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Business Case Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+- 回到主线：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -48,10 +58,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`BootBusinessCaseBranchMatrixLabTest`
-- Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
+- Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseBookMatrixLabTest` / `BootBusinessCaseBranchMatrixLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](190-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](190-04-branch-decision-matrix.md)
+上一章：[架构与端到端流转](../part-01-business-case/191-01-architecture-and-flow.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[190-04-branch-decision-matrix.md](190-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

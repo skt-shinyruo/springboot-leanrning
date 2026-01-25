@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 10 章：主线时间线：Spring Core Beans（IoC 容器）](010-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](012-01-quickstart-30min.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -541,9 +542,9 @@ mvn -pl :spring-core-beans -Dtest=<TestClass>#<testMethod> test
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansResolvableDependencyLabTest`
+- Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansResolvableDependencyLabTest` / `SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Bean 心智模型：BeanDefinition vs Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md)
+上一章：[主线时间线](010-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[主线叙事：从 `refresh()` 到 `doCreateBean()`（源码级）](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)
 
 <!-- BOOKIFY:END -->

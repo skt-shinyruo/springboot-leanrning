@@ -3,15 +3,16 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：Redirect（旧路径兼容）
-    - 怎么使用：本页为旧路径保留；请跳转到新章节继续阅读与运行。
-    - 原理：通过 redirect 页面保留历史入口，避免断链与读者迷路；正文与可跑入口统一在新章节维护。
-    - 源码入口：见新章节
-    - 推荐 Lab：见新章节
+    - 知识点：（Redirect）Web MVC 请求主线（旧入口）
+    - 怎么使用：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
+    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 推荐 Lab：`BootWebMvcInternalsLabTest`
 <!-- CHAPTER-CARD:END -->
 
 ## 已迁移
 本页为旧入口兼容页，正文已迁移到：[新位置](062-webmvc-mainline.md)。
 
 ## 返回
-- [全书目录](/)
+- [模块目录](../README.md)
+- [全书目录](/book/)

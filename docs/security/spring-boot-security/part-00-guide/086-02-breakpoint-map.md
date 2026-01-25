@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Security Debugger Pack）
-    - 怎么使用：先跑 `BootSecurityBranchMatrixLabTest` 固化“哪条 SecurityFilterChain 被命中”的断言，再用断点沿 `FilterChainProxy` 观察 chain 匹配、过滤器顺序与鉴权失败点。
-    - 原理：请求 → `FilterChainProxy` 选择 `SecurityFilterChain` → 逐个 filter 执行 → `Authentication`/`Authorization` 决策 → 可能影响 MVC 异常边界。
-    - 源码入口：`org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain`
-    - 推荐 Lab：`BootSecurityBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
+    - 推荐 Lab：`BootSecurityMultiFilterChainOrderLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 86 章：00 - Deep Dive Guide（springboot-security）](086-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 86 章：04：关键分支矩阵（Branch Decision Matrix）](086-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Security Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+- 回到主线：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -52,10 +62,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`BootSecurityBranchMatrixLabTest`
-- Lab：`BootSecurityMultiFilterChainOrderLabTest` / `BootSecurityDevProfileLabTest`
+- Lab：`BootSecurityMultiFilterChainOrderLabTest` / `BootSecurityBookMatrixLabTest` / `BootSecurityBranchMatrixLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](086-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](086-04-branch-decision-matrix.md)
+上一章：[JWT 无状态](../part-01-security/091-05-jwt-stateless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[086-04-branch-decision-matrix.md](086-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

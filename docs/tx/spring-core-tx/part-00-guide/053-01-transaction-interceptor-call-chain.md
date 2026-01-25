@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）
-    - 怎么使用：建议先跑本章推荐 Lab，把“commit/rollback/传播/回滚规则”固化为断言，再按本文把调用链串起来：容器阶段如何把 `@Transactional` 变成 Advisor → 运行阶段如何进入 `TransactionInterceptor` → 如何决定提交/回滚。
-    - 原理：声明式事务本质是 AOP：容器用 Advisor + TransactionInterceptor 包装 bean；运行时 `invokeWithinTransaction` 根据传播与回滚规则建立/加入事务，执行目标方法，再 commit/rollback 收尾。
-    - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager` / `org.springframework.transaction.support.TransactionSynchronizationManager`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
+    - 原理：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
+    - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager`
     - 推荐 Lab：`SpringCoreTxLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 53 章：00. 深挖指南：把“事务边界/传播/回滚规则”落到源码与断点](053-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 53 章：02：断点地图（Tx Debugger Pack）](053-02-breakpoint-map.md)
@@ -84,15 +85,21 @@
 
 - 本章把 `@Transactional` 的“生成链 + 执行链”串成可复述叙事；下一章把入口收敛为断点地图，方便排障时快速命中关键分支。
 
+## 证据链（如何验证你真的理解了）
+
+<!-- BOOKLIKE-V2:EVIDENCE:START -->
+- 观察点 1：运行本章推荐入口后，聚焦「01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.PlatformTransactionManager`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``SpringCoreTxLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+<!-- BOOKLIKE-V2:EVIDENCE:END -->
+
 <!-- BOOKIFY:START -->
 
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreTxLabTest`
-- Lab：`SpringCoreTxRollbackRulesLabTest`
-- Lab：`SpringCoreTxPropagationMatrixLabTest`
-- Lab：`SpringCoreTxSelfInvocationPitfallLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](053-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](053-02-breakpoint-map.md)
+上一章：[053-02-breakpoint-map.md](053-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[053-04-branch-decision-matrix.md](053-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->

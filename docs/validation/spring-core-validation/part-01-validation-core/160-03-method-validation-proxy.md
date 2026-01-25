@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreValidationLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 159 章：02. 程序化校验：为什么直接用 `Validator` 仍然很重要？](159-02-programmatic-validator.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？](161-04-groups.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -97,6 +98,6 @@
 
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
 
-上一章：[02-programmatic-validator](159-02-programmatic-validator.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04-groups](161-04-groups.md)
+上一章：[Programmatic Validator](159-02-programmatic-validator.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Groups](161-04-groups.md)
 
 <!-- BOOKIFY:END -->

@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Common Pitfalls（springboot-testing）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：按目标选择测试切片（如 `@WebMvcTest`）或全量上下文（`@SpringBootTest`）；用 mock/替身把外部依赖固定成可断言证据。
-    - 原理：测试注解决定上下文装配范围 → TestContext 缓存与复用 → slice/full context 的权衡 → 断言固化机制结论 → 快速定位失败。
-    - 源码入口：`org.springframework.boot.test.context.SpringBootTest` / `org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest` / `org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootTestingMockBeanLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 185 章：01 - Slice 与 Mock（Testing）](../part-01-testing/185-01-slice-and-mocking.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 187 章：99 - Self Check（springboot-testing）](187-99-self-check.md)
@@ -57,6 +58,7 @@
 
 ## 常见坑与边界
 
+
 ## 常见坑
 1. 误把 slice 当成全量上下文：缺失的 bean/auto-config 导致误判
 2. `@MockBean` 过度使用：测试变成“模拟驱动”，与真实行为脱节
@@ -76,8 +78,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest` / `GreetingControllerWebMvcLabTest`
+- Lab：`BootTestingMockBeanLabTest` / `BootTestingBookMatrixLabTest` / `BootTestingBranchMatrixLabTest` / `GreetingControllerSpringBootLabTest` / `GreetingControllerWebMvcLabTest`
 
-上一章：[part-01-testing/01-slice-and-mocking.md](../part-01-testing/185-01-slice-and-mocking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](187-99-self-check.md)
+上一章：[184-04-branch-decision-matrix.md](../part-00-guide/184-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](187-99-self-check.md)
 
 <!-- BOOKIFY:END -->

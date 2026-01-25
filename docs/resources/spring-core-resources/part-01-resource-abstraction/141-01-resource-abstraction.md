@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreResourcesLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 140 章：深挖指南（Spring Core Resources）](../part-00-guide/140-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？](142-02-classpath-locations.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -73,6 +74,7 @@ Spring 的 `Resource` 抽象解决的是一个常见问题：
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：`Resource` 抽象：为什么 Spring 不让你直接用 `File`？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
 - 回到主线：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -88,6 +90,6 @@ Spring 的 `Resource` 抽象解决的是一个常见问题：
 
 - Lab：`SpringCoreResourcesLabTest`
 
-上一章：[00-deep-dive-guide](../part-00-guide/140-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-classpath-locations](142-02-classpath-locations.md)
+上一章：[深挖导读](../part-00-guide/140-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[classpath 定位](142-02-classpath-locations.md)
 
 <!-- BOOKIFY:END -->

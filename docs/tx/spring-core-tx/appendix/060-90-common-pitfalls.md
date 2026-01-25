@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreTxLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？](../part-02-template-and-debugging/059-06-debugging.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 61 章：自测题（Spring Core Tx）](061-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -57,6 +58,7 @@
 - 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
+
 
 ## 坑 1：同类自调用导致 `@Transactional` 不生效
 
@@ -108,9 +110,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreTxLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
+- Lab：`SpringCoreTxLabTest` / `SpringCoreTxBookMatrixLabTest` / `SpringCoreTxBranchMatrixLabTest` / `SpringCoreTxPitfallsBranchMatrixLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
 - Exercise：`SpringCoreTxExerciseTest`
 
-上一章：[06-debugging](../part-02-template-and-debugging/059-06-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](061-99-self-check.md)
+上一章：[053-04-branch-decision-matrix.md](../part-00-guide/053-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](061-99-self-check.md)
 
 <!-- BOOKIFY:END -->

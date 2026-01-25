@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Boot 启动与配置主线
-    - 怎么使用：通过 `application.yml`/环境变量/命令行等配置进入 `Environment`，用 `@ConfigurationProperties` 做类型安全绑定，并将最终值用于条件装配或业务逻辑。
-    - 原理：配置源（PropertySource）→ `Environment` 聚合与覆盖 → Binder 绑定 → Profile/优先级分流 → 影响条件装配与运行期行为。
-    - 源码入口：`org.springframework.core.env.ConfigurableEnvironment` / `org.springframework.core.env.PropertySource` / `org.springframework.boot.context.properties.bind.Binder` / `org.springframework.boot.context.properties.ConfigurationPropertiesBinder`
-    - 推荐 Lab：`BootBasicsOverrideLabTest`
+    - 怎么使用：本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+    - 原理：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+    - 源码入口：N/A（本页为索引/工具页）
+    - 推荐 Lab：N/A
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 1 章：Start Here（如何运行、如何读、如何调试）](001-start-here.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）](../basics/spring-boot-basics/part-00-guide/003-03-mainline-timeline.md)
@@ -22,8 +23,9 @@
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：Boot 启动与配置主线 —— 通过 `application.yml`/环境变量/命令行等配置进入 `Environment`，用 `@ConfigurationProperties` 做类型安全绑定，并将最终值用于条件装配或业务逻辑。
-- 回到主线：配置源（PropertySource）→ `Environment` 聚合与覆盖 → Binder 绑定 → Profile/优先级分流 → 影响条件装配与运行期行为。
+- 一句话总结：Boot 启动与配置主线 —— 本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+- 回到主线：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -34,7 +36,7 @@
 
 阅读建议：
 - 先看章首的“章节学习卡片/本章要点”，建立预期；
-- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+- 建议先带着问题顺读一遍正文，再按证据链回到源码/断点验证。
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 主线（按时间线顺读）
@@ -91,8 +93,7 @@
 ## 证据链（如何验证你真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「Boot 启动与配置主线」的生效时机/顺序/边界；断点/入口：`org.springframework.core.env.ConfigurableEnvironment`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「Boot 启动与配置主线」的生效时机/顺序/边界；断点/入口：`org.springframework.core.env.PropertySource`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「Boot 启动与配置主线」的生效时机/顺序/边界；断点/入口：`org.springframework.boot.context.properties.bind.Binder`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootBasicsOverrideLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「Boot 启动与配置主线」的生效时机/顺序/边界；断点/入口：N；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「Boot 启动与配置主线」的生效时机/顺序/边界；断点/入口：A（本页为索引；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「Boot 启动与配置主线」的生效时机/顺序/边界；断点/入口：工具页）；断言：你能解释“为什么此处生效/为什么此处不生效”。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

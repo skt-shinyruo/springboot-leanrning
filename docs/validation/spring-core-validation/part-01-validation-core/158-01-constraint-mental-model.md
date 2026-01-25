@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreValidationLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 157 章：深挖指南（Spring Core Validation）](../part-00-guide/157-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 159 章：02. 程序化校验：为什么直接用 `Validator` 仍然很重要？](159-02-programmatic-validator.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -99,6 +100,7 @@ Bean Validation 的价值在于：
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：约束（Constraint）心智模型：你在校验什么？校验结果是什么？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
 - 回到主线：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -112,8 +114,8 @@ Bean Validation 的价值在于：
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreValidationLabTest`
+- Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
 
-上一章：[00-deep-dive-guide](../part-00-guide/157-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-programmatic-validator](159-02-programmatic-validator.md)
+上一章：[深挖导读](../part-00-guide/157-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Programmatic Validator](159-02-programmatic-validator.md)
 
 <!-- BOOKIFY:END -->

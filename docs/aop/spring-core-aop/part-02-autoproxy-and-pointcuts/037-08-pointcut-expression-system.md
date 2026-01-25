@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopPointcutExpressionsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 36 章：07. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）](036-07-autoproxy-creator-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 38 章：09. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](../part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -228,6 +229,6 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 - Lab：`SpringCoreAopPointcutExpressionsLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[07-autoproxy-creator-mainline](036-07-autoproxy-creator-mainline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[09-multi-proxy-stacking](../part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
+上一章：[AutoProxyCreator 主线](036-07-autoproxy-creator-mainline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[多层代理叠加](../part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
 
 <!-- BOOKIFY:END -->

@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Business Case 收束
-    - 怎么使用：用端到端链路把 Web/Validation/Security/AOP/Tx/JPA/Events 串起来：遇到红测/异常时，先定位“哪个边界没生效”，再回到对应模块主线。
-    - 原理：一次业务请求贯穿：MVC 入参→安全边界→事务边界→持久化上下文→事件时机→可观测信号；排障的关键是把问题归类到具体边界。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.data.jpa.repository.support.SimpleJpaRepository`
-    - 推荐 Lab：`BootBusinessCaseLabTest`
+    - 怎么使用：本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+    - 原理：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+    - 源码入口：N/A（本页为索引/工具页）
+    - 推荐 Lab：N/A
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 187 章：99 - Self Check（spring-boot-testing）](../testing/spring-boot-testing/appendix/187-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 189 章：主线时间线：Business Case（综合案例）](../business-case/spring-boot-business-case/part-00-guide/189-03-mainline-timeline.md)
@@ -20,8 +21,9 @@
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：Business Case 收束 —— 用端到端链路把 Web/Validation/Security/AOP/Tx/JPA/Events 串起来：遇到红测/异常时，先定位“哪个边界没生效”，再回到对应模块主线。
-- 回到主线：一次业务请求贯穿：MVC 入参→安全边界→事务边界→持久化上下文→事件时机→可观测信号；排障的关键是把问题归类到具体边界。
+- 一句话总结：Business Case 收束 —— 本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+- 回到主线：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -32,7 +34,7 @@
 
 阅读建议：
 - 先看章首的“章节学习卡片/本章要点”，建立预期；
-- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+- 建议先带着问题顺读一遍正文，再按证据链回到源码/断点验证。
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 主线（按时间线顺读）
@@ -84,8 +86,7 @@
 ## 证据链（如何验证你真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「Business Case 收束」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「Business Case 收束」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「Business Case 收束」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootBusinessCaseLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「Business Case 收束」的生效时机/顺序/边界；断点/入口：N；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「Business Case 收束」的生效时机/顺序/边界；断点/入口：A（本页为索引；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「Business Case 收束」的生效时机/顺序/边界；断点/入口：工具页）；断言：你能解释“为什么此处生效/为什么此处不生效”。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：事务主线（Tx）
-    - 怎么使用：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
-    - 原理：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
-    - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager`
-    - 推荐 Lab：`SpringCoreTxLabTest`
+    - 怎么使用：本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+    - 原理：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+    - 源码入口：N/A（本页为索引/工具页）
+    - 推荐 Lab：N/A
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 50 章：99. 自测题：你是否真的理解了 weaving？](../aop/spring-core-aop-weaving/appendix/050-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 52 章：主线时间线：Spring Core Tx（事务）](../tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md)
@@ -20,8 +21,9 @@
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：事务主线（Tx） —— 在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
-- 回到主线：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
+- 一句话总结：事务主线（Tx） —— 本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+- 回到主线：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -32,7 +34,7 @@
 
 阅读建议：
 - 先看章首的“章节学习卡片/本章要点”，建立预期；
-- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+- 建议先带着问题顺读一遍正文，再按证据链回到源码/断点验证。
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 主线（按时间线顺读）
@@ -86,8 +88,7 @@
 ## 证据链（如何验证你真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「事务主线（Tx）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「事务主线（Tx）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「事务主线（Tx）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.PlatformTransactionManager`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``SpringCoreTxLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「事务主线（Tx）」的生效时机/顺序/边界；断点/入口：N；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「事务主线（Tx）」的生效时机/顺序/边界；断点/入口：A（本页为索引；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「事务主线（Tx）」的生效时机/顺序/边界；断点/入口：工具页）；断言：你能解释“为什么此处生效/为什么此处不生效”。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

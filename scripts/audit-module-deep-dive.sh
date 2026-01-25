@@ -7,10 +7,14 @@ cd "${repo_root}"
 task_file=""
 format="text"
 out=""
+include_docs_quality="false"
+docs_quality_root="docs"
+docs_quality_max_report="50"
 
 usage() {
   cat <<'EOF'
 Usage: scripts/audit-module-deep-dive.sh [--task <task.md>] [--format text|md] [--out <file>]
+                                        [--include-docs-quality] [--docs-root <dir>] [--docs-max-report <n>]
 
 默认行为：
   - 从 task.md（3.1/3.2 章节）解析每模块的 docs/tests/perf 入口清单
@@ -20,6 +24,7 @@ Usage: scripts/audit-module-deep-dive.sh [--task <task.md>] [--format text|md] [
 Examples:
   scripts/audit-module-deep-dive.sh
   scripts/audit-module-deep-dive.sh --format md --out helloagents/plan/YYYYMMDDHHMM_<feature>/module-deep-dive-audit.md
+  scripts/audit-module-deep-dive.sh --format md --out helloagents/plan/YYYYMMDDHHMM_<feature>/module-deep-dive-audit.md --include-docs-quality
   scripts/audit-module-deep-dive.sh --task helloagents/history/YYYY-MM/YYYYMMDDHHMM_<feature>/task.md --format text
 EOF
 }
@@ -36,6 +41,18 @@ while [[ $# -gt 0 ]]; do
       ;;
     --out)
       out="${2:-}"
+      shift 2
+      ;;
+    --include-docs-quality)
+      include_docs_quality="true"
+      shift
+      ;;
+    --docs-root)
+      docs_quality_root="${2:-}"
+      shift 2
+      ;;
+    --docs-max-report)
+      docs_quality_max_report="${2:-}"
       shift 2
       ;;
     -h|--help)
@@ -305,10 +322,73 @@ sys.stdout.write(out)
 PY
 }
 
+run_docs_quality() {
+  local fmt="${1}"
+  local root="${2}"
+  local max_report="${3}"
+
+  local contract_out=""
+  local links_out=""
+  local contract_status=0
+  local links_status=0
+
+  set +e
+  contract_out="$(python3 scripts/check-chapter-contract.py --root "${root}" --max-report "${max_report}" 2>&1)"
+  contract_status=$?
+  links_out="$(python3 scripts/check-md-relative-links.py --root "${root}" --max-report "${max_report}" 2>&1)"
+  links_status=$?
+  set -e
+
+  if [[ "${fmt}" == "md" ]]; then
+    cat <<EOF
+
+## Docs 质量门禁（契约 / 断链）
+
+### Chapter Contract（章节契约）
+
+\`\`\`text
+${contract_out}
+\`\`\`
+
+### Relative Links（相对链接断链）
+
+\`\`\`text
+${links_out}
+\`\`\`
+EOF
+  else
+    cat <<EOF
+
+== Docs 质量门禁（契约 / 断链） ==
+
+[Chapter Contract]
+${contract_out}
+
+[Relative Links]
+${links_out}
+EOF
+  fi
+
+  if [[ ${contract_status} -ne 0 || ${links_status} -ne 0 ]]; then
+    return 1
+  fi
+  return 0
+}
+
 if [[ -n "${out}" ]]; then
   mkdir -p "$(dirname "${out}")"
   run_audit > "${out}"
+  if [[ "${include_docs_quality}" == "true" ]]; then
+    if ! run_docs_quality "${format}" "${docs_quality_root}" "${docs_quality_max_report}" >> "${out}"; then
+      echo "[WARN] docs quality checks failed (see report): ${out}" >&2
+      echo "[OK] wrote: ${out}"
+      exit 1
+    fi
+  fi
   echo "[OK] wrote: ${out}"
 else
   run_audit
+  if [[ "${include_docs_quality}" == "true" ]]; then
+    run_docs_quality "${format}" "${docs_quality_root}" "${docs_quality_max_report}"
+  fi
 fi

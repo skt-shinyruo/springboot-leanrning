@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：05：`@Scheduled` 基础与可测试性
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootAsyncSchedulingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 124 章：90：常见坑清单（Async & Scheduling）](../appendix/124-90-common-pitfalls.md)
@@ -84,6 +85,6 @@
 
 - Lab：`BootAsyncSchedulingLabTest`
 
-上一章：[part-01-async-scheduling/04-self-invocation.md](122-04-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/124-90-common-pitfalls.md)
+上一章：[self-invocation](122-04-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[118-02-breakpoint-map.md](../part-00-guide/118-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

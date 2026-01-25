@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreTxLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 51 章：事务主线（Tx）](../../../book/051-tx-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 53 章：深挖指南（Spring Core Tx）](053-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -27,6 +28,7 @@
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：主线时间线：Spring Core Tx（事务） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
 - 回到主线：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -38,6 +40,11 @@
 阅读建议：
 - 先看章首的“章节学习卡片/本章要点”，建立预期；
 - 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxLabTest test
+```
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 在 Spring 主线中的位置
@@ -73,3 +80,13 @@
 - 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Core Tx（事务）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.PlatformTransactionManager`；断言：你能解释“为什么此处生效/为什么此处不生效”。
 - 建议：跑完 ``SpringCoreTxLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->
+
+<!-- BOOKIFY:START -->
+
+### 对应 Lab/Test
+
+- Lab：`SpringCoreTxLabTest`
+
+上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[深挖导读](053-00-deep-dive-guide.md)
+
+<!-- BOOKIFY:END -->

@@ -144,7 +144,11 @@ def iter_chapters_ordered_by_last_occurrence(repo_root: Path, docs_readme: Path)
             chapter.relative_to(repo_root)
         except ValueError:
             continue
-        if "/docs/" not in chapter.as_posix():
+        # 只把“模块目录页 README.md 所在目录”下的页面视为本模块章节：
+        # - 避免把 docs/book 等跨模块公共页面当成章节（会导致重复改写、破坏幂等）
+        try:
+            chapter.relative_to(docs_readme.parent)
+        except ValueError:
             continue
         if chapter == docs_readme:
             continue
@@ -352,6 +356,7 @@ def upsert_bookify_footer(
     docs_readme: Path,
     chapters: list[ChapterRef],
     dry_run: bool,
+    list_changed: bool,
 ) -> tuple[int, int, list[str]]:
     """
     Returns (changed_files, total_files, warnings)
@@ -403,6 +408,12 @@ def upsert_bookify_footer(
 
         if new_text != original:
             changed += 1
+            if list_changed:
+                try:
+                    rel = chapter.chapter.relative_to(repo_root).as_posix()
+                except ValueError:
+                    rel = chapter.chapter.as_posix()
+                print(f"[CHANGED] {rel}")
             if not dry_run:
                 chapter.chapter.write_text(new_text, encoding="utf-8")
 
@@ -424,6 +435,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="append",
         default=[],
         help="仅处理指定模块（可重复）。例如：--module spring-core-beans",
+    )
+    parser.add_argument(
+        "--list-changed",
+        action="store_true",
+        help="输出将被改动的章节路径（用于排查非幂等问题）。",
     )
     return parser.parse_args(argv)
 
@@ -471,6 +487,7 @@ def main(argv: list[str]) -> int:
             docs_readme=docs_readme,
             chapters=chapters,
             dry_run=args.dry_run,
+            list_changed=args.list_changed,
         )
         total_changed += changed
         total_files += total

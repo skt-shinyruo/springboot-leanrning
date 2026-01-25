@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Spring Events Debugger Pack）
-    - 怎么使用：先跑 `SpringCoreEventsBasicsBranchMatrixLabTest`/`SpringCoreEventsAsyncTransactionalBranchMatrixLabTest` 固化“同步/异步/事务事件”的断言，再用断点观察 multicaster 如何选择 listener、在哪个线程执行、异常如何传播。
-    - 原理：publishEvent → ApplicationEventMulticaster 选 listener → 逐个调用（同步/异步取决于 multicaster/executor）→ 事务事件依赖事务同步回调。
-    - 源码入口：`org.springframework.context.event.AbstractApplicationEventMulticaster` / `org.springframework.context.event.SimpleApplicationEventMulticaster`
-    - 推荐 Lab：`SpringCoreEventsBasicsBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
+    - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
+    - 推荐 Lab：`SpringCoreEventsMechanicsLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 128 章：00 - Deep Dive Guide（spring-core-events）](128-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 128 章：04：关键分支矩阵（Branch Decision Matrix）](128-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Spring Events Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+- 回到主线：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -46,10 +56,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`SpringCoreEventsBasicsBranchMatrixLabTest` / `SpringCoreEventsAsyncTransactionalBranchMatrixLabTest`
-- Lab：`SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest` / `SpringCoreEventsAsyncMulticasterLabTest` / `SpringCoreEventsTransactionalEventLabTest`
+- Lab：`SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsBookMatrixLabTest` / `SpringCoreEventsBasicsBranchMatrixLabTest` / `SpringCoreEventsAsyncTransactionalBranchMatrixLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](128-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](128-04-branch-decision-matrix.md)
+上一章：[事务事件](../part-02-async-and-transactional/135-07-transactional-event-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[128-04-branch-decision-matrix.md](128-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

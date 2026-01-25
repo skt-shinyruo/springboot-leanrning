@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcAdviceMatchingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 69 章：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](069-04-exception-resolvers-and-error-flow.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 71 章：01：校验（Validation）与错误响应形状（Error Shape）](../part-01-web-mvc/071-01-validation-and-error-shaping.md)
@@ -112,9 +113,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcAdviceMatchingLabTest`
-- Lab：`BootWebMvcAdviceOrderLabTest`
+- Lab：`BootWebMvcAdviceMatchingLabTest` / `BootWebMvcAdviceOrderLabTest`
 
-上一章：[part-03-web-mvc-internals/04-exception-resolvers-and-error-flow.md](069-04-exception-resolvers-and-error-flow.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-04-rest-contract/01-content-negotiation-406-415.md](../part-04-rest-contract/077-01-content-negotiation-406-415.md)
+上一章：[异常收敛与错误流](069-04-exception-resolvers-and-error-flow.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[校验与错误塑形](../part-01-web-mvc/071-01-validation-and-error-shaping.md)
 
 <!-- BOOKIFY:END -->

@@ -1,0 +1,36 @@
+12:55:19.159 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.learning.springboot.bootbasics.part01_boot_basics.BootBasicsDefaultLabTest]: BootBasicsDefaultLabTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+12:55:19.284 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.learning.springboot.bootbasics.BootBasicsApplication for test class com.learning.springboot.bootbasics.part01_boot_basics.BootBasicsDefaultLabTest
+2026-01-25T12:55:19.658+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsDefaultLabTest       : Starting BootBasicsDefaultLabTest using Java 17.0.17 with PID 1505841 (started by feng in /home/feng/code/project/springboot-leanrning/spring-boot-modules/spring-boot-basics)
+2026-01-25T12:55:19.659+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsDefaultLabTest       : No active profile set, falling back to 1 default profile: "default"
+2026-01-25T12:55:20.083+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsDefaultLabTest       : Started BootBasicsDefaultLabTest in 0.677 seconds (process running for 1.73)
+== springboot-basics ==
+activeProfiles=[]
+app.name=springboot-basics
+app.greeting=你好，默认配置
+app.featureEnabled=false
+greetingProvider=DefaultGreetingProvider
+greeting=你好，默认配置 (from default bean)
+2026-01-25T12:55:20.683+08:00  INFO 1505841 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.learning.springboot.bootbasics.part01_boot_basics.BootBasicsDevLabTest]: BootBasicsDevLabTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-01-25T12:55:20.688+08:00  INFO 1505841 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.learning.springboot.bootbasics.BootBasicsApplication for test class com.learning.springboot.bootbasics.part01_boot_basics.BootBasicsDevLabTest
+2026-01-25T12:55:20.729+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsDevLabTest           : Starting BootBasicsDevLabTest using Java 17.0.17 with PID 1505841 (started by feng in /home/feng/code/project/springboot-leanrning/spring-boot-modules/spring-boot-basics)
+2026-01-25T12:55:20.730+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsDevLabTest           : The following 1 profile is active: "dev"
+2026-01-25T12:55:20.854+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsDevLabTest           : Started BootBasicsDevLabTest in 0.16 seconds (process running for 2.502)
+== springboot-basics ==
+activeProfiles=[dev]
+app.name=springboot-basics
+app.greeting=你好，DEV 配置
+app.featureEnabled=true
+greetingProvider=DevGreetingProvider
+greeting=你好，DEV 配置 (from dev bean)
+2026-01-25T12:55:20.880+08:00  INFO 1505841 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.learning.springboot.bootbasics.part01_boot_basics.BootBasicsOverrideLabTest]: BootBasicsOverrideLabTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-01-25T12:55:20.882+08:00  INFO 1505841 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.learning.springboot.bootbasics.BootBasicsApplication for test class com.learning.springboot.bootbasics.part01_boot_basics.BootBasicsOverrideLabTest
+2026-01-25T12:55:20.910+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsOverrideLabTest      : Starting BootBasicsOverrideLabTest using Java 17.0.17 with PID 1505841 (started by feng in /home/feng/code/project/springboot-leanrning/spring-boot-modules/spring-boot-basics)
+2026-01-25T12:55:20.910+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsOverrideLabTest      : No active profile set, falling back to 1 default profile: "default"
+2026-01-25T12:55:21.009+08:00  INFO 1505841 --- [           main] c.l.s.b.p.BootBasicsOverrideLabTest      : Started BootBasicsOverrideLabTest in 0.122 seconds (process running for 2.656)
+== springboot-basics ==
+activeProfiles=[]
+app.name=springboot-basics
+app.greeting=Hello from test override
+app.featureEnabled=true
+greetingProvider=DefaultGreetingProvider
+greeting=Hello from test override (from default bean)

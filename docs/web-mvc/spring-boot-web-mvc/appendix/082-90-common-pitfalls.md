@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：90：常见坑清单（Web MVC）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../part-08-security-observability/081-01-security-filterchain-and-mvc.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 83 章：99 - Self Check（springboot-web-mvc）](083-99-self-check.md)
@@ -80,6 +81,7 @@
 - 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
+
 
 ## 400/校验相关
 
@@ -189,18 +191,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-- Lab：`BootWebMvcBindingDeepDiveLabTest`
-- Lab：`BootWebMvcTestingDebuggingLabTest`
-- Lab：`BootWebMvcRealWorldHttpLabTest`
-- Lab：`BootWebMvcAsyncSseLabTest`
-- Lab：`BootWebMvcTraceLabTest`
-- Lab：`BootWebMvcMessageConverterTraceLabTest`
-- Lab：`BootWebMvcAdviceOrderLabTest`
-- Lab：`BootWebMvcAdviceMatchingLabTest`
-- Lab：`BootWebMvcSecurityLabTest`
-- Lab：`BootWebMvcObservabilityLabTest`
+- Lab：`BootWebMvcLabTest` / `BootWebMvcBookMatrixLabTest` / `BootWebMvcErrorBranchMatrixLabTest` / `BootWebMvcSpringBootLabTest` / `BootWebMvcBindingDeepDiveLabTest` / `BootWebMvcTestingDebuggingLabTest` / `BootWebMvcRealWorldHttpLabTest` / `BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest` / `BootWebMvcAsyncSseLabTest` / `BootWebMvcTraceLabTest` / `BootWebMvcSecurityVsMvcExceptionBoundaryLabTest` / `BootWebMvcContractJacksonLabTest` / `BootWebMvcMessageConverterTraceLabTest` / `BootWebMvcAdviceMatchingLabTest` / `BootWebMvcAdviceOrderLabTest`
 
-上一章：[part-08-security-observability/02-observability-and-metrics.md](../part-08-security-observability/02-observability-and-metrics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](083-99-self-check.md)
+上一章：[064-04-branch-decision-matrix.md](../part-00-guide/064-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](083-99-self-check.md)
 
 <!-- BOOKIFY:END -->

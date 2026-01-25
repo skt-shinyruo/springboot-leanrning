@@ -43,7 +43,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
 
-from repo_paths import find_module_root
+from repo_paths import find_module_root, to_maven_artifact_id
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -430,9 +430,18 @@ def replace_or_insert_marker_block(
     return new_block + ("\n" if not new_block.endswith("\n") else "") + body.lstrip("\n")
 
 
-def build_intro_block(*, card: ChapterCard) -> str:
+def build_intro_block(*, card: ChapterCard, run_command: str | None = None) -> str:
     lab = card.recommended_lab
     lab_hint = "推荐先跑一遍本章 Lab，再带着问题回到正文。" if lab and lab != "N/A" else "建议先带着问题顺读一遍正文，再按证据链回到源码/断点验证。"
+    run_hint = ""
+    if run_command:
+        run_hint = (
+            "\n"
+            "验证入口（可直接跑）：\n"
+            "```bash\n"
+            f"{run_command}\n"
+            "```\n"
+        )
     return (
         f"{BOOKLIKE_V2_INTRO_START}\n"
         f"这一章围绕「{card.knowledge_point}」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。\n"
@@ -440,6 +449,7 @@ def build_intro_block(*, card: ChapterCard) -> str:
         f"阅读建议：\n"
         f"- 先看章首的“章节学习卡片/本章要点”，建立预期；\n"
         f"- {lab_hint}\n"
+        f"{run_hint}"
         f"{BOOKLIKE_V2_INTRO_END}\n"
     )
 
@@ -481,6 +491,7 @@ def build_summary_block(*, card: ChapterCard, has_footer_nav: bool) -> str:
         f"{BOOKLIKE_V2_SUMMARY_START}\n"
         f"- 一句话总结：{card.knowledge_point} —— {card.how_to_use}\n"
         f"- 回到主线：{card.principle}\n"
+        f"- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。\n"
         f"- {next_hint}\n"
         f"{BOOKLIKE_V2_SUMMARY_END}\n"
     )
@@ -656,7 +667,9 @@ def clean_duplicate_experiment_section(*, sections: list[H2Section], has_lab_cal
     return sections, changed
 
 
-def fix_empty_watchlist_blocks(*, sections: list[H2Section], card: ChapterCard, has_footer_nav: bool) -> tuple[list[H2Section], bool]:
+def fix_empty_watchlist_blocks(
+    *, sections: list[H2Section], card: ChapterCard, has_footer_nav: bool, run_command: str | None
+) -> tuple[list[H2Section], bool]:
     changed = False
     for s in sections:
         norm = normalize_section_title(s.title)
@@ -665,7 +678,7 @@ def fix_empty_watchlist_blocks(*, sections: list[H2Section], card: ChapterCard, 
         if not is_effectively_empty(s.body):
             continue
         if norm == "导读":
-            s.body = "\n" + build_intro_block(card=card) + "\n"
+            s.body = "\n" + build_intro_block(card=card, run_command=run_command) + "\n"
             changed = True
         elif norm == "证据链":
             s.body = "\n" + build_evidence_block(card=card) + "\n"
@@ -685,6 +698,7 @@ def rewrite_normal_or_tool_page(
     path: Path,
     page_type: str,
     card: ChapterCard,
+    run_command: str | None,
 ) -> tuple[str, list[RewriteWarning]]:
     warnings: list[RewriteWarning] = []
     stripped, bookify_block = strip_bookify_block(original)
@@ -700,7 +714,7 @@ def rewrite_normal_or_tool_page(
             title="怎么用这页",
             matcher=intro_re,
             insert_before_titles=None,
-            new_body=build_intro_block(card=card),
+            new_body=build_intro_block(card=card, run_command=run_command),
             marker_start=BOOKLIKE_V2_INTRO_START,
             marker_end=BOOKLIKE_V2_INTRO_END,
         )
@@ -713,7 +727,9 @@ def rewrite_normal_or_tool_page(
             marker_start=BOOKLIKE_V2_SUMMARY_START,
             marker_end=BOOKLIKE_V2_SUMMARY_END,
         )
-        sections, c3 = fix_empty_watchlist_blocks(sections=sections, card=card, has_footer_nav=has_footer_nav)
+        sections, c3 = fix_empty_watchlist_blocks(
+            sections=sections, card=card, has_footer_nav=has_footer_nav, run_command=run_command
+        )
         changed = c1 or c2 or c3
     else:
         sections, c_intro = ensure_section(
@@ -721,7 +737,7 @@ def rewrite_normal_or_tool_page(
             title="导读",
             matcher=re.compile(r"^(导读|本章定位|前言)$"),
             insert_before_titles=None,
-            new_body=build_intro_block(card=card),
+            new_body=build_intro_block(card=card, run_command=run_command),
             marker_start=BOOKLIKE_V2_INTRO_START,
             marker_end=BOOKLIKE_V2_INTRO_END,
         )
@@ -750,7 +766,9 @@ def rewrite_normal_or_tool_page(
             marker_end=BOOKLIKE_V2_SUMMARY_END,
         )
 
-        sections, c_empty = fix_empty_watchlist_blocks(sections=sections, card=card, has_footer_nav=has_footer_nav)
+        sections, c_empty = fix_empty_watchlist_blocks(
+            sections=sections, card=card, has_footer_nav=has_footer_nav, run_command=run_command
+        )
         sections, c_dup = clean_duplicate_experiment_section(sections=sections, has_lab_callout=has_lab_callout)
         changed = c_intro or c_evidence or c_summary or c_empty or c_dup
 
@@ -764,7 +782,29 @@ def rewrite_normal_or_tool_page(
     return rebuilt, warnings
 
 
-def rewrite_page(path: Path) -> tuple[str, str, list[RewriteWarning]]:
+def to_test_selector(recommended_lab: str) -> str | None:
+    s = (recommended_lab or "").strip()
+    if not s or s == "N/A":
+        return None
+    # 典型形式：`SomeLabTest` / `SomeLabTest#method`
+    if s.startswith("`") and s.endswith("`"):
+        s = s[1:-1].strip()
+    if not s:
+        return None
+    return s
+
+
+def build_run_command(*, kind: str, module: str, recommended_lab: str) -> str | None:
+    if kind != "module" or not module:
+        return None
+    selector = to_test_selector(recommended_lab)
+    if not selector:
+        return None
+    artifact = to_maven_artifact_id(module)
+    return f"mvn -q -pl :{artifact} -Dtest={selector} test"
+
+
+def rewrite_page(*, path: Path, kind: str, module: str) -> tuple[str, str, list[RewriteWarning]]:
     original = read_text_utf8(path)
     card, card_warnings = extract_chapter_card(original)
     title = extract_title(path) or path.name
@@ -776,7 +816,10 @@ def rewrite_page(path: Path) -> tuple[str, str, list[RewriteWarning]]:
     if not card:
         # 没有卡片时保守：不改写正文，只返回原文 + warning
         return original, page_type, card_warnings
-    new_text, warnings = rewrite_normal_or_tool_page(original=original, path=path, page_type=page_type, card=card)
+    run_command = build_run_command(kind=kind, module=module, recommended_lab=card.recommended_lab)
+    new_text, warnings = rewrite_normal_or_tool_page(
+        original=original, path=path, page_type=page_type, card=card, run_command=run_command
+    )
     return new_text, page_type, card_warnings + warnings
 
 
@@ -861,7 +904,7 @@ def main(argv: list[str]) -> int:
             )
             continue
         try:
-            new_text, page_type, warnings = rewrite_page(p)
+            new_text, page_type, warnings = rewrite_page(path=p, kind=c.kind, module=c.module)
             original = read_text_utf8(p)
             ws = warnings
             warn_count += len(ws)

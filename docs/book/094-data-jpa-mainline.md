@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Data JPA 主线
-    - 怎么使用：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
-    - 原理：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
-    - 源码入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository` / `org.springframework.data.jpa.repository.support.JpaRepositoryFactory` / `jakarta.persistence.EntityManager` / `org.springframework.orm.jpa.JpaTransactionManager`
-    - 推荐 Lab：`BootDataJpaLabTest`
+    - 怎么使用：本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+    - 原理：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+    - 源码入口：N/A（本页为索引/工具页）
+    - 推荐 Lab：N/A
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 93 章：99 - Self Check（spring-boot-security）](../security/spring-boot-security/appendix/093-99-self-check.md) ｜ 全书目录：[Book TOC](/) ｜ 下一章：[第 95 章：主线时间线：Spring Boot Data JPA](../data-jpa/spring-boot-data-jpa/part-00-guide/095-03-mainline-timeline.md)
@@ -28,8 +29,9 @@
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：Data JPA 主线 —— 通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
-- 回到主线：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
+- 一句话总结：Data JPA 主线 —— 本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
+- 回到主线：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -40,7 +42,7 @@
 
 阅读建议：
 - 先看章首的“章节学习卡片/本章要点”，建立预期；
-- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+- 建议先带着问题顺读一遍正文，再按证据链回到源码/断点验证。
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 你将学到什么（本章目标）
@@ -114,8 +116,7 @@
 ## 证据链（如何验证你真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「Data JPA 主线」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「Data JPA 主线」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.JpaRepositoryFactory`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「Data JPA 主线」的生效时机/顺序/边界；断点/入口：`jakarta.persistence.EntityManager`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootDataJpaLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「Data JPA 主线」的生效时机/顺序/边界；断点/入口：N；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「Data JPA 主线」的生效时机/顺序/边界；断点/入口：A（本页为索引；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「Data JPA 主线」的生效时机/顺序/边界；断点/入口：工具页）；断言：你能解释“为什么此处生效/为什么此处不生效”。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

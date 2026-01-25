@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：05：测试策略：为什么用 MockWebServer？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
-    - 原理：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
-    - 源码入口：`org.springframework.web.reactive.function.client.WebClient` / `org.springframework.web.reactive.function.client.ExchangeFilterFunction` / `org.springframework.web.reactive.function.client.ExchangeFunction`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebClientRestClientLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 178 章：04：超时与重试（确定性实验）](178-04-timeout-and-retry.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 180 章：90：常见坑清单（Web Client）](../appendix/180-90-common-pitfalls.md)
@@ -28,6 +29,7 @@
     - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
 
 ## 机制主线
+
 
 ## 目的
 
@@ -84,8 +86,8 @@ MockWebServer 的优势：
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
+- Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
 
-上一章：[part-01-web-client/04-timeout-and-retry.md](178-04-timeout-and-retry.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/180-90-common-pitfalls.md)
+上一章：[超时与重试](178-04-timeout-and-retry.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[174-02-breakpoint-map.md](../part-00-guide/174-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

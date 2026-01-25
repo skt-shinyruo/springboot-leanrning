@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreTxLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 54 章：01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？](054-01-transaction-boundary.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 56 章：03. 回滚规则：为什么 checked exception 默认不回滚？](056-03-rollback-rules.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -72,6 +73,7 @@
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：`@Transactional` 如何生效：它也是 AOP（也是代理） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
 - 回到主线：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -87,6 +89,6 @@
 
 - Lab：`SpringCoreTxLabTest`
 
-上一章：[01-transaction-boundary](054-01-transaction-boundary.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03-rollback-rules](056-03-rollback-rules.md)
+上一章：[事务边界](054-01-transaction-boundary.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[回滚规则](056-03-rollback-rules.md)
 
 <!-- BOOKIFY:END -->

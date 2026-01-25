@@ -9,6 +9,7 @@
     - 推荐 Lab：`AspectjLtwLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 45 章：01. 心智模型：Proxy vs Weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 47 章：03. CTW：Compile-Time Weaving（编译期织入）](../part-03-ctw/047-03-ctw-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -116,6 +117,6 @@ LTW 的一句话定义：
 
 - Lab：`AspectjLtwLabTest`
 
-上一章：[01-proxy-vs-weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03-ctw-basics](../part-03-ctw/047-03-ctw-basics.md)
+上一章：[代理 vs 织入](../part-01-mental-model/045-01-proxy-vs-weaving.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[CTW 基础](../part-03-ctw/047-03-ctw-basics.md)
 
 <!-- BOOKIFY:END -->

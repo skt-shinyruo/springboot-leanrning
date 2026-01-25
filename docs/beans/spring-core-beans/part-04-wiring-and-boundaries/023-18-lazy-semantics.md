@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansLazyLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -164,6 +165,7 @@
 
 ## 常见坑与边界
 
+
 ## 4. 常见坑
 
 - **坑 1：以为 `@Lazy` 能让所有依赖都不创建**
@@ -187,6 +189,6 @@
 - Lab：`SpringCoreBeansLazyLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansLazyLabTest.java`
 
-上一章：[17. 生命周期回调顺序：Aware/@PostConstruct/afterPropertiesSet/initMethod](../part-03-container-internals/17-lifecycle-callback-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[19. dependsOn：强制初始化顺序与依赖关系记录](19-depends-on.md)
+上一章：[12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[40](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreEventsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 129 章：01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？](129-01-event-mental-model.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 131 章：03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？](131-03-condition-and-payload.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -98,6 +99,6 @@
 
 - Lab：`SpringCoreEventsLabTest`
 
-上一章：[01-event-mental-model](129-01-event-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03-condition-and-payload](131-03-condition-and-payload.md)
+上一章：[事件心智模型](129-01-event-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[条件与 payload](131-03-condition-and-payload.md)
 
 <!-- BOOKIFY:END -->

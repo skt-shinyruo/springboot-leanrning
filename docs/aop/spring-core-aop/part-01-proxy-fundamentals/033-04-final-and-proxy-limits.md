@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopProxyMechanicsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 32 章：03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？](032-03-self-invocation.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 34 章：05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](034-05-expose-proxy.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -109,6 +110,7 @@ CGLIB 代理的核心是：**生成目标类的子类**，然后覆盖（overrid
 
 ## 常见误区
 
+
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
@@ -119,6 +121,6 @@ CGLIB 代理的核心是：**生成目标类的子类**，然后覆盖（overrid
 
 - Lab：`SpringCoreAopProxyMechanicsLabTest`
 
-上一章：[03-self-invocation](032-03-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05-expose-proxy](034-05-expose-proxy.md)
+上一章：[self-invocation](032-03-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[exposeProxy](034-05-expose-proxy.md)
 
 <!-- BOOKIFY:END -->

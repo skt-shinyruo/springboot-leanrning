@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Async & Scheduling Debugger Pack）
-    - 怎么使用：先跑 `BootAsyncSchedulingBranchMatrixLabTest` 固化“是否走代理/线程切换/异常传播/定时触发”的断言，再用断点回答“为什么这次没异步/为什么没调度”。
-    - 原理：`@Async/@Scheduled` 依赖代理与后置处理器；分支多发生在“有没有启用/是不是自调用/用的是哪个 Executor/TaskScheduler”。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor`
-    - 推荐 Lab：`BootAsyncSchedulingBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
+    - 推荐 Lab：`BootAsyncSchedulingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）](118-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 118 章：04：关键分支矩阵（Branch Decision Matrix）](118-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Async & Scheduling Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+- 回到主线：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -58,10 +68,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`BootAsyncSchedulingBranchMatrixLabTest`
-- Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
+- Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingBookMatrixLabTest` / `BootAsyncSchedulingBranchMatrixLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](118-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](118-04-branch-decision-matrix.md)
+上一章：[@Scheduled 基础](../part-01-async-scheduling/123-05-scheduling-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[118-04-branch-decision-matrix.md](118-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

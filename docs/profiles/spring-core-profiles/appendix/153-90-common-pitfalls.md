@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreProfilesLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 152 章：Profile 激活与 Bean 选择](../part-01-profiles/152-01-profile-activation-and-bean-selection.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 154 章：自测题（Spring Core Profiles）](154-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -73,8 +74,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreProfilesLabTest`
+- Lab：`SpringCoreProfilesLabTest` / `SpringCoreProfilesBookMatrixLabTest` / `SpringCoreProfilesBranchMatrixLabTest`
 
-上一章：[01-profile-activation-and-bean-selection](../part-01-profiles/152-01-profile-activation-and-bean-selection.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](154-99-self-check.md)
+上一章：[151-04-branch-decision-matrix.md](../part-00-guide/151-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](154-99-self-check.md)
 
 <!-- BOOKIFY:END -->

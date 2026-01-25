@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreValidationLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 156 章：主线时间线：Spring Validation](156-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 158 章：01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？](../part-01-validation-core/158-01-constraint-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -112,6 +113,6 @@ Validation 的“深挖主线”不是记注解，而是把三件事分清：
 
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-constraint-mental-model](../part-01-validation-core/158-01-constraint-mental-model.md)
+上一章：[主线时间线](156-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[约束心智模型](../part-01-validation-core/158-01-constraint-mental-model.md)
 
 <!-- BOOKIFY:END -->

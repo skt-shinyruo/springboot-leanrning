@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：常见坑清单（建议反复对照）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
-    - 原理：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
-    - 源码入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository` / `org.springframework.data.jpa.repository.support.JpaRepositoryFactory` / `jakarta.persistence.EntityManager` / `org.springframework.orm.jpa.JpaTransactionManager`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootDataJpaDebugSqlLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 103 章：07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](../part-01-data-jpa/103-07-debug-sql.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 105 章：99 - Self Check（springboot-data-jpa）](105-99-self-check.md)
@@ -57,6 +58,7 @@
 
 ## 常见坑与边界
 
+
 ## 坑 1：把 persistence context 当成数据库
 
 - 现象：你改了对象字段，立刻 `findById` 看到“变了”，误以为 DB 已更新
@@ -79,6 +81,7 @@
 - 原因：事务/Session 结束后再访问 lazy 属性无法触发查询
 
 ## 坑 5：测试里忘记 `@DataJpaTest` 的默认回滚
+
 
 ## 坑 6：以为 `merge()` 会“把原对象重新托管”，结果改了半天没生效
 
@@ -105,8 +108,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest`
+- Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaBookMatrixLabTest` / `BootDataJpaBranchMatrixLabTest` / `BootDataJpaLabTest` / `BootDataJpaMergeAndDetachLabTest`
 
-上一章：[part-01-data-jpa/07-debug-sql.md](../part-01-data-jpa/103-07-debug-sql.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](105-99-self-check.md)
+上一章：[096-04-branch-decision-matrix.md](../part-00-guide/096-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](105-99-self-check.md)
 
 <!-- BOOKIFY:END -->

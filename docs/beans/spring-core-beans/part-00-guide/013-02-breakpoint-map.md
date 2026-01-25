@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](012-01-quickstart-30min.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -135,11 +136,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansLabTest`
-- Lab：`SpringCoreBeansBootstrapInternalsLabTest`
-- Lab：`SpringCoreBeansBeanCreationTraceLabTest`
-- Lab：`SpringCoreBeansEarlyReferenceLabTest`
+- Lab：`SpringCoreBeansLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 
-上一章：[part-00-guide/01-quickstart-30min.md](012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-ioc-container/01-bean-mental-model.md](../part-01-ioc-container/020-01-bean-mental-model.md)
+上一章：[40](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[98-debugger-pack.md](../appendix/98-debugger-pack.md)
 
 <!-- BOOKIFY:END -->

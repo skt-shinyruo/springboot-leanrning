@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：01：校验（Validation）与错误响应形状（Error Shape）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 70 章：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](../part-03-web-mvc-internals/070-05-controlleradvice-matching-and-ordering.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 72 章：02：统一异常处理（ControllerAdvice）与“坏输入”](072-02-exception-handling.md)
@@ -29,6 +30,7 @@
     - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
 
 ## 机制主线
+
 
 ## 你应该观察到什么（What to observe）
 
@@ -151,9 +153,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
+- Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest` / `BootWebMvcBindingDeepDiveLabTest` / `BootWebMvcExceptionResolverChainLabTest`
 - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](../part-00-guide/064-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-mvc/02-exception-handling.md](072-02-exception-handling.md)
+上一章：[@ControllerAdvice 匹配与顺序](../part-03-web-mvc-internals/070-05-controlleradvice-matching-and-ordering.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[异常处理](072-02-exception-handling.md)
 
 <!-- BOOKIFY:END -->

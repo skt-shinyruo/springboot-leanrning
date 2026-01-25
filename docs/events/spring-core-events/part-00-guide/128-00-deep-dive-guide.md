@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreEventsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 127 章：主线时间线：Spring Events](127-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 129 章：01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？](../part-01-event-basics/129-01-event-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -110,8 +111,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest`
+- Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest` / `SpringCoreEventsTransactionalEventLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-event-mental-model](../part-01-event-basics/129-01-event-mental-model.md)
+上一章：[主线时间线](127-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[事件心智模型](../part-01-event-basics/129-01-event-mental-model.md)
 
 <!-- BOOKIFY:END -->

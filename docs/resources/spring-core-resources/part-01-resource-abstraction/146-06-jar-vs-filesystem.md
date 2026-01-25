@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreResourcesLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 145 章：05. 读取资源：InputStream、编码与“可观察性”](145-05-reading-and-encoding.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 147 章：90. 常见坑清单（建议反复对照）](../appendix/147-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -35,6 +36,7 @@
 - `new File("classpath:...")`（根本不是文件路径）
 
 ## 在本模块的练习入口
+
 
 ## 学习建议
 
@@ -81,6 +83,6 @@
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 - Exercise：`SpringCoreResourcesExerciseTest`
 
-上一章：[05-reading-and-encoding](145-05-reading-and-encoding.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](../appendix/147-90-common-pitfalls.md)
+上一章：[读取与编码](145-05-reading-and-encoding.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[140-02-breakpoint-map.md](../part-00-guide/140-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

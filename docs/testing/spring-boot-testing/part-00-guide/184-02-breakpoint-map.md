@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Testing Debugger Pack）
-    - 怎么使用：先跑 `BootTestingBranchMatrixLabTest` 固化 “@WebMvcTest vs @SpringBootTest vs @MockBean” 的边界，再用断点定位测试上下文如何装配、mock 如何注入、为什么 bean 不存在。
-    - 原理：测试注解决定 ContextBootstrapper 与 auto-config 范围；Mock 注入通过 TestExecutionListener 参与容器装配。
-    - 源码入口：`SpringBootTestContextBootstrapper` / `WebMvcTestContextBootstrapper` / `MockitoTestExecutionListener`
-    - 推荐 Lab：`BootTestingBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
+    - 推荐 Lab：`GreetingControllerWebMvcLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 184 章：00 - Deep Dive Guide（springboot-testing）](184-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 184 章：04：关键分支矩阵（Branch Decision Matrix）](184-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Testing Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+- 回到主线：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -48,10 +58,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`BootTestingBranchMatrixLabTest`
-- Lab：`GreetingControllerWebMvcLabTest` / `GreetingControllerSpringBootLabTest` / `BootTestingMockBeanLabTest`
+- Lab：`GreetingControllerWebMvcLabTest` / `BootTestingBookMatrixLabTest` / `BootTestingBranchMatrixLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](184-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](184-04-branch-decision-matrix.md)
+上一章：[slice 与 mocking](../part-01-testing/185-01-slice-and-mocking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[184-04-branch-decision-matrix.md](184-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

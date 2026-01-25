@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreEventsTransactionalEventLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](134-06-async-multicaster.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 136 章：90. 常见坑清单（建议反复对照）](../appendix/136-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -114,6 +115,7 @@ mvn -pl :spring-boot-business-case test
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：`@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
 - 回到主线：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -130,6 +132,6 @@ mvn -pl :spring-boot-business-case test
 - Lab：`SpringCoreEventsTransactionalEventLabTest`
 - Test file：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
 
-上一章：[06-async-multicaster](134-06-async-multicaster.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](../appendix/136-90-common-pitfalls.md)
+上一章：[异步 multicaster](134-06-async-multicaster.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[128-02-breakpoint-map.md](../part-00-guide/128-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansBeanCreationTraceLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 19 章：11. 调试与自检：如何“看见”容器正在做什么](../part-02-boot-autoconfig/019-11-debugging-and-observability.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -29,6 +30,7 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanFactoryVsApplicationContextLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
 
 ## 机制主线
+
 
 ## 1. 你要建立的 3 层心智模型
 
@@ -350,10 +352,12 @@ mvn -pl :spring-core-beans test
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansComponentScanLabTest` / `SpringCoreBeansImportLabTest`
+- Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansImportLabTest`
 - Exercise：`SpringCoreBeansImportExerciseTest`
 - Solution：`SpringCoreBeansImportExerciseSolutionTest`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanFactoryVsApplicationContextLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansImportLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansImportExerciseTest.java`
+- （另有 1 个 test file 路径引用，略）
 
-上一章：[00. 深挖指南：把“Bean 三层模型”落到源码与断点](../part-00-guide/011-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 依赖注入解析：类型/名称/@Qualifier/@Primary](014-03-dependency-injection-resolution.md)
+上一章：[调试与观测](../part-02-boot-autoconfig/019-11-debugging-and-observability.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[10](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
 
 <!-- BOOKIFY:END -->

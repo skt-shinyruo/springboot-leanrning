@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 35 章：06. Debug / 观察：如何“看见”代理与切点](../part-01-proxy-fundamentals/035-06-debugging.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 37 章：08. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](037-08-pointcut-expression-system.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -229,6 +230,6 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyCreatorInternalsLabTest te
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
 
-上一章：[06-debugging](../part-01-proxy-fundamentals/035-06-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08-pointcut-expression-system](037-08-pointcut-expression-system.md)
+上一章：[代理调试](../part-01-proxy-fundamentals/035-06-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[切点表达式系统](037-08-pointcut-expression-system.md)
 
 <!-- BOOKIFY:END -->

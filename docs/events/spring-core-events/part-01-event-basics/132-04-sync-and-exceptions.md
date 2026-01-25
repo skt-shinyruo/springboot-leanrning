@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreEventsMechanicsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 131 章：03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？](131-03-condition-and-payload.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 133 章：05. 异步监听器：`@Async` 生效需要什么？线程会怎么变？](../part-02-async-and-transactional/133-05-async-listener.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -95,6 +96,6 @@
 
 - Lab：`SpringCoreEventsMechanicsLabTest`
 
-上一章：[03-condition-and-payload](131-03-condition-and-payload.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05-async-listener](../part-02-async-and-transactional/133-05-async-listener.md)
+上一章：[条件与 payload](131-03-condition-and-payload.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[异步监听](../part-02-async-and-transactional/133-05-async-listener.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：`AspectjCtwLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）](043-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 45 章：01. 心智模型：Proxy vs Weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -148,6 +149,6 @@ LTW 是否生效，最常见的判断点不是“有没有写 @Aspect”，而�
 
 - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-proxy-vs-weaving](../part-01-mental-model/045-01-proxy-vs-weaving.md)
+上一章：[主线时间线](043-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[代理 vs 织入](../part-01-mental-model/045-01-proxy-vs-weaving.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopMultiProxyStackingLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 37 章：08. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](../part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 39 章：10 real world stacking playbook](039-10-real-world-stacking-playbook.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -248,6 +249,6 @@ AutoProxyCreator 主线详见：[07 - AutoProxyCreator 主线](../part-02-autopr
 
 - Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopRealWorldStackingLabTest`
 
-上一章：[08-pointcut-expression-system](../part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[10-real-world-stacking-playbook](039-10-real-world-stacking-playbook.md)
+上一章：[切点表达式系统](../part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[叠加排障手册](039-10-real-world-stacking-playbook.md)
 
 <!-- BOOKIFY:END -->

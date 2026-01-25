@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Dirty Checking（脏检查）：为什么改字段不用 save 也能落库？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
-    - 原理：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
-    - 源码入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository` / `org.springframework.data.jpa.repository.support.JpaRepositoryFactory` / `jakarta.persistence.EntityManager` / `org.springframework.orm.jpa.JpaTransactionManager`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootDataJpaLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？](099-03-flush-and-visibility.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 101 章：05. Fetching 与 N+1：为什么查一次会变成查很多次？](101-05-fetching-and-n-plus-one.md)
@@ -86,6 +87,6 @@
 
 - Lab：`BootDataJpaLabTest`
 
-上一章：[part-01-data-jpa/03-flush-and-visibility.md](099-03-flush-and-visibility.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-data-jpa/05-fetching-and-n-plus-one.md](101-05-fetching-and-n-plus-one.md)
+上一章：[flush 与可见性](099-03-flush-and-visibility.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[fetching 与 N+1](101-05-fetching-and-n-plus-one.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreAopLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 27 章：AOP/代理主线](../../../book/027-aop-proxy-mainline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](029-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -27,6 +28,7 @@
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：主线时间线：Spring Core AOP —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
 - 回到主线：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -38,6 +40,11 @@
 阅读建议：
 - 先看章首的“章节学习卡片/本章要点”，建立预期；
 - 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopLabTest test
+```
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 在 Spring 主线中的位置
@@ -79,3 +86,13 @@
 - 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Core AOP」的生效时机/顺序/边界；断点/入口：`org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`；断言：你能解释“为什么此处生效/为什么此处不生效”。
 - 建议：跑完 ``SpringCoreAopLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->
+
+<!-- BOOKIFY:START -->
+
+### 对应 Lab/Test
+
+- Lab：`SpringCoreAopLabTest`
+
+上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[深挖导读](029-00-deep-dive-guide.md)
+
+<!-- BOOKIFY:END -->

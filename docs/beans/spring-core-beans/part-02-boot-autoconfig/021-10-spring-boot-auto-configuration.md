@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -184,6 +185,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 ## 面试常问（自动配置与条件装配怎么定位）
 
+
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
@@ -358,6 +360,6 @@ mvn -pl :spring-core-beans test
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationImportOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansConditionEvaluationReportLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationBackoffTimingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationOverrideMatrixLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansBeanDefinitionOriginLabTest.java`
 - （另有 1 个 test file 路径引用，略）
 
-上一章：[09. 循环依赖概览：三级缓存与现象分类](../part-01-ioc-container/09-circular-dependencies.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[11. 调试与可观察性：从异常到断点入口](019-11-debugging-and-observability.md)
+上一章：[01](../part-01-ioc-container/020-01-bean-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreResourcesLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？](141-01-resource-abstraction.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 143 章：03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？](143-03-classpath-star-and-pattern.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -73,6 +74,6 @@
 
 - Lab：`SpringCoreResourcesLabTest`
 
-上一章：[01-resource-abstraction](141-01-resource-abstraction.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03-classpath-star-and-pattern](143-03-classpath-star-and-pattern.md)
+上一章：[Resource 抽象](141-01-resource-abstraction.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[classpath* 与 pattern](143-03-classpath-star-and-pattern.md)
 
 <!-- BOOKIFY:END -->

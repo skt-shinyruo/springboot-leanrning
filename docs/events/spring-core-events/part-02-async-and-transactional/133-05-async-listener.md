@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreEventsMechanicsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](../part-01-event-basics/132-04-sync-and-exceptions.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`](134-06-async-multicaster.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -86,6 +87,7 @@
 
 ## 常见误区
 
+
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
@@ -96,6 +98,6 @@
 
 - Lab：`SpringCoreEventsMechanicsLabTest`
 
-上一章：[04-sync-and-exceptions](../part-01-event-basics/132-04-sync-and-exceptions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06-async-multicaster](134-06-async-multicaster.md)
+上一章：[同步与异常](../part-01-event-basics/132-04-sync-and-exceptions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[异步 multicaster](134-06-async-multicaster.md)
 
 <!-- BOOKIFY:END -->

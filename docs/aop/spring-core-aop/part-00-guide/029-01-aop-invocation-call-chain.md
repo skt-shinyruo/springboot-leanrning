@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：01：AOP 调用链（从代理入口到 Advice 链执行）
-    - 怎么使用：建议先跑本章推荐 Lab，把“proceed 嵌套顺序/拦截器链”固化成断言，再按本文把调用链串起来：代理如何生成（BPP 阶段）→ 调用如何进入代理 → 如何执行 `MethodInterceptor` 链。
-    - 原理：Spring AOP 以代理实现：容器阶段由 AutoProxyCreator 作为 BPP 创建代理；运行阶段由 JDK/CGLIB 代理把调用转发到 `ReflectiveMethodInvocation#proceed`，逐个执行拦截器（Advice）。
-    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator` / `org.springframework.aop.framework.JdkDynamicAopProxy#invoke` / `org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+    - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
+    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
     - 推荐 Lab：`SpringCoreAopProceedNestingLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 29 章：00. 深挖指南：把“代理产生 + advice 链执行”落到源码与断点](029-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 29 章：02：断点地图（AOP Debugger Pack）](029-02-breakpoint-map.md)
@@ -107,14 +108,21 @@ Spring AOP 默认不是“编译期织入”，而是“运行期代理”。因
 
 - 本章把 AOP 的“生成链/执行链”串成了一条可复述叙事；下一章把这些入口收敛为 Debugger Pack。
 
+## 证据链（如何验证你真的理解了）
+
+<!-- BOOKLIKE-V2:EVIDENCE:START -->
+- 观察点 1：运行本章推荐入口后，聚焦「01：AOP 调用链（从代理入口到 Advice 链执行）」的生效时机/顺序/边界；断点/入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「01：AOP 调用链（从代理入口到 Advice 链执行）」的生效时机/顺序/边界；断点/入口：`org.springframework.aop.framework.ProxyFactory`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「01：AOP 调用链（从代理入口到 Advice 链执行）」的生效时机/顺序/边界；断点/入口：`org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`；断言：你能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``SpringCoreAopProceedNestingLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+<!-- BOOKLIKE-V2:EVIDENCE:END -->
+
 <!-- BOOKIFY:START -->
 
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreAopProceedNestingLabTest`
-- Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
-- Lab：`SpringCoreAopProxyMechanicsLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](029-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](029-02-breakpoint-map.md)
+上一章：[029-02-breakpoint-map.md](029-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[029-04-branch-decision-matrix.md](029-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->

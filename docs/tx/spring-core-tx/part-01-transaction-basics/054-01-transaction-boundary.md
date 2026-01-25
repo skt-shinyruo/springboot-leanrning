@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreTxLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 53 章：深挖指南（Spring Core Tx）](../part-00-guide/053-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 55 章：02. `@Transactional` 如何生效：它也是 AOP（也是代理）](055-02-transactional-proxy.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -29,6 +30,7 @@
 
 ## 机制主线
 
+
 ## 在本模块的最小闭环
 
 看 `AccountService`：
@@ -36,6 +38,7 @@
 对应测试：
 
 ## 你需要记住的 3 件事
+
 
 ## 源码与断点
 
@@ -82,6 +85,6 @@
 
 - Lab：`SpringCoreTxLabTest`
 
-上一章：[00-deep-dive-guide](../part-00-guide/053-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-transactional-proxy](055-02-transactional-proxy.md)
+上一章：[深挖导读](../part-00-guide/053-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[@Transactional 代理](055-02-transactional-proxy.md)
 
 <!-- BOOKIFY:END -->

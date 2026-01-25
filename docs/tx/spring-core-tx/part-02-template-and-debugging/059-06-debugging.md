@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreTxLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 58 章：05. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？](058-05-transaction-template.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 60 章：90. 常见坑清单（建议反复对照）](../appendix/060-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -94,8 +95,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreTxLabTest`
+- Lab：`SpringCoreTxLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
 
-上一章：[05-transaction-template](058-05-transaction-template.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](../appendix/060-90-common-pitfalls.md)
+上一章：[TransactionTemplate](058-05-transaction-template.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[053-02-breakpoint-map.md](../part-00-guide/053-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

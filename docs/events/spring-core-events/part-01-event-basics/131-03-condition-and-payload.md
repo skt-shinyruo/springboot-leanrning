@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreEventsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 130 章：02. 多监听器与顺序：为什么 `@Order` 值得你认真对待？](130-02-multiple-listeners-and-order.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](132-04-sync-and-exceptions.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -101,6 +102,7 @@ Spring 事件有两个很实用的能力：
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
 - 回到主线：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
@@ -116,6 +118,6 @@ condition 与 payload：监听器为什么能“按条件触发”甚至接收�
 
 - Lab：`SpringCoreEventsLabTest`
 
-上一章：[02-multiple-listeners-and-order](130-02-multiple-listeners-and-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04-sync-and-exceptions](132-04-sync-and-exceptions.md)
+上一章：[多监听器与顺序](130-02-multiple-listeners-and-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[同步与异常](132-04-sync-and-exceptions.md)
 
 <!-- BOOKIFY:END -->

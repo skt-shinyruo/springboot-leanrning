@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Data JPA Debugger Pack）
-    - 怎么使用：先跑 `BootDataJpaBranchMatrixLabTest` 固化“实体状态/flush/merge-detach”的断言，再用断点把每次 SQL 的产生点与 persistence context 的状态变化对齐。
-    - 原理：Repository 代理 → `EntityManager`（Persistence Context）→ flush/dirty checking → 事务提交/回滚 → fetching 决定 SQL 数量与边界。
-    - 源码入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository` / `jakarta.persistence.EntityManager` / `org.hibernate.Session`
-    - 推荐 Lab：`BootDataJpaBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
+    - 推荐 Lab：`BootDataJpaMergeAndDetachLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 96 章：00 - Deep Dive Guide（springboot-data-jpa）](096-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 96 章：04：关键分支矩阵（Branch Decision Matrix）](096-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Data JPA Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+- 回到主线：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -60,10 +70,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`BootDataJpaBranchMatrixLabTest`
-- Lab：`BootDataJpaMergeAndDetachLabTest` / `BootDataJpaDebugSqlLabTest`
+- Lab：`BootDataJpaMergeAndDetachLabTest` / `BootDataJpaBookMatrixLabTest` / `BootDataJpaBranchMatrixLabTest` / `BootDataJpaDebugSqlLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](096-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](096-04-branch-decision-matrix.md)
+上一章：[SQL 调试](../part-01-data-jpa/103-07-debug-sql.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[096-04-branch-decision-matrix.md](096-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

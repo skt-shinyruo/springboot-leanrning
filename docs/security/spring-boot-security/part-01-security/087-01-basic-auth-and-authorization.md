@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：01：401 vs 403：Basic Auth 与授权规则
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：将认证/授权配置为 FilterChain；区分 401/403 与 CSRF 场景；方法级安全依赖代理与拦截器链。
-    - 原理：HTTP 请求 → `FilterChainProxy` 选择 SecurityFilterChain → 认证（Authentication）→ 授权（Authorization）→ 异常处理（401/403）→ 继续进入 MVC。
-    - 源码入口：`org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain` / `org.springframework.security.web.access.intercept.AuthorizationFilter`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootSecurityLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 86 章：00 - Deep Dive Guide（springboot-security）](../part-00-guide/086-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？](088-02-csrf.md)
@@ -29,6 +30,7 @@
     - Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 ## 机制主线
+
 
 ## 你应该观察到什么
 
@@ -74,6 +76,7 @@
 
 ## Debug 建议
 
+
 ## 常见坑与边界
 
 ### 坑点 1：把 401/403 当成同一种失败，导致排障走错方向
@@ -110,6 +113,6 @@
 - Lab：`BootSecurityLabTest`
 - Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](../part-00-guide/086-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-security/02-csrf.md](088-02-csrf.md)
+上一章：[深挖导读](../part-00-guide/086-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[CSRF](088-02-csrf.md)
 
 <!-- BOOKIFY:END -->

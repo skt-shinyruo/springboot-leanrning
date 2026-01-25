@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreEventsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 135 章：07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](../part-02-async-and-transactional/135-07-transactional-event-listener.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 137 章：自测题（Spring Core Events）](137-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -58,6 +59,7 @@
 
 ## 常见坑与边界
 
+
 ## 坑 1：误以为事件默认异步
 
 - 事实：事件默认同步（见 `SpringCoreEventsLabTest#eventsAreSynchronousByDefault`）
@@ -79,6 +81,7 @@
 
 ## 坑 5：事件对象可变导致监听器互相污染
 
+
 ## 坑 6：监听器“没触发”其实是被过滤掉了（参数类型/条件不匹配）
 
 - Symptom：你 `publishEvent(...)` 了，但某个 `@EventListener` 方法完全没进入；你甚至怀疑 multicaster/线程/事务有问题。
@@ -97,8 +100,8 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
+- Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsBookMatrixLabTest` / `SpringCoreEventsBasicsBranchMatrixLabTest` / `SpringCoreEventsAsyncTransactionalBranchMatrixLabTest` / `SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest`
 
-上一章：[07-transactional-event-listener](../part-02-async-and-transactional/135-07-transactional-event-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](137-99-self-check.md)
+上一章：[128-04-branch-decision-matrix.md](../part-00-guide/128-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](137-99-self-check.md)
 
 <!-- BOOKIFY:END -->

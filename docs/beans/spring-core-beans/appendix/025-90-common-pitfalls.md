@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 26 章：99. 自测题：你是否真的理解了？](026-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -58,6 +59,7 @@
 - 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
+
 
 ## 0. 复现入口（可运行）
 
@@ -393,9 +395,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansTypeConversionLabTest`
+- Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBookMatrixLabTest` / `SpringCoreBeansIocBranchMatrixLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansTypeConversionLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 
-上一章：[50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象](../part-05-aot-and-real-world/50-property-editor-and-value-resolution.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[91. 术语表（Glossary）](91-glossary.md)
+上一章：[011-04-branch-decision-matrix.md](../part-00-guide/011-04-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[自检](026-99-self-check.md)
 
 <!-- BOOKIFY:END -->

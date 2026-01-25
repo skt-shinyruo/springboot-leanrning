@@ -3,15 +3,25 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Spring Tx Debugger Pack）
-    - 怎么使用：先跑 `SpringCoreTxBranchMatrixLabTest` 固化“rollback/propagation/自调用坑”的断言，再用断点把 `@Transactional` 的代理入口、事务创建/提交/回滚分支串起来。
-    - 原理：`@Transactional` → AOP 拦截（TransactionInterceptor）→ 事务管理器创建事务（getTransaction）→ 业务执行 → commit/rollback（取决于异常与规则）。
-    - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor` / `org.springframework.transaction.support.AbstractPlatformTransactionManager`
-    - 推荐 Lab：`SpringCoreTxBranchMatrixLabTest`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
+    - 原理：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
+    - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager`
+    - 推荐 Lab：`SpringCoreTxRollbackRulesLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 53 章：00 - Deep Dive Guide（spring-core-tx）](053-00-deep-dive-guide.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 53 章：04：关键分支矩阵（Branch Decision Matrix）](053-04-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 小结与下一章
+
+<!-- BOOKLIKE-V2:SUMMARY:START -->
+- 一句话总结：02：断点地图（Spring Tx Debugger Pack） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
+- 回到主线：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
+- 下一章：见页尾导航（顺读不迷路）。
+<!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
@@ -61,10 +71,8 @@
 
 ### 对应 Lab/Test
 
-- Matrix：`SpringCoreTxBranchMatrixLabTest` / `SpringCoreTxPitfallsBranchMatrixLabTest`
-- Lab：`SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
+- Lab：`SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxBookMatrixLabTest` / `SpringCoreTxBranchMatrixLabTest` / `SpringCoreTxPitfallsBranchMatrixLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](053-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](053-04-branch-decision-matrix.md)
+上一章：[事务调试](../part-02-template-and-debugging/059-06-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[053-01-transaction-interceptor-call-chain.md](053-01-transaction-interceptor-call-chain.md)
 
 <!-- BOOKIFY:END -->
-

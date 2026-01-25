@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Deep Dive Guide（springboot-business-case）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用端到端链路把 Web/Validation/Security/AOP/Tx/JPA/Events 串起来：遇到红测/异常时，先定位“哪个边界没生效”，再回到对应模块主线。
-    - 原理：一次业务请求贯穿：MVC 入参→安全边界→事务边界→持久化上下文→事件时机→可观测信号；排障的关键是把问题归类到具体边界。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.data.jpa.repository.support.SimpleJpaRepository`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootBusinessCaseLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 189 章：主线时间线：Business Case（综合案例）](189-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 191 章：01 - 架构与主流程（Business Case）](../part-01-business-case/191-01-architecture-and-flow.md)
@@ -134,6 +135,6 @@
 - Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
 - Exercise：`BootBusinessCaseExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-business-case/01-architecture-and-flow.md](../part-01-business-case/191-01-architecture-and-flow.md)
+上一章：[主线时间线](189-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[架构与端到端流转](../part-01-business-case/191-01-architecture-and-flow.md)
 
 <!-- BOOKIFY:END -->

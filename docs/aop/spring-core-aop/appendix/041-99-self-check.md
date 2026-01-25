@@ -9,11 +9,24 @@
     - 推荐 Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 40 章：90. 常见坑清单（建议反复对照）](040-90-common-pitfalls.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 42 章：织入主线（LTW/CTW）](../../../book/042-aop-weaving-mainline.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+<!-- BOOKLIKE-V2:INTRO:START -->
+这一章围绕「自测题：你是否真的理解了 AOP？」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+
+阅读建议：
+- 先看章首的“章节学习卡片/本章要点”，建立预期；
+- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+
+验证入口（可直接跑）：
+```bash
+mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyCreatorInternalsLabTest test
+```
+<!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -35,6 +48,7 @@
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 ## 机制主线
+
 
 ## 代理与入口（对应 01/00）
 
@@ -64,7 +78,9 @@
 
 ## AutoProxyCreator 主线（对应 07/00）
 
+
 ## pointcut 表达式系统（对应 08）
+
 
 ## H. 多切面/多代理叠加（对应 09）
 
@@ -125,9 +141,9 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopLabTest`
+- Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopBookMatrixLabTest` / `SpringCoreAopProxyBranchMatrixLabTest` / `SpringCoreAopAutoProxyBranchMatrixLabTest` / `SpringCoreAopStackingBranchMatrixLabTest` / `SpringCoreAopLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopMultiProxyStackingLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[90-common-pitfalls](040-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑](040-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

@@ -9,6 +9,7 @@
     - 推荐 Lab：N/A
 <!-- CHAPTER-CARD:END -->
 
+
 本页目标：让你在读书/跑 Lab 时，能快速把断点装在“最有信息密度”的位置上：入口方法、关键分支、以及能观察到核心数据结构变化的观察点（watchpoints）。
 
 > 说明：不同版本的 Spring/Spring Boot 细节可能不同；当文档与代码冲突时，以代码为准。
@@ -20,6 +21,7 @@
 <!-- BOOKLIKE-V2:SUMMARY:START -->
 - 一句话总结：Debugger Pack（Entrypoints / Watchpoints / Decisive Branch） —— 本页为索引/工具页：按页面提示找到入口（章节/Lab/断点地图），再回到主线章节顺读。
 - 回到主线：本页不讲机制原理，负责把“入口与路径”整理成可检索的导航。
+- 关键分支提示：当行为不符合预期时，优先回到“原理/主线”找分支判断条件，再用推荐入口复现与验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 

@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](016-05-lifecycle-and-callbacks.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](018-07-configuration-enhancement.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -229,6 +230,7 @@ BFPP 本该在“定义层”工作，如果你在里面直接拿 bean（实例�
 
 ## 面试常问（BFPP / BPP / BDRPP）
 
+
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
@@ -356,6 +358,6 @@ registerBeanPostProcessors(beanFactory):
 - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` / `SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansStaticBeanFactoryPostProcessorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
-上一章：[05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](016-05-lifecycle-and-callbacks.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07. @Configuration 增强：proxyBeanMethods 与 @Bean 语义](018-07-configuration-enhancement.md)
+上一章：[生命周期与回调](016-05-lifecycle-and-callbacks.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[配置类增强](018-07-configuration-enhancement.md)
 
 <!-- BOOKIFY:END -->

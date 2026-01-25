@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcInternalsLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 66 章：02：断点地图（Part 01 Debugger Pack）](../part-00-guide/066-02-breakpoint-map.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 68 章：03：HttpMessageConverter 与返回值处理（序列化发生在哪里）](068-03-message-converters-and-return-values.md)
@@ -371,8 +372,8 @@ T1: DispatcherType=ERROR（容器触发错误派发，进入 /error）
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcInternalsLabTest` / `BootWebMvcLabTest` / `BootWebMvcBindingDeepDiveLabTest`
+- Lab：`BootWebMvcInternalsLabTest` / `BootWebMvcTraceLabTest` / `BootWebMvcTestingDebuggingLabTest` / `BootWebMvcSpringBootLabTest` / `BootWebMvcViewSpringBootLabTest` / `BootWebMvcExceptionResolverChainLabTest` / `BootWebMvcBindingDeepDiveLabTest` / `BootWebMvcLabTest`
 
-上一章：[part-02-view-mvc/03-error-pages-and-content-negotiation.md](../part-02-view-mvc/03-error-pages-and-content-negotiation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-03-web-mvc-internals/03-message-converters-and-return-values.md](068-03-message-converters-and-return-values.md)
+上一章：[知识地图（先看全图）](../part-00-guide/065-01-knowledge-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[消息转换与返回值](068-03-message-converters-and-return-values.md)
 
 <!-- BOOKIFY:END -->

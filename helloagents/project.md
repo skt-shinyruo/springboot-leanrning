@@ -48,6 +48,39 @@
   - `bash scripts/test-module.sh <artifactId>`（会自动补齐 `:<artifactId>`）
   - `bash scripts/test-all.sh`
 
+---
+
+## 文档门禁与批处理（Docs as Code）
+
+> 目标：把“更深入”的文档变成可回归资产：可导航、可验证、可断点、可排障，并能通过脚本稳定维护一致性。
+
+### 1) 章节学习卡片（五问闭环）
+
+- 全量补齐：`python3 scripts/upsert-chapter-cards.py`
+- 只跑子集：`python3 scripts/upsert-chapter-cards.py --module <module>`
+- 只看影响范围：`python3 scripts/upsert-chapter-cards.py --dry-run`
+
+### 2) 正文二次书籍化（Intro/Evidence/Summary 骨架）
+
+- 全量改写：`python3 scripts/rewrite-chapters-booklike-v2.py`
+- 输出报告：`python3 scripts/rewrite-chapters-booklike-v2.py --dry-run --report helloagents/plan/.../booklike-v2-report.md`
+
+### 3) 章节尾部入口块（Bookify：对应 Lab/Test + 上一章/目录/下一章）
+
+- 全量 upsert：`python3 scripts/bookify-docs.py`
+- 幂等验证：连续运行两次应 `changed=0`
+- 只跑子集：`python3 scripts/bookify-docs.py --module <module>`
+
+### 4) 文档质量门禁（建议在批处理后运行）
+
+- 相对链接断链检查（必须为 0）：`python3 scripts/check-md-relative-links.py --root docs`
+- 章节契约检查（error=0）：`python3 scripts/check-chapter-contract.py --root docs`
+
+### 5) 深挖基线审计（docs/tests 入口清单）
+
+- 生成审计报告（建议放到方案包目录）：  
+  `bash scripts/audit-module-deep-dive.sh --task helloagents/plan/.../task.md --format md --out helloagents/plan/.../module-deep-dive-audit.md`
+
 ### 文档 ↔ 测试入口绑定约定
 
 - `docs/**.md` 章节的末尾应包含 `### 对应 Lab/Test` 区块（由 BOOKIFY 机制统一维护）。

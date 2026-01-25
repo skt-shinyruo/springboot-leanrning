@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreTxLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 52 章：主线时间线：Spring Core Tx（事务）](052-03-mainline-timeline.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 54 章：01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？](../part-01-transaction-basics/054-01-transaction-boundary.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -111,6 +112,6 @@
 
 - Lab：`SpringCoreTxLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-transaction-boundary](../part-01-transaction-basics/054-01-transaction-boundary.md)
+上一章：[主线时间线](052-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[事务边界](../part-01-transaction-basics/054-01-transaction-boundary.md)
 
 <!-- BOOKIFY:END -->

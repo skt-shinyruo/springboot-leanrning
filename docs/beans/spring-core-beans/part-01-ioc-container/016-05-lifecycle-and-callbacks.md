@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansAwareInfrastructureLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](015-04-scope-and-prototype.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](017-06-post-processors.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -341,6 +342,6 @@ public class LifecycleLogger {
 - Lab：`SpringCoreBeansAwareInfrastructureLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansAwareInfrastructureLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java`
 
-上一章：[04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](015-04-scope-and-prototype.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](017-06-post-processors.md)
+上一章：[作用域与 prototype](015-04-scope-and-prototype.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[扩展点：Post-Processor](017-06-post-processors.md)
 
 <!-- BOOKIFY:END -->

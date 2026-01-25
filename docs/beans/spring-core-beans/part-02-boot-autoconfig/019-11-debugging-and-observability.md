@@ -9,6 +9,7 @@
     - 推荐 Lab：`SpringCoreBeansAutoConfigurationLabTest`
 <!-- CHAPTER-CARD:END -->
 
+
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](../part-01-ioc-container/018-07-configuration-enhancement.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
@@ -460,10 +461,10 @@ mvn -pl :spring-core-beans spring-boot:run
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
+- Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansBeanDefinitionOriginLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
-- （另有 9 个 test file 路径引用，略）
+- （另有 10 个 test file 路径引用，略）
 
-上一章：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](021-10-spring-boot-auto-configuration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[12. 容器启动与基础设施处理器：为什么注解能工作](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
+上一章：[配置类增强](../part-01-ioc-container/018-07-configuration-enhancement.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01](../part-01-ioc-container/020-01-bean-mental-model.md)
 
 <!-- BOOKIFY:END -->

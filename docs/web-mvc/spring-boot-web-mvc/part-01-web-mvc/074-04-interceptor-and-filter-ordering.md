@@ -3,11 +3,12 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：04：Interceptor 与 Filter：入口在哪里、顺序怎么理解
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文主线理解用法。
+    - 原理：主线与关键分支以本章正文为准（先抓住“入口 → 关键分支 → 可观察证据”）。
+    - 源码入口：（以本章正文“源码/断点”小节为准）
     - 推荐 Lab：`BootWebMvcErrorViewLabTest`
 <!-- CHAPTER-CARD:END -->
+
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 73 章：03：请求绑定（Binding）与 Converter/Formatter](073-03-binding-and-converters.md) ｜ 全书目录：[Book TOC](../../../book/index.md) ｜ 下一章：[第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](075-05-interceptor-async-lifecycle.md)
@@ -112,11 +113,10 @@
 
 ### 对应 Lab/Test
 
-- Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
-- Lab：`BootWebMvcTraceLabTest`
+- Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest` / `BootWebMvcTraceLabTest`
 - Exercise：`BootWebMvcExerciseTest`
 - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
-上一章：[part-01-web-mvc/03-binding-and-converters.md](073-03-binding-and-converters.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-mvc/05-interceptor-async-lifecycle.md](075-05-interceptor-async-lifecycle.md)
+上一章：[绑定与 Converter](073-03-binding-and-converters.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[异步拦截器生命周期](075-05-interceptor-async-lifecycle.md)
 
 <!-- BOOKIFY:END -->
