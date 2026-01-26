@@ -122,6 +122,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 2) **误区：把 Qualifier 当作 beanName**
    - Qualifier 是过滤条件，beanName 只是可能参与收敛的一种信号。
 
+## 一句话自检
+
+- 你能解释清楚：自定义 Qualifier 解决的是“候选收敛”的哪一类问题吗？它和 `@Primary` 的边界是什么？
+- 你能说出：候选集合是在依赖解析的哪个方法里被过滤/收敛的吗？（提示：`doResolveDependency` / candidate resolver）
+- 你能给出：如何用一个最小 LabTest + 两个断点把“为什么注入的是它”讲成可复述算法？
+
 ## 小结与下一章
 
 ## 5. 小结

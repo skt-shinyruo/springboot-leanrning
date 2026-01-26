@@ -211,6 +211,20 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+你遇到的“注解不生效”，几乎都能先用两问把范围缩到 1/2：
+
+1) **是不是“规则根本没装进来”？**（定义层 / registry 层）
+   - 症状：`@Configuration/@Bean/@Import/@ComponentScan` 看起来完全没生效；容器里压根没有对应 BeanDefinition
+   - 快速判断：看 registry 里是否存在 `internalConfigurationAnnotationProcessor`（`ConfigurationClassPostProcessor`）
+   - 典型落点：`AnnotationConfigUtils#registerAnnotationConfigProcessors` / `invokeBeanFactoryPostProcessors`
+
+2) **是不是“规则装进来了，但创建链路没调用到”？**（实例层 / 创建链路）
+   - 症状：Bean 有了，但 `@Autowired` 字段是 `null`、`@PostConstruct` 没跑、`@Resource` 没命中
+   - 快速判断：看 `beanFactory.getBeanPostProcessors()` 里有没有 `AutowiredAnnotationBeanPostProcessor` / `CommonAnnotationBeanPostProcessor`
+   - 典型落点：`PostProcessorRegistrationDelegate#registerBeanPostProcessors` / `populateBean` / `initializeBean`
+
+> 经验法则：**registry 里有 processor 的 BeanDefinition ≠ 注解能用**。  
+> 真正决定“注解行为能否发生”的，是这些 BPP 是否进入 BeanFactory 的拦截链，以及目标 bean 是否在它们之后创建。
 
 ## 源码最短路径（call chain）
 
@@ -370,7 +384,25 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 这是一个非常高频的误区：很多人看到 registry 里有这些 internal processors，就以为注解已经“能用”。
 
-## 3. 常见坑
+### 坑 1：只把 processor 注册成了 BeanDefinition，但没把 BPP 装进拦截链
+
+- 你会看到：registry 里能查到 `internalAutowiredAnnotationProcessor`
+- 但 `beanFactory.getBeanPostProcessors()` 里没有 `AutowiredAnnotationBeanPostProcessor`
+- 结果：`populateBean` 不会触发注入逻辑，字段/参数保持默认值（`null/0/false`）
+
+### 坑 2：过早 `getBean`（在 BPP 注册之前就把 bean 创建出来了）
+
+即使你最终注册了 BPP，如果目标 bean 在它之前就已经被创建（例如在 BFPP 阶段过早触发 `getBean`），你仍然会看到：
+
+- Bean 存在，但注入/回调缺失
+- 或者“第一次创建不生效，第二次才生效”（其实是第二次创建的是另一个 bean/另一个 context）
+
+定位策略：回到 refresh 主线，看目标 bean 的创建时机是不是早于 `registerBeanPostProcessors`。
+
+### 坑 3：把“注解不生效”误判为“依赖没引入”
+
+在这个仓库的最小场景里，依赖都在，但只要你跳过 `registerAnnotationConfigProcessors` 这一步，注解同样不会生效。  
+因此排障顺序应该是：**先看处理器是否装配/是否执行，再看依赖是否缺失**。
 
 
 ## 小结与下一章
@@ -393,6 +425,11 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
             - `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`（`@PostConstruct` 触发）
 
 在 `AbstractAutowireCapableBeanFactory#populateBean` / `#initializeBean` 附近 watch/evaluate：
+
+- `beanName`：你关心的目标 bean 是否就在当前栈上
+- `this.beanPostProcessors`：注入/生命周期相关 BPP 是否在列表里（没有就不要继续“猜注解为什么没生效”）
+- `pvs`（PropertyValues）：在 `populateBean` 里是否被注入处理器补充/改写
+- `wrappedBean` / `exposedObject`：`initializeBean` 之后返回的对象是否被包装/替换（代理/替身）
 
 <!-- BOOKIFY:START -->
 

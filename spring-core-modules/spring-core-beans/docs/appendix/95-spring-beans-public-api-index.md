@@ -7,6 +7,39 @@
 
 # 95. spring-beans Public API 索引（Spring Framework 6.2.15）
 
+## 导读
+
+- 本章主题：**spring-beans Public API Index（索引）**
+- 阅读方式建议：这是一份“查阅型文档”。当你遇到某个 API/类名但不确定它属于哪类机制时，先在本章定位，再回到对应章节/测试完成闭环。
+
+!!! summary "本章要点"
+
+    - 这份索引解决的是“定位问题”：它告诉你 *有哪些 Public API*，以及它们大致归属哪个机制域。
+    - 索引不是教程：你需要结合正文章节 + Lab + 断点闭环，才能把 API 变成可解释能力。
+    - 推荐用法：**从现象/类名出发 → 在索引定位 → 跳到章节/断点/Lab 验证**。
+
+!!! example "本章配套实验（先跑再读）"
+
+    - 索引本身不对应单一 Lab；建议用 Debugger Pack/Branch Matrix 作为总入口：
+      - `SpringCoreBeansBreakpointPackLabTest`
+      - `SpringCoreBeansIocBranchMatrixLabTest`
+      - `SpringCoreBeansInternalsBranchMatrixLabTest`
+
+## 机制主线：索引如何服务学习与排障
+
+你可以把本章当成“反向导航”：
+
+1) 你在源码/异常栈里看到一个类（例如 `BeanWrapperImpl` / `DefaultListableBeanFactory`）
+2) 来本章定位它属于哪一类能力（注入解析/类型转换/占位符/FactoryBean/后处理器…）
+3) 回到对应章节：跑 Lab + 下断点 + 看 watch list，把它变成可复现证据链
+
+关联阅读：
+
+- 知识地图（现象→章节→断点）：`92-knowledge-map.md`
+- Debugger Pack（断点入口总索引）：`98-debugger-pack.md`
+- Gap 清单（覆盖看板）：`96-spring-beans-public-api-gap.md`
+
+
 本索引用于把 `spring-beans` 的 public 类型做成“可检索/可审计”的入口，并为每个类型给出：
 - 机制域（Domain）
 - 主入口章节（Chapter）
@@ -448,3 +481,15 @@
 - **FactoryBean 的双重身份**：`getBean("foo")` 拿到的是“产品对象”，`getBean("&foo")` 才是 `FactoryBean` 本身；排查类型不匹配/注入歧义时先确认你拿到的到底是谁。
 - **代理导致的类型错觉**：JDK Proxy 只实现接口，无法赋值给具体类；当 BPP 提前暴露早期引用/创建代理时，“按具体类注入”可能失败，优先按接口注入或切换到 class-based proxy。
 - **版本差异与定位方式**：不要依赖行号；用“入口测试方法 + 关键接口名 + `rg` 关键词”定位更稳（Spring 小版本内部实现经常移动）。
+
+## 一句话自检
+
+- 你遇到一个 Spring 类型名（FQCN）时，是否能在 30 秒内用本索引定位到：对应章节 + 对应 LabTest + 断点入口？
+- 你是否能区分：这是“Public API（你应该用/理解）”，还是“内部实现细节（版本波动大）”？
+- 你是否能把“查到一个类型”进一步落到“能跑能证伪”的证据链，而不是停留在概念解释？
+
+<!-- BOOKIFY:START -->
+
+上一章：[94. 生产排障清单（Troubleshooting Checklist）](94-production-troubleshooting-checklist.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[96. spring-beans Public API Gap 清单](96-spring-beans-public-api-gap.md)
+
+<!-- BOOKIFY:END -->

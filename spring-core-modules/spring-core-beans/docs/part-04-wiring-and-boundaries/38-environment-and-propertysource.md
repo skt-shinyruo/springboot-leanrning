@@ -207,17 +207,20 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 
 ## 6. Debug / 断点入口与观察点
 
-推荐断点：
+推荐断点（按“读配置 → 解析占位符 → 注入落地”的链路）：
 
-推荐断点：
-
-推荐断点：
+1) `ConfigurableEnvironment#getProperty` / `PropertyResolver#getProperty`
+   - 观察：最终读到的值来自哪个 PropertySource（顺序决定胜者）
+2) `PropertySourcesPropertyResolver#getProperty`
+   - 观察：遍历 propertySources 的命中过程（谁先命中谁赢）
+3) `AbstractBeanFactory#resolveEmbeddedValue`
+   - 观察：`${...}` 占位符解析发生点（embedded value resolver）
+4) `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
+   - 观察：strict/non-strict 策略是如何被安装到 BeanFactory 的（缺失占位符是否 fail-fast）
 
 ## 常见坑与边界
 
-边界：
-
-## 7. 常见误区（以及为什么你在真实项目里会踩）
+### 常见误区（以及为什么你在真实项目里会踩）
 
 1) **误区：`@PropertySource` 一定覆盖其它配置**
    - 实际是“按顺序”。更高优先级的 source 先命中就结束。
@@ -225,6 +228,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
    - 绝大多数场景不会。注入发生在创建时；后改 Environment 不会 retroactive。
 3) **误区：profiles 随时都能改**
    - profiles 影响的是“注册阶段”，必须在 refresh 前设置才有意义。
+
+## 一句话自检
+
+- 你能解释清楚：PropertySource 的“顺序”为什么比“有没有某个 key”更重要吗？
+- 你遇到 `${demo.missing}` 没解析时，如何快速判断是“没有 property source/key”，还是“解析策略 non-strict 放行了”，还是“压根没装 placeholder 处理器”？
+- 你能说出：profiles 为什么必须在 refresh 前确定吗？它影响的是定义阶段还是创建阶段？
 
 ## 小结与下一章
 

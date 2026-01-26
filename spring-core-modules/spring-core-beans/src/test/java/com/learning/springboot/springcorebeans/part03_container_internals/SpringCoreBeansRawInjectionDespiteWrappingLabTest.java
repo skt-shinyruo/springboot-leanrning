@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
-class SpringCoreBeansRawInjectionDespiteWrappingLabTest {
+public class SpringCoreBeansRawInjectionDespiteWrappingLabTest {
 
     @Test
     void whenAllowRawInjectionDespiteWrappingFalse_getBeanFailsFastToProtectConsistency() {

@@ -7,14 +7,19 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - registry 里存的是 **原始 BeanDefinition**（可能是 `GenericBeanDefinition`，还带 `parentName`）；创建链路里真正使用的是 **merged 后的 `RootBeanDefinition`**。
+    - merged 不只是“把 propertyValues 拼起来”，它还会把 **scope/lazy-init/init-method/解析出的类型缓存** 等元信息统一成“最终配方”（本仓库 Lab 已补齐“继承 vs 覆盖”的对照）。
+    - merged 会被容器 **缓存**：你在断点里看到的 `RootBeanDefinition` 往往不是“每次现算”，而是命中缓存（这也是很多人“改了定义却没生效”的根因之一）。
+    - `MergedBeanDefinitionPostProcessor` 的触发点很关键：它发生在 `doCreateBean` 中、`populateBean` 之前（实例已创建，但属性还没注入），非常适合做元数据准备/缓存。
 
 
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
+    - 建议先跑的方法（按理解收益排序）：
+      - `mergedBeanDefinition_combinesParentAndChildMetadata_andTriggersMergedDefinitionPostProcessor`
+      - `mergedBeanDefinition_inheritsAndOverridesMetadata_fromParentAndChild`
 
 ## 机制主线
 
@@ -44,6 +49,21 @@
 - **生命周期元数据**：init-method / destroy-method 等（子覆盖父；子不声明则继承）
 - **resolved target type**：创建后可解析出更具体的 beanType（影响后续处理器）
 - 其他“创建需要的元数据”与缓存字段
+
+你可以把 merge 的核心逻辑理解成下面这个“伪代码级模型”（为了理解而非逐行对齐源码）：
+
+```text
+getMergedLocalBeanDefinition(beanName):
+  bd = getBeanDefinition(beanName)                 // raw definition from registry
+  if bd.parentName != null:
+    parentMbd = getMergedLocalBeanDefinition(bd.parentName)
+    mbd = new RootBeanDefinition(parentMbd)        // inherit defaults/metadata
+    mbd.overrideFrom(bd)                           // apply child overrides/additions
+  else:
+    mbd = copyToRootBeanDefinition(bd)             // normalize to RootBeanDefinition
+  cacheMerged(beanName, mbd)
+  return mbd
+```
 
 ---
 
@@ -109,11 +129,28 @@
 
 从 `getBean(beanName)` 到创建结束的最短主干（只列关键节点）：
 
+1) `AbstractBeanFactory#doGetBean(beanName, ...)`  
+2) `AbstractBeanFactory#getMergedLocalBeanDefinition(beanName)`  
+   - **这里计算/合并/缓存** `RootBeanDefinition (mbd)`（parent/child/默认值/解析结果统一到 mbd）  
+3) `AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`  
+4) `AbstractAutowireCapableBeanFactory#doCreateBean(beanName, mbd, args)`  
+   - `createBeanInstance(...)`（实例化）  
+   - `applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)`  
+     - **这里触发 `MergedBeanDefinitionPostProcessor`（在注入前做元数据准备/缓存）**  
+   - `populateBean(...)`（属性填充/依赖注入）  
+   - `initializeBean(...)`（初始化回调 + after-init BPP 可能产生代理）  
+
 你只要把这条链路记住，后面看到任意“元数据为什么已经准备好/为什么看到的是 RootBeanDefinition”都能对上。
 
 ## 固定观察点（watch list）
 
 建议在 `getMergedLocalBeanDefinition(...)` 里 watch/evaluate：
+
+- `beanName`
+- `bd`（raw definition）：是否仍带 `parentName`？scope/lazy/initMethod 是否“看起来缺失”？
+- `mbd`（merged definition）：是否为 `RootBeanDefinition`？哪些字段来自 parent、哪些来自 child？
+- merged 缓存（常见字段名：`mergedBeanDefinitions` 或等价结构）：是否命中缓存？是否发生“stale/需要重算”？
+- `containsBeanDefinition(beanName)` / `containsLocalBean(beanName)`：确认是本地定义还是从 parent fallback
 
 建议在 `doCreateBean(...)` 里 watch/evaluate：
 
@@ -177,7 +214,7 @@
 
 ## 常见坑与边界
 
-## 6. 常见误区
+### 常见误区
 
 - **误区 1：以为 `getBeanDefinition(beanName)` 就是“最终生效的定义”**  
   它更像是“registry 中的原始定义”；真正参与创建的是 merged。
@@ -187,6 +224,12 @@
 
 - **误区 3：只盯着 doCreateBean，不看 merged**  
   你会错过很多“为什么它这样创建/为什么元数据已准备好”的关键原因。
+
+## 一句话自检
+
+- 你能解释清楚：`BeanDefinition`（registry 里的原始定义）与 `MergedBeanDefinition/RootBeanDefinition`（创建时真正使用的配方）有什么区别吗？
+- 你能指出：`MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition` 在创建链路的哪个阶段触发吗？它“适合做什么/不适合做什么”？
+- 你能用断点证明：同一个 beanName 的 mbd 是“计算后缓存”的，而不是每次创建都重新算吗？（提示：观察 `getMergedLocalBeanDefinition` 的缓存命中）
 
 ## 小结与下一章
 

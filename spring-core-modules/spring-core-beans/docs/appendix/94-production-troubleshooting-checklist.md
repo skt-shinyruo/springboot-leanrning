@@ -1,245 +1,193 @@
-# 94. 生产排障清单（异常分型 → 入口 → 观察点 → 修复策略）
+# 94. 生产排障清单（Troubleshooting Checklist）：从症状到证据链
 
-> 目标：把 Spring Bean 排障从“靠经验”变成“固定 3 步收敛”。  
-> 关键词：**分型（在哪一层）→ 复现（可跑证据）→ 断点（看变量证伪/证实）**。
+## 导读
 
-## 本章怎么用（建议顺序）
+- 本章主题：**生产排障清单：从症状到证据链**
+- 阅读方式建议：把本章当成“排障 SOP”。你遇到问题时不要凭感觉改配置/改注入，而是按本章固定流程：先定位阶段 → 再找最短断点入口 → 再用最小复现验证。
 
-1) 先过一遍 **0. 三步收敛**（这是本章真正的“工具”）  
-2) 按异常类型跳到对应小节（NoSuch/NoUnique/BeanCreation/DefinitionStore…）  
-3) 用“最小断点集合 + watch list”把问题收敛到 1–2 个关键分支  
+!!! summary "本章要点"
 
----
+    - 排障优先级：**先确定发生阶段**（definition vs bean creation vs after-init）→ 再确定分支点（if/then）→ 最后才谈修复方案。
+    - 生产排障不要直接“猜改”：优先把现象缩小到最小容器/最小配置（本仓库的 Lab 就是为这一步准备的）。
+    - 证据链要闭环：Symptoms → Repro → Evidence → Decision → Fix → Verify（少一步就容易复发）。
 
-## 0. 三步收敛（通用）
+!!! example "本章配套实验（先跑再读）"
 
-### Step 1：分型（Definition Layer vs Instance Layer vs Final Exposed Object）
+    - Lab（排障入口总集合）：
+      - `SpringCoreBeansBreakpointPackLabTest`
+      - `SpringCoreBeansIocBranchMatrixLabTest`
+      - `SpringCoreBeansInternalsBranchMatrixLabTest`
 
-你拿到异常栈后，第一件事不是搜日志、不是改配置，而是判断它发生在哪一层：
+## 机制主线：先把问题放回 refresh 的哪一段
 
-- **定义层（Definition Layer）**：读/解析/注册 `BeanDefinition` 失败  
-  - 典型异常：`BeanDefinitionStoreException` / XML 解析异常 / 资源不存在  
-  - 常见根因：输入（XML/资源/配置类）不对、占位符解析失败、同名覆盖策略冲突
-- **实例层（Instance Layer）**：create → populate → initialize 过程中失败  
-  - 典型异常：`BeanCreationException` / `UnsatisfiedDependencyException` / `BeanCurrentlyInCreationException`
-- **最终暴露对象（Final Exposed Object）**：你拿到的对象不是“你写的那个类”，而是 proxy/early reference  
-  - 典型现象：self-invocation 不生效、注入对象与最终对象不一致、类型匹配/泛型匹配表现反直觉
+几乎所有 IoC 相关事故，都能归到 refresh 的某一段（见 [10. 主线时间线](../part-00-guide/010-03-mainline-timeline.md)）：
 
-> 你不分型，就会在错误层面修 bug：例如把“没注册”当成“注入问题”，永远修不完。
+- **定义层（Definition Phase）**：解析/注册 BeanDefinition（XML/Reader/扫描/导入）、BFPP/BDRPP 改写定义  
+- **实例层（Creation Phase）**：`doCreateBean` 实例化/注入/初始化、BPP 链、单例缓存  
+- **完成后（Post Refresh）**：容器就绪回调、运行期 getBean、懒加载触发
 
-### Step 2：选一个最小可跑入口（用 Lab 做证据）
-
-排障最怕“我只能在生产复现”。在这个仓库里，你应该优先把问题映射到某个 Lab：
-
-- 注入歧义：`SpringCoreBeansInjectionAmbiguityLabTest`
-- 候选者收敛：`SpringCoreBeansAutowireCandidateSelectionLabTest`
-- 生命周期/回调顺序：`SpringCoreBeansLifecycleCallbackOrderLabTest`
-- 循环依赖/early reference：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
-- 定义层（XML）：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
-
-### Step 3：用固定 watch list 收敛原因（看变量，不靠猜）
-
-建议你每次排障都固定盯这组变量（它们分别回答一个关键问题）：
-
-- `beanName`：当前正在处理哪个 bean（很多栈很深，先抓住“是谁”）
-- `mbd`（merged bean definition）：这个 bean “最终定义”长什么样（很多扩展点会在这里写入信息）
-- 候选集合：`Map<String, Object>` / `Map<String, BeanDefinition>`（为什么候选为空/太多）
-- 注入点描述：`DependencyDescriptor`（required? 泛型? 注解? 注入方式?）
-- post-processors 列表（顺序问题常见）：PriorityOrdered/Ordered/Unordered
-- 单例缓存三表（循环依赖/early reference）：`singletonObjects` / `earlySingletonObjects` / `singletonFactories`
+排障第一步永远是：你现在处在哪一段。
 
 ---
 
-## 1) NoSuchBeanDefinitionException（没有候选）
+## 1. 排障 SOP（建议固定为团队模板）
 
-### 常见根因（按概率排序）
+### 1.1 Symptoms（现象）
 
-1) **根本没注册（定义层没发生）**：扫描路径不对、配置类没进解析集合、`@Import` 没触发  
-2) **条件没 match**：auto-config 条件失败（不是 bug，是条件不满足）  
-3) **类型匹配失败**：泛型/FactoryBean product type/代理导致类型信息丢失
+- 异常类型是什么（root cause 关键词）？
+- 是启动时失败，还是运行一段时间后失败？
+- 影响面：所有请求都挂，还是某条路径触发？
 
-### 推荐断点
+### 1.2 Repro（最小复现）
 
-- `DefaultListableBeanFactory#findAutowireCandidates`（候选集合在哪里变成空）
-- `ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry`（配置类解析/注册入口）
+- 能否用 **最小容器** 复现（`AnnotationConfigApplicationContext`/`GenericApplicationContext`）？
+- 能否用本仓库 **对应 Lab** 复现同类机制边界？
 
-### 修复策略（两类）
+### 1.3 Evidence（证据链）
 
-1) **让候选出现**：修正扫描/导入/条件，使定义进入 registry  
-2) **让匹配正确**：修正泛型、明确 FactoryBean product type、避免代理丢信息
+- 选 1 个关键方法下断点 + 3 个观察点（watch list）
+- 把“猜”变成“看见”：候选集合是什么？BPP 链顺序是什么？三层缓存状态是什么？
 
-对应章节（深入理解而不是“背异常名”）：
-- 注册入口：[`02-bean-registration.md`](../part-01-ioc-container/02-bean-registration.md)
-- 依赖解析主线：[`014-03-dependency-injection-resolution.md`](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
-- 泛型匹配坑：[`37-generic-type-matching-pitfalls.md`](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
+### 1.4 Decision（分流决策）
 
----
+- 定义层问题？实例层问题？时机问题（过早实例化）？
+- 顺序问题（谁包谁）？还是形态问题（early vs final）？
 
-## 2) NoUniqueBeanDefinitionException（候选太多）
+### 1.5 Fix（修复）
 
-### 常见根因
+- 修复优先级：消除根因（设计/边界） > 改注入策略（Qualifier/Provider/Lazy） > 开关兜底（最后才用）
 
-- 多实现同时存在，但注入点是“单依赖”（并且没有 `@Primary/@Qualifier`）  
-- Boot 的 back-off 没生效（覆盖 bean 出现得太晚，条件评估时看不见它）
+### 1.6 Verify（验证）
 
-### 推荐断点
-
-- `DefaultListableBeanFactory#findAutowireCandidates`（候选集合）
-- `DefaultListableBeanFactory#determineAutowireCandidate`（收敛规则）
-- `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`（Qualifier 匹配）
-
-### 修复策略（两类）
-
-1) **确定化选择**：`@Primary` / `@Qualifier`（让注入点确定）  
-2) **让 back-off 生效**：覆盖 bean 必须在条件评估前可见（更干净）
-
-对应章节：
-- 候选者收敛规则：[`33-autowire-candidate-selection-primary-priority-order.md`](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
-- Boot 自动配置主线：[`021-10-spring-boot-auto-configuration.md`](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
+- 写一个可回归的最小测试（或在现有 Lab 中补断言）
+- 再跑一遍主线回归（本模块 `mvn -pl :spring-core-beans test`）
 
 ---
 
-## 3) UnsatisfiedDependencyException（注入失败总包装）
+## 2. 常见事故分类（现象 → 证据链入口）
 
-> 它常常只是“外壳异常”，真正 root cause 在 cause 链更里面。
+### 2.1 启动失败：`BeanDefinitionStoreException` / XML/Reader 相关
 
-常见真实根因：
+**Symptoms：**
 
-- NoSuch / NoUnique（最常见）
-- 类型转换失败（`@Value` / populateBean）
-- 依赖链上游创建失败（构造器异常、init 异常、BPP 包装异常）
+- `BeanDefinitionStoreException`、`BeanDefinitionParsingException`、XML 解析失败等
 
-推荐断点：
+**Evidence：**
+
+- `AbstractApplicationContext#refresh`（定位阶段）
+- `XmlBeanDefinitionReader#loadBeanDefinitions`（如果走 XML）
+- `DefaultListableBeanFactory#registerBeanDefinition`（注册入口）
+
+**Decision：**
+
+- 定义层输入有误（XML/资源路径/占位符）还是 processor 改写造成冲突？
+
+**Docs：**
+
+- `part-01-ioc-container/02-bean-registration.md`
+- `part-05-aot-and-real-world/42-xml-bean-definition-reader.md`
+
+### 2.2 启动失败：`NoSuchBeanDefinitionException` / `NoUniqueBeanDefinitionException`
+
+**Symptoms：**
+
+- 缺 bean / 多候选歧义
+
+**Evidence：**
+
 - `DefaultListableBeanFactory#doResolveDependency`
-- `AutowiredAnnotationBeanPostProcessor#postProcessProperties`
+- `findAutowireCandidates`（候选集合）
+- `determineAutowireCandidate`（收敛规则）
 
-观察点：
-- `DependencyDescriptor`（required? 注解? 泛型信息?）
-- 候选集合分支（空/不唯一）
-- 值注入分支（suggested value / resolveEmbeddedValue）
+**Docs：**
 
-对应章节：
-- 值解析：[`34-value-placeholder-resolution-strict-vs-non-strict.md`](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)
-- 类型转换：[`36-type-conversion-and-beanwrapper.md`](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)
+- `part-01-ioc-container/014-03-dependency-injection-resolution.md`
+- `part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
 
----
+### 2.3 代理不生效（事务/安全/缓存像没开）
 
-## 4) BeanCreationException（创建链路失败）
+**Symptoms：**
 
-### 常见根因（按阶段）
+- 你“确定加了 AOP”，但调用路径像绕过代理
 
-- **instantiate**：构造器抛异常 / FactoryMethod 抛异常  
-- **populate**：依赖注入失败 / 类型转换失败 / `@Value` 解析失败  
-- **initialize**：`@PostConstruct` / initMethod 抛异常 / BPP 包装抛异常  
-- **final exposed object**：代理替换失败/短路导致的异常
+**Evidence：**
 
-推荐断点：
-- `AbstractAutowireCapableBeanFactory#doCreateBean`
-- `AbstractAutowireCapableBeanFactory#populateBean`
-- `AbstractAutowireCapableBeanFactory#initializeBean`
+- `beanFactory.getBeanPostProcessors()`（BPP 链是否完整 & 顺序）
+- `applyBeanPostProcessorsAfterInitialization`（代理/替换发生点）
+- 是否存在“过早实例化”（bean 在 BPP 注册前就被创建）
 
-对应章节：
-- 生命周期与回调：[`016-05-lifecycle-and-callbacks.md`](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)
-- 代理/包装阶段：[`31-proxying-phase-bpp-wraps-bean.md`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
+**Decision：**
 
----
+- 顺序问题（谁包谁） vs 时机问题（错过 BPP）
 
-## 5) BeanDefinitionStoreException（定义层失败：读/解析/注册）
+**Docs：**
 
-典型场景：
+- `part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+- `part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
 
-- XML 非法 / schema 不匹配
-- 资源缺失（classpath 路径不对）
-- 注册冲突（同名覆盖策略/非法定义）
-- 占位符解析失败（定义阶段失败或延迟到实例阶段失败）
+### 2.4 循环依赖 / 提前引用相关（启动失败或行为诡异）
 
-推荐断点：
-- `XmlBeanDefinitionReader#loadBeanDefinitions`
-- `DefaultListableBeanFactory#registerBeanDefinition`
-- `AbstractApplicationContext#refresh`（看它停在 refresh 的哪一段）
+**Symptoms：**
 
-对应章节：
-- XML → BeanDefinitionReader：[`42-xml-bean-definition-reader.md`](../part-05-aot-and-real-world/42-xml-bean-definition-reader.md)
-- 注册入口：[`02-bean-registration.md`](../part-01-ioc-container/02-bean-registration.md)
+- `BeanCurrentlyInCreationException`
+- 代理/增强后开始出现循环依赖相关异常
 
----
+**Evidence：**
 
-## 6) 代理/最终对象问题（行为不符合直觉）
+- `DefaultSingletonBeanRegistry#getSingleton`（三层缓存命中分支）
+- `DefaultSingletonBeanRegistry#addSingletonFactory`（early exposure 起点）
+- `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`（early 形态决定）
 
-典型现象：
+**Decision：**
 
-- 注入进来的对象不是你写的类，而是 proxy
-- self-invocation（自调用）导致拦截不生效
-- early reference 导致注入到的对象与最终对象不一致（尤其是循环依赖 + 代理）
+- constructor cycle（通常 fail-fast）还是 setter cycle（窗口期可救）？
+- early/raw 与 final/proxy 是否一致？
 
-推荐断点：
-- `AbstractAutowireCapableBeanFactory#initializeBean`
-- `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
-- `DefaultSingletonBeanRegistry#getSingleton`（early reference/三级缓存）
+**Docs：**
 
-对应章节：
-- 代理阶段：[`31-proxying-phase-bpp-wraps-bean.md`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
-- early reference：[`16-early-reference-and-circular.md`](../part-03-container-internals/16-early-reference-and-circular.md)
+- `part-01-ioc-container/09-circular-dependencies.md`
+- `part-03-container-internals/16-early-reference-and-circular.md`
 
----
+### 2.5 `@Value` 值不对 / 缺失不失败 / 运行期才暴露
 
-## 7) Boot 自动装配相关排障（为什么有/为什么没有/为什么不退让）
+**Symptoms：**
 
-最常见的三问：
+- 值是 `"${missing}"` 原样字符串
+- strict/non-strict 行为在不同环境不一致
 
-1) **为什么有这个 Bean？**（哪个 auto-config 导入的？条件为什么成立？）  
-2) **为什么没有这个 Bean？**（被过滤了？条件没 match？还是压根没导入？）  
-3) **为什么不退让（back-off）？**（覆盖 bean 出现得太晚，条件评估时不可见）
+**Evidence：**
 
-推荐断点：
-- `AutoConfigurationImportSelector#getAutoConfigurationEntry`（候选收集/排序/过滤）
-- `ConfigurationClassParser#processImports`（导入到容器）
-- `ConditionEvaluator#shouldSkip`（条件评估）
+- `AbstractBeanFactory#resolveEmbeddedValue`（解析输入/输出）
+- `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`（strict 策略来源）
 
-对应章节：
-- 自动配置主线：[`021-10-spring-boot-auto-configuration.md`](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
-- 顺序问题：[`020-09-auto-config-ordering.md`](../part-02-boot-autoconfig/020-09-auto-config-ordering.md)
-- 调试与观测：[`019-11-debugging-and-observability.md`](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
+**Docs：**
+
+- `part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
+- `part-05-aot-and-real-world/44-spel-and-value-expression.md`
+- `part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
 
 ---
 
-## 8) AOT/Native 相关排障（契约缺失）
+## 3. Debugger Pack：排障时的“第一入口”
 
-当你在 AOT/Native 下遇到“JVM 好好的，Native 失败”的问题，优先问：
+如果你只记一个入口，记这个：
 
-- 这是 reflection/proxy/resource 的契约缺失吗？
-- 是否需要补 `RuntimeHints`？
+- `appendix/98-debugger-pack.md`
 
-对应章节：
-- AOT/Native 概览：[`024-40-aot-and-native-overview.md`](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
-- RuntimeHints 入门：[`41-runtimehints-basics.md`](../part-05-aot-and-real-world/41-runtimehints-basics.md)
+它把常见问题都压缩成“断点入口 + watch list + 对应 Lab”，适合作为生产排障的第一跳转页。
 
 ---
 
-## 最小断点集合（建议你背下来）
+## 一句话自检
 
-如果你只允许自己背 6 个断点，就背这 6 个：
+你应该能做到：
 
-- `AbstractApplicationContext#refresh`
-- `AbstractBeanFactory#doGetBean`
-- `AbstractAutowireCapableBeanFactory#doCreateBean`
-- `AbstractAutowireCapableBeanFactory#populateBean`
-- `AbstractAutowireCapableBeanFactory#initializeBean`
-- `DefaultListableBeanFactory#resolveDependency`
-
----
+1) 任意一个 IoC 相关异常，先定位它属于 definition 还是 bean creation，再决定下哪个断点。  
+2) 解释“为什么这个断点能证明我的结论”（而不是碰巧）。  
+3) 用本仓库的 Lab 复现同类机制边界，并把修复方案固化成可回归验证。
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
-
-- Lab（定义层/XML）：[`SpringCoreBeansXmlBeanDefinitionReaderLabTest`](../../src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java)  
-  - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest test`
-- Lab（注入歧义）：`SpringCoreBeansInjectionAmbiguityLabTest`
-- Lab（候选收敛）：`SpringCoreBeansAutowireCandidateSelectionLabTest`
-- Lab（循环依赖/early ref）：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
-- Lab（代理阶段）：`SpringCoreBeansProxyingPhaseLabTest`
-
-上一章：[93. 面试复述模板（决策树 → Lab → 断点入口）](93-interview-playbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[95. spring-beans Public API 索引（按类型检索）](95-spring-beans-public-api-index.md)
+上一章：[93. 面试复述模板（Interview Playbook）](93-interview-playbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[95. spring-beans Public API Index（索引）](95-spring-beans-public-api-index.md)
 
 <!-- BOOKIFY:END -->

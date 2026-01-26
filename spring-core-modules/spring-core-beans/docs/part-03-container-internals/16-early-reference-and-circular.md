@@ -16,10 +16,11 @@
 
 !!! example "本章配套实验（先跑再读）"
 
-    - Lab：`SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest` / `SpringCoreBeansContainerLabTest`
+    - Lab：`SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest`
     - Test file：
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansCircularDependencyBoundaryLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 ## 机制主线：early reference 的“时机”与“形态”
@@ -70,6 +71,16 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 - `singletonFactories`：factory（存在一个 `ObjectFactory`，允许“现在才生成 early 引用”）
 
 这部分回答的是：**什么时候可以把引用交出去？**
+
+补充一个经常被忽略的前提：
+
+- 如果你把 `allowCircularReferences=false`（更安全的工程策略之一），那么 setter/field 循环依赖也会直接 fail-fast  
+- early reference / getEarlyBeanReference 这些机制就没有“发挥空间”（因为循环依赖被更早阻断）
+
+对照实验（本仓库已补齐）：
+
+- `SpringCoreBeansCircularDependencyBoundaryLabTest#setterCycleMaySucceedViaEarlySingletonExposure_whenAllowCircularReferencesIsEnabled`
+- `SpringCoreBeansCircularDependencyBoundaryLabTest#setterCycleFailsFast_whenAllowCircularReferencesIsDisabled`
 
 ### 2.2 `getEarlyBeanReference` 解决“形态问题”
 

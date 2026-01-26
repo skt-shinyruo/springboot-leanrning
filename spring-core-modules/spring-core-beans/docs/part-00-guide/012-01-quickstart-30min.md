@@ -138,3 +138,28 @@
 上一章：[00. 深潜指南（如何读/如何断点/如何建立肌肉记忆）](011-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Bean 心智模型：BeanDefinition / Bean / 容器三层](../part-01-ioc-container/020-01-bean-mental-model.md)
 
 <!-- BOOKIFY:END -->
+
+!!! example "本章配套实验（先跑再读）"
+
+    - Lab（30 分钟闭环入口）：
+      - `SpringCoreBeansLabTest`
+      - `SpringCoreBeansMainlineCallChainLabTest`
+      - `SpringCoreBeansBreakpointPackLabTest`
+
+## 机制主线
+
+30 分钟快启只做三件事：
+
+1) 跑一条最小容器（你能看到 BeanDefinition → bean 实例的转换）
+2) 跑一条 refresh 主线（你能把“处理器/注入/回调”放回时间线）
+3) 下两三个关键断点（你能在调试器里看见关键数据结构变化）
+
+当你完成这三件事，再去读后面的章节，你会发现它们都只是“在同一条主线上加分支/加边界”。
+
+## 一句话自检
+
+你应该能做到：
+
+1) 30 分钟内跑通本章推荐的 1–3 个 Lab，并知道每个 Lab 证明了什么结论。
+2) 能把 refresh 粗粒度分成“定义层/注册 BPP/创建单例”三段，并说出各自的断点入口。
+3) 知道下一步该按“现象驱动”去哪一章（可从 `appendix/92-knowledge-map.md` 开始）。

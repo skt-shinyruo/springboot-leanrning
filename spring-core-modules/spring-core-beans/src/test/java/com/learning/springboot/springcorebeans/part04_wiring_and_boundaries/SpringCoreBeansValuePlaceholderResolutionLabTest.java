@@ -10,7 +10,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 
-class SpringCoreBeansValuePlaceholderResolutionLabTest {
+public class SpringCoreBeansValuePlaceholderResolutionLabTest {
 
     @Test
     void defaultEmbeddedValueResolver_resolvesExistingProperty_butLeavesMissingPlaceholderUnresolved() {
@@ -32,6 +32,7 @@ class SpringCoreBeansValuePlaceholderResolutionLabTest {
 
             assertThat(target.present()).isEqualTo("hello");
             assertThat(target.missing()).isEqualTo("${demo.missing}");
+            assertThat(target.missingWithDefault()).isEqualTo("default-value");
         }
     }
 
@@ -64,6 +65,31 @@ class SpringCoreBeansValuePlaceholderResolutionLabTest {
         System.out.println("OBSERVE: With strict mode, missing '${...}' fails during bean creation instead of silently passing through");
     }
 
+    @Test
+    void propertySourcesPlaceholderConfigurer_strictMode_allowsMissingPlaceholderWhenDefaultValueIsProvided() {
+        try (GenericApplicationContext context = new GenericApplicationContext()) {
+            AnnotationConfigUtils.registerAnnotationConfigProcessors(context);
+
+            ConfigurableEnvironment environment = context.getEnvironment();
+            environment.getPropertySources()
+                    .addFirst(new MapPropertySource("lab", java.util.Map.of("demo.present", "hello")));
+
+            context.registerBean(PropertySourcesPlaceholderConfigurer.class, () -> {
+                PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+                configurer.setIgnoreUnresolvablePlaceholders(false);
+                return configurer;
+            });
+
+            context.registerBean(DefaultedTarget.class);
+            context.refresh();
+
+            DefaultedTarget target = context.getBean(DefaultedTarget.class);
+
+            System.out.println("OBSERVE: strict mode still allows missing placeholders when a default value is provided (${k:default})");
+            assertThat(target.missingWithDefault()).isEqualTo("default-value");
+        }
+    }
+
     static class Target {
 
         @org.springframework.beans.factory.annotation.Value("${demo.present}")
@@ -72,12 +98,29 @@ class SpringCoreBeansValuePlaceholderResolutionLabTest {
         @org.springframework.beans.factory.annotation.Value("${demo.missing}")
         private String missing;
 
+        @org.springframework.beans.factory.annotation.Value("${demo.missing:default-value}")
+        private String missingWithDefault;
+
         String present() {
             return present;
         }
 
         String missing() {
             return missing;
+        }
+
+        String missingWithDefault() {
+            return missingWithDefault;
+        }
+    }
+
+    static class DefaultedTarget {
+
+        @org.springframework.beans.factory.annotation.Value("${demo.missing:default-value}")
+        private String missingWithDefault;
+
+        String missingWithDefault() {
+            return missingWithDefault;
         }
     }
 }

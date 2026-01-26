@@ -120,7 +120,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest test
 
 ## 常见坑与边界
 
-## 5. 常见误区（面试/排障高频）
+### 常见误区（面试/排障高频）
 
 1) **误区：RuntimeHints 是“运行时开关/日志开关”**
    - 更准确：它是 **构建期契约输入**，决定 native image 里哪些元信息会被保留/生成。
@@ -130,6 +130,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest test
 3) **误区：只要注册一个 Type 就够**
    - 真正关键是“访问粒度”：构造器/方法/字段的 MemberCategory 是否足够。
    - 例如你只注册了“public constructors”，但运行期实际上需要反射调用方法/访问字段时，仍然会失败。
+
+## 一句话自检
+
+- 你能用一句话解释：RuntimeHints 在 AOT/Native 场景里扮演的角色是什么吗？（提示：构建期契约输入，不是运行时开关）
+- 你能说出：如何用一个 JVM 单测证明“hints 默认不命中 → 注册后命中”吗？（提示：对照断言）
+- 当 hints “注册了但仍不生效”时，你的排查顺序是什么？（提示：先确认 registrar 执行，再确认注册粒度覆盖真实访问方式）
 
 ## 小结与下一章
 

@@ -275,3 +275,17 @@ destroySingletons():
 - 推荐命令：
   - `mvn -pl :spring-core-beans test`
   - 或单跑：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleCallbackOrderLabTest test`
+
+## 一句话自检
+
+你应该能回答：
+
+1) 初始化回调顺序大致如何（Aware / @PostConstruct / afterPropertiesSet / initMethod / after-init BPP）？
+2) prototype 的销毁为什么默认不会在 context close 时触发？你如何在 Lab/断点里验证？
+3) 如果你怀疑“某个回调没执行/代理没生效”，你会先定位到 refresh 的哪一段？下哪两个断点？
+
+<!-- BOOKIFY:START -->
+
+上一章：[第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](015-04-scope-and-prototype.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. 容器扩展点：BFPP vs BPP（定义层 vs 实例层）](017-06-post-processors.md)
+
+<!-- BOOKIFY:END -->

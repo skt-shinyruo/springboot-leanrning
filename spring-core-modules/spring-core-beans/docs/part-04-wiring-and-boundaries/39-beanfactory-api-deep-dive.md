@@ -173,17 +173,26 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
 
 ## 5. Debug / 断点入口与观察点（把“注解为什么不生效”变成可证明结论）
 
-推荐断点：
+推荐断点（按“先装规则、再创建对象”的顺序跑一遍）：
 
-推荐断点：
+1) `AnnotationConfigUtils#registerAnnotationConfigProcessors`
+   - 观察：它只是把处理器注册成 BeanDefinition（registry 里有了），并不会自动让注解生效
+2) `DefaultListableBeanFactory#addBeanPostProcessor`
+   - 观察：BPP 真正进入 `beanFactory.getBeanPostProcessors()` 的时机（这一步才是“注解能力被激活”的关键）
+3) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`
+   - 观察：字段/参数注入是否发生（plain BeanFactory 未安装 BPP 时不会命中）
+4) `CommonAnnotationBeanPostProcessor#postProcessProperties` / `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`
+   - 观察：`@Resource/@PostConstruct` 等行为是否触发
+5) `AbstractAutowireCapableBeanFactory#populateBean` / `#initializeBean`
+   - 观察：创建链路是否走到注入/初始化阶段，以及 BPP 链路是否生效
 
 ## 常见坑与边界
 
-## 3. 关键边界：plain BeanFactory 不会“自动让注解生效”
+### 关键边界：plain BeanFactory 不会“自动让注解生效”
 
 很多人第一次直接 new 一个 `DefaultListableBeanFactory` 会踩坑：
 
-## 6. 常见误区
+### 常见误区
 
 1) **误区：BeanFactory = “更轻量更推荐”**
    - 轻量不等于省心。除非你非常明确自己要控制哪些 post-processors，否则默认用 ApplicationContext。
@@ -191,6 +200,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
    - 不够：你还需要“执行/注册”整套基础设施链路（ApplicationContext refresh 会做，plain BeanFactory 不会自动做）。
 3) **误区：只要加了 BPP，就能让以前创建过的 bean 也被处理**
    - BPP 通常不 retroactive。顺序与时机是排障关键点。
+
+## 一句话自检
+
+- 你能解释清楚：为什么 `AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory)` “看起来装了处理器”，但注解仍然不生效吗？
+- 你能指出：在 plain BeanFactory 场景里，“让注解生效”的最小动作是什么？（提示：不是 refresh，而是把处理器实例加进 BPP 列表）
+- 你能用断点证明：`@Autowired` 的发生点在 `populateBean` 的哪个钩子里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
 
 ## 小结与下一章
 

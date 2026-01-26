@@ -99,6 +99,14 @@ Spring 里很多“规则”只在特定场景成立。最关键的分界线就�
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+这章几乎都是 **实例层（依赖解析）** 的问题：bean 已经注册进来了，关键在“注入点怎么选胜者/怎么排序”。
+
+- **定义层问题（少见）**：你怀疑候选本不该出现（例如 auto-config 重复注册）
+  - 先看 BeanDefinition 来源与条件（见 [10](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)）
+- **实例层问题（本章）**：
+  - `NoUniqueBeanDefinitionException`：候选收敛失败 → 去 `doResolveDependency` / `determineAutowireCandidate`
+  - “写了 @Primary 但没生效”：看看注入点是否有更强信号（`@Qualifier` / `@Resource` name-first）
+  - “集合注入顺序不稳定”：这是排序问题 → 去 `AnnotationAwareOrderComparator#sort`（不要误用成单依赖选择规则）
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
@@ -168,7 +176,18 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLa
 
 ## 常见坑与边界
 
-并且记住一个常见误区：
+并且记住两句“能救命”的结论：
+
+1) **`@Order` 主要影响集合注入排序，不负责单依赖选择胜者。**
+2) **单依赖选择的优先级信号通常是：`@Qualifier`（最强） > `@Primary` > `@Priority`（tie-break） > by-name fallback（隐式且不推荐依赖）。**
+
+如果你把这两句记牢，大多数“我以为会这样但它没这样”的困惑都会消失。
+
+## 一句话自检
+
+- `@Order` 能不能解决单依赖注入歧义？为什么？
+- `@Primary`、`@Qualifier`、`@Priority` 各自解决的是什么问题？谁更强？
+- 你如何在断点里证明“by-name fallback 确实发生了”？（提示：看 dependency name 与 beanName 的匹配分支）
 
 ## 小结与下一章
 

@@ -121,3 +121,15 @@
 上一章：[part-00-guide/01-quickstart-30min.md](012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](013-02-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->
+
+## 机制主线
+
+这章的核心不是“列出调用链”，而是让你把所有机制放回同一条时间线：
+
+- refresh 前半段：定义层（BeanDefinition 注册 + BFPP/BDRPP）
+- refresh 中段：注册 BPP 链（注解/AOP/回调能力的来源）
+- refresh 后半段：创建单例（doCreateBean：实例化→注入→初始化→入缓存）
+
+你在读调用链时，建议带着一个问题：
+
+> 这个步骤是在“改定义”还是“造实例”？它决定了我能不能通过断点看见某类行为。

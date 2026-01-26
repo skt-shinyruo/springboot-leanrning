@@ -213,6 +213,14 @@
 
 ## 面试常问（prototype 注入陷阱）
 
+1) **prototype 的语义到底是什么？为什么“prototype 注入 singleton”会像单例？**
+   - 要点：prototype 是“每次向容器要都新建”；但注入发生在 singleton 创建时，只向容器要了一次 prototype，之后被 singleton 持有引用。
+
+2) **怎么让 singleton 每次调用都拿到新的 prototype？**
+   - 要点：把“获取动作”延迟到使用时：优先用 `ObjectProvider#getObject()`；也可用 `@Lookup`（方法注入）或 scoped proxy（谨慎，debug 成本更高）。
+
+3) **prototype 的销毁回调为什么经常“不触发”？**
+   - 要点：容器默认不托管 prototype 的完整销毁语义；`context.close()` 只会销毁单例；prototype 的 `@PreDestroy` 需要显式 destroy 或由你管理生命周期（见本章对应 Lab）。
 
 ## 小结与下一章
 

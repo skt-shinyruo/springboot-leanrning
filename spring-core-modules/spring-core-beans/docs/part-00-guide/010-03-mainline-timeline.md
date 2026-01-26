@@ -1,83 +1,144 @@
-# 第 10 章：主线时间线：Spring Core Beans（IoC 容器）
-<!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：主线时间线：Spring Core Beans（IoC 容器）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
-    - 推荐 Lab：`SpringCoreBeansContainerLabTest`
-<!-- CHAPTER-CARD:END -->
-
-<!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 9 章：IoC 容器主线（Beans）](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点](011-00-deep-dive-guide.md)
-<!-- GLOBAL-BOOK-NAV:END -->
-
-!!! summary
-    - 这一模块关注：ApplicationContext/BeanFactory 如何把“定义”变成“对象”，并在过程中提供可插拔的扩展点。
-    - 读完你应该能复述：**注册 BeanDefinition → 执行 Post-Processor → 实例化/注入 → 生命周期回调** 这一条主线。
-    - 推荐顺序：先读《深挖导读》→ 本章（建立时间线）→ 顺读 Part 01 的主线章节 → 再进入 Part 03/04 深挖内部机制与边界。
-
-!!! example "建议先跑的 Lab（把时间线变成证据）"
-
-    - Lab：`SpringCoreBeansContainerLabTest`
-
-## 小结与下一章
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：主线时间线：Spring Core Beans（IoC 容器） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
-- 回到主线：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：建议按模块目录/全书目录继续顺读。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
+# 第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean
 
 ## 导读
 
-<!-- BOOKLIKE-V2:INTRO:START -->
-这一章围绕「主线时间线：Spring Core Beans（IoC 容器）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+- 本章主题：**主线时间线：IoC 容器从 refresh 到创建 Bean**
+- 阅读方式建议：这章不是“讲知识点”，而是给你一张时间线地图。你先跑一个主线 Lab，把 refresh 走一遍；然后拿这张时间线去定位每个现象属于哪个阶段。
 
-阅读建议：
-- 先看章首的“章节学习卡片/本章要点”，建立预期；
-- 推荐先跑一遍本章 Lab，再带着问题回到正文。
-<!-- BOOKLIKE-V2:INTRO:END -->
+!!! summary "本章要点"
 
-## 在 Spring 主线中的位置
+    - 你只要记住一件事：**99% 的排障都能被归到 refresh 的某一段**（定义层/实例层/初始化/完成后回调）。
+    - BFPP/BDRPP（定义层）与 BPP（实例层）是两个世界：先改“定义”，再造“实例”；顺序错了，后果往往是“代理/注入/回调不生效”。
+    - 你不需要背完整 refresh 步骤，但你必须能说清：BPP 什么时候注册？单例什么时候创建？循环依赖窗口在哪里？
 
-- 这是整个 Spring 生态的“发动机”：AOP、事务、WebMVC 等最终都要落在 **Bean 的创建、注入与增强** 上。
-- 绝大多数“为什么我的 Bean 行为不对”的问题，本质都能映射到：**定义阶段**或**创建阶段**的某个关键分支。
+!!! example "本章配套实验（先跑再读）"
 
-## 主线时间线（推荐顺读：先把容器跑通）
+    - Lab：`SpringCoreBeansMainlineCallChainLabTest` / `SpringCoreBeansBreakpointPackLabTest`
+    - Test file：
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansMainlineCallChainLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansBreakpointPackLabTest.java`
 
-1. 建立 Bean 的心智模型：容器到底在管理什么
-   - 阅读：[深挖导读](011-00-deep-dive-guide.md)
-   - 主线章节：[01. Bean 心智模型与注册入口](../part-01-ioc-container/020-01-bean-mental-model.md)
-2. 把“依赖是怎么被解析与注入的”跑通（按类型/按名称/泛型/候选集）
-   - 主线章节：[03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
-3. 把“作用域与生命周期”接起来（尤其是 prototype 的边界）
-   - 主线章节：[04. 作用域与 prototype](../part-01-ioc-container/015-04-scope-and-prototype.md)
-   - 主线章节：[05. 生命周期与回调](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)
-4. 进入扩展点：Post-Processor 如何改变“定义”与“对象”
-   - 主线章节：[06. Post-Processor](../part-01-ioc-container/017-06-post-processors.md)
-   - 主线章节：[07. 配置类增强](../part-01-ioc-container/018-07-configuration-enhancement.md)
-5. 把 Spring Boot 接上来：自动配置如何把条件装配落到容器里
-   - 阅读：[10. 自动配置主线](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
-   - 调试：[11. 调试与观测](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
+## 机制主线：把所有章节放回同一条时间线
 
-## 深挖路线（按需）
+当你学习 Spring IoC 时，最容易迷失的不是“方法太多”，而是：
 
-- 想理解容器内部“按顺序发生了什么”：从 [12. 容器启动与基础设施处理器](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) 开始，再顺读 13–17。
-- 想系统掌握“边界与坑点”（候选集/别名/覆盖/类型匹配/代理时机）：从 [18. Lazy 语义](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md) 开始按目录推进。
-- 想看 AOT 与真实世界输入形态：从 [40. AOT 与 Native 概览](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) 开始按目录推进。
+- 你不知道某个机制发生在 refresh 的哪一步
+- 你不知道“我改了定义/我加了处理器/我触发了 getBean”会影响哪一段
 
-## 排坑与自检
+因此我们先用一张时间线，把 IoC 的主线粗粒度切成几段（每段对应一类问题/一类断点入口）。
 
-- 常见坑：[90-common-pitfalls.md](../appendix/025-90-common-pitfalls.md)
-- 自检：[99-self-check.md](../appendix/026-99-self-check.md)
+---
 
-## 证据链（如何验证你真的理解了）
+## 1. refresh 主线时间线（粗粒度分段）
 
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Core Beans（IoC 容器）」的生效时机/顺序/边界；断点/入口：`org.springframework.context.support.AbstractApplicationContext#refresh`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Core Beans（IoC 容器）」的生效时机/顺序/边界；断点/入口：`org.springframework.beans.factory.support.DefaultListableBeanFactory`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Core Beans（IoC 容器）」的生效时机/顺序/边界；断点/入口：`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``SpringCoreBeansContainerLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
+> 目标：遇到任何现象，先回答：它属于哪一段？
+
+### 1.1 段 A：准备阶段（容器骨架搭好，但还没处理你的 bean）
+
+关键点：
+
+- Environment/PropertySources 基本就位
+- BeanFactory 创建/替换/准备完成（后续所有定义与实例都围绕它发生）
+
+典型断点：
+
+- `AbstractApplicationContext#refresh`（总入口）
+- `AbstractApplicationContext#prepareBeanFactory`
+
+### 1.2 段 B：定义层（Definition Phase：BFPP/BDRPP）
+
+关键点：
+
+- 注册/解析 BeanDefinition（包括扫描/导入/XML/Reader）
+- BFPP/BDRPP 可以批量改写 BeanDefinition
+
+典型断点：
+
+- `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
+- `BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`
+- `BeanFactoryPostProcessor#postProcessBeanFactory`
+
+对应章节：
+
+- `part-03-container-internals/13-bdrpp-definition-registration.md`
+- `part-01-ioc-container/02-bean-registration.md`
+
+### 1.3 段 C：实例层准备（注册 BPP 链）
+
+关键点：
+
+- 把所有 BeanPostProcessor 实例创建出来并按规则注册进链
+- AOP/注解注入/生命周期回调等“能力”都依赖这条链
+
+典型断点：
+
+- `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
+- `DefaultListableBeanFactory#addBeanPostProcessor`
+
+对应章节：
+
+- `part-01-ioc-container/017-06-post-processors.md`
+- `part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
+- `appendix/98-debugger-pack.md`
+
+### 1.4 段 D：创建单例（实例化 → 注入 → 初始化 → 入缓存）
+
+关键点：
+
+- `finishBeanFactoryInitialization` 会触发单例预实例化与创建
+- `doCreateBean` 中存在循环依赖窗口（early exposure）
+
+典型断点：
+
+- `AbstractApplicationContext#finishBeanFactoryInitialization`
+- `AbstractAutowireCapableBeanFactory#doCreateBean`
+- `DefaultSingletonBeanRegistry#getSingleton`
+
+对应章节：
+
+- `part-03-container-internals/18-refresh-to-bean-creation-mainline.md`
+- `part-01-ioc-container/016-05-lifecycle-and-callbacks.md`
+- `part-01-ioc-container/09-circular-dependencies.md`
+- `part-03-container-internals/16-early-reference-and-circular.md`
+
+### 1.5 段 E：完成与后置回调（容器就绪）
+
+关键点：
+
+- 容器完成 refresh，发布事件，执行“容器就绪”类回调（例如 SmartInitializingSingleton）
+
+典型断点：
+
+- `AbstractApplicationContext#finishRefresh`
+- `SmartInitializingSingleton#afterSingletonsInstantiated`
+
+对应章节：
+
+- `part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
+
+---
+
+## 2. 这条时间线怎么用来排障（3 个经典分流）
+
+1) **注入失败（NoSuchBeanDefinition / NoUniqueBeanDefinition）**  
+   - 优先看段 D：`doResolveDependency/findAutowireCandidates/determineAutowireCandidate`
+2) **代理/增强不生效**  
+   - 先分清是段 C（BPP 没注册/顺序不对）还是段 D（bean 创建过早错过 BPP）
+3) **循环依赖/提前引用相关异常**  
+   - 段 D：`getSingleton` 的三层缓存分支 + `doCreateBean` 的 early exposure 窗口
+
+---
+
+## 一句话自检
+
+你应该能用 3 句复述：
+
+1) BFPP/BDRPP 发生在 refresh 的哪一段？它改的是“定义”还是“实例”？  
+2) BPP 链是在什么时候注册的？为什么它决定了“注解/AOP/回调”是否生效？  
+3) 单例创建主线从哪开始（哪一步触发预实例化）？循环依赖窗口在 `doCreateBean` 的哪里？
+
+<!-- BOOKIFY:START -->
+
+上一章：[第 9 章：00 - Deep Dive Guide（spring-core-beans）](011-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 13 章：01. `ApplicationContext#refresh` 调用链（主线）](013-01-applicationcontext-refresh-call-chain.md)
+
+<!-- BOOKIFY:END -->

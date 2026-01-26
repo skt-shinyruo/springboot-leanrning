@@ -156,7 +156,20 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
 - XSD 解析：
   - `spring.schemas` 是否命中（避免网络访问）
 
-## 5. 常见误区（以及为什么你在真实项目里会踩）
+### 常见误区（以及为什么你在真实项目里会踩）
+
+1) **误区：namespace 扩展是“XML 语法糖”**
+   - 本质上你在扩展的是“定义层输入”：把 element 解析成 BeanDefinition 并注册进 registry。
+2) **误区：XSD/handler 的加载失败只会影响这一小块配置**
+   - 实际上它会让整个 XML 文档解析失败，直接卡在定义阶段，应用甚至不会进入创建业务 bean 的阶段。
+3) **误区：排障只看 XML 文本**
+   - 更快的方式：从 `NamespaceHandlerResolver` 与 `BeanDefinitionParser` 下断点，直接看“有没有命中 handler/parser、最终注册了什么定义”。 
+
+## 一句话自检
+
+- 你能解释清楚：XML namespace 扩展发生在定义阶段还是创建阶段吗？输出产物是什么？
+- 你能说出：`spring.handlers` 与 `spring.schemas` 分别负责解决什么问题吗？（提示：handler 映射 vs XSD 映射）
+- 你遇到 `<xxx:...>` 不生效时，最短的断点链路应该从哪里进？
 
 ## 小结与下一章
 

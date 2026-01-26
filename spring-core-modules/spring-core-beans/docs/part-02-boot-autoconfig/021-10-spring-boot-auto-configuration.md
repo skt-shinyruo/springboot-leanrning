@@ -183,8 +183,18 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 学完本章，你至少要能把下面这句话解释清楚：
 
+> **Spring Boot 自动装配不是“运行时自动注入”，而是在“注册阶段”把一批候选配置类导入进来，并在条件评估阶段决定哪些配置/BeanDefinition 真正落进容器；当用户显式提供同类能力时，自动配置应当 back-off（让用户配置优先）。**
+
 ## 面试常问（自动配置与条件装配怎么定位）
 
+1) **你怎么定位“为什么某个自动配置生效/不生效”？（不靠猜日志）**
+   - 要点：先看 `ConditionEvaluationReport`（报告告诉你 match / no match 的理由），再到 `OnBeanCondition#getMatchOutcome` / `SpringBootCondition#matches` 下断点确认“评估时机与输入是什么”。需要跨配置依赖时，再回到排序与 after/before 元数据（见本模块 ordering labs）。
+
+2) **你怎么定位“某个 bean 到底是谁注册的”？**
+   - 要点：看 `BeanDefinition` 的来源字段（factoryBeanName/factoryMethodName/resource/source/role），把“来自哪个 auto-config / 哪个 @Bean 方法”变成可观测事实，而不是翻日志。
+
+3) **你怎么解释“为什么有时能启动、有时会因为 NoUnique 直接挂”？**
+   - 要点：重复候选不一定立刻爆，只有当出现单注入点时才需要收敛候选；修复要么确定化选择（`@Primary/@Qualifier`），要么让自动配置 back-off（从根上消除多余候选）。
 
 ## 源码与断点
 
@@ -347,6 +357,19 @@ mvn -pl :spring-core-beans test
 ## 常见坑与边界
 
 ### 4.1 `matchIfMissing`：缺省值语义（面试高频坑）
+
+- `matchIfMissing=true` 常见于“debug 开关/观测开关”：**你没配并不代表关闭**，而是“缺省即匹配”（默认开启）。
+- 你应该能区分三态：
+  - **missing**：属性未配置（会触发 matchIfMissing 的语义）
+  - **false**：显式关闭
+  - **true**：显式开启
+- 复现入口：`SpringCoreBeansConditionEvaluationReportLabTest`（missing/false/true 三态对照）
+
+## 一句话自检
+
+- 你能用一句话解释：自动装配（auto-configuration）主要发生在定义阶段还是创建阶段吗？为什么？
+- 你能说出：定位“为什么生效/为什么不生效”的最短证据链是什么吗？（提示：ConditionEvaluationReport + 断点到 matchOutcome）
+- 你能区分：overriding（同名定义冲突）和 NoUnique（同类型注入歧义）吗？它们分别怎么修？
 
 ## 小结与下一章
 

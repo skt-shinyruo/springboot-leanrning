@@ -444,6 +444,12 @@ mvn -pl :spring-core-beans spring-boot:run
 - [04. Scope 与 prototype 注入陷阱](../part-01-ioc-container/015-04-scope-and-prototype.md)
 - [05. 生命周期](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)
 
+## 一句话自检
+
+- 你是否能把一个现象先分层：定义层（注册/条件/顺序）vs 实例层（注入/生命周期/代理）？
+- 你是否能把“我觉得”变成“我能证明”：给出一个最小 LabTest 入口 + 断点入口 + 必看变量？
+- 你是否能在 1 分钟内回答：这个 bean “有没有注册/谁注册的/最终暴露对象是谁/为什么是 proxy”？
+
 ## 小结与下一章
 
 - `AbstractAutowireCapableBeanFactory#initializeBean`

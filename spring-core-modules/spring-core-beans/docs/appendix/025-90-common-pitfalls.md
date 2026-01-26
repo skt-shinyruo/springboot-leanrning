@@ -60,8 +60,9 @@
 
 ## 常见坑与边界
 
+> 这一节的目的不是“列口号”，而是把高频误判做成可复现的定位清单：每一条都能在本仓库的某个 Lab 里跑出来，并能下断点看见关键分支。
 
-## 0. 复现入口（可运行）
+### 0. 复现入口（可运行）
 
 - 入口测试：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
@@ -70,7 +71,7 @@
 
 这份清单不是为了“背”，而是为了让你在遇到问题时能快速定位：到底是概念没建立，还是机制没搞清。
 
-## 1) 以为“prototype 每次方法调用都是新对象”
+### 1) 以为“prototype 每次方法调用都是新对象”
 
 典型症状：
 
@@ -89,7 +90,7 @@
 
 见：[04. Scope 与 prototype 注入陷阱](../part-01-ioc-container/015-04-scope-and-prototype.md)
 
-## 2) 以为 `@Order` 能解决“单个依赖注入的歧义”
+### 2) 以为 `@Order` 能解决“单个依赖注入的歧义”
 
 事实：
 
@@ -98,7 +99,7 @@
 
 见：[03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 
-## 3) 在 `@Configuration(proxyBeanMethods=false)` 里互相调用 `@Bean` 方法
+### 3) 在 `@Configuration(proxyBeanMethods=false)` 里互相调用 `@Bean` 方法
 
 典型症状：
 
@@ -110,7 +111,7 @@
 
 见：[07. @Configuration 增强](../part-01-ioc-container/018-07-configuration-enhancement.md)
 
-## 4) 把 `FactoryBean` 当作“普通 bean”
+### 4) 把 `FactoryBean` 当作“普通 bean”
 
 典型症状：
 
@@ -124,7 +125,7 @@
 
 见：[08. FactoryBean](../part-01-ioc-container/08-factorybean.md)
 
-## 5) 认为“循环依赖能跑起来就没问题”
+### 5) 认为“循环依赖能跑起来就没问题”
 
 事实：
 
@@ -134,7 +135,7 @@
 
 见：[09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md)
 
-## 6) 认为“自动装配就是自动注入”
+### 6) 认为“自动装配就是自动注入”
 
 事实：
 
@@ -147,7 +148,7 @@
 
 见：[10. Boot 自动装配](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) 与 [11. 调试](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 
-## 7) 把 `applicationContext.getBean()` 当成日常依赖注入方式
+### 7) 把 `applicationContext.getBean()` 当成日常依赖注入方式
 
 事实：
 
@@ -160,7 +161,7 @@
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 推荐断点：`DefaultListableBeanFactory#doResolveDependency`、`AbstractAutowireCapableBeanFactory#populateBean`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
-## 8) 以为 `@Qualifier` 是“写了就行”
+### 8) 以为 `@Qualifier` 是“写了就行”
 
 典型症状：
 
@@ -183,7 +184,7 @@
 
 见：[03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 
-## 9) 以为 `@Primary` 能“覆盖一切”
+### 9) 以为 `@Primary` 能“覆盖一切”
 
 事实：
 
@@ -196,7 +197,7 @@
 
 见：[03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md) 与 [`@Resource` 注入](../part-04-wiring-and-boundaries/32-resource-injection-name-first.md)
 
-## 10) 以为集合注入的顺序“默认就稳定”
+### 10) 以为集合注入的顺序“默认就稳定”
 
 典型症状：
 
@@ -213,7 +214,7 @@
 
 见：[03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 
-## 11) 以为 `@PostConstruct` 发生在“构造器之前”
+### 11) 以为 `@PostConstruct` 发生在“构造器之前”
 
 事实：
 
@@ -226,7 +227,7 @@
 
 见：[05. 生命周期：初始化、销毁与回调](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md) 与 [12. 容器启动与基础设施处理器](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
 
-## 12) 以为 BPP “只是改属性”，不会把 bean 换成另一个对象
+### 12) 以为 BPP “只是改属性”，不会把 bean 换成另一个对象
 
 事实：
 
@@ -239,7 +240,7 @@
 
 见：[31. 代理/替换阶段：BPP 如何把 Bean 换成 Proxy](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
 
-## 13) 以为循环依赖“只要能启动就等于没问题”
+### 13) 以为循环依赖“只要能启动就等于没问题”
 
 事实：
 
@@ -252,7 +253,7 @@
 
 见：[09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md) 与 [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md)
 
-## 14) 以为 `FactoryBean` 只影响 `getBean("name")` 的返回值
+### 14) 以为 `FactoryBean` 只影响 `getBean("name")` 的返回值
 
 事实：
 
@@ -265,7 +266,7 @@
 
 见：[08. FactoryBean](../part-01-ioc-container/08-factorybean.md)、[23. FactoryBean 深潜](../part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)、[29. FactoryBean 边界](../part-04-wiring-and-boundaries/29-factorybean-edge-cases.md)
 
-## 15) 以为 `proxyBeanMethods=false` 只是“性能优化”，不会影响语义
+### 15) 以为 `proxyBeanMethods=false` 只是“性能优化”，不会影响语义
 
 事实：
 
@@ -280,7 +281,7 @@
 
 见：[07. @Configuration 增强](../part-01-ioc-container/018-07-configuration-enhancement.md)
 
-## 16) 以为“按泛型找 bean（Handler<String>）一定可靠”
+### 16) 以为“按泛型找 bean（Handler<String>）一定可靠”
 
 典型症状：
 
@@ -298,7 +299,7 @@
 
 见：[37. 泛型匹配与注入坑](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
 
-## 17) 以为“类型转换只发生在 @Value”，与 BeanDefinition/属性填充无关
+### 17) 以为“类型转换只发生在 @Value”，与 BeanDefinition/属性填充无关
 
 典型症状：
 
@@ -316,7 +317,7 @@
 
 见：[36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)
 
-## 18) 以为 `@Autowired` 永远只按类型，不会按名字回退（by-name fallback）
+### 18) 以为 `@Autowired` 永远只按类型，不会按名字回退（by-name fallback）
 
 典型症状：
 
@@ -343,7 +344,7 @@
 
 - 生产代码里不要“依赖 by-name fallback 的侥幸收敛”，优先显式表达依赖关系：`@Qualifier` / `@Primary`
 
-## 19) 混淆 `ObjectProvider#getIfAvailable()` 与 `getIfUnique()`（以及多候选时的行为）
+### 19) 混淆 `ObjectProvider#getIfAvailable()` 与 `getIfUnique()`（以及多候选时的行为）
 
 典型症状：
 
@@ -364,7 +365,7 @@
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#resolveDependency`
 
-## 20) 以为 `@Primary` “覆盖一切”，忽略了更强的限定信号（`@Qualifier` / `@Resource`）
+### 20) 以为 `@Primary` “覆盖一切”，忽略了更强的限定信号（`@Qualifier` / `@Resource`）
 
 典型症状：
 
@@ -386,6 +387,12 @@
 
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#determineAutowireCandidate`
+
+## 一句话自检
+
+- 你能否做到：拿到一个现象（注入失败/拿到 proxy/占位符没解析/启动阶段异常）就能先分层（定义层 vs 实例层），并跳到对应章节与 Lab？
+- 你能否明确区分三件事：**候选选择（谁赢）**、**集合排序（谁先谁后）**、**初始化顺序（谁先创建）**？
+- 你能否把“猜测”变成“证据链”：用一个 LabTest + 断点 + watch list 把结论固定为可复现事实？
 
 ## 小结与下一章
 

@@ -318,3 +318,17 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但你需要把它�
 - 推荐命令：
   - `mvn -pl :spring-core-beans test`
   - 或单跑：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLabTest test`
+
+## 一句话自检
+
+你应该能用 3 句复述：
+
+1) 当候选不止一个时，Spring 的“候选收集→候选收敛→最终注入”主线分别在哪个方法里发生？
+2) 单依赖注入里 `@Order` 为什么不生效？真正决定单依赖选择的是哪些信号？
+3) 你如何在 `doResolveDependency` 里用 3 个变量解释“为什么注入的是它/为什么失败”？
+
+<!-- BOOKIFY:START -->
+
+上一章：[第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）](../part-00-guide/013-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](015-04-scope-and-prototype.md)
+
+<!-- BOOKIFY:END -->

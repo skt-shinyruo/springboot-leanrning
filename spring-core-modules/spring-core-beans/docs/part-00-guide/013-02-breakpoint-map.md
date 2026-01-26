@@ -144,3 +144,11 @@
 上一章：[part-00-guide/01-quickstart-30min.md](012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-ioc-container/01-bean-mental-model.md](../part-01-ioc-container/020-01-bean-mental-model.md)
 
 <!-- BOOKIFY:END -->
+
+## 一句话自检
+
+你应该能做到：
+
+1) 说出 refresh 主线、依赖解析、bean 创建、单例缓存、BPP 代理这五类问题各自的“第一断点”。
+2) 解释为什么“断点 + watch list”比“全局搜栈”更高效。
+3) 用本模块任意一个 Lab，把断点地图跑通一次并能复述观察到的关键变化。

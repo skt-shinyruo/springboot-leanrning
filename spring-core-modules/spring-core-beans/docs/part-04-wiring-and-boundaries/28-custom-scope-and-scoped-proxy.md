@@ -7,8 +7,12 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - scope 管的不是“对象长什么样”，而是：**容器每次 `getBean` 时如何取对象**（singleton/prototype/custom scope 只是不同分流）。
+    - 把短生命周期 scope（prototype/thread/request 等）直接注入 singleton，最容易踩“冻结引用”坑：注入只发生一次，之后一直用那一个引用。
+    - 两个最常见解法：
+      - `ObjectProvider<T>`：把解析推迟到“使用时”（每次调用回到容器解析）
+      - scoped proxy：注入 proxy，把“回到 scope 找真实对象”的动作隐藏在方法调用里
+    - 本仓库已补齐对照实验：thread scope 与 prototype 都能复现“冻结 vs 延迟解析”的差异。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -36,12 +40,32 @@ Spring 的 scope 机制是可扩展的：你可以注册自定义 scope。
 对应测试：
 
 - `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly`
+  - `SpringCoreBeansCustomScopeLabTest#prototypeInjectedIntoSingleton_isResolvedOnce_butObjectProviderCanObtainFreshPrototypeEachCall`（prototype 也会发生同类“冻结”现象）
 
 原因与你在 prototype 注入 singleton 看到的现象一致：
 
 - singleton 创建时解析依赖
 - 只向容器要一次 scoped bean
 - 之后一直用这个引用
+
+---
+
+## 2. 同类现象：prototype 注入 singleton 也会“冻结”
+
+很多人第一次理解 thread/request scope 时会觉得“这是自定义 scope 的特殊坑”。其实不是——它是一个更一般的事实：
+
+> **只要“目标 bean 的生命周期比 consumer 短”，把它直接注入到 singleton 里，就会在注入那一刻被冻结。**
+
+prototype 是最典型的例子。
+
+对应实验（本仓库已补齐）：
+
+- `SpringCoreBeansCustomScopeLabTest#prototypeInjectedIntoSingleton_isResolvedOnce_butObjectProviderCanObtainFreshPrototypeEachCall`
+
+你会观察到：
+
+- direct injection：`PrototypeCounter` 被解析一次，consumer 内部持有固定引用
+- `ObjectProvider<PrototypeCounter>`：每次 `getObject()` 都能拿到新的 prototype 实例
 
 ## 3. 解法 1：ObjectProvider（推荐，机制最直观）
 
@@ -151,9 +175,9 @@ Spring 的 scope 机制是可扩展的：你可以注册自定义 scope。
 
 ## 常见坑与边界
 
-## 2. 关键陷阱：把 scoped bean 直接注入 singleton，会被冻结在“注入那一刻”
+### 关键陷阱：把 scoped bean 直接注入 singleton，会被冻结在“注入那一刻”
 
-## 5. 常见坑
+### 常见坑
 
 - **坑 1：以为 scope 会自动传播到注入点**
   - scope 的语义是“容器如何管理对象”；注入点如果不做延迟解析，仍然只取一次。

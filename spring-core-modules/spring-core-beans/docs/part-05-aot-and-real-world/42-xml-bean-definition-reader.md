@@ -122,7 +122,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 
 ## 常见坑与边界
 
-## 4. 常见误区
+### 常见误区
 
 1) **误区：把 XML 问题当成“业务逻辑问题”**
    - XML 读不进来时，容器甚至还没开始创建你的业务 bean；优先用“定义层入口断点”确认读/解析/注册发生在何处失败。
@@ -130,6 +130,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
    - 更快的方式：从 `XmlBeanDefinitionReader#loadBeanDefinitions` 进，先确认 resource 与 schema/namespace，再定位到具体 element 的 parse。
 3) **误区：以为 XML 只会影响“创建对象”**
    - XML 的核心价值是让你把“输入形态”统一回 BeanDefinition：你看的其实是“定义元数据”，不是实例本身。
+
+## 一句话自检
+
+- 你能解释清楚：XML 在 Spring 里最终会变成什么吗？（提示：BeanDefinition）
+- 你遇到 `BeanDefinitionStoreException` 时，第一步应该先分型到“定义阶段”还是“创建阶段”？为什么？
+- 你能说出：从哪条最短调用链进断点，能最快定位到“哪个资源/哪个 element 解析失败”吗？
 
 ## 小结与下一章
 

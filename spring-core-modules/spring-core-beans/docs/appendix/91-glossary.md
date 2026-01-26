@@ -152,6 +152,12 @@
 - **ResolvableType**：Spring 用来描述/匹配泛型的类型系统。  
   章节：[`37`](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
 
+## 一句话自检
+
+- 你能把下面 5 个名词分别放到 refresh 主线的哪个阶段吗：`BeanDefinition` / BFPP/BDRPP / BPP / `doGetBean` / `doCreateBean`？
+- 你能解释清楚：为什么同一个名词（例如 “processor”）在定义阶段与创建阶段的职责完全不同吗？
+- 你是否能用术语表把“看到名词 → 关联章节 → 跑 Lab → 下断点验证”的链路跑通？
+
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。

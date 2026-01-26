@@ -17,6 +17,7 @@
 - spring-core-beans：docs 目录入口补充 Debugger Pack 链接，同步知识库入口索引
 - spring-core-beans：重写 09/16/97 三章（循环依赖 / early reference / Explore/Debug），补齐“可跑实验 + 断点/观察点 + 常见坑/工程策略”的教程闭环
 - spring-core-beans：重写 Part-04 的 25/32/34/36 四章（programmatic BPP / @Resource / @Value 占位符 / 类型转换），并修复全站目录 `docs/SUMMARY.md` 的相对链接（统一 `../` 前缀）
+- spring-core-beans：docs 全章“教程化一致性”补齐：统一补齐排障分流/常见坑与边界/面试常问/一句话自检，清理空标题与 Markdown 层级问题；并将 `refresh() → doCreateBean()` 主线章书本化（导读/实验入口/分支决策表/BOOKIFY 导航）。
 
 ### Changed
 - `docs/book/debugger-pack.md`：补充“模块深挖最小闭环（Doc/Test/Perf）”验收口径（用于全模块 A–E 统一标准化）。

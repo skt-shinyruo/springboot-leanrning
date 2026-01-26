@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 25 章：90. 常见坑清单（建议反复对照）](../appendix/025-90-common-pitfalls.md)
+上一章：[39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](../part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[41. RuntimeHints 入门：把构建期契约跑通](41-runtimehints-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -167,9 +167,20 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 
 ## 常见坑与边界
 
+### 常见误区（把“JVM 能跑”误当成“Native 也能跑”）
 
-## 6. 常见误区
+1) **误区：AOT/Native 的问题都是“依赖/环境问题”**
+   - 更常见的根因：缺失构建期契约（hints）导致运行期能力不可用（反射/代理/资源等）。
+2) **误区：我只要把反射都改掉，就不需要 hints**
+   - 实际上 Spring 的很多能力（包括框架自身）依赖“可发现/可反射/可生成”的元信息；hints 解决的是“告诉构建器保留/生成哪些能力”。  
+3) **误区：hints 能解决一切**
+   - hints 只解决“反射/代理/资源”等契约问题；业务逻辑、条件装配、初始化时机仍然需要正确性。
 
+## 一句话自检
+
+- 你能用一句话解释：为什么“JVM 能跑”不等于“Native 能跑”吗？（提示：运行期信息在 Native 下不可得）
+- 你能说出：RuntimeHints 的作用域是什么、解决什么问题、解决不了什么问题吗？
+- 如果你要把一个 AOT/Native 失败变成“可复现证据链”，你会优先写一个什么样的最小对照测试？
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->

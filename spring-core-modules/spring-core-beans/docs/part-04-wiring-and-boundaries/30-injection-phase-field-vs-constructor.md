@@ -81,6 +81,17 @@
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+- “构造器里访问 field injection 字段为 null” → **这是实例层阶段差异（预期）**：field injection 在实例化之后才发生（本章第 1 节）
+- “constructor injection 没走到带参构造器/选错构造器” → **实例层（构造器解析）**：看 `determineCandidateConstructors` 与 `autowireConstructor`（本章源码锚点）
+- “`@Autowired/@Value` 完全不生效” → **优先定义层/基础设施问题**：注解处理器是否注册？（见 [12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)）
+- “注入发生了但候选选择不符合预期” → **实例层（依赖解析）**：转到 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)/[33](33-autowire-candidate-selection-primary-priority-order.md)
+
+对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
+
+推荐断点（按创建链路顺序）：
+
+- `AutowiredAnnotationBeanPostProcessor#determineCandidateConstructors` / `AbstractAutowireCapableBeanFactory#autowireConstructor`（constructor injection）
+- `AbstractAutowireCapableBeanFactory#populateBean` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties`（field/property injection）
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
@@ -138,13 +149,6 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 
 建议断点（把“阶段感”走一遍即可）：
 
-- “构造器里访问 field injection 字段为 null” → **这是实例层阶段差异（预期）**：field injection 在实例化之后才发生（本章第 1 节）
-- “constructor injection 没走到带参构造器/选错构造器” → **实例层（构造器解析）**：看 `determineCandidateConstructors` 与 `autowireConstructor`（本章源码锚点）
-- “`@Autowired/@Value` 完全不生效” → **优先定义层/基础设施问题**：注解处理器是否注册？（见 [12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)）
-- “注入发生了但候选选择不符合预期” → **实例层（依赖解析）**：转到 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)/[33](33-autowire-candidate-selection-primary-priority-order.md)
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
-推荐断点：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`AbstractAutowireCapableBeanFactory#populateBean`、`DefaultListableBeanFactory#doResolveDependency`
-
 ## 常见坑与边界
 
 > 注意：**多个 BPP 的顺序会影响你在 `postProcessProperties(...)` 里看到的 bean 状态**。  
@@ -153,6 +157,12 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 ## 5. 常见坑与实践建议
 
 本章本质是在讲：**容器通过 BPP 让注解“生效”**。这条线能直接解释 AOP/事务为何会出现“入口必须走代理”的坑：
+
+## 一句话自检
+
+- 你能解释清楚：为什么 field injection 在构造器里一定是 `null` 吗？（提示：注入发生在 `populateBean` 阶段，不会倒流到构造器）
+- 你能解释清楚：constructor injection 为什么更适合“必填依赖”吗？（提示：更早失败 + 可测试 + 不可变）
+- 你能指出：`@Autowired` 的源码触发点在哪里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
 
 ## 小结与下一章
 

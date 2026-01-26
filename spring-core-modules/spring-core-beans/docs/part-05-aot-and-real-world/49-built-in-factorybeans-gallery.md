@@ -225,7 +225,17 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 
 但是注意：这是一种 **service locator 模式**，会把依赖关系从“注入点”挪到“调用点”，可读性更差，能不用就不用。
 
-## 5. 常见边界与误区（你为什么会在真实项目里踩）
+### 常见边界与误区（你为什么会在真实项目里踩）
+
+- **FactoryBean 双重身份永远要先确认**：你拿到的是 product 还是 factory？（`&` 前缀）
+- **默认 singleton 缓存会“冻结结果”**：例如 MethodInvokingFactoryBean，你以为每次调用都变，其实是同一个 product 被缓存。
+- **ServiceLocator 的排障成本更高**：它把依赖关系从“注入时”推迟到“调用时”，定位问题必须回到调用点追踪。
+
+## 一句话自检
+
+- 你能解释清楚：FactoryBean 的 product/factory 分流规则吗？什么时候必须用 `&name`？
+- 你能说出：MethodInvoking/ServiceLocator/ServiceLoader 这几类 FactoryBean 各自把“依赖关系”放在了哪里吗？
+- 你遇到“拿到的对象类型不对/每次返回都一样/调用时才失败”时，第一反应会去哪个章节/哪个断点入口？
 
 ## 小结与下一章
 

@@ -125,6 +125,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCapableBeanFactoryLabTe
 2) **误区：容器外对象一定不能用 @PostConstruct**
    - 可以，但你要显式调用 initialize 链路（否则 BPP 不会触发）。
 
+## 一句话自检
+
+- 你能解释清楚：为什么“容器外对象”不会自动触发 `@Autowired/@PostConstruct/@PreDestroy` 吗？
+- 你能说出：`autowireBean`、`initializeBean`、`destroyBean` 三个 API 分别补的是哪一段管道吗？
+- 你能说明：在容器外对象场景里，为什么仍然要警惕“最终暴露对象可能是 proxy”这件事吗？（提示：BPP 仍可能替换对象）
+
 ## 小结与下一章
 
 - `AutowireCapableBeanFactory#autowireBean`（偏“只做注入”）

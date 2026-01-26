@@ -20,8 +20,12 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - `lazy-init` 是**定义层策略**：控制 bean 是否在 refresh 的 `preInstantiateSingletons` 阶段被创建；但它挡不住“被 eager 依赖触发创建”。
+    - 注入点 `@Lazy` 是**实例层策略**：它不是“让 bean 变懒”，而是“在注入点注入一个延迟解析代理（lazy proxy）”，把真正的解析/创建推迟到首次使用。
+    - `@Lazy` 代理的形态与注入点类型相关：  
+      - 注入点是接口 → 多数情况下是 JDK proxy（`Proxy.isProxyClass(...) == true`）  
+      - 注入点是具体类 → 多数情况下是 CGLIB（`ClassUtils.isCglibProxyClass(...) == true`）
+    - 想证明“到底什么时候创建”，不要靠猜：跑本章 Lab，用构造器计数与断言把现象固定下来。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -77,6 +81,26 @@
 
 - 没有“外部因素”提前创建目标 bean
 - 你能清晰观测到：目标 bean 的构造器是在“第一次调用”时才执行
+
+---
+
+## 4. 代理类型边界：接口注入点 vs 类注入点（必须会排障）
+
+这一段是很多人学 `@Lazy` 学不明白的关键原因：你看到的是 proxy，但 proxy 的“类型形态”并不总一样。
+
+在本仓库的 Lab 中你可以直接对照：
+
+1) **接口注入点（JDK proxy）**  
+   - 对应实验：`SpringCoreBeansLazyLabTest#lazyInjectionPoint_canDeferCreationOfLazyBeanUntilFirstUse`  
+   - 现象：注入对象满足接口类型，但**不是具体实现类**（按实现类查找/强转会踩坑）
+2) **类注入点（CGLIB proxy）**  
+   - 对应实验：`SpringCoreBeansLazyLabTest#lazyInjectionPoint_onConcreteClass_usesClassBasedProxy_andDefersCreationUntilFirstUse`  
+   - 现象：注入对象是目标类的子类代理，通常仍可按具体类类型工作，但调试时类名会带 `$$` 等 proxy 痕迹
+
+排障分流建议（先问自己这 2 个问题）：
+
+- 你是“按接口”注入/查找，还是“按实现类”注入/查找？  
+- 你拿到的是 JDK proxy 还是 CGLIB proxy？（决定“类型边界”与“能不能强转”）
 
 入口：
 
@@ -166,7 +190,7 @@
 ## 常见坑与边界
 
 
-## 4. 常见坑
+### 常见坑
 
 - **坑 1：以为 `@Lazy` 能让所有依赖都不创建**
   - 如果目标 bean 不是 lazy-init，它仍可能在 refresh 阶段被 pre-instantiate。

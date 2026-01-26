@@ -188,6 +188,15 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+你可以先用“这到底影响什么”来判断要追哪条链路：
+
+- **定义层（BFPP/BDRPP）顺序问题**：你看到的是“BeanDefinition 元数据/占位符/条件/扫描结果”不符合预期
+  - 典型落点：`invokeBeanFactoryPostProcessors`（先分段再排序再执行）
+- **实例层（BPP）顺序问题**：你看到的是“代理叠加顺序/回调顺序/注入增强”不符合预期
+  - 典型落点：`registerBeanPostProcessors`（决定 BPP 列表顺序）+ `applyBeanPostProcessors*`（把顺序变成最终对象形态）
+- **手工注册导致的“顺序失效”**：你在代码里 `addBeanPostProcessor`，但期待 `Ordered/@Order` 生效
+  - 典型落点：不经过 `registerBeanPostProcessors` 的排序流程，执行顺序只看“谁先 add”
+  - 对应章节：[25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)
 ## 源码最短路径（call chain）
 
 > 目标：当你怀疑“顺序导致结果反直觉”时，用最短调用链把问题归位：到底是 **BFPP（定义层）** 的顺序，还是 **BPP（实例层）** 的顺序？
@@ -390,6 +399,11 @@ registerBeanPostProcessors(beanFactory):
           - `applyBeanPostProcessorsAfterInitialization`
 
 在 `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` 里建议 watch/evaluate：
+
+- `beanName`：确认当前被处理的目标 bean
+- `result`（或等价变量）：每个 BPP 处理后返回的对象引用（是否在某一步被替换成 proxy）
+- `this.beanPostProcessors`：最终 BPP 列表顺序（顺序就是“包裹/增强顺序”）
+- `result.getClass()`：最终暴露对象的实际类型（经常能一眼看出“谁先包、谁后包”）
 
 <!-- BOOKIFY:START -->
 

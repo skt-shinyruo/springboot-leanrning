@@ -174,12 +174,18 @@ Groovy reader 的典型断点：
 
 ## 常见坑与边界
 
-## 5. 常见误区
+### 常见误区
 
 1) **误区：Reader = 创建对象**
    - Reader 注册的是“配方”（BeanDefinition），对象创建发生在后续主线。
 2) **误区：我写的是 Groovy/Properties，所以不属于 beans 体系**
    - 恰恰相反：这些机制说明 beans 体系的抽象能力（输入可扩展，输出统一）。
+
+## 一句话自检
+
+- 你能解释清楚：BeanDefinitionReader 做的是“注册配方”还是“创建对象”吗？为什么这个区分重要？
+- 你能说出：Properties/Groovy 这类输入最终落到 Spring 的哪一种统一产物上吗？（提示：BeanDefinition）
+- 你遇到“Reader 加载失败/资源不存在/脚本解析失败”时，最短断点入口在哪？
 
 ## 小结与下一章
 

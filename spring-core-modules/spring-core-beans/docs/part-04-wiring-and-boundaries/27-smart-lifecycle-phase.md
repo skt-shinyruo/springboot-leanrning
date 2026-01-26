@@ -7,8 +7,10 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - `SmartLifecycle` 把 start/stop 变成“容器生命周期的一部分”：refresh 收尾自动 start、close 自动 stop（由 `LifecycleProcessor` 统一触发）。
+    - start 的顺序按 `phase` 升序；stop 的顺序按 `phase` 反序（更符合依赖停机的安全性）。
+    - `isAutoStartup()` 决定是否自动 start：false 时 refresh 不会自动启动它（本仓库 Lab 已补齐对照）。
+    - 对 `SmartLifecycle`，容器通常走 `stop(Runnable callback)`（支持异步 stop）：不调用 callback 可能导致关闭卡住直到超时（本仓库 Lab 已补齐“调用的是 stop(callback)”的证据）。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -38,6 +40,16 @@
 - refresh 时：`start:A` → `start:B`
 - close 时：`stop:B` → `stop:A`
 
+你还应该补齐两个“真实项目更常见”的边界：
+
+- **autoStartup=false**：refresh 不会自动 start（否则很多“为什么它启动就跑起来了”讲不清）  
+- **stop(callback)**：容器为什么要 callback（否则 shutdown 可能卡住）
+
+对应实验（本仓库已补齐）：
+
+- `SpringCoreBeansSmartLifecycleLabTest#smartLifecycleDoesNotAutoStart_whenIsAutoStartupIsFalse`
+- `SpringCoreBeansSmartLifecycleLabTest#containerStopsSmartLifecycle_viaStopCallbackMethod_notStopMethod`
+
 ## 2. 机制：LifecycleProcessor 统一管理
 
 容器内部通过 `LifecycleProcessor`（默认 `DefaultLifecycleProcessor`）来：
@@ -52,6 +64,11 @@
 - `DefaultLifecycleProcessor#startBeans`：start 的排序与触发点（phase 升序）
 - `LifecycleProcessor#onClose`：close 阶段入口（触发 stop）
 - `DefaultLifecycleProcessor#stopBeans`：stop 的排序与触发点（phase 反序）
+
+补充一个非常重要但容易忽略的事实：
+
+- `DefaultLifecycleProcessor` 的 stop 逻辑会按 phase 分组，并等待 `stop(callback)` 的回调完成（用于支持异步 stop）  
+- 如果回调永远不触发，容器会等待直到 `timeoutPerShutdownPhase` 超时（这就是“关闭卡住”的来源之一）
 
 入口：
 
@@ -124,7 +141,7 @@
 
 ## 常见坑与边界
 
-## 3. 常见坑
+### 常见坑
 
 - **坑 1：把 SmartLifecycle 当成业务逻辑入口**
   - 它更像基础设施启动/停止钩子。

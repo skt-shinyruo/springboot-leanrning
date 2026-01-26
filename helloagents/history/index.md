@@ -8,6 +8,7 @@
 
 | 时间戳 | 变更名称 | 类型 | 状态 | 方案包路径 |
 | --- | --- | --- | --- | --- |
+| 202601261138 | beans_docs_all_tutorial | Enhancement | ✅Completed | [202601261138_beans_docs_all_tutorial](2026-01/202601261138_beans_docs_all_tutorial/) |
 | 202601252331 | beans_docs_part04_tutorial_deepen | Enhancement | ✅Completed | [202601252331_beans_docs_part04_tutorial_deepen](2026-01/202601252331_beans_docs_part04_tutorial_deepen/) |
 | 202601252255 | beans_docs_tutorial_deepen | Enhancement | ✅Completed | [202601252255_beans_docs_tutorial_deepen](2026-01/202601252255_beans_docs_tutorial_deepen/) |
 | 202601251755 | docs_modularize_nav | Refactor | ✅Completed | [202601251755_docs_modularize_nav](2026-01/202601251755_docs_modularize_nav/) |
@@ -80,6 +81,7 @@
 
 ### 2026-01
 
+- [202601261138_beans_docs_all_tutorial](2026-01/202601261138_beans_docs_all_tutorial/) - spring-core-beans：将 docs 全章节薄弱内容补齐为可学习教程（导读/要点/实验入口/断点观察点/排障分流/自检/Bookify 导航），并通过测试与 docs-site build 验证
 - [202601251755_docs_modularize_nav](2026-01/202601251755_docs_modularize_nav/) - 文档归并：以模块 `*/docs/` 为 SSOT，根 `docs/` 收敛为 `docs/SUMMARY.md`，并移除 `docs/book/` 与旧 `docs/<topic>/...` 副本
 - [202601232320_beans_docs_refactor](2026-01/202601232320_beans_docs_refactor/) - spring-core-beans 文档与测试入口补齐（断点包/主线/排障/性能）
 - [202601010649_spring-core-beans-deep-dive](2026-01/202601010649_spring-core-beans-deep-dive/) - 深化 spring-core-beans 核心章节与坑点/自测题闭环
@@ -145,10 +147,13 @@
 - [202601251025_remove_gates_everywhere](2026-01/202601251025_remove_gates_everywhere/) - 移除 docs 检查脚本与 docs-site workflow，并清理文档/知识库引用
 - [202601251209_docs-deepen-all](2026-01/202601251209_docs-deepen-all/) - 全量文档加深：章节契约/Bookify/Booklike V2 门禁与批处理（面试复习 / 源码级）
 - [202601231156_tutorials_format_alignment](2026-01/202601231156_tutorials_format_alignment/) - tutorials 风格对齐续作：补充全模块深挖“最小闭环”验收口径与审计脚本/基线；补齐 autoconfig/logging/observability/events 并发/性能可复现实验；通过 `mvn -q test`
+- [202601261257_beans_docs_deepen_more](2026-01/202601261257_beans_docs_deepen_more/) - spring-core-beans：继续加深高频边界机制（循环依赖/FactoryBean/泛型匹配/@Lazy/MergedBeanDefinition/占位符+SpEL/ScopedProxy/SmartLifecycle/父子容器/覆盖），并补齐对应 Labs 与站点导航
 
 ## Index
 | Timestamp | Feature Name | Type | Status | Solution Package Path |
 |-----------|--------------|------|--------|----------------------|
+| 202601261257 | beans_docs_deepen_more | Enhancement | ✅Completed | history/2026-01/202601261257_beans_docs_deepen_more/ |
+| 202601261138 | beans_docs_all_tutorial | Enhancement | ✅Completed | history/2026-01/202601261138_beans_docs_all_tutorial/ |
 | 202601252331 | beans_docs_part04_tutorial_deepen | Enhancement | ✅Completed | history/2026-01/202601252331_beans_docs_part04_tutorial_deepen/ |
 | 202601252255 | beans_docs_tutorial_deepen | Enhancement | ✅Completed | history/2026-01/202601252255_beans_docs_tutorial_deepen/ |
 | 202601232320 | beans_docs_refactor | Refactor | ✅Completed | history/2026-01/202601232320_beans_docs_refactor/ |

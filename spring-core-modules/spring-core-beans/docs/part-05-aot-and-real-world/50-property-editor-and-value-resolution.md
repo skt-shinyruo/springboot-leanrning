@@ -181,17 +181,26 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 
 ## 4. 怎么实现的：关键类/方法 + 断点入口 + 观察点
 
-推荐断点：
+推荐断点（把“定义层 value → 注入对象”拆成三段看）：
 
-推荐断点组合：
+1) `AbstractAutowireCapableBeanFactory#applyPropertyValues`
+   - 观察：属性填充阶段开始把 `PropertyValues` 应用到 bean 上
+2) `BeanDefinitionValueResolver#resolveValueIfNecessary`
+   - 观察：`RuntimeBeanReference`/集合/TypedStringValue 等不同“定义层 value”如何被分派解析
+3) `BeanWrapperImpl#setPropertyValues` / `AbstractNestablePropertyAccessor#setPropertyValue`
+   - 观察：最终 set 到 bean 字段/属性上的到底是什么对象，以及转换是否发生
 
-推荐断点：
+推荐观察点（看类型分派比看字符串更快）：
+
+- `value` 的实际类型：`RuntimeBeanReference` / `ManagedList` / `TypedStringValue` / plain literal
+- `resolvedValue` / `convertedValue`：解析/转换后的最终值
+- `typeConverter` / `conversionService`：走 ConversionService 还是 PropertyEditor（可与 [36](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md) 对照）
 
 ## 常见坑与边界
 
 所以很多新手误区来自于把 1) 和 2) 混在一起：
 
-## 5. 常见边界与误区
+### 常见边界与误区
 
 1) **误区：类型转换都由 ConversionService 负责**
    - 真实情况：beans 主线里 ConversionService 与 PropertyEditor 可能都参与；PropertyEditor 仍可能影响行为。
@@ -199,6 +208,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
    - 很多 editor 是有状态的（setValue），不要在非预期场景复用实例。
 3) **误区：看到 `RuntimeBeanReference` 就以为“这是 XML 才有的东西”**
    - 这是 beans 的抽象：你在任何输入源（XML/Properties/Groovy/程序化注册）都可以表达“引用”。
+
+## 一句话自检
+
+- 你能解释清楚：BeanDefinition 的 value 解析发生在创建阶段的哪一步吗？（提示：applyPropertyValues → value resolver → BeanWrapper）
+- 你能区分：这是“引用解析”（`RuntimeBeanReference`）还是“字符串转换”（`TypedStringValue` → convert）吗？
+- 你遇到“属性注入值不对/转换失败/引用解析失败”时，能否用 3 个断点把问题固定在“解析 vs 转换 vs 赋值”的哪一段？
 
 ## 小结与下一章
 

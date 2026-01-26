@@ -7,14 +7,26 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - `FactoryBean` 有两种“对外暴露形态”：
+      - `getBean("name")` / `getType("name")` → **product**
+      - `getBean("&name")` / `getType("&name")` → **factory**
+    - product 会参与按类型匹配/注入；**product 是否缓存**取决于 `FactoryBean#isSingleton()`（这和 factory bean 自己是否 singleton 是两回事）。
+    - `getObjectType()` 是 type discovery 的关键输入：返回 `null`/不稳定会导致“按类型发现失效、但按名字仍能取到”的边界（尤其 `allowEagerInit=false` 时）。
+    - 当 product 不缓存（`isSingleton=false`）时：
+      - direct injection（直接注入 Value）只解析一次（consumer 持有固定引用）
+      - `ObjectProvider<Value>` 可以每次获取到新的 product（更贴近“按需解析”语义）
 
 
 !!! example "本章配套实验（先跑再读）"
 
-    - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+    - Lab：
+      - `SpringCoreBeansContainerLabTest`（基础版：`name` vs `&name`）
+      - `SpringCoreBeansFactoryBeanDeepDiveLabTest`（product 缓存语义 + `getType` 对照）
+      - `SpringCoreBeansFactoryBeanEdgeCasesLabTest`（getObjectType 边界 + provider 对照）
+    - Test file：
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
 
 ## 机制主线
 
@@ -29,6 +41,11 @@
 
 - `getBean("valueFactory")` 拿到的是 **product**（`getObject()` 的返回值）
 - `getBean("&valueFactory")` 拿到的是 **factory**（FactoryBean 自身）
+
+同样的规则也适用于“看类型”：
+
+- `getType("valueFactory")` 更像在问：**product 的类型是什么？**
+- `getType("&valueFactory")` 更像在问：**factory 的类型是什么？**
 
 对应测试：
 
@@ -83,6 +100,9 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java`
   - `singletonFactoryBeanProduct_isCached_byTheContainer()`（证据：多次 getBean(productType) 返回 same reference）
   - `nonSingletonFactoryBeanProduct_isNotCached_byTheContainer()`（证据：每次 getBean(productType) 都会新建 product）
+  - `factoryBeanItself_isASingletonBean_byDefault_evenWhenProductIsNotCached()`（对照：factory 自己仍是 singleton，但 product 不缓存）
+- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
+  - `productVsFactoryVsProvider_whenFactoryBeanProductIsNotCached()`（对照：direct injection vs ObjectProvider，每次是否能拿到新 product）
 
 你应该观察到：
 
@@ -93,6 +113,24 @@
 
 - **isSingleton 控制的是 product 的缓存语义**
 - factory bean 自己通常仍然是容器管理的 singleton（除非你显式把它定义成 prototype）
+
+### 3.1 一个很容易混淆的点：factory bean 自己仍是普通 bean
+
+你应该能解释清楚这句话：
+
+> **FactoryBean 的“特殊”只发生在 `getBean("name")` 返回值上；FactoryBean 本身仍然是一个普通 bean（默认 singleton）。**
+
+所以你会看到这种对照现象：
+
+- `getBean("&valueFactory")` 拿到的 factory 引用通常是同一个（singleton）
+- 但 `getBean(Value.class)` 拿到的 product 可能每次都不同（当 `isSingleton=false`）
+
+### 3.2 当 product 不缓存时：ObjectProvider 的意义更直观
+
+当 `isSingleton=false` 时，product 的语义更接近“按需创建”。这时：
+
+- direct injection：在 consumer 创建时解析一次，consumer 内部持有固定 product 引用
+- `ObjectProvider<Value>`：每次 `getObject()` 都回到容器再解析一次，更贴近“每次获取新 product”的语义
 
 - `AbstractBeanFactory#getObjectForBeanInstance`：处理 “FactoryBean 的 product vs factory” 分流（`&` 前缀的核心路径）
 - `BeanFactoryUtils#isFactoryDereference`：判断 beanName 是否带 `&`（理解为什么 `&name` 拿到的是工厂）

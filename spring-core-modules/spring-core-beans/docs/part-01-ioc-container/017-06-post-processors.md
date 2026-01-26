@@ -337,3 +337,11 @@ registerBeanPostProcessors(beanFactory):
 上一章：[05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](016-05-lifecycle-and-callbacks.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07. @Configuration 增强：proxyBeanMethods 与 @Bean 语义](018-07-configuration-enhancement.md)
 
 <!-- BOOKIFY:END -->
+
+## 一句话自检
+
+你应该能用 3 句复述：
+
+1) BFPP/BDRPP 与 BPP 的核心差异是什么（改定义 vs 改实例）？
+2) 为什么“过早 getBean”会导致 bean 错过后续 BPP？你如何用 Lab/断点证明？
+3) 你如何用 refresh 时间线定位：某个处理器应该在什么时候生效？

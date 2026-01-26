@@ -11,10 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanCurrentlyInCreationException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SpringCoreBeansCircularDependencyBoundaryLabTest {
 
@@ -54,6 +56,37 @@ public class SpringCoreBeansCircularDependencyBoundaryLabTest {
             assertThat(beta.alpha()).isSameAs(alpha);
             assertThat(beta.alpha().id()).isEqualTo("alpha");
         }
+    }
+
+    @Test
+    void setterCycleMaySucceedViaEarlySingletonExposure_whenAllowCircularReferencesIsEnabled() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SetterCycleConfig.class)) {
+            SetterAlpha alpha = context.getBean(SetterAlpha.class);
+            SetterBeta beta = context.getBean(SetterBeta.class);
+
+            System.out.println("OBSERVE: setter/field cycle may succeed because container can expose an early singleton reference");
+            System.out.println("OBSERVE: 'succeeds' does NOT mean 'safe' — proxy/wrapping may introduce early-vs-final consistency issues");
+
+            assertThat(alpha.beta()).isSameAs(beta);
+            assertThat(beta.alpha()).isSameAs(alpha);
+        }
+    }
+
+    @Test
+    void setterCycleFailsFast_whenAllowCircularReferencesIsDisabled() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        ((DefaultListableBeanFactory) context.getBeanFactory()).setAllowCircularReferences(false);
+        context.register(SetterCycleConfig.class);
+
+        assertThatThrownBy(context::refresh)
+                .as("禁用 allowCircularReferences 后，setter/field 循环依赖也应 fail-fast")
+                .isInstanceOf(BeanCreationException.class)
+                .hasRootCauseInstanceOf(BeanCurrentlyInCreationException.class);
+
+        context.close();
+
+        System.out.println("OBSERVE: allowCircularReferences=false => even setter/field cycles fail-fast");
+        System.out.println("OBSERVE: this is often a safer default in large systems (it forces explicit refactoring)");
     }
 
     interface Alpha {
@@ -181,6 +214,46 @@ public class SpringCoreBeansCircularDependencyBoundaryLabTest {
         @Bean
         ProviderBeta beta(ObjectProvider<ProviderAlpha> alphaProvider) {
             return new ProviderBeta(alphaProvider);
+        }
+    }
+
+    @Configuration
+    static class SetterCycleConfig {
+
+        @Bean
+        SetterAlpha alpha() {
+            return new SetterAlpha();
+        }
+
+        @Bean
+        SetterBeta beta() {
+            return new SetterBeta();
+        }
+    }
+
+    static class SetterAlpha {
+        private SetterBeta beta;
+
+        @Autowired
+        void setBeta(SetterBeta beta) {
+            this.beta = beta;
+        }
+
+        SetterBeta beta() {
+            return beta;
+        }
+    }
+
+    static class SetterBeta {
+        private SetterAlpha alpha;
+
+        @Autowired
+        void setAlpha(SetterAlpha alpha) {
+            this.alpha = alpha;
+        }
+
+        SetterAlpha alpha() {
+            return alpha;
         }
     }
 }

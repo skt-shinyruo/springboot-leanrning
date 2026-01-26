@@ -146,7 +146,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 
 ## 常见坑与边界
 
-## 5. 常见边界与误区
+### 常见边界与误区
 
 1) **误区：这是 AOP**
    - 不是。它是“实例化策略”层面的子类化替换。
@@ -154,6 +154,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
    - CGLIB 子类化的天然限制：final 类/方法无法被覆盖。
 3) **误区：这在现代项目里没意义**
    - 你可能不写，但你要能在排障时识别：某个对象为什么是 enhanced class、为什么方法行为“不像源码那样”。
+
+## 一句话自检
+
+- 你能解释清楚：replaced-method 属于 AOP 还是“实例化策略分支”？为什么？
+- 你能说出：它为什么必须依赖 CGLIB 子类化吗？final class/final method 会发生什么？
+- 你如何用断点证明：方法替换发生在 `createBeanInstance` 的哪个分支里，并最终落到 `MethodReplacer#reimplement`？
 
 ## 小结与下一章
 

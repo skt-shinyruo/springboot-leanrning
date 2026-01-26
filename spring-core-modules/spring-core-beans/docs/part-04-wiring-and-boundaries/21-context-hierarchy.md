@@ -7,14 +7,20 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 可见性规则只有一句话：**child 能向上查 parent；parent 完全不知道 child。**
+    - “覆盖/override”在 hierarchy 里依然是 **name-based**：child 的同名 beanName 只影响 child 自己的查找结果，不会反向影响 parent。
+    - `containsBean(name)` 与 `containsLocalBean(name)` 是排障利器：前者包含 parent fallback，后者只看本地 registry（本仓库 Lab 已补齐对照）。
+    - 一旦你“把 ancestors 也算进候选集”（例如 `BeanFactoryUtils.beanOfTypeIncludingAncestors`），按类型就更容易出现多候选歧义（本仓库 Lab 已补齐可复现异常）。
 
 
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansContextHierarchyLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
+    - 建议先跑的方法：
+      - `childContext_canSeeParentBeans_butParentCannotSeeChildBeans`
+      - `containsLocalBean_differsFromContainsBean_inChildContext`
+      - `typeLookupIncludingAncestors_canBecomeAmbiguous_whenParentAndChildBothProvideSameType`
 
 ## 机制主线
 
@@ -66,6 +72,16 @@
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+这类问题很适合先按“查找链路”分层：
+
+- **定义层（注册/上下文关系）**：child 拿不到 parent 的 bean
+  - 优先确认：parent 是否 `refresh` 完成、child 是否真的设置了 parent（`AbstractApplicationContext#setParent`）
+  - 然后确认：目标 beanName 是否确实存在于 parent 的 registry（`containsBeanDefinition`）
+- **查找链路（本章重点）**：同名覆盖是否生效、child/parent 的可见性是否符合预期
+  - 关键结论：child 先查自己，再 fallback parent；parent 不会向下查 child
+  - 典型断点：`AbstractBeanFactory#doGetBean`（看 fallback 到 parent 的时机）
+- **实例层（候选解析）**：parent 与 child 都有同类型 bean，按类型注入出现歧义
+  - 这不是 context hierarchy 本身的 bug，而是候选集扩大后的收敛问题（用 `@Qualifier/@Primary`）
 ## 4. 一句话自检
 
 - 常问：parent/child 的可见性规则是什么？
@@ -128,7 +144,7 @@
 
 ## 常见坑与边界
 
-## 3. 常见坑
+### 常见坑
 
 - **坑 1：按类型注入时可能出现歧义**
   - 如果 parent 与 child 都有同类型的 bean，按类型注入/查找可能变成多候选。

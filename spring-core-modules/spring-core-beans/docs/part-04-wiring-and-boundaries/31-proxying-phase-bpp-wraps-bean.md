@@ -114,6 +114,16 @@ JDK 代理的本质是：
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+先把“你在排什么”说清楚：
+
+- **定义层（不在本章主线）**：你怀疑某个代理相关基础设施根本没注册（例如 AutoProxyCreator 没进容器）
+  - 快速入口：看 `BeanDefinition` 是否存在、谁注册的（尤其是 `@Enable...` / `@Import` / auto-config）
+- **实例层（本章主线）**：bean 已创建，但最终暴露对象被替换成 proxy/wrapper
+  - 关键入口：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+  - 关键判断：`result != bean`（是否发生替换）
+- **调用路径问题（AOP/事务“不生效”高频）**：你拿到的是 proxy，但调用没有经过 proxy（self-invocation）
+  - 关键判断：断点/日志只命中了外层方法，内层 `this.xxx()` 没有再次经过代理
+  - 修复方向：让调用变成跨 bean 调用（或显式从容器拿到代理再调用）
 ## 源码最短路径（call chain）
 
 > 目标：当你怀疑“这个 bean 被换成了 proxy/wrapper”时，用最短调用链找到“换的那一行”。
@@ -284,6 +294,12 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test
     - `applyBeanPostProcessorsAfterInitialization(...)`
       - `BeanPostProcessor#postProcessAfterInitialization`  
         - **这里是“把原始对象替换成 proxy/wrapper”的最常见发生点**
+
+## 一句话自检
+
+- 你能用一句话解释：为什么“容器里那个 bean”有时不是你构造出来的类型，而是 proxy/wrapper 吗？
+- 你能指出：最终替换最常见发生在哪个方法里吗？（提示：after-init 的 BPP 链）
+- 你能解释清楚：为什么 self-invocation 会绕过代理吗？以及最常见的修复方式是什么？
 
 <!-- BOOKIFY:START -->
 

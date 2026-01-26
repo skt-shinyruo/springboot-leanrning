@@ -7,8 +7,10 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - BeanDefinition overriding 解决的是 **name-based 的定义冲突**：同一个 beanName 被注册多次时，是 last-wins 还是 fail-fast。
+    - `allowBeanDefinitionOverriding=true`：后注册覆盖先注册（更“灵活”，但更难排障）；`false`：注册阶段直接失败（更安全、更可控）。
+    - overriding ≠ 按类型多候选（`NoUniqueBeanDefinitionException`）：不要用“允许覆盖”去解决注入歧义。
+    - 排障关键不是“类型”，而是 **beanName + 来源**：谁先注册、谁后注册、最终 registry 里保存的是哪一个（本仓库 Lab 已补齐 BeanDefinition 来源 dump 的证据链）。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -61,6 +63,11 @@
 - `BeanDefinitionOverrideException#getBeanName`：定位冲突 beanName 的直接抓手（排查时先锁定名称而非类型）
 - `DefaultListableBeanFactory#getBeanDefinition`：确认最终注册进容器的定义是哪一个（对照“last wins”）
 
+可观测性补充（本仓库提供的排障小工具）：
+
+- `BeanDefinitionOriginDumper.dump(beanFactory, beanName)`：把 beanDefinition 的 resourceDescription/source/factoryMethod 等“来源线索”打印出来  
+  - 对应 Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`（允许覆盖场景会输出 dump，你能直接看到最终保留下来的来源标记）
+
 入口：
 
 1) `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding`：确认本次测试里开关的取值
@@ -69,6 +76,15 @@
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+这章非常适合用“异常类型”快速分流：
+
+- **定义层（本章）**：`BeanDefinitionOverrideException` / “注册同名 beanName 失败”
+  - 关键入口：`DefaultListableBeanFactory#registerBeanDefinition`
+  - 关键变量：`isAllowBeanDefinitionOverriding`（决定 fail-fast vs last-wins）
+  - 关键动作：先锁定冲突的 **beanName**，再追“谁先注册、谁后注册”
+- **实例层（不是 overriding 能解决）**：`NoUniqueBeanDefinitionException` / “同类型多候选注入歧义”
+  - 关键入口：`DefaultListableBeanFactory#doResolveDependency`
+  - 修复方向：`@Primary/@Qualifier` 或让自动配置 back-off（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md)、[10](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)）
 ## 5. 一句话自检
 
 - 常问：BeanDefinition overriding 解决的是什么问题？
@@ -142,7 +158,7 @@
 
 ## 常见坑与边界
 
-## 4. 常见坑
+### 常见坑
 
 - **坑 1：把覆盖当成“解决歧义”的手段**
   - 覆盖解决的是“同名冲突”，不是“同类型多实现注入”的歧义。

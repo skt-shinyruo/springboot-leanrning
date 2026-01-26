@@ -197,3 +197,11 @@ ConfigB configB(ConfigA a) {
 上一章：[06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](017-06-post-processors.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08. FactoryBean：product vs factory（& 前缀）](08-factorybean.md)
 
 <!-- BOOKIFY:END -->
+
+## 一句话自检
+
+你应该能回答：
+
+1) `@Configuration` 的增强解决了什么问题？（提示：@Bean 方法调用语义）
+2) `proxyBeanMethods` 为 true/false 时，行为差异在哪里体现？
+3) 你如何在调试器里证明“同一个 @Bean 方法多次调用是否返回同一对象”？

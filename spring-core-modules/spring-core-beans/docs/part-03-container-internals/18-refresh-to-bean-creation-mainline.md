@@ -1,13 +1,32 @@
-# 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
+# 18. 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
+
+## 导读
+
+- 本章主题：**把 `ApplicationContext#refresh` 的“定义阶段”与“创建阶段”连成一条可下断点的主线**
+- 阅读方式建议：先跑本章推荐 Lab（把现象固化为断言），再对照本文的“十步走/五段式/分支决策表”去源码下断点。
+
+!!! summary "本章要点"
+
+    - 你只需要记住两条流水线：**图（BeanDefinition）如何扩张**、**图如何变成对象（bean instance）**。
+    - 你需要能按现象分流：注册缺失/条件没生效 → 看 refresh 第 5 步（BFPP/BDRPP）；注入/代理/生命周期 → 看第 9 步（`getBean` → `doCreateBean`）。
+    - 你需要能复述三类关键分支：`PriorityOrdered/Ordered` 顺序、`preInstantiateSingletons` 预实例化 vs lazy、early reference vs circular boundary。
+    - 你需要知道“该在哪下断点”：`AbstractApplicationContext#refresh`、`PostProcessorRegistrationDelegate`、`AbstractBeanFactory#doGetBean`、`AbstractAutowireCapableBeanFactory#doCreateBean`。
+
+!!! example "本章配套实验（先跑再读）"
+
+    - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+
+## 机制主线
 
 > 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。
->
-> 这一章只做一件事：**把容器启动与 Bean 创建的主线串起来**，并且落到“关键方法 + 关键分支”上。
-> 你读完后，不需要背完 Spring 源码，但应该能做到：
-> - 看到一个 Bean 的奇怪行为，能快速判断它发生在 **refresh 哪一段**。
-> - 知道应该去哪个方法下断点，看哪个变量，定位是 **BeanDefinition 阶段** 的问题，还是 **对象创建阶段** 的问题。
 
----
+这一章只做一件事：**把容器启动与 Bean 创建的主线串起来**，并且落到“关键方法 + 关键分支”上。
+
+你读完后，不需要背完 Spring 源码，但应该能做到：
+
+- 看到一个 Bean 的奇怪行为，能快速判断它发生在 **refresh 哪一段**。
+- 知道应该去哪个方法下断点，看哪个变量，定位是 **BeanDefinition 阶段** 的问题，还是 **对象创建阶段** 的问题。
 
 ## 0. 先把“主线地图”记住：容器做两件事
 
@@ -564,7 +583,7 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 - `earlySingletonExposure`（是否走了提前暴露）
 - `exposedObject`（最终返回对象是否已被包装/代理）
 
-### 7.3 分支决策表：现象 → 阶段 → 关键方法 → 必看变量 → 对应 LabTest
+## 排障分流：现象 → 阶段 → 关键方法 → 必看变量 → 对应 LabTest
 
 下面这张表的目的不是“背诵”，而是把本章的主线叙事进一步压缩成一个**可复用的排障套路**：
 
@@ -613,3 +632,43 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 - 生命周期回调顺序：[17-lifecycle-callback-order.md](17-lifecycle-callback-order.md)
 
 你会发现：这些文件不是“散点知识”，而是主线上的分支专题。
+
+## 一句话自检
+
+- 你能否用一句话区分：**定义阶段** 与 **创建阶段**？
+  - 答题要点：定义阶段产物是 `BeanDefinition`（图在长）；创建阶段产物是“最终暴露对象”（可能被 BPP 代理/替换），入口是 `getBean`/`preInstantiateSingletons`。
+- 你遇到“Bean 根本没注册/条件没生效”，第一反应应该去 refresh 的哪一步？
+  - 答题要点：优先看第 5 步（`invokeBeanFactoryPostProcessors`），尤其是 `ConfigurationClassPostProcessor`/条件装配相关后处理器是否执行、顺序是否正确。
+- 你遇到“注入不对/代理不生效/生命周期回调顺序怪”，第一反应应该去哪条链路？
+  - 答题要点：优先走创建阶段：`AbstractBeanFactory#doGetBean` → `AbstractAutowireCapableBeanFactory#doCreateBean`（populate/initialize/BPP 链）。
+
+## 源码与断点
+
+- 主线入口：`org.springframework.context.support.AbstractApplicationContext#refresh`
+- 定义阶段核心：`org.springframework.context.support.PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
+- 规则装载核心：`org.springframework.context.support.PostProcessorRegistrationDelegate#registerBeanPostProcessors`
+- 创建阶段入口：`org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons` / `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`
+- 创建阶段主线：`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`
+
+## 最小可运行实验（Lab）
+
+- 建议按“先容器后对象”的顺序跑（先把 refresh 的阶段感建立起来，再看 doCreateBean 五段式）：
+  - `SpringCoreBeansBootstrapInternalsLabTest`
+  - `SpringCoreBeansRegistryPostProcessorLabTest`
+  - `SpringCoreBeansPostProcessorOrderingLabTest`
+  - `SpringCoreBeansPreInstantiationLabTest`
+  - `SpringCoreBeansBeanCreationTraceLabTest`
+  - `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest`
+  - `SpringCoreBeansLifecycleCallbackOrderLabTest`
+- 推荐命令：`mvn -pl :spring-core-beans test`
+
+<!-- BOOKIFY:START -->
+
+### 对应 Lab/Test
+
+- Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+
+上一章：[17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）](17-lifecycle-callback-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
+
+<!-- BOOKIFY:END -->

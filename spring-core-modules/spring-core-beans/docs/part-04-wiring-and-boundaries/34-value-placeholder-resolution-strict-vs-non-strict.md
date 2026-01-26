@@ -10,6 +10,7 @@
     - `@Value` 本身不“读配置”，它把字符串交给 BeanFactory 的 **embedded value resolver** 解析（`${...}`/`#{...}`），再进入后续注入/转换。
     - 默认情况下（本章 Lab 的最小纯容器），embedded value resolver 往往委托给 `Environment.resolvePlaceholders(..)`，它是 **non-strict**：缺失 key 时，`${...}` 可能原样保留，不一定 fail-fast。
     - 想要 strict fail-fast，典型方式是注册 `PropertySourcesPlaceholderConfigurer`（BFPP）：把“缺失占位符就失败”的策略显式安装到容器早期流程里。
+    - 默认值语法 `${key:default}` 是你在 strict/non-strict 都应该掌握的“兜底手段”：缺失 key 时不会失败，而是注入 default（本仓库 Lab 已补齐对照）。
     - 排障时先拆三件事：**占位符解析（本章）**、**SpEL 求值**、**类型转换**（见 [44](../part-05-aot-and-real-world/44-spel-and-value-expression.md)、[36](36-type-conversion-and-beanwrapper.md)）。
 
 !!! example "本章配套实验（先跑再读）"
@@ -90,7 +91,28 @@
 
 ---
 
-## 4. Debug 断点闭环：把 strict/non-strict 变成可见证据
+## 4. 默认值（强烈推荐）：`${key:default}` 让“缺失配置”可控
+
+很多团队走 strict 的原因是：他们宁可启动失败，也不想“原样字符串通过”。
+
+但 strict 并不意味着你必须“所有 key 都必须配置齐全”。你应该掌握一个更工程化的兜底：
+
+- `${demo.missing:default-value}`
+
+对应实验（本仓库已补齐）：
+
+- `SpringCoreBeansValuePlaceholderResolutionLabTest#propertySourcesPlaceholderConfigurer_strictMode_allowsMissingPlaceholderWhenDefaultValueIsProvided`
+
+你会看到：
+
+- strict 模式仍然存在（缺失 key 会 fail-fast）
+- 但当你显式提供 default value 时，缺失 key 不会失败，注入变得可控
+
+这能帮助你把“必须配置”的项与“可选配置”的项区分开来。
+
+---
+
+## 5. Debug 断点闭环：把 strict/non-strict 变成可见证据
 
 ### 4.1 推荐断点（按收益排序）
 
@@ -101,13 +123,13 @@
 
 ### 4.2 固定观察点（watch list）
 
-- 输入字符串：`"${demo.present}"` / `"{demo.missing}"`
+- 输入字符串：`"${demo.present}"` / `"${demo.missing}"`
 - 输出字符串：解析后的结果是否仍包含 `"${"`
 - 当前 Environment 的 PropertySources（尤其是 key 是否存在、以及优先级顺序）
 
 ---
 
-## 5. 排障分流：先确定你卡在“解析/求值/转换”的哪一步
+## 6. 排障分流：先确定你卡在“解析/求值/转换”的哪一步
 
 | 现象 | 最可能根因 | 下一步 |
 | --- | --- | --- |
@@ -118,6 +140,12 @@
 | `@Value` 完全不生效（字段没注入） | 注解处理器未注册/容器能力不完整 | 回到 [12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) |
 
 ---
+
+## 一句话自检
+
+- 你能解释清楚：为什么有时缺失 `${...}` 会“原样字符串通过”，有时会 fail-fast 吗？
+- strict/non-strict 是谁决定的？是 `@Value` 注解本身吗？（提示：embedded value resolver / `PropertySourcesPlaceholderConfigurer`）
+- 你如何在排障时快速分清：这是占位符解析问题、SpEL 求值问题、还是类型转换问题？（提示：三连分层）
 
 ## 小结与下一章
 

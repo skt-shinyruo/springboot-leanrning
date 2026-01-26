@@ -20,10 +20,14 @@ public class SpringCoreBeansFactoryBeanDeepDiveLabTest {
 
             Object byName = context.getBean("valueFactory");
             Object factory = context.getBean("&valueFactory");
+            Class<?> productType = context.getType("valueFactory");
+            Class<?> factoryType = context.getType("&valueFactory");
 
             System.out.println("OBSERVE: getBean(\"valueFactory\") returns product; getBean(\"&valueFactory\") returns factory");
             assertThat(byName).isInstanceOf(Value.class);
             assertThat(factory).isInstanceOf(ValueFactoryBean.class);
+            assertThat(productType).isEqualTo(Value.class);
+            assertThat(factoryType).isEqualTo(ValueFactoryBean.class);
         }
     }
 
@@ -49,6 +53,23 @@ public class SpringCoreBeansFactoryBeanDeepDiveLabTest {
             assertThat(first).isNotSameAs(second);
             assertThat(first.id()).isEqualTo(1L);
             assertThat(second.id()).isEqualTo(2L);
+        }
+    }
+
+    @Test
+    void factoryBeanItself_isASingletonBean_byDefault_evenWhenProductIsNotCached() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PrototypeFactoryConfiguration.class)) {
+            Object factory1 = context.getBean("&valueFactory");
+            Object factory2 = context.getBean("&valueFactory");
+
+            Value p1 = context.getBean(Value.class);
+            Value p2 = context.getBean(Value.class);
+
+            System.out.println("OBSERVE: the FactoryBean itself is managed as a normal bean (singleton by default)");
+            System.out.println("OBSERVE: product caching is controlled by FactoryBean.isSingleton(), not by the factory bean's scope");
+
+            assertThat(factory1).isSameAs(factory2);
+            assertThat(p1).isNotSameAs(p2);
         }
     }
 

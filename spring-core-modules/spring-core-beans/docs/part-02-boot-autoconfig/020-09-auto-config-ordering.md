@@ -1,101 +1,112 @@
-# 020-09 Auto-Config Ordering（自动配置顺序）
+# 09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 
-## 章节学习卡片（五问闭环）
-- **这章解决什么问题？** 自动配置装配的先后顺序由哪些规则决定，为什么“顺序不同”会影响最终 Bean。
-- **怎么用？** 识别 `@AutoConfigureBefore/@AutoConfigureAfter/@AutoConfigureOrder` 与 `@Order` 的作用边界，定位冲突来源。
-- **背后的原理？** Spring Boot 通过 `AutoConfigurationImportSelector` 收集候选自动配置类，并在“导入到容器之前”完成排序/去重/过滤；顺序决定了**谁先注册定义**、以及 `@ConditionalOnMissingBean` 等条件判断时看到的“已存在 Bean”集合。
-- **源码入口？** `AutoConfigurationImportSelector`、`AutoConfigurationSorter`、`AutoConfigurationMetadata`、`ConfigurationClassParser#processImports`。
-- **推荐 Lab？** `SpringCoreBeansAutoConfigurationOrderingLabTest`、`SpringCoreBeansAutoConfigurationImportOrderingLabTest`。
+## 导读
+
+- 本章主题：**Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？**
+- 阅读方式建议：先跑本章 Lab，看清楚“同一份条件、不同顺序，结果不同”的反直觉现象；再用断点把它放回 Boot 的 auto-config 导入与排序链路里理解。
+
+!!! summary "本章要点"
+
+    - 你在写 `@ConditionalOnBean` 时，隐含假设是“依赖的 bean 会在我之前注册/创建”。跨 auto-config 时，这个假设可能不成立：**顺序未定义就会不稳定**。
+    - 解决思路不是“调整 import 列表顺序”，而是让依赖关系显式化：例如用 `@AutoConfiguration(after=...)` 把顺序从“偶然”变成“确定”。
+    - 排障时优先问：问题发生在“定义是否注册”还是“实例是否创建”？大多数 auto-config 顺序问题本质是 **定义层顺序**。
+
+!!! example "本章配套实验（先跑再读）"
+
+    - Lab：`SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`
+    - Test file：
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationOrderingLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationBackoffTimingLabTest.java`
+
+## 机制主线：顺序不定义，就会“看起来像偶发”
+
+在 Spring Boot 里，auto-configuration 的本质是：
+
+- Boot 在 refresh 之前批量导入一堆配置类
+- 这些配置类里会声明 bean（通过 `@Bean`、`@Import`、Registrar 等）
+- 许多 bean 的注册/创建由条件控制（`@ConditionalOn*`）
+
+因此如果两个 auto-config 之间存在“隐性依赖”，但顺序没声明，结果就可能随导入顺序/排序算法变化而变化。
+
+这类问题在工程里最常见的表现就是：
+
+- 本地可以
+- CI 不行
+- 升级 Boot 后偶发
+
+---
+
+## 1. 现象：跨 Auto-Config 的 `@ConditionalOnBean` 可能因为顺序不确定而失败
+
+对应实验：
+
+- `SpringCoreBeansAutoConfigurationOrderingLabTest#conditionalOnBean_canFailAcrossAutoConfigurations_whenOrderingIsNotDefined`
+
+你会观察到：
+
+- Dependent auto-config 想依赖 Marker auto-config 提供的 bean
+- 但如果顺序未定义，Dependent 的条件可能在 Marker 之前评估 → 条件不成立 → bean 不注册
+
+这就是“偶发”的根源：**条件评估是有时机的**，你不能假设“总会按你期望的顺序来”。
 
 ---
 
-## 1. 导读：为什么“顺序”是 Bug 的根因之一？
-自动配置的“顺序”并不是简单的 `@Order`，而是**多层规则叠加**：
+## 2. 修复思路：让顺序从“偶然”变成“确定”
 
-- **显式依赖关系**（before/after）：定义局部拓扑图（谁必须在谁之前/之后）
-- **元数据排序**（metadata）：用于在候选集合很大时做稳定排序（避免“看起来随机”的差异）
-- **去重/排除/过滤**：排除掉不该导入的配置类，再决定最终导入列表
-- **导入时机**：最终是通过 `ImportSelector` 把自动配置类导入到“配置类解析阶段”，从而进入 `BeanDefinitionRegistry`
+对应实验：
 
-顺序错了，最常见的“假象”是：
+- `SpringCoreBeansAutoConfigurationOrderingLabTest#autoConfigurationAfter_canMakeCrossAutoConfigConditionsDeterministic_evenIfImportOrderIsReversed`
 
-- **你以为条件没生效**：其实条件生效了，但它看到的“已存在 Bean”集合不同（因为导入顺序不同）
-- **你以为 Bean 被覆盖**：其实是 `@ConditionalOnMissingBean` 让某个候选配置没有注册（或注册了但被后续的定义/代理改变）
-- **你以为是并发问题**：实际上是排序/过滤导致的“顺序差异”，只是表现为“本地可用、CI 偶发”
+核心做法：
+
+- 在 Dependent auto-config 上显式声明：`@AutoConfiguration(after = MarkerAutoConfiguration.class)`
+
+你应该得到的稳定结论是：
+
+- 即使导入列表顺序反过来，结果仍然确定（因为排序规则不再依赖“列表偶然顺序”）
+
+> 这也是工程里更健康的做法：显式表达依赖关系，而不是靠 import 列表“排队”。
+
+---
+
+## 3. 断点闭环：把“顺序”落到可观察证据
+
+### 3.1 推荐断点（按收益排序）
+
+1) `AutoConfigurationImportSelector#selectImports`（auto-config 导入入口）
+2) `AutoConfigurationSorter` 相关方法（排序算法入口，具体方法名以版本为准）
+3) `ConfigurationClassPostProcessor#processConfigBeanDefinitions`（把导入结果转换成 BeanDefinition 的主入口）
+4) `ConditionEvaluator#shouldSkip`（条件评估点：为什么这个配置/bean 被跳过）
+
+### 3.2 固定观察点（watch list）
+
+- “最终导入的 auto-config 列表”（排序后的）
+- `ConditionEvaluationReport`（如果你在 Boot 环境里排障，这个报告能直接告诉你为什么匹配/不匹配）
+- 目标 bean 的 `BeanDefinition` 是否存在（定义层） vs 实例是否创建（实例层）
 
 ---
 
-## 1.1 快速验证（先把顺序问题跑出来）
+## 4. 常见坑（工程里最容易误诊的点）
 
-```bash
-mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansAutoConfigurationOrderingLabTest test
-```
-
-如果你想把“导入顺序 vs 条件过滤”分开看：
-
-```bash
-mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansAutoConfigurationImportOrderingLabTest test
-```
-
-## 2. 主线：自动配置排序的四个层级
-1. **显式依赖关系**：`@AutoConfigureBefore/@AutoConfigureAfter` 定义局部拓扑。
-2. **元数据排序**：`spring.factories` 或 `AutoConfiguration.imports` 的候选集合基于 metadata 做排序与去重。
-3. **条件过滤**：`@Conditional*` 先过滤，再进入注册阶段（过滤本身不会重排）。
-4. **注册时机**：`ImportSelector` 导入的配置类进入 `BeanDefinitionRegistry`，影响后续处理器的执行顺序。
-
-> 关键点：**自动配置的排序发生在“导入到容器之前”**。  
-> `@Order` 主要影响的是 `Ordered` Bean（例如某些 filter/processor/listener 的排序），而不是“自动配置类的导入顺序”。
-
-### 2.1 更精确的主线（把“排序/过滤/导入”分清楚）
-
-你可以把它拆成三段（建议在断点里按段确认）：
-
-1) **收集候选**：从 imports（或历史上的 spring.factories）拿到候选自动配置类列表  
-2) **排序/去重/排除**：基于 `AutoConfigurationMetadata`、before/after、order 等规则得到稳定列表  
-3) **导入到容器**：把最终列表交给配置类解析器（`processImports`），进入 BeanDefinitionRegistry
-
-这三段的任何一段出错，最终都会表现为“Bean 为什么会是这样”。
-
-## 3. 关键分支矩阵（最易混淆的点）
-- **before/after 冲突**：同时声明 before 与 after，最终以拓扑排序结果为准。
-- **@Order vs AutoConfigureOrder**：前者影响 `Ordered` Bean，后者仅影响自动配置类的顺序。
-- **条件过滤导致“顺序失效”**：A before B，但 A 被过滤后 B 仍会进入注册。
-
-## 4. 断点与观察点
-- `AutoConfigurationImportSelector#getAutoConfigurationEntry`
-- `AutoConfigurationSorter#sort`
-- `ConfigurationClassParser#processImports`
-
-> 推荐观察点（你要在变量里看见“排序前/排序后/过滤后”的列表）：
->
-> - 候选列表（original candidates）
-> - 排序后列表（sorted）
-> - 排除/过滤后列表（exclusions + filtered）
-> - 最终导入列表（imports）
-
-## 5. 可跑入口（证据链）
-- `SpringCoreBeansAutoConfigurationOrderingLabTest`：排序规则对最终 Bean 的影响
-- `SpringCoreBeansAutoConfigurationImportOrderingLabTest`：Import 级别的排序与过滤
-
-## 6. 常见坑
-- 误把 `@Order` 当作自动配置顺序控制器
-- 依赖顺序未声明，导致本地可用、CI 偶发失败
-- 只看日志而未下断点，无法判断“排序 vs 过滤”
-
-## 7. 小结
-自动配置顺序不是单一规则，而是“显式依赖 + 元数据排序 + 条件过滤 + 注册时机”的组合。定位问题时，先确认拓扑关系是否声明，再通过断点确定排序与过滤阶段的真实结果。
+1) **误区：靠调整 import 顺序修复**
+   - import 顺序只是“当前偶然可用”，不是稳定契约；升级/依赖变化后容易再次翻车。
+2) **误区：把问题当成“bean 创建失败”**
+   - 很多 auto-config 问题是“根本没注册定义”（定义层就被跳过了）。
+3) **误区：只看异常，不看 Condition 证据**
+   - 在 Boot 环境里，优先用 ConditionEvaluationReport 定位“为什么没匹配”，再去下断点。
 
 ---
+
+## 一句话自检
+
+你应该能用 3 句答题：
+
+1) 为什么跨 auto-config 的 `@ConditionalOnBean` 会出现“偶发不匹配”？（提示：顺序未定义 + 条件评估有时机）  
+2) `@AutoConfiguration(after=...)` 解决的是什么问题？（提示：把隐式依赖变成显式排序规则）  
+3) 你会用哪 2 个断点把“排序→条件评估→定义是否注册”走成证据链？
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
-
-- Lab：[`SpringCoreBeansAutoConfigurationOrderingLabTest`](../../src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationOrderingLabTest.java)  
-  - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansAutoConfigurationOrderingLabTest test`
-- Lab：[`SpringCoreBeansAutoConfigurationImportOrderingLabTest`](../../src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationImportOrderingLabTest.java)  
-  - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansAutoConfigurationImportOrderingLabTest test`
-
-上一章：[10. Spring Boot Auto-Configuration（主线）](021-10-spring-boot-auto-configuration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[11. Debugging & Observability（把现象变成证据）](019-11-debugging-and-observability.md)
+上一章：[09. 循环依赖：现象、原因与规避（constructor vs setter）](../part-01-ioc-container/09-circular-dependencies.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](021-10-spring-boot-auto-configuration.md)
 
 <!-- BOOKIFY:END -->

@@ -139,6 +139,18 @@
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+`dependsOn` 的定位非常清晰：它是 **BeanDefinition 元数据（定义层）**，但它影响的是 **创建/销毁顺序（创建链路）**。
+
+按现象快速分流：
+
+- **定义层问题（本章优先）**：你“以为写了 dependsOn”，但顺序没变化
+  - 先确认：`RootBeanDefinition#getDependsOn()` 里是否真的有目标 beanName（拼错/别名/覆盖都可能导致你以为生效但其实没写进去）
+  - 典型断点：`RootBeanDefinition#getDependsOn` / `AbstractBeanFactory#doGetBean`（读 dependsOn 并触发 `getBean(dep)`）
+- **创建链路问题（本章也覆盖）**：`@Lazy` 明明想延迟，但启动时依赖还是被创建了
+  - 关键结论：`dependsOn` 会强制 `getBean(dep)`，因此能把 lazy 依赖“拉起”
+  - 典型断点：`AbstractBeanFactory#doGetBean`（dependsOn 检查点）/ `DefaultListableBeanFactory#preInstantiateSingletons`
+- **实例层问题（非 dependsOn 能解决）**：你想用 dependsOn “解决注入歧义/指定注入对象”
+  - 结论：这是概念误用；注入选择看 `@Qualifier/@Primary/@Resource` 等规则（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md)）
 ## 源码最短路径（call chain）
 
 > 目标：给你“最短可跟栈”，把 dependsOn 如何写进依赖表、依赖表如何影响销毁顺序串起来。
@@ -284,17 +296,31 @@
 
 ## 常见坑与边界
 
-## 4. 常见坑
+### 常见坑
 
 - **坑 1：把 dependsOn 当成 DI 手段**
   - dependsOn 不会把 `first` 注入到 `second` 里。
+  - 你得到的只是“创建顺序先后”，不是“注入目标选择”。
 
-## 6.2 机制边界：为什么 dependsOn 不会影响 DI 候选选择？
+### 坑 2：误以为 dependsOn 不会影响 lazy-init
+
+- `@Lazy` 的语义是“没人要就不创建”，但 dependsOn 的语义是“创建当前 bean 前必须先 getBean(dep)”
+- 因此 dependsOn 可以强行把 lazy 依赖拉起（本章已给出最小复现）
+
+### 机制边界：为什么 dependsOn 不会影响 DI 候选选择？
 
 把这个边界分清，你就能避免一个经典误判：
 
 ## 面试常问（`dependsOn` 的边界）
 
+1) **dependsOn 解决什么问题？为什么说它不是 DI？**
+   - 要点：它解决初始化/销毁顺序问题；它不参与候选选择与依赖解析，不会影响注入点拿到谁。
+
+2) **dependsOn 为什么会让 lazy-init “看起来失效”？**
+   - 要点：dependsOn 在 `doGetBean` 里被处理，创建当前 bean 前会先 `getBean(dep)`；因此 lazy 依赖会被强制实例化。
+
+3) **关闭时为什么顺序会“反过来”？**
+   - 要点：销毁要保证“先销毁依赖者再销毁被依赖者”；容器依据 `dependentBeanMap` 递归销毁 dependents，最后才销毁 dependency。
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。

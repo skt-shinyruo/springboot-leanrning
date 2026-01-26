@@ -23,6 +23,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 class SpringCoreBeansCustomScopeLabTest {
 
     private static final AtomicLong sequence = new AtomicLong();
+    private static final AtomicLong prototypeSequence = new AtomicLong();
 
     @Test
     void threadScope_createsOneInstancePerThread_whenAccessedDirectly() throws Exception {
@@ -87,6 +88,28 @@ class SpringCoreBeansCustomScopeLabTest {
             assertThat(o1.first()).isEqualTo(o1.second());
             assertThat(o2.first()).isEqualTo(o2.second());
             assertThat(o1.first()).isNotEqualTo(o2.first());
+        }
+    }
+
+    @Test
+    void prototypeInjectedIntoSingleton_isResolvedOnce_butObjectProviderCanObtainFreshPrototypeEachCall() {
+        prototypeSequence.set(0);
+
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PrototypeInjectionConfiguration.class)) {
+            PrototypeDirectConsumer direct = context.getBean(PrototypeDirectConsumer.class);
+            PrototypeProviderConsumer provider = context.getBean(PrototypeProviderConsumer.class);
+
+            long directFirst = direct.currentId();
+            long directSecond = direct.currentId();
+
+            long providerFirst = provider.currentId();
+            long providerSecond = provider.currentId();
+
+            System.out.println("OBSERVE: prototype injected into singleton is resolved once at injection time (frozen reference)");
+            System.out.println("OBSERVE: ObjectProvider can defer lookup => each call can obtain a fresh prototype instance");
+
+            assertThat(directFirst).isEqualTo(directSecond);
+            assertThat(providerFirst).isNotEqualTo(providerSecond);
         }
     }
 
@@ -185,6 +208,62 @@ class SpringCoreBeansCustomScopeLabTest {
         @Bean
         DirectConsumer directConsumer(ThreadScopedCounter counter) {
             return new DirectConsumer(counter);
+        }
+    }
+
+    static class PrototypeCounter {
+        private final long id;
+
+        PrototypeCounter(long id) {
+            this.id = id;
+        }
+
+        long id() {
+            return id;
+        }
+    }
+
+    static class PrototypeDirectConsumer {
+        private final PrototypeCounter counter;
+
+        PrototypeDirectConsumer(PrototypeCounter counter) {
+            this.counter = counter;
+        }
+
+        long currentId() {
+            return counter.id();
+        }
+    }
+
+    static class PrototypeProviderConsumer {
+        private final ObjectProvider<PrototypeCounter> provider;
+
+        PrototypeProviderConsumer(ObjectProvider<PrototypeCounter> provider) {
+            this.provider = provider;
+        }
+
+        long currentId() {
+            return provider.getObject().id();
+        }
+    }
+
+    @Configuration
+    static class PrototypeInjectionConfiguration {
+
+        @Bean
+        @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+        PrototypeCounter prototypeCounter() {
+            return new PrototypeCounter(prototypeSequence.incrementAndGet());
+        }
+
+        @Bean
+        PrototypeDirectConsumer prototypeDirectConsumer(PrototypeCounter counter) {
+            return new PrototypeDirectConsumer(counter);
+        }
+
+        @Bean
+        PrototypeProviderConsumer prototypeProviderConsumer(ObjectProvider<PrototypeCounter> provider) {
+            return new PrototypeProviderConsumer(provider);
         }
     }
 }

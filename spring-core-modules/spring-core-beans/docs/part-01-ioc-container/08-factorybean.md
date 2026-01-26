@@ -105,6 +105,14 @@
 
 ## 面试常问（FactoryBean）
 
+1) **FactoryBean 到底是什么？它和“工厂模式”有什么不同？**
+   - 要点：它是容器级扩展点：一个 beanName 同时代表“工厂本体”与“工厂产物”；默认对外暴露的是产物（product），不是工厂实例。
+
+2) **为什么 `getBean("x")` 拿到的是 product，而不是你注册的 FactoryBean？**
+   - 要点：`AbstractBeanFactory#getObjectForBeanInstance` 会对 `FactoryBean` 做分流；`"x"` 返回 product；`"&x"` 才返回 factory。
+
+3) **`FactoryBean#isSingleton()` 的语义是什么？它决定了什么缓存？**
+   - 要点：它决定的是 product 的缓存语义（`FactoryBeanRegistrySupport` 缓存 product），不是“工厂 bean 是否单例”；工厂本体通常仍按普通 bean 的 scope 管理。
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
@@ -162,7 +170,7 @@
 
 ## 常见坑与边界
 
-## 4. 常见坑
+### 常见坑（高频误判）
 
 - 常问：`FactoryBean` 是什么？为什么 `getBean("x")` 拿到的是 product 而不是 factory？
   - 答题要点：`FactoryBean<T>` 是“工厂 bean”；默认通过 beanName 暴露的是它生产的 product；用 `&beanName` 才能拿到 factory 本身。
@@ -185,3 +193,11 @@
 上一章：[07. @Configuration 增强：proxyBeanMethods 与 @Bean 语义](018-07-configuration-enhancement.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[09. 循环依赖概览：三级缓存与现象分类](09-circular-dependencies.md)
 
 <!-- BOOKIFY:END -->
+
+## 一句话自检
+
+你应该能回答：
+
+1) 为什么 `getBean("name")` 返回的是 product，而不是工厂本身？
+2) `&name` 的语义是什么？什么时候必须用它？
+3) `FactoryBean#getObjectType()` 返回 null 会导致哪类“按类型发现/注入”的问题？

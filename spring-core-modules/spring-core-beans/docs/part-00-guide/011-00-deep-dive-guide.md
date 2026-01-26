@@ -548,3 +548,11 @@ mvn -pl :spring-core-beans -Dtest=<TestClass>#<testMethod> test
 上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Bean 心智模型：BeanDefinition vs Bean 实例](../part-01-ioc-container/020-01-bean-mental-model.md)
 
 <!-- BOOKIFY:END -->
+
+## 一句话自检
+
+你应该能用 2–3 句话向别人解释：
+
+1) 为什么本模块推荐“先跑 Lab 再读正文”？
+2) 当你遇到注入失败/代理不生效/循环依赖时，你会如何用“现象→章节→断点→Lab”走一遍闭环？
+3) 你下一次学习/排障的入口应该从哪里进（Knowledge Map / Debugger Pack / Branch Matrix）？

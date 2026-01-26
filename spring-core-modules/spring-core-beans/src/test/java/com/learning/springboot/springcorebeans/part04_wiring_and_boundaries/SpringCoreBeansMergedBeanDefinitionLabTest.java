@@ -9,12 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.support.GenericApplicationContext;
 
-class SpringCoreBeansMergedBeanDefinitionLabTest {
+public class SpringCoreBeansMergedBeanDefinitionLabTest {
 
     @Test
     void mergedBeanDefinition_combinesParentAndChildMetadata_andTriggersMergedDefinitionPostProcessor() {
@@ -67,6 +68,38 @@ class SpringCoreBeansMergedBeanDefinitionLabTest {
             assertThat(snapshot.parentOnly()).isEqualTo("from-parent");
             assertThat(snapshot.childOnly()).isEqualTo("from-child");
             assertThat(snapshot.initMethodName()).isEqualTo("parentInit");
+        }
+    }
+
+    @Test
+    void mergedBeanDefinition_inheritsAndOverridesMetadata_fromParentAndChild() {
+        try (GenericApplicationContext context = new GenericApplicationContext()) {
+            RootBeanDefinition parent = new RootBeanDefinition(MergedTarget.class);
+            parent.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
+            parent.setLazyInit(true);
+
+            GenericBeanDefinition child = new GenericBeanDefinition();
+            child.setBeanClass(MergedTarget.class);
+            child.setParentName("parentBean");
+            child.setLazyInit(false);
+
+            context.registerBeanDefinition("parentBean", parent);
+            context.registerBeanDefinition("childBean", child);
+            context.refresh();
+
+            BeanDefinition rawChild = context.getBeanFactory().getBeanDefinition("childBean");
+            BeanDefinition merged = context.getBeanFactory().getMergedBeanDefinition("childBean");
+
+            System.out.println("OBSERVE: raw child keeps only local metadata (still has parentName)");
+            assertThat(rawChild.getParentName()).isEqualTo("parentBean");
+            assertThat(rawChild.isLazyInit()).isFalse();
+            assertThat(rawChild.getScope()).isEmpty();
+
+            System.out.println("OBSERVE: merged RootBeanDefinition combines parent+child: inherits scope, but child overrides lazy-init");
+            assertThat(merged).isInstanceOf(RootBeanDefinition.class);
+            RootBeanDefinition mergedRoot = (RootBeanDefinition) merged;
+            assertThat(mergedRoot.getScope()).isEqualTo(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
+            assertThat(mergedRoot.isLazyInit()).isFalse();
         }
     }
 
@@ -146,4 +179,3 @@ class SpringCoreBeansMergedBeanDefinitionLabTest {
         }
     }
 }
-

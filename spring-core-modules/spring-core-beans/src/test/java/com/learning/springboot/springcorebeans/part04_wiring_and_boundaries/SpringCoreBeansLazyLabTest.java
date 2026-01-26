@@ -8,10 +8,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.util.ClassUtils;
 
 public class SpringCoreBeansLazyLabTest {
 
     private static final AtomicInteger serviceConstructorCalls = new AtomicInteger();
+    private static final AtomicInteger concreteServiceConstructorCalls = new AtomicInteger();
 
     @Test
     void lazyInitBean_isNotInstantiatedDuringRefresh_butCreatedOnFirstGetBean() {
@@ -63,6 +65,29 @@ public class SpringCoreBeansLazyLabTest {
         }
     }
 
+    @Test
+    void lazyInjectionPoint_onConcreteClass_usesClassBasedProxy_andDefersCreationUntilFirstUse() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            concreteServiceConstructorCalls.set(0);
+
+            context.registerBean(ConcreteService.class, ConcreteService::new, bd -> bd.setLazyInit(true));
+            context.registerBean(ConcreteConsumer.class);
+            context.refresh();
+
+            ConcreteConsumer consumer = context.getBean(ConcreteConsumer.class);
+
+            System.out.println("OBSERVE: @Lazy on a concrete class injection point usually creates a class-based (CGLIB) proxy");
+            System.out.println("OBSERVE: defers target bean creation until first method invocation on the proxy");
+
+            assertThat(concreteServiceConstructorCalls.get()).isEqualTo(0);
+            assertThat(Proxy.isProxyClass(consumer.injected().getClass())).isFalse();
+            assertThat(ClassUtils.isCglibProxyClass(consumer.injected().getClass())).isTrue();
+
+            assertThat(consumer.ping()).isEqualTo("pong");
+            assertThat(concreteServiceConstructorCalls.get()).isEqualTo(1);
+        }
+    }
+
     interface Service {
         String ping();
     }
@@ -103,6 +128,33 @@ public class SpringCoreBeansLazyLabTest {
         }
 
         Service injectedService() {
+            return service;
+        }
+    }
+
+    static class ConcreteService {
+
+        ConcreteService() {
+            concreteServiceConstructorCalls.incrementAndGet();
+        }
+
+        String ping() {
+            return "pong";
+        }
+    }
+
+    static class ConcreteConsumer {
+        private final ConcreteService service;
+
+        ConcreteConsumer(@Lazy ConcreteService service) {
+            this.service = service;
+        }
+
+        String ping() {
+            return service.ping();
+        }
+
+        ConcreteService injected() {
             return service;
         }
     }

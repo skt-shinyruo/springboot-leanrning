@@ -1,43 +1,74 @@
-<!--
-⚠️ SNAPSHOT FILE - 历史上由脚本生成（当前仓库已移除 `scripts/`，因此本文件按快照保留）。
-- Generator: (removed)
-- Source: /home/feng/.m2/repository/org/springframework/spring-beans/6.2.15/spring-beans-6.2.15-sources.jar
-- Generated at: 2026-01-20 14:30:48
--->
+# 96. spring-beans Public API Gap 清单（按包/机制域分批深化）
 
-# 96. spring-beans Public API 覆盖差距（Gap）清单（Spring Framework 6.2.15）
+## 导读
 
-本文件用于把“还缺什么”变成显式清单，配合：
-- 索引：`95-spring-beans-public-api-index.md`
-- 分批补齐策略：HelloAGENTS 方案包 task.md
+- 本章主题：**Public API Gap 清单（按包/机制域分批深化）**
+- 阅读方式建议：这章不是“讲课”，而是一个可维护的“覆盖率看板”：哪些 spring-beans 的 Public API 已经有 Lab+Docs 闭环，哪些仍需要补齐。你可以用它驱动后续的学习/补齐工作。
+
+!!! summary "本章要点"
+
+    - Gap 清单的用途：把“我还没学透什么”显式化，避免学习停留在舒适区。
+    - 本仓库的标准不是“写了文档就算学完”，而是：**Doc + Lab + 断点入口 + 自检复述** 四件套闭环。
+    - 当你发现某个 API/机制不在主线章节里：先在 [95](95-spring-beans-public-api-index.md) 查索引定位，再回到本章看是否已覆盖。
+
+!!! example "本章配套实验（先跑再读）"
+
+    - Lab（作为“覆盖闭环”入口的总集合）：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansIocBranchMatrixLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest`
+
+## 机制主线：为什么要维护 Gap？
+
+在真实工程里，问题往往出在“你没覆盖到的边界”：
+
+- 你知道 @Autowired，但你不知道 `ResolvableDependency` 为什么能注入但不是 bean
+- 你知道 AOP，但你不知道 early reference 与 final proxy 不一致会怎样 fail-fast
+- 你知道 `FactoryBean`，但你不知道 `&` 前缀与缓存语义的边界
+
+Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审计的学习路线**。
 
 ---
-## 可运行入口（建议先跑再看 Gap）
 
-本章是“缺口清单”，推荐先跑一个能让你进入 Spring Beans 主线的 Lab，再回来按需查 Gap：
+## 1. 覆盖标准（本仓库的“教程级”验收口径）
 
-- `SpringCoreBeansContainerLabTest`
-- `SpringCoreBeansBeanCreationTraceLabTest`
-- `SpringCoreBeansRegistryPostProcessorLabTest`
-- `SpringCoreBeansTypeConversionLabTest`
+一个 API/机制域被认为“已覆盖”，至少满足：
+
+1) 文档：解释“解决什么问题 / 关键约束是什么 / 常见坑在哪里”  
+2) Lab：能跑出核心现象（最好能断言，而不是只打印）  
+3) Debug：给出 2–5 个关键断点与 watch list（能看见关键数据结构变化）  
+4) 自检：能用 2–3 句话复述（面试/复盘模板）
 
 ---
-## 概览
 
-- 总 public 顶层类型（按 sources.jar 统计）：**320**
-- 未映射（unmapped）：**0**
-- partial 覆盖（需要后续补齐/深化）：**0**
-- 索引指向缺失的 chapter：**0**
-- 索引指向缺失的 lab：**0**
+## 2. 当前清单（建议按需扩展）
 
-## 结论
+> 说明：本清单不会试图枚举所有 API，而是按“机制域”列出最常被忽略、但一旦踩坑代价很大的那批。
 
-- 当前索引规则无缺口（0 unmapped），且索引指向的 chapter/lab 均存在。
+- IoC 主线（refresh → doCreateBean）：✅ 已覆盖（主线叙事 + Labs）
+- 候选选择（Primary/Qualifier/by-name fallback/@Order vs @Priority）：✅ 已覆盖（Docs 14/33 + Labs）
+- 循环依赖与 early reference：✅ 已覆盖（Docs 09/16 + Labs）
+- `@Value` 占位符 / SpEL / 类型转换三连：✅ 已覆盖（Docs 34/44/36 + Labs）
+- programmatic 注册与 BPP/BFPP 时机：✅ 已覆盖（Docs 25 + Labs）
+- `FactoryBean` 深挖与边界：✅ 已覆盖（Docs 08/23/29 + Labs）
+- XML/Reader/Namespace 扩展：✅ 已覆盖（Part 05 + Labs）
+- AOT/RuntimeHints：✅ 已覆盖（Part 05 + Labs）
 
-## 坑点与排障（把索引变成“可用工具”）
+如果你发现某个机制域仍有真实缺口（“写了但不够深/无法断点/没有可复现入口”），建议直接按下面模板补齐：
 
-- **索引不是学习路线**：Index/GAP 的价值是“定位”，不是“背诵清单”。推荐先按模块目录页（[`README.md`](../README.md)）的 Start Here 跑最小 Lab，再回索引做反查定位。
-- **BeanFactory vs ApplicationContext 差异**：很多“注解不生效/生命周期不触发”的现象，根因是没有安装 `AnnotationConfigProcessors`（仅 `BeanFactory` 不会自动做这件事）。
-- **FactoryBean 的双重身份**：`getBean("foo")` 拿到的是“产品对象”，`getBean("&foo")` 才是 `FactoryBean` 本身；排查类型不匹配/注入歧义时先确认你拿到的到底是谁。
-- **代理导致的类型错觉**：JDK Proxy 只实现接口，无法赋值给具体类；当 BPP 提前暴露早期引用/创建代理时，“按具体类注入”可能失败，优先按接口注入或切换到 class-based proxy。
-- **版本差异与定位方式**：不要依赖行号；用“入口测试方法 + 关键接口名 + `rg` 关键词”定位更稳（Spring 小版本内部实现经常移动）。
+1) 先在 [95](95-spring-beans-public-api-index.md) 定位 API 包/类
+2) 写一条最小 Lab 把现象固化
+3) 在对应章节补齐断点闭环与常见坑
+
+---
+
+## 一句话自检
+
+你应该能回答：
+
+1) “Gap 清单”解决的是什么学习问题？（提示：把未知变成可审计）  
+2) 一个机制要达到“教程级”至少满足哪 4 个验收口径？  
+3) 你如何从 API 索引（95）→ Gap（96）→ 具体章节/Lab（正文）完成一次补齐？
+
+<!-- BOOKIFY:START -->
+
+上一章：[95. spring-beans Public API Index（索引）](95-spring-beans-public-api-index.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[97. Explore/Debug 用例（可选启用，不影响默认回归）](97-explore-debug-tests.md)
+
+<!-- BOOKIFY:END -->

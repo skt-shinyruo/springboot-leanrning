@@ -67,6 +67,17 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+你可以用一句话把本章的适用范围钉死：
+
+> **只要问题是“这个 BeanDefinition 到底从哪里来的/为什么会出现/为什么会被改写”，就优先回到 BDRPP/BFPP（定义层）。**
+
+具体分流：
+
+- **定义层（本章）**：Bean 根本没注册、注册数量不对、beanName 冲突/覆盖、BeanDefinition 元数据不符合预期
+  - 典型断点：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`、`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`、`DefaultListableBeanFactory#registerBeanDefinition`
+- **实例层（非本章）**：Bean 有了，但注入不对/变成 proxy/生命周期回调顺序奇怪
+  - 典型断点：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`、`AbstractBeanFactory#doGetBean`、`AbstractAutowireCapableBeanFactory#doCreateBean`
+  - 对应章节：[14](14-post-processor-ordering.md)、[15](15-pre-instantiation-short-circuit.md)、[31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
 ## 源码最短路径（call chain）
 
 > 目标：当你想回答“这个 bean 为什么会出现（我明明没注册）”或“为什么 BFPP 能改到 BDRPP 注册的定义”时，用最短调用链把问题钉在 refresh 的精确阶段。
@@ -222,7 +233,7 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 ## 常见坑与边界
 
-## 4. 常见坑
+### 常见坑
 
 - **坑 1：在 BDRPP/BFPP 里 `getBean()` 触发提前实例化**
   - post-processor 阶段本质是“定义层”的工作。
@@ -232,6 +243,14 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 - **坑 2：beanName 冲突**
   - BDRPP 动态注册时必须保证名称唯一，否则会覆盖或直接报错（取决于容器配置）。
+
+- **坑 3：以为 `@Order` 会改变“分组”（PriorityOrdered/Ordered/others）**
+  - 分组本质上看接口类型，不看注解；`@Order` 只影响“组内排序”（且前提是它确实进入了会被 sort 的列表）。
+  - 对应章节：[14](14-post-processor-ordering.md)
+
+- **坑 4：把“注解生效”误认为是 BDRPP 自己完成的**
+  - BDRPP 负责把注解世界翻译成 BeanDefinition（图扩张），但 `@Autowired/@PostConstruct/@Resource` 这类行为依赖 BPP 在创建阶段介入。
+  - 对应章节：[022-12](022-12-container-bootstrap-and-infrastructure.md)
 
 - `AbstractApplicationContext#refresh`
   - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`

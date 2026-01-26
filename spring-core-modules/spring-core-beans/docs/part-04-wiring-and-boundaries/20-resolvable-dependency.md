@@ -157,6 +157,16 @@
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
+这类问题最容易误判，因为“注入成功”会让人下意识以为它是个普通 bean。
+
+- **定义层问题（不是本章重点）**：你怀疑某个类型没有注册成 BeanDefinition
+  - 快速确认：`context.getBeanFactory().containsBeanDefinition(beanName)` / 查看 `beanDefinitionNames`
+  - 但注意：ResolvableDependency 本身没有 beanName、也不走 BeanDefinition 注册表
+- **实例层问题（本章重点）**：`@Autowired` 能注入，但 `getBean(type)` 报 `NoSuchBeanDefinitionException`
+  - 结论：大概率命中了 `resolvableDependencies`（注入解析表），而不是“按 bean 候选集”路线
+  - 优先断点：`DefaultListableBeanFactory#doResolveDependency`（看是否直接命中 `resolvableDependencies`）
+- **候选选择问题（非本章）**：当 resolvableDependencies 未命中，才会进入 `findAutowireCandidates` 的候选收敛（`@Primary/@Qualifier/@Priority`）
+  - 对应章节：[03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md)
 ## 源码最短路径（call chain）
 
 注入管道（命中 ResolvableDependency）：
@@ -265,9 +275,7 @@
 
 ## 常见坑与边界
 
-注意两个细节：
-
-## 3. 常见坑
+### 常见坑（高频误判）
 
 - **坑 1：以为它会出现在 beans 列表里**
   - 不会。它不是 bean。
@@ -283,6 +291,14 @@
 
 ## 面试常问（ResolvableDependency 的边界）
 
+1) **为什么说它“能注入但不是 Bean”？**
+   - 要点：它注册在 `resolvableDependencies`（依赖解析表）里，只参与 `doResolveDependency`；`getBean` 走的是 BeanDefinition/单例缓存/FactoryBean 语义，不会查这张表。
+
+2) **它和 `*Aware` 回调有什么关系？**
+   - 要点：效果相似（把容器对象交给 bean），但机制不同：ResolvableDependency 发生在注入解析阶段；Aware 发生在初始化阶段，由 BPP 回调触发。
+
+3) **什么时候应该用它？什么时候绝对不该用？**
+   - 要点：适合容器/框架提供“上下文级依赖”（Environment/ResourceLoader 这类）；不适合承载业务对象，否则生命周期/可观察性/排障都会变差。
 ## 小结与下一章
 
 > 一句话总结：**注入（resolveDependency）** 和 **查找（getBean）** 是两条不同的管道。
