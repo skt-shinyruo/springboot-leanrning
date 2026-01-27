@@ -201,6 +201,6 @@
 - Exercise：`SpringCoreBeansExerciseTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 
-上一章：[97. Explore/Debug 用例（可选启用，不影响默认回归）](97-explore-debug-tests.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本](99-team-training-kit.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

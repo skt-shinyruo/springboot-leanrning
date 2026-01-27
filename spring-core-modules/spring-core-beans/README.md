@@ -35,6 +35,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 
 - 从这里开始读：[`docs/00-deep-dive-guide.md`](docs/part-00-guide/011-00-deep-dive-guide.md)
 
+## 团队内训（可直接开讲）
+
+如果你要在团队内做一次“Spring Beans 机制与排障”分享，推荐直接用这份讲义（含 60/90/120 分钟课时脚本 + Labs/断点/互动题）：
+
+- `docs/appendix/99-team-training-kit.md`
+
 ## 学习路线（入门→进阶→深挖）
 
 | 层级 | 目标 | 推荐入口（固定） | 你应该能解释清楚什么 |
@@ -62,6 +68,69 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 - 自定义 scope 与 scoped proxy：thread scope 的语义与注入陷阱
 - 父子 `ApplicationContext`：可见性与覆盖边界
 - Spring Boot 自动装配如何影响最终的 Bean 图（bean graph）
+
+## 核心七件套（从“知识点”到“可断言闭环”）
+
+> 你提到的这 7 点，本模块已经拆到不同章节与 Lab 里了。为了方便“查漏 + 导航”，这里把它们收敛成一份清单，并给出对应的章节与可跑入口。
+
+1. BeanDefinition 体系（“定义”与“实例”分开讲清楚）
+
+   - `BeanDefinition` 的角色：描述元数据（class、scope、依赖、构造参数、属性注入、init/destroy 等），不是 bean 实例本身
+   - 常见 `BeanDefinition` 类型差异：`RootBeanDefinition` / `GenericBeanDefinition` 以及“合并后的定义（merged）”概念
+   - `BeanDefinitionRegistry` 与 `BeanFactory` 的分工：注册阶段 vs 创建/获取阶段
+   - BeanName / alias 规则：命名、别名、覆盖（override）行为与风险点
+
+2. Bean 创建全链路（建议按“源码步骤”拆成可复述的流程）
+
+   - 典型创建路径：`getBean` → `doGetBean` → `createBean` → `doCreateBean`（宏观链路要能背出来）
+   - 实例化策略与分支：构造器注入、工厂方法、`Supplier`、`FactoryBean`（尤其 `FactoryBean` 很多人混淆）
+   - 属性填充阶段：`populateBean` 里如何解析依赖、如何处理集合/引用/占位符值
+   - 初始化阶段：Aware 回调、`InitializingBean`、自定义 `initMethod`、`@PostConstruct`（顺序与触发条件）
+   - 销毁阶段：`DisposableBean`、`destroyMethod`、`@PreDestroy`、依赖销毁顺序（dependent beans）
+
+3. 依赖解析与注入细节（比“会用 `@Autowired`”更深入一层）
+
+   - 依赖解析模型：注入点如何被描述（如 `DependencyDescriptor` 这类概念），按类型/按名称/限定符的选择逻辑
+   - `@Primary` / `@Qualifier` / 多候选 bean 的决策规则（最好用案例串起来）
+   - 延迟获取：`ObjectFactory` / `ObjectProvider` 这种“按需取 bean”的场景与价值
+   - 泛型注入与类型匹配：为什么 `List<Foo>` 能注入、类型擦除下如何匹配（至少讲清思路）
+
+4. 容器扩展点（“为什么 Spring 能插拔”这一块最容易缺）
+
+   - `BeanPostProcessor`：bean 初始化前后增强点（AOP/代理很多都靠它串起来）
+   - `InstantiationAwareBeanPostProcessor` / `SmartInstantiationAwareBeanPostProcessor`：更早期的“实例化前后”拦截点（解决代理提前暴露等问题）
+   - `MergedBeanDefinitionPostProcessor`：合并定义后的增强点（很多注解元信息处理会牵涉）
+   - `BeanFactoryPostProcessor` 与 `BeanDefinitionRegistryPostProcessor`：创建 bean 之前“改定义”的能力（非常核心，但经常被略过）
+   - 执行顺序体系：`Ordered` / `PriorityOrdered` 以及“为什么顺序会影响结果”
+
+5. 作用域与代理（scope 不只是 singleton/prototype）
+
+   - singleton/prototype 的本质差异：生命周期归属、注入到单例里会发生什么
+   - request/session 等 Web scope（如果你的项目会用到）：为何需要 scoped proxy
+   - 自定义 scope：什么时候要自定义、关键接口与典型坑点
+
+6. 循环依赖（这块属于 spring-beans 的“高频缺口”）
+
+   - 单例循环依赖为什么“有时能解、有时不能解”
+   - 三级缓存的核心思想：提前暴露 early reference、与代理创建时机的关系
+   - 典型失败场景：构造器循环依赖、prototype 循环依赖，以及如何拆解（`@Lazy` / 重构依赖 / 抽接口）
+
+7. 类型转换与属性绑定基础（偏底层但很实用）
+
+   - `BeanWrapper` / `PropertyEditor` / `ConversionService` 的定位（至少分清“属性访问”与“类型转换”）
+   - 集合、枚举、日期等常见类型的转换链路（从配置到对象的过程）
+
+对应章节与 Lab 入口（建议：先跑 Lab 固化现象，再回到章节看主线）：
+
+| 核心点 | 章节入口（Docs） | 推荐 Lab/Test |
+| --- | --- | --- |
+| 1. BeanDefinition 体系 | [01. Bean 心智模型](docs/part-01-ioc-container/020-01-bean-mental-model.md)、[22. BeanName 与 alias](docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)、[24. BeanDefinition 覆盖](docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md)、[35. MergedBeanDefinition](docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md) | `SpringCoreBeansContainerLabTest`、`SpringCoreBeansBeanNameAliasLabTest`、`SpringCoreBeansBeanDefinitionOverridingLabTest`、`SpringCoreBeansMergedBeanDefinitionLabTest` |
+| 2. Bean 创建全链路 | [18. refresh→doCreateBean 主线](docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md)、[30. 注入阶段](docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)、[05. 生命周期](docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md)、[17. 回调顺序](docs/part-03-container-internals/17-lifecycle-callback-order.md) | `SpringCoreBeansBeanCreationTraceLabTest`、`SpringCoreBeansInjectionPhaseLabTest`、`SpringCoreBeansLifecycleCallbackOrderLabTest` |
+| 3. 依赖解析与注入细节 | [03. 依赖注入解析](docs/part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择与优先级](docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)、[37. 泛型匹配注入坑](docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansInjectionAmbiguityLabTest`、`SpringCoreBeansAutowireCandidateSelectionLabTest`、`SpringCoreBeansOptionalInjectionLabTest` |
+| 4. 容器扩展点 | [06. PostProcessor 总览](docs/part-01-ioc-container/017-06-post-processors.md)、[13. BDRPP](docs/part-03-container-internals/13-bdrpp-definition-registration.md)、[14. 顺序（Ordering）](docs/part-03-container-internals/14-post-processor-ordering.md)、[15. 实例化前短路](docs/part-03-container-internals/15-pre-instantiation-short-circuit.md) | `SpringCoreBeansRegistryPostProcessorLabTest`、`SpringCoreBeansPostProcessorOrderingLabTest`、`SpringCoreBeansPreInstantiationLabTest`、`SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
+| 5. 作用域与代理 | [04. Scope 与 prototype](docs/part-01-ioc-container/015-04-scope-and-prototype.md)、[28. 自定义 Scope + scoped proxy](docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md)、[18. Lazy 语义](docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansCustomScopeLabTest`、`SpringCoreBeansLazyLabTest` |
+| 6. 循环依赖 | [09. 循环依赖](docs/part-01-ioc-container/09-circular-dependencies.md)、[16. early reference 与循环依赖](docs/part-03-container-internals/16-early-reference-and-circular.md) | `SpringCoreBeansCircularDependencyBoundaryLabTest`、`SpringCoreBeansEarlyReferenceLabTest`、`SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
+| 7. 类型转换与属性绑定 | [36. 类型转换](docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)、[50. PropertyEditor 与值解析](docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md) | `SpringCoreBeansTypeConversionLabTest`、`SpringCoreBeansValuePlaceholderResolutionLabTest` |
 
 ## 前置知识
 

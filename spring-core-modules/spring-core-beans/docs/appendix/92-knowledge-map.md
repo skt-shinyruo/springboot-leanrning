@@ -4,6 +4,7 @@
 
 - 本章主题：**知识地图（从现象直达章节/断点/Lab）**
 - 阅读方式建议：把本章当成“导航页”：你在真实项目里遇到问题时，不需要从头顺读文档，而是先在这里按现象定位到章节与断点入口，再回到对应章节补齐机制主线。
+- 团队内训场景：如果你要给团队“按课时讲一遍”，优先看：[`99-team-training-kit.md`](99-team-training-kit.md)（60/90/120 分钟脚本 + Labs/断点/互动题）。
 
 !!! summary "本章要点"
 
@@ -31,6 +32,20 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 下面这张表就是答案。
 
 ---
+
+## 0. 核心七件套（概念 → 章节 → Lab）
+
+如果你希望先用一份“检查表”把 Spring Beans 的关键知识点框住，再按需深挖，本模块建议优先掌握下面 7 件事：
+
+| 核心点 | 章节入口（Docs） | 推荐 Lab/Test |
+| --- | --- | --- |
+| 1. BeanDefinition 体系 | [01. Bean 心智模型](../part-01-ioc-container/020-01-bean-mental-model.md)、[22. BeanName 与 alias](../part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)、[24. BeanDefinition 覆盖](../part-04-wiring-and-boundaries/24-bean-definition-overriding.md)、[35. MergedBeanDefinition](../part-04-wiring-and-boundaries/35-merged-bean-definition.md) | `SpringCoreBeansContainerLabTest`、`SpringCoreBeansBeanNameAliasLabTest`、`SpringCoreBeansBeanDefinitionOverridingLabTest`、`SpringCoreBeansMergedBeanDefinitionLabTest` |
+| 2. Bean 创建全链路 | [18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)、[30. 注入阶段](../part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)、[05. 生命周期](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)、[17. 回调顺序](../part-03-container-internals/17-lifecycle-callback-order.md) | `SpringCoreBeansBeanCreationTraceLabTest`、`SpringCoreBeansInjectionPhaseLabTest`、`SpringCoreBeansLifecycleCallbackOrderLabTest` |
+| 3. 依赖解析与注入细节 | [03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择与优先级](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)、[37. 泛型匹配注入坑](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansInjectionAmbiguityLabTest`、`SpringCoreBeansAutowireCandidateSelectionLabTest`、`SpringCoreBeansOptionalInjectionLabTest` |
+| 4. 容器扩展点 | [06. PostProcessor 总览](../part-01-ioc-container/017-06-post-processors.md)、[13. BDRPP](../part-03-container-internals/13-bdrpp-definition-registration.md)、[14. 顺序（Ordering）](../part-03-container-internals/14-post-processor-ordering.md)、[15. 实例化前短路](../part-03-container-internals/15-pre-instantiation-short-circuit.md) | `SpringCoreBeansRegistryPostProcessorLabTest`、`SpringCoreBeansPostProcessorOrderingLabTest`、`SpringCoreBeansPreInstantiationLabTest`、`SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
+| 5. 作用域与代理 | [04. Scope 与 prototype](../part-01-ioc-container/015-04-scope-and-prototype.md)、[28. 自定义 Scope + scoped proxy](../part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md)、[18. Lazy 语义](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansCustomScopeLabTest`、`SpringCoreBeansLazyLabTest` |
+| 6. 循环依赖 | [09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md)、[16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md) | `SpringCoreBeansCircularDependencyBoundaryLabTest`、`SpringCoreBeansEarlyReferenceLabTest`、`SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
+| 7. 类型转换与属性绑定 | [36. 类型转换](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)、[50. PropertyEditor 与值解析](../part-05-aot-and-real-world/50-property-editor-and-value-resolution.md) | `SpringCoreBeansTypeConversionLabTest`、`SpringCoreBeansValuePlaceholderResolutionLabTest` |
 
 ## 1. 现象 → 章节 → 断点入口（建议收藏）
 

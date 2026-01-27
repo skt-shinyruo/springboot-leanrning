@@ -8,11 +8,15 @@
 
 ### Added
 - spring-core-beans：新增 Debugger Pack 文档与主线/断点/排障/性能入口测试套件
+- spring-core-beans：新增团队内训讲义（60/90/120 分钟课时脚本），并纳入 docs 目录页与知识地图入口
 
 ### Removed
 - 删除仓库根 `scripts/` 目录（包含测试/运行快捷脚本与文档批处理脚本），并清理文档/知识库中的引用
 
 ### Changed
+- spring-core-beans：在模块 README 与知识地图中新增“核心七件套”导航（概念 → 章节 → Lab），用于查漏与快速跳转
+- spring-core-beans：深化 `02-bean-registration.md`（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”
+- spring-core-beans：继续深化 `02-bean-registration.md`（方法级源码调用链/排障决策表/面试标准答案），补齐“可追踪/可定位/可背诵”交付
 - 文档结构调整：以各模块 `*/docs/` 为唯一事实来源（SSOT），仓库根 `docs/` 收敛为仅保留 `docs/SUMMARY.md`（全站目录/导航 SSOT），并删除 `docs/book/` 与旧 `docs/<topic>/...` 内容副本。
 - spring-core-beans：docs 目录入口补充 Debugger Pack 链接，同步知识库入口索引
 - spring-core-beans：重写 09/16/97 三章（循环依赖 / early reference / Explore/Debug），补齐“可跑实验 + 断点/观察点 + 常见坑/工程策略”的教程闭环

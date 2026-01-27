@@ -25,7 +25,9 @@
 
 - 30 分钟快启：`part-00-guide/012-01-quickstart-30min.md`
 - 深挖导读（症状驱动导航）：`part-00-guide/011-00-deep-dive-guide.md`
+- 核心七件套（检查表 + 对应章节/Lab）：`appendix/92-knowledge-map.md`（第 0 节）
 - Debugger Pack（断点包总入口）：`appendix/98-debugger-pack.md`
+- 团队内训讲义（可直接开讲的课时脚本）：`appendix/99-team-training-kit.md`
 
 ## 目录
 
@@ -117,6 +119,7 @@
 - [96. spring-beans Public API 覆盖差距（Gap）清单（Spring Framework 6.2.15）](appendix/96-spring-beans-public-api-gap.md)
 - [97. Explore/Debug 用例（可选启用，不影响默认回归）](appendix/97-explore-debug-tests.md)
 - [Debugger Pack（断点包总入口）](appendix/98-debugger-pack.md)
+- [99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本](appendix/99-team-training-kit.md)
 
 ## 一句话自检
 

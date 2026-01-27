@@ -19,6 +19,7 @@
 - **`@Value("${...}")` 占位符（strict vs non-strict）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
 - **类型转换（BeanWrapper/ConversionService）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
 - **Debugger Pack（断点包总入口）:** `spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`（聚合主线/分支/排障/性能并发入口）
+- **团队内训讲义（可直接开讲）:** `spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`（60/90/120 分钟课时脚本 + Labs/断点/互动题）
 - **关键分支矩阵（If/Then 决策表）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
 - **排障 playbook:** `spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
 - **自检清单:** `spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
@@ -182,3 +183,6 @@
 - [202601181724_spring_core_beans_refresh_mainline_deepen](../../history/2026-01/202601181724_spring_core_beans_refresh_mainline_deepen/) - ✅ 已执行：新增 `refresh()` → `doCreateBean()` 源码主线叙事章节，并补齐 docs/README 与深挖导读入口（docs + wiki + changelog）
 - [202601182033_beans_branch_decision_table_webmvc_error_async_deepen](../../history/2026-01/202601182033_beans_branch_decision_table_webmvc_error_async_deepen/) - ✅ 已执行：在主线叙事章新增“分支决策表”（现象→阶段→关键方法→必看变量→LabTest），把叙事压缩为可复用排障套路
 - [202601182117_beans_bootstrap_guide_webmvc_deepen](../../history/2026-01/202601182117_beans_bootstrap_guide_webmvc_deepen/) - ✅ 已执行：继续下压主线章关键分支（preInstantiateSingletons/doGetBean：dependsOn/parent/prototype guard 等）；bootstrap 章新增处理器速查表+时机时间线；深挖指南新增症状驱动导航
+- [202601271554_spring_core_beans_docs_tutorial_upgrade](../../history/2026-01/202601271554_spring_core_beans_docs_tutorial_upgrade/) - ✅ 已执行：新增团队内训讲义（60/90/120 分钟课时脚本），并收敛入口到 docs/README 与知识地图
+- [202601271739_spring_core_beans_bean_registration_deepen](../../history/2026-01/202601271739_spring_core_beans_bean_registration_deepen/) - ✅ 已执行：深化 02-bean-registration（入口对照表/最短调用链/证据链/面试与内训复述模板），用于源码进阶与可教学交付
+- [202601271944_spring_core_beans_bean_registration_callchain_and_playbook](../../history/2026-01/202601271944_spring_core_beans_bean_registration_callchain_and_playbook/) - ✅ 已执行：进一步深化 02-bean-registration（方法级调用链/排障决策表/面试标准答案 + 属性填充入口），把“能看懂”升级为“能跟断点/能排障/能复述”

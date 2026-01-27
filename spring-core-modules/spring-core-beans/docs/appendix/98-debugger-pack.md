@@ -49,6 +49,15 @@ Debugger Pack 的做法是：把常见问题压缩成 **断点入口 + 观察点
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 ```
 
+## 1.1 团队内训如何用（可选）
+
+如果你正在做团队分享/内训，不建议“从目录按章讲完”。更高效的方式是：
+
+1) 先用本章断点包把主线跑通（建立共同的观察点与语言）  
+2) 再按课时选择讲解深度（60/90/120 分钟脚本 + 互动题/作业）
+
+内训讲义入口：[`99-team-training-kit.md`](99-team-training-kit.md)
+
 ---
 
 ## 2. 最常用断点入口（按“主线 → 分支 → 现象”组织）
@@ -136,6 +145,6 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 
 <!-- BOOKIFY:START -->
 
-上一章：[97. Explore/Debug 用例（可选启用，不影响默认回归）](97-explore-debug-tests.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99. 自测题（Self Check）](026-99-self-check.md)
+上一章：[97. Explore/Debug 用例（可选启用，不影响默认回归）](97-explore-debug-tests.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99. 团队内训讲义（Training Kit）](99-team-training-kit.md)
 
 <!-- BOOKIFY:END -->

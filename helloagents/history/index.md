@@ -8,6 +8,9 @@
 
 | 时间戳 | 变更名称 | 类型 | 状态 | 方案包路径 |
 | --- | --- | --- | --- | --- |
+| 202601271944 | spring_core_beans_bean_registration_callchain_and_playbook | Enhancement | ✅Completed | [202601271944_spring_core_beans_bean_registration_callchain_and_playbook](2026-01/202601271944_spring_core_beans_bean_registration_callchain_and_playbook/) |
+| 202601271739 | spring_core_beans_bean_registration_deepen | Enhancement | ✅Completed | [202601271739_spring_core_beans_bean_registration_deepen](2026-01/202601271739_spring_core_beans_bean_registration_deepen/) |
+| 202601271554 | spring_core_beans_docs_tutorial_upgrade | Enhancement | ✅Completed | [202601271554_spring_core_beans_docs_tutorial_upgrade](2026-01/202601271554_spring_core_beans_docs_tutorial_upgrade/) |
 | 202601261138 | beans_docs_all_tutorial | Enhancement | ✅Completed | [202601261138_beans_docs_all_tutorial](2026-01/202601261138_beans_docs_all_tutorial/) |
 | 202601252331 | beans_docs_part04_tutorial_deepen | Enhancement | ✅Completed | [202601252331_beans_docs_part04_tutorial_deepen](2026-01/202601252331_beans_docs_part04_tutorial_deepen/) |
 | 202601252255 | beans_docs_tutorial_deepen | Enhancement | ✅Completed | [202601252255_beans_docs_tutorial_deepen](2026-01/202601252255_beans_docs_tutorial_deepen/) |
@@ -81,6 +84,9 @@
 
 ### 2026-01
 
+- [202601271944_spring_core_beans_bean_registration_callchain_and_playbook](2026-01/202601271944_spring_core_beans_bean_registration_callchain_and_playbook/) - spring-core-beans：进一步深化 02-bean-registration（方法级调用链 + 排障决策表 + 面试标准答案），用于源码进阶/面试/内训/排障
+- [202601271739_spring_core_beans_bean_registration_deepen](2026-01/202601271739_spring_core_beans_bean_registration_deepen/) - spring-core-beans：深化 02-bean-registration（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”
+- [202601271554_spring_core_beans_docs_tutorial_upgrade](2026-01/202601271554_spring_core_beans_docs_tutorial_upgrade/) - spring-core-beans：新增团队内训讲义（60/90/120 分钟课时脚本），并接入 docs 目录页/知识地图/Debugger Pack 导航
 - [202601261138_beans_docs_all_tutorial](2026-01/202601261138_beans_docs_all_tutorial/) - spring-core-beans：将 docs 全章节薄弱内容补齐为可学习教程（导读/要点/实验入口/断点观察点/排障分流/自检/Bookify 导航），并通过测试与 docs-site build 验证
 - [202601251755_docs_modularize_nav](2026-01/202601251755_docs_modularize_nav/) - 文档归并：以模块 `*/docs/` 为 SSOT，根 `docs/` 收敛为 `docs/SUMMARY.md`，并移除 `docs/book/` 与旧 `docs/<topic>/...` 副本
 - [202601232320_beans_docs_refactor](2026-01/202601232320_beans_docs_refactor/) - spring-core-beans 文档与测试入口补齐（断点包/主线/排障/性能）
@@ -152,6 +158,9 @@
 ## Index
 | Timestamp | Feature Name | Type | Status | Solution Package Path |
 |-----------|--------------|------|--------|----------------------|
+| 202601271944 | spring_core_beans_bean_registration_callchain_and_playbook | Enhancement | ✅Completed | history/2026-01/202601271944_spring_core_beans_bean_registration_callchain_and_playbook/ |
+| 202601271739 | spring_core_beans_bean_registration_deepen | Enhancement | ✅Completed | history/2026-01/202601271739_spring_core_beans_bean_registration_deepen/ |
+| 202601271554 | spring_core_beans_docs_tutorial_upgrade | Enhancement | ✅Completed | history/2026-01/202601271554_spring_core_beans_docs_tutorial_upgrade/ |
 | 202601261257 | beans_docs_deepen_more | Enhancement | ✅Completed | history/2026-01/202601261257_beans_docs_deepen_more/ |
 | 202601261138 | beans_docs_all_tutorial | Enhancement | ✅Completed | history/2026-01/202601261138_beans_docs_all_tutorial/ |
 | 202601252331 | beans_docs_part04_tutorial_deepen | Enhancement | ✅Completed | history/2026-01/202601252331_beans_docs_part04_tutorial_deepen/ |
