@@ -96,11 +96,11 @@
 - product 缓存命中/未命中的差异
 - `allowEagerInit=false` 时为什么不会主动实例化 factory 来推断类型
 
-1) 你以为注册的是 `MyFactoryBean`，结果注入点按类型找不到  
+1) 你以为注册的是 `MyFactoryBean`，结果注入点按类型找不到
    - 因为容器对外暴露的类型是它生产的 `T`
-2) 你以为 `@Autowired MyFactoryBean` 能注入工厂  
+2) 你以为 `@Autowired MyFactoryBean` 能注入工厂
    - 需要按 `&name` 或按工厂类型显式获取/注入（并不常见）
-3) 你以为 `FactoryBean` 的 `isSingleton()` 决定工厂是不是单例  
+3) 你以为 `FactoryBean` 的 `isSingleton()` 决定工厂是不是单例
    - 它影响的是“产品是否单例”，不是“工厂本身是否单例”（工厂通常也是单例 bean）
 
 ## 面试常问（FactoryBean）
@@ -178,6 +178,14 @@
   - 答题要点：决定 product 的缓存语义（缓存的是 product 不是 factory）；这会影响你观测到的“是不是同一个对象”。
 - 常见追问：`getObjectType()` 返回 `null` 有什么坑？为什么 `allowEagerInit=false` 会放大它？
   - 答题要点：会影响 type-based 查找与条件装配（例如 `@ConditionalOnMissingBean`）；需要时对照 [23](../part-04-wiring-and-boundaries/23-factorybean-deep-dive.md) 与 [29](../part-04-wiring-and-boundaries/29-factorybean-edge-cases.md) 深挖。
+
+## 排障决策表（FactoryBean：name/type/缓存三连）
+
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| `getBean(\"x\")` 拿到的不是 FactoryBean 本体 | FactoryBean 的默认暴露语义：返回的是 product | 断点 `AbstractBeanFactory#getObjectForBeanInstance`；观察 beanName 是否带 `&` 前缀 | 用 `&x` 获取 factory；文档/代码里把语义写清楚 | `SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory` |
+| 按类型查找找不到（但按名字 `getBean(\"x\")` 可以） | `FactoryBean#getObjectType()` 返回 `null` 或不稳定，导致 type discovery 失败 | 断点 `AbstractBeanFactory#isTypeMatch` / `DefaultListableBeanFactory#getBeanNamesForType`；关注 `allowEagerInit` 分支 | 让 `getObjectType()` 可推断；必要时允许 eager init（谨慎）；或用 name/Qualifier 规避 | `SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName` |
+| 你以为 `isSingleton()` 决定“工厂是否单例” | 误解：它决定的是 product 的缓存语义 | 断点 `FactoryBeanRegistrySupport#getObjectFromFactoryBean`；观察缓存命中与否 | 把“工厂本体 scope”与“产品缓存语义”分开理解与验证 | `SpringCoreBeansFactoryBeanDeepDiveLabTest#singletonFactoryBeanProduct_isCached_byTheContainer` / `#nonSingletonFactoryBeanProduct_isNotCached_byTheContainer` |
 
 ## 小结与下一章
 

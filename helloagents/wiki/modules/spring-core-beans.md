@@ -186,3 +186,4 @@
 - [202601271554_spring_core_beans_docs_tutorial_upgrade](../../history/2026-01/202601271554_spring_core_beans_docs_tutorial_upgrade/) - ✅ 已执行：新增团队内训讲义（60/90/120 分钟课时脚本），并收敛入口到 docs/README 与知识地图
 - [202601271739_spring_core_beans_bean_registration_deepen](../../history/2026-01/202601271739_spring_core_beans_bean_registration_deepen/) - ✅ 已执行：深化 02-bean-registration（入口对照表/最短调用链/证据链/面试与内训复述模板），用于源码进阶与可教学交付
 - [202601271944_spring_core_beans_bean_registration_callchain_and_playbook](../../history/2026-01/202601271944_spring_core_beans_bean_registration_callchain_and_playbook/) - ✅ 已执行：进一步深化 02-bean-registration（方法级调用链/排障决策表/面试标准答案 + 属性填充入口），把“能看懂”升级为“能跟断点/能排障/能复述”
+- [202601272227_spring_core_beans_docs_tutorial_v2_all](../../history/2026-01/202601272227_spring_core_beans_docs_tutorial_v2_all/) - ✅ 已执行：docs 全量“教程化 v2”（70 篇）补齐面试标准答案/排障决策表/方法级调用链，并强化 Appendix 工具页（面试题库/生产排障清单/Debugger Pack）以支持源码进阶、面试复述与团队内训

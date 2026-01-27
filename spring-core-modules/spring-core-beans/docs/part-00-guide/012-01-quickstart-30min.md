@@ -124,7 +124,7 @@
 - 你已经拿到了“最小闭环”：**从测试方法进、用固定断点收敛噪音、用 watch list 拿到证据**
 - 下一步建议：按主线继续读 Part 01（01→09），并把每章的“复现入口”跑一遍再读源码锚点
 
-## 证据链（如何验证你真的理解了）
+## 证据链（调用链 + 断点 + 断言）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
 - 观察点 1：运行本章推荐入口后，聚焦「30 分钟快速闭环：先快后深（3 个最小实验入口）」的生效时机/顺序/边界；断点/入口：`org.springframework.context.support.AbstractApplicationContext#refresh`；断言：你能解释“为什么此处生效/为什么此处不生效”。
@@ -155,6 +155,24 @@
 3) 下两三个关键断点（你能在调试器里看见关键数据结构变化）
 
 当你完成这三件事，再去读后面的章节，你会发现它们都只是“在同一条主线上加分支/加边界”。
+
+## 排障分流（快启版：先别猜，先分类）
+
+如果你只有 10 分钟排一个 IoC 相关问题，建议你按这个顺序收敛：
+
+1) **定义层**：BeanDefinition 是否注册？（优先用 `DefaultListableBeanFactory#registerBeanDefinition` 断点证明一次）
+2) **创建层**：实例是否创建？（看是否命中 `doCreateBean/populateBean/initializeBean`）
+3) **注入/代理层**：是不是错过了 BPP 链？（对照 `registerBeanPostProcessors` 与目标 bean 创建时机）
+
+进一步入口：`appendix/94-production-troubleshooting-checklist.md` / `appendix/98-debugger-pack.md`
+
+## 面试常问（快启版：你至少要能复述 3 句）
+
+1) refresh 主线分几段？每段的代表性方法是什么？
+2) BFPP/BDRPP vs BPP 的本质差异是什么？（定义层 vs 实例层）
+3) 你如何用一个断点证明“这个行为确实发生了”（比如代理替换/候选收敛/early reference）？
+
+推荐复习入口：`appendix/93-interview-playbook.md`
 
 ## 一句话自检
 

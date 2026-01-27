@@ -134,101 +134,91 @@
 - 症状：连接/文件句柄/线程池等资源泄漏，但你确认 `@PreDestroy` 逻辑存在
 - 排查：这个 bean 是否是 prototype？它的创建者（调用方）是否负责 close/destroy？
 
-## 8. 一句话自检
+## 8. 源码调用链（方法级）：prototype 为什么会“像单例”？
 
-读完这一章你应该能回答：
+把问题压缩成一句话：
 
-1) “prototype 的语义到底是什么？”
-2) “为什么直接注入 prototype 到 singleton 会得到同一个实例？”
-3) “`ObjectProvider` 和 `@Lookup` 的差别是什么？”
+> **prototype 不是“每次方法调用都新建”，而是“每次向容器要（resolve/getBean）都新建”。**
 
-- 常问：`prototype` 的真实语义是什么？为什么“prototype 注入 singleton”会像单例？
-  - 答题要点：prototype 的语义是“每次向容器要都是新的”；但注入发生在 singleton 创建时，只解析一次导致实例被“冻结”。
-- 常见追问：怎么修复？`ObjectProvider` / `@Lookup` / scoped proxy 什么时候用？
-  - 答题要点：需要“每次用都新”→ provider/lookup；需要“按上下文动态解析”→ scoped proxy；关键是让解析发生在“使用时”，不是“创建 singleton 时”。
+### 8.1 直接注入 prototype 到 singleton：为什么会冻结成同一个实例？
 
-## 源码与断点
+1) 创建 singleton A：`AbstractAutowireCapableBeanFactory#doCreateBean("a")`
+2) 依赖解析：`DefaultListableBeanFactory#doResolveDependency`
+3) 解析到 prototype P：`AbstractBeanFactory#doGetBean("p")` → `createBean("p")`
+4) **把这个 P 注入到 A 的字段/构造器参数里**（发生在 `populateBean`/构造器解析阶段）
+5) A 从此持有 P 的引用（A 是单例 ⇒ 引用不会变）
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
+### 8.2 `ObjectProvider`：为什么能做到“每次调用拿一个新的 prototype”？
 
-## 最小可运行实验（Lab）
+关键差异：注入的不再是 P，而是 provider（容器句柄）。
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+1) 注入阶段只注入 provider：`ObjectProvider<T>`
+2) 每次业务方法调用时：`provider.getObject()`
+3) 才触发：`AbstractBeanFactory#doGetBean("p")`（于是每次都是新实例）
 
-### 复现/验证补充说明（来自原文迁移）
+### 8.3 `@Lookup`：方法注入为什么也能“每次调用都新”？
 
-## 0. 复现入口（可运行）
+- 它依赖运行时子类化（方法被覆盖），在方法调用点再去容器取 bean
+- 证据链入口（方法级）：`LookupOverride` / `CglibSubclassingInstantiationStrategy`（了解存在即可；学习阶段优先掌握 provider）
 
-- 入口测试（推荐先跑通再下断点）：
-  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
-- 推荐运行命令：
-  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest test`
+## 9. 排障决策表（scope/prototype：从“像单例”到“证据链”）
 
-运行测试你会看到：
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| prototype 注入到 singleton 后“总是同一个” | 获取动作只发生在 singleton 创建时 | 断点 `doResolveDependency`；观察 prototype 的 `doGetBean("p")` 只发生一次 | 使用 `ObjectProvider` / `@Lookup` 延迟获取；或改 scope | `SpringCoreBeansLabTest` |
+| `@Lookup` 不生效 | final 类/方法无法覆盖；或没被容器增强 | 断点 `CglibSubclassingInstantiationStrategy`（可选）；观察目标类是否被增强 | 避免 final；优先用 `ObjectProvider` | `SpringCoreBeansContainerLabTest.lookupMethodCanObtainFreshPrototypeEachCall` |
+| prototype 的 `@PreDestroy` 不触发 | 容器默认不托管 prototype 的销毁 | `DefaultSingletonBeanRegistry#destroySingletons` 不会遍历 prototype；prototype 不进入 `disposableBeans` | 调用方显式销毁；或改为 singleton + 显式资源管理 | `SpringCoreBeansPrototypeDestroySemanticsLabTest` |
+| scoped proxy 行为“像代理/类型不对” | 注入的是代理而不是目标对象 | 观察注入对象是否为 proxy；看 scopedTarget 命名 | 明确按接口注入；理解代理边界；优先用 provider | `SpringCoreBeansCustomScopeLabTest`（结合 [28](../part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md)） |
 
-- `directPrototypeConsumer.currentId()` 连续两次返回 **相同** id（因为 prototype 只在注入时向容器要过一次）
-- `providerPrototypeConsumer.newId()` 连续两次返回 **不同** id（因为 provider 在每次调用时向容器要一个新的 prototype）
-- prototype 销毁语义：默认 `context.close()` 不会触发 prototype 的 `@PreDestroy`（需要显式 destroy）
-
-对应验证：
-
-- `SpringCoreBeansLabTest.demonstratesPrototypeScopeBehavior()`
-
-本模块的容器实验覆盖了它：
-
-- `SpringCoreBeansContainerLabTest.lookupMethodCanObtainFreshPrototypeEachCall()`
-
-注意：`@Lookup` 依赖运行时的增强/代理机制，阅读成本更高；学习阶段建议先掌握 `ObjectProvider`。
-
-优点：调用方代码很干净  
-缺点：引入代理语义，debug 成本上升；某些情况下会误以为自己拿到的是“真实对象”
-
-### 7.1 最小复现入口（可断言）
-
-- 入口测试：
-  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java`
-- 推荐运行命令：
-  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPrototypeDestroySemanticsLabTest test`
-
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
-推荐断点：`AbstractBeanFactory#doGetBean`、`DefaultSingletonBeanRegistry#getSingleton`、`DefaultListableBeanFactory#doResolveDependency`
-
-## 练习与参考答案（Exercise ↔ Solution）
+## 10. 练习与参考答案（Exercise ↔ Solution）
 
 如果你想把“现象 → 原理 → 断点 → 代码改造”做成闭环，可以对照下面两份测试：
 
 - Exercise（默认 `@Disabled`，自己动手改造）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java`
-    - `exercise_makeDirectPrototypeConsumerUseFreshPrototypeEachCall()`（让 direct consumer 每次调用都拿到新 prototype）
-    - `exercise_changePrototypeScopeAndUpdateExpectations()`（把 prototype 改为 singleton，观察 provider 行为变化）
+    - `exercise_makeDirectPrototypeConsumerUseFreshPrototypeEachCall()`
+    - `exercise_changePrototypeScopeAndUpdateExpectations()`
 - Solution（默认参与回归，可直接对照答案）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
 
-## 常见坑与边界
+## 11. 面试常问（prototype 注入陷阱）
 
-注意关键限定词：同一个容器。不同 `ApplicationContext` 里当然会有不同实例。
+### Q1：prototype 的语义是什么？为什么“prototype 注入 singleton”会像单例？
 
-## 面试常问（prototype 注入陷阱）
+- 标准答案（可复述）：
+  - prototype 的语义是“每次向容器要都会新建”；但注入发生在 singleton 创建时，只向容器要了一次 prototype，之后被 singleton 持有引用，因此表现得像单例。
+- 证据链（方法级）：
+  - `DefaultListableBeanFactory#doResolveDependency`
+  - `AbstractBeanFactory#doGetBean`（prototype 只在依赖解析时触发一次）
+- 最小复现：
+  - `SpringCoreBeansLabTest.demonstratesPrototypeScopeBehavior`
 
-1) **prototype 的语义到底是什么？为什么“prototype 注入 singleton”会像单例？**
-   - 要点：prototype 是“每次向容器要都新建”；但注入发生在 singleton 创建时，只向容器要了一次 prototype，之后被 singleton 持有引用。
+### Q2：怎么让 singleton 每次调用都拿到新的 prototype？
 
-2) **怎么让 singleton 每次调用都拿到新的 prototype？**
-   - 要点：把“获取动作”延迟到使用时：优先用 `ObjectProvider#getObject()`；也可用 `@Lookup`（方法注入）或 scoped proxy（谨慎，debug 成本更高）。
+- 标准答案（可复述）：
+  - 把“获取动作”延迟到使用时：优先用 `ObjectProvider#getObject()`；也可用 `@Lookup`（方法注入）或 scoped proxy（谨慎，debug 成本更高）。
 
-3) **prototype 的销毁回调为什么经常“不触发”？**
-   - 要点：容器默认不托管 prototype 的完整销毁语义；`context.close()` 只会销毁单例；prototype 的 `@PreDestroy` 需要显式 destroy 或由你管理生命周期（见本章对应 Lab）。
+### Q3：prototype 的销毁回调为什么经常“不触发”？
+
+- 标准答案（可复述）：
+  - 容器默认不托管 prototype 的销毁；`context.close()` 只会销毁 singleton；prototype 的 `@PreDestroy` 需要显式 destroy 或由调用方管理生命周期。
+- 证据链（方法级）：
+  - `DefaultSingletonBeanRegistry#destroySingletons`
+  - `ConfigurableBeanFactory#destroyBean`
+- 最小复现：
+  - `SpringCoreBeansPrototypeDestroySemanticsLabTest`
+
+## 12. 一句话自检
+
+读完这一章你应该能回答：
+
+1) prototype 的第一性语义是什么？（每次 resolve/getBean 都新建）
+2) 为什么“prototype 注入 singleton”会冻结？（获取动作只发生一次）
+3) 你会用哪条证据链证明 provider/lookup 把获取动作推迟到了“使用时”？
 
 ## 小结与下一章
 
-- 你希望调用 `consumer.next()` 时每次都要一个新 prototype
-- 你不想显式注入 `ObjectProvider`
-
-下一章我们把 scope 与生命周期合起来讲：什么时候创建、什么时候初始化、什么时候销毁（以及回调顺序）。
-如果你已经开始关心“销毁回调顺序/触发者”，可以直接跳到下一章 [05](016-05-lifecycle-and-callbacks.md)。
+下一章我们把 scope 与生命周期合起来讲：什么时候创建、什么时候初始化、什么时候销毁（以及回调顺序）。如果你已经开始关心“销毁回调顺序/触发者”，可以直接跳到下一章 [05](016-05-lifecycle-and-callbacks.md)。
 
 <!-- BOOKIFY:START -->
 

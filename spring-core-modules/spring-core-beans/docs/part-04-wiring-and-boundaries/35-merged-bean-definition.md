@@ -33,8 +33,8 @@
 
 你会观察到 3 个关键现象：
 
-1) registry 里拿到的 child definition **仍然保留 parentName**，且看不到 parent 的元数据  
-2) `getMergedBeanDefinition(...)` 拿到的是 **`RootBeanDefinition`**，并且已经把 parent 的元数据合并进来  
+1) registry 里拿到的 child definition **仍然保留 parentName**，且看不到 parent 的元数据
+2) `getMergedBeanDefinition(...)` 拿到的是 **`RootBeanDefinition`**，并且已经把 parent 的元数据合并进来
 3) `MergedBeanDefinitionPostProcessor` 能拿到 merged 后的 `RootBeanDefinition`（可用于“预处理/缓存元数据”）
 
 ---
@@ -71,9 +71,9 @@ getMergedLocalBeanDefinition(beanName):
 
 两个最有价值的入口点：
 
-1) `AbstractBeanFactory#getMergedLocalBeanDefinition`  
+1) `AbstractBeanFactory#getMergedLocalBeanDefinition`
    - 语义：为某个 beanName 计算（或读取缓存）“最终参与创建的 merged definition”
-2) `DefaultListableBeanFactory#getMergedBeanDefinition`  
+2) `DefaultListableBeanFactory#getMergedBeanDefinition`
    - 这是你在业务/测试代码里更容易直接调用到的 public API（底层会走到上面那个方法）
 
 你可以把它和 [00 章](../part-00-guide/011-00-deep-dive-guide.md) 的时间线对上：
@@ -129,16 +129,16 @@ getMergedLocalBeanDefinition(beanName):
 
 从 `getBean(beanName)` 到创建结束的最短主干（只列关键节点）：
 
-1) `AbstractBeanFactory#doGetBean(beanName, ...)`  
-2) `AbstractBeanFactory#getMergedLocalBeanDefinition(beanName)`  
-   - **这里计算/合并/缓存** `RootBeanDefinition (mbd)`（parent/child/默认值/解析结果统一到 mbd）  
-3) `AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`  
-4) `AbstractAutowireCapableBeanFactory#doCreateBean(beanName, mbd, args)`  
-   - `createBeanInstance(...)`（实例化）  
-   - `applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)`  
-     - **这里触发 `MergedBeanDefinitionPostProcessor`（在注入前做元数据准备/缓存）**  
-   - `populateBean(...)`（属性填充/依赖注入）  
-   - `initializeBean(...)`（初始化回调 + after-init BPP 可能产生代理）  
+1) `AbstractBeanFactory#doGetBean(beanName, ...)`
+2) `AbstractBeanFactory#getMergedLocalBeanDefinition(beanName)`
+   - **这里计算/合并/缓存** `RootBeanDefinition (mbd)`（parent/child/默认值/解析结果统一到 mbd）
+3) `AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`
+4) `AbstractAutowireCapableBeanFactory#doCreateBean(beanName, mbd, args)`
+   - `createBeanInstance(...)`（实例化）
+   - `applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)`
+     - **这里触发 `MergedBeanDefinitionPostProcessor`（在注入前做元数据准备/缓存）**
+   - `populateBean(...)`（属性填充/依赖注入）
+   - `initializeBean(...)`（初始化回调 + after-init BPP 可能产生代理）
 
 你只要把这条链路记住，后面看到任意“元数据为什么已经准备好/为什么看到的是 RootBeanDefinition”都能对上。
 
@@ -216,14 +216,42 @@ getMergedLocalBeanDefinition(beanName):
 
 ### 常见误区
 
-- **误区 1：以为 `getBeanDefinition(beanName)` 就是“最终生效的定义”**  
+- **误区 1：以为 `getBeanDefinition(beanName)` 就是“最终生效的定义”**
   它更像是“registry 中的原始定义”；真正参与创建的是 merged。
 
-- **误区 2：把 merged 当成“只对 XML 才有”**  
+- **误区 2：把 merged 当成“只对 XML 才有”**
   你在注解场景也会频繁遇到 merged：容器需要一个统一的 `RootBeanDefinition` 来驱动创建与缓存。
 
-- **误区 3：只盯着 doCreateBean，不看 merged**  
+- **误区 3：只盯着 doCreateBean，不看 merged**
   你会错过很多“为什么它这样创建/为什么元数据已准备好”的关键原因。
+
+## 排障决策表（MergedBeanDefinition：你在看的到底是不是“生效配方”）
+
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复/处理思路 |
+| --- | --- | --- | --- |
+| 你改了 `BeanDefinition`，但创建行为没变 | 你改的是 registry 原始定义；创建用的是 merged 缓存 | 断点 `AbstractBeanFactory#getMergedLocalBeanDefinition` 看缓存命中；观察 `mbd` 是否仍旧 | 修改发生在 merge 之前；必要时清理/避免依赖缓存；把修改放到 BFPP/BDRPP 或 MBDPP 的正确阶段 |
+| 调试时看到的是 `RootBeanDefinition`，和你注册的类型不一致 | 这是预期：容器会把定义合并成统一的 RootBeanDefinition | 断点 `getMergedLocalBeanDefinition` / `applyMergedBeanDefinitionPostProcessors` | 用 mbd 作为事实来源，不要把 registry 返回值当“最终生效” |
+| “属性/元数据好像凭空出现” | parent/child 合并、默认值补全、解析增强在 merge 阶段发生 | 观察 `mbd` 的 property values / initMethodName / destroyMethodName | 把排查口径改成：先看 mbd，再回溯原始定义来源 |
+| 你想在 MBDPP 里“改实例” | MBDPP 属于定义/元数据阶段扩展点，不是实例替换点 | 断点 `MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition` | 改实例去 BPP（before/after init）；改定义去 BFPP/BDRPP；改 merged 元数据用 MBDPP（谨慎） |
+
+## 面试常问（MergedBeanDefinition / MBDPP）
+
+### Q1：`BeanDefinition` 和 `MergedBeanDefinition` 的关系是什么？为什么要有 merge？
+
+- 标准答案（可复述）：
+  - registry 里保存的是原始定义；创建时容器需要一个统一且可缓存的 `RootBeanDefinition`（merged），把 parent/child、默认值、解析结果等合并起来，避免每次创建都重复计算。
+- 证据链（方法级）：
+  - `AbstractBeanFactory#getMergedLocalBeanDefinition`（计算/缓存入口）
+  - `AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`（MBDPP 介入点）
+- 最小复现：
+  - `SpringCoreBeansMergedBeanDefinitionLabTest`
+
+### Q2：`MergedBeanDefinitionPostProcessor` 适合做什么？不适合做什么？
+
+- 标准答案（可复述）：
+  - 适合在“定义已合并但实例未创建”窗口补齐元数据/做解析缓存；不适合替换实例或做重副作用（那属于 BPP/实例阶段）。
+- 证据链（方法级）：
+  - `applyMergedBeanDefinitionPostProcessors` 的调用位置（发生在 `createBeanInstance` 之后、`populateBean` 之前）
 
 ## 一句话自检
 
@@ -238,12 +266,12 @@ getMergedLocalBeanDefinition(beanName):
 - `MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition`
 
 - `AbstractBeanFactory#doGetBean(beanName, ...)`
-  - `getMergedLocalBeanDefinition(beanName)`  
+  - `getMergedLocalBeanDefinition(beanName)`
     - **这里拿到/计算/缓存 merged `RootBeanDefinition`（mbd）**
   - `AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`
     - `doCreateBean(beanName, mbd, args)`
       - `createBeanInstance(...)`（实例化）
-      - `applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)`  
+      - `applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)`
         - **这里触发 `MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition`**
       - `populateBean(...)`（属性填充 / 注入）
       - `initializeBean(...)`（初始化回调：`@PostConstruct`/init-method/...）

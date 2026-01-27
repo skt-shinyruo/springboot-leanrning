@@ -24,8 +24,8 @@
 
 所以你遇到“`Handler<String>` 注入失败”的时候，真正要问的不是“泛型是不是坏了”，而是：
 
-1) Spring 在注入点看到的目标类型（`descriptor.getResolvableType()`）到底是什么？  
-2) Spring 在候选 bean 上看到的候选类型（`beanFactory.getType(beanName)` / `BeanDefinition#getResolvableType` / `FactoryBean#getObjectType`）到底是什么？  
+1) Spring 在注入点看到的目标类型（`descriptor.getResolvableType()`）到底是什么？
+2) Spring 在候选 bean 上看到的候选类型（`beanFactory.getType(beanName)` / `BeanDefinition#getResolvableType` / `FactoryBean#getObjectType`）到底是什么？
 3) 两者在泛型参数层面能不能对上？
 
 把这三件事打通，这章你就掌握了。
@@ -36,14 +36,14 @@
 
 当 Spring 需要做“按类型（含泛型）匹配”时，候选 bean 的类型信息主要来自三条路径（按可靠性排序）：
 
-1) **BeanDefinition（class metadata）**：你提供了 beanClass（或 targetType）  
-   - 优点：容器在“定义层”就能做匹配，不必实例化对象  
-   - 典型：`RootBeanDefinition(StringHandler.class)`  
-2) **FactoryBean 的 product type**：通过 `FactoryBean#getObjectType()`（以及一些预测机制）  
-   - 优点：能把“复杂构建逻辑”隐藏在工厂里  
-   - 风险：`getObjectType()` 不可靠/返回 null，会直接让 type discovery 变得不稳定（见 [23](23-factorybean-deep-dive.md)、[29](29-factorybean-edge-cases.md)）  
-3) **已存在的 singleton instance（运行时对象）**：容器只能“看实例类型”  
-   - 优点：简单  
+1) **BeanDefinition（class metadata）**：你提供了 beanClass（或 targetType）
+   - 优点：容器在“定义层”就能做匹配，不必实例化对象
+   - 典型：`RootBeanDefinition(StringHandler.class)`
+2) **FactoryBean 的 product type**：通过 `FactoryBean#getObjectType()`（以及一些预测机制）
+   - 优点：能把“复杂构建逻辑”隐藏在工厂里
+   - 风险：`getObjectType()` 不可靠/返回 null，会直接让 type discovery 变得不稳定（见 [23](23-factorybean-deep-dive.md)、[29](29-factorybean-edge-cases.md)）
+3) **已存在的 singleton instance（运行时对象）**：容器只能“看实例类型”
+   - 优点：简单
    - 风险：如果实例是 **JDK 动态代理** 或“擦掉泛型信息的包装对象”，泛型参数可能完全不可见
 
 这一章的核心就是：**当候选从 1) 退化到 3) 时，泛型匹配的可靠性会大幅下降。**
@@ -63,8 +63,8 @@
 
 这一章解决一个“看起来很合理，但在真实项目里经常踩坑”的问题：
 
-> 我明明在容器里有一个 `Handler<String>`，  
-> 为什么按 `Handler<String>`（带泛型）去找/注入时，Spring 却说“没有候选”？  
+> 我明明在容器里有一个 `Handler<String>`，
+> 为什么按 `Handler<String>`（带泛型）去找/注入时，Spring 却说“没有候选”？
 > 但按原始类型 `Handler`（不带泛型）又能找到？
 
 结论先行：
@@ -112,11 +112,11 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 这个 Lab 做了两件事（对照非常强）：
 
-1) **用 class metadata 注册**（`RootBeanDefinition(StringHandler.class)`）  
-   - BeanFactory 能通过 `StringHandler implements Handler<String>` 推断出泛型信息  
+1) **用 class metadata 注册**（`RootBeanDefinition(StringHandler.class)`）
+   - BeanFactory 能通过 `StringHandler implements Handler<String>` 推断出泛型信息
    - 因此 `getBeanNamesForType(Handler<String>)` 能找到它
-2) **用运行时 JDK proxy 实例注册 singleton**  
-   - 代理实现的是原始接口 `Handler`，运行时很难保留 `Handler<String>` 的泛型参数  
+2) **用运行时 JDK proxy 实例注册 singleton**
+   - 代理实现的是原始接口 `Handler`，运行时很难保留 `Handler<String>` 的泛型参数
    - 因此按 `Handler` 能找到，但按 `Handler<String>` 会失配
 
 你应该把这个现象记成一句话：
@@ -137,7 +137,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 它用一个对照证明：
 
-- 同样是 singleton instance：如果实例的运行时 class 仍是“真实类”（不是 JDK proxy），Spring 仍可能从 class metadata 推断泛型参数  
+- 同样是 singleton instance：如果实例的运行时 class 仍是“真实类”（不是 JDK proxy），Spring 仍可能从 class metadata 推断泛型参数
 
 ### 3.2 修复路线：显式提供 target type 元信息（让匹配回到定义层）
 
@@ -147,7 +147,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 它演示了一个非常工程化的技巧：
 
-- 当你的候选必须是“运行时对象/代理对象”，但你又想让它参与泛型匹配  
+- 当你的候选必须是“运行时对象/代理对象”，但你又想让它参与泛型匹配
 - 你可以在 BeanDefinition 上显式设置 target type（`ResolvableType`），让容器在定义层做正确匹配
 
 这不是“黑魔法”，而是把“不可靠的运行时类型信息”替换成“可靠的定义层元信息”。
@@ -158,22 +158,22 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 常见触发点：
 
-1) **JDK 动态代理（接口代理）**  
+1) **JDK 动态代理（接口代理）**
    - 代理类只实现接口，泛型参数在运行时往往不可见/不可推断
-2) **手工注册 singleton 实例**（`registerSingleton`）  
+2) **手工注册 singleton 实例**（`registerSingleton`）
    - 容器拿到的是一个对象，不一定能反推出“它原本的泛型语义”
-3) **FactoryBean 的类型预测**  
+3) **FactoryBean 的类型预测**
    - `FactoryBean#getObjectType()` 返回不准确/为 `null` 时，按类型发现会出现边界问题（见 [23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义](23-factorybean-deep-dive.md) 与 [29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](29-factorybean-edge-cases.md)）
 
 ---
 
 ## 5. 怎么避免/修复（工程建议）
 
-1) 如果你依赖“按泛型精确匹配”，尽量让候选以 **BeanDefinition + class metadata** 的形式进入容器  
+1) 如果你依赖“按泛型精确匹配”，尽量让候选以 **BeanDefinition + class metadata** 的形式进入容器
    - 让容器在定义层就能看到目标类，从而更可靠地计算 ResolvableType
-2) 对运行时代理场景，不要过度依赖“按泛型查找”  
+2) 对运行时代理场景，不要过度依赖“按泛型查找”
    - 更稳妥的方式通常是：原始类型 + `@Qualifier`（或显式命名）来表达意图
-3) 如果你必须让“运行时对象”参与泛型匹配  
+3) 如果你必须让“运行时对象”参与泛型匹配
    - 推荐：在 BeanDefinition 上显式声明 target type（`ResolvableType`），让容器在定义层做匹配（见本章第 3.2 节 Lab）
    - 退而求其次：用 name/Qualifier 把意图表达清楚（把“泛型参数”从“匹配条件”降级为“业务语义”）
 
@@ -212,6 +212,26 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 - `DefaultListableBeanFactory#getBeanNamesForType(ResolvableType ...)`：按 ResolvableType 查找候选的入口之一
 
 ---
+
+## 面试常问（泛型匹配：ResolvableType 为什么会“看不见”你的泛型）
+
+### Q1：为什么按 `Handler<String>` 注入可能失败，但按原始类型 `Handler` 又能成功？
+
+- 标准答案（可复述）：
+  - 因为泛型匹配依赖 `ResolvableType` 与候选的“可被推断的类型元信息”。当候选退化为运行时代理实例（尤其是 JDK proxy）时，泛型参数往往不可见，导致按 `ResolvableType` 失配；原始类型匹配则更宽松。
+- 证据链（方法级）：
+  - 依赖解析：`DefaultListableBeanFactory#doResolveDependency` / `#findAutowireCandidates`
+  - 泛型校验：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
+- 最小复现：
+  - `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
+
+### Q2：如何修复/规避“泛型信息丢失”导致的失配？
+
+- 标准答案（可复述）：
+  - 规避：尽量让候选以 class metadata（BeanDefinition）形式进入容器，不要只靠运行时代理实例；必要时按接口注入并配合 `@Qualifier` 表达意图。
+  - 修复：显式提供 target type 元信息（让匹配回到定义层），避免容器只能从运行时对象猜类型。
+- 最小复现：
+  - `SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canBeRestoredByProvidingTargetTypeMetadata_evenIfRuntimeInstanceIsAProxy`
 
 ## 一句话自检
 

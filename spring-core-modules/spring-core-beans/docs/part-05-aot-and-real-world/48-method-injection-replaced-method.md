@@ -155,6 +155,24 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 3) **误区：这在现代项目里没意义**
    - 你可能不写，但你要能在排障时识别：某个对象为什么是 enhanced class、为什么方法行为“不像源码那样”。
 
+## 面试常问（方法注入：replaced-method / MethodReplacer）
+
+### Q1：replaced-method 属于 AOP 吗？它解决的是什么问题？
+
+- 标准答案（可复述）：
+  - 不是 AOP；它是“实例化策略分支”层面的子类化替换。它通过 MethodOverride 元数据驱动，在实例化时生成 enhanced class，并在方法调用时委托 `MethodReplacer`。
+- 证据链（方法级）：
+  - `AbstractAutowireCapableBeanFactory#createBeanInstance`
+  - `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`
+  - `MethodReplacer#reimplement`
+- 最小复现：
+  - `SpringCoreBeansReplacedMethodLabTest`
+
+### Q2：为什么它必须依赖 CGLIB 子类化？final class/final method 会怎样？
+
+- 标准答案（可复述）：
+  - 因为它需要覆盖/拦截目标方法；final 类/方法无法被覆盖，子类化天然受限，因此这类场景会失败或无法生效。
+
 ## 一句话自检
 
 - 你能解释清楚：replaced-method 属于 AOP 还是“实例化策略分支”？为什么？

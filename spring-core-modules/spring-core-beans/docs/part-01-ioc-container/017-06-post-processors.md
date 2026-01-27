@@ -133,7 +133,7 @@ Spring 通常用这些规则决定顺序：
 
 这一节的目标是把你前面记住的结论（BDRPP 更早、BFPP 改定义、BPP 改实例、顺序受 PriorityOrdered/Ordered 影响），落到 Spring 源码里最核心的两段逻辑：
 
-1) `invokeBeanFactoryPostProcessors`：**定义层**（registry/factory）post-processors 的执行算法  
+1) `invokeBeanFactoryPostProcessors`：**定义层**（registry/factory）post-processors 的执行算法
 2) `registerBeanPostProcessors`：**实例层**（BeanPostProcessor）链路的注册算法
 
 ### 3.3.1 `invokeBeanFactoryPostProcessors`：为什么 BDRPP 会“先 registry 再 factory”，还要“反复扫描”
@@ -175,8 +175,8 @@ invokeBeanFactoryPostProcessors(beanFactory):
 
 你从这段伪代码应该得到 3 个稳定结论（非常重要）：
 
-1) **BDRPP 的 `postProcessBeanDefinitionRegistry` 可能会多轮执行**：不是因为 Spring “爱绕”，而是为了把 registry 稳定下来  
-2) **BDRPP 的 registry 回调一定发生在 BFPP 之前**：否则 BFPP 可能看不到新注册的定义（或改不到正确的定义）  
+1) **BDRPP 的 `postProcessBeanDefinitionRegistry` 可能会多轮执行**：不是因为 Spring “爱绕”，而是为了把 registry 稳定下来
+2) **BDRPP 的 registry 回调一定发生在 BFPP 之前**：否则 BFPP 可能看不到新注册的定义（或改不到正确的定义）
 3) **“顺序接口”在这里才真正产生决定性作用**：PriorityOrdered/Ordered/无序不是装饰，而是直接改变执行顺序
 
 ### 3.3.2 `registerBeanPostProcessors`：为什么 BPP 也要分组注册？为什么会出现“没被所有 BPP 处理”的警告？
@@ -187,7 +187,7 @@ invokeBeanFactoryPostProcessors(beanFactory):
 
 “为什么会出现没被所有 BPP 处理”的现象？根因只有一句话：
 
-> **BPP 是“创建时拦截链”，不是“创建后补丁”。**  
+> **BPP 是“创建时拦截链”，不是“创建后补丁”。**
 > 某个 bean 如果在 BPP 链未完整时就被创建，那么后续 BPP 不会 retroactively 生效。
 
 你在资料里经常看到一句建议：
@@ -236,19 +236,34 @@ BFPP 本该在“定义层”工作，如果你在里面直接拿 bean（实例�
 
 学习阶段建议把 BPP 当作“理解容器机制”的窗口，而不是“解决业务问题的日常手段”。
 
+## 源码调用链（方法级）：把三类处理器放回 refresh 主线
+
+你在排障/面试里最常被追问的不是“名词解释”，而是：
+
+> “它发生在 refresh 的哪一段？你能说出 2–3 个关键方法把调用链串起来吗？”
+
+最短调用链（够用版）：
+
+1) `AbstractApplicationContext#refresh`
+2) `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`（BDRPP/BFPP：定义层）
+3) `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（BPP：实例层链路准备）
+4) `DefaultListableBeanFactory#preInstantiateSingletons` → `AbstractAutowireCapableBeanFactory#doCreateBean`（创建阶段：BPP 介入点大量发生）
+
+如果你能把这 4 个点说清楚，再补一句“BDRPP 为什么要循环扫描”，基本就是“做过源码排障”的信号。
+
 ## 面试常问（BFPP / BPP / BDRPP）
 
 > 目标：你不是背概念，而是能把“它发生在 refresh 哪一段 / 改了什么数据结构 / 为什么会导致某个现象”讲清楚。
 
-- BFPP、BPP、BDRPP 分别是什么？分别能做什么？  
+- BFPP、BPP、BDRPP 分别是什么？分别能做什么？
   - BDRPP：registry 阶段可新增/修改定义（让“图继续长大”）；BFPP：实例化前改定义（改配方）；BPP：创建链路中改实例/换 proxy（改最终暴露对象）。
-- 为什么很多 BFPP/BDRPP 建议写成 `static @Bean`？  
+- 为什么很多 BFPP/BDRPP 建议写成 `static @Bean`？
   - 让 post-processor 在定义阶段创建时不必先实例化配置类，避免配置类过早出生而错过后续 BPP（顺序陷阱可以用本仓库 Lab 证据化）。
-- 为什么会出现“某个 bean 没被所有 BPP 处理”的提示？  
+- 为什么会出现“某个 bean 没被所有 BPP 处理”的提示？
   - BPP 是创建时拦截链；bean 过早创建就会错过后续 BPP，后面的 BPP 不会 retroactively 生效。
-- 为什么在 BDRPP/BFPP 里 `getBean()` 很危险？  
+- 为什么在 BDRPP/BFPP 里 `getBean()` 很危险？
   - 你以为在定义层“改配方”，但 `getBean()` 直接把你拉进实例层“造对象”，导致时序错乱、错过 BPP、回调顺序反直觉。
-- BPP 到底能不能“换掉对象”？  
+- BPP 到底能不能“换掉对象”？
   - 能。初始化后链路（after-init）返回值就是最终暴露对象；这就是 AOP/事务等“换壳”的根。
 
 ## 断点闭环（用本仓库 Lab/Test 跑一遍）

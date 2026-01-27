@@ -122,6 +122,34 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 2) **误区：把 Qualifier 当作 beanName**
    - Qualifier 是过滤条件，beanName 只是可能参与收敛的一种信号。
 
+## 排障决策表（Qualifier：为什么注入的不是你想要的那个）
+
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| 注入到了“不是我想要的那个实现” | 候选收敛规则没表达清楚（缺 Qualifier/Primary 冲突） | `DefaultListableBeanFactory#determineAutowireCandidate`；看最终 winner 如何选出 | 在注入点用 `@Qualifier`（或自定义 Qualifier）显式缩小候选；避免“靠默认” | `SpringCoreBeansCustomQualifierLabTest` |
+| `NoUniqueBeanDefinitionException` | 单依赖没有唯一胜者 | `findAutowireCandidates` 看候选集合；`isAutowireCandidate` 看过滤是否生效 | 明确 `@Qualifier` / `@Primary`；必要时拆分类型或引入语义标签 | 同上 |
+| 你以为 `@Primary` 会覆盖一切但实际被“压过” | 注入点带了更强限定（Qualifier） | `AutowireCandidateResolver#isAutowireCandidate` / `QualifierAnnotationAutowireCandidateResolver` | 认识强信号优先级：Qualifier > Primary（单依赖收敛） | 结合 [33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) |
+
+## 面试常问（自定义 Qualifier / meta-annotation）
+
+### Q1：自定义 Qualifier 解决的是什么问题？和 `@Primary` 的边界是什么？
+
+- 标准答案（可复述）：
+  - `@Primary` 是“默认胜者”；自定义 Qualifier 是“按语义显式选择”，用来缩小候选集合并表达业务意图，两者适用场景不同。
+- 证据链（方法级）：
+  - 候选收集：`DefaultListableBeanFactory#findAutowireCandidates`
+  - 限定过滤：`AutowireCandidateResolver#isAutowireCandidate`（Qualifier 逻辑在 resolver 里）
+  - winner 收敛：`DefaultListableBeanFactory#determineAutowireCandidate`
+- 最小复现：
+  - `SpringCoreBeansCustomQualifierLabTest`
+
+### Q2：自定义 Qualifier（meta-annotation）是怎么参与候选过滤的？
+
+- 标准答案（可复述）：
+  - 通过候选解析器识别注入点上的 Qualifier 元注解，进而决定某个候选是否可注入；它不是“改 beanName”，而是“改候选集合”。
+- 证据链（方法级）：
+  - `QualifierAnnotationAutowireCandidateResolver`（或同类 resolver）的 `isAutowireCandidate` 分支
+
 ## 一句话自检
 
 - 你能解释清楚：自定义 Qualifier 解决的是“候选收敛”的哪一类问题吗？它和 `@Primary` 的边界是什么？

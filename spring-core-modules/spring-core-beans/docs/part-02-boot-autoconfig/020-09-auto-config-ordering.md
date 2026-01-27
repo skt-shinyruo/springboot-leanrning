@@ -95,14 +95,43 @@
 3) **误区：只看异常，不看 Condition 证据**
    - 在 Boot 环境里，优先用 ConditionEvaluationReport 定位“为什么没匹配”，再去下断点。
 
+## 源码调用链（方法级）：从“导入”到“条件评估”
+
+把 auto-config 顺序问题说清楚，你至少要能把下面这条最短调用链串起来：
+
+1) 导入入口：`AutoConfigurationImportSelector#selectImports`（得到候选 auto-config 列表）
+2) 排序入口：`AutoConfigurationSorter`（把隐式/显式顺序规则应用到列表上）
+3) 定义层落地：`ConfigurationClassPostProcessor#processConfigBeanDefinitions`（把配置类解析成 BeanDefinition）
+4) 条件评估：`ConditionEvaluator#shouldSkip`（决定某个配置类/某个 `@Bean` 是否被跳过）
+
+排障时不要先找“bean 创建失败”，先证明“定义到底有没有注册进容器”。
+
+## 面试常问（Auto-Config 顺序与确定性）
+
+### Q1：为什么跨 auto-config 的 `@ConditionalOnBean` 会“偶发不匹配”？
+
+- 标准答案（可复述）：
+  - 因为顺序未定义时，条件评估可能发生在依赖 bean 注册之前；这属于定义层时机/顺序问题，不是实例层创建失败。
+- 证据链（方法级）：
+  - `AutoConfigurationImportSelector#selectImports` → `AutoConfigurationSorter` → `ConditionEvaluator#shouldSkip`
+- 最小复现：
+  - `SpringCoreBeansAutoConfigurationOrderingLabTest#conditionalOnBean_canFailAcrossAutoConfigurations_whenOrderingIsNotDefined`
+
+### Q2：`@AutoConfiguration(after=...)` 解决的是什么问题？
+
+- 标准答案（可复述）：
+  - 把“隐式依赖”变成“显式排序规则”，让排序算法有稳定依据，从而使条件评估与定义注册顺序确定化。
+- 最小复现：
+  - `SpringCoreBeansAutoConfigurationOrderingLabTest#autoConfigurationAfter_canMakeCrossAutoConfigConditionsDeterministic_evenIfImportOrderIsReversed`
+
 ---
 
 ## 一句话自检
 
 你应该能用 3 句答题：
 
-1) 为什么跨 auto-config 的 `@ConditionalOnBean` 会出现“偶发不匹配”？（提示：顺序未定义 + 条件评估有时机）  
-2) `@AutoConfiguration(after=...)` 解决的是什么问题？（提示：把隐式依赖变成显式排序规则）  
+1) 为什么跨 auto-config 的 `@ConditionalOnBean` 会出现“偶发不匹配”？（提示：顺序未定义 + 条件评估有时机）
+2) `@AutoConfiguration(after=...)` 解决的是什么问题？（提示：把隐式依赖变成显式排序规则）
 3) 你会用哪 2 个断点把“排序→条件评估→定义是否注册”走成证据链？
 
 <!-- BOOKIFY:START -->

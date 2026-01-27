@@ -84,100 +84,66 @@
 - “短路后生命周期回调/注入行为变得反直觉” → **实例层（绕过默认流程）**：你返回对象意味着你可能绕过 `doCreateBean` 的部分阶段（可对照 [17](17-lifecycle-callback-order.md)、[30](../part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)）
 - “我以为这是 AOP/事务专属机制” → **实例层通用机制**：代理/替身的出现不止发生在 AOP（见 [31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
 
-## 5. 一句话自检
+## 4. 源码调用链（方法级）：短路发生在哪个分支？
 
-- 常问：`postProcessBeforeInstantiation` 能做什么？为什么它看起来像“魔法”？
-  - 答题要点：它允许在实例化前直接返回替身/proxy，从而短路默认实例化与后续创建流程。
-- 常见追问：怎么证明某个 bean 命中了“实例化前短路”？
-  - 答题要点：在 `resolveBeforeInstantiation` 加条件断点（beanName），观察 `applyBeanPostProcessorsBeforeInstantiation` 是否返回非 null。
-- 常见追问：为什么说它是高危扩展点？
-  - 答题要点：短路意味着你可能绕过注入/初始化回调的直觉，导致生命周期行为变得反直觉，排障成本上升。
+你不需要背完整 `createBean` 流程，但要记住一个“关键分叉”：
 
-## 面试常问（实例化前短路的风险）
+- **默认路径**：`createBean` → `doCreateBean`（构造器/工厂方法 → `populateBean` → `initializeBean`）
+- **短路路径**：`createBean` → `resolveBeforeInstantiation`（有返回值则直接作为最终暴露对象）
 
-1) **为什么说这是“高危扩展点”，而不是“常规技巧”？**
-   - 要点：它能绕过默认创建主线（`doCreateBean` 的一部分阶段可能不发生），导致注入/初始化回调的直觉失效；一旦引入多层代理/多 BPP 叠加，排障会显著变难。
+把分支落到方法级，一条够用的最短链路是：
 
-2) **它和 AOP “after initialization 代理”有什么本质差别？**
-   - 要点：实例化前短路发生在“还没走默认实例化”之前（`resolveBeforeInstantiation`），AOP 常见代理更偏向在初始化后替换最终暴露对象（`postProcessAfterInitialization`）；两者影响的是不同阶段与不同可观察点。
+1) `AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`
+2) `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation(beanName, mbd)`
+3) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation(targetType, beanName)`
+4) `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation(beanClass, beanName)`
+5) 如果返回非 null：
+   - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization(result, beanName)`（必要时再做 after-init 包装）
+   - **跳过** `doCreateBean`（因此构造器/注入/初始化回调的直觉会被打破）
 
-3) **你如何在生产排障里快速证明“某个 bean 被实例化前短路了”？**
-   - 要点：对 `resolveBeforeInstantiation(beanName)` 下条件断点；看 `applyBeanPostProcessorsBeforeInstantiation` 是否返回非 null；再反查是哪一个 `InstantiationAwareBeanPostProcessor` 返回的替身对象。
-## 源码与断点
+> Debug 建议：在 `resolveBeforeInstantiation` 加条件断点（beanName），你会立刻知道“这次创建到底有没有走短路分支”。
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
+## 5. 排障决策表（实例化前短路：从“构造器没执行”到“证据链”）
 
-## 最小可运行实验（Lab）
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| 构造器还是执行了（短路没生效） | BPP 注册太晚 / 根本没进 BPP 链 | `beanFactory.getBeanPostProcessors()` 是否包含你的 IABPP；`resolveBeforeInstantiation` 是否命中；`applyBeanPostProcessorsBeforeInstantiation` 是否返回 null | 确保在 refresh 前注册；不要在 BFPP/BDRPP 阶段过早创建目标 bean；必要时先用最小容器入口复现 | `SpringCoreBeansPreInstantiationLabTest` |
+| 构造器不执行但 `@Autowired/@PostConstruct` 也没发生 | 你返回了“最终对象”，绕过了默认注入/初始化路径 | 对照：短路分支返回非 null；`doCreateBean/populateBean/initializeBean` 未命中目标 beanName | 这属于机制边界：如果需要注入/生命周期，别用 short-circuit；或把依赖迁移到代理内部/外部工厂 | `SpringCoreBeansPreInstantiationLabTest`（对照两条用例） |
+| `BeanNotOfRequiredTypeException` | 返回对象类型不兼容（JDK proxy 只实现接口） | 观察返回对象类型；按实现类 `getBean(Impl.class)` 失败 | 让注入点按接口；或使用 class-based proxy（但注意 final 限制）；或改成 after-init 代理（更稳定） | `SpringCoreBeansPreInstantiationLabTest` |
+| 行为像 AOP，但找不到切面/事务配置 | 不是 AOP，而是 IABPP 的 before-instantiation short-circuit | `resolveBeforeInstantiation` 返回非 null；定位到具体哪个 IABPP 返回了替身 | 先在“创建链路”定位代理产生点，再回到“是谁注册了该 IABPP” | `SpringCoreBeansPreInstantiationLabTest` |
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`SpringCoreBeansPreInstantiationLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+## 6. 面试常问（实例化前短路：能力与风险）
 
-### 复现/验证补充说明（来自原文迁移）
+### Q1：`postProcessBeforeInstantiation` 能做什么？为什么它看起来像“魔法”？
 
-## 0. 复现入口（可运行）
+- 标准答案（可复述）：
+  - 它允许在目标 bean 实例化之前直接返回一个替身对象（常见是 proxy），从而短路默认的构造器/注入/初始化流程，最终暴露对象不一定来自原始类的实例化。
+- 证据链（方法级）：
+  - `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`
+  - `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`
+- 最小复现：
+  - `SpringCoreBeansPreInstantiationLabTest`
 
-- 入口测试（推荐先跑通再下断点）：
-  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`
-- 推荐运行命令：
-  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPreInstantiationLabTest test`
+### Q2：它和“初始化后代理（AOP 常见形态）”有什么本质差别？
 
-对应实验：
+- 标准答案（可复述）：
+  - before-instantiation short-circuit 发生在默认实例化之前；AOP 常见代理发生在 `postProcessAfterInitialization`（初始化后替换最终暴露对象）。两者影响的阶段不同，导致“构造器是否执行/生命周期是否按直觉发生”的可观察结果也不同。
+- 证据链（方法级）：
+  - short-circuit：`resolveBeforeInstantiation`
+  - after-init：`applyBeanPostProcessorsAfterInitialization`（或具体 APC）
 
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`
+### Q3：你如何在排障里快速证明“某个 bean 命中了短路分支”？
 
-- `SpringCoreBeansPreInstantiationLabTest.withoutBeforeInstantiationShortCircuit_refreshFailsAndConstructorWasCalled()`
+- 标准答案（可复述）：
+  - 对 `resolveBeforeInstantiation(beanName)` 下条件断点；看 `applyBeanPostProcessorsBeforeInstantiation` 是否返回非 null；再反查是哪一个 `InstantiationAwareBeanPostProcessor` 返回的替身对象。
 
-- `SpringCoreBeansPreInstantiationLabTest.postProcessBeforeInstantiation_canShortCircuitDefaultInstantiationPath()`
+## 7. 一句话自检
 
-## 源码锚点（建议从这里下断点）
+你应该能回答：
 
-- `AbstractAutowireCapableBeanFactory#createBean` / `doCreateBean`（创建主线）
-- `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`（短路入口）
-- `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation`（遍历 IABPP 的关键循环）
-- `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`（用户/框架扩展点）
-- （对照）`AbstractAutowireCapableBeanFactory#createBeanInstance`（默认实例化策略入口：构造器/工厂方法等）
-
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`
-  - `withoutBeforeInstantiationShortCircuit_refreshFailsAndConstructorWasCalled()`
-  - `postProcessBeforeInstantiation_canShortCircuitDefaultInstantiationPath()`
-
-建议断点：
-
-1) `FailingService` 构造器：对照两段测试，确认“默认路径一定会调用构造器”
-2) 你在 Lab 里实现的 `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation(...)`：观察它返回的对象（proxy）
-3) `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`：观察短路发生在默认实例化之前
-4) `AbstractAutowireCapableBeanFactory#doCreateBean`：在短路成功的测试里，验证这里不会被命中（或不会为目标 bean 执行）
-
-- 你能解释清楚：为什么短路后构造器不执行，但 bean 仍然可以被容器拿到并调用吗？
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`
-推荐断点：`AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation`、`AbstractAutowireCapableBeanFactory#createBeanInstance`
-
-- 常问：`postProcessBeforeInstantiation` 能做什么？为什么它是高危扩展点？
-  - 答题要点：可以在实例化前直接返回替身/proxy，短路后续创建流程；风险是打破注入/初始化回调的直觉，引入“看似没执行构造但对象可用”的误判。
-- 常见追问：怎么证明某个 bean 命中了短路？断点怎么下？
-  - 答题要点：以 `resolveBeforeInstantiation` 为入口，沿着 `applyBeanPostProcessorsBeforeInstantiation` 找到具体哪个 `InstantiationAwareBeanPostProcessor` 返回了替身。
-
-## 常见坑与边界
-
-### 常见坑
-
-- **坑 1：返回的对象类型不兼容**
-  - 容器后续按类型注入、按类型 getBean 可能会失败（`BeanNotOfRequiredTypeException`）。
-
-- **坑 2：短路会绕过一些正常生命周期**
-  - 短路意味着你不走默认实例化流程，很多生命周期回调/依赖注入的时机都会改变。
-
-- **坑 3：学习可以用，工程里要非常谨慎**
-  - 它属于极强的扩展点：一旦用错，系统会变得难以推理。
-
-### 边界提醒（别用它去“修业务问题”）
-
-- 业务层面出现“构造器太重/初始化太慢”，优先解决依赖与初始化时机，而不是用短路把对象替换掉。
-- 如果你的目标是“代理增强/拦截”，优先考虑常规 BPP after-init 的代理方式（可控、语义更稳定），避免把创建链路变成黑盒。
+1) 短路分支发生在 `createBean` 的哪个阶段？（提示：`resolveBeforeInstantiation`）
+2) 为什么短路是“高危扩展点”？（提示：绕过默认注入/初始化直觉）
+3) 你会用哪两个断点证明“短路真的发生了”？（提示：`resolveBeforeInstantiation` + 你的 IABPP）
 
 ## 小结与下一章
 

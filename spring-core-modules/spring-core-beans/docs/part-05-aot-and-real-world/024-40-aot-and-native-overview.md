@@ -87,7 +87,7 @@
 
 学习阶段你只需要能回答两件事：
 
-1) hints 在哪里被“注册/汇总”？  
+1) hints 在哪里被“注册/汇总”？
 2) 我怎么证明“现在 hints 有/没有”？
 
 - `RuntimeHintsRegistrar#registerHints`（你定义的注册入口）
@@ -124,9 +124,9 @@
 - JVM：反射、动态代理、类路径扫描等“运行期能力”默认可用（成本是启动慢/内存大/可预知性较差）。
 - Native（AOT）：运行期能力被收紧（换来启动快/内存小/可预知性强），你必须在构建期把需求“说清楚”。
 
-1) 你有没有用到反射？（例如框架要反射调用构造器/方法/字段）  
-2) 你有没有用到动态代理？（JDK/CGLIB proxy）  
-3) 你有没有依赖运行期扫描/注册？（classpath 扫描、动态注册 bean 定义）  
+1) 你有没有用到反射？（例如框架要反射调用构造器/方法/字段）
+2) 你有没有用到动态代理？（JDK/CGLIB proxy）
+3) 你有没有依赖运行期扫描/注册？（classpath 扫描、动态注册 bean 定义）
 4) 这些需求能不能在构建期被推导/声明？
 
 下一章会把它落成“可断言”的最小实验：[41. RuntimeHints 入门](41-runtimehints-basics.md)。
@@ -138,7 +138,7 @@
 
 ## 4. 复现入口（可运行）
 
-> 注意：本模块的 AOT Lab **不构建 native image**。  
+> 注意：本模块的 AOT Lab **不构建 native image**。
 > 我们用 JVM 单测验证“构建期契约”的存在性（hints 是否注册），以保证可复现与低成本。
 
 - 入口测试：
@@ -172,9 +172,37 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 1) **误区：AOT/Native 的问题都是“依赖/环境问题”**
    - 更常见的根因：缺失构建期契约（hints）导致运行期能力不可用（反射/代理/资源等）。
 2) **误区：我只要把反射都改掉，就不需要 hints**
-   - 实际上 Spring 的很多能力（包括框架自身）依赖“可发现/可反射/可生成”的元信息；hints 解决的是“告诉构建器保留/生成哪些能力”。  
+   - 实际上 Spring 的很多能力（包括框架自身）依赖“可发现/可反射/可生成”的元信息；hints 解决的是“告诉构建器保留/生成哪些能力”。
 3) **误区：hints 能解决一切**
    - hints 只解决“反射/代理/资源”等契约问题；业务逻辑、条件装配、初始化时机仍然需要正确性。
+
+## 排障决策表（AOT/Native：从“现象”到“hints 证据链”）
+
+| 现象 | 最可能根因 | 证据（断点/断言） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| JVM 正常，Native 下反射失败 / `ClassNotFound` / `NoSuchMethod` | 缺失 reflection hints（构建期未声明） | `RuntimeHintsPredicates` 断言 hints 是否存在；查看 `RuntimeHintsRegistrar#registerHints` 是否执行 | 写/补 `RuntimeHintsRegistrar` 并确保被加载（factories/aot.factories） | `SpringCoreBeansAotRuntimeHintsLabTest` |
+| 资源读取在 Native 下失败 | 缺失 resource hints | 同上，用 predicates 断言资源 hints | 注册资源 hints（pattern/文件） | `SpringCoreBeansAotRuntimeHintsLabTest`（按本仓库方式做可断言对照） |
+| 代理/动态生成能力失效 | 缺失 proxy hints 或 AOT 生成契约 | predicates 断言代理 hints；定位 registrar 是否被加载 | 注册 proxy hints；必要时调整设计避免运行时动态行为 | 结合 `SpringCoreBeansAotRuntimeHintsLabTest` 的对照断言 |
+| “我加了 registrar 但没生效” | registrar 没被 factories 发现/加载 | 断点 `AotServices.factories().load(...)`（或等价入口）；看注册器列表 | 确保 factories 文件/配置正确，包名/类名匹配 | `SpringCoreBeansAotFactoriesLabTest` |
+
+## 面试常问（AOT / RuntimeHints：为什么“JVM 能跑 ≠ Native 能跑”）
+
+### Q1：一句话解释 AOT/Native 和 JVM 的本质差异是什么？
+
+- 标准答案（可复述）：
+  - Native 环境下运行期信息不可得/受限，很多动态行为必须前移到构建期声明；RuntimeHints 是这份“构建期契约”的一部分。
+
+### Q2：RuntimeHints 解决什么问题？解决不了什么问题？
+
+- 标准答案（可复述）：
+  - 解决反射/资源/代理等“运行期能力可用性”的契约问题；不解决业务逻辑正确性、条件装配语义、生命周期/时机等逻辑问题。
+
+### Q3：你如何用证据链证明“没注册就不会命中”？
+
+- 标准答案（可复述）：
+  - 用对照测试：一个场景注册 hints、一个不注册；用 predicates/断言验证 hints 是否存在，并把 registrar 的加载入口写清楚（factories/aot.factories）。
+- 最小复现：
+  - `SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAotFactoriesLabTest`
 
 ## 一句话自检
 

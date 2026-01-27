@@ -23,14 +23,14 @@
 
 这一章解决的不是“怎么写 Converter”这种 API 问题，而是排障时更致命的问题：
 
-> 我明明在配置里写的是字符串（`"8080"` / `"PT30S"` / `"42"`），  
-> 为什么注入到 Bean 的属性/字段里时能变成 `int` / `Duration` / 自定义值对象？  
+> 我明明在配置里写的是字符串（`"8080"` / `"PT30S"` / `"42"`），
+> 为什么注入到 Bean 的属性/字段里时能变成 `int` / `Duration` / 自定义值对象？
 > 以及：为什么有时候它又完全不转、或者转错、或者报错？
 
 先把你可能遇到的“转换问题”分成三类（这是本章最重要的分流）：
 
-1) **占位符/SpEL 解析问题**：`${...}` 没解析出来，值还是 `"${...}"` 或表达式报错  
-2) **类型转换问题**：字符串解析出来了，但 `String -> TargetType` 失败（或走错转换器）  
+1) **占位符/SpEL 解析问题**：`${...}` 没解析出来，值还是 `"${...}"` 或表达式报错
+2) **类型转换问题**：字符串解析出来了，但 `String -> TargetType` 失败（或走错转换器）
 3) **系统搞错了**：你以为是 Spring 的注入转换，其实是 Boot Binder（`@ConfigurationProperties`）或别的绑定系统
 
 本章只讲第 2 类，并且把第 1/3 类的“怎么快速排除”也给你。
@@ -64,8 +64,8 @@
 
 它更像：
 
-1) BPP 识别到 `@Value`（通常是 `AutowiredAnnotationBeanPostProcessor`）  
-2) 先把 `"${...}"` / `"#{...}"` 交给 BeanFactory 做解析：`AbstractBeanFactory#resolveEmbeddedValue`  
+1) BPP 识别到 `@Value`（通常是 `AutowiredAnnotationBeanPostProcessor`）
+2) 先把 `"${...}"` / `"#{...}"` 交给 BeanFactory 做解析：`AbstractBeanFactory#resolveEmbeddedValue`
 3) 再把解析后的字符串交给类型转换：`convertIfNecessary(...)`
 
 这也是为什么占位符章节（[34](34-value-placeholder-resolution-strict-vs-non-strict.md)）和本章经常一起出现：
@@ -123,9 +123,9 @@
 
 在 `applyPropertyValues` 或 `setPropertyValue` 处建议用条件断点（按你的 Lab 里的 beanName/propertyName 调整）：
 
-- `\"serverPortHolder\".equals(beanName)`  
-- `\"userIdConsumer\".equals(beanName)`  
-- `\"port\".equals(propertyName)`  
+- `\"serverPortHolder\".equals(beanName)`
+- `\"userIdConsumer\".equals(beanName)`
+- `\"port\".equals(propertyName)`
 - `\"userId\".equals(propertyName)`
 
 如果你只是想确认“有没有发生类型转换”，加一个更粗的过滤也很有效：
@@ -199,6 +199,33 @@
 
 ---
 
+## 面试常问（类型转换：BeanWrapper / ConversionService / PropertyEditor）
+
+### Q1：Spring 把字符串转成目标类型，最关键的决策点在哪里？
+
+- 标准答案（可复述）：
+  - 多数注入/属性填充路径最终都会走到 `TypeConverterDelegate#convertIfNecessary`：在这里能看见 requiredType、原始值、ConversionService 是否存在、是否回退到 PropertyEditor 分支。
+- 证据链（方法级）：
+  - property values：`populateBean` → `applyPropertyValues` → `BeanWrapperImpl#setPropertyValue` → `TypeConverterDelegate#convertIfNecessary`
+  - `@Value`：`resolveEmbeddedValue` → `convertIfNecessary`
+- 最小复现：
+  - `SpringCoreBeansTypeConversionLabTest`
+
+### Q2：ConversionService 和 PropertyEditor 谁优先？你如何在断点里证明“这次走了哪条分支”？
+
+- 标准答案（可复述）：
+  - ConversionService 是现代主力；PropertyEditor 更多是历史兼容分支。排障时不靠“猜优先级”，而是在 `convertIfNecessary` 里看 `conversionService` 是否为 null、是否命中 editor 分支。
+- 最小复现：
+  - `SpringCoreBeansTypeConversionLabTest`（结合本章 4 的 watch list）
+
+### Q3：为什么 `@ConfigurationProperties` 能转，不代表 `@Value` 一定能转？
+
+- 标准答案（可复述）：
+  - Binder（`@ConfigurationProperties`）和容器注入/属性填充是两套系统：一个是绑定系统，一个是创建/注入系统。两者都可能用到转换，但入口、触发时机与失败形态不同，不能互相替代。
+- 证据链（方法级）：
+  - 注入系统：`resolveEmbeddedValue` / `populateBean` / `convertIfNecessary`
+  - Binder 系统：走的是 Boot 的 binder 链路（不在本章主线）
+
 ## 一句话自检
 
 - 你能解释清楚：`@Value` 的“值注入”大致经历哪三步吗？（提示：占位符/SpEL → 类型转换）
@@ -209,8 +236,8 @@
 
 这一章你只要记住三件事就够了：
 
-1) 两条链路：property values（`populateBean/applyPropertyValues`） vs `@Value`（`resolveEmbeddedValue` → `convertIfNecessary`）  
-2) 一个决策点：`TypeConverterDelegate#convertIfNecessary`（在这里看清到底走 ConversionService 还是 PropertyEditor）  
+1) 两条链路：property values（`populateBean/applyPropertyValues`） vs `@Value`（`resolveEmbeddedValue` → `convertIfNecessary`）
+2) 一个决策点：`TypeConverterDelegate#convertIfNecessary`（在这里看清到底走 ConversionService 还是 PropertyEditor）
 3) 一个高频误区：别把 Boot Binder 的转换当成注入转换
 
 <!-- BOOKIFY:START -->

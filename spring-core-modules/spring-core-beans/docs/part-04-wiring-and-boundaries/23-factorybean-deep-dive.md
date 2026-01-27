@@ -163,7 +163,7 @@
 - “product 缓存像是坏了/每次 get 都创建新对象” → **实例层（缓存语义）**：检查 `isSingleton()` 返回值是否与你期望一致（本章第 3 节）
 - “以为 factory 的 scope 就等于 product 的 scope” → **实例层概念澄清**：`isSingleton()` 控制的是 product 缓存，不是 factory 自己的 scope（本章第 3 节）
 
-## 5. 一句话自检
+## 5. 面试常问（FactoryBean 深挖）
 
 - 常问：`&beanName` 到底拿到什么？为什么？
   - 答题要点：默认 `getBean("name")` 返回 product；`&name` 是 FactoryBean dereference，返回 factory 自身；分流发生在 `getObjectForBeanInstance`。

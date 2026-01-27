@@ -306,11 +306,11 @@ preInstantiateSingletons():
 
 你会得到 3 个非常实用的“排障结论”：
 
-1. **“启动即创建”不是一个开关，而是一串 if 判断。**  
+1. **“启动即创建”不是一个开关，而是一串 if 判断。**
    只要你把 `abstract/lazy/singleton/FactoryBean/SmartFactoryBean` 这几类分支钉住，你就能解释大多数“为什么它启动时就出问题”的案例。
-2. **FactoryBean 的预实例化是“两段式”。**  
+2. **FactoryBean 的预实例化是“两段式”。**
    `&name` 创建的是 FactoryBean 本体；是否预先创建产品对象，要看 `SmartFactoryBean#isEagerInit()` 这条分支。
-3. **有些初始化逻辑不属于 doCreateBean，它发生在“单例都出来之后”。**  
+3. **有些初始化逻辑不属于 doCreateBean，它发生在“单例都出来之后”。**
    `SmartInitializingSingleton#afterSingletonsInstantiated()` 就是典型例子：它在 preInstantiateSingletons 收尾阶段触发。
 
 #### 4.3.1 一个容易误判的高级分支：background init 与 `bootstrapExecutor`
@@ -385,9 +385,9 @@ preInstantiateSingletons():
 
 这条分支的排障价值非常高，因为它能解释两类“看似反直觉”的现象：
 
-1. **“我明明把 bean 标成 lazy-init，但它还是启动时就被创建了。”**  
+1. **“我明明把 bean 标成 lazy-init，但它还是启动时就被创建了。”**
    可能原因：它被别的 bean 声明为 `dependsOn`（或被别的 bean 依赖，依赖也会强制创建）。
-2. **“我没有注入它，但它为什么先被创建？”**  
+2. **“我没有注入它，但它为什么先被创建？”**
    `dependsOn` 就是“非注入式的初始化边”，它强制了创建顺序。
 
 对应本仓库验证入口：
@@ -632,6 +632,40 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 - 生命周期回调顺序：[17-lifecycle-callback-order.md](17-lifecycle-callback-order.md)
 
 你会发现：这些文件不是“散点知识”，而是主线上的分支专题。
+
+## 源码调用链（方法级）：refresh → doCreateBean 的最短主线
+
+这章你不需要背所有步骤，但必须能把主线串成“方法级调用链”（面试/排障都用得上）：
+
+1) `AbstractApplicationContext#refresh`（总入口）
+2) `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`（定义层：BDRPP/BFPP 稳定“配方”）
+3) `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（实例层：BPP 链准备）
+4) `AbstractApplicationContext#finishBeanFactoryInitialization` → `DefaultListableBeanFactory#preInstantiateSingletons`（大规模创建开始）
+5) `AbstractBeanFactory#doGetBean`（按需创建入口）
+6) `AbstractAutowireCapableBeanFactory#doCreateBean`（单 bean 五段式：instance→populate→initialize→expose）
+
+你只要能在调试器里把这条链走一遍，并解释每一步“为什么在这里”，就能把 IoC 主线讲清楚。
+
+## 面试常问（refresh 主线：你要能讲“阶段”而不是“名词”）
+
+### Q1：refresh 为什么要“先定义层、再实例层”？顺序错了会怎样？
+
+- 标准答案（可复述）：
+  - 因为后续实例化/注入依赖“稳定的 BeanDefinition 与基础设施处理器”；如果定义层没稳定就开始创建实例，会出现错过 BPP/代理不生效/条件不一致等时序问题。
+- 证据链（方法级）：
+  - `invokeBeanFactoryPostProcessors`（定义层稳定）
+  - `registerBeanPostProcessors`（实例层拦截链准备）
+  - `preInstantiateSingletons`（创建开始）
+- 最小复现：
+  - `SpringCoreBeansMainlineCallChainLabTest` / `SpringCoreBeansBeanCreationTraceLabTest`
+
+### Q2：为什么 BPP 是“创建时拦截链”，不是“创建后补丁”？
+
+- 标准答案（可复述）：
+  - BPP 只在 bean 创建流程的钩子点被调用；如果某个 bean 在 BPP 链完整之前就被创建，它不会 retroactively 被后来注册的 BPP 处理，导致增强缺失或顺序反直觉。
+- 证据链（方法级）：
+  - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
+  - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
 ## 一句话自检
 

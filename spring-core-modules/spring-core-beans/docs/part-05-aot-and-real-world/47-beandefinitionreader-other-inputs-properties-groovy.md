@@ -181,6 +181,27 @@ Groovy reader 的典型断点：
 2) **误区：我写的是 Groovy/Properties，所以不属于 beans 体系**
    - 恰恰相反：这些机制说明 beans 体系的抽象能力（输入可扩展，输出统一）。
 
+## 排障决策表（BeanDefinitionReader：资源/解析/注册分型）
+
+| 现象 | 更像失败在哪一段 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| 资源不存在 / 路径错误 | 输入源（Resource） | 断点 `AbstractBeanDefinitionReader#loadBeanDefinitions`；看 `resourceDescription` | 修正路径/类路径；确认测试资源打包 | `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest` / `SpringCoreBeansGroovyBeanDefinitionReaderLabTest` |
+| 脚本/属性解析异常 | reader 解析阶段 | `PropertiesBeanDefinitionReader#loadBeanDefinitions` / `GroovyBeanDefinitionReader#loadBeanDefinitions` | 修正格式；Groovy 确认运行库依赖存在 | 同上 |
+| “看起来加载了，但容器里找不到 bean” | 注册阶段未落地 | 断点 `DefaultListableBeanFactory#registerBeanDefinition`；看是否真正写入 registry | 确认 beanName/定义是否冲突；排查覆盖策略 | 同上 |
+| 误以为这是“创建失败” | 其实还没进入创建阶段 | 先证明是否进入 `preInstantiateSingletons/doCreateBean` | 先把问题分型为“定义层 vs 实例层”再排查 | 结合 [18](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md) 主线 |
+
+## 面试常问（Reader：输入可扩展，输出要统一）
+
+### Q1：BeanDefinitionReader 做的是“注册配方”还是“创建对象”？为什么这个区分重要？
+
+- 标准答案（可复述）：
+  - Reader 负责把各种输入（XML/properties/groovy…）解析成 BeanDefinition 并注册到 registry；对象创建发生在后续 `getBean/preInstantiateSingletons/doCreateBean` 主线。区分清楚才能正确分型排障。
+- 证据链（方法级）：
+  - `AbstractBeanDefinitionReader#loadBeanDefinitions`
+  - `DefaultListableBeanFactory#registerBeanDefinition`
+- 最小复现：
+  - `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest` / `SpringCoreBeansGroovyBeanDefinitionReaderLabTest`
+
 ## 一句话自检
 
 - 你能解释清楚：BeanDefinitionReader 做的是“注册配方”还是“创建对象”吗？为什么这个区分重要？

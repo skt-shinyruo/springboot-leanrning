@@ -37,8 +37,8 @@
 
 你可以把它记成一条时间线：
 
-1) **构造器执行**（对象刚被 `new` 出来）  
-2) **属性填充 / 注入阶段**（field/method injection 发生在这里）  
+1) **构造器执行**（对象刚被 `new` 出来）
+2) **属性填充 / 注入阶段**（field/method injection 发生在这里）
 3) **初始化回调**（例如 `@PostConstruct`）
 
 ## 2. 现象：constructor injection 在构造器里就能拿到依赖
@@ -151,12 +151,33 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 
 ## 常见坑与边界
 
-> 注意：**多个 BPP 的顺序会影响你在 `postProcessProperties(...)` 里看到的 bean 状态**。  
+> 注意：**多个 BPP 的顺序会影响你在 `postProcessProperties(...)` 里看到的 bean 状态**。
 > 你需要把重点放在“注入发生在属性填充阶段”这个结论上，而不是纠结某一个 BPP 是先还是后（顺序规则见第 14/25 章）。
 
 ## 5. 常见坑与实践建议
 
 本章本质是在讲：**容器通过 BPP 让注解“生效”**。这条线能直接解释 AOP/事务为何会出现“入口必须走代理”的坑：
+
+## 面试常问（注入阶段：constructor vs field）
+
+### Q1：构造器注入与字段注入分别发生在创建链路的哪一步？
+
+- 标准答案（可复述）：
+  - 构造器注入发生在实例化阶段（选构造器 → 解析参数依赖 → 创建实例）；字段/属性注入主要发生在 `populateBean` 阶段，由注解处理器（如 `AutowiredAnnotationBeanPostProcessor`）介入填充依赖。
+- 证据链（方法级）：
+  - `AbstractAutowireCapableBeanFactory#doCreateBean`
+  - `AbstractAutowireCapableBeanFactory#autowireConstructor` / `#createBeanInstance`
+  - `AbstractAutowireCapableBeanFactory#populateBean`
+  - `AutowiredAnnotationBeanPostProcessor#postProcessProperties`
+- 最小复现：
+  - `SpringCoreBeansInjectionPhaseLabTest`
+
+### Q2：为什么“在构造器里拿不到字段注入的值”不是 bug？
+
+- 标准答案（可复述）：
+  - 因为字段注入发生在实例创建之后（populate 阶段）；构造器执行时对象还没进入属性填充/注解处理器链路，字段自然还是默认值。
+- 工程建议：
+  - 必填依赖优先构造器注入（更早失败、可测试、不可变）；可选/延迟语义用 `ObjectProvider` 明确表达。
 
 ## 一句话自检
 

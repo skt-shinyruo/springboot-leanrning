@@ -319,6 +319,22 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但你需要把它�
   - `mvn -pl :spring-core-beans test`
   - 或单跑：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLabTest test`
 
+## 面试常问（依赖注入解析）
+
+1) **为什么会 NoSuch / NoUnique？你怎么用“证据链”解释？**
+   - 要点：先收集候选（by type）→ 再收敛（primary/qualifier/name/priority…）→ 最终注入；NoSuch 是“候选为空”，NoUnique 是“候选>1 且缩不下来”。
+   - 证据链：`doResolveDependency` → `findAutowireCandidates` → `determineAutowireCandidate`；观察 `matchingBeans.keySet()`、`dependencyName`、`primaryCandidate`。
+
+2) **`@Primary` / `@Qualifier` / by-name fallback 的边界你怎么讲？**
+   - 要点：`@Qualifier` 是精确收敛；`@Primary` 是默认实现；by-name fallback 只在特定条件下参与收敛（容易误判）。
+   - 证据链：同上，重点看 `descriptor.getDependencyName()` 与候选集合的变化。
+
+3) **为什么 `@Order` 对单依赖注入不生效？什么时候才看排序？**
+   - 要点：单依赖注入的目标是“选出唯一候选”；排序更多用于集合注入或 ordered stream。
+   - 证据链：看 `determineAutowireCandidate` 的分支；对比 `ObjectProvider.orderedStream()` 的路径（见 33 章）。
+
+推荐复习入口：`appendix/93-interview-playbook.md`（Q2/Q3）。
+
 ## 一句话自检
 
 你应该能用 3 句复述：

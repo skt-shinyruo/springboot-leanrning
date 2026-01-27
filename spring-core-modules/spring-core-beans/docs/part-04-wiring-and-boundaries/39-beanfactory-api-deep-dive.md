@@ -20,8 +20,8 @@
 
 这一章解决一个常见“源码阅读/排障”卡点：
 
-> 我明明用的是 Spring（注解都写了），为什么在某些启动方式/某些测试里注解不生效？  
-> 为什么 `DefaultListableBeanFactory` 看起来“很强”，但很多能力又像是缺失的？  
+> 我明明用的是 Spring（注解都写了），为什么在某些启动方式/某些测试里注解不生效？
+> 为什么 `DefaultListableBeanFactory` 看起来“很强”，但很多能力又像是缺失的？
 > BeanFactory 到底是一套什么 API？哪些能力是它自带的，哪些是靠 post-processors “装上去”的？
 
 一句话先讲清楚：
@@ -36,7 +36,7 @@
 
 你可以把 Spring 的容器能力拆成两层：
 
-1) **容器内核（BeanFactory API）**：负责定义→实例化→依赖解析→生命周期基本骨架  
+1) **容器内核（BeanFactory API）**：负责定义→实例化→依赖解析→生命周期基本骨架
 2) **容器增强（post-processors + 上层设施）**：负责注解处理、AOP 代理、条件装配、占位符解析、事件/资源等
 
 其中 BeanFactory 是第一层的核心接口，它解决的是：
@@ -71,7 +71,7 @@
 
 所以你要么：
 
-1) 用 `ApplicationContext`（默认推荐）  
+1) 用 `ApplicationContext`（默认推荐）
 2) 或者你明确知道自己在干什么：手动 bootstrap 必要的 post-processors
 
 - plain BeanFactory：注解不生效
@@ -200,6 +200,27 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
    - 不够：你还需要“执行/注册”整套基础设施链路（ApplicationContext refresh 会做，plain BeanFactory 不会自动做）。
 3) **误区：只要加了 BPP，就能让以前创建过的 bean 也被处理**
    - BPP 通常不 retroactive。顺序与时机是排障关键点。
+
+## 面试常问（BeanFactory vs ApplicationContext：差异与边界）
+
+### Q1：`BeanFactory` 和 `ApplicationContext` 的关键差异是什么？为什么 plain BeanFactory 下“注解不生效”？
+
+- 标准答案（可复述）：
+  - `ApplicationContext` 会在 refresh 主线里自动完成 BFPP/BDRPP/BPP 的 bootstrap（包括注册并激活注解处理器）；plain `DefaultListableBeanFactory` 只是内核，不会自动装这些基础设施，因此很多注解行为没有触发者。
+- 证据链（方法级）：
+  - 注册处理器（定义层）：`AnnotationConfigUtils#registerAnnotationConfigProcessors`
+  - 激活处理器（实例层）：`DefaultListableBeanFactory#addBeanPostProcessor`
+  - 注入触发点：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`
+- 最小复现：
+  - `SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest`
+
+### Q2：为什么“我已经注册了处理器 BeanDefinition”，注解还是不生效？
+
+- 标准答案（可复述）：
+  - 因为“注册定义”不等于“处理器已加入 BPP 执行链”。只有处理器实例进入 `beanFactory.getBeanPostProcessors()`，创建链路才会在对应钩子点回调它们。
+- 证据链（方法级）：
+  - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（ApplicationContext 场景）
+  - `DefaultListableBeanFactory#addBeanPostProcessor`（plain BeanFactory 手动激活）
 
 ## 一句话自检
 

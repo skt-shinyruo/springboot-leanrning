@@ -388,6 +388,66 @@
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#determineAutowireCandidate`
 
+## 面试常问（把“坑点”说成标准答案）
+
+> 目标：你不是背“坑列表”，而是能把“现象 → 结论 → 证据链（方法级）→ 修复”说成一段可复述答案。
+> 建议配合：`appendix/93-interview-playbook.md`（答题模板）与 `appendix/94-production-troubleshooting-checklist.md`（排障分流）。
+
+### Q1：`@Order` / `Ordered` 能解决单依赖注入的多候选歧义吗？
+
+- 标准答案（可复述）：
+  - 不能。`@Order` 主要影响“集合注入/链路执行顺序”，单依赖的 winner 选择走的是候选收敛规则（`@Primary` / `@Qualifier` / by-name fallback 等），不是排序规则。
+- 证据链（方法级）：
+  - 候选收集：`DefaultListableBeanFactory#findAutowireCandidates`
+  - winner 收敛：`DefaultListableBeanFactory#determineAutowireCandidate`
+  - 集合排序：`DefaultListableBeanFactory#resolveMultipleBeanCollection`（或同类分支）
+- 最小复现：
+  - `SpringCoreBeansAutowireCandidateSelectionLabTest`（单依赖歧义/候选收敛）
+
+### Q2：为什么 `@Qualifier` 通常“压过” `@Primary`？
+
+- 标准答案（可复述）：
+  - `@Primary` 是“默认胜者”，前提是候选集合没有被更强的限定条件缩小；`@Qualifier` 属于“强限定”，会先参与候选过滤/匹配，让不匹配的候选直接出局，后续再在剩余集合里考虑 `@Primary`。
+- 证据链（方法级）：
+  - 限定过滤：`AutowireCandidateResolver#isAutowireCandidate`（实现通常包含 Qualifier 逻辑）
+  - 最终收敛：`DefaultListableBeanFactory#determineAutowireCandidate`
+- 最小复现：
+  - `SpringCoreBeansAutowireCandidateSelectionLabTest#qualifierOverridesPrimary_forSingleInjection`
+
+### Q3：`@Autowired` 的 by-name fallback 和 `@Resource` 的 name-first 有什么本质差异？
+
+- 标准答案（可复述）：
+  - `@Resource` 是“规范定义的 name-first”，先按名字找，再按类型；`@Autowired` 的 by-name fallback 是框架行为且只在特定条件下触发（单依赖歧义/参数名可得性等），两者不是同一个机制。
+- 证据链（方法级）：
+  - `@Resource` 注入入口：`CommonAnnotationBeanPostProcessor#postProcessProperties`
+  - `@Autowired` 注入入口：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`
+  - 依赖解析核心：`DefaultListableBeanFactory#doResolveDependency`
+- 最小复现：
+  - `SpringCoreBeansResourceInjectionLabTest`（`@Resource` name-first）
+  - `SpringCoreBeansAutowireCandidateSelectionLabTest`（by-name fallback 边界）
+
+### Q4：循环依赖为什么“构造器死、setter 可能活”？三层缓存解决什么、不解决什么？
+
+- 标准答案（可复述）：
+  - setter 循环依赖可能在“提前暴露 early reference”的窗口期被打断；构造器注入没有“先实例化再注入”的窗口，通常 fail-fast。三层缓存的核心是：支持 early reference 的按需生成与区分 early/final，但它不承诺解决所有循环（比如构造器循环、或 raw/wrapped 不一致导致的失败）。
+- 证据链（方法级）：
+  - 三层缓存入口：`DefaultSingletonBeanRegistry#getSingleton`
+  - early exposure：`DefaultSingletonBeanRegistry#addSingletonFactory`
+  - early 形态：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+- 最小复现：
+  - `SpringCoreBeansCircularDependencyBoundaryLabTest`
+  - `SpringCoreBeansEarlyReferenceLabTest`
+
+### Q5：为什么“代理导致类型不匹配”在面试里经常出现？你如何给出修复建议？
+
+- 标准答案（可复述）：
+  - JDK 动态代理只实现接口，不是目标类的子类；如果你按具体类类型注入/强转，会失败。修复建议通常是：按接口注入、或改用 class-based proxy（CGLIB）、或在设计层避免在容器早期阶段触发代理相关时序问题。
+- 证据链（方法级）：
+  - 代理替换发生点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+  - 代理/增强触发者：具体 BPP（如 AOP 相关 post-processor）
+- 最小复现：
+  - `SpringCoreBeansProxyingPhaseLabTest`
+
 ## 一句话自检
 
 - 你能否做到：拿到一个现象（注入失败/拿到 proxy/占位符没解析/启动阶段异常）就能先分层（定义层 vs 实例层），并跳到对应章节与 Lab？

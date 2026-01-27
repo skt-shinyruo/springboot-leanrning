@@ -106,12 +106,12 @@
 - 决定性分支：
   - `postProcessAfterInitialization` 是否返回代理（这通常决定“你最终拿到的对象是谁”）
 
-## 源码与断点（建议从 Lab 反推）
+## 源码调用链与断点（建议从 Lab 反推）
 
-更完整的“入口测试 → 断点链路”建议，优先看：
+更完整的“入口测试 → 断点调用链”建议，优先看：
 
-- 30 分钟快启：`part-00-guide/01-quickstart-30min.md`
-- 深挖指南：`part-00-guide/00-deep-dive-guide.md`
+- 30 分钟快启：`part-00-guide/012-01-quickstart-30min.md`
+- 深挖指南：`part-00-guide/011-00-deep-dive-guide.md`
 
 ## 最小可运行实验（Lab）
 
@@ -144,6 +144,16 @@
 上一章：[part-00-guide/01-quickstart-30min.md](012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-ioc-container/01-bean-mental-model.md](../part-01-ioc-container/020-01-bean-mental-model.md)
 
 <!-- BOOKIFY:END -->
+
+## 面试怎么用（把断点地图变成“证据链话术”）
+
+面试里你不需要“背源码”，但你需要能说清：
+
+1) 我会在哪个阶段下断点（refresh 哪一段）
+2) 我在断点里看哪 3 个变量就能下结论
+3) 我用哪个 Lab 复现并证明它
+
+推荐复习入口：`appendix/93-interview-playbook.md` / `appendix/98-debugger-pack.md`
 
 ## 一句话自检
 

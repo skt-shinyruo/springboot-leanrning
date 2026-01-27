@@ -46,7 +46,7 @@
 - `AutowireCapableBeanFactory#initializeBean`：触发初始化链路（Aware / BPP / init callbacks）
 - `AutowireCapableBeanFactory#destroyBean`：触发销毁回调（@PreDestroy 等）
 
-一个非常容易踩的点是：`initializeBean(...)` **可能返回一个“被 BPP 包装/替换后的对象”**（例如代理）。  
+一个非常容易踩的点是：`initializeBean(...)` **可能返回一个“被 BPP 包装/替换后的对象”**（例如代理）。
 因此在“容器外对象”场景里，如果你想要 AOP/代理语义，必须使用 `initializeBean` 的返回值，而不是继续拿原始对象用。
 
 ---
@@ -124,6 +124,24 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCapableBeanFactoryLabTe
    - 实际：它只是“尽力帮你补上部分管道”，你仍要对生命周期与代理替换保持警惕。
 2) **误区：容器外对象一定不能用 @PostConstruct**
    - 可以，但你要显式调用 initialize 链路（否则 BPP 不会触发）。
+
+## 面试常问（容器外对象：AutowireCapableBeanFactory 的边界）
+
+### Q1：AutowireCapableBeanFactory 解决的是什么问题？它“没解决什么”？
+
+- 标准答案（可复述）：
+  - 它让容器外对象也能获得“注入/初始化/销毁”等能力入口；但它不等于完整托管生命周期（对象的创建、持有、使用时机仍由你控制），也不会自动把所有容器语义（例如完整的创建时序/代理链）都补齐。
+- 证据链（方法级）：
+  - `AutowireCapableBeanFactory#autowireBean`
+  - `AutowireCapableBeanFactory#initializeBean`
+  - `AutowireCapableBeanFactory#destroyBean`
+- 最小复现：
+  - `SpringCoreBeansAutowireCapableBeanFactoryLabTest`
+
+### Q2：为什么这类“手工拼装”在工程里要谨慎使用？
+
+- 标准答案（可复述）：
+  - 它容易引入时机不确定、重复注入/重复初始化、以及与容器内 bean 语义不一致等问题；更推荐把对象创建权交回容器（定义层注册），让创建链路可预测。
 
 ## 一句话自检
 

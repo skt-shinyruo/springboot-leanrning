@@ -22,7 +22,7 @@
 
 这一章回答一个在真实项目里非常折磨人的问题：
 
-> 为什么我写了 `@Value("${demo.missing}")`，应用居然没启动失败？  
+> 为什么我写了 `@Value("${demo.missing}")`，应用居然没启动失败？
 > 注入进来的值甚至变成了字符串 `"${demo.missing}"`？
 
 先说结论（背这句就够排 80% 的坑）：
@@ -35,8 +35,8 @@
 
 把 `@Value` 想清楚，你就不会把问题误判成“配置没加载”或“环境没生效”：
 
-1) `@Value` 注解先被基础设施处理器识别（通常是 `AutowiredAnnotationBeanPostProcessor`）  
-2) 它把注解里的字符串（例如 `"${demo.present}"`）交给 `BeanFactory#resolveEmbeddedValue`  
+1) `@Value` 注解先被基础设施处理器识别（通常是 `AutowiredAnnotationBeanPostProcessor`）
+2) 它把注解里的字符串（例如 `"${demo.present}"`）交给 `BeanFactory#resolveEmbeddedValue`
 3) 解析后的结果再进入注入（必要时再做类型转换，见 [36](36-type-conversion-and-beanwrapper.md)）
 
 所以严格与否，最终会体现在：
@@ -58,7 +58,7 @@
 
 本章 Lab 的输出已经把关键事实写死：
 
-- 默认 embedded value resolver 往往委托给 `Environment.resolvePlaceholders(..)`  
+- 默认 embedded value resolver 往往委托给 `Environment.resolvePlaceholders(..)`
 - `resolvePlaceholders(..)` 默认是 **non-strict**：解析不到时可能保留原样 `"${...}"`
 
 > 这类行为最大的坑在于：系统能启动，但你在运行中才发现“配置没生效”，排障成本更高。
@@ -83,10 +83,10 @@
 
 关键点是它的**时机与职责**：
 
-- BFPP 发生在 bean 实例化之前，因此它可以把“严格策略”尽早装进容器  
+- BFPP 发生在 bean 实例化之前，因此它可以把“严格策略”尽早装进容器
 - 这类 fail-fast 往往比“运行到某个业务路径才发现值不对”更健康
 
-对照阅读（BFPP vs BPP，谁更早）：  
+对照阅读（BFPP vs BPP，谁更早）：
 - [06. 容器扩展点：BFPP vs BPP](../part-01-ioc-container/017-06-post-processors.md)
 
 ---
@@ -141,6 +141,38 @@
 
 ---
 
+## 源码调用链（方法级）：`${...}` 到底在哪一步被解析
+
+你在排 `@Value` 时，最容易误诊的是把“占位符解析 / SpEL 求值 / 类型转换”混为一谈。本章只关心第一步（占位符解析），最短调用链如下：
+
+1) 注入点入口：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`（识别 `@Value` 并触发解析）
+2) 解析入口：`AbstractBeanFactory#resolveEmbeddedValue`（把 `"${...}"` 交给 embedded value resolvers 逐个处理）
+3) strict 策略来源：`PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`（BFPP，在定义阶段安装/替换 resolver）
+4) 默认（non-strict）来源：`AbstractApplicationContext#prepareBeanFactory`（安装默认 embedded value resolver）
+
+你在 `resolveEmbeddedValue` 里看“输入/输出字符串是否仍包含 `${`”，就能快速判断 strict/non-strict 是否生效。
+
+## 面试常问（`@Value`：strict vs non-strict）
+
+### Q1：为什么缺失的 `${...}` 有时会原样字符串通过、有时会 fail-fast？
+
+- 标准答案（可复述）：
+  - 因为 embedded value resolver 的策略不同：non-strict 会放行未解析占位符；strict 会在缺失时抛异常。策略不是 `@Value` 决定的，而是容器里安装了什么 resolver/placeholder configurer 决定的。
+- 证据链（方法级）：
+  - `AbstractBeanFactory#resolveEmbeddedValue`
+  - `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
+- 最小复现：
+  - `SpringCoreBeansValuePlaceholderResolutionLabTest`
+
+### Q2：如何快速区分“占位符解析问题” vs “SpEL 求值问题” vs “类型转换问题”？
+
+- 标准答案（可复述）：
+  - 先在 `resolveEmbeddedValue` 看解析后的字符串；如果 `${...}` 还在，是解析问题；如果 `${...}` 已变成字符串但 `#{...}` 报错，是 SpEL 问题；如果字符串已正确但注入到目标类型失败，是类型转换问题（看 `convertIfNecessary`）。
+- 证据链（方法级）：
+  - 解析：`resolveEmbeddedValue`
+  - 求值：`StandardBeanExpressionResolver#evaluate`（见 [44](../part-05-aot-and-real-world/44-spel-and-value-expression.md)）
+  - 转换：`TypeConverterDelegate#convertIfNecessary`（见 [36](36-type-conversion-and-beanwrapper.md)）
+
 ## 一句话自检
 
 - 你能解释清楚：为什么有时缺失 `${...}` 会“原样字符串通过”，有时会 fail-fast 吗？
@@ -151,7 +183,7 @@
 
 这一章你只要记住两件事就够了：
 
-1) `@Value` 是否 strict 取决于 embedded value resolver（不是注解本身）  
+1) `@Value` 是否 strict 取决于 embedded value resolver（不是注解本身）
 2) strict fail-fast 的典型来源是 `PropertySourcesPlaceholderConfigurer`（BFPP，早期介入）
 
 <!-- BOOKIFY:START -->

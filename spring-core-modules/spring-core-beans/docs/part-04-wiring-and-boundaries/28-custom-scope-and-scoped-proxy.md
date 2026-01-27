@@ -104,7 +104,7 @@ prototype 是最典型的例子。
 2) **“不同 thread 里拿到的是同一个对象”** → 多半是 **scope 实现问题**：看 `SimpleThreadScope#get` 是否真的按 thread 隔离缓存。
 3) **“注入到 singleton 后看起来像单例（冻结）”** → **实例层语义**：注入只发生一次；用 `ObjectProvider` 或 scoped proxy 把解析推迟到“调用时”。
 
-## 6. 一句话自检
+## 6. 面试常问（Scope / ScopedProxy）
 
 1) 自定义 scope 的语义由谁决定？（提示：scope 的 `get`/缓存策略）
 2) 为什么 thread scope 注入到 singleton 会“冻结”？你能给出两种解法并说明代价吗？

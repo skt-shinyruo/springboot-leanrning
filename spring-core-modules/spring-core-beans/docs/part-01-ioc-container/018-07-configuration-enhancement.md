@@ -171,17 +171,25 @@ ConfigB configB(ConfigA a) {
 
 ## 常见坑与边界
 
-- **坑 1：`proxyBeanMethods=false` + `@Bean` 方法互调**  
-  - 现象：容器里 bean 依然是单例，但你在配置类内部互调会 new 出“额外对象”  
+- **坑 1：`proxyBeanMethods=false` + `@Bean` 方法互调**
+  - 现象：容器里 bean 依然是单例，但你在配置类内部互调会 new 出“额外对象”
   - 证据链：`SpringCoreBeansContainerLabTest.configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance()`
   - 修复：避免互调；改成“方法参数注入”（让依赖解析回到容器）
-- **坑 2：Lite 模式（`@Component + @Bean`）没有增强**  
-  - 现象：你以为“写了 @Bean 就等于 @Configuration”，结果互调语义与 proxy=false 一样（不会拦截）  
+- **坑 2：Lite 模式（`@Component + @Bean`）没有增强**
+  - 现象：你以为“写了 @Bean 就等于 @Configuration”，结果互调语义与 proxy=false 一样（不会拦截）
   - 证据链：`SpringCoreBeansContainerLabTest.liteConfiguration_componentWithBeanMethods_doesNotEnhance_beanMethodInterCallsCreateExtraInstance()`
   - 修复：把配置类显式改成 `@Configuration`（并明确 `proxyBeanMethods`）；或者同样避免互调
-- **坑 3：误把它当成“scope 语义变化”**  
+- **坑 3：误把它当成“scope 语义变化”**
   - 澄清：bean 还是单例；变的是“你在配置类里写的 Java 调用有没有被容器拦截并重定向”
   - 经验法则：只要你看到“配置类内部互调 @Bean 方法”，就默认它是风险点，优先改成“参数注入”
+
+## 排障决策表（`@Configuration` 增强 / `proxyBeanMethods`）
+
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| `@Bean` 方法互调出现“额外实例”（对象不相等） | `proxyBeanMethods=false` 或 Lite 模式导致没有增强 | 观察配置类运行时 class 是否包含 `$$SpringCGLIB$$`；互调时调用栈是否进入 `BeanMethodInterceptor#intercept` | 避免 `@Bean` 方法互调；改用方法参数注入；必要时显式 `@Configuration(proxyBeanMethods=true)` | `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance` |
+| 明明写了 `@Bean`，但行为像普通组件（互调不走容器） | Lite 模式（`@Component + @Bean`）默认不增强 | 断点 `ConfigurationClassPostProcessor#processConfigBeanDefinitions` 看 Full/Lite 判定；运行时 class 不增强 | 视需求改成 Full `@Configuration`；或同样避免互调 | `SpringCoreBeansContainerLabTest#liteConfiguration_componentWithBeanMethods_doesNotEnhance_beanMethodInterCallsCreateExtraInstance` |
+| 你以为“这是 scope 问题”但其实不是 | 混淆了“bean 是否单例”与“方法调用是否走容器” | 对照：容器 `getBean` 仍返回同一个 singleton；互调返回的是方法体 new | 把依赖解析交回容器（参数注入），不要在方法里 new | 同上两条对照用例 |
 
 ## 小结与下一章
 

@@ -19,6 +19,11 @@
       - `SpringCoreBeansIocBranchMatrixLabTest`
       - `SpringCoreBeansInternalsBranchMatrixLabTest`
 
+## 面试复盘入口（把“地图”变成“可复述答案”）
+
+- 如果你的目标是面试：建议先刷 `appendix/93-interview-playbook.md` 的题目结构，再回到本知识地图用“现象→章节→断点→Lab”把每个答案补齐证据链。
+- 经验法则：面试题的高分答案不是“名词堆砌”，而是“结论 + 方法级证据链 + 一个可运行复现入口”。
+
 ## 机制主线：用“症状驱动”组织知识点
 
 Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”发生。
@@ -68,10 +73,10 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 
 如果你希望按最省时间的顺序提升能力，建议：
 
-1) `part-00-guide/012-01-quickstart-30min.md`（30 分钟快启）  
-2) `part-00-guide/010-03-mainline-timeline.md`（时间线：把机制放回阶段）  
-3) `part-03-container-internals/18-refresh-to-bean-creation-mainline.md`（主线叙事：refresh → doCreateBean）  
-4) Part 01/04 的注入、代理、循环依赖关键章（按你遇到的现象挑读）  
+1) `part-00-guide/012-01-quickstart-30min.md`（30 分钟快启）
+2) `part-00-guide/010-03-mainline-timeline.md`（时间线：把机制放回阶段）
+3) `part-03-container-internals/18-refresh-to-bean-creation-mainline.md`（主线叙事：refresh → doCreateBean）
+4) Part 01/04 的注入、代理、循环依赖关键章（按你遇到的现象挑读）
 5) Appendix 的 Debugger Pack / Troubleshooting Checklist（把经验固化成套路）
 
 ---
@@ -80,8 +85,8 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 
 你应该能做到：
 
-1) 看到异常信息，能先判断它更像“定义层问题”还是“实例层问题”。  
-2) 看到“注入/代理/循环依赖”的任一现象，能在 30 秒内找到对应章节与断点入口。  
+1) 看到异常信息，能先判断它更像“定义层问题”还是“实例层问题”。
+2) 看到“注入/代理/循环依赖”的任一现象，能在 30 秒内找到对应章节与断点入口。
 3) 能用对应 Lab 把现象复现出来，而不是在业务项目里盲调。
 
 <!-- BOOKIFY:START -->

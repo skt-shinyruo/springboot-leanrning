@@ -276,6 +276,48 @@ destroySingletons():
   - `mvn -pl :spring-core-beans test`
   - 或单跑：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleCallbackOrderLabTest test`
 
+## 排障决策表（生命周期/回调：从“没执行”到“证据链”）
+
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| `@PostConstruct` 没执行 | 没有对应 BPP；或 bean 不在容器托管链路里 | `beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`；断点 `applyBeanPostProcessorsBeforeInitialization` 是否命中目标 beanName | 确保走完整 `ApplicationContext#refresh`；不要绕过容器 new；必要时手动注册注解处理器 | `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansAwareInfrastructureLabTest` |
+| `afterPropertiesSet`/`initMethod` 没执行 | bean 没走 `initializeBean`（例如早期返回了短路对象/被替换导致误判） | 断点 `AbstractAutowireCapableBeanFactory#initializeBean`；观察 `exposedObject` 是否被替换 | 先确认创建主线是否命中 `initializeBean`；若被 proxy 替换，分清 raw vs exposed | `SpringCoreBeansLifecycleCallbackOrderLabTest` |
+| `@PreDestroy` 没执行 | context 没 close；或是 prototype（默认不托管销毁） | 断点 `AbstractApplicationContext#doClose` / `DefaultSingletonBeanRegistry#destroySingletons`；prototype 不会进入 `disposableBeans` | 确保关闭容器；prototype 需要调用方显式销毁（`destroyBean`） | `SpringCoreBeansPrototypeDestroySemanticsLabTest` |
+| 你以为“拿到的就是原对象”，但行为像被代理 | after-init BPP 返回了另一个对象（proxy/wrapper） | 断点 `applyBeanPostProcessorsAfterInitialization`；观察 `bean` vs `result` | 把“最终暴露对象”当作事实来源，不要假设 raw 就是 exposed | `SpringCoreBeansLifecycleCallbackOrderLabTest`（结合 creation trace） |
+| 关闭时卡住/很慢 | destroy 回调做了重 IO/长耗时；或有依赖链导致逐个销毁很慢 | 断点 `DisposableBeanAdapter#destroy`；看具体 bean 的 destroy 方法耗时 | 缩短 destroy；拆依赖；把重任务移出销毁回调 | 结合本章断点闭环复盘 |
+
+## 面试常问（生命周期：顺序、触发者与边界）
+
+### Q1：`initializeBean(...)` 的核心顺序是什么？哪些点最容易说错？
+
+- 标准答案（可复述）：
+  - Aware → before-init BPP（这里可能触发 `@PostConstruct`）→ init callbacks（`afterPropertiesSet`/`initMethod`）→ after-init BPP（这里经常产生 proxy，决定最终暴露对象）。
+- 证据链（方法级）：
+  - `AbstractAutowireCapableBeanFactory#initializeBean`
+  - `#applyBeanPostProcessorsBeforeInitialization`
+  - `#invokeInitMethods`
+  - `#applyBeanPostProcessorsAfterInitialization`
+- 最小复现：
+  - `SpringCoreBeansLifecycleCallbackOrderLabTest`
+
+### Q2：为什么 prototype 默认不会触发 `@PreDestroy`？你怎么证明？
+
+- 标准答案（可复述）：
+  - prototype 的销毁不由容器统一托管；容器不会在 close 时遍历销毁它创建过的所有 prototype 实例，调用方需要显式销毁。
+- 证据链（方法级）：
+  - singleton 销毁主线：`DefaultSingletonBeanRegistry#destroySingletons`
+  - 手动销毁入口：`ConfigurableBeanFactory#destroyBean`
+- 最小复现：
+  - `SpringCoreBeansPrototypeDestroySemanticsLabTest`
+
+### Q3：为什么说 `@PostConstruct/@PreDestroy` 不是“语法自带生命周期”？
+
+- 标准答案（可复述）：
+  - 它们是“容器生命周期”，靠 `BeanPostProcessor` 在创建/销毁链路中触发；脱离 `ApplicationContext` 的 bootstrap（或没有注册对应 BPP）就不会发生。
+- 证据链（方法级）：
+  - 创建链路：`applyBeanPostProcessorsBeforeInitialization`
+  - 销毁链路：`DisposableBeanAdapter#destroy`（包含 DestructionAware BPP 与 JSR-250）
+
 ## 一句话自检
 
 你应该能回答：

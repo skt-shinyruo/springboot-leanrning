@@ -120,21 +120,33 @@
 
 ## 2. 这条时间线怎么用来排障（3 个经典分流）
 
-1) **注入失败（NoSuchBeanDefinition / NoUniqueBeanDefinition）**  
+1) **注入失败（NoSuchBeanDefinition / NoUniqueBeanDefinition）**
    - 优先看段 D：`doResolveDependency/findAutowireCandidates/determineAutowireCandidate`
-2) **代理/增强不生效**  
+2) **代理/增强不生效**
    - 先分清是段 C（BPP 没注册/顺序不对）还是段 D（bean 创建过早错过 BPP）
-3) **循环依赖/提前引用相关异常**  
+3) **循环依赖/提前引用相关异常**
    - 段 D：`getSingleton` 的三层缓存分支 + `doCreateBean` 的 early exposure 窗口
 
 ---
+
+## 面试常问（refresh 时间线）
+
+1) **refresh 的关键阶段你怎么讲（且能落到方法名）？**
+   - 要点：prepare → 定义层（BFPP/BDRPP）→ 注册 BPP 链 → 创建单例（doCreateBean）→ finishRefresh 回调。
+   - 证据链：`AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors` / `finishBeanFactoryInitialization`。
+
+2) **为什么说“时机决定能力”（尤其是代理/注解/回调）？**
+   - 要点：BPP 链注册完成前创建的 bean，可能错过后续 BPP（代理/注解注入），表现为“有时生效有时不生效”。
+   - 证据链：对照 `registerBeanPostProcessors` 与目标 bean 的创建时机，结合条件断点过滤 beanName。
+
+推荐复习入口：`appendix/93-interview-playbook.md`（Q1/Q5 等题型都以时间线为骨架）。
 
 ## 一句话自检
 
 你应该能用 3 句复述：
 
-1) BFPP/BDRPP 发生在 refresh 的哪一段？它改的是“定义”还是“实例”？  
-2) BPP 链是在什么时候注册的？为什么它决定了“注解/AOP/回调”是否生效？  
+1) BFPP/BDRPP 发生在 refresh 的哪一段？它改的是“定义”还是“实例”？
+2) BPP 链是在什么时候注册的？为什么它决定了“注解/AOP/回调”是否生效？
 3) 单例创建主线从哪开始（哪一步触发预实例化）？循环依赖窗口在 `doCreateBean` 的哪里？
 
 <!-- BOOKIFY:START -->

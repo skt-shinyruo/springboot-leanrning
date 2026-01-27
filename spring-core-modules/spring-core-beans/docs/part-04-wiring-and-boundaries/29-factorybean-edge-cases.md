@@ -96,7 +96,7 @@
 - “在 Boot 条件装配里出现诡异匹配结果” → **定义层 + 条件机制**：FactoryBean 的类型声明不可靠会影响条件判断，建议优先修正 `getObjectType()`（并回看 [10](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)）
 - “把它当成缓存/创建 bug 去排查” → **先确认类型信息**：这类问题往往不是实例缓存，而是类型推断与 allowEagerInit 的限制
 
-## 4. 一句话自检
+## 4. 面试常问（FactoryBean 边界）
 
 - 你能解释：为什么 `getBeanNamesForType(..., allowEagerInit=false)` 可能“按类型发现不到 FactoryBean 的 product”？入口：`SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName`
 - 你能解释：为什么 `getBean("sequence")` 拿到的是 product，但 `getBean("&sequence")` 拿到的是 FactoryBean 本体？入口：`SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory`

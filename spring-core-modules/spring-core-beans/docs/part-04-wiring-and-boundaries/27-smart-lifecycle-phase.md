@@ -42,7 +42,7 @@
 
 你还应该补齐两个“真实项目更常见”的边界：
 
-- **autoStartup=false**：refresh 不会自动 start（否则很多“为什么它启动就跑起来了”讲不清）  
+- **autoStartup=false**：refresh 不会自动 start（否则很多“为什么它启动就跑起来了”讲不清）
 - **stop(callback)**：容器为什么要 callback（否则 shutdown 可能卡住）
 
 对应实验（本仓库已补齐）：
@@ -67,7 +67,7 @@
 
 补充一个非常重要但容易忽略的事实：
 
-- `DefaultLifecycleProcessor` 的 stop 逻辑会按 phase 分组，并等待 `stop(callback)` 的回调完成（用于支持异步 stop）  
+- `DefaultLifecycleProcessor` 的 stop 逻辑会按 phase 分组，并等待 `stop(callback)` 的回调完成（用于支持异步 stop）
 - 如果回调永远不触发，容器会等待直到 `timeoutPerShutdownPhase` 超时（这就是“关闭卡住”的来源之一）
 
 入口：
@@ -82,7 +82,7 @@
 - “close 卡住/stop 不返回” → **实例层（异步 stop）**：`stop(Runnable)` 必须调用 callback（本章第 3 节）
 - “把它当业务逻辑入口导致复杂副作用” → **设计风险**：它更适合作为基础设施 start/stop 钩子（本章第 3 节）
 
-## 4. 一句话自检
+## 4. 面试常问（SmartLifecycle / phase）
 
 1) SmartLifecycle 的 start/stop 触发点分别落在 refresh/close 的哪个阶段？（提示：LifecycleProcessor）
 2) 为什么 start 按 phase 升序，而 stop 按 phase 反序？（提示：依赖关系与安全停机）

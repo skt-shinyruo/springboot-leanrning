@@ -211,7 +211,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 在 `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 里建议 watch/evaluate：
 
 - `processedBeans`（或同等含义的集合）：哪些 processor 已经处理过（避免重复执行）
-- “三组 processor 集合”（概念上）：`PriorityOrdered` / `Ordered` / others 的分组结果  
+- “三组 processor 集合”（概念上）：`PriorityOrdered` / `Ordered` / others 的分组结果
   - 你不必强记变量名，但要确认：同一类 processor 是否被按三段执行
 
 在 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 里建议 watch/evaluate：
@@ -225,10 +225,10 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 **反例：我明明让 BPP 实现了 `PriorityOrdered/Ordered`，为什么顺序还是不生效？**
 
-- 手工 `beanFactory.addBeanPostProcessor(...)` 注册的 BPP  
+- 手工 `beanFactory.addBeanPostProcessor(...)` 注册的 BPP
   - **不会**走 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 的排序流程
   - 执行顺序只按“注册顺序”，不是按 `Ordered`
-- 因此你会看到：`beanFactory.getBeanPostProcessors()` 里手工注册的 BPP 在更前面  
+- 因此你会看到：`beanFactory.getBeanPostProcessors()` 里手工注册的 BPP 在更前面
   ⇒ 最终包裹/增强顺序也跟着变（很多“反直觉”就是从这里来的）
 
 把这个反例看懂，你就能把两个顺序体系彻底分开：
@@ -264,7 +264,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java`
 
-本模块提供了一个“反直觉但很重要”的可复现反例（只用 `@Order`，不实现 `Ordered`）：  
+本模块提供了一个“反直觉但很重要”的可复现反例（只用 `@Order`，不实现 `Ordered`）：
 `SpringCoreBeansPostProcessorOrderingLabTest.beanPostProcessors_annotatedWithOrderButNotOrdered_areNotSorted_andFollowRegistrationOrder()`
 
 - `SpringCoreBeansPostProcessorOrderingLabTest.beanFactoryPostProcessors_areInvokedInPriorityOrderedThenOrderedThenUnorderedOrder()`
@@ -300,7 +300,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 一个非常实用的“断点分流口诀”：
 
-> 注意：这里的“先包/后包”说的是 **容器阶段的 BPP 包裹顺序**。  
+> 注意：这里的“先包/后包”说的是 **容器阶段的 BPP 包裹顺序**。
 > 它会影响是否出现“多层 proxy（套娃）”以及外层/内层 proxy 的归属。
 >
 > AOP/事务/缓存/安全这类能力内部还有另一套“链条顺序”（advisor/interceptor 顺序），不要混在一起：
@@ -384,12 +384,29 @@ registerBeanPostProcessors(beanFactory):
   sort(internal); addAll(internal) // internal 统一被挪到 list 尾部
 ```
 
+## 面试常问（顺序：为什么“先包谁/后包谁”会改变行为）
+
+### Q1：`PriorityOrdered` / `Ordered` / `@Order` 的优先级关系是什么？
+
+- 标准答案（可复述）：
+  - 分组优先看接口：`PriorityOrdered` 最高、`Ordered` 次之、其余最后；组内再用 comparator（接口 `getOrder()` 优先于注解值），数字越小越靠前。
+- 证据链（方法级）：
+  - 注册入口：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`
+  - 排序入口：`AnnotationAwareOrderComparator#sort`
+
+### Q2：为什么 “手工 addBeanPostProcessor” 可能让 `Ordered` 不生效？
+
+- 标准答案（可复述）：
+  - 手工注册绕过了容器的分组+排序装配算法，本质按“注册顺序”生效；这会直接改变包裹顺序。
+- 最小复现：
+  - `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticBppExecutionOrder_isRegistrationOrder_notOrderedInterface`
+
 ## 小结与下一章
 
 - `AbstractApplicationContext#refresh`
-  - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`  
+  - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
     - **BFPP/BDRPP 在这里执行**（定义层：改 `BeanDefinition`）
-  - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`  
+  - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
     - **BPP 在这里注册进 BeanFactory**（实例层：决定“谁先作用于实例”）
   - `AbstractApplicationContext#finishBeanFactoryInitialization`
     - `DefaultListableBeanFactory#preInstantiateSingletons`（批量创建非 lazy 单例）

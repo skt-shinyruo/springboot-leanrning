@@ -27,14 +27,14 @@
 
 这一章解决两类“很常见但很难讲清”的问题：
 
-1) **概念边界**：`${...}` 和 `#{...}` 到底分别属于哪条链路？  
+1) **概念边界**：`${...}` 和 `#{...}` 到底分别属于哪条链路？
 2) **排障边界**：值注入失败时，怎么把问题快速定位到“解析/求值/转换”的哪一步？
 
 先给结论（你背这 4 句就够排障）：
 
-1) `${...}` 是 **占位符解析**（通常来自 Environment/PropertySources），本质是“把字符串里的 key 替换成值”。  
-2) `#{...}` 是 **SpEL 求值**（可以计算/引用 bean/调用方法），本质是“执行表达式并产生一个对象”。  
-3) 两者最终都要经过 **类型转换**（注入点类型决定转换规则），然后才能注入成功。  
+1) `${...}` 是 **占位符解析**（通常来自 Environment/PropertySources），本质是“把字符串里的 key 替换成值”。
+2) `#{...}` 是 **SpEL 求值**（可以计算/引用 bean/调用方法），本质是“执行表达式并产生一个对象”。
+3) 两者最终都要经过 **类型转换**（注入点类型决定转换规则），然后才能注入成功。
 4) 组合写法 `#{ ${...} + 2 }` 能成立，通常意味着：**先解析 `${...}`，再对剩余字符串做 SpEL 求值**。
 
 对照阅读（把“解析/求值/转换”三段分别看清）：
@@ -48,8 +48,8 @@
 
 建议按这个顺序跑（从正常路径到失败分流）：
 
-1) 引用 bean + 类型转换：`SpringCoreBeansSpelValueLabTest#valueWithSpel_canReferenceBeanAndResultIsConvertedToTargetType`  
-2) 占位符 + SpEL 组合（解析顺序）：`SpringCoreBeansSpelValueLabTest#spelCanComposeWithPlaceholderResolution_placeholdersResolveFirst_thenExpressionIsEvaluated`  
+1) 引用 bean + 类型转换：`SpringCoreBeansSpelValueLabTest#valueWithSpel_canReferenceBeanAndResultIsConvertedToTargetType`
+2) 占位符 + SpEL 组合（解析顺序）：`SpringCoreBeansSpelValueLabTest#spelCanComposeWithPlaceholderResolution_placeholdersResolveFirst_thenExpressionIsEvaluated`
 3) 求值成功但转换失败：`SpringCoreBeansSpelValueLabTest#spelEvaluationMaySucceedButTypeConversionMayFail_whenInjectingIntoPrimitiveType`
 
 命令：
@@ -64,11 +64,11 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 
 你可以把 `@Value` 注入链路压缩成这条“最短可跟栈”：
 
-1) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：识别 `@Value` 注入点  
-2) `BeanFactory#resolveEmbeddedValue`（常见落点：`AbstractBeanFactory#resolveEmbeddedValue`）：解析字符串  
-   - 可能包含 `${...}` 占位符替换  
-   - 可能包含 `#{...}` 表达式求值（通过 `BeanExpressionResolver`）  
-3) `TypeConverter#convertIfNecessary`：把解析/求值结果转换成注入点目标类型  
+1) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：识别 `@Value` 注入点
+2) `BeanFactory#resolveEmbeddedValue`（常见落点：`AbstractBeanFactory#resolveEmbeddedValue`）：解析字符串
+   - 可能包含 `${...}` 占位符替换
+   - 可能包含 `#{...}` 表达式求值（通过 `BeanExpressionResolver`）
+3) `TypeConverter#convertIfNecessary`：把解析/求值结果转换成注入点目标类型
 4) 注入到字段/参数（属性填充或构造注入）
 
 你只要把这条链路记住，就不会再把“值注入失败”当成玄学。
@@ -90,31 +90,61 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 
 ### 4.1 推荐断点（按收益排序）
 
-1) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`（定位注入点与原始字符串）  
-2) `AbstractBeanFactory#resolveEmbeddedValue`（看 `${...}`/`#{...}` 处理前后字符串）  
-3) `StandardBeanExpressionResolver#evaluate`（只在 `#{...}` 场景触发）  
-4) `TypeConverter#convertIfNecessary`（看转换失败到底从哪来）  
+1) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`（定位注入点与原始字符串）
+2) `AbstractBeanFactory#resolveEmbeddedValue`（看 `${...}`/`#{...}` 处理前后字符串）
+3) `StandardBeanExpressionResolver#evaluate`（只在 `#{...}` 场景触发）
+4) `TypeConverter#convertIfNecessary`（看转换失败到底从哪来）
 
 ### 4.2 Watch List（最小够用版）
 
-- 原始值：`@Value` 的字符串（包含 `${...}` 或 `#{...}`）  
-- 解析后字符串：`resolveEmbeddedValue` 的输出（是否还包含 `${`/`#{`）  
-- SpEL 求值结果：value 的 runtime type（String/Integer/对象）  
-- 目标类型：注入点类型（字段类型/参数类型）  
+- 原始值：`@Value` 的字符串（包含 `${...}` 或 `#{...}`）
+- 解析后字符串：`resolveEmbeddedValue` 的输出（是否还包含 `${`/`#{`）
+- SpEL 求值结果：value 的 runtime type（String/Integer/对象）
+- 目标类型：注入点类型（字段类型/参数类型）
 - 异常 root cause：`NumberFormatException` / `SpelEvaluationException` / `IllegalArgumentException` 等
 
 ## 常见坑与边界
 
-1) **把“类型转换失败”误以为 “SpEL 失败”**  
-   - 典型：`@Value("#{ 'not-a-number' }") private int n;`  
+1) **把“类型转换失败”误以为 “SpEL 失败”**
+   - 典型：`@Value("#{ 'not-a-number' }") private int n;`
    - 现象：root cause 可能是 `NumberFormatException`（转换失败），不是 `SpelParseException`
-2) **把“缺失占位符原样通过”误以为 “配置没加载/没生效”**  
-   - 典型：non-strict 模式下 `${demo.missing}` 可能被原样注入成字符串  
+2) **把“缺失占位符原样通过”误以为 “配置没加载/没生效”**
+   - 典型：non-strict 模式下 `${demo.missing}` 可能被原样注入成字符串
    - 解法：要么 strict fail-fast（`PropertySourcesPlaceholderConfigurer`），要么用默认值 `${k:default}`
-3) **误区：`@Value` 直接读 Environment**  
+3) **误区：`@Value` 直接读 Environment**
    - 正确模型：`@Value` → `resolveEmbeddedValue` →（占位符/SpEL）→ 类型转换 → 注入
-4) **误区：SpEL 只能返回字符串**  
+4) **误区：SpEL 只能返回字符串**
    - SpEL 可以返回任意对象（bean 引用结果、计算结果）；是否需要转换取决于注入点类型
+
+## 源码调用链（方法级）：`@Value` 的“三连”在哪里发生
+
+本章的核心是把 `@Value` 的三步拆开看清楚（占位符 → SpEL → 类型转换），最短调用链如下：
+
+1) 注入点入口：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`（拿到原始字符串）
+2) 解析入口：`AbstractBeanFactory#resolveEmbeddedValue`（处理 `${...}`）
+3) 表达式求值：`StandardBeanExpressionResolver#evaluate`（只在 `#{...}` 场景触发）
+4) 类型转换：`TypeConverterDelegate#convertIfNecessary`（把求值结果/字符串转成注入点类型）
+
+你在断点里把“字符串解析前后值 / SpEL 求值结果类型 / requiredType”三件事看清楚，就能快速定位是第几步出问题。
+
+## 面试常问（SpEL / @Value：区分链路比背语法更重要）
+
+### Q1：`${...}` 与 `#{...}` 的本质差异是什么？
+
+- 标准答案（可复述）：
+  - `${...}` 是占位符解析（来自 PropertySource/Environment）；`#{...}` 是 SpEL 表达式求值（可以做计算/引用 bean）。两者都可能在 `resolveEmbeddedValue` 之后进入类型转换。
+- 证据链（方法级）：
+  - `${...}`：`resolveEmbeddedValue`
+  - `#{...}`：`StandardBeanExpressionResolver#evaluate`
+- 最小复现：
+  - `SpringCoreBeansSpelValueLabTest`
+
+### Q2：值注入失败时，如何快速判断是“解析/求值/转换”哪一步？
+
+- 标准答案（可复述）：
+  - 先看 `resolveEmbeddedValue` 输出（`${...}` 是否还在）；再看 `evaluate` 是否抛 `SpelEvaluationException`；最后看 `convertIfNecessary` 是否抛 `TypeMismatch/NumberFormat` 等转换异常。
+- 最小复现：
+  - `SpringCoreBeansSpelValueLabTest`（配合本章断点/Watch List）
 
 ## 一句话自检
 

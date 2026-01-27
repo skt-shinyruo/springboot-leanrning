@@ -62,7 +62,7 @@
 - “按类型注入仍然歧义” → **实例层（候选解析）**：alias 不改变候选选择规则（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)/[33](33-autowire-candidate-selection-primary-priority-order.md)）
 - “和 FactoryBean/`&` 混在一起更乱” → **先分清 name 变换**：`transformedBeanName` 同时负责 alias 与 `&`（见 [23](23-factorybean-deep-dive.md)）
 
-## 4. 一句话自检
+## 4. 面试常问（beanName 与 alias）
 
 - 常问：alias 是“复制一个 bean”吗？它到底是什么？
   - 答题要点：alias 只是 name → canonicalName 的映射，不会创建第二个 BeanDefinition/第二个实例。

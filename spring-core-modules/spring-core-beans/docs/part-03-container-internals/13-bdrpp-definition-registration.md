@@ -90,10 +90,10 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 如果你在调用栈里看到了：
 
-- `invokeBeanFactoryPostProcessors` → `postProcessBeanDefinitionRegistry`  
+- `invokeBeanFactoryPostProcessors` → `postProcessBeanDefinitionRegistry`
   那你处理的是“定义从哪里来的”问题（本章）
 - 如果你要追“最初的定义入口”（扫描/`@Bean`/`@Import`/registrar），先回到 [02](../part-01-ioc-container/02-bean-registration.md)
-- `registerBeanPostProcessors` / `preInstantiateSingletons` / `doCreateBean`  
+- `registerBeanPostProcessors` / `preInstantiateSingletons` / `doCreateBean`
   那你处理的是“实例如何被创建/被包装”问题（见 [14](14-post-processor-ordering.md)、[25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)、[31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
 
 ## 固定观察点（watch list）
@@ -255,15 +255,38 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 - `AbstractApplicationContext#refresh`
   - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
     - （内部）收集并实例化 `BeanDefinitionRegistryPostProcessor` beans
-    - `BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry(registry)`  
+    - `BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry(registry)`
       - **在这里动态注册/修改 `BeanDefinition`**
       - `DefaultListableBeanFactory#registerBeanDefinition(beanName, beanDefinition)`（真正写入 registry）
-    - `BeanDefinitionRegistryPostProcessor#postProcessBeanFactory(beanFactory)`  
+    - `BeanDefinitionRegistryPostProcessor#postProcessBeanFactory(beanFactory)`
       - **注意：这仍然属于“定义阶段/处理器阶段”，不是实例阶段**
-    - `BeanFactoryPostProcessor#postProcessBeanFactory(beanFactory)`（普通 BFPP）  
+    - `BeanFactoryPostProcessor#postProcessBeanFactory(beanFactory)`（普通 BFPP）
       - **在这里修改 BDRPP 刚注册进去的定义**
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（BPP 注册在这里发生）
   - `DefaultListableBeanFactory#preInstantiateSingletons`（批量创建非 lazy 单例从这里开始）
+
+## 面试常问（BDRPP：定义注册为什么这么关键）
+
+### Q1：BDRPP 和 BFPP 的本质差异是什么？为什么 BDRPP 能“注册更多定义”？
+
+- 标准答案（可复述）：
+  - BDRPP 作用于 registry（定义注册表），能新增/删除/修改 `BeanDefinition`；BFPP 作用于 BeanFactory（已存在定义），通常做“修改定义元数据”。因此 BDRPP 的影响面更大、发生更早。
+- 证据链（方法级）：
+  - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
+  - `BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`
+  - `DefaultListableBeanFactory#registerBeanDefinition`
+- 最小复现：
+  - `SpringCoreBeansRegistryPostProcessorLabTest`
+
+### Q2：为什么“在 post-processor 阶段调用 getBean()”会引发时序错乱？
+
+- 标准答案（可复述）：
+  - 因为这会触发过早实例化，导致某些 BPP 还没注册就有 bean 先“出生”，后续增强链无法 retroactively 生效，表现为代理/注解处理缺失或顺序反直觉。
+- 证据链（方法级）：
+  - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（BPP 链在这里才完整）
+  - `BeanPostProcessorChecker`（典型提示信号）
+- 最小复现：
+  - `SpringCoreBeansRegistryPostProcessorLabTest#getBeanDuringPostProcessing_instantiatesTooEarly_andSkipsLaterBeanPostProcessors`
 
 ## 小结与下一章
 

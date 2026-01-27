@@ -22,11 +22,22 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansImportLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticRegistrationLabTest.java`
 
+## 章节验收口径（10/30/3：教程化闭环）
+
+> 这章内容多，但验收很简单：你不需要背细节，你要能“跑得出 + 断得到 + 说得清”。
+
+1) **10 分钟最小闭环（跑得出）**
+   - 至少跑通 1 个入口 Lab，并在输出/断言里看见“定义层注册发生了”。
+2) **30 分钟断点闭环（断得到）**
+   - 用条件断点命中 `registerBeanDefinition`，并能用 `source/factoryMethodName` 反推来源（scan/@Bean/@Import/registrar）。
+3) **3 分钟复述闭环（说得清）**
+   - 用“结论 → 证据链（方法级）→ 反例/坑”回答本章末尾的面试题（也可对照 `appendix/93-interview-playbook.md`）。
+
 ## 机制主线：注册 = 先注册定义，再按定义造实例
 
 你在工程里“把一个东西交给 Spring 管”，本质上有两种完全不同的语义：
 
-1) **定义层（Definition）**：把“怎么造对象”交给容器（容器拥有创建权）  
+1) **定义层（Definition）**：把“怎么造对象”交给容器（容器拥有创建权）
 2) **实例层（Instance）**：你已经造好了对象，容器只是“给它一个名字”
 
 很多“注入没生效 / 代理没生效 / 回调没执行”的坑，都来自：你以为自己走的是定义层，其实走的是实例层。
@@ -101,9 +112,9 @@ Lab：`SpringCoreBeansImportLabTest`
 
 这部分最容易踩坑，所以必须单列出来：
 
-- 定义层注册（推荐）：`registerBeanDefinition` / `registerBean`  
+- 定义层注册（推荐）：`registerBeanDefinition` / `registerBean`
   - 会走 `doCreateBean`，所以会注入、会生命周期、会 BPP
-- 实例层注册（慎用）：`registerSingleton`  
+- 实例层注册（慎用）：`registerSingleton`
   - 只把对象放进单例缓存，不会 retroactive 触发注入/BPP/init
 
 对应章节（深入）：[25. 手工添加 BPP：顺序与时机](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)
@@ -130,9 +141,9 @@ Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`
 
 #### 2.6.1 证据链模板（通用）
 
-1) 跑一个最小 Lab（噪音最少）  
-2) 在 `registerBeanDefinition` 处打断点（定义层落点）  
-3) 只看固定 watch list（不要在调用栈里漫游）  
+1) 跑一个最小 Lab（噪音最少）
+2) 在 `registerBeanDefinition` 处打断点（定义层落点）
+3) 只看固定 watch list（不要在调用栈里漫游）
 4) 用 `source/factoryMethodName/beanClassName` 判断来源（scan / @Bean / @Import / registrar）
 
 推荐固定断点：
@@ -185,7 +196,7 @@ Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`
 !!! note "版本说明（很重要）"
 
     - 下面链路以 **Spring Framework 6.2.x（Spring Boot 3.5.x）** 为准。
-    - 少数内部方法/类名在不同小版本可能会微调，但以下锚点基本稳定：  
+    - 少数内部方法/类名在不同小版本可能会微调，但以下锚点基本稳定：
       - `AbstractApplicationContext#refresh`
       - `PostProcessorRegistrationDelegate#invokeBeanDefinitionRegistryPostProcessors`
       - `ConfigurationClassPostProcessor#processConfigBeanDefinitions`
@@ -240,7 +251,7 @@ ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry
 
 你只要把这条链路走通，就能回答两个高价值问题：
 
-1) `@ComponentScan/@Bean/@Import` 这类注解“谁在解析”？（答：配置类解析链路）  
+1) `@ComponentScan/@Bean/@Import` 这类注解“谁在解析”？（答：配置类解析链路）
 2) 解析出来的结果是什么？（答：BeanDefinition 注册进 registry）
 
 ### 3.3 ComponentScan：@ComponentScan vs scan(...) 的方法级链路
@@ -313,8 +324,8 @@ ConfigurationClassPostProcessor#postProcessBeanFactory(beanFactory)
 
 排障提示：
 
-- 现象：你在一个 `@Bean` 方法里直接调用另一个 `@Bean` 方法，却得到了“新对象”而不是容器单例  
-  - 优先检查：是否处于 “lite mode”（例如仅 `@Component`）或 `proxyBeanMethods=false`  
+- 现象：你在一个 `@Bean` 方法里直接调用另一个 `@Bean` 方法，却得到了“新对象”而不是容器单例
+  - 优先检查：是否处于 “lite mode”（例如仅 `@Component`）或 `proxyBeanMethods=false`
   - 证据链：`ConfigurationClassEnhancer#enhance` 是否命中；配置类是否被增强为 CGLIB 子类（类名通常带 `$$`）
   - 对应章节：[第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](018-07-configuration-enhancement.md)
 
@@ -382,13 +393,13 @@ SingletonBeanRegistry#registerSingleton(beanName, singletonObject)
 
 关键结论：
 
-- **实例层注册不会 retroactive 触发注入/BPP/init**  
+- **实例层注册不会 retroactive 触发注入/BPP/init**
   - 证据链：你会发现 `doCreateBean/populateBean/initializeBean` 根本不命中
 - 排障上，“定义存在/实例存在”必须拆开看：`containsBeanDefinition` vs `containsSingleton`
 
 ### 3.7 你说的“属性绑定”：populateBean / BeanWrapper 的方法级入口在哪里？
 
-虽然本章讲“注册”，但你排障时经常要回答：**“我到底有没有走到属性填充（populateBean）？”**  
+虽然本章讲“注册”，但你排障时经常要回答：**“我到底有没有走到属性填充（populateBean）？”**
 因为它直接决定“注入/值绑定/类型转换”是否发生。
 
 方法级最短链路（创建阶段）：
@@ -417,9 +428,9 @@ AbstractBeanFactory#doGetBean(beanName)
 
 !!! warning "反例：过早 getBean（或实例层注册）会让你“绕开管线”"
 
-    - 场景 1：在 BFPP/BDRPP 执行过程中（定义层加工阶段）直接触发 `getBean(...)`  
+    - 场景 1：在 BFPP/BDRPP 执行过程中（定义层加工阶段）直接触发 `getBean(...)`
       - 后果：目标 bean 可能在 BPP 链注册完成前被创建，导致注解注入/代理/回调行为异常（表现为“有时生效、有时不生效”）。
-    - 场景 2：用 `registerSingleton` 把对象塞进容器  
+    - 场景 2：用 `registerSingleton` 把对象塞进容器
       - 后果：对象不会 retroactive 走注入/BPP/init（表面看“在容器里”，实际上绕开了创建管线）。
 
 ---
@@ -459,8 +470,8 @@ AbstractBeanFactory#doGetBean(beanName)
 
 ### 5.1 最短判定：三件事先问清楚
 
-1) `containsBeanDefinition(beanName)` 是否为 true？（定义层是否存在）  
-2) `containsSingleton(beanName)` 是否为 true？（实例层是否已有对象）  
+1) `containsBeanDefinition(beanName)` 是否为 true？（定义层是否存在）
+2) `containsSingleton(beanName)` 是否为 true？（实例层是否已有对象）
 3) `doCreateBean/populateBean` 是否命中过？（是否走过创建与属性填充）
 
 ### 5.2 排障决策表（建议收藏）
@@ -502,18 +513,18 @@ AbstractBeanFactory#doGetBean(beanName)
 
 如果你想把本章用于面试或团队内训，建议统一用这套答题结构：
 
-1) 一句话定义：Bean 注册的第一性对象是 `BeanDefinition`（定义），不是实例  
-2) 四类入口：scan / @Bean / @Import（selector+registrar）/ programmatic  
-3) 时机：它发生在 `refresh` 的定义层阶段，晚了就错过 BFPP/BDRPP 与 BPP 链  
-4) 反例：`registerSingleton` / 过早 getBean（绕开管线）  
+1) 一句话定义：Bean 注册的第一性对象是 `BeanDefinition`（定义），不是实例
+2) 四类入口：scan / @Bean / @Import（selector+registrar）/ programmatic
+3) 时机：它发生在 `refresh` 的定义层阶段，晚了就错过 BFPP/BDRPP 与 BPP 链
+4) 反例：`registerSingleton` / 过早 getBean（绕开管线）
 5) 证据链：给出一个 Lab + 关键断点 + 3 个观察点（source/beanName/factoryMethodName）
 
 面试高频问法（建议你至少能答出 3 题）：
 
-1) Spring 里“注册一个 Bean”到底注册的是什么？（BeanDefinition vs bean instance）  
-2) `registerBeanDefinition` vs `registerSingleton` 的根本差异是什么？为什么会影响注入/代理/回调？  
-3) `@ComponentScan`、`@Bean`、`@Import` 分别是谁在负责解析与注册？（关键处理器/落点）  
-4) 为什么说“注册时机决定能力”？你如何用断点证明一次？  
+1) Spring 里“注册一个 Bean”到底注册的是什么？（BeanDefinition vs bean instance）
+2) `registerBeanDefinition` vs `registerSingleton` 的根本差异是什么？为什么会影响注入/代理/回调？
+3) `@ComponentScan`、`@Bean`、`@Import` 分别是谁在负责解析与注册？（关键处理器/落点）
+4) 为什么说“注册时机决定能力”？你如何用断点证明一次？
 5) 你在真实项目里遇到“注入没生效/代理没生效”，如何第一时间判断是不是“绕开了创建管线”？
 
 团队内训可直接复用的课时脚本见：[`appendix/99-team-training-kit.md`](../appendix/99-team-training-kit.md)
@@ -616,8 +627,8 @@ AbstractBeanFactory#doGetBean(beanName)
 
 你应该能用 3 句答题：
 
-1) Bean 注册的“第一性对象”是什么？（提示：BeanDefinition，而不是实例）  
-2) `registerBeanDefinition` vs `registerSingleton` 的根本差异是什么？  
+1) Bean 注册的“第一性对象”是什么？（提示：BeanDefinition，而不是实例）
+2) `registerBeanDefinition` vs `registerSingleton` 的根本差异是什么？
 3) 为什么“注册时机”会决定 AOP/注解/回调是否生效？
 
 <!-- BOOKIFY:START -->

@@ -209,6 +209,33 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 3) **误区：看到 `RuntimeBeanReference` 就以为“这是 XML 才有的东西”**
    - 这是 beans 的抽象：你在任何输入源（XML/Properties/Groovy/程序化注册）都可以表达“引用”。
 
+## 排障决策表（属性注入：解析 vs 转换 vs 赋值）
+
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| 属性值是 `RuntimeBeanReference`，但最终没解析成对象 | 引用解析失败 / beanName 不存在 | 断点 `BeanDefinitionValueResolver#resolveValueIfNecessary`；看 `RuntimeBeanReference#getBeanName` | 修正 beanName/alias；确认定义是否注册 | `SpringCoreBeansBeanDefinitionValueResolutionLabTest` |
+| `TypedStringValue` 注入失败（TypeMismatch） | 转换链路没命中合适 converter/editor | 断点 `BeanWrapperImpl#setPropertyValues` / `TypeConverterDelegate#convertIfNecessary`；看 requiredType 与分支 | 安装/注册 ConversionService 或 PropertyEditor；区分占位符/SpEL/转换三连 | `SpringCoreBeansPropertyEditorLabTest`（配合 [36](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)） |
+| 你以为“值已经解析”，但其实是占位符没解析 | embedded value resolver non-strict 放行 | 断点 `AbstractBeanFactory#resolveEmbeddedValue` | 启用 strict 或补齐 property source/key | [34](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) |
+| PropertyEditor 行为偶发、并发下异常 | editor 有状态且非线程安全 | 看 editor 是否复用、是否共享实例（setValue） | 避免共享 editor 实例；优先用 ConversionService | 结合本章与性能/并发相关用例复盘 |
+
+## 面试常问（BeanDefinition 值解析：为什么它不是“单纯 setProperty”）
+
+### Q1：定义层 value 是如何落到对象属性上的？关键分派点在哪？
+
+- 标准答案（可复述）：
+  - 创建阶段先在 `applyPropertyValues` 进入属性填充；定义层 value 由 `BeanDefinitionValueResolver#resolveValueIfNecessary` 按类型分派（引用/集合/字符串等）；最终由 `BeanWrapper` 写入属性并触发类型转换。
+- 证据链（方法级）：
+  - `AbstractAutowireCapableBeanFactory#applyPropertyValues`
+  - `BeanDefinitionValueResolver#resolveValueIfNecessary`
+  - `BeanWrapperImpl#setPropertyValues` / `AbstractNestablePropertyAccessor#setPropertyValue`
+- 最小复现：
+  - `SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
+
+### Q2：PropertyEditor 和 ConversionService 的边界是什么？为什么现代更推荐 ConversionService？
+
+- 标准答案（可复述）：
+  - ConversionService 更现代、更易组合且能感知类型描述；PropertyEditor 主要是历史兼容且常有状态，容易引入并发/复用问题。排障时要能在断点里确认这次到底走了哪条分支。
+
 ## 一句话自检
 
 - 你能解释清楚：BeanDefinition 的 value 解析发生在创建阶段的哪一步吗？（提示：applyPropertyValues → value resolver → BeanWrapper）

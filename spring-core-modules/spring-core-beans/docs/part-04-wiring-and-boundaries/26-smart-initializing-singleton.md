@@ -66,7 +66,7 @@ Spring 提供了一个非常明确的回调：
 - “回调里 `getBean` 导致启动变慢” → **实例层行为**：你把 lazy bean 全部提前创建了（本章第 3 节）
 - “我以为它等价于 ApplicationRunner” → **生命周期粒度差异**：它更贴近 BeanFactory 的创建阶段（本章第 2 节 + `preInstantiateSingletons`）
 
-## 4. 一句话自检
+## 4. 面试常问（SmartInitializingSingleton）
 
 1) `SmartInitializingSingleton#afterSingletonsInstantiated` 触发于 refresh 的哪个阶段？为什么它早于 lazy bean 的创建？
 2) 为什么它不等价于 `ApplicationRunner`？（提示：它挂在 BeanFactory 的 preInstantiateSingletons 尾部）

@@ -82,7 +82,7 @@
   - 典型断点：`AbstractBeanFactory#doGetBean`（看 fallback 到 parent 的时机）
 - **实例层（候选解析）**：parent 与 child 都有同类型 bean，按类型注入出现歧义
   - 这不是 context hierarchy 本身的 bug，而是候选集扩大后的收敛问题（用 `@Qualifier/@Primary`）
-## 4. 一句话自检
+## 4. 面试常问（父子 ApplicationContext）
 
 - 常问：parent/child 的可见性规则是什么？
   - 答题要点：child 能向上查 parent；parent 完全不知道 child。
@@ -163,6 +163,6 @@
 - Lab：`SpringCoreBeansContextHierarchyLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
 
-上一章：[20. registerResolvableDependency：能注入但它不是 Bean](20-resolvable-dependency.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[22. beanName 与 alias：命名规则与别名本质](22-bean-names-and-aliases.md)
+上一章：[20. registerResolvableDependency：能注入，但它不是 Bean](20-resolvable-dependency.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[22. beanName 与 alias：命名规则与别名本质](22-bean-names-and-aliases.md)
 
 <!-- BOOKIFY:END -->

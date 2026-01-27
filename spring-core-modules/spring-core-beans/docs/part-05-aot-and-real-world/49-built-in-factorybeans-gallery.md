@@ -24,7 +24,7 @@
 
 你需要先把一件事讲清楚：
 
-- `FactoryBean` 不是“帮你 new 对象的工具类”，它是一个**容器级机制**：  
+- `FactoryBean` 不是“帮你 new 对象的工具类”，它是一个**容器级机制**：
   容器把它当作“能生产 product 的 bean”，并且在 `getBean` 时做特殊分派。
 
 本章用 3 类常见的内置 FactoryBean 做闭环：
@@ -41,9 +41,9 @@
 - `SpringCoreBeansServiceLoaderFactoryBeansLabTest#serviceListFactoryBean_loadsProviders_fromMetaInfServices`（SPI providers → List）
 - `SpringCoreBeansServiceLoaderFactoryBeansLabTest#serviceLoaderFactoryBean_exposesRawServiceLoader`（SPI loader → ServiceLoader）
 
-1) `getBean("uuidSingleton")` 多次返回同一个 `UUID`（product 被缓存）  
-2) `getBean("uuidPrototype")` 多次返回不同 `UUID`（product 不缓存）  
-3) `getBean("&uuidPrototype")` 返回的是 `MethodInvokingFactoryBean` 本体  
+1) `getBean("uuidSingleton")` 多次返回同一个 `UUID`（product 被缓存）
+2) `getBean("uuidPrototype")` 多次返回不同 `UUID`（product 不缓存）
+3) `getBean("&uuidPrototype")` 返回的是 `MethodInvokingFactoryBean` 本体
 4) `ServiceLocator` 每次方法调用都会回到容器查找：prototype 每次都是新实例
 
 ---
@@ -52,7 +52,7 @@
 
 在 Spring 里你经常想做两件事：
 
-1) **把“配置/元数据”变成一个对象**（product）  
+1) **把“配置/元数据”变成一个对象**（product）
 2) 把“对象的创建逻辑”放到容器可管理的位置（可复用、可缓存、可替换）
 
 这两件事用 `FactoryBean` 都能表达：
@@ -117,14 +117,14 @@
 
 换句话说：
 
-> `&` 不是语法糖，它是容器级分支选择；  
+> `&` 不是语法糖，它是容器级分支选择；
 > `isSingleton` 不是 bean scope，它描述的是 product 的缓存语义。
 
 ---
 
 ### 4.1 `&beanName` 分支（你排障最常用的入口）
 
-1) `AbstractBeanFactory#doGetBean`  
+1) `AbstractBeanFactory#doGetBean`
 2) `AbstractBeanFactory#getObjectForBeanInstance`
 
 观察点：
@@ -230,6 +230,23 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 - **FactoryBean 双重身份永远要先确认**：你拿到的是 product 还是 factory？（`&` 前缀）
 - **默认 singleton 缓存会“冻结结果”**：例如 MethodInvokingFactoryBean，你以为每次调用都变，其实是同一个 product 被缓存。
 - **ServiceLocator 的排障成本更高**：它把依赖关系从“注入时”推迟到“调用时”，定位问题必须回到调用点追踪。
+
+## 面试常问（内置 FactoryBean：识别模式比背清单更重要）
+
+### Q1：看到 `XXXFactoryBean`，你如何快速判断“容器对外暴露的到底是谁”？
+
+- 标准答案（可复述）：
+  - 默认 `getBean(\"name\")` 返回的是 product；`getBean(\"&name\")` 才是 FactoryBean 本体。先分清“名字语义”，再谈类型匹配与缓存语义。
+- 证据链（方法级）：
+  - `AbstractBeanFactory#getObjectForBeanInstance`
+  - `FactoryBeanRegistrySupport#getObjectFromFactoryBean`
+- 最小复现：
+  - `SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
+
+### Q2：FactoryBean 最容易踩的两个边界是什么？
+
+- 标准答案（可复述）：
+  - `getObjectType()` 不准确/返回 null 会影响 type-based 发现与条件装配；`isSingleton()` 决定的是 product 缓存语义，不是工厂本体是否单例。
 
 ## 一句话自检
 

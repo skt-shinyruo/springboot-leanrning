@@ -178,7 +178,7 @@
 9) early reference：`SpringCoreBeansEarlyReferenceLabTest`
 10) 排障断点入口：`SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansBeanGraphDebugLabTest`
 
-## 证据链（如何验证你真的理解了）
+## 证据链（调用链 + 断点 + 断言）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
 - 观察点 1：运行本章推荐入口后，聚焦「自测题：你是否真的理解了？」的生效时机/顺序/边界；断点/入口：`org.springframework.context.support.AbstractApplicationContext#refresh`；断言：你能解释“为什么此处生效/为什么此处不生效”。
@@ -186,6 +186,17 @@
 - 观察点 3：运行本章推荐入口后，聚焦「自测题：你是否真的理解了？」的生效时机/顺序/边界；断点/入口：`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`；断言：你能解释“为什么此处生效/为什么此处不生效”。
 - 建议：跑完 ``SpringCoreBeansLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->
+
+## 面试怎么用（把自测题“收敛成可复述答案”）
+
+把这页当成“题库”，但答题时不要停留在名词解释。推荐你按固定结构输出：
+
+1) **结论（1 句）**：先把边界说清楚（能/不能/发生在哪个阶段）。
+2) **证据链（方法级调用链）**：给出 1 个入口方法名 + 2–3 个关键分支/数据结构。
+3) **最小复现**：指向 1 个可跑的 LabTest（最好能到方法级）。
+4) **反例/坑**：给出 1 个“常见误归因”，说明为什么错。
+
+模板对照：`appendix/93-interview-playbook.md`
 
 ## 一句话自检
 

@@ -22,11 +22,29 @@
 
 几乎所有 IoC 相关事故，都能归到 refresh 的某一段（见 [10. 主线时间线](../part-00-guide/010-03-mainline-timeline.md)）：
 
-- **定义层（Definition Phase）**：解析/注册 BeanDefinition（XML/Reader/扫描/导入）、BFPP/BDRPP 改写定义  
-- **实例层（Creation Phase）**：`doCreateBean` 实例化/注入/初始化、BPP 链、单例缓存  
+- **定义层（Definition Phase）**：解析/注册 BeanDefinition（XML/Reader/扫描/导入）、BFPP/BDRPP 改写定义
+- **实例层（Creation Phase）**：`doCreateBean` 实例化/注入/初始化、BPP 链、单例缓存
 - **完成后（Post Refresh）**：容器就绪回调、运行期 getBean、懒加载触发
 
 排障第一步永远是：你现在处在哪一段。
+
+---
+
+## 0. 总分流表（先选最短入口）
+
+> 目标：不要上来就“改注入/改配置”。先用一张表把问题压缩到“阶段 + 最短断点 + 最短复现”。
+
+| 现象（Symptoms） | 首要阶段 | 第一断点（最短证据链） | 第一章（最短阅读） | 推荐 Lab |
+| --- | --- | --- | --- | --- |
+| 扫不到/导不进（NoSuchBeanDefinition） | 定义层 | `DefaultListableBeanFactory#registerBeanDefinition` | `part-01-ioc-container/02-bean-registration.md` | `SpringCoreBeansComponentScanLabTest` / `SpringCoreBeansImportLabTest` |
+| 多候选歧义（NoUniqueBeanDefinition） | 注入解析 | `DefaultListableBeanFactory#doResolveDependency` | `part-01-ioc-container/014-03-dependency-injection-resolution.md` | `SpringCoreBeansAutowireCandidateSelectionLabTest` |
+| 代理不生效（像绕过 AOP） | 创建/after-init | `applyBeanPostProcessorsAfterInitialization` | `part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md` | `SpringCoreBeansProxyingPhaseLabTest`（或对应分支矩阵） |
+| 循环依赖异常/行为诡异 | 创建层（窗口期） | `DefaultSingletonBeanRegistry#getSingleton` | `part-01-ioc-container/09-circular-dependencies.md` | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
+| `@Value` 值不对/缺失不失败 | 定义层 + 注入阶段 | `AbstractBeanFactory#resolveEmbeddedValue` | `part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md` | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
+| `FactoryBean` 拿到的不是你以为的对象 | getBean 分流 | `AbstractBeanFactory#doGetBean` | `part-01-ioc-container/08-factorybean.md` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
+| Boot 自动装配“偶发失效” | 定义层顺序 | `AutoConfigurationImportSelector#selectImports` | `part-02-boot-autoconfig/020-09-auto-config-ordering.md` | `SpringCoreBeansAutoConfigurationOrderingLabTest` |
+| XML/namespace 解析失败 | 定义层输入 | `XmlBeanDefinitionReader#loadBeanDefinitions` | `part-05-aot-and-real-world/42-xml-bean-definition-reader.md` | `SpringCoreBeansXmlBeanDefinitionReaderLabTest` |
+| AOT/Native 行为缺失（反射/资源） | 构建期契约 | `RuntimeHintsRegistrar#registerHints` | `part-05-aot-and-real-world/41-runtimehints-basics.md` | `SpringCoreBeansAotRuntimeHintsLabTest` |
 
 ---
 
@@ -176,14 +194,24 @@
 
 它把常见问题都压缩成“断点入口 + watch list + 对应 Lab”，适合作为生产排障的第一跳转页。
 
+## 最短调用链（方法级）：把“Evidence”写成可执行路线
+
+本页每个条目都给了 Evidence（方法名），但你真正落地排障时，需要把它组装成 3 步的最短调用链：
+
+1) **定位阶段**：先在 `AbstractApplicationContext#refresh`（或启动异常栈顶）确认自己处在 refresh 的哪一段。
+2) **锁定入口**：选择该现象的第一入口方法（例如 `doResolveDependency` / `getSingleton` / `resolveEmbeddedValue`）。
+3) **看见关键数据结构**：候选 Map / 三层缓存 / embedded value 解析前后值 / BPP 链顺序。
+
+你不需要追完整条链，只要能用 2–3 个方法把“阶段→分支→结论”连起来即可。
+
 ---
 
 ## 一句话自检
 
 你应该能做到：
 
-1) 任意一个 IoC 相关异常，先定位它属于 definition 还是 bean creation，再决定下哪个断点。  
-2) 解释“为什么这个断点能证明我的结论”（而不是碰巧）。  
+1) 任意一个 IoC 相关异常，先定位它属于 definition 还是 bean creation，再决定下哪个断点。
+2) 解释“为什么这个断点能证明我的结论”（而不是碰巧）。
 3) 用本仓库的 Lab 复现同类机制边界，并把修复方案固化成可回归验证。
 
 <!-- BOOKIFY:START -->

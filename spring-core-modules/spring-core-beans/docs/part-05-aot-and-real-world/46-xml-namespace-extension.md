@@ -42,7 +42,7 @@
 
 这类 `<tx:...>`/`<context:...>` 的本质是：
 
-> **把一段“注册 BeanDefinition 的动作”封装成一个 XML 元素**  
+> **把一段“注册 BeanDefinition 的动作”封装成一个 XML 元素**
 > 最终仍然回到 `BeanDefinitionRegistry`。
 
 ---
@@ -163,7 +163,25 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
 2) **误区：XSD/handler 的加载失败只会影响这一小块配置**
    - 实际上它会让整个 XML 文档解析失败，直接卡在定义阶段，应用甚至不会进入创建业务 bean 的阶段。
 3) **误区：排障只看 XML 文本**
-   - 更快的方式：从 `NamespaceHandlerResolver` 与 `BeanDefinitionParser` 下断点，直接看“有没有命中 handler/parser、最终注册了什么定义”。 
+   - 更快的方式：从 `NamespaceHandlerResolver` 与 `BeanDefinitionParser` 下断点，直接看“有没有命中 handler/parser、最终注册了什么定义”。
+
+## 面试常问（XML namespace 扩展：扩展的不是对象，是“定义层翻译器”）
+
+### Q1：自定义 XML namespace 扩展到底扩展的是什么？（Handler/Parser 的职责）
+
+- 标准答案（可复述）：
+  - 扩展的是“定义层解析器”：`NamespaceHandler` 负责把 namespace 下的元素映射到具体 `BeanDefinitionParser`；Parser 负责把元素翻译成 BeanDefinition 并注册到 registry。
+- 证据链（方法级）：
+  - `NamespaceHandlerResolver` / `NamespaceHandler#init`
+  - `BeanDefinitionParser#parse`
+  - 最终落点：`DefaultListableBeanFactory#registerBeanDefinition`
+- 最小复现：
+  - `SpringCoreBeansXmlNamespaceExtensionLabTest`
+
+### Q2：为什么说 namespace 扩展属于“定义层输入”，不是“实例层扩展点”？
+
+- 标准答案（可复述）：
+  - 因为它的产物仍然是 BeanDefinition；实例怎么创建/怎么注入/怎么增强依旧走容器主线（`doCreateBean`、BPP 链等），namespace 只是换了一种输入语法。
 
 ## 一句话自检
 

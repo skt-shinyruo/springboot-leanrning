@@ -91,7 +91,7 @@
 - **Boot 自动装配最小复现（最适合查条件报告/排序/backoff）**：`ApplicationContextRunner`
   - 代表用例：`SpringCoreBeansAutoConfigurationLabTest`、`SpringCoreBeansConditionEvaluationReportLabTest`
 
-## 4. 固定观察点：候选集合 vs 最终注入（以及容器记录的依赖边）
+## 3. 固定观察点：候选集合 vs 最终注入（以及容器记录的依赖边）
 
 当你要解释“为什么注入的是它”，建议把问题拆成两步观察：
 
@@ -105,7 +105,7 @@
 
 > 补充：依赖关系表也会影响关闭时的销毁顺序；如果你想看更底层的 `dependentBeanMap` / `dependenciesForBeanMap`，建议结合 [19](../part-04-wiring-and-boundaries/19-depends-on.md) 一起看。
 
-## 5. Spring Boot 的“条件报告”：把自动装配的生效/失效原因打印出来
+## 4. Spring Boot 的“条件报告”：把自动装配的生效/失效原因打印出来
 
 当你怀疑“自动配置没生效”或“多了我不认识的 bean”时，建议开启条件评估报告：
 
@@ -117,7 +117,7 @@
 
 学习阶段你不需要记住每条报告格式，但要知道它存在，并且能回答“为什么”。
 
-## 6. 日志：把容器行为“吵”出来
+## 5. 日志：把容器行为“吵”出来
 
 - `org.springframework.beans`
 - `org.springframework.context`
@@ -128,7 +128,7 @@
 - bean 创建顺序
 - 自动装配导入/条件判断的部分信息
 
-## 7. 一个实用的自检流程（遇到 DI 问题就按这个来）
+## 6. 一个实用的自检流程（遇到 DI 问题就按这个来）
 
 你会在输出中看到这些线索：
 
@@ -146,7 +146,7 @@
 - `BEANS:lifecycle.*` → [05](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)、[17](../part-03-container-internals/17-lifecycle-callback-order.md)（生命周期回调顺序与证据链）
 - `BEANS:beanDefinitionCount=...` / “看不到你以为注册的 bean” → 本章第 2 节（先确认定义层是否存在，再决定往注册/条件/顺序走）
 
-## 10. 代理定位闭环：为什么它是 proxy？
+## 7. 代理定位闭环：为什么它是 proxy？
 
 对 B 路线读者而言，“为什么是 proxy”最有效的做法不是背概念，而是用一套固定闭环把它查出来：
 
@@ -173,7 +173,7 @@
 - 看循环变量（当前 BPP）是谁
 - 观察 `result` 何时从“原对象”变成“新对象”
 
-## 11. Boot 条件报告：把它当成“可查询的数据结构”（而不仅是日志）
+## 8. Boot 条件报告：把它当成“可查询的数据结构”（而不仅是日志）
 
 > 条件报告不是日志技巧，它是 `ConditionEvaluationReport` 这份“可查询的数据结构”。
 
@@ -226,18 +226,7 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 
 - proxy/替换不只是 AOP/事务的“魔法”，而是容器在实例阶段允许 BPP 返回“另一个对象”作为最终暴露对象
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
+### Debug 工具箱（对象→问题→断点→观察点）
 
 这一章给你一个实用的调试工具箱，目标是：当你遇到“为什么注入的是它？”“为什么它没注册？”“为什么它是代理？”时，知道从哪里下手。
 
@@ -261,7 +250,7 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 
 - `SpringCoreBeansContainerLabTest.beanDefinitionIsNotTheBeanInstance()`
 
-## 3. 把场景做小：用“最小容器”复现（比跑完整应用更快）
+## 9. 把场景做小：用“最小容器”复现（比跑完整应用更快）
 
 很多人调 Spring 容器最大的痛点不是“不会打断点”，而是：**断点命中太多、调用栈太深、噪音太大**。
 
@@ -318,7 +307,7 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 
 > 你可以把它记成一句话：先判断“这是定义层、解析层、还是实例层”，再去打断点。
 
-## 8. 与本模块运行输出对齐
+## 10. 与本模块运行输出对齐
 
 运行本模块：
 
@@ -326,7 +315,7 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 mvn -pl :spring-core-beans spring-boot:run
 ```
 
-## 9. 异常 → 断点入口（从报错秒跳到正确抓手）
+## 11. 异常 → 断点入口（从报错秒跳到正确抓手）
 
 你不需要背所有异常，但建议把“异常类型 → 最有效入口断点”形成肌肉记忆。
 
@@ -452,16 +441,12 @@ mvn -pl :spring-core-beans spring-boot:run
 
 ## 小结与下一章
 
-- `AbstractAutowireCapableBeanFactory#initializeBean`
-  - `applyBeanPostProcessorsAfterInitialization`（这里的 `result` 一旦不等于 `bean`，就发生了替换）
-
-1) `AbstractAutowireCapableBeanFactory#doCreateBean`（创建主线）
-2) `AbstractAutowireCapableBeanFactory#populateBean`（注入发生点）
-3) `AbstractAutowireCapableBeanFactory#initializeBean`（Aware + init callbacks 串联点）
-4) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization/AfterInitialization`（BPP 两个切面）
-
-1) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
-2) 你自己的 `BeanPostProcessor#postProcessAfterInitialization`（或 AOP/Tx 的 AutoProxyCreator）
+- 这章的目标是把“调不动/看不见/栈太深”的问题收敛成固定套路：先分层（定义层 vs 实例层），再选对象（定义/候选/依赖边/最终暴露对象），最后用条件断点把噪音压到最小。
+- 三个最高收益断点（建议记住）：
+  1) `DefaultListableBeanFactory#doResolveDependency`（注入为什么选中它）
+  2) `AbstractAutowireCapableBeanFactory#populateBean`（注入发生点）
+  3) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（谁把它换成 proxy）
+- Boot 自动装配相关问题优先用 `ConditionEvaluationReport`（或 `--debug`）先回答“为什么 match/why skip”，再决定是条件问题还是覆盖/排除问题。
 
 <!-- BOOKIFY:START -->
 

@@ -12,7 +12,7 @@
     - 它们不是“生产诊断方案”：测试会用反射访问内部字段、依赖实现细节；Spring 升级后可能需要同步调整。
     - 正确使用方式：先用 Core Labs 固化结论（可断言、稳定），再用 Explore 用例补齐“我想看见缓存怎么变”的证据链。
 
-!!! example "本章 Explore 用例（先跑再读）"
+!!! example "本章配套实验（Explore 用例，先跑再读）"
 
     - Explore Test（默认不参与回归）：
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansSingletonCacheExploreTest.java`
@@ -22,7 +22,7 @@
 
 在这个仓库里，“教程闭环”的基座是两类东西：
 
-1) **Core Labs（默认参与回归）**：用断言把机制结论固化下来，保证“你学到的结论能稳定复现”。  
+1) **Core Labs（默认参与回归）**：用断言把机制结论固化下来，保证“你学到的结论能稳定复现”。
 2) **Explore/Debug 用例（可选启用）**：用断点 + 内部状态读取，把“你脑子里想象的容器内部结构”变成可观察事实。
 
 这两类用例的关系是：
@@ -146,6 +146,16 @@ Watch List（建议盯“缓存容器的 key/size”，不要依赖具体字段�
 你会发现：Explore 用例的价值不是“多了一堆测试”，而是“你终于能在调试器里看见那个一直被口述的内部结构”。
 
 ---
+
+## 面试怎么用（把“我看见了”说成可复述答案）
+
+Explore 用例本身不是面试题，但它能显著提升你答题的“可信度”：
+
+1) 面试官问循环依赖/early reference：你可以补一句“我在调试器里观察过三层缓存命中分支”，并能说出方法名：`getSingleton/addSingletonFactory/getEarlyBeanReference`。
+2) 面试官问属性填充/类型转换：你可以补一句“我看过 JDK 内省缓存的命中/失效”，并能说出入口：`CachedIntrospectionResults#forClass`。
+3) 面试官追问“你怎么证明”：你可以直接回指本章的 ExploreTest + 断点 + watch list。
+
+更标准的答题模板：`appendix/93-interview-playbook.md`
 
 ## 常见坑
 

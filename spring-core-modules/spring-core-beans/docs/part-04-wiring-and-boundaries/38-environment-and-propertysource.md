@@ -22,7 +22,7 @@
 
 一句话先建立心智模型：
 
-> **Environment = “属性解析器 + profiles 决策器”。它通过一串有序的 PropertySources 来解析 key。**  
+> **Environment = “属性解析器 + profiles 决策器”。它通过一串有序的 PropertySources 来解析 key。**
 > 你看到的“覆盖/优先级/不生效”，几乎都能归因到：**PropertySource 顺序** 或 **解析发生的时机**。
 
 ---
@@ -168,8 +168,8 @@ Spring 把“多个来源”组织成一个有序链表：
 
 ### 复现/验证补充说明（来自原文迁移）
 
-> `@Value("${...}")` 到底从哪里取值？  
-> 为什么同一个 key 在不同环境/不同启动方式下值不一样？  
+> `@Value("${...}")` 到底从哪里取值？
+> 为什么同一个 key 在不同环境/不同启动方式下值不一样？
 > `@PropertySource` 加了也不生效，或者被别的配置覆盖了，怎么断点证明？
 
 ## 0. 复现入口（可运行）
@@ -228,6 +228,35 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
    - 绝大多数场景不会。注入发生在创建时；后改 Environment 不会 retroactive。
 3) **误区：profiles 随时都能改**
    - profiles 影响的是“注册阶段”，必须在 refresh 前设置才有意义。
+
+## 面试常问（Environment / PropertySource：优先级与时机）
+
+### Q1：Environment 的属性优先级从哪来？你如何用一句话说清楚？
+
+- 标准答案（可复述）：
+  - Environment 通过 `PropertySources` 的顺序解析属性，优先级就是 sources 的顺序；同 key 先命中的 source 胜出。
+- 证据链（方法级）：
+  - `ConfigurableEnvironment#getPropertySources`（优先级来源）
+  - `PropertySourcesPropertyResolver#getProperty`（解析入口）
+- 最小复现：
+  - `SpringCoreBeansEnvironmentPropertySourceLabTest`
+
+### Q2：为什么“后改 Environment”不一定影响已创建的 bean？
+
+- 标准答案（可复述）：
+  - 因为注入/属性填充发生在 bean 创建窗口（`resolveEmbeddedValue` / `populateBean`）；bean 一旦创建完成，容器不会因为 Environment 变化自动重注入（除非你让它延迟创建/重新创建）。
+- 证据链（方法级）：
+  - `AbstractBeanFactory#resolveEmbeddedValue`
+  - `AbstractAutowireCapableBeanFactory#populateBean`
+- 最小复现：
+  - `SpringCoreBeansValuePlaceholderResolutionLabTest`（配合 strict/non-strict 观察“解析发生在何时”）
+
+### Q3：`@Profile` 与 PropertySource 的关系是什么？它影响“注册”还是“注入”？
+
+- 标准答案（可复述）：
+  - `@Profile` 更偏“定义层是否注册”；PropertySource 更偏“值解析/占位符取值来源”。两者可能共同影响最终行为，但作用点不同：先决定是否注册，再决定注入取到什么值。
+- 最小复现：
+  - `SpringCoreBeansProfileRegistrationLabTest`
 
 ## 一句话自检
 

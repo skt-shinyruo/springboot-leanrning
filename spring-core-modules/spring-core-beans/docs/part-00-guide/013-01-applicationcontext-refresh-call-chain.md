@@ -99,6 +99,24 @@
 
 因为“启动期爆”几乎都意味着：**它是非 lazy 单例，且被预实例化触发了**。
 
+## 排障分流（refresh 入口版）
+
+当你遇到“注入失败/代理不生效/循环依赖”等现象时，不要从异常栈顶开始迷路，先用 refresh 主线把它归位：
+
+1) **定义层（BFPP/BDRPP）**：`invokeBeanFactoryPostProcessors`
+2) **注册 BPP 链**：`registerBeanPostProcessors`
+3) **创建单例**：`finishBeanFactoryInitialization` → `doCreateBean`
+
+进一步入口：`appendix/94-production-troubleshooting-checklist.md`（总分流表）/ `appendix/98-debugger-pack.md`（断点包）。
+
+## 面试常问（refresh 调用链）
+
+1) refresh 的主线阶段你怎么讲清楚？（每段至少能点名 1 个方法名）
+2) 为什么“过早 getBean”会导致代理/注解不生效？你怎么证明一次？
+3) 你如何把一个启动失败快速归到 definition vs creation（各给 1 个断点）？
+
+推荐复习入口：`appendix/93-interview-playbook.md`（Q1/Q5 等）。
+
 ## 一句话自检（你应该能回答）
 
 1. BFPP 与 BPP 的差别是什么？它们分别“改什么”，分别在 refresh 的哪段执行？

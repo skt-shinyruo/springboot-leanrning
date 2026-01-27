@@ -2,314 +2,195 @@
 
 ## 导读
 
-- 本章主题：**20. registerResolvableDependency：能注入，但它不是 Bean**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 本章主题：**registerResolvableDependency：能注入，但它不是 Bean**
+- 这章专治一种“看起来像魔法”的现象：
+  你能 `@Autowired` 进来一个东西，但它**不是 BeanDefinition**、`getBean(类型)` 也找不到它。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
+    - `registerResolvableDependency` 注册的是一张“特殊依赖表”：`DefaultListableBeanFactory#resolvableDependencies`（**type → value**），不是 BeanDefinition。
+    - 命中位置在依赖解析主入口 `DefaultListableBeanFactory#doResolveDependency`：在“按类型找候选 bean”之前，会先尝试从 `resolvableDependencies` 里按可赋值关系匹配。
+    - 所以它的典型外观是：**能注入（resolveDependency 命中）**，但**不是 bean（getBean/getBeansOfType 查不到）**。
+    - 这条机制经常与 `*Aware` 搞混：两者都能把“容器对象/上下文对象”交给业务 bean，但生效点和生命周期完全不同。
 
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`SpringCoreBeansResolvableDependencyLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
 
-## 机制主线
+## 机制主线：它是“可解析依赖”，不是“可获取 Bean”
 
-有些东西你可以直接注入到 bean 里：
+一句话心智模型：
 
-- `ApplicationContext`
-- `BeanFactory`
+> `registerResolvableDependency` 是在告诉容器：**遇到注入点需要这个 type，就给它这个 value**。
+> 但这个 value **不进入 BeanDefinition 注册表**，也**不进单例池/生命周期/后置处理器链**。
+
+因此它适用的典型对象是“容器基础设施对象”，例如：
+
+- `BeanFactory` / `ApplicationContext` / `ResourceLoader`
+- `ApplicationEventPublisher`
 - `Environment`
 
-很多初学者会误以为：
+## 1. 方法级入口：注入是怎么进入 `doResolveDependency` 的？
 
-- “那它们一定也是普通 Bean 吧？”
+你不需要记住所有注入触发点，但你必须知道**最后汇聚点**：
 
-- 有些依赖参与 autowiring，但它不是通过 BeanDefinition 注册出来的
+- 汇聚点：`DefaultListableBeanFactory#resolveDependency` → `doResolveDependency`
 
-## 1. 现象：能注入，但 `getBean(该类型)` 失败
+常见上游触发：
 
-对应测试：
+1) 属性注入（字段/Setter）
+   `AutowiredAnnotationBeanPostProcessor#postProcessProperties` → `beanFactory.resolveDependency(...)`
+2) 构造器注入（`@Autowired` 构造器/单构造器）
+   `ConstructorResolver#autowireConstructor` → `resolveDependency(...)`
+3) `@Resource`（按名优先）
+   `CommonAnnotationBeanPostProcessor` 最终也会走 `resolveDependency` 或 `getBean(name)`（见第 32 章）
 
-1) `registerResolvableDependency(NotABeanDependency.class, instance)`
-2) 注册一个 `NeedsDependency`，构造器参数是 `NotABeanDependency`
-3) refresh 后 `NeedsDependency` 能拿到我们注册的 instance
+**本章的关键点**：在 `doResolveDependency` 内部，Spring 会在“找候选 bean”之前先看 `resolvableDependencies`。
 
-但同时：
-
-- `context.getBean(NotABeanDependency.class)` 会报 `NoSuchBeanDefinitionException`
-
-学习重点：
-
-- **ResolvableDependency 参与“注入解析”**
-- **但不参与“Bean 查找”**（它不是普通 bean）
-
-## 2. 机制：它是“特殊依赖表”，不是 BeanDefinition
-
-你可以把它理解为：
-
-- 容器里有一张“特殊依赖表”
-- 当容器解析构造器/字段依赖时，会先看这张表
-
-所以它非常适合给框架提供“容器级依赖”。
+## 2. 机制：`resolvableDependencies` 到底是什么？
 
 ### 2.1 这张“特殊依赖表”在源码里是什么？
 
-在 `DefaultListableBeanFactory` 里，它通常就是一个按类型索引的 Map（概念上可以理解为）：  
+它就是 `DefaultListableBeanFactory` 里的一个 map：
 
-- `Map<Class<?>, Object> resolvableDependencies`
+- key：`Class<?>`（通常是接口/基础设施类型）
+- value：`Object`（可以是实例，也可以是 `ObjectFactory`）
 
-它的 key 是“你想让容器能注入的类型”，value 是“注入时返回的值”。
+注册入口：
 
-1) value 不一定只是一个“固定实例”  
-   - 也可以是一个 `ObjectFactory<?>`（让容器在注入时再去取，达到 lazy 的效果）
-2) 这张表的语义是 **“参与依赖解析（autowiring）”**  
-   - 它不是 `BeanDefinition`，不会进入正常的 bean 生命周期
+- `DefaultListableBeanFactory#registerResolvableDependency(Class<?> dependencyType, Object autowiredValue)`
 
-### 2.2 它在依赖解析链路的哪个位置命中？（注入路径）
+> 注意：这是“容器级”的注册行为；注册到哪个 `BeanFactory`，就只对哪个上下文的注入生效（见第 21 章父子容器可见性）。
 
-把“依赖注入”看成一条链路会更清晰：
+### 2.2 命中逻辑在依赖解析链路的哪个位置？
 
-1) 需要解析一个注入点（构造器参数/字段/方法参数）  
-2) 容器把注入点封装成 `DependencyDescriptor`  
-3) 进入 `DefaultListableBeanFactory#doResolveDependency(...)`  
-4) **优先检查** `resolvableDependencies` 能否命中（命中就直接返回 value）  
-5) 命不中，才进入“按 bean 候选集”路线：`findAutowireCandidates(...)` + 规则收敛（`@Primary/@Qualifier/@Priority` 等）
+核心发生在：
 
-- `descriptor.getDependencyType()`（注入点要什么）
-- `resolvableDependencies` 是否有这个 key
-- 没命中时是否继续走 `findAutowireCandidates(...)`
+- `DefaultListableBeanFactory#doResolveDependency`
+
+你在断点里通常会看到类似流程（表达的是顺序，不是源码逐行复刻）：
+
+1) 处理快捷路径（`Optional` / `ObjectProvider` / `@Lazy` 等）
+2) 处理 `@Value`（字符串/表达式）
+3) **尝试匹配 `resolvableDependencies`**
+4) 再去 `findAutowireCandidates`（按类型收集候选 bean）并做候选收敛（见第 33 章）
 
 ### 2.3 为什么 `getBean(type)` 查不到？（查找路径完全不同）
 
-`context.getBean(SomeType.class)` 走的是 **Bean 查找** 路径：
+因为 `getBean` 查的是：
 
-- 典型入口：`AbstractBeanFactory#doGetBean(...)`
-- 它依赖的是：
-  - `BeanDefinition` 注册表
-  - 单例缓存（`singletonObjects`）
-  - `FactoryBean` 等“bean 语义”
+- BeanDefinition 注册表
+- 单例池（singletonObjects 等缓存）
+- FactoryBean 产物（`&` 前缀语义见第 23/29 章）
 
-而 `ResolvableDependency` 的 key/value **不在**这些结构里，因此：
+而 `resolvableDependencies`：
 
-- 它可以被 `doResolveDependency` 命中（注入成功）
-- 但不会被 `doGetBean` 命中（查找失败）
+- 不会生成 BeanDefinition
+- 不进入 singletonObjects
+- 不经过完整生命周期（BPP/BFPP/Aware/init/destroy…）
 
-### 2.4 容器默认会注册哪些 ResolvableDependency？（以及怎么确认）
+所以现象就变得非常“稳定”：**能注入 ≠ 能 getBean**。
 
-在真实的 `ApplicationContext` 里，你能注入很多“容器对象”，通常并不是因为它们是普通 bean，而是因为 context 在 refresh 过程中做了准备工作。
+## 3. 容器默认会注册哪些 ResolvableDependency？（以及怎么确认）
 
-最有价值的源码入口是：
+默认注册发生在 `ApplicationContext` 启动过程中，最关键的方法级入口是：
 
 - `AbstractApplicationContext#prepareBeanFactory`
 
-建议你至少确认下面这类类型是否出现（只记“方向”，不强记列表）：
+这里会为你注册一批基础设施对象（不同 Spring 版本略有差异，但核心思想一致），常见包括：
 
-- `BeanFactory` / `ApplicationContext`（容器本体）
-- `ResourceLoader` / `ApplicationEventPublisher`（容器对外的基础能力接口）
+- `BeanFactory` / `ApplicationContext`
+- `ResourceLoader`
+- `ApplicationEventPublisher`
+- `Environment`
 
-然后你再回到本章的结论，会更“实”：  
-**这些东西能注入，不代表它们是 bean。**
+你要确认“我的注入为什么能命中？”最直接的方法不是猜，而是：
 
-### 2.5 高级用法：用 `ObjectFactory` 做“按需提供”
+- 在 `prepareBeanFactory` 或 `registerResolvableDependency` 下断点，看注册了哪些 type
+- 在 `doResolveDependency` 的 resolvableDependencies 命中分支下断点，看命中了哪一条
 
-如果你把 value 注册成 `ObjectFactory<?>`，你就能把“注入值”变成“按需计算/按需获取”。
+## 4. 高级用法：用 `ObjectFactory` 做“按需提供”
 
-典型用途（学习阶段知道即可）：
+`resolvableDependencies` 的 value 允许是 `ObjectFactory`，Spring 会在注入时把它“解包”为真实对象（常见落点：`AutowireUtils#resolveAutowiringValue`）。
 
-- 延迟访问某个对象（避免过早初始化）
-- 注入一个“代理式入口”，内部再决定返回什么
+适用场景：
 
-但需要强调：这属于容器/框架内部手段。  
-业务对象不要用它替代正常的 bean 注册，否则排障成本会非常高。
+- 你要注入一个“**按线程/按请求动态变化**”的上下文对象（例如 requestId），但它不是 Spring Bean（或者你不想把它做成 Bean + Scope）
+- 你要把“获取动作”延迟到注入发生时（而不是注册时就固定一个实例）
 
-### 2.6 它和 `*Aware` 是什么关系？（两种“把容器对象交给 bean”的方式）
+反例与警告：
 
-初学者常见困惑是：
+- 不要用它塞业务单例对象来“绕过” BeanDefinition（这会让生命周期、代理、AOP 变得不可预测）
+- 如果你想要真正的生命周期/代理/范围语义，应该用 **Scope/ScopedProxy** 或 **Provider/ObjectProvider**（见第 28/30 章）
 
-- “我既可以 `@Autowired ApplicationContext`，也可以实现 `ApplicationContextAware`，它们是不是一回事？”
+## 5. 它和 `*Aware` 是什么关系？
 
-它们最终效果相似，但机制不同：
+两者都是“把容器信息交给 bean”，但路径不同：
 
-1) **ResolvableDependency（本章）**  
-   - 发生在依赖解析阶段（`doResolveDependency`）  
-   - 注入点是构造器参数/字段/方法参数  
-2) **Aware 回调（BPP 机制）**  
-   - 发生在初始化阶段（`initializeBean` 附近，由基础设施 BPP 触发）  
-   - 容器把自己“回调”给 bean（例如调用 `setApplicationContext(...)`）
+- `registerResolvableDependency`：注入阶段命中
+  典型入口：`doResolveDependency`（依赖解析）
+- `*Aware`：实例创建之后的回调阶段命中
+  典型入口：`AbstractAutowireCapableBeanFactory#invokeAwareMethods`
 
-- `AbstractApplicationContext#prepareBeanFactory`：context 在 refresh 中准备 beanFactory（会注册一批默认 resolvable dependencies）
-- `DefaultListableBeanFactory#registerResolvableDependency`：把“可解析但非 bean”的依赖放进特殊依赖表
-- `DefaultListableBeanFactory#resolveDependency` / `DefaultListableBeanFactory#doResolveDependency`：依赖解析主流程（会优先检查 resolvableDependencies）
-- `DependencyDescriptor#getDependencyType`：注入点抽象（字段/参数的类型信息从这里进入解析流程）
-- `DefaultListableBeanFactory#findAutowireCandidates`：当 resolvableDependencies 未命中时，才会走“按 bean 候选集”找候选
-- `AbstractBeanFactory#doGetBean`：`getBean(type)` 走的是 bean 查找链路，不会命中 resolvableDependencies（因此会失败）
+你可以这样记：
 
-入口：
+> **ResolvableDependency 是“像注入一样给你一个对象”；Aware 是“给你一个回调机会”。**
 
-0) （可选但很推荐）`AbstractApplicationContext#prepareBeanFactory`：观察默认注册了哪些 resolvable dependencies（理解“为什么能注入容器对象”）
-1) `DefaultListableBeanFactory#registerResolvableDependency`：观察 NotABeanDependency 被放入哪张表（它不会变成 BeanDefinition）
-2) `DefaultListableBeanFactory#doResolveDependency`：观察构造器参数解析时直接命中 resolvableDependencies 并返回 instance
-3) `AbstractBeanFactory#doGetBean`（或测试里 `context.getBean(NotABeanDependency.class)` 那一行）：观察为什么它会抛 `NoSuchBeanDefinitionException`
+## 6. 排障决策表（能注入/不能 getBean/命中不了 → 证据链）
 
-## 排障分流：这是定义层问题还是实例层问题？
+| 现象/报错 | 最可能原因 | 证据链（方法级） | 推荐修复 |
+| --- | --- | --- | --- |
+| `@Autowired` 成功，但 `getBean(类型)` 失败 | 这是 resolvable dependency，不是 bean | `doResolveDependency` 命中 `resolvableDependencies`；`getBean` 查不到对应 BeanDefinition | 接受它的定位；如果你需要 bean 语义，就改成注册 BeanDefinition（`registerBeanDefinition`/`registerSingleton`） |
+| 你自己注册了 `registerResolvableDependency`，但注入点还是报 `NoSuchBeanDefinitionException`/`UnsatisfiedDependencyException` | 注册到了**另一个** `BeanFactory`（父子容器/测试 context 变化） | `prepareBeanFactory`/自定义注册处断点看目标工厂；`doResolveDependency` 里 map 是否包含该 key | 确认注册发生在“注入发生的那个 context”的 `BeanFactory` 上 |
+| 你以为 `@Qualifier` 能约束它，但没有效果 | resolvableDependencies 按 type 命中，不走候选选择 | 命中发生在 `doResolveDependency` 的 resolvableDependencies 分支，未进入 `findAutowireCandidates` | 如果你需要 Qualifier 语义，就别用 resolvableDependency；改为注册多个 bean + Qualifier |
+| 你把一个对象塞进 resolvableDependencies，期望它被 AOP/后置处理器增强，但没有 | 它不是 bean，不会走 BPP 链 | 不经过 `createBean` / `initializeBean` / `applyBeanPostProcessors...` | 需要增强就让它成为 bean，或把增强逻辑放在你自己的 factory/provider 里 |
 
-这类问题最容易误判，因为“注入成功”会让人下意识以为它是个普通 bean。
+## 7. 断点闭环（建议照做一次）
 
-- **定义层问题（不是本章重点）**：你怀疑某个类型没有注册成 BeanDefinition
-  - 快速确认：`context.getBeanFactory().containsBeanDefinition(beanName)` / 查看 `beanDefinitionNames`
-  - 但注意：ResolvableDependency 本身没有 beanName、也不走 BeanDefinition 注册表
-- **实例层问题（本章重点）**：`@Autowired` 能注入，但 `getBean(type)` 报 `NoSuchBeanDefinitionException`
-  - 结论：大概率命中了 `resolvableDependencies`（注入解析表），而不是“按 bean 候选集”路线
-  - 优先断点：`DefaultListableBeanFactory#doResolveDependency`（看是否直接命中 `resolvableDependencies`）
-- **候选选择问题（非本章）**：当 resolvableDependencies 未命中，才会进入 `findAutowireCandidates` 的候选收敛（`@Primary/@Qualifier/@Priority`）
-  - 对应章节：[03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md)
-## 源码最短路径（call chain）
+### 7.1 推荐断点（按收益排序）
 
-注入管道（命中 ResolvableDependency）：
+1) `AbstractApplicationContext#prepareBeanFactory`：看默认注册了哪些 resolvable dependencies
+2) `DefaultListableBeanFactory#registerResolvableDependency`：看你的 type/value 如何进入 map
+3) `DefaultListableBeanFactory#doResolveDependency`：看注入点命中的是 resolvableDependencies 还是候选 bean
+4) `AutowireUtils#resolveAutowiringValue`：value 是 `ObjectFactory` 时，看它何时解包
 
-- `DefaultListableBeanFactory#doResolveDependency(descriptor, ...)`
-  - `descriptor.getDependencyType()`（注入点要什么类型）
-  - `this.resolvableDependencies` 命中  
-    - value 如果是 instance：直接返回  
-    - value 如果是 `ObjectFactory`：调用 `getObject()` 再返回
+### 7.2 固定观察点（watch list）
 
-查找管道（`getBean(type)` 不会命中 ResolvableDependency）：
+- `DependencyDescriptor#getDependencyType()` / `descriptor.getResolvableType()`
+- `this.resolvableDependencies`
+- 命中条目：`entry.getKey()` / `entry.getValue()`
+- 是否进入 `findAutowireCandidates(...)`
 
-- `AbstractBeanFactory#doGetBean(...)`
-  - 走 `BeanDefinition` 注册表 + singleton 缓存 + FactoryBean 语义  
-  - **不会**查询 `resolvableDependencies`  
-  ⇒ 所以 `getBean(NotABeanDependency.class)` 失败是“机制决定”，不是偶然
+## 8. 面试常问（标准答案 + 方法级证据链）
 
-## 固定观察点（watch list）
+### Q1：`registerResolvableDependency` 是什么？为什么“能注入但不是 Bean”？
 
-在 `doResolveDependency(...)` 里建议 watch/evaluate：
+- 标准答案：它注册的是“可解析依赖表”（type → value），注入时在 `doResolveDependency` 里先命中这张表；但它不是 BeanDefinition，因此 `getBean` 查不到。
+- 方法级证据链：`registerResolvableDependency` → `resolvableDependencies`；注入：`doResolveDependency` 命中；查找：`getBean` 走 BeanDefinition/单例池，不看这张表。
 
-- `descriptor.getDependencyType()`：决定是否能命中 `resolvableDependencies`
-- `this.resolvableDependencies`：是否包含该类型 key（命中则不会再走候选集合收敛）
-- `matchingBeans` / `findAutowireCandidates(...)`（如果没命中 ResolvableDependency）：说明你已经切换到“按 bean 候选集”路线（转 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)）
+### Q2：它和 `*Aware` 的区别是什么？
 
-在 `doGetBean(...)` 里建议 watch/evaluate：
+- 标准答案：ResolvableDependency 在“注入解析阶段”命中；`*Aware` 在“bean 实例创建后回调阶段”命中；两者都能拿到容器对象，但生命周期与可测试性不同。
+- 方法级证据链：`doResolveDependency` vs `invokeAwareMethods`。
 
-- `containsBeanDefinition(beanName)` / `beanDefinitionMap`（概念上）：它查的是“定义层”，不是 `resolvableDependencies`
-- `singletonObjects`：它查的是“实例缓存”，不是 `resolvableDependencies`
+### Q3：能不能用它来实现 `@Qualifier` 多实现选择？
 
-## 反例（counterexample）
+- 标准答案：不适合。ResolvableDependency 按 type 直接命中，跳过候选收敛逻辑；要 Qualifier 就应该走候选选择（注册多个 bean）。
+- 方法级证据链：命中在 `doResolveDependency` 的 resolvableDependencies 分支，没有进入 `determineAutowireCandidate`（见第 33 章）。
 
-**反例：我看到某个类型能注入，就以为它一定是 Bean；结果 `getBean(type)` 失败。**
+## 一句话自检
 
-- `doResolveDependency` 直接命中 `resolvableDependencies`（注入成功）
-- `doGetBean` 根本不会查 `resolvableDependencies`（查找失败，抛 `NoSuchBeanDefinitionException`）
+ResolvableDependency = **注入时可解析的 type→value 映射**；命中在 `doResolveDependency`；它不是 bean，因此没有 BeanDefinition/生命周期/BPP/AOP 增强。
 
-## 4. 一句话自检
-
-- 常问：`registerResolvableDependency` 是什么？为什么“能注入但不是 Bean”？
-  - 答题要点：它注册在依赖解析表里，不会变成 `BeanDefinition`/bean；因此可 autowire，但 `getBean(type)` 不一定存在。
-- 常见追问：什么时候应该用它，而不是 `@Bean`？
-  - 答题要点：适合“容器基础对象/上下文对象”的注入（更像基础设施）；业务对象仍应通过 `BeanDefinition` 管理，避免隐藏生命周期与可观测性问题。
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`SpringCoreBeansResolvableDependencyLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-这一章用一个可运行实验告诉你：
-
-对应实验：
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
-
-- `SpringCoreBeansResolvableDependencyLabTest.registerResolvableDependency_enablesAutowiringWithoutRegisteringABean()`
-
-实验里我们做了三件事：
-
-你用断点验证时，一般不需要把整条链路单步到底；只要在 `doResolveDependency` 看清：
-
-你可以在这里打断点，然后在 debugger 里展开 `beanFactory`，观察 `resolvableDependencies` 里有哪些默认条目（不同 Spring 小版本可能略有调整）。
-
-如果你在 debug 时把两者混在一起看，很容易误判“为什么这个注入能生效/为什么另一个不生效”。  
-建议和 [12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) 一起对照理解。
-
-## 源码锚点（建议从这里下断点）
-
-- `DefaultListableBeanFactory#registerResolvableDependency`：注册 “type → value” 的 resolvableDependencies
-- `DefaultListableBeanFactory#doResolveDependency`：依赖注入解析主入口（会优先命中 resolvableDependencies）
-- `DefaultListableBeanFactory#findAutowireCandidates`：未命中 resolvableDependencies 后才进入 bean 候选查找
-- `AbstractBeanFactory#doGetBean`：`getBean(type)` 路径（不会命中 resolvableDependencies，这是最关键边界）
-
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
-  - `registerResolvableDependency_enablesAutowiringWithoutRegisteringABean()`
-
-建议断点：
-
-- “某个类型能注入，但 `getBean(type)` 拿不到” → **优先实例层（解析路径差异）**：它可能是 ResolvableDependency，而不是普通 bean（本章 Lab）
-- “我想让它也出现在 beans 列表/支持 scope/lifecycle” → **定义层需求**：你需要注册 BeanDefinition（而不是 ResolvableDependency）（回看 [02](../part-01-ioc-container/02-bean-registration.md)）
-- “把业务对象塞进 ResolvableDependency 里导致难 debug” → **设计/使用问题**：ResolvableDependency 更适合容器级依赖（framework internal），业务对象更适合普通 bean（对照本章第 2 节）
-- “依赖解析选错候选/歧义” → **实例层（候选解析）**：ResolvableDependency 只是其中一种来源，回到 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)/[33](33-autowire-candidate-selection-primary-priority-order.md)
-
-> 目标：把“注入能命中、getBean 命不中”的两条管道用最短路径摆在一起，避免在断点里迷路。
-
-最小复现入口：
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
-  - `registerResolvableDependency_enablesAutowiringWithoutRegisteringABean()`
-
-你在断点里应该看到什么（用于纠错）：
-
-- 你能解释清楚：为什么它能被注入，但不能被 `getBean(type)` 拿到吗？
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
-推荐断点：`AbstractApplicationContext#prepareBeanFactory`、`DefaultListableBeanFactory#doResolveDependency`、`AbstractBeanFactory#doGetBean`
-
-## 常见坑与边界
-
-### 常见坑（高频误判）
-
-- **坑 1：以为它会出现在 beans 列表里**
-  - 不会。它不是 bean。
-
-- **坑 2：以为它有 scope/lifecycle**
-  - 它不是 bean，自然也没有完整的 bean 生命周期语义。
-
-- **坑 3：以为它会出现在依赖图里**
-  - 依赖图是按 beanName 记录的；ResolvableDependency 没有 beanName，所以你用 `getDependenciesForBean(...)` 不会看到它。
-
-- **坑 4：把业务对象塞进 ResolvableDependency**
-  - 这会绕开 BeanDefinition 与生命周期语义，让“为什么它被注入/为什么它被代理/为什么它没销毁”变得非常难解释。
-
-## 面试常问（ResolvableDependency 的边界）
-
-1) **为什么说它“能注入但不是 Bean”？**
-   - 要点：它注册在 `resolvableDependencies`（依赖解析表）里，只参与 `doResolveDependency`；`getBean` 走的是 BeanDefinition/单例缓存/FactoryBean 语义，不会查这张表。
-
-2) **它和 `*Aware` 回调有什么关系？**
-   - 要点：效果相似（把容器对象交给 bean），但机制不同：ResolvableDependency 发生在注入解析阶段；Aware 发生在初始化阶段，由 BPP 回调触发。
-
-3) **什么时候应该用它？什么时候绝对不该用？**
-   - 要点：适合容器/框架提供“上下文级依赖”（Environment/ResourceLoader 这类）；不适合承载业务对象，否则生命周期/可观察性/排障都会变差。
 ## 小结与下一章
 
-> 一句话总结：**注入（resolveDependency）** 和 **查找（getBean）** 是两条不同的管道。
-
-<!-- BOOKIFY:START -->
+- 本章完成后：你要把三件事分清楚：**能注入**、**能 getBean**、**会不会走生命周期/代理**。
+- 下一章我们进入父子容器：同一个 type 在不同 `ApplicationContext` 下为何“可见性不同、覆盖规则不同”。
 
 ### 对应 Lab/Test
 
 - Lab：`SpringCoreBeansResolvableDependencyLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
 
-上一章：[19. dependsOn：强制初始化顺序与依赖关系记录](19-depends-on.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[21. 父子 ApplicationContext：可见性与覆盖边界](21-context-hierarchy.md)
-
-<!-- BOOKIFY:END -->
+上一章：[19. dependsOn：强制初始化顺序（即使没有显式依赖）](19-depends-on.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[21. 父子 ApplicationContext：可见性与覆盖边界](21-context-hierarchy.md)

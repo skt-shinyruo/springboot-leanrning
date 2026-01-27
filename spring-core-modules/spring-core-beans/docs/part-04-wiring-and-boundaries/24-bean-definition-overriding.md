@@ -65,7 +65,7 @@
 
 可观测性补充（本仓库提供的排障小工具）：
 
-- `BeanDefinitionOriginDumper.dump(beanFactory, beanName)`：把 beanDefinition 的 resourceDescription/source/factoryMethod 等“来源线索”打印出来  
+- `BeanDefinitionOriginDumper.dump(beanFactory, beanName)`：把 beanDefinition 的 resourceDescription/source/factoryMethod 等“来源线索”打印出来
   - 对应 Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`（允许覆盖场景会输出 dump，你能直接看到最终保留下来的来源标记）
 
 入口：
@@ -101,60 +101,13 @@
 - 常见追问：它和“按类型注入选择（多候选）”是什么关系？
   - 答题要点：几乎无关：注入歧义是“同类型多候选怎么收敛”；overriding 是“同名定义冲突怎么处理”。不要混用概念。
 
-## 源码与断点
+## 排障决策表（overriding：从异常到修复）
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 0. 复现入口（可运行）
-
-- 入口测试（推荐先跑通再下断点）：
-  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
-- 推荐运行命令：
-  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionOverridingLabTest test`
-
-对应实验：
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
-
-- `SpringCoreBeansBeanDefinitionOverridingLabTest.whenBeanDefinitionOverridingIsAllowed_lastDefinitionWins()`
-
-- `SpringCoreBeansBeanDefinitionOverridingLabTest.whenBeanDefinitionOverridingIsDisallowed_registeringSameBeanNameFailsFast()`
-
-- 如果允许覆盖：你可能会得到“悄悄被覆盖”的行为（难 debug）
-- 如果禁止覆盖：你会在启动期得到明确错误（更安全、更可控）
-
-## 源码锚点（建议从这里下断点）
-
-- `DefaultListableBeanFactory#registerBeanDefinition`：注册入口（同名冲突与覆盖策略的分支发生处）
-- `DefaultListableBeanFactory#isBeanDefinitionOverridable`：是否允许覆盖的判定入口
-- `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding`：全局开关来源（Spring Boot 属性会影响这里）
-- `DefaultListableBeanFactory#removeBeanDefinition`：覆盖/替换时对旧定义的处理路径
-
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
-  - `whenBeanDefinitionOverridingIsAllowed_lastDefinitionWins()`
-  - `whenBeanDefinitionOverridingIsDisallowed_registeringSameBeanNameFailsFast()`
-
-建议断点：
-
-- “启动时报 BeanDefinitionOverrideException/同名冲突” → **定义层**：这是 BeanDefinition 注册阶段就失败，与实例化/注入无关（本章第 2 节）
-- “我以为覆盖能解决按类型歧义” → **不是覆盖问题，是注入候选选择问题**：同名覆盖 ≠ 同类型多候选（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)/[33](33-autowire-candidate-selection-primary-priority-order.md)）
-- “行为在不同环境不一致（有时覆盖、有时报错）” → **定义层配置差异**：检查 allowBeanDefinitionOverriding 的默认值/配置来源（本章第 4 节）
-- “覆盖发生了但结果难 debug” → **定义层可观测性问题**：优先用 `getBeanDefinition(beanName)` 确认最终定义，并结合 [11](../part-02-boot-autoconfig/019-11-debugging-and-observability.md) 的排查流程
-
-- 你能解释清楚：覆盖开关控制的是“同名 BeanDefinition”冲突，而不是“按类型注入”的选择规则吗？
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
-推荐断点：`DefaultListableBeanFactory#registerBeanDefinition`、`DefaultListableBeanFactory#getBeanDefinition`、`AbstractBeanFactory#getMergedLocalBeanDefinition`
+| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
+| --- | --- | --- | --- | --- |
+| 启动期 `BeanDefinitionOverrideException` | 禁止 overriding（fail-fast）且同名重复注册 | 断点 `DefaultListableBeanFactory#registerBeanDefinition`；看 `isAllowBeanDefinitionOverriding` | 改名/去重；或明确开启 overriding（但要承担可观测性成本） | `SpringCoreBeansBeanDefinitionOverridingLabTest` |
+| 启动正常但行为“像被悄悄改了” | 允许 overriding（last-wins），后注册覆盖前注册 | `getBeanDefinition(beanName)` 对照 source/resource/factoryMethod；看第二次注册发生点 | 优先禁止 overriding；或完善来源追踪与命名规范 | `SpringCoreBeansBeanDefinitionOriginLabTest` + overriding Lab |
+| 你想用 overriding 解决注入歧义 | 概念误用：这是 type-based 的候选收敛问题 | `doResolveDependency`→`findAutowireCandidates` | 使用 `@Qualifier/@Primary/@Priority` 收敛，或让 auto-config back-off | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md) |
 
 ## 常见坑与边界
 

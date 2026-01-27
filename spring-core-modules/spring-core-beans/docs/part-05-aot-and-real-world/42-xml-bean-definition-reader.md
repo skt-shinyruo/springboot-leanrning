@@ -131,6 +131,26 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 3) **误区：以为 XML 只会影响“创建对象”**
    - XML 的核心价值是让你把“输入形态”统一回 BeanDefinition：你看的其实是“定义元数据”，不是实例本身。
 
+## 面试常问（XML：Reader 到底做了什么）
+
+### Q1：XML 是如何变成 BeanDefinition 并注册进容器的？
+
+- 标准答案（可复述）：
+  - XML 通过 `XmlBeanDefinitionReader` 读取与解析，产出 `BeanDefinition`，最终注册到 `DefaultListableBeanFactory` 的 registry；它属于定义层输入，不是直接 new 对象。
+- 证据链（方法级）：
+  - `XmlBeanDefinitionReader#loadBeanDefinitions`
+  - `DefaultListableBeanFactory#registerBeanDefinition`
+- 最小复现：
+  - `SpringCoreBeansXmlBeanDefinitionReaderLabTest`
+
+### Q2：排 XML 解析问题时，你如何快速判断“定义没注册”还是“创建失败”？
+
+- 标准答案（可复述）：
+  - 先在 `registerBeanDefinition` 证明定义是否写入 registry；如果没写入，优先排资源/解析/schema/namespace；如果写入了，再回到 `doCreateBean` 看实例化/注入/初始化链路。
+- 断点建议：
+  - 定义层：`XmlBeanDefinitionReader#loadBeanDefinitions` / `registerBeanDefinition`
+  - 实例层：`AbstractAutowireCapableBeanFactory#doCreateBean`
+
 ## 一句话自检
 
 - 你能解释清楚：XML 在 Spring 里最终会变成什么吗？（提示：BeanDefinition）

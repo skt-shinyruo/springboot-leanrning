@@ -25,7 +25,7 @@
 
 把循环依赖先分成两类（这是排障时最省脑的第一步）：
 
-1) **构造器循环依赖（constructor cycle）**：依赖发生在“实例化之前” → 容器没有 early exposure 的窗口 → 典型 fail-fast  
+1) **构造器循环依赖（constructor cycle）**：依赖发生在“实例化之前” → 容器没有 early exposure 的窗口 → 典型 fail-fast
 2) **属性/Setter 循环依赖（setter/field cycle）**：依赖发生在“实例已创建、但尚未完成初始化”的窗口期 → 容器可能提前暴露一个引用 → 有机会把环跑起来
 
 这也是为什么同样是“相互依赖”，表现会完全不同。
@@ -68,9 +68,9 @@
 
 把 `doCreateBean` 只看成 4 句话（足够你对照断点理解）：
 
-1) **实例化**：先把 bean new 出来（此时还没有属性注入，也没有初始化回调）  
-2) **（可选）提前暴露**：如果允许循环依赖，注册一个 `singletonFactory` 到三级缓存（还没产生 early object）  
-3) **属性填充**：开始解析依赖并注入（setter/field 注入在这里发生）  
+1) **实例化**：先把 bean new 出来（此时还没有属性注入，也没有初始化回调）
+2) **（可选）提前暴露**：如果允许循环依赖，注册一个 `singletonFactory` 到三级缓存（还没产生 early object）
+3) **属性填充**：开始解析依赖并注入（setter/field 注入在这里发生）
 4) **初始化**：执行 Aware/@PostConstruct/afterPropertiesSet/initMethod，以及 after-init BPP 可能返回 proxy，然后把 final 对象放入一级缓存
 
 setter cycle 之所以“可能成功”，就在于第 2 步留下的窗口：**B 在创建时请求 A，`getSingleton(..., allowEarlyReference=true)` 可以从 factory 里拿到一个 early reference**。
@@ -109,9 +109,9 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 当你跑 setter cycle 并在断点里看到下面这条链，就算真正掌握了：
 
-1) 创建 A：`doCreateBean("a")` → `addSingletonFactory("a", ...)`（三级缓存出现工厂）  
-2) 创建 B：注入时需要 A → `getSingleton("a", allowEarlyReference=true)`  
-3) `getSingleton` 发现 A “in creation” 且存在 factory → 调用 factory 生成 early reference  
+1) 创建 A：`doCreateBean("a")` → `addSingletonFactory("a", ...)`（三级缓存出现工厂）
+2) 创建 B：注入时需要 A → `getSingleton("a", allowEarlyReference=true)`
+3) `getSingleton` 发现 A “in creation” 且存在 factory → 调用 factory 生成 early reference
 4) B 拿到 early reference 完成创建 → 回到 A 的 populate/initialize → 最终对象进入 `singletonObjects`
 
 > 提醒：这一章到这里为止就够了。若你想进一步搞清“early reference 应该是 raw 还是 proxy”“raw vs wrapped 不一致为何会 fail-fast”，请去看 [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md)（那一章专门讲这个坑）。
@@ -161,12 +161,39 @@ setter 注入能“让环跑起来”的前提是：你愿意接受半初始化�
 
 ---
 
+## 面试常问（循环依赖）
+
+1) **constructor cycle 为什么基本 fail-fast？setter cycle 为什么有时能救？**
+   - 要点：constructor 依赖发生在实例化之前，没有 early exposure 窗口；setter/field 依赖发生在实例已创建但未初始化完的窗口期，singleton 可以提前暴露引用把环跑起来。
+   - 证据链：`doCreateBean` 的 early exposure（`addSingletonFactory`）+ `getSingleton(beanName, allowEarlyReference)` 三层命中分支。
+
+2) **三级缓存到底解决了什么问题？它没解决什么？**
+   - 要点：它解决的是“singleton 在创建窗口期的提前引用”，不是“任意依赖图都能救”；prototype、constructor cycle 等场景仍然是边界。
+   - 证据链：`DefaultSingletonBeanRegistry#getSingleton`（final/early/factory 三层）+ `earlySingletonObjects` 命中情况。
+
+3) **`getEarlyBeanReference` 的意义是什么？为什么会牵扯 raw vs wrapped 一致性？**
+   - 要点：early 引用是否等于最终暴露形态（proxy/wrapper）很关键；不一致会导致 raw 注入绕过代理，或触发一致性保护 fail-fast。
+   - 证据链：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference` + `SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference` + `doCreateBean` 尾部一致性检查。
+
+推荐复习入口：`appendix/93-interview-playbook.md`（Q6/Q7）。
+
+## 源码调用链（方法级）：三层缓存 + early reference 在哪发生
+
+当你在面试/排障里讲循环依赖，最关键的是把“结论”落到方法级调用链：
+
+1) `AbstractAutowireCapableBeanFactory#doCreateBean`（单 bean 创建主线）
+2) `DefaultSingletonBeanRegistry#addSingletonFactory`（early exposure：注册 early factory）
+3) `DefaultSingletonBeanRegistry#getSingleton`（三层缓存命中分支：final/early/factory）
+4) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`（决定 early 形态：raw vs proxy）
+
+你不需要背实现细节，但必须能解释“为什么在这个窗口期能救 setter 循环、救不了 constructor 循环”。
+
 ## 一句话自检
 
 你应该能用 3 句完整回答：
 
-1) constructor cycle 为什么 fail-fast？（依赖发生在实例化之前，没有 early exposure 窗口）  
-2) setter cycle 为什么可能成功？（singleton 创建窗口期 + early exposure + `getSingleton(..., allowEarlyReference=true)`）  
+1) constructor cycle 为什么 fail-fast？（依赖发生在实例化之前，没有 early exposure 窗口）
+2) setter cycle 为什么可能成功？（singleton 创建窗口期 + early exposure + `getSingleton(..., allowEarlyReference=true)`）
 3) 工程上你怎么处理？（重构消环优先；延迟依赖是折中；setter 不是默认解法）
 
 <!-- BOOKIFY:START -->

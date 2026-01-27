@@ -74,7 +74,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 补充一个经常被忽略的前提：
 
-- 如果你把 `allowCircularReferences=false`（更安全的工程策略之一），那么 setter/field 循环依赖也会直接 fail-fast  
+- 如果你把 `allowCircularReferences=false`（更安全的工程策略之一），那么 setter/field 循环依赖也会直接 fail-fast
 - early reference / getEarlyBeanReference 这些机制就没有“发挥空间”（因为循环依赖被更早阻断）
 
 对照实验（本仓库已补齐）：
@@ -109,12 +109,12 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 
 以 setter 循环依赖为例，关键链路可以压缩成：
 
-1) `doCreateBean("alpha")`：实例已创建，但尚未初始化完  
-2) early exposure：`addSingletonFactory("alpha", ...)`（把 factory 放进三级缓存）  
-3) `populateBean("alpha")` → 触发创建 `beta`  
-4) `populateBean("beta")` 需要注入 `alpha` → `getSingleton("alpha", allowEarlyReference=true)`  
-5) `getSingleton` 命中 factory → `factory.getObject()` → `getEarlyBeanReference(...)`（决定 early 是 raw 还是 proxy）  
-6) `initializeBean("alpha")`：after-init BPP 可能再次 wrapping  
+1) `doCreateBean("alpha")`：实例已创建，但尚未初始化完
+2) early exposure：`addSingletonFactory("alpha", ...)`（把 factory 放进三级缓存）
+3) `populateBean("alpha")` → 触发创建 `beta`
+4) `populateBean("beta")` 需要注入 `alpha` → `getSingleton("alpha", allowEarlyReference=true)`
+5) `getSingleton` 命中 factory → `factory.getObject()` → `getEarlyBeanReference(...)`（决定 early 是 raw 还是 proxy）
+6) `initializeBean("alpha")`：after-init BPP 可能再次 wrapping
 7) `doCreateBean` 尾部检查：如果 dependent bean 已注入 raw，但 final 又 wrapping，可能 fail-fast（raw vs wrapped 不一致）
 
 你会发现：**三级缓存并没有“神奇地解决所有环”**，它只是把“有机会把引用交出去”的窗口期暴露出来；至于交出去什么形态，要靠 `getEarlyBeanReference` 与一致性保护来兜住。
@@ -192,14 +192,27 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 3) **“我只是加了一个 AOP，就开始报循环依赖相关异常”**
    - 代理改变了 final 形态，使 early/raw 与 final/proxy 的不一致暴露出来；这不是 AOP “制造了 bug”，而是它让你看见了之前已经存在的边界。
 
+## 面试常问（early reference：边界比结论更重要）
+
+### Q1：为什么有 early reference 仍然不能“保证循环依赖都能解”？
+
+- 标准答案（可复述）：
+  - early reference 只覆盖“能先实例化再注入”的窗口期（典型 setter 依赖）；构造器循环没有这个窗口。并且 early/raw 与 final/proxy 形态不一致时，Spring 可能 fail-fast 以保证一致性。
+- 证据链（方法级）：
+  - `DefaultSingletonBeanRegistry#getSingleton`（early 分支）
+  - `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+  - `AbstractAutowireCapableBeanFactory#doCreateBean`（尾部一致性检查）
+- 最小复现：
+  - `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest`
+
 ---
 
 ## 一句话自检
 
 你应该能用 3 句答题：
 
-1) `getEarlyBeanReference` 解决什么？（循环依赖窗口期让 early reference 尽量等于最终 proxy/wrapper 形态）  
-2) 为什么需要它？（避免 raw 注入绕过代理，避免 early 与 final 形态不一致）  
+1) `getEarlyBeanReference` 解决什么？（循环依赖窗口期让 early reference 尽量等于最终 proxy/wrapper 形态）
+2) 为什么需要它？（避免 raw 注入绕过代理，避免 early 与 final 形态不一致）
 3) `allowRawInjectionDespiteWrapping` 是什么态度？（做不到一致时的风险开关：默认 fail-fast，打开就是你接受“绕过代理”的隐患）
 
 <!-- BOOKIFY:START -->

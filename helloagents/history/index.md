@@ -8,6 +8,7 @@
 
 | 时间戳 | 变更名称 | 类型 | 状态 | 方案包路径 |
 | --- | --- | --- | --- | --- |
+| 202601272227 | spring_core_beans_docs_tutorial_v2_all | Enhancement | ✅Completed | [202601272227_spring_core_beans_docs_tutorial_v2_all](2026-01/202601272227_spring_core_beans_docs_tutorial_v2_all/) |
 | 202601271944 | spring_core_beans_bean_registration_callchain_and_playbook | Enhancement | ✅Completed | [202601271944_spring_core_beans_bean_registration_callchain_and_playbook](2026-01/202601271944_spring_core_beans_bean_registration_callchain_and_playbook/) |
 | 202601271739 | spring_core_beans_bean_registration_deepen | Enhancement | ✅Completed | [202601271739_spring_core_beans_bean_registration_deepen](2026-01/202601271739_spring_core_beans_bean_registration_deepen/) |
 | 202601271554 | spring_core_beans_docs_tutorial_upgrade | Enhancement | ✅Completed | [202601271554_spring_core_beans_docs_tutorial_upgrade](2026-01/202601271554_spring_core_beans_docs_tutorial_upgrade/) |
@@ -158,6 +159,7 @@
 ## Index
 | Timestamp | Feature Name | Type | Status | Solution Package Path |
 |-----------|--------------|------|--------|----------------------|
+| 202601272227 | spring_core_beans_docs_tutorial_v2_all | Enhancement | ✅Completed | history/2026-01/202601272227_spring_core_beans_docs_tutorial_v2_all/ |
 | 202601271944 | spring_core_beans_bean_registration_callchain_and_playbook | Enhancement | ✅Completed | history/2026-01/202601271944_spring_core_beans_bean_registration_callchain_and_playbook/ |
 | 202601271739 | spring_core_beans_bean_registration_deepen | Enhancement | ✅Completed | history/2026-01/202601271739_spring_core_beans_bean_registration_deepen/ |
 | 202601271554 | spring_core_beans_docs_tutorial_upgrade | Enhancement | ✅Completed | history/2026-01/202601271554_spring_core_beans_docs_tutorial_upgrade/ |
