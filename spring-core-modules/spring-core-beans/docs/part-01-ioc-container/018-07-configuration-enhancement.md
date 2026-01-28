@@ -37,6 +37,24 @@
 
 答案就在 `proxyBeanMethods`。
 
+## 配置类解析主线（定义层发生了什么）
+
+配置类解析发生在 **定义层**，核心入口在：
+
+- `ConfigurationClassPostProcessor#processConfigBeanDefinitions`
+- `ConfigurationClassParser#parse`
+- `ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsForConfigurationClass`
+
+它把 `@Configuration/@Bean/@Import` 翻译成 **BeanDefinition** 并注册进 registry；  
+实例化发生在 refresh 后段的 `preInstantiateSingletons`（不是这里）。
+
+## 增强机制细节（proxyBeanMethods=true 才发生）
+
+- 入口：`ConfigurationClassEnhancer#enhance`
+- 关键拦截：`BeanMethodInterceptor#intercept`
+- 它拦截的是 **配置类里 `@Bean` 方法的 Java 调用**，并把它重定向为 `BeanFactory#getBean`
+- 因此“增强”影响的是 **方法调用语义**，不是 BeanDefinition 的注册
+
 ## 1. 两种配置方式的核心差异
 
 `@Configuration(proxyBeanMethods = true)`（默认 true 的经典行为）：
@@ -50,6 +68,15 @@
 - Spring 不会为“方法调用语义”提供额外保障
 - 你在方法体里直接调用另一个 `@Bean` 方法，就是一次普通 Java 方法调用
 - 这可能会产生额外实例（绕过容器缓存）
+
+### 1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
+
+**条件**：配置类是 Full（`@Configuration`）还是 Lite（`@Component + @Bean`），以及 `proxyBeanMethods` 取值  
+**分支**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` 标记 Full/Lite  
+**结果**：  
+- Full + proxy=true：`ConfigurationClassEnhancer` 介入，`@Bean` 方法互调走容器  
+- Lite 或 proxy=false：互调为普通 Java 调用，可能产生额外对象  
+**断点建议**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConfigurationClassEnhancer#enhance`
 
 建议先把“现象”做成可断言的闭环（别靠日志猜）：
 
@@ -128,6 +155,20 @@ ConfigB configB(ConfigA a) {
 - 常见追问：在工程里如何避免误用？
   - 答题要点：避免在 `@Bean` 方法体内直接调用另一个 `@Bean` 方法；优先使用方法参数注入或构造注入，让依赖解析回到容器。
 
+## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
+
+至少跑出 3 条可断言结论：
+
+1) **proxy=true 时，`@Bean` 方法互调会回到容器**  
+   - 断点：`BeanMethodInterceptor#intercept`  
+   - 断言：互调返回同一实例
+2) **proxy=false/Lite 时，互调是普通 Java 调用**  
+   - 断点：互调调用栈不进入 `intercept`  
+   - 断言：方法体内 new 出额外实例
+3) **参数注入是最稳妥写法**  
+   - 断点：`doResolveDependency`  
+   - 断言：即使 proxy=false，容器注入仍保持单例语义
+
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
@@ -182,6 +223,9 @@ ConfigB configB(ConfigA a) {
 - **坑 3：误把它当成“scope 语义变化”**
   - 澄清：bean 还是单例；变的是“你在配置类里写的 Java 调用有没有被容器拦截并重定向”
   - 经验法则：只要你看到“配置类内部互调 @Bean 方法”，就默认它是风险点，优先改成“参数注入”
+- **坑 4：跨配置类/自调用导致“绕过容器”或触发循环依赖**
+  - 现象：final/private 方法无法被增强；互调时提前触发 `getBean`，可能让循环依赖更早暴露
+  - 修复：避免在 `@Bean` 方法体内互调；用方法参数注入或拆分配置类
 
 ## 排障决策表（`@Configuration` 增强 / `proxyBeanMethods`）
 

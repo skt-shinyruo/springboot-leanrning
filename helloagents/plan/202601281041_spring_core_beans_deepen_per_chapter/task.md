@@ -115,7 +115,7 @@
   - 针对“1. BFPP：`BeanFactoryPostProcessor`”补细：用 1 个具体例子说明该分支如何改变最终行为（最好能在 Lab 里跑出差异）。
   - 补充可复现闭环：以 `SpringCoreBeansContainerLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 12. [ ] 第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）
+### 12. [√] 第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/018-07-configuration-enhancement.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `ApplicationContext#refresh` / `BeanMethodInterceptor#intercept`；配套 Lab：`SpringCoreBeansContainerLabTest`
@@ -126,7 +126,7 @@
   - 针对“1. 两种配置方式的核心差异”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansContainerLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 13. [ ] 02. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）
+### 13. [√] 02. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyPropertyValues` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansComponentScanLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansImportLabTest`
@@ -135,7 +135,7 @@
   - 补充可复现闭环：以 `SpringCoreBeansComponentScanLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
   - 补充“关键分支解释”：围绕 `AbstractApplicationContext#refresh`，把本章最重要的 if/then 分支写成可推导结论，并给出必看变量。
 
-### 14. [ ] 第 20 章：01. Bean 心智模型：从 BeanDefinition 到最终暴露对象
+### 14. [√] 第 20 章：01. Bean 心智模型：从 BeanDefinition 到最终暴露对象
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `ApplicationContext#refresh` / `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
@@ -144,7 +144,7 @@
   - 补充可复现闭环：以 `SpringCoreBeansBeanCreationTraceLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
   - 补充“关键分支解释”：围绕 `AbstractApplicationContext#refresh`，把本章最重要的 if/then 分支写成可推导结论，并给出必看变量。
 
-### 15. [ ] 08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
+### 15. [√] 08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-factorybean.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#isTypeMatch`；配套 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
@@ -155,7 +155,7 @@
   - 针对“1. `FactoryBean` 的核心语义”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansContainerLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 16. [ ] 09. 循环依赖：现象、原因与规避（constructor vs setter）
+### 16. [√] 09. 循环依赖：现象、原因与规避（constructor vs setter）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#populateBean`；配套 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`

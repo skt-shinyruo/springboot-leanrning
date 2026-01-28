@@ -35,6 +35,15 @@
 - `"name"` → product（`FactoryBean#getObject()` 的返回值）
 - `"&name"` → factory（`FactoryBean` 实例本身）
 
+### 1.1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
+
+**条件**：beanName 是否以 `&` 开头  
+**分支**：`AbstractBeanFactory#getObjectForBeanInstance`  
+**结果**：  
+- `"name"`：走 `FactoryBean#getObject()`，返回 product  
+- `"&name"`：直接返回 factory 本体  
+**断点建议**：`AbstractBeanFactory#getObjectForBeanInstance`
+
 这不是“语法糖”，而是 Spring IoC 对 FactoryBean 的硬规则：不记牢，排查注入问题会非常痛苦。
 
 ### 1.2 缓存语义：缓存的是 product（并且由 isSingleton 决定）
@@ -52,6 +61,18 @@
 - 如果 `getObjectType()` 返回 `null`，很多 **按类型发现**（尤其 `allowEagerInit=false` 的路径）会失效
 
 这一点在复杂项目里非常常见：你会遇到“明明能按名字拿到，但按类型找不到”的怪现象。
+
+### 1.4 类型推断与缓存链路（你需要知道这 3 个入口）
+
+按类型查找/条件装配时，Spring 走的不是 `getObject()`，而是类型推断链路：
+
+1) `FactoryBean#getObjectType()`：产品类型的第一优先级  
+2) `AbstractBeanFactory#getTypeForFactoryBean(...)`：必要时会触发 factory 创建/推断  
+3) `FactoryBeanRegistrySupport#getObjectFromFactoryBean(...)`：真正创建 product，并处理缓存
+
+**关键影响**：  
+- `getObjectType()` 为空 → `allowEagerInit=false` 的路径会直接放弃匹配  
+- `isSingleton()` 为 true → product 会进入缓存（`factoryBeanObjectCache`），影响“是否每次创建”
 
 当某个 bean 实现了 `FactoryBean<T>`：
 
@@ -77,6 +98,21 @@
 
 - `"name"` → product
 - `"&name"` → factory
+
+## `&` 前缀证据链（最短路径）
+
+从 `getBean("name")` 到“分流”的最短路径：
+
+1) `AbstractBeanFactory#doGetBean`  
+2) `AbstractBeanFactory#getObjectForBeanInstance`  
+3) `BeanFactoryUtils.isFactoryDereference(beanName)`（判断是否 `&` 前缀）
+
+## FactoryBean 与代理/循环依赖的交叉
+
+- **early reference 一致性**：FactoryBean 产物若被代理，early reference 必须与最终暴露对象一致  
+  - 观察点：`getEarlyBeanReference` 与 `getObjectFromFactoryBean` 返回形态是否一致
+- **循环依赖边界**：FactoryBean 本体与 product 参与循环依赖时，容易出现“工厂已创建但产品不可用”的窗口  
+  - 观察点：`singletonFactories` / `earlySingletonObjects` 是否含 product
 
 ## 3. `FactoryBean` 常见用途（理解即可）
 
@@ -113,6 +149,21 @@
 
 3) **`FactoryBean#isSingleton()` 的语义是什么？它决定了什么缓存？**
    - 要点：它决定的是 product 的缓存语义（`FactoryBeanRegistrySupport` 缓存 product），不是“工厂 bean 是否单例”；工厂本体通常仍按普通 bean 的 scope 管理。
+
+## 可复现闭环（基于 `SpringCoreBeansFactoryBeanDeepDiveLabTest`）
+
+用 3 条断言把 FactoryBean 的核心语义固定下来：
+
+1) **`"name"` vs `"&name"` 的分流**  
+   - 断点：`getObjectForBeanInstance`  
+   - 断言：`&` 返回 factory，本体不等于 product
+2) **`isSingleton()` 决定 product 缓存**  
+   - 断点：`FactoryBeanRegistrySupport#getObjectFromFactoryBean`  
+   - 断言：`isSingleton=true` 时 product 命中缓存
+3) **`getObjectType()` 影响 type-based 查找**  
+   - 断点：`AbstractBeanFactory#isTypeMatch`  
+   - 断言：`getObjectType=null` 时按类型查找失败但按名字可取
+
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。

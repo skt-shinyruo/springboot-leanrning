@@ -30,6 +30,17 @@
 
 这也是为什么同样是“相互依赖”，表现会完全不同。
 
+### 机制讲透：constructor vs setter（条件 → 分支 → 结果）
+
+**条件**：依赖发生在“实例化前”还是“实例化后但初始化前”  
+**分支**：  
+- constructor 依赖 → `ConstructorResolver#autowireConstructor` 触发  
+- setter/field 依赖 → `populateBean` 触发  
+**结果**：  
+- constructor cycle：没有 early exposure 窗口 → fail-fast  
+- setter cycle：可能命中 early reference → 有时可救  
+**断点建议**：`ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean`
+
 ---
 
 ## 1. 先把现象固定成断言（不要靠脑补）
@@ -46,6 +57,15 @@
 
 > 这里的重点是：constructor 环“不是靠三级缓存救”，而是靠“延迟获取依赖”改变时机；这属于工程层面的折中，代价要你自己承担。
 
+### 1.1 循环依赖类型速查（含 fail-fast 点）
+
+| 类型 | 是否可能被“救活” | fail-fast 点 | 备注 |
+| --- | --- | --- | --- |
+| constructor ↔ constructor | 几乎不行 | `autowireConstructor` | 没有 early exposure 窗口 |
+| setter/field ↔ setter/field（singleton） | 可能 | `getSingleton(..., allowEarlyReference=true)` | 依赖 early reference |
+| prototype ↔ prototype | 不行 | `isPrototypeCurrentlyInCreation` | prototype 不进入单例缓存 |
+| dependsOn 形成的环 | 不行 | `AbstractBeanFactory#checkDependencies` | 强制初始化顺序，遇环直接失败 |
+
 ---
 
 ## 2. 三层缓存的真实语义：final / early / factory
@@ -61,6 +81,12 @@
 > 当 A 在创建中（还没初始化完）但 B 需要注入 A 时，容器能不能给 B 一个“暂时可用”的 A 引用？
 
 它的答案是：**可以，但只能在 singleton 的特定窗口期，并且通过 factory 延迟决定 early reference 的形态**。
+
+### 2.1 early reference 的生成链路（SmartInstantiationAwareBPP 介入）
+
+- 入口：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`  
+- 扩展点：`SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference`  
+- 关键影响：代理通常在这里介入，决定 early 引用与最终暴露对象是否一致
 
 ---
 
@@ -118,6 +144,18 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 ---
 
+## 排障配方：如何定位“环路边”并选择打断手段
+
+1) **先看异常 root cause**：`BeanCurrentlyInCreationException` 往往是内因  
+2) **锁定环路边**：  
+   - 断点：`DefaultSingletonBeanRegistry#beforeSingletonCreation`  
+   - 观察：`dependentBeanMap` / `dependenciesForBeanMap`（谁依赖谁）
+3) **判断类型**：constructor / setter / prototype / dependsOn  
+4) **选择手段**：  
+   - `@Lazy`：引入代理，延后依赖获取  
+   - `ObjectProvider`：按需获取（更清晰、可测试）  
+   - **重构**：拆依赖/引入中介（长期最优）
+
 ## 5. Framework vs Boot：策略差异（不要用“能启动”骗自己）
 
 在纯 Spring Framework 容器里，循环依赖策略通常更“宽松”；在 Spring Boot 里，启动过程往往会更倾向 fail-fast，并提供配置开关（例如 `spring.main.allow-circular-references`）。
@@ -147,6 +185,20 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 ### 6.3 不推荐：为了启动而把所有依赖改 setter
 
 setter 注入能“让环跑起来”的前提是：你愿意接受半初始化窗口 + 更隐蔽的运行时问题。学习阶段可以用它理解机制，工程里通常是更糟的选择。
+
+## 可复现闭环（基于 `SpringCoreBeansCircularDependencyBoundaryLabTest`）
+
+跑完这些用例，你应该能明确 3 个结论：
+
+1) **constructor cycle 直接 fail-fast**  
+   - 断点：`ConstructorResolver#autowireConstructor`  
+   - 断言：启动失败 + `BeanCurrentlyInCreationException`
+2) **`@Lazy`/`ObjectProvider` 可以打断 constructor 环**  
+   - 断点：`getObject()` / `ObjectFactory#getObject()`  
+   - 断言：依赖被延迟获取后启动成功
+3) **setter cycle 的“可救”来自 early exposure**  
+   - 断点：`addSingletonFactory` → `getSingleton(..., allowEarlyReference=true)`  
+   - 断言：early 引用命中，环被临时打通
 
 ---
 

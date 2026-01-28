@@ -51,6 +51,15 @@
 > 你真正要背进肌肉记忆的一句话：
 > **定义层回答“有没有/谁注册的/配方是什么”，实例层回答“什么时候创建/注入选了谁/最终是不是 proxy”。**
 
+### 机制讲透：三层模型 + 最终对象（条件 → 分支 → 结果）
+
+**条件**：bean 是否走完整 `doCreateBean`，以及是否被 BPP/early reference 替换  
+**分支**：`applyBeanPostProcessorsAfterInitialization` / `getEarlyBeanReference`  
+**结果**：  
+- 走完整创建链 → 有机会被 after-init BPP 替换成 proxy  
+- 进入 early reference → 最终对象可能不是 raw instance  
+**断点建议**：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+
 ## 1. 四类对象一张表：你到底在看什么？
 
 | 你在调试器里看到的对象 | 它代表什么 | 最直接 API/入口 | 你通常用它回答什么问题 |
@@ -71,6 +80,13 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 3) `registerBeanPostProcessors`（把实例层拦截链装好：注解注入/AOP/回调都依赖它）
 4) `finishBeanFactoryInitialization` → `preInstantiateSingletons`（批量创建非 lazy 单例）
 
+### 2.1 关键分支解释（围绕 refresh 的 if/then）
+
+- **是否预实例化**：`mbd.isLazyInit()` 决定是否在 `preInstantiateSingletons` 被创建  
+- **是否走 BPP 链**：BPP 注册发生在 `registerBeanPostProcessors`，过早创建会错过  
+- **是否进入 early reference**：循环依赖窗口期决定最终暴露对象形态  
+- **是否为 FactoryBean**：`getObjectForBeanInstance` 决定拿到的是工厂还是产品
+
 单个 bean 的创建主线（方法级锚点）：
 
 1) `AbstractBeanFactory#doGetBean(beanName)`
@@ -78,6 +94,20 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 3) `populateBean(beanName, mbd, bw)`（注入发生点：依赖解析、属性填充、类型转换）
 4) `initializeBean(beanName, bean, mbd)`（回调与 BPP：Aware → before-init BPP → init callbacks → after-init BPP）
 5) 返回 exposed object（可能是 proxy）
+
+## 可复现闭环（基于 `SpringCoreBeansBeanCreationTraceLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **raw instance 与最终暴露对象可能不同**  
+   - 断点：`applyBeanPostProcessorsAfterInitialization`  
+   - 断言：`result != bean`
+2) **注入发生在 populateBean 阶段**  
+   - 断点：`populateBean`  
+   - 断言：属性填充发生在初始化之前
+3) **最终暴露对象在 initializeBean 之后确定**  
+   - 断点：`initializeBean`  
+   - 断言：`getBean()` 拿到的是 initialize 之后的返回值
 
 ## 3. 三个“最终对象被替换”的高频入口
 

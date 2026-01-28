@@ -33,6 +33,30 @@
 3) **3 分钟复述闭环（说得清）**
    - 用“结论 → 证据链（方法级）→ 反例/坑”回答本章末尾的面试题（也可对照 `appendix/93-interview-playbook.md`）。
 
+## 机制讲透：注册入口的条件 → 分支 → 结果（可断点证明）
+
+**条件**：你是“注册定义”还是“注册实例”，以及注册发生的时机  
+**分支**：  
+- `registerBeanDefinition`（定义层）  
+- `registerSingleton`（实例层）  
+
+**结果**：  
+- 定义层注册 → 会参与 BFPP/BPP/生命周期（注入/回调/代理可生效）  
+- 实例层注册 → 直接入单例缓存，**不会 retroactive 触发注入/BPP**  
+
+**断点建议**：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#registerSingleton`  
+**关键变量**：`beanDefinition.getSource()` / `factoryMethodName` / `allowBeanDefinitionOverriding`
+
+## 关键分支解释（围绕 refresh 的 if/then）
+
+- **注册发生在 BFPP/BDRPP 之前？**  
+  - 是：定义仍可被加工（注解/占位符/注册表扩张）  
+  - 否：可能错过定义层加工
+- **注册发生在 BPP 之前？**  
+  - 是：实例创建可被完整 BPP 链处理  
+  - 否：容易出现“过早出生”的 bean（错过代理/注解处理）
+- **是否允许覆盖**：`allowBeanDefinitionOverriding` 决定同名定义能否被后注册覆盖
+
 ## 机制主线：注册 = 先注册定义，再按定义造实例
 
 你在工程里“把一个东西交给 Spring 管”，本质上有两种完全不同的语义：
@@ -188,6 +212,20 @@ Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`
   - 实例层：只是把对象塞进 `singletonObjects`，不会 retroactive 触发注入与 BPP（常见“看起来交给 Spring 了但不生效”）
 
 ---
+
+## 可复现闭环（基于 `SpringCoreBeansComponentScanLabTest`）
+
+你至少要能用 3 个断言讲清楚“扫描注册”的关键结论：
+
+1) **扫描注册写入的是 BeanDefinition，不是实例**  
+   - 断点：`ClassPathBeanDefinitionScanner#doScan` → `registerBeanDefinition`  
+   - 断言：`beanDefinitionMap` 增长但 `singletonObjects` 仍为空
+2) **来源可以通过 source/factoryMethodName 反推**  
+   - 断点：`registerBeanDefinition`  
+   - 断言：`beanDefinition.getSource()` 指向扫描来源
+3) **时机决定能否被后处理器看见**  
+   - 断点：`invokeBeanFactoryPostProcessors`  
+   - 断言：注册发生在 BFPP/BDRPP 之前 → 定义可被加工
 
 ## 3. 注册发生在 refresh 的哪一段？（时机决定能力）
 
