@@ -27,6 +27,13 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：同一个 key 在多个 PropertySource 中同时存在  
+**分支**：按 `MutablePropertySources` 的顺序从前到后查找  
+**结果**：**先命中者生效**（顺序即优先级）  
+**断点建议**：`PropertySourcesPropertyResolver#getProperty`
+
 ---
 
 ## 1. 是什么：Environment 抽象解决的是什么问题？
@@ -84,6 +91,19 @@ Spring 把“多个来源”组织成一个有序链表：
 2) 它在链表中的位置（顺序）是什么
 
 ---
+
+## 3.1 PropertySources 的“时序边界”：什么时候加，什么时候才会生效？
+
+你必须牢记一条规则：
+
+- **影响注入/条件装配的 PropertySource，必须在 refresh 之前进入 Environment**
+
+否则会出现两类典型现象：
+
+- `@Profile`/条件装配已完成，新增 PropertySource 不会“倒流重算”
+- `@Value` 已经解析完成，后续再加 PropertySource 不会影响已创建的 bean
+
+这也是为什么排障时一定要先确认“是谁在什么时候把 source 加进来的”。
 
 ## 4. 占位符解析：`@Value("${...}")` 与 Environment 的连接点
 

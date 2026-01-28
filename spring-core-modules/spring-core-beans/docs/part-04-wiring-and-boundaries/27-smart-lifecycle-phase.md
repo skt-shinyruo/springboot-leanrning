@@ -28,6 +28,31 @@
 - 我希望在容器 close 时 stop
 - 并且我希望多个组件之间按 phase 排序
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：bean 实现 `SmartLifecycle`，且 `isAutoStartup()` 为 `true`  
+**分支**：`LifecycleProcessor#onRefresh` → `DefaultLifecycleProcessor#startBeans` 按 phase 升序启动  
+**结果**：refresh 结束自动 start；close 阶段按 phase 反序 stop  
+**断点建议**：`DefaultLifecycleProcessor#startBeans` / `DefaultLifecycleProcessor#stopBeans`
+
+## 回调来源分型：它和其他回调有什么层级差异？
+
+- **bean 内部回调**（`@PostConstruct` / `afterPropertiesSet` / `init-method`）  
+  发生在“单个 bean 创建”阶段  
+- **容器生命周期回调**（`SmartLifecycle`）  
+  发生在“容器 refresh/close 关键节点”  
+
+因此它适合“基础设施启动/停止”，而不适合承载复杂业务逻辑。
+
+## 回调与代理交织：start/stop 执行在 proxy 还是 target 上？
+
+容器触发的是 `getBean(beanName)` 返回的最终实例：
+
+- 如果 BPP 把 bean 替换为 proxy（AOP 常见），start/stop 调用落在 **proxy** 上  
+- 如果没有替换，调用落在 **目标对象** 上  
+
+排障时请先确认：你看到的是哪种对象，避免误判“start 没执行”。
+
 ## 1. 现象：start 按 phase 升序，stop 反向
 
 对应测试：

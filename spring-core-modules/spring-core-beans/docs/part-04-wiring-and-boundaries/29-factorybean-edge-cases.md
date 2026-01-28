@@ -23,6 +23,22 @@
 - 如果 `FactoryBean#getObjectType()` 返回 `null`
 - 那么在“不允许 eager init”的按类型扫描里，它可能不会被当成候选
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：`allowEagerInit=false` 且 `FactoryBean#getObjectType()==null`  
+**分支**：`getBeanNamesForType` 不能为了“推断类型”而实例化 FactoryBean  
+**结果**：按类型扫描 **忽略该 FactoryBean 的 product**  
+**断点建议**：`DefaultListableBeanFactory#getBeanNamesForType` / `FactoryBeanRegistrySupport#getTypeForFactoryBean`
+
+## 0. 与代理/循环依赖的交叉边界（只要记住一条）
+
+当 FactoryBean 本身或其 product 进入“提前暴露”路径时：
+
+- `getObjectType()` 的不稳定会放大问题：**类型推断不可靠 → 条件判断/候选匹配更容易误判**
+- 如果你在循环依赖里拿到了 early reference（proxy 或半成品），再叠加“类型不可判定”，排障会非常痛苦
+
+实务建议：**FactoryBean 的 product 类型能稳定就稳定**，不要让它成为“隐形类型黑洞”。
+
 ## 1. 现象：getBeanNamesForType(..., allowEagerInit=false) 找不到 unknownValue
 
 这类现象非常“反直觉”，但它背后是一个很合理的设计取舍：

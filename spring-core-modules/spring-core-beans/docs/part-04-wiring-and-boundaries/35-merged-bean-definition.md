@@ -31,6 +31,13 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：bean 定义存在 parent/子定义或需要解析默认值  
+**分支**：`getMergedLocalBeanDefinition` 递归合并 parent → 生成 `RootBeanDefinition`  
+**结果**：创建阶段只看 **merged**；registry 原始定义仅用于输入  
+**断点建议**：`AbstractBeanFactory#getMergedLocalBeanDefinition`
+
 你会观察到 3 个关键现象：
 
 1) registry 里拿到的 child definition **仍然保留 parentName**，且看不到 parent 的元数据

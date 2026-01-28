@@ -31,6 +31,15 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：BeanFactory 安装了哪一种 embedded value resolver  
+**分支**：  
+- 默认 resolver（多为 `Environment#resolvePlaceholders`）→ **non-strict**  
+- `PropertySourcesPlaceholderConfigurer` → **strict fail-fast**  
+**结果**：缺失占位符要么“原样保留”，要么直接抛异常  
+**断点建议**：`AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
+
 ## 1. 先把链路拆开：`@Value` 不是“直接读 Environment”
 
 把 `@Value` 想清楚，你就不会把问题误判成“配置没加载”或“环境没生效”：

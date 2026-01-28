@@ -54,6 +54,37 @@
 
 因此：constructor injection 的依赖在对象构造完成时就已经存在。
 
+## 2.1 DependencyDescriptor 深挖：解析“注入点语义”的核心对象
+
+无论是构造器参数还是字段，最终都会被包装成 `DependencyDescriptor`：
+
+- `DependencyDescriptor#required`：是否必需（决定是否允许 `null` / Optional）
+- `DependencyDescriptor#annotations`：注入点上的注解集合（`@Qualifier/@Lazy/@Value` 等都会影响分支）
+- `DependencyDescriptor#resolvableType`：泛型信息（决定按类型匹配是否精确）
+- `DependencyDescriptor#getDependencyName`：按名称回退时的候选名（`@Resource` 尤其依赖它）
+
+这就是“注入点语义”的单一入口，排障时优先看它。
+
+## 2.2 依赖解析分支树（简化版）
+
+你可以把 `doResolveDependency` 的决策流程记成一棵树：
+
+1) **快捷路径**：Optional/Provider/@Lazy/@Value → 有条件地短路  
+2) **resolvableDependencies**：`registerResolvableDependency` 的直接命中  
+3) **候选收集**：`findAutowireCandidates`（按类型收集）  
+4) **候选收敛**：`determineAutowireCandidate`（@Primary/@Priority/@Qualifier/beanName）  
+5) **集合解析**：`Collection/Map/Stream/Array` 类型走“多候选路径”  
+6) **fallback**：可选依赖或容器默认值
+
+每个分支都可能改变“你到底拿到哪个对象”的结论。
+
+## 2.3 关键变量解释（调试时只看这几项）
+
+- `candidates`：收集到的候选集合（数量决定是否进入“歧义”分支）
+- `primary` / `priority`：收敛时的优先级判定依据
+- `dependencyName`：按名称回退的关键输入（字段名/参数名/Qualifier value）
+- `resolvedCandidate`：最终被选中的 beanName（这是你要“证明”的结论）
+
 ## 3. `postProcessProperties(...)` 在哪里起作用？
 
 这一点是把“注解不是魔法”落地成可解释机制的关键：

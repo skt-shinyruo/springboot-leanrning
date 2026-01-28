@@ -41,6 +41,25 @@
 
 - `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
 
+### DependencyDescriptor 深挖：注入点语义决定“走哪条分支”
+
+`doResolveDependency` 的每一次决策，都基于 `DependencyDescriptor`：
+
+- `descriptor.getDependencyType()`：单依赖 vs 集合注入的第一道分叉
+- `descriptor.getDependencyName()`：by-name fallback 的来源（字段/参数名）
+- `descriptor.getAnnotations()`：`@Qualifier/@Lazy/@Value` 的入口
+- `descriptor.getResolvableType()`：泛型匹配与候选过滤
+
+**结论**：注入点语义不清楚，候选收敛就会变成“运气”。
+
+### 依赖解析分支树（简化版）
+
+1) **快捷路径**：`@Value` / `ObjectProvider` / `@Lazy`  
+2) **候选收集**：`findAutowireCandidates`  
+3) **候选收敛**：Qualifier → Primary → by-name → Priority  
+4) **集合排序**（仅集合注入）：`AnnotationAwareOrderComparator#sort`  
+5) **失败**：仍无法唯一 → `NoUniqueBeanDefinitionException`
+
 ## 2. 单依赖注入：胜者是怎么选出来的？
 
 把规则压缩成你能复述的版本（学习阶段不用背全分支）：

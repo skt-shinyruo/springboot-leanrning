@@ -41,6 +41,13 @@
 - 同名 `duplicate` 注册两次
 - 最终 `getBean(Marker.class)` 得到的是第二次注册的定义
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：`DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` 为 `true`  
+**分支**：`registerBeanDefinition` 检测到同名时进入“覆盖”分支  
+**结果**：registry 中 **BeanDefinition 被替换**（但已创建的单例不会回滚）  
+**断点建议**：`DefaultListableBeanFactory#registerBeanDefinition`
+
 ## 2. allowBeanDefinitionOverriding=false：同名注册 fail-fast
 
 对应测试：
@@ -53,7 +60,36 @@
 - 第二次注册直接抛 `BeanDefinitionOverrideException`
 - 甚至还不需要 refresh，注册阶段就失败
 
-## 3. 为什么这个点重要？
+## 3. 覆盖语义的来源：Spring vs Boot 的开关路径
+
+在纯 Spring 容器里，覆盖与否只由 `DefaultListableBeanFactory` 的开关决定；  
+在 Spring Boot 中，开关通常会被 `SpringApplication` 或配置项提前设置。
+
+你需要明确“是谁设置了开关”：
+
+- 代码路径：`SpringApplication#setAllowBeanDefinitionOverriding(...)`
+- 配置路径：`spring.main.allow-bean-definition-overriding`
+
+> 经验提示：**不要假设默认值**。不同运行方式/版本可能不一致，最稳妥的证据链是断点观察该开关被设置的时机。
+
+## 4. 定义层覆盖 vs 实例缓存：覆盖不会回滚已创建单例
+
+这是最容易造成“我明明覆盖了，但注入还是旧的”的原因：
+
+- 覆盖只替换 **BeanDefinition**
+- `singletonObjects` 里的已创建实例 **不会自动清理/替换**
+
+因此要区分两个阶段：
+
+1) **注册阶段**：`registerBeanDefinition` 决定“覆盖或失败”
+2) **实例阶段**：`getBean` 先检查 `singletonObjects`，若已存在则直接返回
+
+排障时你需要同时看两处：
+
+- `DefaultListableBeanFactory#getBeanDefinition(beanName)`：定义是否已被覆盖
+- `DefaultSingletonBeanRegistry#singletonObjects`：实例是否仍是旧对象
+
+## 5. 为什么这个点重要？
 
 因为它会影响你在工程里“怎么理解装配冲突”：
 
@@ -74,7 +110,7 @@
 2) `DefaultListableBeanFactory#registerBeanDefinition`：观察第二次注册同名 beanName 时走“覆盖”还是“抛异常”分支
 3) `DefaultListableBeanFactory#getBeanDefinition`：在允许覆盖的场景下，确认最终 registry 里保存的是哪一个定义
 
-## 排障分流：这是定义层问题还是实例层问题？
+## 6. 排障分流：这是定义层问题还是实例层问题？
 
 这章非常适合用“异常类型”快速分流：
 
@@ -85,7 +121,21 @@
 - **实例层（不是 overriding 能解决）**：`NoUniqueBeanDefinitionException` / “同类型多候选注入歧义”
   - 关键入口：`DefaultListableBeanFactory#doResolveDependency`
   - 修复方向：`@Primary/@Qualifier` 或让自动配置 back-off（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md)、[10](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)）
-## 5. 一句话自检
+
+## 可复现闭环（用本仓库 Lab/Test 跑一遍）
+
+你至少要能跑出并复述三条结论：
+
+1) **允许覆盖：后注册 wins**  
+   - 断点：`registerBeanDefinition`  
+   - 断言：最终 `getBeanDefinition(beanName)` 指向第二次注册来源
+2) **禁止覆盖：注册阶段 fail-fast**  
+   - 断点：`registerBeanDefinition`  
+   - 断言：抛 `BeanDefinitionOverrideException`，无需进入 refresh
+3) **覆盖不影响已创建单例**  
+   - 断点：`AbstractBeanFactory#doGetBean`  
+   - 断言：已有 `singletonObjects` 时直接返回旧对象
+## 7. 一句话自检
 
 - 常问：BeanDefinition overriding 解决的是什么问题？
   - 答题要点：解决“同名 BeanDefinition 冲突”的定义层问题；开关决定是 last-wins 还是 fail-fast。
@@ -94,14 +144,14 @@
 - 常见追问：你如何用断点证明“冲突发生在注册阶段，而不是实例化阶段”？
   - 答题要点：在 `registerBeanDefinition` 处观察分支；fail-fast 场景甚至不需要 refresh 就会抛 `BeanDefinitionOverrideException`。
 
-## 面试常问（overriding 与注入歧义不是一回事）
+## 8. 面试常问（overriding 与注入歧义不是一回事）
 
 - 常问：BeanDefinition overriding 是什么？它解决什么问题？
   - 答题要点：解决“同名 BeanDefinition 冲突”的定义层问题；开关控制是否允许后注册覆盖先注册。
 - 常见追问：它和“按类型注入选择（多候选）”是什么关系？
   - 答题要点：几乎无关：注入歧义是“同类型多候选怎么收敛”；overriding 是“同名定义冲突怎么处理”。不要混用概念。
 
-## 排障决策表（overriding：从异常到修复）
+## 9. 排障决策表（overriding：从异常到修复）
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |
@@ -109,7 +159,7 @@
 | 启动正常但行为“像被悄悄改了” | 允许 overriding（last-wins），后注册覆盖前注册 | `getBeanDefinition(beanName)` 对照 source/resource/factoryMethod；看第二次注册发生点 | 优先禁止 overriding；或完善来源追踪与命名规范 | `SpringCoreBeansBeanDefinitionOriginLabTest` + overriding Lab |
 | 你想用 overriding 解决注入歧义 | 概念误用：这是 type-based 的候选收敛问题 | `doResolveDependency`→`findAutowireCandidates` | 使用 `@Qualifier/@Primary/@Priority` 收敛，或让 auto-config back-off | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md) |
 
-## 常见坑与边界
+## 10. 常见坑与边界
 
 ### 常见坑
 

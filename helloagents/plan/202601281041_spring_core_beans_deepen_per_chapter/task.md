@@ -278,7 +278,7 @@
   - 针对“1. lazy-init bean：refresh 阶段不创建”补细：把本段涉及的分支条件/关键变量补齐到能推导结论的程度。
   - 补充可复现闭环：以 `SpringCoreBeansLazyLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 28. [ ] 19. dependsOn：强制初始化顺序（即使没有显式依赖）
+### 28. [√] 19. dependsOn：强制初始化顺序（即使没有显式依赖）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-depends-on.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractBeanFactory#doGetBean` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties`；配套 Lab：`SpringCoreBeansDependsOnLabTest`
@@ -289,7 +289,7 @@
   - 针对“机制主线：它解决的是“顺序”，不是“注入””补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansDependsOnLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 29. [ ] 20. registerResolvableDependency：能注入，但它不是 Bean
+### 29. [√] 20. registerResolvableDependency：能注入，但它不是 Bean
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#prepareBeanFactory` / `AbstractAutowireCapableBeanFactory#invokeAwareMethods` / `AutowireUtils#resolveAutowiringValue`；配套 Lab：`SpringCoreBeansResolvableDependencyLabTest`
@@ -300,7 +300,7 @@
   - 针对“机制主线：它是“可解析依赖”，不是“可获取 Bean””补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansResolvableDependencyLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 30. [ ] 21. 父子 ApplicationContext：可见性与覆盖边界
+### 30. [√] 21. 父子 ApplicationContext：可见性与覆盖边界
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-context-hierarchy.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#getParent` / `AbstractApplicationContext#setParent` / `AbstractBeanFactory#containsBean`；配套 Lab：`SpringCoreBeansContextHierarchyLabTest`
@@ -311,7 +311,7 @@
   - 针对“1. 现象：child 能看到 parent，parent 看不到 child”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansContextHierarchyLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 31. [ ] 22. Bean 名称与 alias：同一个实例，多一个名字
+### 31. [√] 22. Bean 名称与 alias：同一个实例，多一个名字
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#transformedBeanName` / `BeanDefinitionReaderUtils#generateBeanName`；配套 Lab：`SpringCoreBeansBeanNameAliasLabTest`
@@ -322,7 +322,7 @@
   - 针对“1. 现象：两个名字拿到的是同一个对象”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansBeanNameAliasLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 32. [ ] 23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
+### 32. [√] 23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#getType`；配套 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
@@ -333,7 +333,7 @@
   - 针对“1. 最重要的规则：`&` 前缀”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansContainerLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 33. [ ] 24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
+### 33. [√] 24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md`
 - 现状速记：关键锚点：`BeanDefinitionOverrideException#getBeanName` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultListableBeanFactory#getBeanDefinition`；配套 Lab：`SpringCoreBeansBeanDefinitionOriginLabTest` / `SpringCoreBeansBeanDefinitionOverridingLabTest`
@@ -344,7 +344,7 @@
   - 针对“1. allowBeanDefinitionOverriding=true：最后一个 wins”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansBeanDefinitionOriginLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 34. [ ] 25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱
+### 34. [√] 25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`；配套 Lab：`SpringCoreBeansProgrammaticBeanPostProcessorLabTest` / `SpringCoreBeansProgrammaticRegistrationLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
@@ -354,7 +354,7 @@
   - 针对“机制主线：两条注册路径 + 一个“不可逆”事实”补细：用 1 个具体例子说明该分支如何改变最终行为（最好能在 Lab 里跑出差异）。
   - 补充可复现闭环：以 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 35. [ ] 26. SmartInitializingSingleton：所有单例都创建完之后再做事
+### 35. [√] 26. SmartInitializingSingleton：所有单例都创建完之后再做事
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractBeanFactory#doGetBean`；配套 Lab：`SpringCoreBeansSmartInitializingSingletonLabTest`
@@ -364,7 +364,7 @@
   - 针对“1. 现象：回调发生在“非 lazy 单例创建完成之后””补细：把本段涉及的分支条件/关键变量补齐到能推导结论的程度。
   - 补充可复现闭环：以 `SpringCoreBeansSmartInitializingSingletonLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 36. [ ] 27. SmartLifecycle：start/stop 时机与 phase 顺序
+### 36. [√] 27. SmartLifecycle：start/stop 时机与 phase 顺序
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishRefresh` / `DefaultLifecycleProcessor#onRefresh` / `DefaultLifecycleProcessor#startBeans`；配套 Lab：`SpringCoreBeansSmartLifecycleLabTest`
@@ -374,7 +374,7 @@
   - 针对“1. 现象：start 按 phase 升序，stop 反向”补细：把本段涉及的分支条件/关键变量补齐到能推导结论的程度。
   - 补充可复现闭环：以 `SpringCoreBeansSmartLifecycleLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 37. [ ] 28. 自定义 Scope + scoped proxy：thread scope 的真实语义
+### 37. [√] 28. 自定义 Scope + scoped proxy：thread scope 的真实语义
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#registerScope` / `DefaultListableBeanFactory#registerScope`；配套 Lab：`SpringCoreBeansCustomScopeLabTest`
@@ -385,7 +385,7 @@
   - 针对“1. 注册自定义 scope（thread）”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansCustomScopeLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 38. [ ] 29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
+### 38. [√] 29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#getType` / `AbstractBeanFactory#isTypeMatch`；配套 Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
@@ -396,7 +396,7 @@
   - 针对“1. 现象：getBeanNamesForType(..., allowEagerInit=false) 找不到 unknownValue”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansFactoryBeanEdgeCasesLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 39. [ ] 30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）
+### 39. [√] 30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#autowireConstructor` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#populateBean`；配套 Lab：`SpringCoreBeansInjectionPhaseLabTest`
@@ -407,7 +407,7 @@
   - 针对“1. 现象：field injection 在构造器里拿不到依赖”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansInjectionPhaseLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 40. [ ] 31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
+### 40. [√] 31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
@@ -418,7 +418,7 @@
   - 针对“机制主线：容器允许“换对象””补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansBeanCreationTraceLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 41. [ ] 32. `@Resource` 注入：为什么它更像“按名称找 Bean”？
+### 41. [√] 32. `@Resource` 注入：为什么它更像“按名称找 Bean”？
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#populateBean` / `AnnotationConfigUtils#registerAnnotationConfigProcessors`；配套 Lab：`SpringCoreBeansResourceInjectionLabTest`
@@ -429,7 +429,7 @@
   - 针对“机制主线：`@Resource` 的三个关键事实”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansResourceInjectionLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 42. [ ] 33. 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界
+### 42. [√] 33. 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
 - 现状速记：关键锚点：`AnnotationAwareOrderComparator#sort` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties` / `DefaultListableBeanFactory#determineAutowireCandidate`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
@@ -440,7 +440,7 @@
   - 针对“机制主线：先问“注入的是一个，还是一组？””补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansAutowireCandidateSelectionLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 43. [ ] 34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
+### 43. [√] 34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#prepareBeanFactory` / `AbstractBeanFactory#resolveEmbeddedValue` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties`；配套 Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
@@ -451,7 +451,7 @@
   - 针对“机制主线：`@Value` 严不严格，取决于 resolver”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansValuePlaceholderResolutionLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 44. [ ] 35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
+### 44. [√] 35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors` / `AbstractBeanFactory#getMergedLocalBeanDefinition` / `DefaultListableBeanFactory#getMergedBeanDefinition`；配套 Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
@@ -462,7 +462,7 @@
   - 针对“2. merged 到底“合并”了什么？”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansMergedBeanDefinitionLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 45. [ ] 36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
+### 45. [√] 36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyPropertyValues` / `AbstractAutowireCapableBeanFactory#populateBean` / `AbstractBeanFactory#resolveEmbeddedValue`；配套 Lab：`SpringCoreBeansBeansSupportUtilitiesLabTest` / `SpringCoreBeansTypeConversionLabTest`
@@ -473,7 +473,7 @@
   - 针对“机制主线：两条链路 + 一个决策点”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansBeansSupportUtilitiesLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 46. [ ] 37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失
+### 46. [√] 37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`
 - 现状速记：关键锚点：`BeanDefinition#getResolvableType` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultListableBeanFactory#findAutowireCandidates`；配套 Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
@@ -484,7 +484,7 @@
   - 针对“0. 先建立一个“排障口径”：候选类型信息的三大来源”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansGenericTypeMatchingPitfallsLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 47. [ ] 38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线
+### 47. [√] 38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#populateBean` / `AbstractBeanFactory#resolveEmbeddedValue` / `ConfigurableEnvironment#getProperty`；配套 Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest` / `SpringCoreBeansProfileRegistrationLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
@@ -495,7 +495,7 @@
   - 针对“1. 是什么：Environment 抽象解决的是什么问题？”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansEnvironmentPropertySourceLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 48. [ ] 39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界
+### 48. [√] 39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#populateBean` / `AbstractBeanFactory#doGetBean`；配套 Lab：`SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`

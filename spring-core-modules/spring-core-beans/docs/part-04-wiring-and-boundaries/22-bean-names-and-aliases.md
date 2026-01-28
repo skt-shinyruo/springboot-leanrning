@@ -36,6 +36,13 @@
 
 - `getBean("primaryName")` 与 `getBean("aliasName")` 拿到的是同一个实例（same reference）
 
+### 1.1 机制讲透：条件 → 分支 → 结果
+
+**条件**：是否传入 aliasName  
+**分支**：`canonicalName` / `transformedBeanName` 先做名称归一化  
+**结果**：aliasName 最终映射到同一 canonicalName  
+**断点建议**：`SimpleAliasRegistry#canonicalName`
+
 ## 2. alias 在容器里的定位
 
 你可以把 alias 理解为：
@@ -49,6 +56,17 @@
 - `AbstractBeanFactory#doGetBean`：按 name 取 bean 的主流程（最终总是落到 canonicalName）
 - `DefaultSingletonBeanRegistry#getSingleton`：singleton 缓存只存一份实例（解释“alias 不会复制对象”）
 
+### 2.1 名字参与注入的入口集合（容易被忽略）
+
+- `@Resource`：按 name-first  
+- by-name fallback：字段/参数名匹配  
+- `@Qualifier("beanName")`：显式指名  
+
+### 2.2 工程建议：让名字稳定、可重构
+
+- 给核心 bean 明确 canonicalName，避免依赖默认生成名  
+- alias 用于兼容旧名/灰度迁移，不要当作“多实例手段”
+
 入口：
 
 1) `SimpleAliasRegistry#registerAlias`：观察 aliasName → primaryName 的映射写入
@@ -61,6 +79,20 @@
 - “我以为 alias 会复制一个 bean，结果两个名字拿到同一个对象” → **这是预期（实例层语义）**：alias 只是名字映射，不产生第二个实例（本章第 1 节）
 - “按类型注入仍然歧义” → **实例层（候选解析）**：alias 不改变候选选择规则（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)/[33](33-autowire-candidate-selection-primary-priority-order.md)）
 - “和 FactoryBean/`&` 混在一起更乱” → **先分清 name 变换**：`transformedBeanName` 同时负责 alias 与 `&`（见 [23](23-factorybean-deep-dive.md)）
+
+## 可复现闭环（基于 `SpringCoreBeansBeanNameAliasLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **alias 只做名字映射**  
+   - 断点：`canonicalName`  
+   - 断言：aliasName 与 primaryName 返回同一实例
+2) **singleton 缓存只有一份**  
+   - 断点：`getSingleton`  
+   - 断言：两次获取命中同一缓存条目
+3) **名称归一化发生在最早入口**  
+   - 断点：`transformedBeanName`  
+   - 断言：`&` 与 alias 统一处理
 
 ## 4. 面试常问（beanName 与 alias）
 

@@ -30,6 +30,15 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：你使用的是 plain `BeanFactory` 还是 `ApplicationContext`  
+**分支**：  
+- `BeanFactory`：不会自动执行 BFPP/BPP  
+- `ApplicationContext`：refresh 时自动 bootstrap 全套处理器  
+**结果**：前者“注解不生效/能力缺失”，后者“开箱即用”  
+**断点建议**：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`
+
 ---
 
 ## 1. 是什么：BeanFactory 在 Spring 体系里的位置
@@ -78,6 +87,29 @@
 - 手动 addBeanPostProcessor：注解生效
 
 ---
+
+## 3. 最小容器边界：哪些能力来自 BeanFactory，哪些必须由 ApplicationContext 承接？
+
+**BeanFactory 自带的最小能力**：
+
+- `getBean` / 单例缓存 / 依赖解析 / 基础生命周期骨架  
+
+**ApplicationContext 额外提供的能力**（通过 refresh 统一装配）：
+
+- BFPP/BPP 自动发现与执行（注解、AOP、条件装配、占位符解析）
+- 事件、资源、国际化等上层设施
+
+排障时你必须先回答：**你当前拿到的是哪一层？**
+
+## 3.1 容器外对象三段能力：autowire / initialize / destroy
+
+当你手里有“非容器管理对象”时，`AutowireCapableBeanFactory` 提供三段能力：
+
+1) `autowireBean`：只做依赖注入  
+2) `initializeBean`：触发初始化回调/BPP  
+3) `destroyBean`：触发销毁回调  
+
+**结论**：这三段能力彼此独立，调用顺序决定你能拿到什么语义。
 
 ## 4. 怎么用：你在真实项目里会如何接触 BeanFactory？
 

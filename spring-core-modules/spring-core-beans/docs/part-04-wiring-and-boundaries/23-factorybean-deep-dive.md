@@ -42,6 +42,15 @@
 - `getBean("valueFactory")` 拿到的是 **product**（`getObject()` 的返回值）
 - `getBean("&valueFactory")` 拿到的是 **factory**（FactoryBean 自身）
 
+### 1.1 机制讲透：条件 → 分支 → 结果
+
+**条件**：beanName 是否以 `&` 开头  
+**分支**：`AbstractBeanFactory#getObjectForBeanInstance`  
+**结果**：  
+- `"name"` → product  
+- `"&name"` → factory  
+**断点建议**：`AbstractBeanFactory#getObjectForBeanInstance`
+
 同样的规则也适用于“看类型”：
 
 - `getType("valueFactory")` 更像在问：**product 的类型是什么？**
@@ -131,6 +140,25 @@
 
 - direct injection：在 consumer 创建时解析一次，consumer 内部持有固定 product 引用
 - `ObjectProvider<Value>`：每次 `getObject()` 都回到容器再解析一次，更贴近“每次获取新 product”的语义
+
+## FactoryBean 与代理/循环依赖的交叉
+
+- early reference 阶段若需要 product，建议确保 **early == final** 形态一致  
+- 代理介入时，优先让 `getEarlyBeanReference` 返回 proxy，避免 raw 注入绕过增强
+
+## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **`"name"` vs `"&name"` 的分流**  
+   - 断点：`getObjectForBeanInstance`  
+   - 断言：同名不同语义
+2) **product 参与 type matching**  
+   - 断点：`isTypeMatch`  
+   - 断言：按类型返回 product
+3) **isSingleton 决定 product 缓存**  
+   - 断点：`getObjectFromFactoryBean`  
+   - 断言：缓存命中取决于 `isSingleton()`
 
 - `AbstractBeanFactory#getObjectForBeanInstance`：处理 “FactoryBean 的 product vs factory” 分流（`&` 前缀的核心路径）
 - `BeanFactoryUtils#isFactoryDereference`：判断 beanName 是否带 `&`（理解为什么 `&name` 拿到的是工厂）

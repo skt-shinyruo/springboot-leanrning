@@ -34,6 +34,15 @@
 
 > ⚠️ 建议：把 `dependsOn` 视为“最后手段”。能用显式依赖（构造注入/方法参数注入）就不要用它，因为**显式依赖更可维护、也更能被 IDE/测试/重构工具捕获**。
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：`mbd.getDependsOn()` 是否为空  
+**分支**：`AbstractBeanFactory#doGetBean` 先 `getBean(dep)` 再创建自身  
+**结果**：  
+- 只影响创建/销毁顺序  
+- 不改变候选选择与注入规则  
+**断点建议**：`AbstractBeanFactory#doGetBean`
+
 ## 1. 方法级入口：dependsOn 在哪一步生效？
 
 `dependsOn` 的读取点非常固定：**bean 创建入口 `doGetBean`**。
@@ -108,6 +117,18 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 - `DefaultSingletonBeanRegistry#destroyBean`（递归销毁 dependent）
 - `DisposableBeanAdapter#destroy`（真正执行销毁回调：`@PreDestroy` / `DisposableBean` / destroy-method）
 
+## dependsOn vs SmartLifecycle phase：什么时候用哪一个？
+
+- **dependsOn**：表达“初始化/销毁顺序”，适合基础设施/资源就绪顺序  
+- **SmartLifecycle phase**：表达“启动/停止阶段顺序”，适合需要 start/stop 语义的组件  
+如果你需要严格的 start/stop 控制，优先用 **SmartLifecycle**；只有在“必须强制初始化顺序但没有显式依赖”时考虑 dependsOn。
+
+## 父子容器边界（层级 context 下的依赖解析）
+
+- dependsOn 只在 **当前 BeanFactory** 范围内生效  
+- 子容器可见父容器 bean，但父容器不可见子容器  
+- 跨 context 的 dependsOn 容易出现“名字存在但不可见”的误判
+
 ## 5. 交互：dependsOn 会强行拉起 lazy-init 吗？
 
 结论很“硬”：
@@ -136,6 +157,20 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 - **循环依赖**问题：`dependsOn` 的环不是三级缓存能救的（它会 fail-fast）
 - **AOP 自调用**问题：代理是否生效与 dependsOn 无关（见第 31 章）
 - **BeanPostProcessor 顺序**问题：处理器顺序由 ordering 体系决定，而不是 dependsOn（见第 14 章）
+
+## 可复现闭环（基于 `SpringCoreBeansDependsOnLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **dependsOn 只影响顺序**  
+   - 断点：`doGetBean` → `mbd.getDependsOn()`  
+   - 断言：依赖先创建，注入规则不变
+2) **dependsOn 会拉起 lazy-init**  
+   - 断点：`preInstantiateSingletons`  
+   - 断言：lazy bean 被强制创建
+3) **依赖图可复盘**  
+   - 断点：`registerDependentBean`  
+   - 断言：依赖边记录在 `dependentBeanMap`
 
 ## 7. 排障决策表（初始化/关闭/异常消息 → 证据链）
 

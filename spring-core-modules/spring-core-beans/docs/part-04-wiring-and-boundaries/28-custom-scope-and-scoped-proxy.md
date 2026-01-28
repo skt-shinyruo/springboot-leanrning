@@ -30,6 +30,16 @@ Spring 的 scope 机制是可扩展的：你可以注册自定义 scope。
 - scope 的“每次从容器获取”语义
 - 为什么把短生命周期 scope 注入到 singleton 里需要 `ObjectProvider` 或 scoped proxy
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：容器 `getBean` 时发现 bean 定义了 scope（`singleton`/`prototype`/自定义）  
+**分支**：`AbstractBeanFactory#doGetBean` 按 scope 分流  
+**结果**：  
+- singleton：从 `singletonObjects` 取/建  
+- prototype：每次新建  
+- custom scope：委派给 `Scope#get`（语义完全取决于你的实现）  
+**断点建议**：`AbstractBeanFactory#doGetBean` / `Scope#get`
+
 ## 1. 注册自定义 scope（thread）
 
 `SimpleThreadScope` 的关键点：
@@ -97,6 +107,25 @@ prototype 是最典型的例子。
 3) direct injection 的 consumer 构造器/字段赋值点：观察“只取一次”导致冻结
 4) `ObjectProvider#getObject`：观察 provider 每次调用都会触发一次新的解析（回到 `doGetBean`）
 5) `ScopedProxyFactoryBean#getObject`（可选）：观察 proxy 生成与调用时的目标定位
+
+## 5. 销毁语义：prototype 不会自动销毁，自定义 scope 必须显式回收
+
+请记住这条规则：
+
+- **prototype**：容器创建但不管理销毁  
+- **custom scope**：销毁时机由 scope 自己决定  
+
+如果你不注册销毁回调，最常见的后果是：
+
+- 线程/请求上下文泄漏  
+- 资源未释放（连接、文件句柄等）  
+
+关键方法：
+
+- `Scope#registerDestructionCallback`：注册销毁回调  
+- `Scope#remove`：移除并触发回调  
+
+实务建议：对 thread/request 这类 scope，明确“回收点”是排障核心。
 
 ## 排障分流：这是定义层问题还是实例层问题？
 

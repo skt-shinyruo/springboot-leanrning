@@ -29,6 +29,15 @@
 - parent/child context 的可见性规则
 - child 的“覆盖”只发生在 child 内部
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：当前 BeanFactory 是否存在 parent  
+**分支**：`AbstractBeanFactory#doGetBean` 本地找不到就 fallback parent  
+**结果**：  
+- child 能看到 parent  
+- parent 永远看不到 child  
+**断点建议**：`AbstractBeanFactory#doGetBean`
+
 ## 1. 现象：child 能看到 parent，parent 看不到 child
 
 对应测试：
@@ -69,6 +78,20 @@
 1) 测试里 `child.getBean(...)` 与 `parent.getBean(...)` 的调用行：对照“谁能看到谁”
 2) `AbstractBeanFactory#doGetBean`：观察 child 查找失败后如何沿 parent 链路继续找
 3) `AbstractBeanFactory#containsLocalBean`：观察同名 beanName 时，child 是如何优先命中自己的
+
+## 可复现闭环（基于 `SpringCoreBeansContextHierarchyLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **child 能看到 parent，parent 看不到 child**  
+   - 断点：`doGetBean`  
+   - 断言：fallback 只向上
+2) **override 只在 child 生效**  
+   - 断点：`containsLocalBean`  
+   - 断言：child 命中本地，parent 不受影响
+3) **按类型包含祖先会扩大候选集**  
+   - 断点：`beanOfTypeIncludingAncestors`  
+   - 断言：容易出现 NoUnique
 
 ## 排障分流：这是定义层问题还是实例层问题？
 

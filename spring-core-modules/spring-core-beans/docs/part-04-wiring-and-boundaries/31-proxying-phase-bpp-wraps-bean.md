@@ -32,6 +32,13 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 > **BPP 是创建时拦截链，不是创建后补丁。**
 > 一个 bean 如果在 BPP 链完整之前就创建了，后续 BPP 不会 retroactive 生效。
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：BPP 返回的 `result` 与原始 `bean` 不同  
+**分支**：`initializeBean` 在 after-init 阶段“用 result 替换 bean”  
+**结果**：容器暴露的是 **proxy/wrapper**，原对象只作为内部目标存在  
+**断点建议**：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+
 ## 1. 方法级主线：代理替换发生在 initializeBean 的哪一步？
 
 最常见的“换壳点”发生在初始化链路的末尾：

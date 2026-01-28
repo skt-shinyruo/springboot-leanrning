@@ -32,6 +32,13 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：注入点是带泛型的 `ResolvableType`，候选类型信息不完整  
+**分支**：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch` 发现泛型参数无法匹配  
+**结果**：按原始类型能匹配，按泛型类型失配  
+**断点建议**：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
+
 ## 0. 先建立一个“排障口径”：候选类型信息的三大来源
 
 当 Spring 需要做“按类型（含泛型）匹配”时，候选 bean 的类型信息主要来自三条路径（按可靠性排序）：

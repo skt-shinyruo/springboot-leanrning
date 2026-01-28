@@ -54,6 +54,41 @@ Spring 提供了一个非常明确的回调：
 - `DefaultSingletonBeanRegistry#getSingleton`：观察某个 bean 是否已经进入 singleton cache（解释 lazy bean 尚未创建）
 - `AbstractBeanFactory#doGetBean`：后续第一次 `getBean(lazy)` 才会触发真正创建
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：bean 是 **非 lazy 的 singleton**，并实现了 `SmartInitializingSingleton`  
+**分支**：`preInstantiateSingletons` 先创建全部非 lazy 单例 → 再统一回调  
+**结果**：回调发生在“已创建单例集合稳定”之后，但 **不会包含 lazy 单例**  
+**断点建议**：`DefaultListableBeanFactory#preInstantiateSingletons`
+
+## 回调来源分型：SmartInitializingSingleton 在生命周期里处于哪一层？
+
+把“回调”分两层看：
+
+1) **单个 bean 级别的初始化回调**  
+   - `@PostConstruct` / `InitializingBean#afterPropertiesSet` / `init-method`  
+   - 发生在 **bean 自己的创建流程** 中（`populateBean` → `initializeBean`）
+2) **容器级别的“全量就绪回调”**  
+   - `SmartInitializingSingleton#afterSingletonsInstantiated`  
+   - 发生在 **所有非 lazy 单例创建完成之后**
+
+因此它与 `ApplicationRunner`/`CommandLineRunner` 的关系是：
+
+- **更早、更底层**（挂在 BeanFactory 的 preInstantiateSingletons 之后）
+- 只保证 **非 lazy 单例已完成创建**，并不保证外部系统已 fully ready
+
+## 回调与代理交织：回调发生在 proxy 还是 target 上？
+
+回调被触发时，容器会通过 `getBean(beanName)` 获取最终单例对象：
+
+- 如果 BPP 在初始化后把 bean **替换为 proxy**，这里拿到的通常就是 **proxy**  
+- 如果没有替换，回调就在 **目标对象** 上执行  
+
+排障建议：
+
+- 断点 `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`：确认是否发生了“对象替换”  
+- 断点 `DefaultListableBeanFactory#preInstantiateSingletons`：确认回调时拿到的是哪种类型  
+
 入口：
 
 - 入口测试（方法级）：`SpringCoreBeansSmartInitializingSingletonLabTest#afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans`

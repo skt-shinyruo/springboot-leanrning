@@ -37,6 +37,13 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：属性填充或 `@Value` 注入需要把 String 转成目标类型  
+**分支**：`TypeConverterDelegate#convertIfNecessary` 判断：ConversionService → PropertyEditor → 失败  
+**结果**：转换成功则写入属性；失败则抛 `TypeMismatchException` / `ConversionNotSupportedException`  
+**断点建议**：`TypeConverterDelegate#convertIfNecessary`
+
 ## 1. 两条你必须区分的链路：property values vs `@Value`
 
 ### 1.1 定义层 property values（BeanDefinition 的值）→ 实例属性
@@ -71,6 +78,23 @@
 这也是为什么占位符章节（[34](34-value-placeholder-resolution-strict-vs-non-strict.md)）和本章经常一起出现：
 
 - 你必须先确定：**字符串到底解析成了什么**，再谈转换。
+
+### 1.3 属性路径解析与 auto-grow：BeanWrapper 处理“复杂属性”的方式
+
+当你看到类似 `order.items[0].price` 或 `props[\"k\"]` 的属性路径时：
+
+- 解析与写入主要发生在 `BeanWrapperImpl` / `AbstractPropertyAccessor`
+- `autoGrowNestedPaths` 决定“中间对象是否自动创建”
+
+典型坑：
+
+- 中间对象为 `null` 且未允许 auto-grow → 抛 `NullValueInNestedPathException`
+- 集合/Map 下标越界或 key 缺失 → 抛 `InvalidPropertyException`
+
+排障入口：
+
+- `BeanWrapperImpl#setPropertyValue`
+- `AbstractNestablePropertyAccessor#processLocalProperty`
 
 ---
 

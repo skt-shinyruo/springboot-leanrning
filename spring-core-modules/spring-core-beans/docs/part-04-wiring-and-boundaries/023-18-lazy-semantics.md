@@ -37,6 +37,12 @@
 
 懒加载经常被误用：很多人以为“加了 `@Lazy` 就不会启动慢了”，但实际效果取决于你把 lazy 放在哪里。
 
+### 回调与代理交织（什么时候才会触发生命周期回调）
+
+- lazy-init 只是“延迟创建”，回调仍然发生在 **真正创建时**  
+- 注入点 `@Lazy` 注入的是 proxy，**回调不会在注入时发生**  
+- 只有当 proxy 首次触发真实解析时，`@PostConstruct/afterPropertiesSet` 等才会执行
+
 ## 1. lazy-init bean：refresh 阶段不创建
 
 对应测试：
@@ -48,6 +54,15 @@
 
 - refresh 阶段不会创建它
 - 第一次 `getBean(...)` 才会创建
+
+### 1.1 机制讲透：条件 → 分支 → 结果
+
+**条件**：`mbd.isLazyInit()` 是否为 true  
+**分支**：`preInstantiateSingletons` 是否跳过  
+**结果**：  
+- lazy-init：启动期跳过，首次 `getBean` 才创建  
+- 非 lazy：启动期即创建  
+**断点建议**：`DefaultListableBeanFactory#preInstantiateSingletons`
 
 ## 2. 关键反直觉点：lazy-init 也挡不住“被别人依赖”
 
@@ -83,6 +98,20 @@
 - 你能清晰观测到：目标 bean 的构造器是在“第一次调用”时才执行
 
 ---
+
+## 可复现闭环（基于 `SpringCoreBeansLazyLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **lazy-init 只影响预实例化**  
+   - 断点：`preInstantiateSingletons`  
+   - 断言：lazy bean 在 refresh 时不创建
+2) **eager 依赖会提前触发创建**  
+   - 断点：`doResolveDependency`  
+   - 断言：非 lazy consumer 会触发 lazy bean 创建
+3) **注入点 `@Lazy` 只是 proxy**  
+   - 断点：`getLazyResolutionProxyIfNecessary`  
+   - 断言：首次调用才触发真实 bean 创建
 
 ## 4. 代理类型边界：接口注入点 vs 类注入点（必须会排障）
 
