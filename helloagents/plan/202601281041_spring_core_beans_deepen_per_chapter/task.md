@@ -166,7 +166,7 @@
   - 针对“机制主线：为什么 constructor 死、setter 有时能活？”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansCircularDependencyBoundaryLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 17. [ ] 第 19 章：11. 调试与自检：如何“看见”容器正在做什么
+### 17. [√] 第 19 章：11. 调试与自检：如何“看见”容器正在做什么
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutoProxyCreator#postProcessAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`；配套 Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest`
@@ -177,7 +177,7 @@
   - 针对“0. 观测对象总览：你其实只是在看 5 类东西”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansAutoConfigurationLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 18. [ ] 09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
+### 18. [√] 09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
 - 现状速记：关键锚点：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions`；配套 Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest`
@@ -188,7 +188,7 @@
   - 针对“机制主线：顺序不定义，就会“看起来像偶发””补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 19. [ ] 第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
+### 19. [√] 第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `ApplicationContext#refresh` / `ApplicationContextRunner#run`；配套 Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationImportOrderingLabTest` / `SpringCoreBeansAutoConfigurationLabTest`

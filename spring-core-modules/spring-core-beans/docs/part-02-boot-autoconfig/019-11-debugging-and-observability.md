@@ -33,6 +33,19 @@
 
 理解 Spring 容器的最快方式，是让“不可见的机制”变得可观察。
 
+### Boot 自动装配的角色分工（调试时先记住这 4 类）
+
+- **导入清单**：`AutoConfigurationImportSelector#selectImports`  
+- **排序器**：`AutoConfigurationImportSorter`（决定先后）  
+- **条件评估**：`ConditionEvaluator#shouldSkip`  
+- **定义注册**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions`
+
+### 顺序 vs 条件：为什么“偶发失效”往往是顺序问题
+
+排序决定“谁先注册”；条件评估在特定阶段触发。  
+当一个 Auto-Config 依赖“前一个配置先注册某个 bean”才能通过条件时，**顺序一变就像“偶发失效”**。  
+调试时优先看：导入顺序 → 条件报告 → BeanDefinition 来源。
+
 ## 0. 观测对象总览：你其实只是在看 5 类东西
 
 当你说“调 Spring 容器”，本质上是在回答 5 类问题。把它们固定下来，你就不会再靠日志/猜测“碰运气”。
@@ -52,6 +65,13 @@
 - **为什么拿到的是 proxy？（最终暴露对象）**：回答“是谁把对象换成了 proxy/wrapper？换壳发生在哪一段？”
   - 最直接入口：`AbstractAutowireCapableBeanFactory#initializeBean(...)`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization(...)`
   - 最小复现：`SpringCoreBeansBeanCreationTraceLabTest.beanCreationTrace_recordsPhases_andExposesProxyReplacement()` / `SpringCoreBeansProxyingPhaseLabTest.beanPostProcessorCanReturnAProxyAsTheFinalExposedBean_andSelfInvocationStillBypassesTheProxy()`
+
+### 0.1 机制讲透：条件 → 分支 → 结果（观测对象版）
+
+**条件**：你要解决的是“定义/候选/注入/最终对象”的哪一类问题  
+**分支**：进入对应入口方法（`getBeanDefinition` / `findAutowireCandidates` / `doResolveDependency` / `applyBeanPostProcessorsAfterInitialization`）  
+**结果**：把“现象”归位到明确的数据结构变化，而不是停留在日志猜测  
+**断点建议**：`DefaultListableBeanFactory#doResolveDependency`
 
 ## 1. 最简单也最有效：查容器里到底有哪些 Bean
 
@@ -117,6 +137,12 @@
 
 学习阶段你不需要记住每条报告格式，但要知道它存在，并且能回答“为什么”。
 
+### 4.1 可断言诊断（把“生效/失效”做成测试）
+
+- 用 `ApplicationContextRunner` 构建最小上下文  
+- 用 `ConditionEvaluationReport` 断言某个 Auto-Config 是否生效  
+- 用 `beanDefinition.getSource()` 反推定义来源（避免“以为是我注册的”）
+
 ## 5. 日志：把容器行为“吵”出来
 
 - `org.springframework.beans`
@@ -145,6 +171,20 @@
 - `BEANS:prototype.*` → [04](../part-01-ioc-container/015-04-scope-and-prototype.md)（prototype 注入陷阱 vs ObjectProvider/@Lookup）
 - `BEANS:lifecycle.*` → [05](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)、[17](../part-03-container-internals/17-lifecycle-callback-order.md)（生命周期回调顺序与证据链）
 - `BEANS:beanDefinitionCount=...` / “看不到你以为注册的 bean” → 本章第 2 节（先确认定义层是否存在，再决定往注册/条件/顺序走）
+
+## 可复现闭环（基于 `SpringCoreBeansAutoConfigurationLabTest`）
+
+跑完这组用例，你至少要能复述 3 条结论：
+
+1) **自动装配是否生效可被断言**  
+   - 断点：`ConditionEvaluationReport#get`  
+   - 断言：report 中存在对应的 match/no-match 结果
+2) **导入顺序会影响条件判断**  
+   - 断点：`AutoConfigurationImportSorter`  
+   - 断言：排序改变后某些条件结果不同
+3) **定义来源可追溯**  
+   - 断点：`registerBeanDefinition`  
+   - 断言：`beanDefinition.getSource()` 指向 Auto-Config 类
 
 ## 7. 代理定位闭环：为什么它是 proxy？
 

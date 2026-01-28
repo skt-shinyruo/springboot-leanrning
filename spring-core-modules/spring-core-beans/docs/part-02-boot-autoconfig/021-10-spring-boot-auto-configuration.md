@@ -33,6 +33,13 @@
 
 你会发现它并不神秘：它本质上就是一套更系统化的 **配置导入（@Import）+ 条件判断（@Conditional...）+ bean 注册**。
 
+### 自动装配角色分工（先记住 4 个入口）
+
+- 导入：`AutoConfigurationImportSelector#selectImports`  
+- 排序：`AutoConfigurationImportSorter`  
+- 条件评估：`ConditionEvaluator#shouldSkip`  
+- 定义注册：`ConfigurationClassPostProcessor#processConfigBeanDefinitions`
+
 ## 1. 先说结论：Boot 做了什么？
 
 当你写下 `@SpringBootApplication` 并启动应用时，Boot 至少做了这些与 Bean 相关的事：
@@ -47,6 +54,15 @@
 
 - 你没写某个 bean，但容器里确实有（自动配置注册的）
 - 你写了某个 bean，自动配置反而“没生效”（条件失败，例如 `@ConditionalOnMissingBean` 不成立）
+
+### 1.1 机制讲透：条件 → 分支 → 结果（Boot 版）
+
+**条件**：是否满足 `@Conditional*`（classpath/属性/已有 bean）  
+**分支**：`ConditionEvaluator#shouldSkip` 决定跳过/注册  
+**结果**：  
+- 条件通过 → 注册 BeanDefinition  
+- 条件不通过 → 自动配置被跳过（即使类在导入清单里）  
+**断点建议**：`ConditionEvaluator#shouldSkip`
 
 ## 2. 自动装配的入口：`@SpringBootApplication` / `@EnableAutoConfiguration`
 
@@ -187,6 +203,20 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 1) `@Primary/@Qualifier`：让注入变成确定性选择（候选可能仍然有多个）
 2) 让 back-off 生效：确保覆盖 bean 在条件评估前就可见（更干净）
+
+## 可复现闭环（基于 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **back-off 是定义层时机问题**  
+   - 断点：`ConditionEvaluator#shouldSkip`  
+   - 断言：覆盖 bean 是否在条件评估时已可见
+2) **顺序影响条件判断**  
+   - 断点：`AutoConfigurationImportSorter`  
+   - 断言：排序变化会改变 back-off 结果
+3) **定义来源可追溯**  
+   - 断点：`registerBeanDefinition`  
+   - 断言：`beanDefinition.getSource()` 能定位到 auto-config 类
 
 ## 6. 你如何“看见”自动装配做了什么？
 
