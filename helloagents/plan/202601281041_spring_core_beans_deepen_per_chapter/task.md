@@ -199,7 +199,7 @@
   - 针对“1. 先说结论：Boot 做了什么？”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 20. [ ] 第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？
+### 20. [√] 第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansResourceInjectionLabTest`
@@ -209,7 +209,7 @@
   - 针对“1. 现象：同样是 Spring 容器，不同启动方式结果不一样”补细：用 1 个具体例子说明该分支如何改变最终行为（最好能在 Lab 里跑出差异）。
   - 补充可复现闭环：以 `SpringCoreBeansBootstrapInternalsLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 21. [ ] 13. BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义
+### 21. [√] 13. BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/13-bdrpp-definition-registration.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansRegistryPostProcessorLabTest`
@@ -218,7 +218,7 @@
   - 补充可复现闭环：以 `SpringCoreBeansRegistryPostProcessorLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
   - 补充“关键分支解释”：围绕 `AbstractApplicationContext#refresh`，把本章最重要的 if/then 分支写成可推导结论，并给出必看变量。
 
-### 22. [ ] 14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
+### 22. [√] 14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`；配套 Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
@@ -228,7 +228,7 @@
   - 针对“1. 规则总览（记住这三层就够）”补细：用 1 个具体例子说明该分支如何改变最终行为（最好能在 Lab 里跑出差异）。
   - 补充可复现闭环：以 `SpringCoreAopMultiProxyStackingLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 23. [ ] 15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
+### 23. [√] 15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation` / `AbstractAutowireCapableBeanFactory#createBean` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansPreInstantiationLabTest`
@@ -238,7 +238,7 @@
   - 针对“1. 现象：构造器抛异常会让 refresh 直接失败”补细：用 1 个具体例子说明该分支如何改变最终行为（最好能在 Lab 里跑出差异）。
   - 补充可复现闭环：以 `SpringCoreBeansPreInstantiationLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 24. [ ] 16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？
+### 24. [√] 16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `DefaultSingletonBeanRegistry#addSingletonFactory`；配套 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
@@ -249,7 +249,7 @@
   - 针对“机制主线：early reference 的“时机”与“形态””补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansCircularDependencyBoundaryLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 25. [ ] 17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）
+### 25. [√] 17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/17-lifecycle-callback-order.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#doClose` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#initializeBean`；配套 Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
@@ -259,7 +259,7 @@
   - 针对“1. 一个可断言的顺序（比看日志更可靠）”补细：把本段涉及的分支条件/关键变量补齐到能推导结论的程度。
   - 补充可复现闭环：以 `SpringCoreBeansBootstrapInternalsLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 26. [ ] 18. 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
+### 26. [√] 18. 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest`

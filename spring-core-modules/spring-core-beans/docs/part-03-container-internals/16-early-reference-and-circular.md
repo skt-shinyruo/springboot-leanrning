@@ -38,6 +38,15 @@
 - **功能绕过**：依赖方拿到 raw，调用链绕过事务/安全/缓存等代理增强（见 [31. 代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
 - **类型爆炸**：final 是 JDK proxy，但你按实现类注入/获取，直接类型不匹配
 
+### 机制讲透：时机 → 形态 → 结果（可断点验证）
+
+**条件**：是否进入 early exposure 窗口  
+**分支**：`getSingleton(..., allowEarlyReference=true)` → `getEarlyBeanReference`  
+**结果**：  
+- early == final：循环依赖可被救活且不绕过代理  
+- early ≠ final：触发一致性保护 fail-fast  
+**断点建议**：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+
 ---
 
 ## 1. 先跑实验：让问题变成“可见”的
@@ -81,6 +90,15 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 - `SpringCoreBeansCircularDependencyBoundaryLabTest#setterCycleMaySucceedViaEarlySingletonExposure_whenAllowCircularReferencesIsEnabled`
 - `SpringCoreBeansCircularDependencyBoundaryLabTest#setterCycleFailsFast_whenAllowCircularReferencesIsDisabled`
+
+### 2.1.1 可救/不可救分类速查
+
+| 环类型 | 是否可能救活 | 关键原因 |
+| --- | --- | --- |
+| constructor ↔ constructor | 基本不行 | 没有 early exposure 窗口 |
+| setter/field ↔ setter/field（singleton） | 可能 | early reference 可介入 |
+| prototype ↔ prototype | 不行 | prototype 不进单例缓存 |
+| dependsOn 形成的环 | 不行 | 强制初始化顺序直接 fail-fast |
 
 ### 2.2 `getEarlyBeanReference` 解决“形态问题”
 
@@ -148,6 +166,20 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 
 ---
 
+## 可复现闭环（基于 `SpringCoreBeansEarlyReferenceLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **early proxy 可在循环依赖窗口期提供一致形态**  
+   - 断点：`getEarlyBeanReference`  
+   - 断言：early 与 final 形态一致
+2) **按实现类注入 + JDK proxy 会失败**  
+   - 断点：`isTypeMatch`  
+   - 断言：实现类注入不通过
+3) **raw vs wrapped 不一致会 fail-fast**  
+   - 断点：`doCreateBean` 尾部一致性检查  
+   - 断言：抛出 raw/wrapped 相关异常
+
 ## 5. 两个必须掌握的边界：类型与一致性
 
 ### 5.1 边界 1：按实现类注入 vs JDK proxy
@@ -182,6 +214,18 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 > `getEarlyBeanReference` 解决的是“尽量让 early == final”；`allowRawInjectionDespiteWrapping` 解决的是“如果做不到一致，要不要带着隐患硬跑”。
 
 ---
+
+## 排障配方：定位环路边并选择打断手段
+
+1) **先锁定 root cause**：`BeanCurrentlyInCreationException`  
+2) **找环路边**：  
+   - 断点：`DefaultSingletonBeanRegistry#beforeSingletonCreation`  
+   - 观察：`dependentBeanMap` / `dependenciesForBeanMap`  
+3) **判断类型**：constructor / setter / prototype / dependsOn  
+4) **选择手段**：  
+   - `@Lazy`：引入代理延迟依赖  
+   - `ObjectProvider`：显式按需获取（更可控）  
+   - **重构**：拆环（长期最优）
 
 ## 常见坑与排障提示
 

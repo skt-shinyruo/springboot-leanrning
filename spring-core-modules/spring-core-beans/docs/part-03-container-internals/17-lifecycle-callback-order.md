@@ -20,6 +20,16 @@
 
 很多“容器行为”只有把生命周期顺序看清楚才能解释。
 
+### 回调来源分型（触发时机 / 优先级）
+
+| 回调类型 | 触发时机 | 备注 |
+| --- | --- | --- |
+| `@PostConstruct/@PreDestroy` | before-init / destroy | 依赖 `CommonAnnotationBeanPostProcessor` |
+| `InitializingBean/DisposableBean` | init / destroy | 接口回调，位置稳定 |
+| `initMethod/destroyMethod` | init / destroy | 配置级回调 |
+| `SmartInitializingSingleton` | 单例创建完成后 | 容器就绪后回调 |
+| `Lifecycle/SmartLifecycle` | start/stop 阶段 | 受 phase 顺序影响 |
+
 ## 1. 一个可断言的顺序（比看日志更可靠）
 
 读者 C 的目标不是“背顺序”，而是：**当你看到一个对象行为不对时，能判断它到底处在生命周期的哪一段、被哪些扩展点改过**。
@@ -61,6 +71,18 @@
 - init callbacks 都发生在 BPP(before) 与 BPP(after) 之间
 - destroy callbacks 发生在 context close 阶段
 
+### 1.1 关键分支条件（决定“触发/不触发”）
+
+- `mbd.isSingleton()`：决定是否进入统一销毁链路  
+- `mbd.hasInitMethod()` / `mbd.hasDestroyMethod()`：决定是否调用自定义回调  
+- `beanFactory.hasDestructionAwareBeanPostProcessors()`：决定是否触发 `@PreDestroy` 等回调
+
+### 1.2 回调与代理交织：回调到底发生在谁身上？
+
+- `@PostConstruct` / `afterPropertiesSet`：发生在 raw bean（proxy 还没产生）  
+- after-init BPP：可能返回 proxy，最终暴露对象可能不是 raw  
+- `@PreDestroy`：通常由 DestructionAwareBPP 触发，目标仍指向 raw/target  
+
 ## 2. prototype 为什么默认不走销毁回调？
 
 对应测试：
@@ -97,6 +119,20 @@ prototype 的语义是：
 
 - singleton 的 init callbacks 稳定发生在 BPP(before) 与 BPP(after) 之间
 - prototype 在容器 close 时不会被自动 destroy（除非你自己显式管理）
+
+## 可复现闭环（基于 `SpringCoreBeansBootstrapInternalsLabTest`）
+
+跑完这组用例，你至少要能复述 3 条结论：
+
+1) **注解回调依赖基础设施处理器**  
+   - 断点：`registerAnnotationConfigProcessors`  
+   - 断言：不注册 → `@PostConstruct` 不触发
+2) **回调顺序可被稳定断言**  
+   - 断点：`initializeBean`  
+   - 断言：Aware → before-init → init → after-init
+3) **prototype 默认不进入销毁链路**  
+   - 断点：`destroySingletons`  
+   - 断言：prototype 不在 `disposableBeans`
 
 ## 排障分流：这是定义层问题还是实例层问题？
 

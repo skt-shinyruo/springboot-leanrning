@@ -47,6 +47,15 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`（证据：字段为 null、`@PostConstruct` 没跑）
 
+### 1.1.1 机制讲透：条件 → 分支 → 结果
+
+**条件**：是否注册 annotation processors  
+**分支**：`AnnotationConfigUtils.registerAnnotationConfigProcessors` 是否被调用  
+**结果**：  
+- 未注册 → `@Autowired/@PostConstruct` 不生效  
+- 已注册 → 注解能力进入 refresh 主线  
+**断点建议**：`AnnotationConfigUtils#registerAnnotationConfigProcessors`
+
 ### 1.2 注册 annotation processors 后，注解才会被处理
 
 当你调用：
@@ -77,6 +86,12 @@
 | `@Resource/@PostConstruct/@PreDestroy` 能生效 | `CommonAnnotationBeanPostProcessor` | `InstantiationAwareBeanPostProcessor` + `DestructionAwareBeanPostProcessor`（BPP） | `postProcessProperties`（`@Resource`）<br>`postProcessBeforeInitialization`（`@PostConstruct`）<br>`postProcessBeforeDestruction`（`@PreDestroy`） | 第 6 步：`registerBeanPostProcessors`（装规则）<br>创建/销毁阶段：`initializeBean` / destroy |
 | `*Aware`（BeanName/BeanFactory/ApplicationContext/Environment…）能被回调 | `ApplicationContextAwareProcessor`（容器内置） | `BeanPostProcessor`（BPP） | `postProcessBeforeInitialization`（触发各类 `setXxx(...)`） | 第 3 步：`prepareBeanFactory`（先塞基础设施） |
 | 某些类型“能注入但不是 Bean”（如 `Environment`） | `registerResolvableDependency`（容器内置） | ——（不是 processor，是解析规则） | `DefaultListableBeanFactory#doResolveDependency`（优先命中 resolvableDependencies） | 第 3 步：`prepareBeanFactory`（先塞基础设施） |
+
+### 1.2.2 处理器时机与排序算法（为什么要分阶段）
+
+- **BDRPP/BFPP**：按 `PriorityOrdered → Ordered → 无序` 分组执行  
+- **BPP 注册**：同样按分组注册，必须在大量 bean 创建前完成  
+- **原因**：处理器本身可能注册新的处理器/定义，必须“先稳定定义，再进入实例化”
 
 ### 1.3 源码解析：为什么 `AnnotationConfigApplicationContext` “默认就有注解能力”？
 
@@ -154,6 +169,20 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 本仓库有一个很直观的对照证据链：同一个目标 bean，early vs late 的创建时机不同，最终对象形态/回调就可能不同：
 
 - `SpringCoreBeansRegistryPostProcessorLabTest`
+
+## 可复现闭环（基于 `SpringCoreBeansBootstrapInternalsLabTest`）
+
+跑完这些用例，你至少要能复述 3 条结论：
+
+1) **注解能力来自基础设施处理器**  
+   - 断点：`registerAnnotationConfigProcessors`  
+   - 断言：不注册 → `@Autowired/@PostConstruct` 不生效
+2) **定义层处理先于实例层**  
+   - 断点：`invokeBeanFactoryPostProcessors`  
+   - 断言：`@Configuration/@Bean` 解析发生在 refresh 前半段
+3) **BPP 注册时机决定注解是否生效**  
+   - 断点：`registerBeanPostProcessors`  
+   - 断言：BPP 未就位时创建的 bean 会错过注解处理
 
 ## 2. `@Bean` 为什么能“变成 BeanDefinition”？
 

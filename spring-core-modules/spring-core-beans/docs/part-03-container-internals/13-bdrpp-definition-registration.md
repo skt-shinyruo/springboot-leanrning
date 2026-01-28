@@ -28,6 +28,15 @@
 
 BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注册新的 `BeanDefinition`。
 
+### 1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
+
+**条件**：是否存在 `BeanDefinitionRegistryPostProcessor`  
+**分支**：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 先执行 BDRPP  
+**结果**：  
+- BDRPP 可新增/改名/批量注册定义  
+- BFPP 只能修改已有定义  
+**断点建议**：`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`
+
 ## 2. 现象：你没有显式注册 bean，但它依然出现了
 
 - 你只注册了一个 BDRPP
@@ -47,6 +56,12 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 - **BDRPP 能“新增定义”**
 - **BFPP 更常见的用途是“修改定义”**
 
+### 3.1 关键分支解释（refresh 时机）
+
+- `beanFactory instanceof BeanDefinitionRegistry`：决定是否进入 BDRPP 分支  
+- `processedBeans`：避免同一处理器重复执行  
+- `beanDefinitionNames`：定义数量变化是“注册成功”的直观证据  
+
 - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`：refresh 早期调用链入口（BDRPP/BFPP 的统一调度点）
 - `BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`：BDRPP 的“注册阶段”入口（新增/改名/批量注册定义）
 - `DefaultListableBeanFactory#registerBeanDefinition`：真正把 `BeanDefinition` 放进 registry 的地方（可观察同名冲突/覆盖策略）
@@ -64,6 +79,20 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
   3) `DefaultListableBeanFactory#registerBeanDefinition`：真正写入 registry（看覆盖/冲突/beanDefinitionNames）
   4) `BeanFactoryPostProcessor#postProcessBeanFactory`：普通 BFPP 修改定义发生点（看它如何改到 BDRPP 注册的定义）
   5) `DefaultListableBeanFactory#preInstantiateSingletons`：定义稳定后才进入实例化（验证“先定义、后实例”）
+
+## 可复现闭环（基于 `SpringCoreBeansRegistryPostProcessorLabTest`）
+
+跑完这组用例，你至少要能复述 3 条结论：
+
+1) **BDRPP 能动态注册定义**  
+   - 断点：`postProcessBeanDefinitionRegistry`  
+   - 断言：`registeredBean` 出现在 registry
+2) **BDRPP 先于 BFPP**  
+   - 断点：`invokeBeanFactoryPostProcessors`  
+   - 断言：BFPP 能修改 BDRPP 新注册的定义
+3) **定义稳定后才实例化**  
+   - 断点：`preInstantiateSingletons`  
+   - 断言：实例创建发生在定义加工之后
 
 ## 排障分流：这是定义层问题还是实例层问题？
 

@@ -47,6 +47,15 @@ Spring 的容器启动（`ApplicationContext#refresh`）看起来很长，但逻
 1. **现在是在扩张定义（BeanDefinition），还是在创建对象（bean instance）？**
 2. **此刻是谁在改规则：BDRPP/BFPP（改定义）还是 BPP（改对象）？**
 
+### 0.1 机制讲透：条件 → 分支 → 结果（主线版）
+
+**条件**：问题发生在定义阶段还是创建阶段  
+**分支**：`invokeBeanFactoryPostProcessors`（定义层） vs `finishBeanFactoryInitialization`（创建层）  
+**结果**：  
+- 定义层：决定“有没有/谁注册的/配方是什么”  
+- 创建层：决定“什么时候创建/是否代理/生命周期顺序”  
+**断点建议**：`AbstractApplicationContext#finishBeanFactoryInitialization`
+
 ---
 
 ## 1. 第一幕：`refresh()` 的骨架（容器主线）
@@ -73,6 +82,13 @@ refresh()
 
 - **图的扩张**主要发生在第 5 步：`invokeBeanFactoryPostProcessors`
 - **对象的落地**主要发生在第 9 步：`finishBeanFactoryInitialization`
+
+### 1.3 关键分支解释（为什么有些问题“启动就爆”）
+
+- **是否预实例化**：`mbd.isLazyInit()` 为 false 的 singleton 会在 `preInstantiateSingletons` 被创建  
+- **是否 FactoryBean**：`getObjectForBeanInstance` 决定拿到工厂还是产品  
+- **是否 prototype**：prototype 不进单例缓存，循环依赖更容易 fail-fast  
+- **是否允许循环依赖**：`allowCircularReferences` 决定 early exposure 是否开启
 
 ### 1.1 `obtainFreshBeanFactory()`：你真正持有的是哪个 `BeanFactory`
 
@@ -549,6 +565,20 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 - `SpringCoreBeansBeanCreationTraceLabTest`
 - `SpringCoreBeansLifecycleCallbackOrderLabTest`
 - `SpringCoreBeansRawInjectionDespiteWrappingLabTest`
+
+## 可复现闭环（基于 `SpringCoreBeansBeanCreationTraceLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **创建链路可被分段观测**  
+   - 断点：`doCreateBean` / `populateBean` / `initializeBean`  
+   - 断言：阶段顺序稳定
+2) **最终暴露对象可能被替换**  
+   - 断点：`applyBeanPostProcessorsAfterInitialization`  
+   - 断言：`result != bean`
+3) **启动期异常多发生在预实例化阶段**  
+   - 断点：`preInstantiateSingletons`  
+   - 断言：非 lazy 单例在此被创建
 
 ---
 

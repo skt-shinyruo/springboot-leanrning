@@ -18,6 +18,15 @@
 
 ## 机制主线
 
+### 默认基础设施处理器（为什么它们的顺序很重要）
+
+| 处理器 | 作用 | 层级 |
+| --- | --- | --- |
+| `ConfigurationClassPostProcessor` | 解析配置类、扩张定义 | 定义层（BDRPP/BFPP） |
+| `AutowiredAnnotationBeanPostProcessor` | `@Autowired/@Value` 注入 | 实例层（BPP） |
+| `CommonAnnotationBeanPostProcessor` | `@PostConstruct/@PreDestroy` | 实例层（BPP/DestructionAware） |
+| `ApplicationContextAwareProcessor` | Aware 回调 | 实例层（BPP） |
+
 ## 1. 规则总览（记住这三层就够）
 
 Spring 在同一类 post-processor 内，常用的排序规则是：
@@ -27,6 +36,11 @@ Spring 在同一类 post-processor 内，常用的排序规则是：
 3) 没实现顺序接口（最后）
 
 > 这套规则适用于 BFPP 与 BPP（以及很多“插件式扩展点”）。
+
+### 1.2 一个具体例子：顺序改变最终对象形态
+
+当多个 BPP 都可能“包裹/替换”对象时（如多层代理），顺序决定最终暴露形态。  
+对应用例：`SpringCoreAopMultiProxyStackingLabTest`（观察代理栈叠加顺序）。
 
 ## 1.1 源码解析：真正参与排序的“不是接口名”，而是 comparator 的比较规则
 
@@ -182,9 +196,23 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 - 推荐断点（闭环版）：
   1) `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`（定义层：BFPP/BDRPP 的分段执行与排序）
   2) `PostProcessorRegistrationDelegate#sortPostProcessors`（排序入口：看使用哪个 comparator）
-  3) `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（实例层：BPP 的分段注册与最终顺序）
-  4) `DefaultListableBeanFactory#addBeanPostProcessor`（BPP 进入 `beanFactory.getBeanPostProcessors()` 的最终写入点）
-  5) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`（对照：BPP 的“注册顺序”如何变成“执行顺序”）
+3) `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（实例层：BPP 的分段注册与最终顺序）
+4) `DefaultListableBeanFactory#addBeanPostProcessor`（BPP 进入 `beanFactory.getBeanPostProcessors()` 的最终写入点）
+5) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`（对照：BPP 的“注册顺序”如何变成“执行顺序”）
+
+## 可复现闭环（基于 `SpringCoreAopMultiProxyStackingLabTest`）
+
+跑完该 Lab，你至少要能复述 3 条结论：
+
+1) **分段规则决定“谁先执行”**  
+   - 断点：`sortPostProcessors`  
+   - 断言：`PriorityOrdered` 永远早于 `Ordered`
+2) **组内排序决定“代理叠加顺序”**  
+   - 断点：`addBeanPostProcessor`  
+   - 断言：顺序不同导致代理链叠加顺序不同
+3) **`@Order` 不等于 `Ordered`**  
+   - 断点：`sortPostProcessors`（观察 comparator）  
+   - 断言：未实现 `Ordered` 的 BPP 仍可能按注册顺序执行
 
 ## 排障分流：这是定义层问题还是实例层问题？
 

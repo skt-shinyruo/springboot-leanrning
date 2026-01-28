@@ -24,6 +24,12 @@
 
 它允许你在 bean 实例化之前返回一个对象，从而 **短路默认的创建路径**。
 
+### 处理器时机与排序（为什么要先注册再创建）
+
+- IABPP 属于 **实例层 BPP**，必须在 `registerBeanPostProcessors` 完成后才能生效  
+- 排序规则仍遵循 `PriorityOrdered → Ordered → 无序`  
+- 早于 BPP 注册的创建，将无法触发短路
+
 ## 1. 现象：构造器抛异常会让 refresh 直接失败
 
 对应测试：
@@ -37,6 +43,14 @@
 - 构造器抛异常导致容器 refresh 失败
 
 这说明：**默认情况下，单例会在 refresh 阶段被创建**（非 lazy）。
+
+### 1.1 机制讲透：条件 → 分支 → 结果
+
+**条件**：是否有 IABPP 在 before-instantiation 阶段返回替身  
+**分支**：`resolveBeforeInstantiation` 返回非 null → 直接暴露  
+**结果**：  
+- 无短路：构造器执行，异常导致 refresh 失败  
+- 有短路：构造器不执行，容器拿到 proxy/替身
 
 ## 2. 现象：短路后，构造器不再执行
 
@@ -76,6 +90,20 @@
 2) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation`：观察哪个 `InstantiationAwareBeanPostProcessor` 返回了替身
 3) 你在 Lab 里实现的 `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`：观察返回对象（surrogate/proxy）
 4) `AbstractAutowireCapableBeanFactory#doCreateBean`：对照两条路径（短路成功时目标 bean 不会走完整创建主线）
+
+## 可复现闭环（基于 `SpringCoreBeansPreInstantiationLabTest`）
+
+你至少要能用 3 条断言讲清楚本章主线：
+
+1) **没有短路时，构造器必然执行**  
+   - 断点：`doCreateBean`  
+   - 断言：构造器调用次数为 1
+2) **短路时，构造器不执行**  
+   - 断点：`resolveBeforeInstantiation`  
+   - 断言：构造器调用次数为 0
+3) **短路对象必须满足类型兼容**  
+   - 断点：`applyBeanPostProcessorsBeforeInstantiation`  
+   - 断言：JDK proxy 只能满足接口注入
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
