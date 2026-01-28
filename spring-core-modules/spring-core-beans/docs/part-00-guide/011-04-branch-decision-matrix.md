@@ -10,6 +10,7 @@
     - 这章是“排障索引页”：你遇到一个现象时，不要先全局搜代码，而是先把它定位到某个分支点（if/then）。
     - 分支矩阵的价值在于“可复现”：每个分支都应该能在本仓库的 LabTest 里跑出来，而不是靠脑补。
     - 学会用最少观察点做最大判断：一个关键方法 + 3 个变量，往往足够把问题收敛到根因。
+    - 先学会“读异常 cause chain”：很多错误的外层异常是 `BeanCreationException`/`UnsatisfiedDependencyException`，真正的分支点往往藏在 root cause。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -31,6 +32,25 @@ Branch Decision Matrix 的目的就是把“判断规则”显式写出来：你
 
 ---
 
+## 0. 先学会读异常 cause chain（别被外层异常骗了）
+
+Spring 容器的“外层异常”非常容易误导你，因为它们经常只是包装（wrap）：
+
+- `BeanCreationException`：只是说“创建 bean 失败”，但失败点可能在 instantiate / populate / initialize / BPP / destroy 的任何一步。
+- `UnsatisfiedDependencyException`：只是说“依赖没满足”，但 root cause 通常是：
+  - `NoSuchBeanDefinitionException`（没找到候选）
+  - `NoUniqueBeanDefinitionException`（候选太多没收敛）
+  - `BeanCurrentlyInCreationException`（循环依赖/创建窗口期）
+  - 类型转换/值解析异常（populateBean 阶段）
+
+因此你排障的固定第一步是：
+
+1) 先打开异常的 **root cause**（最底层 `cause`）
+2) 再把 root cause 映射到“阶段 + 关键方法 + watch list”
+3) 最后再选 Lab 复现（用断言把分支固化）
+
+> 你会发现：很多“看起来像 DI 的问题”，其实是 `@Value`/类型转换/FactoryBean 类型推断导致的。
+
 ## 1. 分支矩阵（现象 → 阶段 → 方法 → 观察点 → Lab）
 
 > 提示：这张表不是为了“覆盖所有情况”，而是覆盖最常见、最能决定走向的分支点。
@@ -45,6 +65,12 @@ Branch Decision Matrix 的目的就是把“判断规则”显式写出来：你
 | 循环依赖：constructor 失败、setter 有时能救 | 是否存在 early exposure 窗口？ | 单例创建 | `DefaultSingletonBeanRegistry#getSingleton` | 三层缓存 key/size、`allowEarlyReference` | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
 | AOP/代理不生效 | BPP 链是否完整？bean 是否创建过早错过 BPP？ | BPP/创建时机 | `registerBeanPostProcessors` / `applyBeanPostProcessorsAfterInitialization` | `beanFactory.getBeanPostProcessors()`、目标 bean 创建时机 | `SpringCoreBeansRegistryPostProcessorLabTest` |
 | “代理形态不一致 / raw vs wrapped” | early 与 final 是否一致？ | 循环依赖/代理 | `getEarlyBeanReference` / `doCreateBean` 尾部检查 | `earlySingletonReference`、`exposedObject`、dependentBeans | `SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
+| `UnsatisfiedDependencyException`（外层） | root cause 是“无候选”还是“多候选”？还是“值解析/类型转换”？ | 注入/属性填充 | `DefaultListableBeanFactory#doResolveDependency` / `AbstractAutowireCapableBeanFactory#populateBean` | root cause 类型、`descriptor`、`pvs`、`PropertyValue` | `SpringCoreBeansContainerLabTest` / `SpringCoreBeansInjectionPhaseLabTest` |
+| `BeanCreationException`（外层） | 失败发生在 instantiate / populate / initialize 哪一步？ | 创建主线 | `AbstractAutowireCapableBeanFactory#doCreateBean` | `beanName`、`mbd`、`BeanWrapper`、`exposedObject` | `SpringCoreBeansBeanCreationTraceLabTest` |
+| `BeanCurrentlyInCreationException` | 是 constructor cycle？还是“早期引用介入的窗口期”？ | 单例创建 / 循环依赖 | `DefaultSingletonBeanRegistry#beforeSingletonCreation` / `getSingleton` | `singletonsCurrentlyInCreation`、`allowCircularReferences` | `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest` |
+| `Circular depends-on relationship` | 是定义层 dependsOn 拓扑环，不要误判成三级缓存循环依赖 | 创建入口（dependsOn） | `AbstractBeanFactory#doGetBean` / `DefaultSingletonBeanRegistry#isDependent` | `mbd.getDependsOn()`、`dependentBeanMap` | `SpringCoreBeansDependsOnLabTest` |
+| `BeanDefinitionOverrideException` / “Cannot register bean definition … already exists” | 是否禁止覆盖？覆盖发生在谁注册得更晚？ | 定义层注册 | `DefaultListableBeanFactory#registerBeanDefinition` | `allowBeanDefinitionOverriding`、旧/新 BD source | overriding 相关 Lab / 注册相关 Lab |
+| `BeanNotOfRequiredTypeException` | 你要的是 factory 还是 product？或者被代理后类型发生变化？ | 查找/注入 | `AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#isTypeMatch` | beanName 是否含 `&`、`predictedType`、`targetType` | FactoryBean / proxy 相关 Lab |
 
 ---
 

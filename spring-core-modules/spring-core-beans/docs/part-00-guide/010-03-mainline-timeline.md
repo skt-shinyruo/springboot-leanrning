@@ -116,6 +116,22 @@
 
 - `part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
 
+### 1.6 段内关键对象变化（你在 debugger 里应该看见什么）
+
+这一小节只做一件事：把“阶段”变成“可观察对象”。
+
+你不需要记住全部字段，但你要能在断点里回答：**我现在处于哪个阶段？这个阶段改变了什么？**
+
+| 段 | 你在断点里看什么 | 关键对象/变量（建议优先） | 你会得到的判断 |
+| --- | --- | --- | --- |
+| A 准备 | 容器是否已经具备“解析属性/注入容器对象”的基础能力 | `AbstractApplicationContext#prepareBeanFactory` 内：`beanFactory.resolvableDependencies`、embedded value resolvers、`beanFactory.getBeanClassLoader()` | 还没处理你的 bean，但容器的“基础设施”已就绪（后续注解能否工作取决于下一段） |
+| B 定义层 | BeanDefinition 是否已经齐全、是否被改写过 | `beanFactory.getBeanDefinitionCount()`、`getBeanDefinitionNames()`、`BeanDefinition#getSource()`、`BeanDefinition#getRole()` | 问题属于“没注册/注册错/被覆盖/被改写”时，这一段就能定位根因 |
+| C 注册 BPP | BPP 链是否完整、顺序是否符合预期 | `beanFactory.getBeanPostProcessors()`（数量/类型/顺序）、关键处理器是否存在（注入/AOP/JSR-250） | “注解/AOP/回调不生效”的高频根因：BPP 没注册、注册晚了、顺序错了 |
+| D 创建单例 | 单例缓存是否进入“创建窗口期”，是否出现 early reference | `singletonObjects/earlySingletonObjects/singletonFactories`、`singletonsCurrentlyInCreation`、`mbd`、`pvs` | 绝大多数运行期问题都在这里落地：注入、类型转换、代理替换、循环依赖边界 |
+| E 容器就绪 | “容器就绪后”回调是否触发、事件是否发布 | `finishRefresh`、`SmartInitializingSingleton#afterSingletonsInstantiated`、事件发布 | 适合放“容器一致性校验/外部资源健康检查/延迟启动”类逻辑；也能解释“为什么某些逻辑必须等到这里” |
+
+> 提醒：如果你在 D 段看到目标 bean 已经创建，但 C 段的关键 BPP 还没注册完成，那几乎必然是“创建过早/时机错误”。
+
 ---
 
 ## 2. 这条时间线怎么用来排障（3 个经典分流）

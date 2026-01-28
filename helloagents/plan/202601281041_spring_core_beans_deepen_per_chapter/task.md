@@ -19,7 +19,7 @@
   - 补充“问题驱动索引”：按常见现象/异常把读者送到对应章节（并标注最短证据链入口方法）。
   - 补充“核心对象词典”：用 1 页把 BeanDefinition/merged BD/early reference/exposed object 等对象关系讲清楚，避免读者在术语上耗时。
 
-### 02. [ ] 第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean
+### 02. [√] 第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/010-03-mainline-timeline.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#finishRefresh` / `AbstractApplicationContext#prepareBeanFactory`；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansMainlineCallChainLabTest`
@@ -37,7 +37,7 @@
   - 补充“新手易卡点的修复路径”：断点不命中/测试过慢/IDE 卡死等问题的最短排障策略。
   - 补充“学习闭环”：围绕 `SpringCoreBeansAutowireCandidateSelectionLabTest` 说明跑完应当得到的 3 个可复述结论（每个结论对应一个方法级证据点）。
 
-### 04. [ ] 第 11 章：关键分支矩阵（Branch Decision Matrix）
+### 04. [√] 第 11 章：关键分支矩阵（Branch Decision Matrix）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#resolveEmbeddedValue` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `DefaultListableBeanFactory#doResolveDependency`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest`
