@@ -1,4 +1,4 @@
-# Task List: spring-core-beans docs 书面化改写（去口语化）
+# Task List: spring-core-beans 文档书面化改写（去口语化）
 
 Directory: `helloagents/plan/202601281326_spring_core_beans_docs_formalize/`
 
@@ -6,8 +6,8 @@ Directory: `helloagents/plan/202601281326_spring_core_beans_docs_formalize/`
 
 ## 1. Documentation（书面化改写）
 
-- [√] 1.1 扫描 docs 口语化标记（第二人称/俚语/课堂化措辞），in `spring-core-modules/spring-core-beans/docs/**/*.md`, verify why.md#文档书面化去口语化-阅读与复述
-- [√] 1.2 对 `spring-core-modules/spring-core-beans/docs/**/*.md` 全量执行书面化改写（跳过 fenced code block，保持技术语义不变）, verify why.md#文档书面化去口语化-阅读与复述
+- [√] 1.1 扫描文档口语化标记（第二人称/俚语/课堂化措辞），in `spring-core-modules/spring-core-beans/docs/**/*.md` and `spring-core-modules/spring-core-beans/README.md`, verify why.md#文档书面化去口语化-阅读与复述
+- [√] 1.2 对 `spring-core-modules/spring-core-beans/docs/**/*.md` 与 `spring-core-modules/spring-core-beans/README.md` 全量执行书面化改写（跳过 fenced code block，保持技术语义不变）, verify why.md#文档书面化去口语化-阅读与复述
 - [√] 1.3 重点抽查并校正高敏感章节（调用链/决策表/面试答案/排障清单），避免语义偏移, verify why.md#文档书面化去口语化-排障复盘
 
 ## 2. Security Check
@@ -16,7 +16,7 @@ Directory: `helloagents/plan/202601281326_spring_core_beans_docs_formalize/`
 
 ## 3. Verification
 
-- [√] 3.1 关键短语回归扫描：确认“你/如果你/踩坑/翻车”等口语标记显著减少（docs 全量扫描）
+- [√] 3.1 关键短语回归扫描：确认“你/如果你/踩坑/翻车”等口语标记显著减少（模块文档全量扫描）
 - [√] 3.2 可选：运行模块测试 `mvn -pl :spring-core-beans test`（如耗时可跳过并记录原因）
 
 ## 4. Knowledge Base Sync（SSOT）

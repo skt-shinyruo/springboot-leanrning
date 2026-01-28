@@ -1,4 +1,4 @@
-# Technical Design: spring-core-beans docs 书面化改写（去口语化）
+# Technical Design: spring-core-beans 文档书面化改写（去口语化）
 
 ## Technical Solution
 
@@ -15,7 +15,7 @@
    - 保留技术名词、类名/方法名、路径、命令与代码片段，不做语义改写。
 
 2. **改写范围控制：**
-   - 仅修改 `spring-core-modules/spring-core-beans/docs/**/*.md`。
+   - 仅修改 `spring-core-modules/spring-core-beans/docs/**/*.md` 与 `spring-core-modules/spring-core-beans/README.md`。
    - 不新增“章节桥接/格式性段落”；不调整目录结构与文件命名。
 
 3. **Markdown 安全边界：**
@@ -23,7 +23,7 @@
    - 仅对正文段落、列表项与标题进行措辞改写。
 
 4. **验证策略：**
-   - 关键短语扫描：改写后对 docs 目录进行 `rg` 扫描，确保主要口语标记显著减少（如“你/如果你/踩坑/翻车/一句话自检”等）。
+   - 关键短语扫描：改写后对模块文档进行 `rg` 扫描，确保主要口语标记显著减少（如“你/如果你/踩坑/翻车/一句话自检”等）。
    - 抽查回读：对“调用链/决策表/面试答案/排障清单”类章节抽查 5–10 个片段，确保结论仍准确、方法名未被误改。
 
 ## Security and Performance
@@ -35,4 +35,3 @@
 
 - **Testing:** 不涉及代码行为变更；可选执行 `mvn -pl :spring-core-beans test` 作为回归验证（非阻塞）。
 - **Deployment:** 无。
-
