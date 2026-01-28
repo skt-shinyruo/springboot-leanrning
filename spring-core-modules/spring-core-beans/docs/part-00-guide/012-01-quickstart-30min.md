@@ -26,6 +26,26 @@
     2) **为什么 prototype 注入进 singleton 会‘像单例’？**（以及怎么修）
     3) **为什么你拿到的是 proxy？**（换壳发生在哪一段、是谁换的）
 
+## 30 分钟内要抓住的最小心智模型（5 个对象 + 4 条入口）
+
+不追求背细节，只追求“能在断点里看见”的 5 个对象/入口：
+
+1) **BeanDefinition（定义层）**  
+   - 入口方法：`DefaultListableBeanFactory#registerBeanDefinition`  
+   - 你要看到的变化：定义进 registry，`beanDefinitionMap` 里出现条目
+2) **DependencyDescriptor（依赖解析层）**  
+   - 入口方法：`DefaultListableBeanFactory#doResolveDependency`  
+   - 你要看到的变化：候选集合被收集并收敛为唯一候选
+3) **BeanWrapper（属性填充层）**  
+   - 入口方法：`AbstractAutowireCapableBeanFactory#populateBean`  
+   - 你要看到的变化：`PropertyValues` 转换并写入目标对象
+4) **BeanPostProcessor（实例增强层）**  
+   - 入口方法：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`  
+   - 你要看到的变化：`bean` → `result` 的第一次替换（proxy/包装）
+5) **Singleton 缓存（生命周期结果层）**  
+   - 入口方法：`DefaultSingletonBeanRegistry#getSingleton`  
+   - 你要看到的变化：是否命中 `singletonObjects`，以及 early reference 的介入
+
 ## 快启路线（按顺序跑）
 
 > 建议：先只跑单个测试方法（噪音最少），确认能复现后再跑整类测试。
@@ -119,6 +139,18 @@
 - [31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
 - [11. 调试与自检：从异常到断点入口](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 
+## 新手易卡点与修复路径（快启版）
+
+- **断点不命中**  
+  - 常见原因：bean 从未创建（`@Lazy`/未触发 `getBean`/没跑到 `preInstantiateSingletons`）  
+  - 修复路径：改成非 lazy 或显式 `getBean`；在 `doGetBean`/`preInstantiateSingletons` 观察是否进入
+- **跑起来太慢/噪音太大**  
+  - 常见原因：跑了全量 `@SpringBootTest` 或扫描了整个 classpath  
+  - 修复路径：用 `AnnotationConfigApplicationContext` 只注册最小配置类；只跑方法级测试（`-Dtest=Class#method`）
+- **调试卡死或命中频率爆炸**  
+  - 常见原因：断点落在高频循环（如 `isTypeMatch`/`doGetBean`）  
+  - 修复路径：加条件断点（`beanName` 过滤）+ 固定 watch list（只看 3–5 个关键变量）
+
 ## 小结与下一章
 
 - 你已经拿到了“最小闭环”：**从测试方法进、用固定断点收敛噪音、用 watch list 拿到证据**
@@ -145,6 +177,20 @@
       - `SpringCoreBeansLabTest`
       - `SpringCoreBeansMainlineCallChainLabTest`
       - `SpringCoreBeansBreakpointPackLabTest`
+
+## BreakpointPack 深入复盘（可选：把“快启”升级为“可排障”）
+
+如果你跑了 `SpringCoreBeansBreakpointPackLabTest`，至少能复述以下 3 条“可断言结论”：
+
+1) **循环依赖能不能救，取决于 early reference 介入时机**  
+   - 证据链：`DefaultSingletonBeanRegistry#addSingletonFactory` → `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`  
+   - 对应 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
+2) **BPP 顺序决定“先换壳还是先注入”，会导致 raw 注入**  
+   - 证据链：`PostProcessorRegistrationDelegate#registerBeanPostProcessors` → `applyBeanPostProcessorsAfterInitialization`  
+   - 对应 Lab：`SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest`
+3) **FactoryBean 与占位符解析是两条“最容易被误解”的分支**  
+   - 证据链：`AbstractBeanFactory#getObjectForBeanInstance` / `FactoryBeanRegistrySupport#getObjectFromFactoryBean`  
+   - 对应 Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
 
 ## 机制主线
 

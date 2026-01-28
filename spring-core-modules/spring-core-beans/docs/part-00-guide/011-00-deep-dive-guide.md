@@ -50,6 +50,40 @@
 - **不分层（不知道自己在看什么对象）**：把“定义层/解析层/实例层”混在一起看，容易在巨大调用栈里迷路
   - 对策：先问自己：我是在查 **BeanDefinition**（有没有注册）、还是查 **候选集合**（有哪些候选）、还是查 **最终暴露对象**（为什么是 proxy）？
 
+### 0.1 最小心智模型：5 个对象 + 4 条链路（先把“概念”变成“可观察”）
+
+如果你只能记 5 个对象与 4 条链路，建议按下面的顺序记（每一条都能在断点里验证）：
+
+1) **BeanDefinition → MergedBeanDefinition**  
+   - 入口方法：`AbstractBeanFactory#getMergedBeanDefinition`  
+   - 你要看到的变化：注解/父子定义/属性覆盖被“合并成最终配方”（`RootBeanDefinition`）
+2) **DependencyDescriptor → 候选收集/收敛**  
+   - 入口方法：`DefaultListableBeanFactory#doResolveDependency`  
+   - 关键分支：`findAutowireCandidates`（收集）→ `determineAutowireCandidate`（收敛）
+3) **BeanWrapper → 属性填充**  
+   - 入口方法：`AbstractAutowireCapableBeanFactory#populateBean`  
+   - 你要看到的变化：`PropertyValues` 被转换并写入目标对象
+4) **BeanPostProcessor → 对象替换/增强**  
+   - 入口方法：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`  
+   - 你要看到的变化：`bean` → `result` 的第一次替换（proxy/包装）
+5) **单例缓存 / early reference**  
+   - 入口方法：`DefaultSingletonBeanRegistry#getSingleton` / `addSingletonFactory`  
+   - 你要看到的变化：三级缓存与 early reference 介入时机（循环依赖/代理一致性）
+
+### 0.2 新手易卡点与修复路径（最短闭环）
+
+以下是“第一次深挖”最常见的三类卡点，以及最短修复路径：
+
+- **断点不命中**  
+  - 典型原因：目标 bean 没创建（`@Lazy`/未触发 `getBean`/没被预实例化）  
+  - 修复路径：强制触发创建（调用 `getBean` / 去掉 `@Lazy`）→ 在 `preInstantiateSingletons` 或 `doGetBean` 看是否进入
+- **测试太慢/日志太吵**  
+  - 典型原因：跑了全量上下文或 classpath 扫描过大  
+  - 修复路径：用 `AnnotationConfigApplicationContext` 只注册最小配置类 → 只跑单方法测试（`-Dtest=Class#method`）
+- **IDE 卡死/调试爆炸**  
+  - 典型原因：断点下在高频循环（如 `doGetBean`、`isTypeMatch`）  
+  - 修复路径：加条件断点（`beanName` 过滤）→ 只观察固定 watch list（不要单步穿全链）
+
 跑一个测试类：
 
 如果你是第一次进入本模块，建议先快后深：
@@ -84,6 +118,22 @@
    - `preInstantiateSingletons`（非 lazy 单例开始批量创建）
    - `finishRefresh`（容器就绪）
 3) 选一个你最关心的现象（注入歧义/生命周期/代理），把它缩成一个方法级 `-Dtest=Class#method` 入口，再去读对应章节
+
+### 0.4 学习闭环：`SpringCoreBeansAutowireCandidateSelectionLabTest` 的 3 个结论
+
+跑完这个 Lab，你至少要能复述下面 3 条“有证据的结论”（每条都有方法级入口）：
+
+1) **`@Order` 只影响集合注入顺序，不会解决单一依赖歧义**  
+   - 证据链：`resolveMultipleBeans` → `AnnotationAwareOrderComparator`  
+   - 对照分支：`determineAutowireCandidate` 仍然会抛 `NoUniqueBeanDefinitionException`
+2) **单一依赖的收敛优先级：Qualifier > Primary > Priority > by-name fallback**  
+   - 证据链：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` →  
+     `DefaultListableBeanFactory#determinePrimaryCandidate` →  
+     `DefaultListableBeanFactory#determineHighestPriorityCandidate` →  
+     `DefaultListableBeanFactory#determineAutowireCandidate`
+3) **泛型信息与 ObjectProvider 会改变“候选收敛”的结果**  
+   - 证据链：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`  
+   - 对照现象：`ObjectProvider#getIfUnique` 可能返回 null，`orderedStream` 会按 `@Order/@Priority` 排序
 
 ---
 

@@ -54,6 +54,17 @@
 - 第 6 段（改实例）：`bean instance` 可能被增强/替换成 proxy
 - 第 10 段（批量创建）：非 lazy 单例会在这里被创建出来（因此很多问题会在这里爆）
 
+## 阶段内关键对象变化（断点可验证）
+
+这一段是为了让你“看得见阶段变化”，不是为了背概念：
+
+| 阶段 | 关键对象/数据结构变化 | 断点与观察点（最小够用） |
+| --- | --- | --- |
+| `prepareBeanFactory` | 注册基础设施：`resolvableDependencies` / `beanClassLoader` / `environment` | `AbstractApplicationContext#prepareBeanFactory`；观察 `resolvableDependencies.size()` |
+| `invokeBeanFactoryPostProcessors` | `BeanDefinition` 图被扩充/改写（`beanDefinitionMap`、`beanDefinitionNames`） | `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` |
+| `registerBeanPostProcessors` | `beanPostProcessors` 列表按顺序最终定型 | `PostProcessorRegistrationDelegate#registerBeanPostProcessors`；观察 `beanFactory.getBeanPostProcessors().size()` |
+| `finishBeanFactoryInitialization` | 单例缓存开始被填充（`singletonObjects` / `earlySingletonObjects` / `singletonFactories`） | `DefaultListableBeanFactory#preInstantiateSingletons` / `DefaultSingletonBeanRegistry#getSingleton` |
+
 ## 把调用链落到“你能下断点的锚点”
 
 ### 锚点 1：BFPP/BDRPP（改定义）——“注解为什么能生效？”
@@ -99,6 +110,26 @@
 
 因为“启动期爆”几乎都意味着：**它是非 lazy 单例，且被预实例化触发了**。
 
+## 主线高频分支最小集（你必须能一眼定位）
+
+`refresh()` 的主线其实不复杂，复杂的是分支。下面是最“高频且决定走向”的最小分支集：
+
+1) **singleton vs prototype**  
+   - 入口：`AbstractBeanFactory#doGetBean`  
+   - 关键变量：`mbd.isSingleton()` / `mbd.isPrototype()`
+2) **dependsOn 强制依赖顺序**  
+   - 入口：`AbstractBeanFactory#getBean` → `dependsOn`  
+   - 关键变量：`mbd.getDependsOn()` / `isDependent(beanName, dep)`
+3) **parent BeanFactory 兜底**  
+   - 入口：`AbstractBeanFactory#doGetBean`  
+   - 关键变量：`containsBeanDefinition(beanName)` / `parentBeanFactory != null`
+4) **FactoryBean vs 产品对象**  
+   - 入口：`AbstractBeanFactory#getObjectForBeanInstance`  
+   - 关键变量：`BeanFactoryUtils.isFactoryDereference(beanName)` / `isFactoryBean`
+5) **类型匹配（含泛型/FactoryBean 预测）**  
+   - 入口：`AbstractBeanFactory#isTypeMatch` / `predictBeanType`  
+   - 关键变量：`typeToMatch` / `resolvedType` / `factoryBeanObjectType`
+
 ## 排障分流（refresh 入口版）
 
 当你遇到“注入失败/代理不生效/循环依赖”等现象时，不要从异常栈顶开始迷路，先用 refresh 主线把它归位：
@@ -108,6 +139,15 @@
 3) **创建单例**：`finishBeanFactoryInitialization` → `doCreateBean`
 
 进一步入口：`appendix/94-production-troubleshooting-checklist.md`（总分流表）/ `appendix/98-debugger-pack.md`（断点包）。
+
+## 证据链样例（现象 → 断点 → 变量 → 结论）
+
+**现象**：AOP/事务“不生效”，你拿到的对象不是代理（或代理缺少拦截器）  
+**断点**：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` → `AbstractBeanFactory#doGetBean`  
+**观察变量**：  
+- `beanFactory.getBeanPostProcessors().size()`（此时尚未注册完 BPP）  
+- `beanFactory.containsSingleton(beanName)`（是否已被提前创建）  
+**结论**：在 BFPP 阶段“过早 getBean”会让目标 bean 提前创建，错过后续 BPP 注册与代理替换链路，因此表现为“代理不生效”。
 
 ## 面试常问（refresh 调用链）
 

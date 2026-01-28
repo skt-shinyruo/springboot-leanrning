@@ -28,7 +28,7 @@
   - 补充“分支判断最小集”：把主线中的高频分支（prototype/dependsOn/parent/FactoryBean/type match）用触发条件+必看变量说明清楚。
   - 补充“证据链样例”：以 `AbstractApplicationContext#finishBeanFactoryInitialization` 为例，给出 1 次完整的“现象→断点→变量→结论”示范。
 
-### 03. [ ] 第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点
+### 03. [√] 第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanFactoryApiLabTest`
@@ -46,7 +46,7 @@
   - 补充“分支判断最小集”：把主线中的高频分支（prototype/dependsOn/parent/FactoryBean/type match）用触发条件+必看变量说明清楚。
   - 补充“证据链样例”：以 `AbstractBeanFactory#resolveEmbeddedValue` 为例，给出 1 次完整的“现象→断点→变量→结论”示范。
 
-### 05. [ ] 第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
+### 05. [√] 第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#initializeBean` / `AbstractBeanFactory#doGetBean`；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansMainlineCallChainLabTest`
@@ -55,7 +55,7 @@
   - 补充“新手易卡点的修复路径”：断点不命中/测试过慢/IDE 卡死等问题的最短排障策略。
   - 补充“学习闭环”：围绕 `SpringCoreBeansBreakpointPackLabTest` 说明跑完应当得到的 3 个可复述结论（每个结论对应一个方法级证据点）。
 
-### 06. [ ] 第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
+### 06. [√] 第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansContainerLabTest`
