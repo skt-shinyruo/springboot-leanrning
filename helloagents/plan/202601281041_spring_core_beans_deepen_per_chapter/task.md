@@ -64,7 +64,7 @@
   - 补充“分支判断最小集”：把主线中的高频分支（prototype/dependsOn/parent/FactoryBean/type match）用触发条件+必看变量说明清楚。
   - 补充“证据链样例”：以 `AbstractApplicationContext#refresh` 为例，给出 1 次完整的“现象→断点→变量→结论”示范。
 
-### 07. [ ] 第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
+### 07. [√] 第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
@@ -73,7 +73,7 @@
   - 补充“分支判断最小集”：把主线中的高频分支（prototype/dependsOn/parent/FactoryBean/type match）用触发条件+必看变量说明清楚。
   - 补充“证据链样例”：以 `AbstractApplicationContext#refresh` 为例，给出 1 次完整的“现象→断点→变量→结论”示范。
 
-### 08. [ ] 第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary
+### 08. [√] 第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
 - 现状速记：关键锚点：`ApplicationContext#refresh` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties` / `ConstructorResolver#autowireConstructor`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
@@ -84,7 +84,7 @@
   - 针对“机制主线：候选收集 → 候选收敛 → 最终注入”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansAutowireCandidateSelectionLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 09. [ ] 第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
+### 09. [√] 第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `ApplicationContext#refresh` / `ConfigurableBeanFactory#destroyBean`；配套 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansCustomScopeLabTest` / `SpringCoreBeansLabTest`
@@ -95,7 +95,7 @@
   - 针对“1. singleton vs prototype：到底“一”指什么？”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansContainerLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 10. [ ] 第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）
+### 10. [√] 第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#close` / `AbstractApplicationContext#doClose` / `AbstractApplicationContext#refresh`；配套 Lab：`SpringCoreBeansAwareInfrastructureLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
@@ -105,7 +105,7 @@
   - 针对“1. 源码级生命周期骨架：把顺序落到关键方法”补细：把本段涉及的分支条件/关键变量补齐到能推导结论的程度。
   - 补充可复现闭环：以 `SpringCoreBeansAwareInfrastructureLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 11. [ ] 第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
+### 11. [√] 第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`；配套 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`

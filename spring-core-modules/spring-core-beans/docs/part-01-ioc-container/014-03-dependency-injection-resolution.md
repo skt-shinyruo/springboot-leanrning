@@ -40,6 +40,24 @@
 
 > 经验规则：不要在注入点上“赌 Spring 会选对”。如果候选>1 且你没有写清楚规则，Spring 选择失败是一个非常好的保护。
 
+### 0.1 DependencyDescriptor 深挖：注入点到底“要什么”？
+
+`DependencyDescriptor` 是依赖解析的真正“需求描述”，你能否解释它，决定了你能否解释“为什么注入的是它”。重点看这些字段：
+
+- `required`：是否必须（`@Autowired(required=false)` / Optional 影响这里）
+- `annotations`：`@Qualifier/@Value/@Lazy` 等都会在这里被解析
+- `resolvableType`：泛型信息（`Handler<String>` vs `Handler<Long>`）会影响候选匹配
+- `dependencyName`：字段名/参数名（用于 by-name fallback）
+
+**两个对照注入点（你应该能解释差异）：**
+
+1) 字段注入（依赖名可见）：  
+   - `@Autowired private Worker secondaryWorker;`  
+   - `dependencyName = secondaryWorker`，可能触发 by-name fallback
+2) 构造器注入（依赖名来自参数）：  
+   - `public Consumer(Worker worker)`  
+   - `dependencyName = worker`，如果候选>1 且无 Qualifier/Primary，容易歧义
+
 ---
 
 ## 1. 本模块里的最小例子：两个 `TextFormatter`
@@ -72,6 +90,23 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 
 你要建立的直觉是：**by type 的候选集合通常不小**，你需要先把它“看见”，再谈“为什么最终选中它”。
 
+### 2.0 依赖解析分支树（全链路视角）
+
+把 `doResolveDependency` 看成“分支树”会更容易排障：
+
+1) **快捷路径**：`Optional` / `ObjectProvider` / `@Lazy` / `@Value`  
+   - 现象：走 `resolveMultipleBeans` 或 `suggestedValue`，不会进入“候选收敛”
+2) **resolvableDependencies**  
+   - 现象：能注入 `BeanFactory/ApplicationContext` 等，但它们不是 Bean
+3) **候选收集**（by type）  
+   - 现象：`matchingBeans` 为空 → `NoSuchBeanDefinitionException`
+4) **候选收敛**（Qualifier/Primary/Name/Priority）  
+   - 现象：候选>1 且缩不下来 → `NoUniqueBeanDefinitionException`
+5) **集合注入与排序**  
+   - 现象：`@Order/@Priority` 影响 List/Stream 顺序，但不选唯一候选
+6) **fallback**  
+   - 现象：by-name / suggestedName 等兜底路径影响最终选择
+
 ### 2.1 三条“早返回通道”（很多人以为没走到候选收集，其实是提前返回了）
 
 在 `doResolveDependency` 里，真实项目常见的三类提前返回：
@@ -91,6 +126,18 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 
 - “容器里到底有哪些同类型实现？”
 - “是不是某个 auto-config/扫描把我没预期的 bean 也注册进来了？”
+
+### 2.3 关键变量速查表（把“为什么选它”变成可解释）
+
+| 变量 | 含义 | 决策地位 |
+| --- | --- | --- |
+| `descriptor` | 注入点描述（类型/限定符/是否 required） | 决定候选筛选维度 |
+| `matchingBeans` | 候选集合（beanName → candidate） | 决定是否进入收敛 |
+| `dependencyName` | 字段/参数名 | by-name fallback 重要输入 |
+| `suggestedName` | resolver 推导名称（如 Qualifier 值） | 可能直接命中候选 |
+| `primaryCandidate` | 唯一 `@Primary` 候选 | 单依赖优先级高 |
+| `highestPriorityCandidate` | `@Priority` tie-break | 兜底路径 |
+| `autowiredBeanName` | 最终选中的 beanName | 最终结论落点 |
 
 ---
 
@@ -198,6 +245,15 @@ static class SingleWorkerConsumer {
 
 详见：[32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](../part-04-wiring-and-boundaries/32-resource-injection-name-first.md)
 
+### 3.6 机制讲透：候选收集 → 收敛 → 最终注入（条件→分支→结果）
+
+**条件**：候选集合 > 1，且注入点没有明确限定  
+**分支**：`determineAutowireCandidate` 依次尝试 Qualifier → Primary → by-name → Priority  
+**结果**：  
+- 仍然无法缩小 → `NoUniqueBeanDefinitionException`  
+- 命中唯一候选 → 注入完成  
+**证据链断点**：`DefaultListableBeanFactory#doResolveDependency`（观察 `matchingBeans` 与 `autowiredBeanName` 的变化）
+
 ---
 
 ## 4. 可选依赖与延迟解析：Optional / required=false / ObjectProvider
@@ -300,6 +356,20 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但你需要把它�
   - 先展开 root cause，通常还是上面两类
 
 > 小技巧：`doResolveDependency` 命中次数很高时，先加条件断点（例如 `descriptor.getDependencyType() == Worker.class`），再看调用栈与变量。
+
+## 可复现闭环（基于 `SpringCoreBeansAutowireCandidateSelectionLabTest`）
+
+把“候选收集→收敛→注入”跑成 3 个可断言结论：
+
+1) **`@Order` 只影响集合注入顺序，不解决单依赖歧义**  
+   - 断点：`resolveMultipleBeans` / `AnnotationAwareOrderComparator`  
+   - 现象：集合注入有序，单注入仍 `NoUnique`
+2) **单依赖收敛优先级：Qualifier > Primary > Priority > by-name**  
+   - 断点：`determineAutowireCandidate`（依次观察 `primaryCandidate` / `highestPriorityCandidate`）  
+   - 现象：`@Qualifier` 可显式绕开 `@Primary`
+3) **泛型与 ObjectProvider 会改变收敛结果**  
+   - 断点：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`  
+   - 现象：`getIfUnique()` 可能返回 null，`orderedStream()` 遵循排序
 
 ---
 

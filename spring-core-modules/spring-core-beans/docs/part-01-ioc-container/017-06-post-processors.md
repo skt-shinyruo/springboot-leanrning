@@ -65,6 +65,13 @@
 
 也就是说：很多“注解配置能工作”，背后本身就依赖 BFPP/registry post-processor。
 
+### 1.4 机制讲透：BFPP 如何改变最终行为（可跑的例子）
+
+**条件**：定义层被改写（BeanDefinition 里的属性/占位符被替换）  
+**分支**：`postProcessBeanFactory` 在实例化前执行  
+**结果**：最终实例读到的是“被改写后的配方”，而不是原始定义  
+**可跑证据**：`SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansContainerLabTest`  
+
 ## 2. BPP：`BeanPostProcessor`
 
 在每个 bean 初始化前后都会被调用（更准确地说：在 bean 创建流程的某些钩子点）。
@@ -86,6 +93,16 @@
 ### 2.3 BPP 与“你以为的对象”之间的差距
 
 因为 BPP 有机会把实例替换成代理。
+
+### 2.4 常见基础设施处理器（谁让注解真正生效）
+
+| 处理器 | 作用 | 层级 |
+| --- | --- | --- |
+| `ConfigurationClassPostProcessor` | 解析 `@Configuration/@Bean/@Import` | 定义层（BDRPP/BFPP） |
+| `PropertySourcesPlaceholderConfigurer` | 解析 `${...}` 占位符 | 定义层（BFPP） |
+| `AutowiredAnnotationBeanPostProcessor` | `@Autowired/@Value` 注入 | 实例层（BPP） |
+| `CommonAnnotationBeanPostProcessor` | `@PostConstruct/@PreDestroy` | 实例层（BPP/DestructionAware） |
+| `ApplicationContextAwareProcessor` | Aware 系列回调 | 实例层（BPP） |
 
 ## 3. 顺序（Ordering）：为什么同一个扩展点里顺序也很重要
 
@@ -293,6 +310,20 @@ BFPP 本该在“定义层”工作，如果你在里面直接拿 bean（实例�
 - `beanFactory.getBeanDefinitionCount()`（registry 阶段是否扩张）
 - `beanFactory.getBeanPostProcessors()`（BPP 链是否已就位、顺序如何）
 - `result != bean`（after-init 是否发生“换壳”）
+
+## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
+
+跑完这个 Lab，你至少要能用 3 条结论解释 BFPP/BPP 的差异：
+
+1) **BFPP 改定义，不改实例**  
+   - 断点：`postProcessBeanFactory` → `createBean`  
+   - 断言：实例读到的是“被改写后的配方”
+2) **BPP 改实例，可替换对象**  
+   - 断点：`applyBeanPostProcessorsAfterInitialization`  
+   - 断言：`result != bean` 时暴露对象发生替换
+3) **时机决定是否生效**  
+   - 断点：`invokeBeanFactoryPostProcessors` vs `registerBeanPostProcessors`  
+   - 断言：过早 `getBean` 会让目标 bean 错过后续 BPP
 
 ## 常见坑与边界（补一段“能落到源码的答案”）
 

@@ -42,6 +42,17 @@
 - `singleton`：**同一个容器**里，这个 beanName 对应的实例只有一个
 - `prototype`：容器**每次创建/获取**都会创建一个新实例；容器通常不缓存它（也不负责销毁回调）
 
+### 1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
+
+**条件**：当前 bean 的 scope 是 singleton 还是 prototype  
+**分支**：`AbstractBeanFactory#doGetBean`  
+- singleton：优先走缓存（`singletonObjects` / `earlySingletonObjects`）  
+- prototype：直接走 `createBean`，并设置 `isPrototypeCurrentlyInCreation`  
+**结果**：  
+- singleton 可以被循环依赖“部分救回”（有 early reference）  
+- prototype 循环依赖直接 fail-fast（不会进单例缓存）  
+**断点建议**：`AbstractBeanFactory#doGetBean`（观察 `mbd.isPrototype()` 与 `isPrototypeCurrentlyInCreation`）
+
 ## 2. 本模块里你能直接观察到的现象
 
 代码对应：
@@ -52,6 +63,12 @@
 
 - `DirectPrototypeConsumer.currentId()` 连续两次拿到同一个 UUID
 - `ProviderPrototypeConsumer.newId()` 连续两次拿到不同 UUID
+
+## 2.1 prototype 的关键边界（创建 guard / 循环依赖 / 缓存差异）
+
+- **创建 guard**：prototype 不走 `singletonObjects`，每次 `getBean` 都走 `createBean`  
+- **循环依赖不可救**：prototype 没有 early reference 缓冲区，触发 `BeanCurrentlyInCreationException`  
+- **缓存差异本质**：singleton 是“容器托管 + 缓存复用”，prototype 是“一次性交付”
 
 ## 3. 为什么“prototype 注入 singleton”会看起来像单例？
 
@@ -107,6 +124,14 @@
 
 学习阶段建议把它当作“了解存在即可”的方案。
 
+### 6.1 三种方案对照（ObjectProvider / @Lookup / scoped proxy）
+
+| 方案 | 优点 | 代价 | 关键类/入口 |
+| --- | --- | --- | --- |
+| `ObjectProvider` | 简单直观、断点容易下 | 需要显式调用 `getObject()` | `DefaultListableBeanFactory#getBeanProvider` |
+| `@Lookup` | 业务代码调用点更自然 | 依赖子类增强、对 final 限制敏感 | `LookupOverride` / `CglibSubclassingInstantiationStrategy` |
+| scoped proxy | 调用点透明 | 调试复杂、代理层级增加 | `ScopedProxyFactoryBean` / `ScopedObject` |
+
 ## 7. prototype 的销毁语义（容器默认不托管）
 
 这一点在真实工程里非常关键，因为它决定了“资源释放责任在谁”：
@@ -129,10 +154,30 @@
 - `context.close()` 不会触发 prototype 的 `@PreDestroy`
 - 只有当你显式调用 `BeanFactory#destroyBean(...)`，才会触发 destroy callbacks（资源释放需要调用方负责）
 
+### 7.1 自定义 scope 的回收要点
+
+- 自定义 scope 要显式注册销毁回调：`Scope#registerDestructionCallback`  
+- 若 scope 生命周期结束（如请求/会话），必须主动触发回收，否则容易发生上下文泄漏  
+- 需要显式销毁时可用 `ConfigurableBeanFactory#destroyBean` 或 `destroyScopedBean`
+
 ### 7.2 排障提示：什么时候应该怀疑是 prototype 销毁语义问题？
 
 - 症状：连接/文件句柄/线程池等资源泄漏，但你确认 `@PreDestroy` 逻辑存在
 - 排查：这个 bean 是否是 prototype？它的创建者（调用方）是否负责 close/destroy？
+
+## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
+
+你至少要能用 3 个断言讲清楚本章主线：
+
+1) **prototype 注入 singleton 会“冻结为同一个实例”**  
+   - 断点：`doResolveDependency` → `doGetBean("prototypeBean")`  
+   - 断言：`DirectPrototypeConsumer.currentId()` 两次相同
+2) **`ObjectProvider` 能做到“每次调用新实例”**  
+   - 断点：`ObjectProvider#getObject`  
+   - 断言：`ProviderPrototypeConsumer.newId()` 两次不同
+3) **prototype destroy 不会自动触发**  
+   - 断点：`DefaultSingletonBeanRegistry#destroySingletons`  
+   - 断言：`@PreDestroy` 不执行，除非显式 `destroyBean`
 
 ## 8. 源码调用链（方法级）：prototype 为什么会“像单例”？
 

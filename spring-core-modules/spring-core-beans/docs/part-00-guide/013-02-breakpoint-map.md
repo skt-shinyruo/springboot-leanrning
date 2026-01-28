@@ -106,6 +106,27 @@
 - 决定性分支：
   - `postProcessAfterInitialization` 是否返回代理（这通常决定“你最终拿到的对象是谁”）
 
+## 阶段内关键对象变化（断点地图补充）
+
+为了让“阶段感”更可见，这里把关键对象变化再压缩成 1 张表：
+
+| 阶段 | 主要变化 | 推荐观察点（最小够用） |
+| --- | --- | --- |
+| 定义注册 | `beanDefinitionMap` 增长，`BeanDefinition` 来源被标记 | `registry.getBeanDefinitionCount()` / `beanDefinition.getSource()` |
+| BFPP/BDRPP | 定义被改写/补齐（占位符、配置类、属性覆盖） | `postProcessBeanFactory` / `processedBeans` |
+| 注册 BPP | `beanPostProcessors` 列表最终排序固定 | `beanFactory.getBeanPostProcessorCount()` |
+| 单例创建 | `singletonObjects` / `earlySingletonObjects` / `singletonFactories` 发生写入 | `singletonsCurrentlyInCreation` / 三级缓存 |
+
+## 主线高频分支最小集（断点地图版）
+
+你不需要记住所有分支，但必须能“看见”这 5 个最常见的分支触发点：
+
+1) **singleton vs prototype**：`AbstractBeanFactory#doGetBean` → `mbd.isPrototype()`  
+2) **dependsOn 强制顺序**：`AbstractBeanFactory#getBean` → `mbd.getDependsOn()`  
+3) **parent BeanFactory 兜底**：`containsBeanDefinition(beanName)` 为 false → `parentBeanFactory.getBean`  
+4) **FactoryBean vs 产品对象**：`AbstractBeanFactory#getObjectForBeanInstance`  
+5) **类型匹配（含泛型）**：`AbstractBeanFactory#isTypeMatch` / `ResolvableType` 判定
+
 ## 源码调用链与断点（建议从 Lab 反推）
 
 更完整的“入口测试 → 断点调用链”建议，优先看：
@@ -121,6 +142,16 @@
 - 依赖解析（候选收敛）：`SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans`
 - 代理替换发生点：`SpringCoreBeansBeanCreationTraceLabTest#beanCreationTrace_recordsPhases_andExposesProxyReplacement`
 - 循环依赖/early reference：`SpringCoreBeansEarlyReferenceLabTest`
+
+## 证据链样例（现象 → 断点 → 变量 → 结论）
+
+**现象**：明明写了 `@Qualifier`，却还是报 `NoUniqueBeanDefinitionException`  
+**断点**：`DefaultListableBeanFactory#doResolveDependency` → `findAutowireCandidates` → `determineAutowireCandidate`  
+**观察变量**：  
+- `descriptor.getAnnotations()`（是否真的带上 Qualifier）  
+- `matchingBeans.keySet()`（候选集合是否被正确收集）  
+- `autowiredBeanName`（最终候选是否收敛成功）  
+**结论**：如果 Qualifier 未参与收敛，优先检查注入点是否被 `AutowiredAnnotationBeanPostProcessor` 正确解析。
 
 ## 常见坑与边界
 

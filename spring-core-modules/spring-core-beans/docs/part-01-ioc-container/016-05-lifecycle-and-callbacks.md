@@ -82,6 +82,14 @@ doCreateBean(beanName, mbd):
   return exposedObject
 ```
 
+### 1.2.1 关键分支与变量（不要漏掉这些“条件开关”）
+
+- `mbd.isSingleton()`：是否走 early reference（prototype 通常不会进入）  
+- `mbd.isSynthetic()`：是否跳过部分 BPP（基础设施 bean 的常见开关）  
+- `hasInstantiationAwareBeanPostProcessors`：是否允许“实例化前短路”（`postProcessBeforeInstantiation`）  
+- `mbd.hasPropertyValues()` / `hasAutowiredAnnotation`：是否进入属性填充与依赖注入  
+- `mbd.hasDestroyMethod()` / `requiresDestruction`：是否登记销毁回调
+
 其中“最容易说错/最容易踩坑”的点是第 5 步：**initializeBean 里 after-init BPP 可能返回 proxy**。
 
 ### 1.3 `initializeBean`：初始化阶段的稳定回调链
@@ -102,6 +110,14 @@ initializeBean(beanName, bean, mbd):
 1) **Aware 发生在 init callbacks 之前**：很多 init 逻辑需要先拿到 beanName/BeanFactory 等容器信息
 2) **`@PostConstruct` 发生在 before-init BPP 链路中**：它不是“硬编码步骤”，而是某个 BPP 触发
 3) **after-init 可能返回代理**：最终暴露对象可能不是原始实例
+
+### 1.3.1 回调与代理交织：回调到底发生在谁身上？
+
+- **`@PostConstruct` / `afterPropertiesSet`**：发生在 **raw bean** 上（proxy 还未产生）
+- **after-init BPP**：可能返回 **proxy**，此后容器对外暴露的是 proxy
+- **`@PreDestroy`**：通常由 `DestructionAwareBeanPostProcessor` 触发，仍然作用在 target 上  
+  - 若依赖 `DisposableBean` 接口，且 proxy 不实现该接口，容易出现“销毁回调没进”的误判
+- **`SmartInitializingSingleton`**：在单例全部实例化后回调，通常作用于 **最终暴露对象**（可能是 proxy）
 
 ### 1.4 销毁主线：singleton 的 destroy callbacks 在哪触发？
 
@@ -204,6 +220,16 @@ destroySingletons():
 - 你不想修改第三方类源码
 - 你想集中管理初始化/销毁方法
 
+### 4.4 回调来源分型（触发时机 / 优先级）
+
+| 回调类型 | 触发时机 | 优先级/边界 |
+| --- | --- | --- |
+| JSR-250（`@PostConstruct/@PreDestroy`） | before-init / destroy | 依赖 `CommonAnnotationBeanPostProcessor` |
+| 接口回调（`InitializingBean/DisposableBean`） | init / destroy | 明确且可断点定位 |
+| 配置回调（`initMethod/destroyMethod`） | init / destroy | 可覆盖第三方类 |
+| `SmartInitializingSingleton` | 单例全部实例化完成后 | 适合做“容器就绪后”的动作 |
+| `Lifecycle/SmartLifecycle` | 容器启动/停止阶段 | 有 phase，决定启动/停止顺序 |
+
 ---
 
 ## 5. 生命周期与 Scope 的交互（重点）
@@ -258,6 +284,17 @@ destroySingletons():
 - `beanName`
 - `bean` vs `exposedObject`（是否被 after-init 替换/代理化）
 - `mbd` 上的 `initMethodName` / destroyMethodName（配置级回调是否声明）
+
+## 可复现闭环（基于 `SpringCoreBeansAwareInfrastructureLabTest`）
+
+用这一组测试把“回调依赖基础设施”的结论固化成断言：
+
+1) **`BeanFactoryAware` 不依赖 BPP，裸 `BeanFactory` 也能触发**  
+   - 断言：`beanFactory()` 非空  
+2) **`ApplicationContextAware` 依赖基础设施 BPP**  
+   - 断言：没有 `ApplicationContextAwareProcessor` 时为 null  
+3) **回调触发点在 before-init**  
+   - 断点：`BeanPostProcessor#postProcessBeforeInitialization`
 
 ---
 
