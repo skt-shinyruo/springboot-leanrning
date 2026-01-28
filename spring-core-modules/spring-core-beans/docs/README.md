@@ -8,18 +8,18 @@
 
 ## 四条阅读路线（按读者分层：源码进阶 + 面试）
 
-- A（能用为主）：按目录顺读每章的“本章要点 + 最小实验”，遇到问题回看“常见坑”。
+- A（能用为主）：按目录顺读每章的“本章要点 + 最小实验”，遇到问题回看“常见误区”。
 - B（能断点为主）：每章至少跑一次对应 Lab，并按章节给出的 breakpoints/watch list 在调试器里看见关键数据结构变化。
-- C（能排障/能解释为主）：把每章的“一句话自检”当成面试/复盘模板；遇到真实问题时按章节的“排障分流表”定位到最短调用链。
+- C（能排障/能解释为主）：把每章的“自检要点”当成面试/复盘模板；遇到真实问题时按章节的“排障分流表”定位到最短调用链。
 - D（面试冲刺为主）：先刷 `appendix/93-interview-playbook.md` 的题库，再回到对应章节用“证据链（方法级）+ 可运行 Lab”把答案证明出来（而不是背书）。
 
 ## 章节契约（教程化验收口径：10/30/3）
 
-你可以把每一章都当成一个“可验收交付物”，按 10/30/3 三段闭环学习：
+可以把每一章都当成一个“可验收交付物”，按 10/30/3 三段闭环学习：
 
 1) **10 分钟最小闭环**：跑通本章 Lab/Test，看到预期现象（或断言）。
 2) **30 分钟深挖闭环**：命中关键断点（3–5 个稳定锚点）并通过 watch list 看见决定性变量。
-3) **3 分钟复述闭环**：用“结论 → 证据链（关键方法）→ 反例/坑”复述本章核心机制（对标 `appendix/93` 的标准结构）。
+3) **3 分钟复述闭环**：用“结论 → 证据链（关键方法）→ 反例/误区”复述本章核心机制（对标 `appendix/93` 的标准结构）。
 
 ## 怎么跑（最小闭环）
 
@@ -98,7 +98,7 @@
 - [34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)
 - [35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？](part-04-wiring-and-boundaries/35-merged-bean-definition.md)
 - [36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)
-- [37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失](part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
+- [37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
 - [38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](part-04-wiring-and-boundaries/38-environment-and-propertysource.md)
 - [39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md)
 
@@ -118,8 +118,8 @@
 
 ### Appendix（术语表 / 速查 / 排障清单 / 索引）
 
-- [第 25 章：90. 常见坑清单（建议反复对照）](appendix/025-90-common-pitfalls.md)
-- [第 26 章：99. 自测题：你是否真的理解了？](appendix/026-99-self-check.md)
+- [第 25 章：90. 常见误区清单（建议反复对照）](appendix/025-90-common-pitfalls.md)
+- [第 26 章：99. 自测题：是否能够真的理解了？](appendix/026-99-self-check.md)
 - [91. 术语表（Glossary）](appendix/91-glossary.md)
 - [92. 知识地图（Concept → Chapter → Lab）](appendix/92-knowledge-map.md)
 - [93. 面试复述模板：用“可证明的主线”回答 Spring Beans](appendix/93-interview-playbook.md)
@@ -130,11 +130,10 @@
 - [Debugger Pack（断点包总入口）](appendix/98-debugger-pack.md)
 - [99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本](appendix/99-team-training-kit.md)
 
-## 一句话自检
-
-- 你是否已经能按“主线 → 分支 → 证据链”的方式学习：先跑 Lab，再带着断点读章节？
-- 你是否能把一个现象先分层：定义阶段（BeanDefinition/processor） vs 创建阶段（getBean/doCreateBean/BPP）？
-- 你是否能在 1 分钟内从目录定位到：对应章节 + 对应 LabTest + 建议断点入口？
+## 自检要点
+- 是否能够已经能按“主线 → 分支 → 证据链”的方式学习：先跑 Lab，再带着断点读章节？
+- 是否能够能把一个现象先分层：定义阶段（BeanDefinition/processor） vs 创建阶段（getBean/doCreateBean/BPP）？
+- 是否能够能在 1 分钟内从目录定位到：对应章节 + 对应 LabTest + 建议断点入口？
 
 <!-- BOOKIFY:START -->
 

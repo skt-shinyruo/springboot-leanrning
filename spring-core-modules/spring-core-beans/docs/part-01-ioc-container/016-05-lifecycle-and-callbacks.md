@@ -34,21 +34,21 @@
 这一章解决两个问题：
 
 1) **Bean 从“还不存在”到“可以被使用”经历了什么阶段？**
-2) 你写的各种回调（`@PostConstruct` / `@PreDestroy` / `afterPropertiesSet` / `initMethod` …）到底在什么时机执行？
+2) 编写的各种回调（`@PostConstruct` / `@PreDestroy` / `afterPropertiesSet` / `initMethod` …）到底在什么时机执行？
 
 ---
 
 ## 1. 源码级生命周期骨架：把顺序落到关键方法
 
-如果你只记住一句话：**生命周期 = instantiate → populate → initialize → (use) → destroy**。
+若只记住一句话：**生命周期 = instantiate → populate → initialize → (use) → destroy**。
 
-但读者 B/C 需要更具体：你至少要能把“高层阶段”映射到 Spring 的关键方法名，否则一旦遇到代理/循环依赖/后处理器介入，就很难定位“到底是哪一段出了问题”。
+但读者 B/C 需要更具体：至少应能够把“高层阶段”映射到 Spring 的关键方法名，否则一旦遇到代理/循环依赖/后处理器介入，就很难定位“到底是哪一段出了问题”。
 
 ### 1.1 从 refresh 到创建：生命周期发生在哪一段？
 
 容器启动主线在：`AbstractApplicationContext#refresh`。
 
-你需要记住：**对象创建的大规模发生点**在 refresh 的后半段：
+需要记住：**对象创建的大规模发生点**在 refresh 的后半段：
 
 - `finishBeanFactoryInitialization` → `DefaultListableBeanFactory#preInstantiateSingletons`
 
@@ -64,7 +64,7 @@
 
 ### 1.2 单个 bean 的创建主线：`createBean` / `doCreateBean`
 
-核心入口（你下断点最常用）：
+核心入口（常用断点入口）：
 
 - `AbstractAutowireCapableBeanFactory#createBean`
 - `AbstractAutowireCapableBeanFactory#doCreateBean`
@@ -90,7 +90,7 @@ doCreateBean(beanName, mbd):
 - `mbd.hasPropertyValues()` / `hasAutowiredAnnotation`：是否进入属性填充与依赖注入  
 - `mbd.hasDestroyMethod()` / `requiresDestruction`：是否登记销毁回调
 
-其中“最容易说错/最容易踩坑”的点是第 5 步：**initializeBean 里 after-init BPP 可能返回 proxy**。
+其中“最易误述/最易出错”的点是第 5 步：**initializeBean 里 after-init BPP 可能返回 proxy**。
 
 ### 1.3 `initializeBean`：初始化阶段的稳定回调链
 
@@ -142,12 +142,12 @@ destroySingletons():
 
 一句话：**因为它们不是 JVM 的生命周期，而是容器的生命周期。**
 
-你之所以能写注解就生效，是因为容器在 refresh 主线里注册了处理它们的基础设施 BPP（典型是 `CommonAnnotationBeanPostProcessor`）。
+读者之所以能写注解就生效，是因为容器在 refresh 主线里注册了处理它们的基础设施 BPP（典型是 `CommonAnnotationBeanPostProcessor`）。
 
 这也解释了一个常见现象：
 
-- 你用“裸 BeanFactory”手动 new/注册 bean，`@PostConstruct` 可能不生效
-- 你走完整 `ApplicationContext#refresh` 主线后，就正常了
+- 读者用“裸 BeanFactory”手动 new/注册 bean，`@PostConstruct` 可能不生效
+- 读者走完整 `ApplicationContext#refresh` 主线后，就正常了
 
 ---
 
@@ -172,11 +172,11 @@ destroySingletons():
 
 ## 3. 本模块的“可观测”例子：把顺序固化成断言
 
-如果你只靠日志理解生命周期，很容易被“并发/代理/顺序差异”骗。
+若只靠日志理解生命周期，很容易被“并发/代理/顺序差异”骗。
 
 本仓库推荐的方式是：**用事件列表 + 断言把顺序固化**。
 
-你可以直接跑：
+可以直接跑：
 
 - `SpringCoreBeansLifecycleCallbackOrderLabTest`
 
@@ -184,9 +184,9 @@ destroySingletons():
 
 1) 用一个 `RecordingBeanPostProcessor` 在 before/after-init 打点
 2) bean 同时实现 Aware、InitializingBean、DisposableBean，并声明 `@PostConstruct/@PreDestroy`
-3) 最后断言事件顺序（你不需要看日志，直接看断言）
+3) 最后断言事件顺序（无需看日志，直接看断言）
 
-你应该从这个 Lab 得到的结论是：
+应当从这个 Lab 得到的结论是：
 
 - Aware → before-init BPP（可能触发 @PostConstruct）→ init callbacks → after-init BPP（可能产出 proxy）
 - destroy 的链路由容器 close 触发，统一走 `DisposableBeanAdapter`
@@ -217,8 +217,8 @@ destroySingletons():
 
 适用场景：
 
-- 你不想修改第三方类源码
-- 你想集中管理初始化/销毁方法
+- 读者不想修改第三方类源码
+- 若希望集中管理初始化/销毁方法
 
 ### 4.4 回调来源分型（触发时机 / 优先级）
 
@@ -244,7 +244,7 @@ destroySingletons():
 - singleton：容器关闭时触发 destroy callbacks
 - prototype：容器通常不触发 destroy callbacks（需要调用方自己管理）
 
-这也是为什么 prototype 更像“容器帮你 new，一次性交付”，而不是“完整托管生命周期”。
+这也是为什么 prototype 更像“容器帮读者 new，一次性交付”，而不是“完整托管生命周期”。
 
 ### 5.1 prototype 销毁语义补齐：为什么不会自动销毁？怎么手动触发？
 
@@ -252,12 +252,12 @@ destroySingletons():
 
 - **prototype 的销毁不是容器的职责，而是“创建者（调用方）”的职责**
 
-原因并不玄学：
+原因并不神秘：
 
 - singleton：容器会缓存实例，并在 close 时统一遍历销毁（`destroySingletons` 主线）
-- prototype：容器每次 `getBean` 都 new 一个给你，但通常不会把这些实例登记到“待销毁列表”里
+- prototype：容器每次 `getBean` 都 new 一个并返回给调用方，但通常不会把这些实例登记到“待销毁列表”里
 
-如果你确实需要触发 prototype 的销毁回调（例如释放连接/文件句柄），需要显式调用销毁 API：
+若确实需要触发 prototype 的销毁回调（例如释放连接/文件句柄），需要显式调用销毁 API：
 
 - `ConfigurableBeanFactory#destroyBean(beanName, instance)`
 
@@ -301,7 +301,7 @@ destroySingletons():
 ## 源码与断点
 
 - 建议优先从 Lab 的断言反推调用链，再定位到关键类/方法设置断点。
-- 若你在真实项目里遇到“顺序/代理/回调不符合直觉”，先把目标 beanName 加条件断点，再看 `exposedObject` 是否被替换。
+- 若在真实项目里遇到“顺序/代理/回调不符合直觉”，先把目标 beanName 加条件断点，再看 `exposedObject` 是否被替换。
 
 ## 最小可运行实验（Lab）
 
@@ -320,12 +320,12 @@ destroySingletons():
 | `@PostConstruct` 没执行 | 没有对应 BPP；或 bean 不在容器托管链路里 | `beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`；断点 `applyBeanPostProcessorsBeforeInitialization` 是否命中目标 beanName | 确保走完整 `ApplicationContext#refresh`；不要绕过容器 new；必要时手动注册注解处理器 | `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansAwareInfrastructureLabTest` |
 | `afterPropertiesSet`/`initMethod` 没执行 | bean 没走 `initializeBean`（例如早期返回了短路对象/被替换导致误判） | 断点 `AbstractAutowireCapableBeanFactory#initializeBean`；观察 `exposedObject` 是否被替换 | 先确认创建主线是否命中 `initializeBean`；若被 proxy 替换，分清 raw vs exposed | `SpringCoreBeansLifecycleCallbackOrderLabTest` |
 | `@PreDestroy` 没执行 | context 没 close；或是 prototype（默认不托管销毁） | 断点 `AbstractApplicationContext#doClose` / `DefaultSingletonBeanRegistry#destroySingletons`；prototype 不会进入 `disposableBeans` | 确保关闭容器；prototype 需要调用方显式销毁（`destroyBean`） | `SpringCoreBeansPrototypeDestroySemanticsLabTest` |
-| 你以为“拿到的就是原对象”，但行为像被代理 | after-init BPP 返回了另一个对象（proxy/wrapper） | 断点 `applyBeanPostProcessorsAfterInitialization`；观察 `bean` vs `result` | 把“最终暴露对象”当作事实来源，不要假设 raw 就是 exposed | `SpringCoreBeansLifecycleCallbackOrderLabTest`（结合 creation trace） |
+| 容易误以为“拿到的就是原对象”，但行为像被代理 | after-init BPP 返回了另一个对象（proxy/wrapper） | 断点 `applyBeanPostProcessorsAfterInitialization`；观察 `bean` vs `result` | 把“最终暴露对象”当作事实来源，不要假设 raw 就是 exposed | `SpringCoreBeansLifecycleCallbackOrderLabTest`（结合 creation trace） |
 | 关闭时卡住/很慢 | destroy 回调做了重 IO/长耗时；或有依赖链导致逐个销毁很慢 | 断点 `DisposableBeanAdapter#destroy`；看具体 bean 的 destroy 方法耗时 | 缩短 destroy；拆依赖；把重任务移出销毁回调 | 结合本章断点闭环复盘 |
 
 ## 面试常问（生命周期：顺序、触发者与边界）
 
-### Q1：`initializeBean(...)` 的核心顺序是什么？哪些点最容易说错？
+### Q1：`initializeBean(...)` 的核心顺序是什么？哪些点最易误述？
 
 - 标准答案（可复述）：
   - Aware → before-init BPP（这里可能触发 `@PostConstruct`）→ init callbacks（`afterPropertiesSet`/`initMethod`）→ after-init BPP（这里经常产生 proxy，决定最终暴露对象）。
@@ -337,7 +337,7 @@ destroySingletons():
 - 最小复现：
   - `SpringCoreBeansLifecycleCallbackOrderLabTest`
 
-### Q2：为什么 prototype 默认不会触发 `@PreDestroy`？你怎么证明？
+### Q2：为什么 prototype 默认不会触发 `@PreDestroy`？如何证明？
 
 - 标准答案（可复述）：
   - prototype 的销毁不由容器统一托管；容器不会在 close 时遍历销毁它创建过的所有 prototype 实例，调用方需要显式销毁。
@@ -355,13 +355,12 @@ destroySingletons():
   - 创建链路：`applyBeanPostProcessorsBeforeInitialization`
   - 销毁链路：`DisposableBeanAdapter#destroy`（包含 DestructionAware BPP 与 JSR-250）
 
-## 一句话自检
-
-你应该能回答：
+## 自检要点
+应能够回答：
 
 1) 初始化回调顺序大致如何（Aware / @PostConstruct / afterPropertiesSet / initMethod / after-init BPP）？
-2) prototype 的销毁为什么默认不会在 context close 时触发？你如何在 Lab/断点里验证？
-3) 如果你怀疑“某个回调没执行/代理没生效”，你会先定位到 refresh 的哪一段？下哪两个断点？
+2) prototype 的销毁为什么默认不会在 context close 时触发？如何在 Lab/断点里验证？
+3) 若怀疑“某个回调没执行/代理没生效”，可先定位到 refresh 的哪一段？下哪两个断点？
 
 <!-- BOOKIFY:START -->
 

@@ -9,8 +9,8 @@
 
     - `addBeanPostProcessor(...)` 的语义不是“注册一个可排序的处理器”，而是：**直接修改 `beanFactory.getBeanPostProcessors()` 这个 list**。因此它天然是“按注册顺序”，而不是“按 Ordered 排序”。
     - 手工注册的 BPP 通常发生在 `refresh()` 之前，因此它会早于容器自动发现/排序注册的 BPP 执行 —— **哪怕后者是 PriorityOrdered**。
-    - BPP 不是“事后补丁”：**bean 一旦在 BPP 链完整之前被创建出来，就永远错过后续 BPP**。排障时要先分清：你遇到的是“顺序问题”还是“时机问题”。
-    - “编程式注册”还有一个更容易误诊的分支：`registerSingleton`（实例层）会绕开创建管线，因此“没注入/没代理/没回调”常常不是顺序问题，而是你根本没走过 `doCreateBean`。
+    - BPP 不是“事后补丁”：**bean 一旦在 BPP 链完整之前被创建出来，就永远错过后续 BPP**。排障时要先分清：遇到的是“顺序问题”还是“时机问题”。
+    - “编程式注册”还有一个更容易误诊的分支：`registerSingleton`（实例层）会绕开创建管线，因此“没注入/没代理/没回调”常常不是顺序问题，而是读者根本没走过 `doCreateBean`。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -30,7 +30,7 @@
 
 - `beanFactory.addBeanPostProcessor(bpp)`（直接把对象塞进链路）
 
-这两条路径的差异，决定了你会遇到的两类典型困惑：
+这两条路径的差异，决定了可以遇到的两类典型困惑：
 
 1) “我实现了 Ordered/ PriorityOrdered，为什么顺序不生效？”
 2) “我明明有 BPP，为什么某些 bean 没被它处理（没代理/没增强/没回调）？”
@@ -41,7 +41,7 @@
 
 ### 机制讲透：条件 → 分支 → 结果
 
-**条件**：你是“手工 add BPP”还是“声明为 bean 让容器注册”  
+**条件**：读者是“手工 add BPP”还是“声明为 bean 让容器注册”  
 **分支**：  
 - 手工 add → 直接操作 `beanFactory.getBeanPostProcessors()` 列表  
 - 容器注册 → `registerBeanPostProcessors` 收集+排序+批量注册  
@@ -61,11 +61,11 @@
 1) 在 `refresh()` 之前手工 `addBeanPostProcessor(...)`
 2) 同时注册一个 **作为 bean** 的 `PriorityOrdered` BPP（让容器在 refresh 中发现并排序注册）
 
-你会观察到的稳定结论是：
+可以观察到的稳定结论是：
 
 - **手工注册的 BPP 更早进入最终 list，所以更早执行**
 
-> 这不是“PriorityOrdered 失效”，而是因为 PriorityOrdered 只影响“容器排序那一批候选”，而你绕开了那一批候选。
+> 这不是“PriorityOrdered 失效”，而是因为 PriorityOrdered 只影响“容器排序那一批候选”，而读者绕开了那一批候选。
 
 ---
 
@@ -75,7 +75,7 @@
 
 - `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticBppExecutionOrder_isRegistrationOrder_notOrderedInterface`
 
-你会看到：即使两个手工注册的 BPP 都实现了 `PriorityOrdered`（并返回不同 order 值），最终执行仍然是：
+可以观察到：即使两个手工注册的 BPP 都实现了 `PriorityOrdered`（并返回不同 order 值），最终执行仍然是：
 
 - **先 add 的先执行**
 
@@ -94,13 +94,13 @@ addBeanPostProcessor(bpp):
 
 ---
 
-## 3. 两条注册路径对照：你到底走的是哪条？
+## 3. 两条注册路径对照：读者到底走的是哪条？
 
 > 目标：排障时用最短路径确认：当前 BPP 顺序为什么是这样？Ordered 到底有没有机会生效？
 
 ### 3.1 手工注册路径（绕过容器排序）
 
-你直接调用：
+读者直接调用：
 
 - `DefaultListableBeanFactory#addBeanPostProcessor`
 
@@ -128,7 +128,7 @@ addBeanPostProcessor(bpp):
 
 ## 4. 排障分流：顺序问题 vs 时机问题（先分清楚再下手）
 
-当你遇到“代理没生效 / 增强没生效 / 某些回调没触发”时，先做一次强制分流：
+当遇到“代理没生效 / 增强没生效 / 某些回调没触发”时，先做一次强制分流：
 
 ### 4.1 顺序问题（BPP 都生效了，但“包裹顺序”不对）
 
@@ -145,8 +145,8 @@ addBeanPostProcessor(bpp):
 
 判断标准（典型信号）：
 
-- 你在启动日志里看到类似 “not eligible for getting processed by all BeanPostProcessors” 的语义
-- 或者你发现某个 bean 在 BFPP/BDRPP 阶段被 `getBean()` 触发创建
+- 在启动日志里看到类似 “not eligible for getting processed by all BeanPostProcessors” 的语义
+- 或者读者发现某个 bean 在 BFPP/BDRPP 阶段被 `getBean()` 触发创建
 
 对照实验：
 
@@ -170,14 +170,14 @@ addBeanPostProcessor(bpp):
 ### 5.2 固定观察点（watch list）
 
 - `beanFactory.getBeanPostProcessors()`：最终链路（顺序就是语义）
-- “你的目标 beanName”：只看你关心的那个 bean，避免噪声
-- “你的目标 BPP 类型”：确认它到底有没有进 list，以及在 list 的位置
+- “相应的目标 beanName”：只看关注的那个 bean，避免噪声
+- “相应的目标 BPP 类型”：确认它到底有没有进 list，以及在 list 的位置
 
 ---
 
 ## 可复现闭环（基于本章 Lab）
 
-跑完三个测试，你至少要能复述三条结论：
+跑完三个测试，至少应能够复述三条结论：
 
 1) **手工 add BPP 的顺序 = 注册顺序**  
    - 断点：`addBeanPostProcessor`  
@@ -195,20 +195,20 @@ addBeanPostProcessor(bpp):
 
 > “我把对象塞进容器了，但它没注入/没 init/没代理/没回调，是不是 BPP 顺序问题？”
 
-很多时候根因是：你走了“实例层注册”。
+很多时候根因是：读者走了“实例层注册”。
 
-### 6.1 三种入口，你到底注册了什么？
+### 6.1 三种入口，读者到底注册了什么？
 
 - **定义层（推荐理解）**：把“怎么造对象”交给容器
   - `registerBeanDefinition` / `registerBean`
   - 会走 `doCreateBean`，因此会有注入、生命周期、BPP
-- **实例层（最容易踩坑）**：你已经把对象 new 好了，容器只是“给它一个名字”
+- **实例层（最易出错）**：对象已由调用方显式创建，容器只是“给它一个名字”
   - `registerSingleton`
   - **不会** retroactive 触发注入、BPP、init 回调
 
-### 6.2 如果你必须把“既有对象”交给 Spring 管，怎么办？
+### 6.2 如果必须把“既有对象”交给 Spring 管，怎么办？
 
-核心原则是：你要显式补齐创建管线的关键步骤，例如：
+核心原则是：需要显式补齐创建管线的关键步骤，例如：
 
 - `AutowireCapableBeanFactory#autowireBean(...)`
 - `AutowireCapableBeanFactory#initializeBean(existing, beanName)`
@@ -219,15 +219,15 @@ addBeanPostProcessor(bpp):
 
 ## 源码调用链（方法级）：为什么“手工注册”会改变语义
 
-这章的关键不是 API，而是“你绕过了哪段主线”，导致顺序/时机/增强语义变化：
+这章的关键不是 API，而是“读者绕过了哪段主线”，导致顺序/时机/增强语义变化：
 
 1) 正常主线：`AbstractApplicationContext#refresh`
 2) 容器注册 BPP：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`
    - 这个方法负责：收集 BPP beanNames → 分组（PriorityOrdered/Ordered/others）→ sort → 批量注册进 `beanFactory.getBeanPostProcessors()`
 3) 手工 `addBeanPostProcessor(...)`：直接修改最终 list
-   - **绕过分组与排序输入**，因此你不能期待 `Ordered/@Order` 在“追加式注册”场景自动生效
+   - **绕过分组与排序输入**，因此读者不能期待 `Ordered/@Order` 在“追加式注册”场景自动生效
 4) `registerSingleton(...)`：把对象塞进 singleton cache，但不会自动补齐 `doCreateBean` 管线
-   - 因此不会 retroactively 注入、不会跑 BPP、不会跑 init 回调（除非你显式调用 `autowireBean/initializeBean`）
+   - 因此不会 retroactively 注入、不会跑 BPP、不会跑 init 回调（除非读者显式调用 `autowireBean/initializeBean`）
 
 ## 面试常问（手工注册：顺序与时机）
 
@@ -254,15 +254,14 @@ addBeanPostProcessor(bpp):
 ### Q3：为什么 `registerSingleton` 容易让人误诊？
 
 - 标准答案（可复述）：
-  - 因为它绕开了 `doCreateBean`，你把“已经 new 好的对象”塞给容器，只获得了“按名字取回”的能力；注入、BPP、init 等创建期能力不会自动补上。
+  - 因为它绕开了 `doCreateBean`，读者把“已经 new 好的对象”塞给容器，只获得了“按名字取回”的能力；注入、BPP、init 等创建期能力不会自动补上。
 - 修复建议（工程化）：
   - 要么回到定义层注册（推荐），要么显式补齐：`autowireBean` + `initializeBean`（但要理解副作用与边界）。
 - 最小复现：
   - `SpringCoreBeansProgrammaticRegistrationLabTest`
 
-## 一句话自检
-
-你应该能用 3 句答题：
+## 自检要点
+应能够用 3 句答题：
 
 1) `addBeanPostProcessor` 为什么不会按 Ordered 排序？（它直接改最终 list，绕过 registerBeanPostProcessors 的排序输入）
 2) 怎么判断是“顺序问题”还是“时机问题”？（先看最终 list；再看目标 bean 是否在链完整之前被创建）

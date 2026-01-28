@@ -9,7 +9,7 @@
 
     - registry 里存的是 **原始 BeanDefinition**（可能是 `GenericBeanDefinition`，还带 `parentName`）；创建链路里真正使用的是 **merged 后的 `RootBeanDefinition`**。
     - merged 不只是“把 propertyValues 拼起来”，它还会把 **scope/lazy-init/init-method/解析出的类型缓存** 等元信息统一成“最终配方”（本仓库 Lab 已补齐“继承 vs 覆盖”的对照）。
-    - merged 会被容器 **缓存**：你在断点里看到的 `RootBeanDefinition` 往往不是“每次现算”，而是命中缓存（这也是很多人“改了定义却没生效”的根因之一）。
+    - merged 会被容器 **缓存**：在断点里看到的 `RootBeanDefinition` 往往不是“每次现算”，而是命中缓存（这也是很多人“改了定义却没生效”的根因之一）。
     - `MergedBeanDefinitionPostProcessor` 的触发点很关键：它发生在 `doCreateBean` 中、`populateBean` 之前（实例已创建，但属性还没注入），非常适合做元数据准备/缓存。
 
 
@@ -38,7 +38,7 @@
 **结果**：创建阶段只看 **merged**；registry 原始定义仅用于输入  
 **断点建议**：`AbstractBeanFactory#getMergedLocalBeanDefinition`
 
-你会观察到 3 个关键现象：
+可以观察到 3 个关键现象：
 
 1) registry 里拿到的 child definition **仍然保留 parentName**，且看不到 parent 的元数据
 2) `getMergedBeanDefinition(...)` 拿到的是 **`RootBeanDefinition`**，并且已经把 parent 的元数据合并进来
@@ -48,7 +48,7 @@
 
 ## 2. merged 到底“合并”了什么？
 
-你可以把 merged 理解为：把多个来源（parent + child + defaults + 解析结果）统一成“最终配方”。
+可以把 merged 理解为：把多个来源（parent + child + defaults + 解析结果）统一成“最终配方”。
 
 常见会在 merged 里稳定存在的内容包括：
 
@@ -57,7 +57,7 @@
 - **resolved target type**：创建后可解析出更具体的 beanType（影响后续处理器）
 - 其他“创建需要的元数据”与缓存字段
 
-你可以把 merge 的核心逻辑理解成下面这个“伪代码级模型”（为了理解而非逐行对齐源码）：
+可以把 merge 的核心逻辑理解成下面这个“伪代码级模型”（为了理解而非逐行对齐源码）：
 
 ```text
 getMergedLocalBeanDefinition(beanName):
@@ -81,14 +81,14 @@ getMergedLocalBeanDefinition(beanName):
 1) `AbstractBeanFactory#getMergedLocalBeanDefinition`
    - 语义：为某个 beanName 计算（或读取缓存）“最终参与创建的 merged definition”
 2) `DefaultListableBeanFactory#getMergedBeanDefinition`
-   - 这是你在业务/测试代码里更容易直接调用到的 public API（底层会走到上面那个方法）
+   - 这是在业务/测试代码里更容易直接调用到的 public API（底层会走到上面那个方法）
 
-你可以把它和 [00 章](../part-00-guide/011-00-deep-dive-guide.md) 的时间线对上：
+可以把它和 [00 章](../part-00-guide/011-00-deep-dive-guide.md) 的时间线对上：
 
 - 当容器准备创建某个 bean 时，它首先会确保拿到 merged definition
 - 拿到 merged 之后，才进入 `createBean → doCreateBean → populateBean → initializeBean` 这条链路
 
-### 3.1 merged 在 `createBean` 链路中的精确位置（你在调用栈里应该看到什么）
+### 3.1 merged 在 `createBean` 链路中的精确位置（在调用栈里应该看到什么）
 
 很多人“看不懂 merged”，本质原因是：只在 `doCreateBean` 附近看对象，但没有把 merged 放回更完整的时间线。
 
@@ -108,11 +108,11 @@ getMergedLocalBeanDefinition(beanName):
 - 它的入口方法是：`postProcessMergedBeanDefinition(RootBeanDefinition, Class<?>, String)`
 - 它在 `doCreateBean(...)` 中被调用（在实例化之后、属性填充之前）
 
-你可以把它理解为：
+可以把它理解为：
 
-> “给你一个最终配方（merged BD），你可以在真正注入/初始化之前做一次准备工作（例如解析注解、建立缓存）。”
+> “给读者一个最终配方（merged BD），可以在真正注入/初始化之前做一次准备工作（例如解析注解、建立缓存）。”
 
-这也是为什么你会在源码里看到一些熟悉的基础设施处理器实现了它（例如与 `@Autowired`、`@PostConstruct` 相关的处理器家族）。
+这也是为什么可以在源码里看到一些熟悉的基础设施处理器实现了它（例如与 `@Autowired`、`@PostConstruct` 相关的处理器家族）。
 
 进一步阅读建议：
 
@@ -126,13 +126,13 @@ getMergedLocalBeanDefinition(beanName):
 
 - `beanName`
 - `mbd` / `beanDefinition`（是否是 `RootBeanDefinition`？有哪些 property values？init-method 是谁？）
-- `mbd.getParentName()`（合并后通常不再需要你手动追 parent 链了）
+- `mbd.getParentName()`（合并后通常不再需要读者手动追 parent 链了）
 
 ---
 
 ## 源码最短路径（call chain）
 
-> 目标：给你“最短可跟栈”，并标出 merged 与 merged-hook 在链路中的精确落点。
+> 目标：给读者“最短可跟栈”，并标出 merged 与 merged-hook 在链路中的精确落点。
 
 从 `getBean(beanName)` 到创建结束的最短主干（只列关键节点）：
 
@@ -147,7 +147,7 @@ getMergedLocalBeanDefinition(beanName):
    - `populateBean(...)`（属性填充/依赖注入）
    - `initializeBean(...)`（初始化回调 + after-init BPP 可能产生代理）
 
-你只要把这条链路记住，后面看到任意“元数据为什么已经准备好/为什么看到的是 RootBeanDefinition”都能对上。
+读者只要把这条链路记住，后面看到任意“元数据为什么已经准备好/为什么看到的是 RootBeanDefinition”都能对上。
 
 ## 固定观察点（watch list）
 
@@ -169,7 +169,7 @@ getMergedLocalBeanDefinition(beanName):
 
 - `getBeanDefinition(beanName)` 取到的是 registry 里的“原始定义”（可能是 child，带 `parentName`，看不到 parent 的元数据）
 - 真正参与创建的是 `getMergedLocalBeanDefinition(beanName)` 返回的 `RootBeanDefinition`（元数据已合并）
-- 如果你只盯着原始定义，会把“定义层对象”误当成“创建时用的最终配方”，因此结论必然错位
+- 若只盯着原始定义，会把“定义层对象”误当成“创建时用的最终配方”，因此结论必然错位
 
 ## 源码与断点
 
@@ -185,7 +185,7 @@ getMergedLocalBeanDefinition(beanName):
 ### 复现/验证补充说明（来自原文迁移）
 
 - 明明我注册的是 `GenericBeanDefinition`（或者通过注解解析得到的定义），为什么调试时经常看到的是 `RootBeanDefinition`？
-- 我在 registry 里拿到的 `BeanDefinition` 看起来缺了很多信息（property、init-method 等），但创建时又“神奇地都有了”？
+- 我在 registry 里拿到的 `BeanDefinition` 看起来缺了很多信息（property、init-method 等），但创建时又“似乎被自动补齐了”？
 
 ## 1. 最小实验：用一个可断言的 Lab 把 merged 跑出来
 
@@ -193,19 +193,19 @@ getMergedLocalBeanDefinition(beanName):
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
 
-> 对学习者而言，你不需要背“每个字段”，但要知道：**你在断点里看到的 `RootBeanDefinition` 往往已经不是你注册进去的那个对象**。
+> 对学习者而言，无需背“每个字段”，但要知道：**在断点里看到的 `RootBeanDefinition` 往往已经不是读者注册进去的那个对象**。
 
-如果你希望把它看“更实”，请直接跳到文末的「源码最短路径（call chain）」与「固定观察点（watch list）」：它们是为断点调试准备的。
+若希望把它看“更实”，请直接跳到文末的「源码最短路径（call chain）」与「固定观察点（watch list）」：它们是为断点调试准备的。
 
 ## 5. 推荐断点与观察点（把 merged 看“实”）
 
-### 5.1 推荐断点（优先打条件断点：只看你的 beanName）
+### 5.1 推荐断点（优先打条件断点：只看相应的 beanName）
 
-> 目标：你每次停在 merged 相关断点，都只看这几项，就能快速回答“合并了什么、缓存在哪、hook 在哪”。
+> 目标：读者每次停在 merged 相关断点，都只看这几项，就能快速回答“合并了什么、缓存在哪、hook 在哪”。
 
-- `beanName`：建议加条件断点只看你的目标 bean
+- `beanName`：建议加条件断点只看相应的目标 bean
 - `mbd`（是否是 `RootBeanDefinition`？property values / init-method / destroy-method 是否已合并？）
-- `mbd.getParentName()`：原始 child 会保留 parentName；merged 后通常不再需要你追 parent 链
+- `mbd.getParentName()`：原始 child 会保留 parentName；merged 后通常不再需要读者追 parent 链
 - `mergedBeanDefinitions`（或等价缓存结构）：容器缓存 merged definition 的地方（很多“为什么不变/还是旧的”都和它有关）
 
 **反例：我一直盯着 `getBeanDefinition(beanName)` 的返回值调试，越看越觉得“Spring 怎么不按我写的来”。**
@@ -214,12 +214,12 @@ getMergedLocalBeanDefinition(beanName):
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
 
-你在断点里应该看到什么（用于纠错）：
+在断点里应该看到什么（用于纠错）：
 
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
 推荐断点：`AbstractBeanFactory#getMergedLocalBeanDefinition`、`AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`、`MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition`
 
-## 常见坑与边界
+## 常见误区与边界
 
 ### 常见误区
 
@@ -227,19 +227,19 @@ getMergedLocalBeanDefinition(beanName):
   它更像是“registry 中的原始定义”；真正参与创建的是 merged。
 
 - **误区 2：把 merged 当成“只对 XML 才有”**
-  你在注解场景也会频繁遇到 merged：容器需要一个统一的 `RootBeanDefinition` 来驱动创建与缓存。
+  在注解场景也会频繁遇到 merged：容器需要一个统一的 `RootBeanDefinition` 来驱动创建与缓存。
 
 - **误区 3：只盯着 doCreateBean，不看 merged**
-  你会错过很多“为什么它这样创建/为什么元数据已准备好”的关键原因。
+  可以错过很多“为什么它这样创建/为什么元数据已准备好”的关键原因。
 
-## 排障决策表（MergedBeanDefinition：你在看的到底是不是“生效配方”）
+## 排障决策表（MergedBeanDefinition：在看的到底是不是“生效配方”）
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复/处理思路 |
 | --- | --- | --- | --- |
-| 你改了 `BeanDefinition`，但创建行为没变 | 你改的是 registry 原始定义；创建用的是 merged 缓存 | 断点 `AbstractBeanFactory#getMergedLocalBeanDefinition` 看缓存命中；观察 `mbd` 是否仍旧 | 修改发生在 merge 之前；必要时清理/避免依赖缓存；把修改放到 BFPP/BDRPP 或 MBDPP 的正确阶段 |
-| 调试时看到的是 `RootBeanDefinition`，和你注册的类型不一致 | 这是预期：容器会把定义合并成统一的 RootBeanDefinition | 断点 `getMergedLocalBeanDefinition` / `applyMergedBeanDefinitionPostProcessors` | 用 mbd 作为事实来源，不要把 registry 返回值当“最终生效” |
+| 读者改了 `BeanDefinition`，但创建行为没变 | 读者改的是 registry 原始定义；创建用的是 merged 缓存 | 断点 `AbstractBeanFactory#getMergedLocalBeanDefinition` 看缓存命中；观察 `mbd` 是否仍旧 | 修改发生在 merge 之前；必要时清理/避免依赖缓存；把修改放到 BFPP/BDRPP 或 MBDPP 的正确阶段 |
+| 调试时看到的是 `RootBeanDefinition`，和读者注册的类型不一致 | 这是预期：容器会把定义合并成统一的 RootBeanDefinition | 断点 `getMergedLocalBeanDefinition` / `applyMergedBeanDefinitionPostProcessors` | 用 mbd 作为事实来源，不要把 registry 返回值当“最终生效” |
 | “属性/元数据好像凭空出现” | parent/child 合并、默认值补全、解析增强在 merge 阶段发生 | 观察 `mbd` 的 property values / initMethodName / destroyMethodName | 把排查口径改成：先看 mbd，再回溯原始定义来源 |
-| 你想在 MBDPP 里“改实例” | MBDPP 属于定义/元数据阶段扩展点，不是实例替换点 | 断点 `MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition` | 改实例去 BPP（before/after init）；改定义去 BFPP/BDRPP；改 merged 元数据用 MBDPP（谨慎） |
+| 若希望在 MBDPP 里“改实例” | MBDPP 属于定义/元数据阶段扩展点，不是实例替换点 | 断点 `MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition` | 改实例去 BPP（before/after init）；改定义去 BFPP/BDRPP；改 merged 元数据用 MBDPP（谨慎） |
 
 ## 面试常问（MergedBeanDefinition / MBDPP）
 
@@ -260,11 +260,10 @@ getMergedLocalBeanDefinition(beanName):
 - 证据链（方法级）：
   - `applyMergedBeanDefinitionPostProcessors` 的调用位置（发生在 `createBeanInstance` 之后、`populateBean` 之前）
 
-## 一句话自检
-
-- 你能解释清楚：`BeanDefinition`（registry 里的原始定义）与 `MergedBeanDefinition/RootBeanDefinition`（创建时真正使用的配方）有什么区别吗？
-- 你能指出：`MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition` 在创建链路的哪个阶段触发吗？它“适合做什么/不适合做什么”？
-- 你能用断点证明：同一个 beanName 的 mbd 是“计算后缓存”的，而不是每次创建都重新算吗？（提示：观察 `getMergedLocalBeanDefinition` 的缓存命中）
+## 自检要点
+- 应能够解释清楚：`BeanDefinition`（registry 里的原始定义）与 `MergedBeanDefinition/RootBeanDefinition`（创建时真正使用的配方）有什么区别吗？
+- 应能够指出：`MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition` 在创建链路的哪个阶段触发吗？它“适合做什么/不适合做什么”？
+- 应能够用断点证明：同一个 beanName 的 mbd 是“计算后缓存”的，而不是每次创建都重新算吗？（提示：观察 `getMergedLocalBeanDefinition` 的缓存命中）
 
 ## 小结与下一章
 

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -31,7 +31,7 @@
 
 ## 机制主线
 
-你会发现它并不神秘：它本质上就是一套更系统化的 **配置导入（@Import）+ 条件判断（@Conditional...）+ bean 注册**。
+可以发现它并不神秘：它本质上就是一套更系统化的 **配置导入（@Import）+ 条件判断（@Conditional...）+ bean 注册**。
 
 ### 自动装配角色分工（先记住 4 个入口）
 
@@ -42,18 +42,18 @@
 
 ## 1. 先说结论：Boot 做了什么？
 
-当你写下 `@SpringBootApplication` 并启动应用时，Boot 至少做了这些与 Bean 相关的事：
+当读者写下 `@SpringBootApplication` 并启动应用时，Boot 至少做了这些与 Bean 相关的事：
 
 1) 创建 `ApplicationContext`
 2) 准备 `Environment`（配置、profiles、属性）
 3) 通过一系列机制把大量“配置类”导入进来（自动配置）
 4) 自动配置类在条件满足时注册大量 bean
-5) 你的显式配置（组件扫描、`@Bean`、`@Import`）与自动配置一起决定最终 bean graph
+5) 相应的显式配置（组件扫描、`@Bean`、`@Import`）与自动配置一起决定最终 bean graph
 
-所以你看到的现象是：
+所以观察到的现象是：
 
-- 你没写某个 bean，但容器里确实有（自动配置注册的）
-- 你写了某个 bean，自动配置反而“没生效”（条件失败，例如 `@ConditionalOnMissingBean` 不成立）
+- 读者没写某个 bean，但容器里确实有（自动配置注册的）
+- 读者写了某个 bean，自动配置反而“没生效”（条件失败，例如 `@ConditionalOnMissingBean` 不成立）
 
 ### 1.1 机制讲透：条件 → 分支 → 结果（Boot 版）
 
@@ -68,7 +68,7 @@
 
 `@SpringBootApplication` 里包含 `@EnableAutoConfiguration`。
 
-理解上你可以把它当作：
+理解上可以把它当作：
 
 - “请帮我导入一堆自动配置类”
 
@@ -78,13 +78,13 @@
 
 Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这些配置类导入容器。
 
-在 Spring Boot 3.x 的体系里，你会看到类似：
+在 Spring Boot 3.x 的体系里，可以观察到类似：
 
 - `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`
 
 > 这类文件本质上是“列出一批配置类”，让 Boot 在启动时统一导入。
 
-你不需要背文件名，但建议知道：
+无需背文件名，但建议知道：
 
 - 自动装配是“可发现”的：starter/依赖带来的 jar 里提供了清单
 - 自动装配是“可控制”的：可以 exclude、可以用条件让它不生效
@@ -97,14 +97,14 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 - 这一步发生在“导入并处理配置类”的主线里
 - 排序结果会直接影响后续条件评估与最终注册（尤其是跨 auto-config 的条件/覆盖场景）
 
-学习阶段你不需要背排序实现，但你要能做到：
+学习阶段无需背排序实现，但应能够做到：
 
 - 能在 `ConditionEvaluationReport` 里看见某个 auto-config 的 match/no-match 结果（先回答“为什么”）
 - 能在断点里定位：auto-config 列表是在哪一步被导入、在哪一步被排序、在哪一步被条件过滤
 
 ### 3.2 源码调用链（方法级）：导入清单 → 排序 → 条件评估 → 注册定义
 
-> 目标：把“自动装配”从概念落到方法级证据链。你不需要记全，只要记住 4 个稳定锚点：导入（selectImports）→ 条件（shouldSkip）→ 注册（registerBeanDefinition）→ 最终注入（doResolveDependency）。
+> 目标：把“自动装配”从概念落到方法级证据链。无需记全，只要记住 4 个稳定锚点：导入（selectImports）→ 条件（shouldSkip）→ 注册（registerBeanDefinition）→ 最终注入（doResolveDependency）。
 
 一条足够实用的主链是：
 
@@ -132,11 +132,11 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 所以最终的 bean graph 是：
 
-> 你写的配置 + 自动配置清单 - 条件失败的部分
+> 编写的配置 + 自动配置清单 - 条件失败的部分
 
 很多人背得出 `@ConditionalOnProperty`，但一到 `matchIfMissing` 就容易“凭感觉答题”。
 
-你只要记住一句话：
+读者只要记住一句话：
 
 > `matchIfMissing=true` 不是“没配置就不生效”，而是“没配置也算匹配”。
 
@@ -148,17 +148,17 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 这个问题很适合用来区分“背概念”与“理解容器/自动装配时机”的人：
 
-这通常不是“Spring 乱了”，而是你没把两个概念分开：
+这通常不是“Spring 乱了”，而是读者没把两个概念分开：
 
 1) **条件评估发生在注册阶段**（不是应用 fully refreshed 后）
 2) **auto-configuration 的导入/处理顺序**会影响“当下能否看见某个 bean/定义”
 
-所以你应该能回答：
+所以应能够回答：
 
 - 为什么“最终容器状态”不能反推“条件评估当时的状态”？
 - 如何把这种顺序/时机敏感，变成确定性行为？（答案通常是：`@AutoConfiguration(after/before=...)`）
 
-## 5. 你如何“覆盖”自动配置？
+## 5. 如何“覆盖”自动配置？
 
 最常见、也最推荐的覆盖方式是：
 
@@ -176,10 +176,10 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 一个非常常见的工程现象：
 
-- 你写了“同类型”的覆盖 bean（或者你以为你写了）
+- 读者写了“同类型”的覆盖 bean（或者容易误以为读者写了）
 - 但 auto-config 并没有 back-off（导致容器里出现两个同类型 bean，后续注入可能歧义/非预期）
 
-面试官最喜欢追问你能不能把它解释成“时机问题”，而不是背一句“用 @ConditionalOnMissingBean”。
+面试官最喜欢追问应能够不能把它解释成“时机问题”，而不是背一句“用 @ConditionalOnMissingBean”。
 
 题目：`@ConditionalOnMissingBean` 的判断到底发生在什么时候？它是看“最终容器状态”吗？
 
@@ -195,18 +195,18 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 - 为什么容器里会有两个同类型候选？（auto-config 没退让 / 覆盖太晚 / 注册了两份）
 - 为什么有时应用能启动、有时会直接挂？（取决于是否存在“单注入点”触发候选收敛）
-- 你怎么修复？（两条路径：**确定化选择** vs **让退让真正发生**）
+- 如何修复？（两条路径：**确定化选择** vs **让退让真正发生**）
 
 题目：当容器里出现两个 `DemoGreeting` 候选时，单注入为什么会 fail-fast？
 
-追问：你有哪些修复方式？分别有什么 trade-off？
+追问：读者有哪些修复方式？分别有什么 trade-off？
 
 1) `@Primary/@Qualifier`：让注入变成确定性选择（候选可能仍然有多个）
 2) 让 back-off 生效：确保覆盖 bean 在条件评估前就可见（更干净）
 
 ## 可复现闭环（基于 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`）
 
-跑完该 Lab，你至少要能复述 3 条结论：
+跑完该 Lab，至少应能够复述 3 条结论：
 
 1) **back-off 是定义层时机问题**  
    - 断点：`ConditionEvaluator#shouldSkip`  
@@ -218,13 +218,13 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
    - 断点：`registerBeanDefinition`  
    - 断言：`beanDefinition.getSource()` 能定位到 auto-config 类
 
-## 6. 你如何“看见”自动装配做了什么？
+## 6. 如何“看见”自动装配做了什么？
 
 学习阶段建议掌握两种手段：
 
 ### 6.1 Bean 来源追踪：这个 bean 到底是谁注册的？
 
-当你看到一个 beanName（或一个注入点类型），你必须能回答：
+当读者看到一个 beanName（或一个注入点类型），必须能回答：
 
 - 它来自哪一个配置类/auto-config？
 - 是 `@Bean` 工厂方法注册的，还是“直接类定义/扫描”注册的？
@@ -232,26 +232,26 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 最通用的入口是：**看 BeanDefinition**。
 
-## 7. 与本模块的关系：你应该带走什么
+## 7. 与本模块的关系：应当带走什么
 
-学完本章，你至少要能把下面这句话解释清楚：
+学完本章，至少应能够把下面这句话解释清楚：
 
 > **Spring Boot 自动装配不是“运行时自动注入”，而是在“注册阶段”把一批候选配置类导入进来，并在条件评估阶段决定哪些配置/BeanDefinition 真正落进容器；当用户显式提供同类能力时，自动配置应当 back-off（让用户配置优先）。**
 
 ## 面试常问（自动配置与条件装配怎么定位）
 
-1) **你怎么定位“为什么某个自动配置生效/不生效”？（不靠猜日志）**
-   - 要点：先看 `ConditionEvaluationReport`（报告告诉你 match / no match 的理由），再到 `OnBeanCondition#getMatchOutcome` / `SpringBootCondition#matches` 下断点确认“评估时机与输入是什么”。需要跨配置依赖时，再回到排序与 after/before 元数据（见本模块 ordering labs）。
+1) **如何定位“为什么某个自动配置生效/不生效”？（不靠猜日志）**
+   - 要点：先看 `ConditionEvaluationReport`（报告告诉读者 match / no match 的理由），再到 `OnBeanCondition#getMatchOutcome` / `SpringBootCondition#matches` 下断点确认“评估时机与输入是什么”。需要跨配置依赖时，再回到排序与 after/before 元数据（见本模块 ordering labs）。
 
-2) **你怎么定位“某个 bean 到底是谁注册的”？**
+2) **如何定位“某个 bean 到底是谁注册的”？**
    - 要点：看 `BeanDefinition` 的来源字段（factoryBeanName/factoryMethodName/resource/source/role），把“来自哪个 auto-config / 哪个 @Bean 方法”变成可观测事实，而不是翻日志。
 
-3) **你怎么解释“为什么有时能启动、有时会因为 NoUnique 直接挂”？**
+3) **如何解释“为什么有时能启动、有时会因为 NoUnique 直接挂”？**
    - 要点：重复候选不一定立刻爆，只有当出现单注入点时才需要收敛候选；修复要么确定化选择（`@Primary/@Qualifier`），要么让自动配置 back-off（从根上消除多余候选）。
 
 ## 8. 在本模块里如何“跑起来验证”（最小复现 + 断点闭环）
 
-这一章的目标是：把 Spring Boot 的自动装配从“玄学”变成“可解释、可调试、可覆盖”的机制。
+这一章的目标是：把 Spring Boot 的自动装配从“黑箱”变成“可解释、可调试、可覆盖”的机制。
 
 1) 能观测排序结果（排序后 class 序列是什么）
 2) 能解释排序为什么会影响条件/覆盖
@@ -267,7 +267,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 ### 4.2 `@ConditionalOnBean`：为什么“运行时有 bean，但条件仍不生效”？（顺序/时机）
 
-- 你在容器里确实能看到某个 bean（运行时存在）
+- 在容器里确实能看到某个 bean（运行时存在）
 - 但另一个 auto-config 上的 `@ConditionalOnBean(ThatBean)` 却没有 match（导致 dependent bean 缺失）
 
 复现入口（可断言）：
@@ -277,7 +277,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 1) 为什么“运行时 bean 已存在”不能推出“当时条件就能看到它”？
 2) 哪些方式会让覆盖 bean 出现得太晚？（例如某些 `BeanDefinitionRegistryPostProcessor` 在 `ConfigurationClassPostProcessor` 之后注册定义）
-3) 你如何用断点证明：条件评估发生在 refresh 前半段（注册阶段），而不是 after refresh？
+3) 如何用断点证明：条件评估发生在 refresh 前半段（注册阶段），而不是 after refresh？
 
 复现入口（可断言）：
 
@@ -293,7 +293,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 - Bean 条件细节：`OnBeanCondition#getMatchOutcome`（`@ConditionalOnMissingBean/@ConditionalOnBean` 的核心分支）
 - 定义注册：`DefaultListableBeanFactory#registerBeanDefinition`（观察“同名/同类型定义”何时进入 registry）
 - 定义层时机（关键闭环）：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
-  - 结合你自己的 registrar：`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`
+  - 结合读者自己的 registrar：`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`
   - 用它证明：**early registrar 能在条件评估前把 override 定义放进去；late registrar 则会绕过 back-off**
 - 最终炸点（当重复候选遇到单注入点）：`DefaultListableBeanFactory#doResolveDependency`
   - 继续走到：`findAutowireCandidates` → `determineAutowireCandidate`（Primary/Qualifier/name 的收敛分支）
@@ -334,7 +334,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 - 对应测试：`src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationBackoffTimingLabTest.java`
   - 覆盖点：
-    - back-off 的判断时机：为什么你“写了覆盖 Bean”但 auto-config 没退让
+    - back-off 的判断时机：为什么读者“写了覆盖 Bean”但 auto-config 没退让
     - 用 early/late registrar 对照把“时机差异”跑成可断言结论，并给出断点闭环入口
 
 - 对应测试：`src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationImportOrderingLabTest.java`
@@ -355,9 +355,9 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 mvn -pl :spring-core-beans test
 ```
 
-运行时你会在测试输出里看到以 `OBSERVE:` 开头的少量提示行，解释“哪个条件命中、最终注册/选择了哪个 bean”。
+运行时可以在测试输出里看到以 `OBSERVE:` 开头的少量提示行，解释“哪个条件命中、最终注册/选择了哪个 bean”。
 
-> Spring Boot 自动装配不是“替你注入”，而是“替你导入配置并注册 BeanDefinition”，最终依赖注入仍遵循 Spring 容器的解析规则（类型、`@Qualifier`、`@Primary`、scope、生命周期……）。
+> Spring Boot 自动装配不是“替读者注入”，而是“替读者导入配置并注册 BeanDefinition”，最终依赖注入仍遵循 Spring 容器的解析规则（类型、`@Qualifier`、`@Primary`、scope、生命周期……）。
 对应 Lab/Test：
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationLabTest.java`
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansConditionEvaluationReportLabTest.java`
@@ -373,22 +373,21 @@ mvn -pl :spring-core-beans test
 - 条件细节（Bean 条件）：`OnBeanCondition#getMatchOutcome`
 - 注册定义：`DefaultListableBeanFactory#registerBeanDefinition`
 
-## 常见坑与边界
+## 常见误区与边界
 
-### 4.1 `matchIfMissing`：缺省值语义（面试高频坑）
+### 4.1 `matchIfMissing`：缺省值语义（面试高频误区）
 
-- `matchIfMissing=true` 常见于“debug 开关/观测开关”：**你没配并不代表关闭**，而是“缺省即匹配”（默认开启）。
-- 你应该能区分三态：
+- `matchIfMissing=true` 常见于“debug 开关/观测开关”：**读者没配并不代表关闭**，而是“缺省即匹配”（默认开启）。
+- 应能够区分三态：
   - **missing**：属性未配置（会触发 matchIfMissing 的语义）
   - **false**：显式关闭
   - **true**：显式开启
 - 复现入口：`SpringCoreBeansConditionEvaluationReportLabTest`（missing/false/true 三态对照）
 
-## 一句话自检
-
-- 你能用一句话解释：自动装配（auto-configuration）主要发生在定义阶段还是创建阶段吗？为什么？
-- 你能说出：定位“为什么生效/为什么不生效”的最短证据链是什么吗？（提示：ConditionEvaluationReport + 断点到 matchOutcome）
-- 你能区分：overriding（同名定义冲突）和 NoUnique（同类型注入歧义）吗？它们分别怎么修？
+## 自检要点
+- 应能够用一句话解释：自动装配（auto-configuration）主要发生在定义阶段还是创建阶段吗？为什么？
+- 应能够说出：定位“为什么生效/为什么不生效”的最短证据链是什么吗？（提示：ConditionEvaluationReport + 断点到 matchOutcome）
+- 应能够区分：overriding（同名定义冲突）和 NoUnique（同类型注入歧义）吗？它们分别怎么修？
 
 ## 小结与下一章
 

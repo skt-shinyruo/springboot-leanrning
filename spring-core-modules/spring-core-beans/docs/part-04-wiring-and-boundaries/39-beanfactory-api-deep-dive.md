@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -26,13 +26,13 @@
 
 一句话先讲清楚：
 
-> **BeanFactory 是 Spring 容器的“最小内核 API”。你看到的大量“注解能力/自动行为”，本质上是 post-processors 在容器启动阶段把能力装配出来的。**
+> **BeanFactory 是 Spring 容器的“最小内核 API”。观察到的大量“注解能力/自动行为”，本质上是 post-processors 在容器启动阶段把能力装配出来的。**
 
 ---
 
 ### 机制讲透：条件 → 分支 → 结果
 
-**条件**：你使用的是 plain `BeanFactory` 还是 `ApplicationContext`  
+**条件**：读者使用的是 plain `BeanFactory` 还是 `ApplicationContext`  
 **分支**：  
 - `BeanFactory`：不会自动执行 BFPP/BPP  
 - `ApplicationContext`：refresh 时自动 bootstrap 全套处理器  
@@ -43,7 +43,7 @@
 
 ## 1. 是什么：BeanFactory 在 Spring 体系里的位置
 
-你可以把 Spring 的容器能力拆成两层：
+可以把 Spring 的容器能力拆成两层：
 
 1) **容器内核（BeanFactory API）**：负责定义→实例化→依赖解析→生命周期基本骨架
 2) **容器增强（post-processors + 上层设施）**：负责注解处理、AOP 代理、条件装配、占位符解析、事件/资源等
@@ -61,9 +61,9 @@
 
 ---
 
-## 2. BeanFactory 接口族谱（你在源码里看到的都从这里来）
+## 2. BeanFactory 接口族谱（在源码里看到的都从这里来）
 
-你不需要背每个方法，但需要能把“你遇到的 API”归类到下面这些角色：
+无需背每个方法，但需要能把“遇到的 API”归类到下面这些角色：
 
 一个非常关键的事实：
 
@@ -78,10 +78,10 @@
 
 > 注解能力靠的是 BPP/BFPP，而 plain BeanFactory 不会像 ApplicationContext 那样自动发现并注册它们。
 
-所以你要么：
+所以需要么：
 
 1) 用 `ApplicationContext`（默认推荐）
-2) 或者你明确知道自己在干什么：手动 bootstrap 必要的 post-processors
+2) 或者读者明确知道自己在干什么：手动 bootstrap 必要的 post-processors
 
 - plain BeanFactory：注解不生效
 - 手动 addBeanPostProcessor：注解生效
@@ -99,23 +99,23 @@
 - BFPP/BPP 自动发现与执行（注解、AOP、条件装配、占位符解析）
 - 事件、资源、国际化等上层设施
 
-排障时你必须先回答：**你当前拿到的是哪一层？**
+排障时必须先回答：**读者当前拿到的是哪一层？**
 
 ## 3.1 容器外对象三段能力：autowire / initialize / destroy
 
-当你手里有“非容器管理对象”时，`AutowireCapableBeanFactory` 提供三段能力：
+当读者手里有“非容器管理对象”时，`AutowireCapableBeanFactory` 提供三段能力：
 
 1) `autowireBean`：只做依赖注入  
 2) `initializeBean`：触发初始化回调/BPP  
 3) `destroyBean`：触发销毁回调  
 
-**结论**：这三段能力彼此独立，调用顺序决定你能拿到什么语义。
+**结论**：这三段能力彼此独立，调用顺序决定应能够拿到什么语义。
 
-## 4. 怎么用：你在真实项目里会如何接触 BeanFactory？
+## 4. 怎么用：在真实项目里会如何接触 BeanFactory？
 
 ### 4.1 作为框架/中间件作者（更常见）
 
-你可能会：
+读者可能会：
 
 - 写一个 `BeanFactoryPostProcessor` / `BeanPostProcessor`
 - 在其中拿到 `ConfigurableListableBeanFactory`
@@ -150,7 +150,7 @@
 
 ### 5.3 “为什么 ApplicationContext 开箱即用”
 
-如果你要把根因讲得更完整，可以对照阅读：
+若要把根因讲得更完整，可以对照阅读：
 
 - [12. 容器启动与基础设施处理器：为什么注解能工作？](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
 - [06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](../part-01-ioc-container/017-06-post-processors.md)
@@ -197,11 +197,11 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
 - `ConfigurableListableBeanFactory`：综合性最强（可枚举 + 可配置 + 可用于内部框架扩展）
 - `BeanDefinitionRegistry`：定义层的注册/移除（BeanDefinition 的“仓库”）
 
-> `DefaultListableBeanFactory` 基本上是这些接口的“集大成者”，所以你在断点里大概率会看到它。
+> `DefaultListableBeanFactory` 基本上是这些接口的“集大成者”，所以在断点里大概率会看到它。
 
 本章 Lab 就是用 “同一个 bean” 做对照：
 
-你会在日志/断点里看到：
+可以在日志/断点里看到：
 
 ## 5. Debug / 断点入口与观察点（把“注解为什么不生效”变成可证明结论）
 
@@ -218,18 +218,18 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
 5) `AbstractAutowireCapableBeanFactory#populateBean` / `#initializeBean`
    - 观察：创建链路是否走到注入/初始化阶段，以及 BPP 链路是否生效
 
-## 常见坑与边界
+## 常见误区与边界
 
 ### 关键边界：plain BeanFactory 不会“自动让注解生效”
 
-很多人第一次直接 new 一个 `DefaultListableBeanFactory` 会踩坑：
+很多人第一次直接 new 一个 `DefaultListableBeanFactory` 会易错点：
 
 ### 常见误区
 
 1) **误区：BeanFactory = “更轻量更推荐”**
-   - 轻量不等于省心。除非你非常明确自己要控制哪些 post-processors，否则默认用 ApplicationContext。
+   - 轻量不等于省心。除非读者非常明确自己要控制哪些 post-processors，否则默认用 ApplicationContext。
 2) **误区：我注册了 `ConfigurationClassPostProcessor` 这个 bean，就等于注解能工作**
-   - 不够：你还需要“执行/注册”整套基础设施链路（ApplicationContext refresh 会做，plain BeanFactory 不会自动做）。
+   - 不够：读者还需要“执行/注册”整套基础设施链路（ApplicationContext refresh 会做，plain BeanFactory 不会自动做）。
 3) **误区：只要加了 BPP，就能让以前创建过的 bean 也被处理**
    - BPP 通常不 retroactive。顺序与时机是排障关键点。
 
@@ -254,11 +254,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（ApplicationContext 场景）
   - `DefaultListableBeanFactory#addBeanPostProcessor`（plain BeanFactory 手动激活）
 
-## 一句话自检
-
-- 你能解释清楚：为什么 `AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory)` “看起来装了处理器”，但注解仍然不生效吗？
-- 你能指出：在 plain BeanFactory 场景里，“让注解生效”的最小动作是什么？（提示：不是 refresh，而是把处理器实例加进 BPP 列表）
-- 你能用断点证明：`@Autowired` 的发生点在 `populateBean` 的哪个钩子里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
+## 自检要点
+- 应能够解释清楚：为什么 `AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory)` “看起来装了处理器”，但注解仍然不生效吗？
+- 应能够指出：在 plain BeanFactory 场景里，“让注解生效”的最小动作是什么？（提示：不是 refresh，而是把处理器实例加进 BPP 列表）
+- 应能够用断点证明：`@Autowired` 的发生点在 `populateBean` 的哪个钩子里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
 
 ## 小结与下一章
 

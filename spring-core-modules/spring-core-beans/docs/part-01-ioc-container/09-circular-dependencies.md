@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 循环依赖不是“Spring 的黑魔法题”，它首先是一个**依赖图/职责边界**问题：能启动不代表设计健康。
+    - 循环依赖不是“Spring 的黑箱机制题”，它首先是一个**依赖图/职责边界**问题：能启动不代表设计健康。
     - **constructor cycle 基本 fail-fast**：因为构造器依赖发生在实例化之前，容器还没机会产生“可注入的引用”。
     - **setter cycle 有时能成功**：因为 singleton 创建过程中存在一个“提前暴露（early exposure）”窗口，容器可以先让依赖方拿到一个 early reference 把环跑起来。
     - “三级缓存”不是背字段名：它表达的是三种语义（final / early / factory），并把 early reference 的产生时机钉死在 `doCreateBean` 的窗口期。
@@ -45,17 +45,17 @@
 
 ## 1. 先把现象固定成断言（不要靠脑补）
 
-建议你先跑完下面两类现象，保证你能“用测试复现”，再进入源码断点：
+建议读者先跑完下面两类现象，保证应能够“用测试复现”，再进入源码断点：
 
 - constructor cycle（fail-fast）：`SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`
 - setter cycle（可能成功）：`SpringCoreBeansContainerLabTest#circularDependencyWithSettersMaySucceedViaEarlySingletonExposure`
 
-如果你希望把“打断 constructor 环”的工程手段也一起验证（而不是只背概念），再跑：
+若希望把“打断 constructor 环”的工程手段也一起验证（而不是只背概念），再跑：
 
 - `SpringCoreBeansCircularDependencyBoundaryLabTest#constructorCycleCanBeBrokenViaLazyInjectionPointProxy`
 - `SpringCoreBeansCircularDependencyBoundaryLabTest#constructorCycleCanBeBrokenViaObjectProvider`
 
-> 这里的重点是：constructor 环“不是靠三级缓存救”，而是靠“延迟获取依赖”改变时机；这属于工程层面的折中，代价要你自己承担。
+> 这里的重点是：constructor 环“不是靠三级缓存救”，而是靠“延迟获取依赖”改变时机；这属于工程层面的折中，代价要读者自己承担。
 
 ### 1.1 循环依赖类型速查（含 fail-fast 点）
 
@@ -70,7 +70,7 @@
 
 ## 2. 三层缓存的真实语义：final / early / factory
 
-循环依赖相关的缓存都在 `DefaultSingletonBeanRegistry` 里。你不需要背字段名，但你必须能把三类语义对上：
+循环依赖相关的缓存都在 `DefaultSingletonBeanRegistry` 里。无需背字段名，但必须能把三类语义对上：
 
 - `singletonObjects`：一级缓存，**final**（完全初始化完成后对外暴露的单例）
 - `earlySingletonObjects`：二级缓存，**early**（循环依赖窗口期暴露的引用，可能是 raw，也可能是 proxy）
@@ -92,7 +92,7 @@
 
 ## 3. 关键窗口期：early exposure 发生在 `doCreateBean` 的哪一步？
 
-把 `doCreateBean` 只看成 4 句话（足够你对照断点理解）：
+把 `doCreateBean` 只看成 4 句话（足够读者对照断点理解）：
 
 1) **实例化**：先把 bean new 出来（此时还没有属性注入，也没有初始化回调）
 2) **（可选）提前暴露**：如果允许循环依赖，注册一个 `singletonFactory` 到三级缓存（还没产生 early object）
@@ -107,7 +107,7 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 ## 4. 断点闭环：从 `getSingleton` 看清“到底救没救”
 
-建议至少跑一次“看缓存变化”的断点闭环（跑一次，你以后就很难再被“三级缓存神话”误导）。
+建议至少跑一次“看缓存变化”的断点闭环（跑一次，读者以后就很难再被“三级缓存神话”误导）。
 
 ### 4.1 推荐断点（按收益排序）
 
@@ -131,16 +131,16 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 - `exposedObject`：最终对外暴露对象（可能被 after-init BPP 替换成 proxy）
 - `earlySingletonReference`：early 引用（出现循环依赖时常能看到它）
 
-### 4.3 你应该能复述的“证据链”
+### 4.3 应能够复述的“证据链”
 
-当你跑 setter cycle 并在断点里看到下面这条链，就算真正掌握了：
+当读者跑 setter cycle 并在断点里看到下面这条链，就算真正掌握了：
 
 1) 创建 A：`doCreateBean("a")` → `addSingletonFactory("a", ...)`（三级缓存出现工厂）
 2) 创建 B：注入时需要 A → `getSingleton("a", allowEarlyReference=true)`
 3) `getSingleton` 发现 A “in creation” 且存在 factory → 调用 factory 生成 early reference
 4) B 拿到 early reference 完成创建 → 回到 A 的 populate/initialize → 最终对象进入 `singletonObjects`
 
-> 提醒：这一章到这里为止就够了。若你想进一步搞清“early reference 应该是 raw 还是 proxy”“raw vs wrapped 不一致为何会 fail-fast”，请去看 [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md)（那一章专门讲这个坑）。
+> 提醒：这一章到这里为止就够了。若希望进一步厘清“early reference 应该是 raw 还是 proxy”“raw vs wrapped 不一致为何会 fail-fast”，请去看 [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md)（那一章专门讲这个误区）。
 
 ---
 
@@ -160,9 +160,9 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 在纯 Spring Framework 容器里，循环依赖策略通常更“宽松”；在 Spring Boot 里，启动过程往往会更倾向 fail-fast，并提供配置开关（例如 `spring.main.allow-circular-references`）。
 
-学习阶段你可以在不同容器之间切换来观察差异，但工程上请牢记：
+学习阶段可以在不同容器之间切换来观察差异，但工程上请牢记：
 
-- “容器能救活”只是机制的副作用，不是你设计循环依赖的理由
+- “容器能救活”只是机制的副作用，不是读者设计循环依赖的理由
 - 依赖图是系统复杂度的真实来源：越早消环越省成本
 
 ---
@@ -184,11 +184,11 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 ### 6.3 不推荐：为了启动而把所有依赖改 setter
 
-setter 注入能“让环跑起来”的前提是：你愿意接受半初始化窗口 + 更隐蔽的运行时问题。学习阶段可以用它理解机制，工程里通常是更糟的选择。
+setter 注入能“让环跑起来”的前提是：读者愿意接受半初始化窗口 + 更隐蔽的运行时问题。学习阶段可以用它理解机制，工程里通常是更糟的选择。
 
 ## 可复现闭环（基于 `SpringCoreBeansCircularDependencyBoundaryLabTest`）
 
-跑完这些用例，你应该能明确 3 个结论：
+跑完这些用例，应能够明确 3 个结论：
 
 1) **constructor cycle 直接 fail-fast**  
    - 断点：`ConstructorResolver#autowireConstructor`  
@@ -202,7 +202,7 @@ setter 注入能“让环跑起来”的前提是：你愿意接受半初始化�
 
 ---
 
-## 常见坑与边界
+## 常见误区与边界
 
 1) **误区：Spring 解决了循环依赖**
    - 更准确的说法：Spring 只在非常特定条件下“救活某些环”（singleton + early exposure + 合适的增强/代理策略）。
@@ -231,22 +231,21 @@ setter 注入能“让环跑起来”的前提是：你愿意接受半初始化�
 
 ## 源码调用链（方法级）：三层缓存 + early reference 在哪发生
 
-当你在面试/排障里讲循环依赖，最关键的是把“结论”落到方法级调用链：
+当在面试/排障里讲循环依赖，最关键的是把“结论”落到方法级调用链：
 
 1) `AbstractAutowireCapableBeanFactory#doCreateBean`（单 bean 创建主线）
 2) `DefaultSingletonBeanRegistry#addSingletonFactory`（early exposure：注册 early factory）
 3) `DefaultSingletonBeanRegistry#getSingleton`（三层缓存命中分支：final/early/factory）
 4) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`（决定 early 形态：raw vs proxy）
 
-你不需要背实现细节，但必须能解释“为什么在这个窗口期能救 setter 循环、救不了 constructor 循环”。
+无需背实现细节，但必须能解释“为什么在这个窗口期能救 setter 循环、救不了 constructor 循环”。
 
-## 一句话自检
-
-你应该能用 3 句完整回答：
+## 自检要点
+应能够用 3 句完整回答：
 
 1) constructor cycle 为什么 fail-fast？（依赖发生在实例化之前，没有 early exposure 窗口）
 2) setter cycle 为什么可能成功？（singleton 创建窗口期 + early exposure + `getSingleton(..., allowEarlyReference=true)`）
-3) 工程上你怎么处理？（重构消环优先；延迟依赖是折中；setter 不是默认解法）
+3) 工程上如何处理？（重构消环优先；延迟依赖是折中；setter 不是默认解法）
 
 <!-- BOOKIFY:START -->
 

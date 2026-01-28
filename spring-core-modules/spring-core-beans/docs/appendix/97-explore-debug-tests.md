@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - Explore 用例的定位：**学习期的“显微镜”**——把 Spring 内部数据结构（缓存/表/映射）变化变成你能在调试器里看见的东西。
+    - Explore 用例的定位：**学习期的“显微镜”**——把 Spring 内部数据结构（缓存/表/映射）变化变成应能够在调试器里看见的东西。
     - 它们默认不运行：用 `@EnabledIfSystemProperty(named = "springcorebeans.explore", matches = "true")` 保护，避免 CI/回归因为“观察型断言”而不稳定。
     - 它们不是“生产诊断方案”：测试会用反射访问内部字段、依赖实现细节；Spring 升级后可能需要同步调整。
     - 正确使用方式：先用 Core Labs 固化结论（可断言、稳定），再用 Explore 用例补齐“我想看见缓存怎么变”的证据链。
@@ -22,8 +22,8 @@
 
 在这个仓库里，“教程闭环”的基座是两类东西：
 
-1) **Core Labs（默认参与回归）**：用断言把机制结论固化下来，保证“你学到的结论能稳定复现”。
-2) **Explore/Debug 用例（可选启用）**：用断点 + 内部状态读取，把“你脑子里想象的容器内部结构”变成可观察事实。
+1) **Core Labs（默认参与回归）**：用断言把机制结论固化下来，保证“读者学到的结论能稳定复现”。
+2) **Explore/Debug 用例（可选启用）**：用断点 + 内部状态读取，把“读者脑子里想象的容器内部结构”变成可观察事实。
 
 这两类用例的关系是：
 
@@ -34,7 +34,7 @@
 
 ## 1. 如何开启 Explore 用例？
 
-Explore 用例默认被系统属性 gate 掉，你需要显式开启：
+Explore 用例默认被系统属性 gate 掉，需要显式开启：
 
 - 系统属性：`-Dspringcorebeans.explore=true`
 
@@ -78,7 +78,7 @@ mvn -pl :spring-core-beans -Dspringcorebeans.explore=true test
 
 - `SpringCoreBeansSingletonCacheExploreTest`
 
-你要观察的点（建议按这个顺序看）：
+需要观察的点（建议按这个顺序看）：
 
 1) **final / early / factory 的语义差异**：
    - `singletonObjects`：final（完全初始化后的单例）
@@ -102,7 +102,7 @@ Watch List（最小够用版）：
 - `isSingletonCurrentlyInCreation(beanName)`
 - `singletonObjects` / `earlySingletonObjects` / `singletonFactories` 的 `containsKey(beanName)` 与 `size()`
 
-你应该能用 2–3 句话复述：
+应能够用 2–3 句话复述：
 
 - “setter 循环依赖为什么可能成功？”（early exposure 窗口期 + getSingleton 的 early 分支）
 - “为什么要三层而不是一层？”（factory 延迟决定 early 形态；early 与 final 的角色不同）
@@ -113,11 +113,11 @@ Watch List（最小够用版）：
 
 - `SpringCoreBeansCachedIntrospectionExploreTest`
 
-你要观察的点：
+需要观察的点：
 
 1) 为什么属性注入/BeanWrapper 不会每次都重新 `Introspector.getBeanInfo(...)`
 2) `CachedIntrospectionResults` 如何做缓存（按 Class/ClassLoader 维度绑定）
-3) “缓存命中/失效”在源码里出现在哪里（你能否找到稳定入口）
+3) “缓存命中/失效”在源码里出现在哪里（应能够否找到稳定入口）
 
 推荐断点（按收益排序）：
 
@@ -143,39 +143,38 @@ Watch List（建议盯“缓存容器的 key/size”，不要依赖具体字段�
    - 缓存/循环依赖：看 [09](../part-01-ioc-container/09-circular-dependencies.md) 与 [16](../part-03-container-internals/16-early-reference-and-circular.md)
    - 更系统的“从异常到断点入口”：看 [11. 调试与可观察性](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 
-你会发现：Explore 用例的价值不是“多了一堆测试”，而是“你终于能在调试器里看见那个一直被口述的内部结构”。
+可以发现：Explore 用例的价值不是“多了一堆测试”，而是“读者终于能在调试器里看见那个一直被口述的内部结构”。
 
 ---
 
 ## 面试怎么用（把“我看见了”说成可复述答案）
 
-Explore 用例本身不是面试题，但它能显著提升你答题的“可信度”：
+Explore 用例本身不是面试题，但它能显著提升读者答题的“可信度”：
 
-1) 面试官问循环依赖/early reference：你可以补一句“我在调试器里观察过三层缓存命中分支”，并能说出方法名：`getSingleton/addSingletonFactory/getEarlyBeanReference`。
-2) 面试官问属性填充/类型转换：你可以补一句“我看过 JDK 内省缓存的命中/失效”，并能说出入口：`CachedIntrospectionResults#forClass`。
-3) 面试官追问“你怎么证明”：你可以直接回指本章的 ExploreTest + 断点 + watch list。
+1) 面试官问循环依赖/early reference：可以补一句“我在调试器里观察过三层缓存命中分支”，并能说出方法名：`getSingleton/addSingletonFactory/getEarlyBeanReference`。
+2) 面试官问属性填充/类型转换：可以补一句“我看过 JDK 内省缓存的命中/失效”，并能说出入口：`CachedIntrospectionResults#forClass`。
+3) 面试官追问“如何证明”：可以直接回指本章的 ExploreTest + 断点 + watch list。
 
 更标准的答题模板：`appendix/93-interview-playbook.md`
 
-## 常见坑
+## 常见误区
 
 1) **用例没跑 / IDE 里看不到执行**
-   - 大概率是你没加 `-Dspringcorebeans.explore=true`；这些用例默认是被 gate 掉的。
+   - 大概率是读者没加 `-Dspringcorebeans.explore=true`；这些用例默认是被 gate 掉的。
 2) **把 Explore 用例当成生产诊断手段**
    - Explore 用例依赖内部实现细节（反射读取字段等），生产排障请回到主线方法论与可观测性工具。
 3) **升级 Spring 后 Explore 用例失败**
    - 这是预期风险：它们本来就是“观察型材料”；修复方式通常是更新反射字段/断言口径，而不是把开关常态化打开。
 
-## 一句话自检
-
-- 你能解释清楚：为什么 Explore 用例默认不参与回归吗？它适合解决什么问题、不适合解决什么问题？
-- 你能把“观察点”落到可复现材料上吗：哪一个 ExploreTest、哪几个断点、你要看哪几个结构/变量？
-- 你能把 Explore 观察“用回主线”吗：把观察点映射回对应章节与 Core Labs 的稳定结论？
+## 自检要点
+- 应能够解释清楚：为什么 Explore 用例默认不参与回归吗？它适合解决什么问题、不适合解决什么问题？
+- 应能够把“观察点”落到可复现材料上吗：哪一个 ExploreTest、哪几个断点、需要看哪几个结构/变量？
+- 应能够把 Explore 观察“用回主线”吗：把观察点映射回对应章节与 Core Labs 的稳定结论？
 
 ## 小结与下一章
 
 - Explore 用例的目标是“看见”，不是“保证稳定结论”；稳定结论以 Core Labs 为准。
-- 跑通本章后，你应该能在调试器里把“三级缓存”与“内省缓存”的变化看出来，并能把观察点准确复述给别人。
+- 跑通本章后，应能够在调试器里把“三级缓存”与“内省缓存”的变化看出来，并能把观察点准确复述给别人。
 
 <!-- BOOKIFY:START -->
 

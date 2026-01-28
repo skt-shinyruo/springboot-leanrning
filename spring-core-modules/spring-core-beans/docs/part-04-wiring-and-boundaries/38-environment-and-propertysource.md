@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -18,12 +18,12 @@
 
 ## 机制主线
 
-这一章补齐一个“你每天都在用，但很少系统化理解”的核心机制：
+这一章补齐一个“读者每天都在用，但很少系统化理解”的核心机制：
 
 一句话先建立心智模型：
 
 > **Environment = “属性解析器 + profiles 决策器”。它通过一串有序的 PropertySources 来解析 key。**
-> 你看到的“覆盖/优先级/不生效”，几乎都能归因到：**PropertySource 顺序** 或 **解析发生的时机**。
+> 观察到的“覆盖/优先级/不生效”，几乎都能归因到：**PropertySource 顺序** 或 **解析发生的时机**。
 
 ---
 
@@ -58,9 +58,9 @@ Environment 抽象的核心目标是：把“从哪里拿配置、如何拿配�
 
 ## 2. PropertySource 抽象：属性到底来自哪里？
 
-你可以把一个 PropertySource 理解为一个最小接口：
+可以把一个 PropertySource 理解为一个最小接口：
 
-> 给你一个 key，我告诉你 value（可能没有）。
+> 给定 key，返回 value（可能为空）。
 
 Spring 把“多个来源”组织成一个有序链表：
 
@@ -69,9 +69,9 @@ Spring 把“多个来源”组织成一个有序链表：
 
 **顺序就是优先级：越靠前，优先级越高。**
 
-这也是为什么在真实项目里你经常会看到类似问题：
+这也是为什么在真实项目里读者经常会看到类似问题：
 
-这并不神秘：只是你的 key 在更高优先级的 PropertySource 里已经存在。
+这并不神秘：只是相应的 key 在更高优先级的 PropertySource 里已经存在。
 
 ---
 
@@ -94,7 +94,7 @@ Spring 把“多个来源”组织成一个有序链表：
 
 ## 3.1 PropertySources 的“时序边界”：什么时候加，什么时候才会生效？
 
-你必须牢记一条规则：
+必须牢记一条规则：
 
 - **影响注入/条件装配的 PropertySource，必须在 refresh 之前进入 Environment**
 
@@ -113,7 +113,7 @@ Spring 把“多个来源”组织成一个有序链表：
 2) value 字符串交给 BeanFactory 做 embedded value 解析
 3) embedded value resolver 通常会委托给 Environment 做 placeholder 解析
 
-因此你在排障时至少要分清两条链：
+因此在排障时至少要分清两条链：
 
 - **读取链（Environment）：** `environment.getProperty("k")`
 - **注入链（@Value）：** `@Value("${k}")` → `BeanFactory.resolveEmbeddedValue` → Environment
@@ -130,7 +130,7 @@ Spring 把“多个来源”组织成一个有序链表：
 
 适用场景：
 
-- 你希望一个配置类自带一份 properties（常用于纯 Spring 应用或组件化库）
+- 读者希望一个配置类自带一份 properties（常用于纯 Spring 应用或组件化库）
 
 - 它通常不是最高优先级
 - 它不负责“让 @Value 变严格”，strict 行为一般要通过 BFPP（例如 `PropertySourcesPlaceholderConfigurer`）控制
@@ -212,7 +212,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 - “我在文件里配置了 `demo.key=foo`，但运行时却是 bar”
 - “我加了 @PropertySource 还是没生效”
 
-你在断点里应该验证的是：
+在断点里应该验证的是：
 
 ### 5.1 运行前插入/覆盖 PropertySource（最强、最可控）
 
@@ -238,9 +238,9 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 4) `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
    - 观察：strict/non-strict 策略是如何被安装到 BeanFactory 的（缺失占位符是否 fail-fast）
 
-## 常见坑与边界
+## 常见误区与边界
 
-### 常见误区（以及为什么你在真实项目里会踩）
+### 常见误区（以及为什么在真实项目里会遇到）
 
 1) **误区：`@PropertySource` 一定覆盖其它配置**
    - 实际是“按顺序”。更高优先级的 source 先命中就结束。
@@ -251,7 +251,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 
 ## 面试常问（Environment / PropertySource：优先级与时机）
 
-### Q1：Environment 的属性优先级从哪来？你如何用一句话说清楚？
+### Q1：Environment 的属性优先级从哪来？如何用一句话说清楚？
 
 - 标准答案（可复述）：
   - Environment 通过 `PropertySources` 的顺序解析属性，优先级就是 sources 的顺序；同 key 先命中的 source 胜出。
@@ -264,7 +264,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 ### Q2：为什么“后改 Environment”不一定影响已创建的 bean？
 
 - 标准答案（可复述）：
-  - 因为注入/属性填充发生在 bean 创建窗口（`resolveEmbeddedValue` / `populateBean`）；bean 一旦创建完成，容器不会因为 Environment 变化自动重注入（除非你让它延迟创建/重新创建）。
+  - 因为注入/属性填充发生在 bean 创建窗口（`resolveEmbeddedValue` / `populateBean`）；bean 一旦创建完成，容器不会因为 Environment 变化自动重注入（除非读者让它延迟创建/重新创建）。
 - 证据链（方法级）：
   - `AbstractBeanFactory#resolveEmbeddedValue`
   - `AbstractAutowireCapableBeanFactory#populateBean`
@@ -278,11 +278,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 - 最小复现：
   - `SpringCoreBeansProfileRegistrationLabTest`
 
-## 一句话自检
-
-- 你能解释清楚：PropertySource 的“顺序”为什么比“有没有某个 key”更重要吗？
-- 你遇到 `${demo.missing}` 没解析时，如何快速判断是“没有 property source/key”，还是“解析策略 non-strict 放行了”，还是“压根没装 placeholder 处理器”？
-- 你能说出：profiles 为什么必须在 refresh 前确定吗？它影响的是定义阶段还是创建阶段？
+## 自检要点
+- 应能够解释清楚：PropertySource 的“顺序”为什么比“有没有某个 key”更重要吗？
+- 遇到 `${demo.missing}` 没解析时，如何快速判断是“没有 property source/key”，还是“解析策略 non-strict 放行了”，还是“压根没装 placeholder 处理器”？
+- 应能够说出：profiles 为什么必须在 refresh 前确定吗？它影响的是定义阶段还是创建阶段？
 
 ## 小结与下一章
 
@@ -295,6 +294,6 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 - Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest` / `SpringCoreBeansProfileRegistrationLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansEnvironmentPropertySourceLabTest.java`
 
-上一章：[37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](39-beanfactory-api-deep-dive.md)
+上一章：[37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](39-beanfactory-api-deep-dive.md)
 
 <!-- BOOKIFY:END -->

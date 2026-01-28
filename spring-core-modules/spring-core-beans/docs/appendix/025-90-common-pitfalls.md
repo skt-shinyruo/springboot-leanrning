@@ -1,8 +1,8 @@
-# 第 25 章：90. 常见坑清单（建议反复对照）
+# 第 25 章：90. 常见误区清单（建议反复对照）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：常见坑清单（建议反复对照）
+    - 知识点：常见误区清单（建议反复对照）
     - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
@@ -10,16 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 26 章：99. 自测题：你是否真的理解了？](026-99-self-check.md)
+上一章：[第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 26 章：99. 自测题：是否能够真的理解了？](026-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 ### 排障模板（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：观察到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
    - Branch Matrix - IoC 分支：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansIocBranchMatrixLabTest test`
@@ -29,12 +29,12 @@
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
 6. 验证（Verify）：复跑入口 + 对照自检清单：[026-99-self-check.md](026-99-self-check.md)
 
-- 本章主题：**90. 常见坑清单（建议反复对照）**
+- 本章主题：**90. 常见误区清单（建议反复对照）**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -45,7 +45,7 @@
 
 ## 机制主线
 
-本章把“常见坑”统一归因到 4 类主线：
+本章把“常见误区”统一归因到 4 类主线：
 
 1) **定义层**：BeanDefinition 注册/覆盖/条件装配
 2) **实例层**：createBean → populateBean → initializeBean
@@ -65,7 +65,7 @@
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
-## 常见坑与边界
+## 常见误区与边界
 
 > 这一节的目的不是“列口号”，而是把高频误判做成可复现的定位清单：每一条都能在本仓库的某个 Lab 里跑出来，并能下断点看见关键分支。
 
@@ -76,7 +76,7 @@
 - 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest test`
 
-这份清单不是为了“背”，而是为了让你在遇到问题时能快速定位：到底是概念没建立，还是机制没搞清。
+这份清单不是为了“背”，而是为了让在遇到问题时能快速定位：到底是概念没建立，还是机制未厘清。
 
 ### 1) 以为“prototype 每次方法调用都是新对象”
 
@@ -168,7 +168,7 @@
 
 - setter 循环能成功不代表设计合理
 - 半初始化对象、代理、生命周期都会让问题变复杂
-- Boot 环境里可能默认更严格，直接不让你启动
+- Boot 环境里可能默认更严格，直接不让读者启动
 
 见：[09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md)
 
@@ -222,13 +222,13 @@
 
 事实：
 
-- `@Qualifier` 的作用是 **缩小候选集合**，它不是“让容器更聪明”，而是“让你把依赖关系写清楚”
+- `@Qualifier` 的作用是 **缩小候选集合**，它不是“让容器更聪明”，而是“让读者把依赖关系写清楚”
 - `@Qualifier` 匹配规则取决于 `AutowireCandidateResolver`（一般是 qualifier 元数据/beanName 等）
 
 建议：
 
 - 多实现时优先使用：**`@Qualifier`（精确）** 或 **`@Primary`（默认实现）**
-- 不要指望 `@Order` 解决单依赖歧义（见坑 2）
+- 不要指望 `@Order` 解决单依赖歧义（见误区 2）
 
 如何验证：
 
@@ -241,7 +241,7 @@
 事实：
 
 - `@Primary` 只是在“没有更强限定条件”时提供默认选择
-- 一旦你引入更强信号（例如 `@Qualifier`、`@Resource` 的 name-first），实际选择会以限定条件为准
+- 一旦读者引入更强信号（例如 `@Qualifier`、`@Resource` 的 name-first），实际选择会以限定条件为准
 
 如何验证：
 
@@ -262,8 +262,8 @@
 
 事实：
 
-- 不显式指定顺序时，顺序不应被依赖（你很容易学到错误结论）
-- `@Order`/`Ordered` 才是你做“确定性顺序”的工具
+- 不显式指定顺序时，顺序不应被依赖（读者很容易学到错误结论）
+- `@Order`/`Ordered` 才是读者做“确定性顺序”的工具
 
 如何验证：
 
@@ -294,7 +294,7 @@
 事实：
 
 - `BeanPostProcessor#postProcessAfterInitialization` 可以直接返回另一个对象（最常见就是 proxy）
-- 因此容器最终对外暴露的 bean，可能不是你写的那个原始实例
+- 因此容器最终对外暴露的 bean，可能不是编写的那个原始实例
 
 如何验证：
 
@@ -311,7 +311,7 @@
 
 事实：
 
-- setter 循环能救，靠的是“提前暴露引用”（early singleton exposure），这意味着你可能拿到半初始化对象
+- setter 循环能救，靠的是“提前暴露引用”（early singleton exposure），这意味着读者可能拿到半初始化对象
 - 一旦代理介入，early 与 final 不一致会让问题更隐蔽（见 [16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](../part-03-container-internals/16-early-reference-and-circular.md)）
 
 如何验证：
@@ -368,7 +368,7 @@
 典型症状：
 
 - 按原始类型 `Handler` 能找到候选，但按 `Handler<String>`（带泛型）找不到
-- 你明明觉得“这个实现就是 String 版本”，但容器无法证明
+- 读者明明觉得“这个实现就是 String 版本”，但容器无法证明
 
 事实：
 
@@ -379,7 +379,7 @@
 
 - 对应 Lab/Test：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenCandidateLosesGenericInformation_likeJdkProxySingleton`
 
-见：[37. 泛型匹配与注入坑](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
+见：[37. 泛型匹配与注入误区](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
 
 - 现象：按泛型类型找不到候选（但按原始类型可用）
 - 证据链：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
@@ -390,7 +390,7 @@
 
 典型症状：
 
-- 你在 BFPP 里把 property value 写成字符串（例如 `"8080"`），却发现最终注入到 `int` 属性里变成了数字
+- 在 BFPP 里把 property value 写成字符串（例如 `"8080"`），却发现最终注入到 `int` 属性里变成了数字
 - 或者自定义值对象注入失败，不知道该在哪注册 Converter
 
 事实：
@@ -413,7 +413,7 @@
 
 典型症状：
 
-- 明明容器里有多个同类型候选，你没写 `@Qualifier/@Primary`，却没有报歧义
+- 明明容器里有多个同类型候选，读者没写 `@Qualifier/@Primary`，却没有报歧义
 - 或者在重构/改字段名后，突然开始报 `NoUniqueBeanDefinitionException` 或注入到了“另一个实现”
 
 事实：
@@ -445,13 +445,13 @@
 
 典型症状：
 
-- 你以为 `ObjectProvider` “永远不会失败”，结果在多候选时仍然抛异常（或返回不符合预期的对象）
-- 你以为 `getIfAvailable()` 与 `getIfUnique()` 都是“拿不到就 null”，但它们语义不同
+- 容易误以为 `ObjectProvider` “永远不会失败”，结果在多候选时仍然抛异常（或返回不符合预期的对象）
+- 容易误以为 `getIfAvailable()` 与 `getIfUnique()` 都是“拿不到就 null”，但它们语义不同
 
 事实：
 
 - `getIfUnique()` 的核心语义是：**只有唯一候选时才返回，否则返回 null**
-- `ObjectProvider` 的意义不是“让容器更聪明”，而是让你把“可选/延迟/多候选”这些语义写清楚
+- `ObjectProvider` 的意义不是“让容器更聪明”，而是让读者把“可选/延迟/多候选”这些语义写清楚
 
 如何验证：
 
@@ -472,7 +472,7 @@
 典型症状：
 
 - 容器里明明有一个 `@Primary`，但最终注入的却是另一个实现
-- 或者你看见了 `@Primary`，就下意识认为“这就是默认实现”，却忘了注入点可能带了更强限定
+- 或者读者看见了 `@Primary`，就下意识认为“这就是默认实现”，却忘了注入点可能带了更强限定
 
 事实：
 
@@ -495,9 +495,9 @@
 - 修复：明确限定规则优先级；避免混用导致误判
 - 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
-## 面试常问（把“坑点”说成标准答案）
+## 面试常问（把“误区”说成标准答案）
 
-> 目标：你不是背“坑列表”，而是能把“现象 → 结论 → 证据链（方法级）→ 修复”说成一段可复述答案。
+> 目标：读者不是背“误区列表”，而是能把“现象 → 结论 → 证据链（方法级）→ 修复”说成一段可复述答案。
 > 建议配合：`appendix/93-interview-playbook.md`（答题模板）与 `appendix/94-production-troubleshooting-checklist.md`（排障分流）。
 
 ### Q1：`@Order` / `Ordered` 能解决单依赖注入的多候选歧义吗？
@@ -545,21 +545,20 @@
   - `SpringCoreBeansCircularDependencyBoundaryLabTest`
   - `SpringCoreBeansEarlyReferenceLabTest`
 
-### Q5：为什么“代理导致类型不匹配”在面试里经常出现？你如何给出修复建议？
+### Q5：为什么“代理导致类型不匹配”在面试里经常出现？如何给出修复建议？
 
 - 标准答案（可复述）：
-  - JDK 动态代理只实现接口，不是目标类的子类；如果你按具体类类型注入/强转，会失败。修复建议通常是：按接口注入、或改用 class-based proxy（CGLIB）、或在设计层避免在容器早期阶段触发代理相关时序问题。
+  - JDK 动态代理只实现接口，不是目标类的子类；若按具体类类型注入/强转，会失败。修复建议通常是：按接口注入、或改用 class-based proxy（CGLIB）、或在设计层避免在容器早期阶段触发代理相关时序问题。
 - 证据链（方法级）：
   - 代理替换发生点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
   - 代理/增强触发者：具体 BPP（如 AOP 相关 post-processor）
 - 最小复现：
   - `SpringCoreBeansProxyingPhaseLabTest`
 
-## 一句话自检
-
-- 你能否做到：拿到一个现象（注入失败/拿到 proxy/占位符没解析/启动阶段异常）就能先分层（定义层 vs 实例层），并跳到对应章节与 Lab？
-- 你能否明确区分三件事：**候选选择（谁赢）**、**集合排序（谁先谁后）**、**初始化顺序（谁先创建）**？
-- 你能否把“猜测”变成“证据链”：用一个 LabTest + 断点 + watch list 把结论固定为可复现事实？
+## 自检要点
+- 应能够否做到：拿到一个现象（注入失败/拿到 proxy/占位符没解析/启动阶段异常）就能先分层（定义层 vs 实例层），并跳到对应章节与 Lab？
+- 应能够否明确区分三件事：**候选选择（谁赢）**、**集合排序（谁先谁后）**、**初始化顺序（谁先创建）**？
+- 应能够否把“猜测”变成“证据链”：用一个 LabTest + 断点 + watch list 把结论固定为可复现事实？
 
 ## 小结与下一章
 

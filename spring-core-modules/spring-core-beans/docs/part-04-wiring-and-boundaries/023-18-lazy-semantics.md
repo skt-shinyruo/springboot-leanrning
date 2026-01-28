@@ -35,7 +35,7 @@
 
 ## 机制主线
 
-懒加载经常被误用：很多人以为“加了 `@Lazy` 就不会启动慢了”，但实际效果取决于你把 lazy 放在哪里。
+懒加载经常被误用：很多人以为“加了 `@Lazy` 就不会启动慢了”，但实际效果取决于读者把 lazy 放在哪里。
 
 ### 回调与代理交织（什么时候才会触发生命周期回调）
 
@@ -76,7 +76,7 @@
 - A 的创建需要 B
 - 容器会为了创建 A 去创建 B
 
-因此你会看到：
+因此可以观察到：
 
 - B 仍然在 refresh 阶段被创建
 
@@ -89,19 +89,19 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansLazyLabTest.java`
   - `lazyInjectionPoint_canDeferCreationOfLazyBeanUntilFirstUse()`（证据：注入的是 proxy，首次调用才触发目标 bean 创建）
 
-当你把 `@Lazy` 放在依赖注入点：
+当读者把 `@Lazy` 放在依赖注入点：
 
 - 容器会注入一个 proxy
 - proxy 在第一次真正调用时，再去容器里解析目标 bean
 
 - 没有“外部因素”提前创建目标 bean
-- 你能清晰观测到：目标 bean 的构造器是在“第一次调用”时才执行
+- 应能够清晰观测到：目标 bean 的构造器是在“第一次调用”时才执行
 
 ---
 
 ## 可复现闭环（基于 `SpringCoreBeansLazyLabTest`）
 
-跑完该 Lab，你至少要能复述 3 条结论：
+跑完该 Lab，至少应能够复述 3 条结论：
 
 1) **lazy-init 只影响预实例化**  
    - 断点：`preInstantiateSingletons`  
@@ -115,21 +115,21 @@
 
 ## 4. 代理类型边界：接口注入点 vs 类注入点（必须会排障）
 
-这一段是很多人学 `@Lazy` 学不明白的关键原因：你看到的是 proxy，但 proxy 的“类型形态”并不总一样。
+这一段是很多人学 `@Lazy` 学不明白的关键原因：观察到的是 proxy，但 proxy 的“类型形态”并不总一样。
 
-在本仓库的 Lab 中你可以直接对照：
+在本仓库的 Lab 中可以直接对照：
 
 1) **接口注入点（JDK proxy）**
    - 对应实验：`SpringCoreBeansLazyLabTest#lazyInjectionPoint_canDeferCreationOfLazyBeanUntilFirstUse`
-   - 现象：注入对象满足接口类型，但**不是具体实现类**（按实现类查找/强转会踩坑）
+   - 现象：注入对象满足接口类型，但**不是具体实现类**（按实现类查找/强转会易错点）
 2) **类注入点（CGLIB proxy）**
    - 对应实验：`SpringCoreBeansLazyLabTest#lazyInjectionPoint_onConcreteClass_usesClassBasedProxy_andDefersCreationUntilFirstUse`
    - 现象：注入对象是目标类的子类代理，通常仍可按具体类类型工作，但调试时类名会带 `$$` 等 proxy 痕迹
 
 排障分流建议（先问自己这 2 个问题）：
 
-- 你是“按接口”注入/查找，还是“按实现类”注入/查找？
-- 你拿到的是 JDK proxy 还是 CGLIB proxy？（决定“类型边界”与“能不能强转”）
+- 读者是“按接口”注入/查找，还是“按实现类”注入/查找？
+- 读者拿到的是 JDK proxy 还是 CGLIB proxy？（决定“类型边界”与“能不能强转”）
 
 入口：
 
@@ -146,7 +146,7 @@
 - “我以为 `@Lazy` 会影响 beanDefinition 的 lazy-init” → **优先定义层澄清**：注入点 `@Lazy` 与 beanDefinition `lazy-init` 是两种语义（本章第 3 节）
 - “看到的是 proxy 类型而不是目标类” → **实例层（代理语义）**：这是注入点 `@Lazy` 的本质（对照 [31](31-proxying-phase-bpp-wraps-bean.md)）
 
-## 5. 一句话自检
+## 5. 自检要点
 
 - 常问：`lazy-init` 与注入点 `@Lazy` 有什么本质差别？
   - 答题要点：`lazy-init` 是定义层“延迟创建策略”；注入点 `@Lazy` 是“注入延迟解析 proxy”，把解析推迟到首次使用。
@@ -181,15 +181,15 @@
 
 > 结论：lazy-init 控制“容器是否主动创建”；注入点 `@Lazy` 控制“注入的是不是一个延迟解析的代理”。
 
-## 常见坑与边界
+## 常见误区与边界
 
 
-### 常见坑
+### 常见误区
 
-- **坑 1：以为 `@Lazy` 能让所有依赖都不创建**
+- **误区 1：以为 `@Lazy` 能让所有依赖都不创建**
   - 如果目标 bean 不是 lazy-init，它仍可能在 refresh 阶段被 pre-instantiate。
 
-- **坑 2：在 proxy 上调用 `toString()` / `equals()` 触发真实创建**
+- **误区 2：在 proxy 上调用 `toString()` / `equals()` 触发真实创建**
   - 学习阶段尽量不要依赖日志；用断言固定“构造器是否被调用”。
 
 ## 小结与下一章

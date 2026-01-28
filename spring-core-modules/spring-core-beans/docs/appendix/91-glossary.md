@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -25,7 +25,7 @@
 
 1) **现象**：它通常对应哪类问题/报错？  
 2) **证据链**：它在源码主线上出现在哪个方法？  
-3) **修复**：你能做的最小动作是什么？  
+3) **修复**：应能够做的最小动作是什么？  
 4) **验证**：哪个 Lab/Test 能复现并验证？  
 
 ---
@@ -144,7 +144,7 @@
 > 使用建议：遇到不熟的名词先来这里查 10 秒，再回到对应章节跑 Lab。
 > Part 05（AOT/XML/SpEL/容器外对象）相关术语请优先看上方“**AOT 与真实世界补齐**”小节。
 
-## 常见坑与边界
+## 常见误区与边界
 
 - **DependencyDescriptor**：注入点的“描述符”（需要什么类型/是否 required/是否带泛型/有哪些注解/名称等）。
   章节：[`03`](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
@@ -163,7 +163,7 @@
 
 ## 排障怎么用（术语 → 断点入口）
 
-如果你在真实项目里看到异常/现象，先别急着“猜机制”，先把术语落到阶段与断点：
+若在真实项目里看到异常/现象，先别急着“猜机制”，先把术语落到阶段与断点：
 
 1) 看到 **BeanDefinition / registry / reader**：优先认为是“定义层”，先去断点 `DefaultListableBeanFactory#registerBeanDefinition` / 对应 Reader 的 `loadBeanDefinitions`。
 2) 看到 **populate / convert / @Value**：优先认为是“注入/值解析/类型转换”阶段，去断点 `populateBean` / `resolveEmbeddedValue` / `convertIfNecessary`。
@@ -174,19 +174,18 @@
 
 ## 面试怎么用（术语 → 结论 → 证据链）
 
-术语表不是用来背的；面试/述职时你要做到的是“把术语放回调用链与时机”：
+术语表不是用来背的；面试/述职时需要做到的是“把术语放回调用链与时机”：
 
-- 你提到 BFPP/BDRPP/BPP：要能补一句“发生在 refresh 哪一段”，并说出关键方法：`invokeBeanFactoryPostProcessors` / `registerBeanPostProcessors`。
-- 你提到 FactoryBean：要能补一句“名字 `&` 前缀的差异”，并能指到 `getObjectForBeanInstance`。
-- 你提到循环依赖：要能补一句“三层缓存解决的是 setter 窗口期，不是构造器循环”，并能指到 `getSingleton`。
+- 读者提到 BFPP/BDRPP/BPP：要能补一句“发生在 refresh 哪一段”，并说出关键方法：`invokeBeanFactoryPostProcessors` / `registerBeanPostProcessors`。
+- 读者提到 FactoryBean：要能补一句“名字 `&` 前缀的差异”，并能指到 `getObjectForBeanInstance`。
+- 读者提到循环依赖：要能补一句“三层缓存解决的是 setter 窗口期，不是构造器循环”，并能指到 `getSingleton`。
 
 答题模板入口：`appendix/93-interview-playbook.md`
 
-## 一句话自检
-
-- 你能把下面 5 个名词分别放到 refresh 主线的哪个阶段吗：`BeanDefinition` / BFPP/BDRPP / BPP / `doGetBean` / `doCreateBean`？
-- 你能解释清楚：为什么同一个名词（例如 “processor”）在定义阶段与创建阶段的职责完全不同吗？
-- 你是否能用术语表把“看到名词 → 关联章节 → 跑 Lab → 下断点验证”的链路跑通？
+## 自检要点
+- 应能够把下面 5 个名词分别放到 refresh 主线的哪个阶段吗：`BeanDefinition` / BFPP/BDRPP / BPP / `doGetBean` / `doCreateBean`？
+- 应能够解释清楚：为什么同一个名词（例如 “processor”）在定义阶段与创建阶段的职责完全不同吗？
+- 是否能够能用术语表把“看到名词 → 关联章节 → 跑 Lab → 下断点验证”的链路跑通？
 
 ## 小结与下一章
 
@@ -198,6 +197,6 @@
 
 - Lab：`SpringCoreBeansContainerLabTest`
 
-上一章：[90. 常见坑清单（建议反复对照）](025-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[92. 知识点地图（Concept → Chapter → Lab）](92-knowledge-map.md)
+上一章：[90. 常见误区清单（建议反复对照）](025-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[92. 知识点地图（Concept → Chapter → Lab）](92-knowledge-map.md)
 
 <!-- BOOKIFY:END -->

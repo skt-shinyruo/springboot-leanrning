@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -18,15 +18,15 @@
 
 ## 机制主线
 
-这一章解决一个“你不一定天天写，但你一定会遇到”的问题：
+这一章解决一个“读者不一定天天写，但读者一定会遇到”的问题：
 
-> **当你看到 `BeanDefinitionStoreException`、`BeanDefinitionParsingException`、或者某个 bean “定义层”就读不进来时，应该从哪里下手？**
+> **当读者看到 `BeanDefinitionStoreException`、`BeanDefinitionParsingException`、或者某个 bean “定义层”就读不进来时，应该从哪里下手？**
 
 Spring 的 IoC 容器把所有配置来源（注解、`@Bean`、`@Import`、XML、程序化注册……）最终都归一到：
 
 > **BeanDefinition（定义层）**
 
-XML 只是其中一种输入形式。理解它的价值在于：它能让你更清晰地区分“定义层失败”与“实例层失败”。
+XML 只是其中一种输入形式。理解它的价值在于：它能让读者更清晰地区分“定义层失败”与“实例层失败”。
 
 ---
 
@@ -44,7 +44,7 @@ XML 这条链路的核心是：
 - `XmlBeanDefinitionReader#loadBeanDefinitions`：把 XML 读成 BeanDefinition，并注册到 BeanFactory
 - 注册成功之后，后续仍走统一主线：refresh → instantiate → populate → initialize
 
-因此你遇到 XML 相关异常时，第一件事就是分型：
+因此遇到 XML 相关异常时，第一件事就是分型：
 
 - **定义层异常**：读/解析/注册阶段失败（refresh 前半段）
 - **实例层异常**：创建/注入/初始化阶段失败（refresh 后半段或 getBean 时）
@@ -54,7 +54,7 @@ XML 这条链路的核心是：
 本模块提供最小 XML 示例：
 
 - 正常 XML：成功注册 BeanDefinition，并能读取 definition 元信息
-- 非法 XML：抛出 `BeanDefinitionStoreException`（用于你建立“错误分型”直觉）
+- 非法 XML：抛出 `BeanDefinitionStoreException`（用于读者建立“错误分型”直觉）
 
 入口测试：
 
@@ -69,7 +69,7 @@ XML 这条链路的核心是：
    - 进一步深挖：`BeanDefinitionParserDelegate#parseBeanDefinitionElement`
 3) 入库：`DefaultListableBeanFactory#registerBeanDefinition`（定义注册入口：冲突/覆盖/合法性检查）
 
-当你需要把错误放回 refresh 主线理解时：
+当需要把错误放回 refresh 主线理解时：
 
 - `AbstractApplicationContext#refresh`
 - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
@@ -81,7 +81,7 @@ XML 这条链路的核心是：
 
 ---
 
-这一章你应该带走的能力是：
+这一章应当带走的能力是：
 
 - 能把 XML 输入归一到 BeanDefinition 视角
 - 能用 `BeanDefinitionStoreException` 快速判断“定义层失败”
@@ -118,25 +118,25 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 
 - `resource` / `resourceDescription`：到底读的是哪一个 XML（路径/类路径资源/文件资源）
 - `document` / `root`：XML 是否被正确解析成 Document（命名空间/元素结构是否符合预期）
-- `beanName` / `beanClassName`：解析出来的定义是什么（是否指向了你期望的类型）
+- `beanName` / `beanClassName`：解析出来的定义是什么（是否指向了读者期望的类型）
 - `BeanDefinition` 关键信息：constructor args / property values / scope / lazy 等元数据是否符合预期
 - 异常类型与 cause：是“解析失败”（document 层）还是“注册失败”（registry 层）
 
 1) **误区：XML 问题只能靠“看 XML”解决**
    - 更有效：先分型（定义层 vs 实例层），再锁定断点入口。
 2) **误区：XML = 过时，不用学**
-   - 在真实项目里，遗留配置/三方组件/某些 starter 仍可能引入 XML 资源；排障时你必须认识链路。
+   - 在真实项目里，遗留配置/三方组件/某些 starter 仍可能引入 XML 资源；排障时必须认识链路。
 
-## 常见坑与边界
+## 常见误区与边界
 
 ### 常见误区
 
 1) **误区：把 XML 问题当成“业务逻辑问题”**
-   - XML 读不进来时，容器甚至还没开始创建你的业务 bean；优先用“定义层入口断点”确认读/解析/注册发生在何处失败。
+   - XML 读不进来时，容器甚至还没开始创建相应的业务 bean；优先用“定义层入口断点”确认读/解析/注册发生在何处失败。
 2) **误区：看到 `BeanDefinitionStoreException` 就直接全局搜字符串**
    - 更快的方式：从 `XmlBeanDefinitionReader#loadBeanDefinitions` 进，先确认 resource 与 schema/namespace，再定位到具体 element 的 parse。
 3) **误区：以为 XML 只会影响“创建对象”**
-   - XML 的核心价值是让你把“输入形态”统一回 BeanDefinition：你看的其实是“定义元数据”，不是实例本身。
+   - XML 的核心价值是让读者把“输入形态”统一回 BeanDefinition：读者看的其实是“定义元数据”，不是实例本身。
 
 ## 面试常问（XML：Reader 到底做了什么）
 
@@ -150,7 +150,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 - 最小复现：
   - `SpringCoreBeansXmlBeanDefinitionReaderLabTest`
 
-### Q2：排 XML 解析问题时，你如何快速判断“定义没注册”还是“创建失败”？
+### Q2：排 XML 解析问题时，如何快速判断“定义没注册”还是“创建失败”？
 
 - 标准答案（可复述）：
   - 先在 `registerBeanDefinition` 证明定义是否写入 registry；如果没写入，优先排资源/解析/schema/namespace；如果写入了，再回到 `doCreateBean` 看实例化/注入/初始化链路。
@@ -158,11 +158,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
   - 定义层：`XmlBeanDefinitionReader#loadBeanDefinitions` / `registerBeanDefinition`
   - 实例层：`AbstractAutowireCapableBeanFactory#doCreateBean`
 
-## 一句话自检
-
-- 你能解释清楚：XML 在 Spring 里最终会变成什么吗？（提示：BeanDefinition）
-- 你遇到 `BeanDefinitionStoreException` 时，第一步应该先分型到“定义阶段”还是“创建阶段”？为什么？
-- 你能说出：从哪条最短调用链进断点，能最快定位到“哪个资源/哪个 element 解析失败”吗？
+## 自检要点
+- 应能够解释清楚：XML 在 Spring 里最终会变成什么吗？（提示：BeanDefinition）
+- 遇到 `BeanDefinitionStoreException` 时，第一步应该先分型到“定义阶段”还是“创建阶段”？为什么？
+- 应能够说出：从哪条最短调用链进断点，能最快定位到“哪个资源/哪个 element 解析失败”吗？
 
 ## 小结与下一章
 
@@ -171,7 +170,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 - XML 是一种输入形式，它最终会被归一为 BeanDefinition 并注册到 BeanFactory
 - XML 相关异常排障优先做“定义层 vs 实例层”分型；定义层失败的典型信号是 `BeanDefinitionStoreException`
 
-下一章我们补齐另一个真实工程经常遇到的边界：**容器外对象**（不是 Spring 创建的）如何获得注入、初始化与销毁能力（AutowireCapableBeanFactory）。
+下一章将补齐另一个真实工程经常遇到的边界：**容器外对象**（不是 Spring 创建的）如何获得注入、初始化与销毁能力（AutowireCapableBeanFactory）。
 
 <!-- BOOKIFY:START -->
 

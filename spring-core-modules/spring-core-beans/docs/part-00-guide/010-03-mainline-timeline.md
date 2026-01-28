@@ -3,13 +3,13 @@
 ## 导读
 
 - 本章主题：**主线时间线：IoC 容器从 refresh 到创建 Bean**
-- 阅读方式建议：这章不是“讲知识点”，而是给你一张时间线地图。你先跑一个主线 Lab，把 refresh 走一遍；然后拿这张时间线去定位每个现象属于哪个阶段。
+- 阅读方式建议：这章不是“讲知识点”，而是给读者一张时间线地图。读者先跑一个主线 Lab，把 refresh 走一遍；然后拿这张时间线去定位每个现象属于哪个阶段。
 
 !!! summary "本章要点"
 
-    - 你只要记住一件事：**99% 的排障都能被归到 refresh 的某一段**（定义层/实例层/初始化/完成后回调）。
+    - 读者只要记住一件事：**99% 的排障都能被归到 refresh 的某一段**（定义层/实例层/初始化/完成后回调）。
     - BFPP/BDRPP（定义层）与 BPP（实例层）是两个世界：先改“定义”，再造“实例”；顺序错了，后果往往是“代理/注入/回调不生效”。
-    - 你不需要背完整 refresh 步骤，但你必须能说清：BPP 什么时候注册？单例什么时候创建？循环依赖窗口在哪里？
+    - 无需背完整 refresh 步骤，但必须能说清：BPP 什么时候注册？单例什么时候创建？循环依赖窗口在哪里？
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -20,12 +20,12 @@
 
 ## 机制主线：把所有章节放回同一条时间线
 
-当你学习 Spring IoC 时，最容易迷失的不是“方法太多”，而是：
+当读者学习 Spring IoC 时，最容易迷失的不是“方法太多”，而是：
 
-- 你不知道某个机制发生在 refresh 的哪一步
-- 你不知道“我改了定义/我加了处理器/我触发了 getBean”会影响哪一段
+- 读者不知道某个机制发生在 refresh 的哪一步
+- 读者不知道“我改了定义/我加了处理器/我触发了 getBean”会影响哪一段
 
-因此我们先用一张时间线，把 IoC 的主线粗粒度切成几段（每段对应一类问题/一类断点入口）。
+因此先用一张时间线，把 IoC 的主线粗粒度切成几段（每段对应一类问题/一类断点入口）。
 
 ---
 
@@ -33,7 +33,7 @@
 
 > 目标：遇到任何现象，先回答：它属于哪一段？
 
-### 1.1 段 A：准备阶段（容器骨架搭好，但还没处理你的 bean）
+### 1.1 段 A：准备阶段（容器骨架搭好，但还没处理相应的 bean）
 
 关键点：
 
@@ -116,21 +116,21 @@
 
 - `part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
 
-### 1.6 段内关键对象变化（你在 debugger 里应该看见什么）
+### 1.6 段内关键对象变化（在 debugger 里应该看见什么）
 
 这一小节只做一件事：把“阶段”变成“可观察对象”。
 
-你不需要记住全部字段，但你要能在断点里回答：**我现在处于哪个阶段？这个阶段改变了什么？**
+无需记住全部字段，但应能够在断点里回答：**我现在处于哪个阶段？这个阶段改变了什么？**
 
-| 段 | 你在断点里看什么 | 关键对象/变量（建议优先） | 你会得到的判断 |
+| 段 | 在断点里看什么 | 关键对象/变量（建议优先） | 可以得到的判断 |
 | --- | --- | --- | --- |
-| A 准备 | 容器是否已经具备“解析属性/注入容器对象”的基础能力 | `AbstractApplicationContext#prepareBeanFactory` 内：`beanFactory.resolvableDependencies`、embedded value resolvers、`beanFactory.getBeanClassLoader()` | 还没处理你的 bean，但容器的“基础设施”已就绪（后续注解能否工作取决于下一段） |
+| A 准备 | 容器是否已经具备“解析属性/注入容器对象”的基础能力 | `AbstractApplicationContext#prepareBeanFactory` 内：`beanFactory.resolvableDependencies`、embedded value resolvers、`beanFactory.getBeanClassLoader()` | 还没处理相应的 bean，但容器的“基础设施”已就绪（后续注解能否工作取决于下一段） |
 | B 定义层 | BeanDefinition 是否已经齐全、是否被改写过 | `beanFactory.getBeanDefinitionCount()`、`getBeanDefinitionNames()`、`BeanDefinition#getSource()`、`BeanDefinition#getRole()` | 问题属于“没注册/注册错/被覆盖/被改写”时，这一段就能定位根因 |
 | C 注册 BPP | BPP 链是否完整、顺序是否符合预期 | `beanFactory.getBeanPostProcessors()`（数量/类型/顺序）、关键处理器是否存在（注入/AOP/JSR-250） | “注解/AOP/回调不生效”的高频根因：BPP 没注册、注册晚了、顺序错了 |
 | D 创建单例 | 单例缓存是否进入“创建窗口期”，是否出现 early reference | `singletonObjects/earlySingletonObjects/singletonFactories`、`singletonsCurrentlyInCreation`、`mbd`、`pvs` | 绝大多数运行期问题都在这里落地：注入、类型转换、代理替换、循环依赖边界 |
 | E 容器就绪 | “容器就绪后”回调是否触发、事件是否发布 | `finishRefresh`、`SmartInitializingSingleton#afterSingletonsInstantiated`、事件发布 | 适合放“容器一致性校验/外部资源健康检查/延迟启动”类逻辑；也能解释“为什么某些逻辑必须等到这里” |
 
-> 提醒：如果你在 D 段看到目标 bean 已经创建，但 C 段的关键 BPP 还没注册完成，那几乎必然是“创建过早/时机错误”。
+> 提醒：若在 D 段看到目标 bean 已经创建，但 C 段的关键 BPP 还没注册完成，那几乎必然是“创建过早/时机错误”。
 
 ---
 
@@ -147,7 +147,7 @@
 
 ## 面试常问（refresh 时间线）
 
-1) **refresh 的关键阶段你怎么讲（且能落到方法名）？**
+1) **refresh 的关键阶段如何讲（且能落到方法名）？**
    - 要点：prepare → 定义层（BFPP/BDRPP）→ 注册 BPP 链 → 创建单例（doCreateBean）→ finishRefresh 回调。
    - 证据链：`AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors` / `finishBeanFactoryInitialization`。
 
@@ -157,9 +157,8 @@
 
 推荐复习入口：`appendix/93-interview-playbook.md`（Q1/Q5 等题型都以时间线为骨架）。
 
-## 一句话自检
-
-你应该能用 3 句复述：
+## 自检要点
+应能够用 3 句复述：
 
 1) BFPP/BDRPP 发生在 refresh 的哪一段？它改的是“定义”还是“实例”？
 2) BPP 链是在什么时候注册的？为什么它决定了“注解/AOP/回调”是否生效？

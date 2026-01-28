@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -41,7 +41,7 @@
 
 本章有 2 个入口测试：
 
-你要观察的现象：
+需要观察的现象：
 
 - 未注册 PropertyEditor 时：`String -> 自定义类型` 注入失败（并且失败发生在 refresh/实例化阶段，而不是注册阶段）
 - 注册 PropertyEditor 后：同样的字符串可以成功注入为自定义对象
@@ -52,7 +52,7 @@
 
 ---
 
-## 1. 是什么：你要分清 2 个“发生位置不同”的问题
+## 1. 是什么：需要分清 2 个“发生位置不同”的问题
 
 ### 1.1 值解析（value resolution）解决的是：value 到底是什么？
 
@@ -70,7 +70,7 @@ BeanDefinition 里保存的 value，可能是：
 
 - `String -> int`（很常见）
 - `String -> enum`
-- `String -> 自定义类型`（需要你注册转换器/editor）
+- `String -> 自定义类型`（需要读者注册转换器/editor）
 
 PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在并且经常被遗留配置依赖。
 
@@ -84,9 +84,9 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 2) 一个 `PropertyEditor`（实现 `setAsText`）
 3) 一个注册器（`PropertyEditorRegistrar`） + `CustomEditorConfigurer`（把注册动作接入 BeanFactoryPostProcessor 阶段）
 
-你可以直接对照本仓库的最小实现：
+可以直接对照本仓库的最小实现：
 
-如果你想看清 `BeanDefinitionValueResolver` 的分支，最直接的方式是显式使用这些类型：
+若想看清 `BeanDefinitionValueResolver` 的分支，最直接的方式是显式使用这些类型：
 
 - `RuntimeBeanReference("h1")`
 - `TypedStringValue("8080")`
@@ -98,7 +98,7 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 
 ## 3. 原理：把现象放回容器主线（定义层 → 实例层）
 
-你只要记住下面这条主线，80% 的“值注入困惑”都能解释清楚：
+读者只要记住下面这条主线，80% 的“值注入困惑”都能解释清楚：
 
 1) **定义层：** BeanDefinition 保存元数据（包括 propertyValues）
 2) **实例层：** 创建实例后，进行属性填充（populate / applyPropertyValues）
@@ -123,7 +123,7 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 
 ### 4.2 BeanDefinitionValueResolver（引用/集合/Map 的解析入口）
 
-如果你想看清不同分支：
+若想看清不同分支：
 
 - `BeanDefinitionValueResolver#resolveReference`（`RuntimeBeanReference`）
 - `BeanDefinitionValueResolver#resolveManagedList`
@@ -149,9 +149,9 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 
 ---
 
-### 4.4 属性路径解析与 auto-grow（复杂属性常见坑）
+### 4.4 属性路径解析与 auto-grow（复杂属性常见误区）
 
-当你的属性路径包含嵌套/集合/Map 时，BeanWrapper 会走更复杂的路径解析：
+当相应的属性路径包含嵌套/集合/Map 时，BeanWrapper 会走更复杂的路径解析：
 
 - `order.items[0].price`
 - `props[\"k\"]`
@@ -183,7 +183,7 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 
 > **我在配置里写的是字符串/引用/集合，为什么运行起来就变成了对象？这一步发生在哪里？怎么断点证明？**
 
-这一章把两个常被混在一起的机制拆开讲清楚，并用 Lab 让你能下断点验证：
+这一章把两个常被混在一起的机制拆开讲清楚，并用 Lab 使读者能够下断点验证：
 
 ## 0. 复现入口（可运行）
 
@@ -227,7 +227,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 - `resolvedValue` / `convertedValue`：解析/转换后的最终值
 - `typeConverter` / `conversionService`：走 ConversionService 还是 PropertyEditor（可与 [36](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md) 对照）
 
-## 常见坑与边界
+## 常见误区与边界
 
 所以很多新手误区来自于把 1) 和 2) 混在一起：
 
@@ -238,7 +238,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 2) **误区：PropertyEditor 是线程安全的**
    - 很多 editor 是有状态的（setValue），不要在非预期场景复用实例。
 3) **误区：看到 `RuntimeBeanReference` 就以为“这是 XML 才有的东西”**
-   - 这是 beans 的抽象：你在任何输入源（XML/Properties/Groovy/程序化注册）都可以表达“引用”。
+   - 这是 beans 的抽象：在任何输入源（XML/Properties/Groovy/程序化注册）都可以表达“引用”。
 
 ## 排障决策表（属性注入：解析 vs 转换 vs 赋值）
 
@@ -246,7 +246,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 | --- | --- | --- | --- | --- |
 | 属性值是 `RuntimeBeanReference`，但最终没解析成对象 | 引用解析失败 / beanName 不存在 | 断点 `BeanDefinitionValueResolver#resolveValueIfNecessary`；看 `RuntimeBeanReference#getBeanName` | 修正 beanName/alias；确认定义是否注册 | `SpringCoreBeansBeanDefinitionValueResolutionLabTest` |
 | `TypedStringValue` 注入失败（TypeMismatch） | 转换链路没命中合适 converter/editor | 断点 `BeanWrapperImpl#setPropertyValues` / `TypeConverterDelegate#convertIfNecessary`；看 requiredType 与分支 | 安装/注册 ConversionService 或 PropertyEditor；区分占位符/SpEL/转换三连 | `SpringCoreBeansPropertyEditorLabTest`（配合 [36](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)） |
-| 你以为“值已经解析”，但其实是占位符没解析 | embedded value resolver non-strict 放行 | 断点 `AbstractBeanFactory#resolveEmbeddedValue` | 启用 strict 或补齐 property source/key | [34](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) |
+| 容易误以为“值已经解析”，但其实是占位符没解析 | embedded value resolver non-strict 放行 | 断点 `AbstractBeanFactory#resolveEmbeddedValue` | 启用 strict 或补齐 property source/key | [34](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) |
 | PropertyEditor 行为偶发、并发下异常 | editor 有状态且非线程安全 | 看 editor 是否复用、是否共享实例（setValue） | 避免共享 editor 实例；优先用 ConversionService | 结合本章与性能/并发相关用例复盘 |
 
 ## 面试常问（BeanDefinition 值解析：为什么它不是“单纯 setProperty”）
@@ -267,11 +267,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 - 标准答案（可复述）：
   - ConversionService 更现代、更易组合且能感知类型描述；PropertyEditor 主要是历史兼容且常有状态，容易引入并发/复用问题。排障时要能在断点里确认这次到底走了哪条分支。
 
-## 一句话自检
-
-- 你能解释清楚：BeanDefinition 的 value 解析发生在创建阶段的哪一步吗？（提示：applyPropertyValues → value resolver → BeanWrapper）
-- 你能区分：这是“引用解析”（`RuntimeBeanReference`）还是“字符串转换”（`TypedStringValue` → convert）吗？
-- 你遇到“属性注入值不对/转换失败/引用解析失败”时，能否用 3 个断点把问题固定在“解析 vs 转换 vs 赋值”的哪一段？
+## 自检要点
+- 应能够解释清楚：BeanDefinition 的 value 解析发生在创建阶段的哪一步吗？（提示：applyPropertyValues → value resolver → BeanWrapper）
+- 应能够区分：这是“引用解析”（`RuntimeBeanReference`）还是“字符串转换”（`TypedStringValue` → convert）吗？
+- 遇到“属性注入值不对/转换失败/引用解析失败”时，能否用 3 个断点把问题固定在“解析 vs 转换 vs 赋值”的哪一段？
 
 ## 小结与下一章
 
@@ -285,6 +284,6 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
 
-上一章：[49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀](49-built-in-factorybeans-gallery.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90. 常见坑清单（建议反复对照）](../appendix/025-90-common-pitfalls.md)
+上一章：[49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀](49-built-in-factorybeans-gallery.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90. 常见误区清单（建议反复对照）](../appendix/025-90-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

@@ -23,7 +23,7 @@
 
     - 注册阶段的第一性对象是 `BeanDefinition`，不是实例。
     - 创建阶段的主线是 `doCreateBean`：实例化 → 注入（populate）→ 初始化（initialize）→ 产出最终暴露对象。
-    - `getBean()` 拿到的是“最终暴露对象”，它可能不是你写的那个类的原始实例（可能是 proxy/wrapper）。
+    - `getBean()` 拿到的是“最终暴露对象”，它可能不是编写的那个类的原始实例（可能是 proxy/wrapper）。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -38,7 +38,7 @@
 
 ## 机制主线：三层模型 + 一个“最终对象”概念
 
-把容器理解成三层（这是你后面所有排障的基础）：
+把容器理解成三层（这是读者后面所有排障的基础）：
 
 1) **输入层（inputs）**：注解、`@Bean`、`@Import`、XML、programmatic 注册……
 2) **定义层（definitions）**：解析输入并注册 `BeanDefinition`（“怎么造”的配方与元数据）
@@ -48,7 +48,7 @@
 
 4) **最终暴露对象（exposed object）**：容器对外返回的对象（`getBean()`/注入点拿到的对象），它可能在多个阶段被替换/包装成 proxy。
 
-> 你真正要背进肌肉记忆的一句话：
+> 读者真正要背进肌肉记忆的一句话：
 > **定义层回答“有没有/谁注册的/配方是什么”，实例层回答“什么时候创建/注入选了谁/最终是不是 proxy”。**
 
 ### 机制讲透：三层模型 + 最终对象（条件 → 分支 → 结果）
@@ -60,9 +60,9 @@
 - 进入 early reference → 最终对象可能不是 raw instance  
 **断点建议**：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
-## 1. 四类对象一张表：你到底在看什么？
+## 1. 四类对象一张表：读者到底在看什么？
 
-| 你在调试器里看到的对象 | 它代表什么 | 最直接 API/入口 | 你通常用它回答什么问题 |
+| 在调试器里看到的对象 | 它代表什么 | 最直接 API/入口 | 读者通常用它回答什么问题 |
 | --- | --- | --- | --- |
 | `BeanDefinition` | 原始定义（配方） | `BeanFactory#getBeanDefinition(beanName)` | “到底有没有注册？谁注册的？scope/lazy/dependsOn 是什么？” |
 | merged `RootBeanDefinition` | 最终生效配方 | `AbstractBeanFactory#getMergedLocalBeanDefinition(beanName)` | “为什么最终是 Root？parent 合并后哪些元数据生效？” |
@@ -71,7 +71,7 @@
 
 ## 2. 方法级主线：refresh → doCreateBean → 最终暴露对象
 
-> 目标：你不需要背全流程，但要能说出“关键窗口在哪、证据链在哪”。
+> 目标：无需背全流程，但要能说出“关键窗口在哪、证据链在哪”。
 
 refresh 的骨架（只保留与本章相关的关键节点）：
 
@@ -97,7 +97,7 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 ## 可复现闭环（基于 `SpringCoreBeansBeanCreationTraceLabTest`）
 
-跑完该 Lab，你至少要能复述 3 条结论：
+跑完该 Lab，至少应能够复述 3 条结论：
 
 1) **raw instance 与最终暴露对象可能不同**  
    - 断点：`applyBeanPostProcessorsAfterInitialization`  
@@ -126,7 +126,7 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 | --- | --- | --- | --- | --- |
 | `NoSuchBeanDefinitionException` | 定义层 | `containsBeanDefinition` / `getBeanDefinition` 是否存在 | 根本没注册；或条件未满足/被排除 | 回到注册入口与条件：见 [02](02-bean-registration.md)、[21](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) |
 | 注入报 `NoUniqueBeanDefinitionException` | 实例层（依赖解析） | `doResolveDependency`→`findAutowireCandidates`→`determineAutowireCandidate` | 候选太多且没收敛信号 | 用 `@Qualifier/@Primary` 收敛；或让 auto-config back-off（见 [03](014-03-dependency-injection-resolution.md)、[33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)） |
-| 你以为拿到原对象但行为像 proxy | 实例层（最终暴露对象） | `applyBeanPostProcessorsAfterInitialization` 里 `result != bean` | after-init BPP 替换了对象 | 追到具体 BPP，再回看其注册顺序与触发条件（见 [31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)） |
+| 容易误以为拿到原对象但行为像 proxy | 实例层（最终暴露对象） | `applyBeanPostProcessorsAfterInitialization` 里 `result != bean` | after-init BPP 替换了对象 | 追到具体 BPP，再回看其注册顺序与触发条件（见 [31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)） |
 | “明明写了 @Bean，但容器里没有” | 定义层（注解基础设施） | `ConfigurationClassPostProcessor` 是否存在并执行 | 没装 annotation processors / 配置类没被解析 | 先把注解基础设施装起来（见 [22](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)） |
 
 ## 5. 面试常问（标准答案 + 方法级证据链）
@@ -155,18 +155,18 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 - 最小复现：
   - `SpringCoreBeansBeanFactoryVsApplicationContextLabTest`
 
-## 6. 一句话自检
+## 6. 自检要点
 
-你应该能用 3 句说明白：
+应能够用 3 句说明白：
 
 1) 为什么说“注册 bean”注册的第一性对象是 BeanDefinition？
 2) 为什么 `getBean()` 拿到的不一定是原始实例？（在哪 3 个阶段可能被替换）
-3) 看到一个异常时，你如何先分层到定义层/实例层，并给出第一个断点入口？
+3) 看到一个异常时，如何先分层到定义层/实例层，并给出第一个断点入口？
 
 ## 小结与下一章
 
 - 本章把 Bean 的最小心智模型固定成“四个对象”：BeanDefinition / merged RootBeanDefinition / raw instance / exposed object。
-- 下一章开始进入 Boot 的自动装配：你会看到“定义层”的复杂度显著上升，但排障方法论不变（先分层，再证据链）。
+- 下一章开始进入 Boot 的自动装配：可以观察到“定义层”的复杂度显著上升，但排障方法论不变（先分层，再证据链）。
 
 <!-- BOOKIFY:START -->
 

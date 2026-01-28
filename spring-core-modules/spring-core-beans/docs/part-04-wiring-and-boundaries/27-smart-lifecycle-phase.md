@@ -51,7 +51,7 @@
 - 如果 BPP 把 bean 替换为 proxy（AOP 常见），start/stop 调用落在 **proxy** 上  
 - 如果没有替换，调用落在 **目标对象** 上  
 
-排障时请先确认：你看到的是哪种对象，避免误判“start 没执行”。
+排障时请先确认：观察到的是哪种对象，避免误判“start 没执行”。
 
 ## 1. 现象：start 按 phase 升序，stop 反向
 
@@ -60,12 +60,12 @@
 - A：phase=0
 - B：phase=1
 
-你会观察到：
+可以观察到：
 
 - refresh 时：`start:A` → `start:B`
 - close 时：`stop:B` → `stop:A`
 
-你还应该补齐两个“真实项目更常见”的边界：
+读者还应该补齐两个“真实项目更常见”的边界：
 
 - **autoStartup=false**：refresh 不会自动 start（否则很多“为什么它启动就跑起来了”讲不清）
 - **stop(callback)**：容器为什么要 callback（否则 shutdown 可能卡住）
@@ -82,7 +82,7 @@
 - 在 refresh 阶段触发 `onRefresh()` → start
 - 在 close 阶段触发 `onClose()` → stop
 
-所以它不是“你手动调用 start/stop”，而是容器生命周期的一部分。
+所以它不是“读者手动调用 start/stop”，而是容器生命周期的一部分。
 
 - `AbstractApplicationContext#finishRefresh`：refresh 收尾阶段（触发 `LifecycleProcessor#onRefresh`）
 - `LifecycleProcessor#onRefresh`：生命周期统一入口（默认实现是 `DefaultLifecycleProcessor`）
@@ -139,7 +139,7 @@
 
 - `SpringCoreBeansSmartLifecycleLabTest.smartLifecycleStartsInPhaseOrder_andStopsInReverseOrder()`
 
-实验里我们注册了两个 lifecycle：
+该实验中注册了两个 lifecycle：
 
 ## 源码锚点（建议从这里下断点）
 
@@ -156,23 +156,23 @@
 建议断点：
 
 1) `DefaultLifecycleProcessor#startBeans`：观察 start 为什么按 phase 升序
-2) `SmartLifecycle#start`（你在 Lab 里的实现）：观察实际 start 调用顺序（A → B）
+2) `SmartLifecycle#start`（在 Lab 里的实现）：观察实际 start 调用顺序（A → B）
 3) `DefaultLifecycleProcessor#stopBeans`：观察 stop 为什么按 phase 反序
 4) `SmartLifecycle#stop` / `stop(Runnable)`：观察容器为什么需要 callback（否则可能卡关闭）
 
-- 你能解释清楚：为什么 stop 顺序是反向的吗？（提示：避免先停掉依赖者）
+- 应能够解释清楚：为什么 stop 顺序是反向的吗？（提示：避免先停掉依赖者）
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartLifecycleLabTest.java`
 推荐断点：`DefaultLifecycleProcessor#startBeans`、`DefaultLifecycleProcessor#stopBeans`、`SmartLifecycle#start`
 
-## 常见坑与边界
+## 常见误区与边界
 
-### 常见坑
+### 常见误区
 
-- **坑 1：把 SmartLifecycle 当成业务逻辑入口**
+- **误区 1：把 SmartLifecycle 当成业务逻辑入口**
   - 它更像基础设施启动/停止钩子。
 
-- **坑 2：stop(Runnable) 不调用 callback**
-  - 容器会等待 callback，用于支持异步 stop；如果你不调用 callback，关闭可能卡住。
+- **误区 2：stop(Runnable) 不调用 callback**
+  - 容器会等待 callback，用于支持异步 stop；若不调用 callback，关闭可能卡住。
 
 ## 小结与下一章
 

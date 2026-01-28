@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -45,7 +45,7 @@
 
 ## 2. alias 在容器里的定位
 
-你可以把 alias 理解为：
+可以把 alias 理解为：
 
 - 从 `aliasName` 映射到 `primaryName`
 - 最终仍然是“同一个 beanDefinition/同一个 singleton instance”
@@ -82,7 +82,7 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansBeanNameAliasLabTest`）
 
-跑完该 Lab，你至少要能复述 3 条结论：
+跑完该 Lab，至少应能够复述 3 条结论：
 
 1) **alias 只做名字映射**  
    - 断点：`canonicalName`  
@@ -131,7 +131,7 @@
 
 - `SpringCoreBeansBeanNameAliasLabTest.aliasResolvesToSameSingletonInstanceAsCanonicalName()`
 
-实验里我们：
+该实验中：
 
 ## 源码锚点（建议从这里下断点）
 
@@ -148,18 +148,18 @@
 
 建议断点：
 
-- 你能解释清楚：alias 解决的是什么问题？（更灵活的名称入口，而不是复制对象）
+- 应能够解释清楚：alias 解决的是什么问题？（更灵活的名称入口，而不是复制对象）
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanNameAliasLabTest.java`
 推荐断点：`DefaultListableBeanFactory#registerAlias`、`DefaultListableBeanFactory#canonicalName`、`AbstractBeanFactory#doGetBean`
 
-## 常见坑与边界
+## 常见误区与边界
 
-### 常见坑
+### 常见误区
 
-- **坑 1：alias 冲突**
+- **误区 1：alias 冲突**
   - alias 不能随意复用，否则会导致覆盖/异常（取决于容器设置）。
 
-- **坑 2：alias 不会改变类型**
+- **误区 2：alias 不会改变类型**
   - alias 只是名字；它不改变注入规则、不改变 `@Primary`/`@Qualifier` 的语义。
 
 ## 小结与下一章

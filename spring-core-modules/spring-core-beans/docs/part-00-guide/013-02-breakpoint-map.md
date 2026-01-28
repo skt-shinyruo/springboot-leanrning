@@ -21,10 +21,10 @@
 !!! summary "本章要点"
 
     - 容器排障的第一原则：**先证明“发生在 refresh 的哪一段”**（定义注册 / PP 执行 / 单例创建 / 初始化 / 代理替换）。
-    - 你想看清的通常不是“某个注解怎么用”，而是：
+    - 若希望看清的通常不是“某个注解怎么用”，而是：
       1. **数据结构在哪里被写入**（registry / beanDefinitionMap / singletonObjects）
       2. **哪个分支决定了后续行为**（排序 / 短路 / early reference / candidate 收敛）
-      3. **你拿到的对象到底是谁**（raw instance vs proxy）
+      3. **读者拿到的对象到底是谁**（raw instance vs proxy）
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -104,7 +104,7 @@
 - 观察点：
   - `wrappedBean` 与 `bean` 是否发生替换（proxying）
 - 决定性分支：
-  - `postProcessAfterInitialization` 是否返回代理（这通常决定“你最终拿到的对象是谁”）
+  - `postProcessAfterInitialization` 是否返回代理（这通常决定“读者最终拿到的对象是谁”）
 
 ## 阶段内关键对象变化（断点地图补充）
 
@@ -119,7 +119,7 @@
 
 ## 主线高频分支最小集（断点地图版）
 
-你不需要记住所有分支，但必须能“看见”这 5 个最常见的分支触发点：
+无需记住所有分支，但必须能“看见”这 5 个最常见的分支触发点：
 
 1) **singleton vs prototype**：`AbstractBeanFactory#doGetBean` → `mbd.isPrototype()`  
 2) **dependsOn 强制顺序**：`AbstractBeanFactory#getBean` → `mbd.getDependsOn()`  
@@ -153,7 +153,7 @@
 - `autowiredBeanName`（最终候选是否收敛成功）  
 **结论**：如果 Qualifier 未参与收敛，优先检查注入点是否被 `AutowiredAnnotationBeanPostProcessor` 正确解析。
 
-## 常见坑与边界
+## 常见误区与边界
 
 - 只盯某个注解：建议先把“发生在 refresh 的哪一段”确定下来（C1-C7）。
 - 把 proxy 当成原始对象：建议在 `applyBeanPostProcessorsAfterInitialization` 处观察 `wrappedBean` 替换点。
@@ -178,7 +178,7 @@
 
 ## 面试怎么用（把断点地图变成“证据链话术”）
 
-面试里你不需要“背源码”，但你需要能说清：
+面试里无需“背源码”，但需要能说清：
 
 1) 我会在哪个阶段下断点（refresh 哪一段）
 2) 我在断点里看哪 3 个变量就能下结论
@@ -186,9 +186,8 @@
 
 推荐复习入口：`appendix/93-interview-playbook.md` / `appendix/98-debugger-pack.md`
 
-## 一句话自检
-
-你应该能做到：
+## 自检要点
+应能够做到：
 
 1) 说出 refresh 主线、依赖解析、bean 创建、单例缓存、BPP 代理这五类问题各自的“第一断点”。
 2) 解释为什么“断点 + watch list”比“全局搜栈”更高效。

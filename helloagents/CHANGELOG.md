@@ -14,6 +14,7 @@
 - 删除仓库根 `scripts/` 目录（包含测试/运行快捷脚本与文档批处理脚本），并清理文档/知识库中的引用
 
 ### Changed
+- spring-core-beans：对 `spring-core-beans/docs` 全量书面化改写（去第二人称/俚语/口语化措辞），保持机制深度不变，提升文档可复述性与严谨性观感。
 - spring-core-beans：深化 Part-05（AOT/RuntimeHints/XML/SpEL/Qualifier/FactoryBean/值解析）与 Appendix（90/99/91–95），补齐“机制讲透 + 方法级调用链 + 排障/面试复述模板”的教程闭环。
 - spring-core-beans：在模块 README 与知识地图中新增“核心七件套”导航（概念 → 章节 → Lab），用于查漏与快速跳转
 - spring-core-beans：深化 `02-bean-registration.md`（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”

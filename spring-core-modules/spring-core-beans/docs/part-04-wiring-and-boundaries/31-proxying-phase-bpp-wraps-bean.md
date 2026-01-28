@@ -50,7 +50,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
    - `invokeInitMethods`
    - `applyBeanPostProcessorsAfterInitialization`  ← **最常见代理替换点**
 
-你在断点里只要盯住这一句，就能把“代理是否发生”变成可观测事实：
+在断点里只要盯住这一句，就能把“代理是否发生”变成可观测事实：
 
 - `result != bean` ⇒ 发生了替换（最终暴露对象已不是原对象）
 
@@ -63,7 +63,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 - `Proxy.isProxyClass(bean.getClass()) == true`
 - 只实现接口，不是目标类子类
 
-后果（高频坑）：
+后果（高频误区）：
 
 - 按接口注入/获取通常没问题
 - 按实现类注入/获取可能失败（`BeanNotOfRequiredTypeException` / `NoSuchBeanDefinitionException`）
@@ -82,7 +82,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 
 ## 3. self-invocation：为什么“看起来像配置问题”，本质是调用路径问题？
 
-当你从容器拿到的是 proxy：
+当从容器拿到的是 proxy：
 
 - 外部调用：`proxy.outer()` ⇒ 走代理 ⇒ 拦截器链生效
 - 内部自调用：`this.inner()` ⇒ 直接调用目标对象方法 ⇒ **不走代理** ⇒ 拦截器链不生效
@@ -97,7 +97,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 - 把被拦截的方法挪到另一个 bean，通过容器注入再调用（让调用从 proxy 进入）
 - 或者使用更明确的设计表达依赖关系（而不是在同类内部 `this.xxx()`）
 
-## 4. 你必须知道的“三个替换点”（pre / early / after-init）
+## 4. 必须知道的“三个替换点”（pre / early / after-init）
 
 很多排障会卡在这句误判上：
 
@@ -159,13 +159,12 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 - 标准答案（可复述）：
   - JDK proxy 只实现接口，不是目标类子类；CGLIB proxy 是子类（但受 final 限制）。所以按实现类注入在 JDK proxy 下更容易失败。
 
-## 一句话自检
-
-你应该能用 3 句回答：
+## 自检要点
+应能够用 3 句回答：
 
 1) 代理最常见在哪个方法级替换点产生？（提示：after-init BPP）
 2) 为什么 self-invocation 一定绕过代理？
-3) 你如何用断点证明“是谁把对象换成了 proxy”？
+3) 如何用断点证明“是谁把对象换成了 proxy”？
 
 <!-- BOOKIFY:START -->
 

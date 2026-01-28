@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -53,7 +53,7 @@
 - prototype 循环依赖直接 fail-fast（不会进单例缓存）  
 **断点建议**：`AbstractBeanFactory#doGetBean`（观察 `mbd.isPrototype()` 与 `isPrototypeCurrentlyInCreation`）
 
-## 2. 本模块里你能直接观察到的现象
+## 2. 本模块里应能够直接观察到的现象
 
 代码对应：
 
@@ -74,18 +74,18 @@
 
 容器创建 singleton 的时候，会把它的依赖也解析出来并注入进去。
 
-如果你把 prototype 当作一个普通依赖注入到 singleton 里，发生的是：
+若将 prototype 当作一个普通依赖注入到 singleton 里，发生的是：
 
 1) 创建 singleton A
 2) 解析到它需要 prototype P
 3) **创建一个 P 并注入到 A**
 4) A 从此持有这个 P 的引用（A 自己是单例）
 
-之后你再调用 A 的方法，当然一直是同一个 P 引用 —— 这不是 prototype “失效”，而是你**只向容器要过一次 P**。
+之后读者再调用 A 的方法，当然一直是同一个 P 引用 —— 这不是 prototype “失效”，而是读者**只向容器要过一次 P**。
 
 ## 4. 解决方案 1：`ObjectProvider`（推荐，简单有效）
 
-`ObjectProvider<T>` 让你把“获取对象的动作”推迟到方法调用时：
+`ObjectProvider<T>` 让读者把“获取对象的动作”推迟到方法调用时：
 
 - 注入的是 provider（可以理解为“容器句柄”）
 - 每次 `getObject()` 才真正向容器要一个实例
@@ -107,8 +107,8 @@
 
 适用场景：
 
-- 你希望“每次方法调用都获取一个新的 prototype”，但不想在业务代码里显式依赖 `ObjectProvider`
-- 你希望调用点保持简单（`consumer.next()`），由容器在运行时完成“按需取 bean”
+- 读者希望“每次方法调用都获取一个新的 prototype”，但不想在业务代码里显式依赖 `ObjectProvider`
+- 读者希望调用点保持简单（`consumer.next()`），由容器在运行时完成“按需取 bean”
 
 常见边界（必知）：
 
@@ -117,7 +117,7 @@
 
 ## 6. 解决方案 3：scoped proxy（谨慎使用）
 
-你可以把某个 scope 的 bean 包装成代理，然后把代理注入到 singleton：
+可以把某个 scope 的 bean 包装成代理，然后把代理注入到 singleton：
 
 - singleton 持有的是“代理”
 - 代理在每次方法调用时去当前 scope 找真实对象
@@ -136,12 +136,12 @@
 
 这一点在真实工程里非常关键，因为它决定了“资源释放责任在谁”：
 
-- prototype 更像是：**容器帮你 new，一次性交付**
+- prototype 更像是：**容器帮读者 new，一次性交付**
 - 而不是：**容器全程托管（创建 + 使用 + 销毁）**
 
 因此默认行为是：
 
-- 你向容器要一个 prototype → 容器负责创建（注入/初始化也照常发生）
+- 读者向容器要一个 prototype → 容器负责创建（注入/初始化也照常发生）
 - 但当容器关闭时 → **不会自动触发 prototype 的 destroy callbacks**
 
 这也是为什么很多人会困惑：
@@ -149,10 +149,10 @@
 - “我写了 `@PreDestroy` / `DisposableBean#destroy`，为什么 prototype 看起来不执行？”
   - 因为容器没有保存这些 prototype 实例的引用，无法在 close 时逐个回收
 
-你应该观察到：
+应当观察到：
 
 - `context.close()` 不会触发 prototype 的 `@PreDestroy`
-- 只有当你显式调用 `BeanFactory#destroyBean(...)`，才会触发 destroy callbacks（资源释放需要调用方负责）
+- 只有当读者显式调用 `BeanFactory#destroyBean(...)`，才会触发 destroy callbacks（资源释放需要调用方负责）
 
 ### 7.1 自定义 scope 的回收要点
 
@@ -162,12 +162,12 @@
 
 ### 7.2 排障提示：什么时候应该怀疑是 prototype 销毁语义问题？
 
-- 症状：连接/文件句柄/线程池等资源泄漏，但你确认 `@PreDestroy` 逻辑存在
+- 症状：连接/文件句柄/线程池等资源泄漏，但读者确认 `@PreDestroy` 逻辑存在
 - 排查：这个 bean 是否是 prototype？它的创建者（调用方）是否负责 close/destroy？
 
 ## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
 
-你至少要能用 3 个断言讲清楚本章主线：
+至少应能够用 3 个断言讲清楚本章主线：
 
 1) **prototype 注入 singleton 会“冻结为同一个实例”**  
    - 断点：`doResolveDependency` → `doGetBean("prototypeBean")`  
@@ -217,7 +217,7 @@
 
 ## 10. 练习与参考答案（Exercise ↔ Solution）
 
-如果你想把“现象 → 原理 → 断点 → 代码改造”做成闭环，可以对照下面两份测试：
+若想把“现象 → 原理 → 断点 → 代码改造”做成闭环，可以对照下面两份测试：
 
 - Exercise（默认 `@Disabled`，自己动手改造）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java`
@@ -253,17 +253,17 @@
 - 最小复现：
   - `SpringCoreBeansPrototypeDestroySemanticsLabTest`
 
-## 12. 一句话自检
+## 12. 自检要点
 
-读完这一章你应该能回答：
+读完这一章应能够回答：
 
 1) prototype 的第一性语义是什么？（每次 resolve/getBean 都新建）
 2) 为什么“prototype 注入 singleton”会冻结？（获取动作只发生一次）
-3) 你会用哪条证据链证明 provider/lookup 把获取动作推迟到了“使用时”？
+3) 可以用哪条证据链证明 provider/lookup 把获取动作推迟到了“使用时”？
 
 ## 小结与下一章
 
-下一章我们把 scope 与生命周期合起来讲：什么时候创建、什么时候初始化、什么时候销毁（以及回调顺序）。如果你已经开始关心“销毁回调顺序/触发者”，可以直接跳到下一章 [05](016-05-lifecycle-and-callbacks.md)。
+下一章将把 scope 与生命周期合起来讲：什么时候创建、什么时候初始化、什么时候销毁（以及回调顺序）。若已经开始关心“销毁回调顺序/触发者”，可以直接跳到下一章 [05](016-05-lifecycle-and-callbacks.md)。
 
 <!-- BOOKIFY:START -->
 

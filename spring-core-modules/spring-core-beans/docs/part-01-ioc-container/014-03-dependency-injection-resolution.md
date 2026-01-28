@@ -20,9 +20,9 @@
 
 !!! summary "本章要点"
 
-    - 你写下 `private final X x;` 时，Spring 做的不是“按类型找一个就行”，而是：**先收集候选（by type），再用一套规则缩小候选（by qualifier/primary/priority/name…）**。
+    - 读者写下 `private final X x;` 时，Spring 做的不是“按类型找一个就行”，而是：**先收集候选（by type），再用一套规则缩小候选（by qualifier/primary/priority/name…）**。
     - `@Order` 管的是“集合注入怎么排”，不是“单依赖注入选谁”。单依赖选谁主要看 `@Primary/@Qualifier`，必要时才用 `@Priority` 做 tie-break。
-    - 排障不要靠猜：在 `doResolveDependency(...)` 里盯住固定观察点（dependencyType / candidates / selectedName），你就能解释“为什么注入的是它/为什么失败”。
+    - 排障不要靠猜：在 `doResolveDependency(...)` 里盯住固定观察点（dependencyType / candidates / selectedName），即可解释“为什么注入的是它/为什么失败”。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -31,25 +31,25 @@
 
 ## 机制主线：候选收集 → 候选收敛 → 最终注入
 
-这一章回答一个非常具体的问题：**当你写下 `private final X x;`，Spring 到底是怎么找到并注入那个 `X` 的？**
+这一章回答一个非常具体的问题：**当读者写下 `private final X x;`，Spring 到底是怎么找到并注入那个 `X` 的？**
 
-把所有注入失败先分成两类（你在真实项目里 90% 的时间都在处理它们）：
+把所有注入失败先分成两类（在真实项目里 90% 的时间都在处理它们）：
 
 1) **没有候选**（`NoSuchBeanDefinitionException`）
 2) **候选太多缩不下来**（`NoUniqueBeanDefinitionException`）
 
-> 经验规则：不要在注入点上“赌 Spring 会选对”。如果候选>1 且你没有写清楚规则，Spring 选择失败是一个非常好的保护。
+> 经验规则：不要在注入点上“赌 Spring 会选对”。如果候选>1 且读者没有写清楚规则，Spring 选择失败是一个非常好的保护。
 
 ### 0.1 DependencyDescriptor 深挖：注入点到底“要什么”？
 
-`DependencyDescriptor` 是依赖解析的真正“需求描述”，你能否解释它，决定了你能否解释“为什么注入的是它”。重点看这些字段：
+`DependencyDescriptor` 是依赖解析的真正“需求描述”，应能够否解释它，决定了应能够否解释“为什么注入的是它”。重点看这些字段：
 
 - `required`：是否必须（`@Autowired(required=false)` / Optional 影响这里）
 - `annotations`：`@Qualifier/@Value/@Lazy` 等都会在这里被解析
 - `resolvableType`：泛型信息（`Handler<String>` vs `Handler<Long>`）会影响候选匹配
 - `dependencyName`：字段名/参数名（用于 by-name fallback）
 
-**两个对照注入点（你应该能解释差异）：**
+**两个对照注入点（应能够解释差异）：**
 
 1) 字段注入（依赖名可见）：  
    - `@Autowired private Worker secondaryWorker;`  
@@ -88,7 +88,7 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#findAutowireCandidates`
 
-你要建立的直觉是：**by type 的候选集合通常不小**，你需要先把它“看见”，再谈“为什么最终选中它”。
+需要建立的直觉是：**by type 的候选集合通常不小**，需要先把它“看见”，再谈“为什么最终选中它”。
 
 ### 2.0 依赖解析分支树（全链路视角）
 
@@ -115,14 +115,14 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 - **值注入（@Value / 占位符 / SpEL）**：从 resolver 拿到 suggested value 后直接 `convertIfNecessary`（不会走“按类型找候选”）。
 - **集合/流/Provider 通道**：`List/Map/Stream/ObjectProvider/Optional` 会走 `resolveMultipleBeans(...)`，它解决的是“收集全部”，不是“选唯一”。
 
-> 排障提示：你在断点里没看到候选集合变化时，先问自己：是不是命中这些早返回分支了？
+> 排障提示：在断点里没看到候选集合变化时，先问自己：是不是命中这些早返回分支了？
 
-### 2.2 你需要关注的第一个变量：`matchingBeans` / `candidates`
+### 2.2 需要关注的第一个变量：`matchingBeans` / `candidates`
 
 - `findAutowireCandidates(...)` 的结果通常是 `Map<String, Object>`（beanName → candidate instance / type holder）
-- 你不需要先看实例，先看 `matchingBeans.keySet()`：**候选 beanName 到底有哪些？**
+- 无需先看实例，先看 `matchingBeans.keySet()`：**候选 beanName 到底有哪些？**
 
-这一步就足够你回答：
+这一步就足够读者回答：
 
 - “容器里到底有哪些同类型实现？”
 - “是不是某个 auto-config/扫描把我没预期的 bean 也注册进来了？”
@@ -147,7 +147,7 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 
 - `DefaultListableBeanFactory#determineAutowireCandidate`
 
-你要建立的直觉是：**收敛不是一个 if，而是一套有先后顺序的规则**。
+需要建立的直觉是：**收敛不是一个 if，而是一套有先后顺序的规则**。
 
 ### 3.1 一个足够贴近断点观察的“决策树”（不追求逐行一致，但足够排障）
 
@@ -175,7 +175,7 @@ determineAutowireCandidate(candidates, descriptor):
   throw NoUniqueBeanDefinitionException
 ```
 
-你不需要背源码，但你应该能在断点里验证：
+无需背源码，但应能够在断点里验证：
 
 - 候选集合为什么是这些（collect）
 - 哪个规则把候选收敛到 1 个（narrow down）
@@ -185,7 +185,7 @@ determineAutowireCandidate(candidates, descriptor):
 - `@Qualifier("xxx")` 的意义是“候选必须匹配这个 qualifier 条件”
 - 它不是“把 bean 改名为 xxx”
 
-你在断点里应该能观察到：
+在断点里应该能观察到：
 
 - 注入点上的 qualifier（`descriptor.getAnnotations()`）
 - `autowireCandidateResolver.isAutowireCandidate(...)` 过滤后的候选集合
@@ -204,13 +204,13 @@ determineAutowireCandidate(candidates, descriptor):
 - 给默认实现加 `@Primary`
 - 对“非默认实现”的注入点显式加 `@Qualifier`
 
-### 3.4 `@Priority` vs `@Order`：你必须把边界说清楚
+### 3.4 `@Priority` vs `@Order`：必须把边界说清楚
 
 - `@Order`：影响 **集合注入**（`List/Stream`）的排序
 - `@Primary/@Qualifier`：影响 **单依赖注入** “选谁”
 - `@Priority`：在某些“单依赖 tie-break”场景会参与（但它不是第一优先级，且不能替代 `@Primary/@Qualifier`）
 
-反例（你应该能解释并用 Lab 验证）：
+反例（应能够解释并用 Lab 验证）：
 
 > 我给 bean 加了 `@Order(1)`，以为就会优先被注入到单个依赖里，但依然 `NoUnique`。
 
@@ -241,7 +241,7 @@ static class SingleWorkerConsumer {
 - `@Autowired` 更偏 type-first（然后再收敛）
 - `@Resource` 更偏 name-first（再退回到 type）
 
-如果你在项目里见过“字段名改了，注入就变了/就坏了”，通常是 `@Resource` 的 name-first 语义触发。
+若在项目里见过“字段名改了，注入就变了/就坏了”，通常是 `@Resource` 的 name-first 语义触发。
 
 详见：[32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](../part-04-wiring-and-boundaries/32-resource-injection-name-first.md)
 
@@ -258,7 +258,7 @@ static class SingleWorkerConsumer {
 
 ## 4. 可选依赖与延迟解析：Optional / required=false / ObjectProvider
 
-当你希望“没有这个 bean 也能启动”，你需要明确告诉容器：**这个依赖不是强依赖**。
+当读者希望“没有这个 bean 也能启动”，需要明确告诉容器：**这个依赖不是强依赖**。
 
 ### 4.1 可选依赖：三种常见写法
 
@@ -270,7 +270,7 @@ static class SingleWorkerConsumer {
    - 适合：显式表达“可选”，比 `null` 更安全
 3) `@Nullable`（对参数/字段标注“可为 null”）
    - 缺失时：允许注入 `null`
-   - 适合：你不想引入 Optional，但能接受空值语义
+   - 适合：读者不想引入 Optional，但能接受空值语义
 
 对应实验（可运行 + 可断言）：
 
@@ -278,14 +278,14 @@ static class SingleWorkerConsumer {
 
 ### 4.2 延迟解析：`ObjectProvider<T>`（推荐的“可选 + 延迟”组合）
 
-当你不想“容器启动时就必须有这个 bean”，或者你希望每次都能获取“最新/新的实例”，可以用：
+当读者不想“容器启动时就必须有这个 bean”，或者读者希望每次都能获取“最新/新的实例”，可以用：
 
 - `ObjectProvider<T>`
 
 它表达的是：
 
-- 我不要求你立刻注入一个具体对象
-- 我要求你给我一个“将来可以向容器要对象”的入口
+- 我不要求读者立刻注入一个具体对象
+- 我要求读者给我一个“将来可以向容器要对象”的入口
 
 它对 prototype 注入 singleton 尤其重要，[04 章](015-04-scope-and-prototype.md)会详细解释。
 
@@ -293,7 +293,7 @@ static class SingleWorkerConsumer {
 
 ## 5. JSR-330 对照：`@Inject` / `@Named` / `Provider<T>`
 
-Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但你需要把它与 Spring 的注入语义对齐理解：
+Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 Spring 的注入语义对齐理解：
 
 - `@Inject` ≈ `@Autowired`（默认 required=true）
   - JSR-330 的 `@Inject` **没有** `required=false` 属性；想表达“可选”通常用 `Provider<T>` / `Optional<T>`
@@ -313,7 +313,7 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但你需要把它�
 
 ### 6.1 最短调用链（两条入口最终汇合到 doResolveDependency）
 
-你在 IDE 里最常见的两个入口：
+在 IDE 里最常见的两个入口：
 
 1) field/method 注入入口（属性填充阶段）
    - `AutowiredAnnotationBeanPostProcessor#postProcessProperties`
@@ -327,7 +327,7 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但你需要把它�
     - `findAutowireCandidates(...)`：候选收集（collect）
       - `determineAutowireCandidate(...)`：候选收敛（narrow down）
 
-### 6.2 固定观察点（watch list）：你每次都只看这几项
+### 6.2 固定观察点（watch list）：读者每次都只看这几项
 
 在 `doResolveDependency(...)` 里 watch/evaluate：
 
@@ -391,11 +391,11 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但你需要把它�
 
 ## 面试常问（依赖注入解析）
 
-1) **为什么会 NoSuch / NoUnique？你怎么用“证据链”解释？**
+1) **为什么会 NoSuch / NoUnique？如何用“证据链”解释？**
    - 要点：先收集候选（by type）→ 再收敛（primary/qualifier/name/priority…）→ 最终注入；NoSuch 是“候选为空”，NoUnique 是“候选>1 且缩不下来”。
    - 证据链：`doResolveDependency` → `findAutowireCandidates` → `determineAutowireCandidate`；观察 `matchingBeans.keySet()`、`dependencyName`、`primaryCandidate`。
 
-2) **`@Primary` / `@Qualifier` / by-name fallback 的边界你怎么讲？**
+2) **`@Primary` / `@Qualifier` / by-name fallback 的边界如何讲？**
    - 要点：`@Qualifier` 是精确收敛；`@Primary` 是默认实现；by-name fallback 只在特定条件下参与收敛（容易误判）。
    - 证据链：同上，重点看 `descriptor.getDependencyName()` 与候选集合的变化。
 
@@ -405,13 +405,12 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但你需要把它�
 
 推荐复习入口：`appendix/93-interview-playbook.md`（Q2/Q3）。
 
-## 一句话自检
-
-你应该能用 3 句复述：
+## 自检要点
+应能够用 3 句复述：
 
 1) 当候选不止一个时，Spring 的“候选收集→候选收敛→最终注入”主线分别在哪个方法里发生？
 2) 单依赖注入里 `@Order` 为什么不生效？真正决定单依赖选择的是哪些信号？
-3) 你如何在 `doResolveDependency` 里用 3 个变量解释“为什么注入的是它/为什么失败”？
+3) 如何在 `doResolveDependency` 里用 3 个变量解释“为什么注入的是它/为什么失败”？
 
 <!-- BOOKIFY:START -->
 

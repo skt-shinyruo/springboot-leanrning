@@ -3,13 +3,13 @@
 ## 导读
 
 - 本章主题：**面试复述模板：用“证据链”回答 Spring IoC**
-- 阅读方式建议：把本章当作“可复习题库”。每道题都给出：一句话结论 → 关键证据链（方法/数据结构）→ 对应 Lab。你不靠背诵，而靠“能跑能断点”拿分。
+- 阅读方式建议：把本章当作“可复习题库”。每道题都给出：一句话结论 → 关键证据链（方法/数据结构）→ 对应 Lab。读者不靠背诵，而靠“能跑能断点”拿分。
 
 !!! summary "本章要点"
 
-    - 绝大多数 IoC 面试题不是考 API，而是考：你能不能把“概念”落到 **refresh 主线 + 关键分支 + 数据结构**。
+    - 绝大多数 IoC 面试题不是考 API，而是考：应能够不能把“概念”落到 **refresh 主线 + 关键分支 + 数据结构**。
     - 复述最常见扣分点：只有结论没有证据；只有名词没有时机；只会说“三级缓存”但说不清它解决了什么问题。
-    - 本章每题都给出“最小证据链入口”：你至少能说出 1 个关键方法 + 3 个观察点 + 1 个可运行 Lab。
+    - 本章每题都给出“最小证据链入口”：至少能够说出 1 个关键方法 + 3 个观察点 + 1 个可运行 Lab。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -17,9 +17,9 @@
 
 ## 机制主线：面试答题的“标准结构”
 
-推荐你用一个固定结构回答（不管题目问什么，都能套）：
+推荐读者用一个固定结构回答（不管题目问什么，都能套）：
 
-1) **一句话结论（What）**：你主张的结论是什么？
+1) **一句话结论（What）**：读者主张的结论是什么？
 2) **关键约束（When/Where）**：它发生在 refresh 的哪一段？为什么这个时机决定了行为？
 3) **证据链（Evidence）**：关键方法/关键分支/关键数据结构是什么？
 4) **可复现入口（Repro）**：本仓库哪个 Lab 能跑出这个现象？
@@ -41,7 +41,7 @@
 
 ## 1. 容器主线：refresh 到底干了什么？
 
-### Q1：`ApplicationContext#refresh` 的主线你能讲清楚吗？
+### Q1：`ApplicationContext#refresh` 的主线应能够讲清楚吗？
 
 - 一句话结论：refresh = 准备 BeanFactory → 定义层处理（BFPP/BDRPP）→ 注册 BPP 链 → 创建单例（doCreateBean）→ 完成与回调。
 - 证据链：
@@ -87,7 +87,7 @@
 
 ---
 
-## 3. 生命周期：初始化回调顺序你能讲到证据吗？
+## 3. 生命周期：初始化回调顺序应能够讲到证据吗？
 
 ### Q4：Aware/@PostConstruct/afterPropertiesSet/initMethod 的顺序？
 
@@ -234,7 +234,7 @@
 
 ### Q13：`Environment` 的属性优先级是什么？为什么“后改环境”不一定影响已创建的 bean？
 
-- 一句话结论：Environment 通过 PropertySources 的顺序解析属性；**已创建的 bean 不会因为你后续修改 Environment 而自动重注入**，除非你让它延迟创建/重新创建。
+- 一句话结论：Environment 通过 PropertySources 的顺序解析属性；**已创建的 bean 不会因为读者后续修改 Environment 而自动重注入**，除非读者让它延迟创建/重新创建。
 - 证据链：
   - `ConfigurableEnvironment#getPropertySources`（优先级来源）
   - 值解析入口：`AbstractBeanFactory#resolveEmbeddedValue`
@@ -252,7 +252,7 @@
 
 ### Q14：`BeanFactory` 和 `ApplicationContext` 的关键差异是什么？为什么 plain BeanFactory 下“注解不生效”？
 
-- 一句话结论：`ApplicationContext` 会自动完成 BFPP/BDRPP/BPP 的 bootstrap；plain `DefaultListableBeanFactory` 只是内核，不会自动“让注解生效”，除非你手动注册/执行相关处理器。
+- 一句话结论：`ApplicationContext` 会自动完成 BFPP/BDRPP/BPP 的 bootstrap；plain `DefaultListableBeanFactory` 只是内核，不会自动“让注解生效”，除非读者手动注册/执行相关处理器。
 - 证据链：
   - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
@@ -268,7 +268,7 @@
 
 ## 12. AOT / RuntimeHints：为什么“JVM 能跑”不等于“Native 能跑”？
 
-### Q15：RuntimeHints 解决什么问题？你如何用证据链证明“没注册就不会命中”？
+### Q15：RuntimeHints 解决什么问题？如何用证据链证明“没注册就不会命中”？
 
 - 一句话结论：AOT/Native 需要把“运行期反射/资源访问等动态行为”变成构建期可知契约；RuntimeHints 就是这份契约的一部分。
 - 证据链：
@@ -314,9 +314,8 @@
 
 ---
 
-## 一句话自检
-
-你应该能做到：
+## 自检要点
+应能够做到：
 
 1) 任意挑一题，说出 1 个关键方法名 + 3 个 watch list + 1 个对应 Lab。
 2) 把“名词”翻译成“时机”：BFPP/BDRPP/BPP 分别发生在哪一段？
@@ -324,14 +323,14 @@
 
 ## 证据链 ≈ 调用链：面试里如何落到“方法级”
 
-这份 Playbook 里每题都写了“证据链”，但你在面试里输出时，建议把它明确说成“调用链”（因为更具象）：
+这份 Playbook 里每题都写了“证据链”，但在面试里输出时，建议把它明确说成“调用链”（因为更具象）：
 
 - 最小调用链写法（推荐 3 行以内）：
   1) 入口方法：我从哪个入口开始看（通常就是 LabTest 里最先命中的方法）。
   2) 关键分支：在哪个方法里做决定（候选收敛/early reference/代理替换/值解析）。
   3) 观察点：我看哪个变量/集合证明我的结论。
 
-如果你答题时能把这三行说出来，再补一个反例/坑，答案就会非常“像做过源码排障的人”。
+若答题时能把这三行说出来，再补一个反例/误区，答案就会非常“像做过源码排障的人”。
 
 <!-- BOOKIFY:START -->
 

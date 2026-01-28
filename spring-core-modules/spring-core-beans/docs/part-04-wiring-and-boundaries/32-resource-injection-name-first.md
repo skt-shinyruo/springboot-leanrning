@@ -9,7 +9,7 @@
 
     - `@Resource` 不是 “另一个 @Autowired”。它更像：**先按 name 找（字段名/显式 name），必要时才按 type 兜底**。
     - `@Resource` 能工作，前提是容器里安装了 `CommonAnnotationBeanPostProcessor`（JSR-250/Jakarta 注解处理器）。没装处理器，注解就只是“写在代码上的字”。
-    - name-first 的代价也很明确：**重构字段名/beanName/alias** 时更容易产生隐性回归；当你想要“按类型 + 候选规则”时，应切回 `@Autowired + @Qualifier/@Primary`。
+    - name-first 的代价也很明确：**重构字段名/beanName/alias** 时更容易产生隐性回归；当需要要“按类型 + 候选规则”时，应切回 `@Autowired + @Qualifier/@Primary`。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -18,7 +18,7 @@
 
 ## 机制主线：`@Resource` 的三个关键事实
 
-当你在项目里看到 `@Resource`，先把它压缩成三句话（排障时非常省命）：
+当在项目里看到 `@Resource`，先把它压缩成三句话（排障时非常省命）：
 
 1) 它由 `CommonAnnotationBeanPostProcessor` 处理（不是 `AutowiredAnnotationBeanPostProcessor`）。
 2) 默认 name-first：不写 name 时，用 **字段名** 当 beanName。
@@ -41,7 +41,7 @@
 - 字段类型/泛型 → `requiredType` / `ResolvableType`
 - 该注入点是否为可选 → 决定 fallback 失败时是否抛错
 
-所以当你看到“注入错了/注入不到”，第一步是确认 **name 与 type 的一致性**。
+所以当读者看到“注入错了/注入不到”，第一步是确认 **name 与 type 的一致性**。
 
 ## 依赖解析分支树（`@Resource` 专用简化版）
 
@@ -55,14 +55,14 @@
 
 - `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored`
 
-你会观察到两个稳定现象：
+可以观察到两个稳定现象：
 
 - 容器能正常 `refresh()`，目标 bean 也能创建出来
 - 但 `@Resource` 标注的字段是 `null`
 
 这不是 “@Resource 不稳定”，而是一个更底层的事实：
 
-> 注解不是语言层魔法。注入发生，是因为容器里有处理器（BPP）把“注解元数据”翻译成“实际赋值动作”。
+> 注解不是语言层隐式行为。注入发生，是因为容器里有处理器（BPP）把“注解元数据”翻译成“实际赋值动作”。
 
 对照阅读（注解为什么能工作）：
 - [12. 容器启动与基础设施处理器：为什么注解能工作？](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
@@ -79,7 +79,7 @@
 
 - `AnnotationConfigUtils.registerAnnotationConfigProcessors(context)`
 
-之后你会看到两个更关键的结论：
+之后可以观察到两个更关键的结论：
 
 1) `@Resource` 注入生效（字段有值）
 2) 即使容器里有多个同类型候选，默认 `@Resource` 仍然“稳定且可预测” —— 因为它先按字段名锁定 beanName
@@ -101,7 +101,7 @@
 2) `CommonAnnotationBeanPostProcessor#postProcessProperties`（扫描并执行 `@Resource` 注入）
 3) `CommonAnnotationBeanPostProcessor#autowireResource`（name-first 的分流入口：按 name 找不到时才考虑 fallback）
 
-只要你在这条链上走通一次，后面遇到 “@Resource 为什么没注入/注入错了” 都能快速定位。
+只要在这条链上走通一次，后面遇到 “@Resource 为什么没注入/注入错了” 都能快速定位。
 
 ---
 
@@ -117,7 +117,7 @@
 ### 4.2 固定观察点（watch list）
 
 - `field.getName()`：默认 resourceName（不写 name 时）
-- `resourceName`（如果你在 `autowireResource` 里）：最终用于查找的 beanName
+- `resourceName`（若在 `autowireResource` 里）：最终用于查找的 beanName
 - `beanFactory.containsBean(resourceName)`：name-first 能否命中
 - （当走 fallback 时）`requiredType`：兜底的类型是什么，是否会多候选
 
@@ -135,12 +135,12 @@
 
 ## 6. `@Resource` vs `@Autowired`：该用哪个？
 
-这不是“谁更好”，而是“你想让依赖关系由什么来约束”：
+这不是“谁更好”，而是“若希望让依赖关系由什么来约束”：
 
-- 你想 **按名称精确绑定**（确定就是那个 beanName）：
+- 若希望 **按名称精确绑定**（确定就是那个 beanName）：
   - `@Resource(name = "...")` 很直观
   - 代价：beanName/字段名重构更敏感
-- 你想 **按类型装配 + 候选规则收敛**（Primary/Qualifier/泛型收敛等）：
+- 若希望 **按类型装配 + 候选规则收敛**（Primary/Qualifier/泛型收敛等）：
   - 优先 `@Autowired + @Qualifier/@Primary`
 - 参见：[03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md)
 
@@ -156,7 +156,7 @@
 4) name-first 查找：内部 `autowireResource(...)` / `beanFactory.containsBean(resourceName)`
 5) fallback 到 type：当 name 未命中时，才会走“按类型解析”（因此可能出现多候选）
 
-你在断点里盯住 `resourceName` 与 `containsBean(resourceName)`，就能立刻判断自己处于 name-first 还是 fallback。
+在断点里盯住 `resourceName` 与 `containsBean(resourceName)`，就能立刻判断自己处于 name-first 还是 fallback。
 
 ## 面试常问（`@Resource` vs `@Autowired`）
 
@@ -178,9 +178,8 @@
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（是否注册了 CABPP）
   - 观察点：`beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`
 
-## 一句话自检
-
-你应该能用 2 句答题：
+## 自检要点
+应能够用 2 句答题：
 
 1) `@Resource` 为什么更像 name-first？（默认用字段名当 beanName；由 CommonAnnotationBeanPostProcessor 处理）
 2) 为什么在某些容器里它完全不生效？（没注册 annotation processors，注解无人处理）

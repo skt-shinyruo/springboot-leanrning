@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -18,7 +18,7 @@
 
 ## 机制主线
 
-这一章解决一个“你可能没在新项目里写过，但在读源码/排障时经常看到”的问题：
+这一章解决一个“读者可能没在新项目里写过，但在读源码/排障时经常看到”的问题：
 
 > **Spring beans 里的 replaced-method 是什么？它跟 AOP 有什么关系？它是怎么做到“改写方法实现”的？**
 
@@ -98,7 +98,7 @@
 
 ## 3. 原理：把现象放回容器主线（它发生在哪个阶段？）
 
-把它放回 beans 主线，你会更容易理解：
+把它放回 beans 主线，可以更容易理解：
 
 1) XML 被解析为 BeanDefinition（定义层）
 2) BeanDefinition 内部会携带一个 `MethodOverrides`（记录 lookup/replaced 的方法覆盖信息）
@@ -111,10 +111,10 @@
 
 ---
 
-### 4.1 关键对象（你至少要认识名字）
+### 4.1 关键对象（至少要认识名字）
 
 - `AbstractBeanDefinition#getMethodOverrides`：定义层里存放 method override 元数据
-- `MethodReplacer`：替换实现（你写的逻辑）
+- `MethodReplacer`：替换实现（编写的逻辑）
 - `InstantiationStrategy`：
   - 当存在 method overrides 时，Spring 会切到 method injection 的 instantiate 分支
 
@@ -151,8 +151,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 
 - `spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
 
-- 你想让某个 bean 的某个方法在运行时“由容器决定实现”，而不是固定写死在类里
-- 或者你需要一种“配置驱动的可插拔方法实现”（历史上在 XML 配置时代更常见）
+- 若希望让某个 bean 的某个方法在运行时“由容器决定实现”，而不是固定写死在类里
+- 或者需要一种“配置驱动的可插拔方法实现”（历史上在 XML 配置时代更常见）
 
 最小结构（本仓库已提供可运行版本）：
 
@@ -160,7 +160,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 2) 一个 `MethodReplacer` bean（提供替换实现）
 3) `<replaced-method name="..." replacer="..."/>`（把 method override 元数据写进 BeanDefinition）
 
-你运行 Lab 后应该能断言：
+读者运行 Lab 后应该能断言：
 
 - 目标方法的返回值来自 replacer（而不是原始实现）
 - 目标对象的 runtime class 为 enhanced class（证明子类化发生）
@@ -175,7 +175,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 3) `CglibSubclassingInstantiationStrategy#instantiateWithMethodInjection`：CGLIB 子类化实现点（“为什么必须是子类”）
 4) `MethodReplacer#reimplement`：替换逻辑真正执行点（最终证据）
 
-## 常见坑与边界
+## 常见误区与边界
 
 ### 常见边界与误区
 
@@ -184,7 +184,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 2) **边界：final class / final method**
    - CGLIB 子类化的天然限制：final 类/方法无法被覆盖。
 3) **误区：这在现代项目里没意义**
-   - 你可能不写，但你要能在排障时识别：某个对象为什么是 enhanced class、为什么方法行为“不像源码那样”。
+   - 读者可能不写，但应能够在排障时识别：某个对象为什么是 enhanced class、为什么方法行为“不像源码那样”。
 
 ## 面试常问（方法注入：replaced-method / MethodReplacer）
 
@@ -204,11 +204,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 - 标准答案（可复述）：
   - 因为它需要覆盖/拦截目标方法；final 类/方法无法被覆盖，子类化天然受限，因此这类场景会失败或无法生效。
 
-## 一句话自检
-
-- 你能解释清楚：replaced-method 属于 AOP 还是“实例化策略分支”？为什么？
-- 你能说出：它为什么必须依赖 CGLIB 子类化吗？final class/final method 会发生什么？
-- 你如何用断点证明：方法替换发生在 `createBeanInstance` 的哪个分支里，并最终落到 `MethodReplacer#reimplement`？
+## 自检要点
+- 应能够解释清楚：replaced-method 属于 AOP 还是“实例化策略分支”？为什么？
+- 应能够说出：它为什么必须依赖 CGLIB 子类化吗？final class/final method 会发生什么？
+- 如何用断点证明：方法替换发生在 `createBeanInstance` 的哪个分支里，并最终落到 `MethodReplacer#reimplement`？
 
 ## 小结与下一章
 
@@ -216,7 +215,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 - `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`（method injection 分支）
 - `SimpleInstantiationStrategy#instantiateWithMethodInjection`（策略抽象入口）
 - `CglibSubclassingInstantiationStrategy#instantiateWithMethodInjection`（CGLIB 子类化实现）
-- `MethodReplacer#reimplement`（你的替换逻辑被调用的点）
+- `MethodReplacer#reimplement`（相应的替换逻辑被调用的点）
 
 <!-- BOOKIFY:START -->
 

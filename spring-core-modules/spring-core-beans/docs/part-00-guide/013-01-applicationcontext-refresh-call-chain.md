@@ -21,7 +21,7 @@
 
 !!! summary "本章要点"
 
-    - 深挖 Beans 的第一要务不是背类名，而是建立**阶段感**：你要知道“我现在在看定义层（BeanDefinition）还是实例层（bean instance/proxy）”。
+    - 深挖 Beans 的第一要务不是背类名，而是建立**阶段感**：需要知道“我现在在看定义层（BeanDefinition）还是实例层（bean instance/proxy）”。
     - `refresh()` 里最值得先钉死的 3 个节点：**BFPP（改定义）**、**BPP（改实例/可能换代理）**、**单例预实例化（批量创建）**。
 
 !!! example "本章配套实验（先跑再读）"
@@ -30,7 +30,7 @@
 
 ## 主线伪代码（把 refresh 当成“时间线”读）
 
-你不需要一次性背完所有步骤，但你必须能把“关键阶段”按顺序复述出来（这样断点才打得准）。
+无需一次性背完所有步骤，但必须能把“关键阶段”按顺序复述出来（这样断点才打得准）。
 
 > 提示：本仓库的断点地图会把下面的关键节点转成“可复用断点清单”，见：[02：断点地图](013-02-breakpoint-map.md)。
 
@@ -48,7 +48,7 @@
 10. **`finishBeanFactoryInitialization(beanFactory)`：单例预实例化（会触发大量 bean 创建）**
 11. `finishRefresh()`：容器就绪（发布事件等）
 
-你可以把 5/6/10 当成“容器三段论”：
+可以把 5/6/10 当成“容器三段论”：
 
 - 第 5 段（改定义）：`BeanDefinition` 图被加工/补齐
 - 第 6 段（改实例）：`bean instance` 可能被增强/替换成 proxy
@@ -56,7 +56,7 @@
 
 ## 阶段内关键对象变化（断点可验证）
 
-这一段是为了让你“看得见阶段变化”，不是为了背概念：
+这一段是为了让读者“看得见阶段变化”，不是为了背概念：
 
 | 阶段 | 关键对象/数据结构变化 | 断点与观察点（最小够用） |
 | --- | --- | --- |
@@ -65,11 +65,11 @@
 | `registerBeanPostProcessors` | `beanPostProcessors` 列表按顺序最终定型 | `PostProcessorRegistrationDelegate#registerBeanPostProcessors`；观察 `beanFactory.getBeanPostProcessors().size()` |
 | `finishBeanFactoryInitialization` | 单例缓存开始被填充（`singletonObjects` / `earlySingletonObjects` / `singletonFactories`） | `DefaultListableBeanFactory#preInstantiateSingletons` / `DefaultSingletonBeanRegistry#getSingleton` |
 
-## 把调用链落到“你能下断点的锚点”
+## 把调用链落到“应能够下断点的锚点”
 
 ### 锚点 1：BFPP/BDRPP（改定义）——“注解为什么能生效？”
 
-当你在真实项目里看到这些症状：
+当在真实项目里看到这些症状：
 
 - `@Bean/@ComponentScan/@Import` 像没生效（BeanDefinition 不存在）
 - `@ConfigurationProperties` 等基础设施没装上
@@ -79,13 +79,13 @@
 - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
 - `ConfigurationClassPostProcessor#processConfigBeanDefinitions`
 
-因为你卡的往往是“定义层没有长出来/没加工完”，而不是“实例创建失败”。
+因为读者卡的往往是“定义层没有长出来/没加工完”，而不是“实例创建失败”。
 
 ### 锚点 2：BPP（改实例/换代理）——“为什么最终暴露的是 proxy？”
 
-当你看到：
+当读者看到：
 
-- 注入进来的 bean 不是你以为的类型（`AopUtils.isAopProxy(bean)` 为 true）
+- 注入进来的 bean 不是容易误以为的类型（`AopUtils.isAopProxy(bean)` 为 true）
 - AOP/Tx/Cache/Security “不生效”或“自调用绕过”
 
 优先把断点打在：
@@ -93,11 +93,11 @@
 - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
 - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
-你要观察的是：**`bean` → `result` 的第一次替换点**（什么时候从原对象变成 proxy）。
+需要观察的是：**`bean` → `result` 的第一次替换点**（什么时候从原对象变成 proxy）。
 
 ### 锚点 3：单例预实例化（批量创建）——“为什么启动就爆？”
 
-当你看到：
+当读者看到：
 
 - 应用启动阶段就报错（而不是第一次 `getBean` 才报错）
 - 循环依赖/类型转换/依赖注入歧义在启动期爆炸
@@ -110,7 +110,7 @@
 
 因为“启动期爆”几乎都意味着：**它是非 lazy 单例，且被预实例化触发了**。
 
-## 主线高频分支最小集（你必须能一眼定位）
+## 主线高频分支最小集（必须能一眼定位）
 
 `refresh()` 的主线其实不复杂，复杂的是分支。下面是最“高频且决定走向”的最小分支集：
 
@@ -132,7 +132,7 @@
 
 ## 排障分流（refresh 入口版）
 
-当你遇到“注入失败/代理不生效/循环依赖”等现象时，不要从异常栈顶开始迷路，先用 refresh 主线把它归位：
+当遇到“注入失败/代理不生效/循环依赖”等现象时，不要从异常栈顶开始迷路，先用 refresh 主线把它归位：
 
 1) **定义层（BFPP/BDRPP）**：`invokeBeanFactoryPostProcessors`
 2) **注册 BPP 链**：`registerBeanPostProcessors`
@@ -142,7 +142,7 @@
 
 ## 证据链样例（现象 → 断点 → 变量 → 结论）
 
-**现象**：AOP/事务“不生效”，你拿到的对象不是代理（或代理缺少拦截器）  
+**现象**：AOP/事务“不生效”，读者拿到的对象不是代理（或代理缺少拦截器）  
 **断点**：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` → `AbstractBeanFactory#doGetBean`  
 **观察变量**：  
 - `beanFactory.getBeanPostProcessors().size()`（此时尚未注册完 BPP）  
@@ -151,17 +151,17 @@
 
 ## 面试常问（refresh 调用链）
 
-1) refresh 的主线阶段你怎么讲清楚？（每段至少能点名 1 个方法名）
-2) 为什么“过早 getBean”会导致代理/注解不生效？你怎么证明一次？
-3) 你如何把一个启动失败快速归到 definition vs creation（各给 1 个断点）？
+1) refresh 的主线阶段如何讲清楚？（每段至少能点名 1 个方法名）
+2) 为什么“过早 getBean”会导致代理/注解不生效？如何证明一次？
+3) 如何把一个启动失败快速归到 definition vs creation（各给 1 个断点）？
 
 推荐复习入口：`appendix/93-interview-playbook.md`（Q1/Q5 等）。
 
-## 一句话自检（你应该能回答）
+## 自检要点（应能够回答）
 
 1. BFPP 与 BPP 的差别是什么？它们分别“改什么”，分别在 refresh 的哪段执行？
-2. 为什么 `@Autowired/@PostConstruct` 在你自己 new 出来的 `DefaultListableBeanFactory` 里可能不生效？
-3. 为什么有些问题“启动就爆”，有些问题“第一次调用才爆”？你会把断点打在哪里区分两者？
+2. 为什么 `@Autowired/@PostConstruct` 在读者自己 new 出来的 `DefaultListableBeanFactory` 里可能不生效？
+3. 为什么有些问题“启动就爆”，有些问题“第一次调用才爆”？可以把断点打在哪里区分两者？
 
 ## 小结与下一章
 
@@ -182,12 +182,12 @@
 
 ## 机制主线
 
-这章的核心不是“列出调用链”，而是让你把所有机制放回同一条时间线：
+这章的核心不是“列出调用链”，而是让读者把所有机制放回同一条时间线：
 
 - refresh 前半段：定义层（BeanDefinition 注册 + BFPP/BDRPP）
 - refresh 中段：注册 BPP 链（注解/AOP/回调能力的来源）
 - refresh 后半段：创建单例（doCreateBean：实例化→注入→初始化→入缓存）
 
-你在读调用链时，建议带着一个问题：
+在读调用链时，建议带着一个问题：
 
 > 这个步骤是在“改定义”还是“造实例”？它决定了我能不能通过断点看见某类行为。

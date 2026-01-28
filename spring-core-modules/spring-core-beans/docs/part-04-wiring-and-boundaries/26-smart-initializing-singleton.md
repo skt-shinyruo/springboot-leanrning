@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -18,7 +18,7 @@
 
 ## 机制主线
 
-有时候你需要一个“容器已经把主要单例都创建完”的时机点，比如：
+有时候需要一个“容器已经把主要单例都创建完”的时机点，比如：
 
 - 想扫描容器里所有某类 bean，并建立索引
 - 想做一次性校验（例如检查某些 bean 组合是否合法）
@@ -38,19 +38,19 @@ Spring 提供了一个非常明确的回调：
 观察点：
 
 - `afterSingletonsInstantiated` 触发时，`lazy` 还不在 singleton cache（还没创建）
-- 之后你第一次 `getBean(lazy)` 才会创建它
+- 之后读者第一次 `getBean(lazy)` 才会创建它
 
 ## 2. 机制：它是 preInstantiateSingletons 的“收尾回调”
 
 把它理解成：
 
-- 容器在创建完所有非 lazy 单例后，给你一个“做一次性事情”的机会
+- 容器在创建完所有非 lazy 单例后，给读者一个“做一次性事情”的机会
 
-它比你自己写 `ApplicationRunner` 更贴近容器内部生命周期。
+它比读者自己写 `ApplicationRunner` 更贴近容器内部生命周期。
 
 - `AbstractApplicationContext#finishBeanFactoryInitialization`：refresh 中“创建单例”阶段的入口（会调用 preInstantiateSingletons）
 - `DefaultListableBeanFactory#preInstantiateSingletons`：批量创建非 lazy 单例，并在末尾触发 SmartInitializingSingleton 回调
-- `SmartInitializingSingleton#afterSingletonsInstantiated`：你能拿到的“单例都创建完了”的明确时机点
+- `SmartInitializingSingleton#afterSingletonsInstantiated`：应能够拿到的“单例都创建完了”的明确时机点
 - `DefaultSingletonBeanRegistry#getSingleton`：观察某个 bean 是否已经进入 singleton cache（解释 lazy bean 尚未创建）
 - `AbstractBeanFactory#doGetBean`：后续第一次 `getBean(lazy)` 才会触发真正创建
 
@@ -98,14 +98,14 @@ Spring 提供了一个非常明确的回调：
 
 - “回调没触发” → **实例层（生命周期时机）**：该 bean 是否是 singleton？context 是否真的 refresh？
 - “回调里拿不到 lazy bean 实例” → **实例层语义**：这是预期；lazy-init 在 refresh 阶段不会创建（对照 [18](023-18-lazy-semantics.md)）
-- “回调里 `getBean` 导致启动变慢” → **实例层行为**：你把 lazy bean 全部提前创建了（本章第 3 节）
+- “回调里 `getBean` 导致启动变慢” → **实例层行为**：读者把 lazy bean 全部提前创建了（本章第 3 节）
 - “我以为它等价于 ApplicationRunner” → **生命周期粒度差异**：它更贴近 BeanFactory 的创建阶段（本章第 2 节 + `preInstantiateSingletons`）
 
 ## 4. 面试常问（SmartInitializingSingleton）
 
 1) `SmartInitializingSingleton#afterSingletonsInstantiated` 触发于 refresh 的哪个阶段？为什么它早于 lazy bean 的创建？
 2) 为什么它不等价于 `ApplicationRunner`？（提示：它挂在 BeanFactory 的 preInstantiateSingletons 尾部）
-3) 在回调里调用 `getBean(lazy)` 会带来什么后果？如何判断你是否“提前把 lazy 全部创建了”？
+3) 在回调里调用 `getBean(lazy)` 会带来什么后果？如何判断是否能够“提前把 lazy 全部创建了”？
 
 ## 源码与断点
 
@@ -150,22 +150,22 @@ Spring 提供了一个非常明确的回调：
 建议断点：
 
 1) `DefaultListableBeanFactory#preInstantiateSingletons`：观察非 lazy 单例创建结束后的“收尾回调”位置
-2) `SmartInitializingSingleton#afterSingletonsInstantiated`（你在 Lab 里的实现）：观察回调触发时机与可见的单例集合
+2) `SmartInitializingSingleton#afterSingletonsInstantiated`（在 Lab 里的实现）：观察回调触发时机与可见的单例集合
 3) `DefaultSingletonBeanRegistry#getSingleton`：在回调里或断言点查看 lazy bean 是否已在缓存中
 4) `AbstractBeanFactory#doGetBean`：在测试后半段第一次 `getBean(lazy)` 时观察真正创建发生在哪里
 
-- 你能解释清楚：为什么 `afterSingletonsInstantiated` 触发时 lazy bean 可能还没创建吗？
+- 应能够解释清楚：为什么 `afterSingletonsInstantiated` 触发时 lazy bean 可能还没创建吗？
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
 推荐断点：`DefaultListableBeanFactory#preInstantiateSingletons`、`SmartInitializingSingleton#afterSingletonsInstantiated`、`AbstractAutowireCapableBeanFactory#doCreateBean`
 
-## 常见坑与边界
+## 常见误区与边界
 
-### 常见坑
+### 常见误区
 
-- **坑 1：误以为它能看到 lazy bean 实例**
+- **误区 1：误以为它能看到 lazy bean 实例**
   - 它看到的是“已创建的单例”。lazy bean 可能还没创建。
 
-- **坑 2：在回调里触发大量 `getBean`**
+- **误区 2：在回调里触发大量 `getBean`**
   - 会把 lazy bean 全部提前创建，可能导致启动变慢。
 
 ## 小结与下一章

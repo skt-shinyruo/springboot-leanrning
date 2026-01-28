@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -35,7 +35,7 @@
 - 容器完成注入后（在初始化阶段之前）依赖变为非 null
 - `@PostConstruct` 里再次检查 → **依赖已经可用**
 
-你可以把它记成一条时间线：
+可以把它记成一条时间线：
 
 1) **构造器执行**（对象刚被 `new` 出来）
 2) **属性填充 / 注入阶段**（field/method injection 发生在这里）
@@ -67,7 +67,7 @@
 
 ## 2.2 依赖解析分支树（简化版）
 
-你可以把 `doResolveDependency` 的决策流程记成一棵树：
+可以把 `doResolveDependency` 的决策流程记成一棵树：
 
 1) **快捷路径**：Optional/Provider/@Lazy/@Value → 有条件地短路  
 2) **resolvableDependencies**：`registerResolvableDependency` 的直接命中  
@@ -76,25 +76,25 @@
 5) **集合解析**：`Collection/Map/Stream/Array` 类型走“多候选路径”  
 6) **fallback**：可选依赖或容器默认值
 
-每个分支都可能改变“你到底拿到哪个对象”的结论。
+每个分支都可能改变“读者到底拿到哪个对象”的结论。
 
 ## 2.3 关键变量解释（调试时只看这几项）
 
 - `candidates`：收集到的候选集合（数量决定是否进入“歧义”分支）
 - `primary` / `priority`：收敛时的优先级判定依据
 - `dependencyName`：按名称回退的关键输入（字段名/参数名/Qualifier value）
-- `resolvedCandidate`：最终被选中的 beanName（这是你要“证明”的结论）
+- `resolvedCandidate`：最终被选中的 beanName（这是需要“证明”的结论）
 
 ## 3. `postProcessProperties(...)` 在哪里起作用？
 
-这一点是把“注解不是魔法”落地成可解释机制的关键：
+这一点是把“注解不是隐式行为”落地成可解释机制的关键：
 
 - **field injection 并不是语言层做的**，而是容器在属性填充阶段调用了一组处理器完成的
 - 其中一个关键扩展点就是：
   - `InstantiationAwareBeanPostProcessor#postProcessProperties(...)`
 - Spring 的 `AutowiredAnnotationBeanPostProcessor`（一个基础设施 BPP）就是靠这条路径处理 `@Autowired` 字段/方法注入
 
-如果你想把“注解能力从哪来”也串起来，请回看：
+若想把“注解能力从哪来”也串起来，请回看：
 
 - [12. 容器启动与基础设施处理器：为什么注解能工作？](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
 
@@ -155,15 +155,15 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 
 实验里 `ConstructorInjectedTarget` 同时提供：
 
-本章的 Lab 额外加了一个“探针 BPP”，在 `postProcessProperties(...)` 里记录快照，帮助你在断点里“看见注入发生在这一段”。
+本章的 Lab 额外加了一个“探针 BPP”，在 `postProcessProperties(...)` 里记录快照，帮助在断点里“看见注入发生在这一段”。
 
 ## 4. Debug / 观察建议
 
-建议你用断点把“阶段感”建立起来：
+建议读者用断点把“阶段感”建立起来：
 
-1. 在 `FieldInjectedTarget` 的构造器里下断点：你会看到依赖为 `null`
+1. 在 `FieldInjectedTarget` 的构造器里下断点：可以观察到依赖为 `null`
 2. 在 `InjectionPhaseProbePostProcessor#postProcessProperties(...)` 下断点：这是属性填充阶段的入口之一
-3. 在 `FieldInjectedTarget#init(@PostConstruct)` 下断点：你会看到依赖已可用
+3. 在 `FieldInjectedTarget#init(@PostConstruct)` 下断点：可以观察到依赖已可用
 4. 对照 `ConstructorInjectedTarget`：依赖在构造器内就已可用，并且会选择 `@Autowired` 构造器
 
 ## 源码锚点（建议从这里下断点）
@@ -180,14 +180,14 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 
 建议断点（把“阶段感”走一遍即可）：
 
-## 常见坑与边界
+## 常见误区与边界
 
-> 注意：**多个 BPP 的顺序会影响你在 `postProcessProperties(...)` 里看到的 bean 状态**。
-> 你需要把重点放在“注入发生在属性填充阶段”这个结论上，而不是纠结某一个 BPP 是先还是后（顺序规则见第 14/25 章）。
+> 注意：**多个 BPP 的顺序会影响在 `postProcessProperties(...)` 里看到的 bean 状态**。
+> 需要把重点放在“注入发生在属性填充阶段”这个结论上，而不是纠结某一个 BPP 是先还是后（顺序规则见第 14/25 章）。
 
-## 5. 常见坑与实践建议
+## 5. 常见误区与实践建议
 
-本章本质是在讲：**容器通过 BPP 让注解“生效”**。这条线能直接解释 AOP/事务为何会出现“入口必须走代理”的坑：
+本章本质是在讲：**容器通过 BPP 让注解“生效”**。这条线能直接解释 AOP/事务为何会出现“入口必须走代理”的误区：
 
 ## 面试常问（注入阶段：constructor vs field）
 
@@ -210,11 +210,10 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 - 工程建议：
   - 必填依赖优先构造器注入（更早失败、可测试、不可变）；可选/延迟语义用 `ObjectProvider` 明确表达。
 
-## 一句话自检
-
-- 你能解释清楚：为什么 field injection 在构造器里一定是 `null` 吗？（提示：注入发生在 `populateBean` 阶段，不会倒流到构造器）
-- 你能解释清楚：constructor injection 为什么更适合“必填依赖”吗？（提示：更早失败 + 可测试 + 不可变）
-- 你能指出：`@Autowired` 的源码触发点在哪里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
+## 自检要点
+- 应能够解释清楚：为什么 field injection 在构造器里一定是 `null` 吗？（提示：注入发生在 `populateBean` 阶段，不会倒流到构造器）
+- 应能够解释清楚：constructor injection 为什么更适合“必填依赖”吗？（提示：更早失败 + 可测试 + 不可变）
+- 应能够指出：`@Autowired` 的源码触发点在哪里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
 
 ## 小结与下一章
 
@@ -231,6 +230,6 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 - Lab：`SpringCoreBeansInjectionPhaseLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
 
-上一章：[29. FactoryBean 边界坑：泛型/代理/对象类型推断](29-factorybean-edge-cases.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy](31-proxying-phase-bpp-wraps-bean.md)
+上一章：[29. FactoryBean 边界误区：泛型/代理/对象类型推断](29-factorybean-edge-cases.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy](31-proxying-phase-bpp-wraps-bean.md)
 
 <!-- BOOKIFY:END -->

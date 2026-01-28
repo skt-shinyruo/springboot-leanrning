@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 你在写 `@ConditionalOnBean` 时，隐含假设是“依赖的 bean 会在我之前注册/创建”。跨 auto-config 时，这个假设可能不成立：**顺序未定义就会不稳定**。
+    - 在写 `@ConditionalOnBean` 时，隐含假设是“依赖的 bean 会在我之前注册/创建”。跨 auto-config 时，这个假设可能不成立：**顺序未定义就会不稳定**。
     - 解决思路不是“调整 import 列表顺序”，而是让依赖关系显式化：例如用 `@AutoConfiguration(after=...)` 把顺序从“偶然”变成“确定”。
     - 排障时优先问：问题发生在“定义是否注册”还是“实例是否创建”？大多数 auto-config 顺序问题本质是 **定义层顺序**。
 
@@ -56,12 +56,12 @@
 
 - `SpringCoreBeansAutoConfigurationOrderingLabTest#conditionalOnBean_canFailAcrossAutoConfigurations_whenOrderingIsNotDefined`
 
-你会观察到：
+可以观察到：
 
 - Dependent auto-config 想依赖 Marker auto-config 提供的 bean
 - 但如果顺序未定义，Dependent 的条件可能在 Marker 之前评估 → 条件不成立 → bean 不注册
 
-这就是“偶发”的根源：**条件评估是有时机的**，你不能假设“总会按你期望的顺序来”。
+这就是“偶发”的根源：**条件评估是有时机的**，读者不能假设“总会按读者期望的顺序来”。
 
 ---
 
@@ -75,7 +75,7 @@
 
 - 在 Dependent auto-config 上显式声明：`@AutoConfiguration(after = MarkerAutoConfiguration.class)`
 
-你应该得到的稳定结论是：
+应当得到的稳定结论是：
 
 - 即使导入列表顺序反过来，结果仍然确定（因为排序规则不再依赖“列表偶然顺序”）
 
@@ -85,7 +85,7 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansAutoConfigurationOrderingLabTest`）
 
-跑完这些用例，你应该能复述 3 条结论：
+跑完这些用例，应能够复述 3 条结论：
 
 1) **顺序未定义时，条件评估可能失败**  
    - 断点：`ConditionEvaluator#shouldSkip`  
@@ -109,15 +109,15 @@
 ### 3.2 固定观察点（watch list）
 
 - “最终导入的 auto-config 列表”（排序后的）
-- `ConditionEvaluationReport`（如果你在 Boot 环境里排障，这个报告能直接告诉你为什么匹配/不匹配）
+- `ConditionEvaluationReport`（若在 Boot 环境里排障，这个报告能直接告诉读者为什么匹配/不匹配）
 - 目标 bean 的 `BeanDefinition` 是否存在（定义层） vs 实例是否创建（实例层）
 
 ---
 
-## 4. 常见坑（工程里最容易误诊的点）
+## 4. 常见误区（工程里最容易误诊的点）
 
 1) **误区：靠调整 import 顺序修复**
-   - import 顺序只是“当前偶然可用”，不是稳定契约；升级/依赖变化后容易再次翻车。
+   - import 顺序只是“当前偶然可用”，不是稳定契约；升级/依赖变化后容易再次出错。
 2) **误区：把问题当成“bean 创建失败”**
    - 很多 auto-config 问题是“根本没注册定义”（定义层就被跳过了）。
 3) **误区：只看异常，不看 Condition 证据**
@@ -125,7 +125,7 @@
 
 ## 源码调用链（方法级）：从“导入”到“条件评估”
 
-把 auto-config 顺序问题说清楚，你至少要能把下面这条最短调用链串起来：
+把 auto-config 顺序问题说清楚，至少应能够把下面这条最短调用链串起来：
 
 1) 导入入口：`AutoConfigurationImportSelector#selectImports`（得到候选 auto-config 列表）
 2) 排序入口：`AutoConfigurationSorter`（把隐式/显式顺序规则应用到列表上）
@@ -154,13 +154,12 @@
 
 ---
 
-## 一句话自检
-
-你应该能用 3 句答题：
+## 自检要点
+应能够用 3 句答题：
 
 1) 为什么跨 auto-config 的 `@ConditionalOnBean` 会出现“偶发不匹配”？（提示：顺序未定义 + 条件评估有时机）
 2) `@AutoConfiguration(after=...)` 解决的是什么问题？（提示：把隐式依赖变成显式排序规则）
-3) 你会用哪 2 个断点把“排序→条件评估→定义是否注册”走成证据链？
+3) 可以用哪 2 个断点把“排序→条件评估→定义是否注册”走成证据链？
 
 <!-- BOOKIFY:START -->
 

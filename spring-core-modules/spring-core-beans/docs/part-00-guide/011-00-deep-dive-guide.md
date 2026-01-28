@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -31,13 +31,13 @@
 
 ## 机制主线
 
-如果你觉得 [01. Bean 心智模型](../part-01-ioc-container/020-01-bean-mental-model.md) 这类“概念章”看完仍然不过瘾，通常不是因为它讲错了，而是因为你已经进入下一阶段：
+若觉得 [01. Bean 心智模型](../part-01-ioc-container/020-01-bean-mental-model.md) 这类“概念章”看完仍然不过瘾，通常不是因为它讲错了，而是因为读者已经进入下一阶段：
 
-> 你需要把概念映射到**时间线（refresh 流程）**、**数据结构（BeanDefinition/缓存）**、以及**关键参与者（哪些类/哪些扩展点在起作用）**。
+> 需要把概念映射到**时间线（refresh 流程）**、**数据结构（BeanDefinition/缓存）**、以及**关键参与者（哪些类/哪些扩展点在起作用）**。
 
 > 适用版本：本仓库基于 Spring Boot 3.x（对应 Spring Framework 6.x）。类名/方法名可能在小版本中微调，但主干结构非常稳定。
 
-如果你希望用“一章”把 **`refresh()` 时间线** 与 **`doCreateBean()` 创建链路** 串成连续叙事（并落到关键方法/关键分支），建议先读这一篇主线章：
+若希望用“一章”把 **`refresh()` 时间线** 与 **`doCreateBean()` 创建链路** 串成连续叙事（并落到关键方法/关键分支），建议先读这一篇主线章：
 
 - [从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)
 
@@ -52,23 +52,23 @@
 
 ### 0.1 最小心智模型：5 个对象 + 4 条链路（先把“概念”变成“可观察”）
 
-如果你只能记 5 个对象与 4 条链路，建议按下面的顺序记（每一条都能在断点里验证）：
+若只能记 5 个对象与 4 条链路，建议按下面的顺序记（每一条都能在断点里验证）：
 
 1) **BeanDefinition → MergedBeanDefinition**  
    - 入口方法：`AbstractBeanFactory#getMergedBeanDefinition`  
-   - 你要看到的变化：注解/父子定义/属性覆盖被“合并成最终配方”（`RootBeanDefinition`）
+   - 需要看到的变化：注解/父子定义/属性覆盖被“合并成最终配方”（`RootBeanDefinition`）
 2) **DependencyDescriptor → 候选收集/收敛**  
    - 入口方法：`DefaultListableBeanFactory#doResolveDependency`  
    - 关键分支：`findAutowireCandidates`（收集）→ `determineAutowireCandidate`（收敛）
 3) **BeanWrapper → 属性填充**  
    - 入口方法：`AbstractAutowireCapableBeanFactory#populateBean`  
-   - 你要看到的变化：`PropertyValues` 被转换并写入目标对象
+   - 需要看到的变化：`PropertyValues` 被转换并写入目标对象
 4) **BeanPostProcessor → 对象替换/增强**  
    - 入口方法：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`  
-   - 你要看到的变化：`bean` → `result` 的第一次替换（proxy/包装）
+   - 需要看到的变化：`bean` → `result` 的第一次替换（proxy/包装）
 5) **单例缓存 / early reference**  
    - 入口方法：`DefaultSingletonBeanRegistry#getSingleton` / `addSingletonFactory`  
-   - 你要看到的变化：三级缓存与 early reference 介入时机（循环依赖/代理一致性）
+   - 需要看到的变化：三级缓存与 early reference 介入时机（循环依赖/代理一致性）
 
 ### 0.2 新手易卡点与修复路径（最短闭环）
 
@@ -86,7 +86,7 @@
 
 跑一个测试类：
 
-如果你是第一次进入本模块，建议先快后深：
+若是第一次进入本模块，建议先快后深：
 
 1) **先快（30 分钟闭环）**：把 3 个最小实验跑通（命令/断点/观察点都给齐）
    - 见：[01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](012-01-quickstart-30min.md)
@@ -109,19 +109,19 @@
 
 ### 0.3 先跑一遍“First Pass”（不新增章节文件版）
 
-如果你只想快速建立“阶段感”，可以按下面顺序做一次 First Pass（不追求背源码，只追求抓住抓手）：
+若只想快速建立“阶段感”，可以按下面顺序做一次 First Pass（不追求背源码，只追求抓住抓手）：
 
-1) 跑通快启 3 个实验（见 01 章），确保你能用断点证明“候选收敛 / prototype 注入陷阱 / proxy 替换”
+1) 跑通快启 3 个实验（见 01 章），确保应能够用断点证明“候选收敛 / prototype 注入陷阱 / proxy 替换”
 2) 在 `AbstractApplicationContext#refresh` 打一个断点，只看 4 个关键节点：
    - `invokeBeanFactoryPostProcessors`（定义层稳定下来）
    - `registerBeanPostProcessors`（实例层增强点进入容器）
    - `preInstantiateSingletons`（非 lazy 单例开始批量创建）
    - `finishRefresh`（容器就绪）
-3) 选一个你最关心的现象（注入歧义/生命周期/代理），把它缩成一个方法级 `-Dtest=Class#method` 入口，再去读对应章节
+3) 选一个读者最关心的现象（注入歧义/生命周期/代理），把它缩成一个方法级 `-Dtest=Class#method` 入口，再去读对应章节
 
 ### 0.4 学习闭环：`SpringCoreBeansAutowireCandidateSelectionLabTest` 的 3 个结论
 
-跑完这个 Lab，你至少要能复述下面 3 条“有证据的结论”（每条都有方法级入口）：
+完成该 Lab 后，至少应能够复述下面 3 条“有证据的结论”（每条都有方法级入口）：
 
 1) **`@Order` 只影响集合注入顺序，不会解决单一依赖歧义**  
    - 证据链：`resolveMultipleBeans` → `AnnotationAwareOrderComparator`  
@@ -141,21 +141,21 @@
 
 ### 1.0 症状驱动导航：遇到现象先选对入口（章节 → 断点 → Lab）
 
-深挖最怕的不是“看不懂源码”，而是**选错入口**：入口错了，你会在巨大调用栈里看一整晚，最后只得到一句“Spring 好复杂”。
+深挖最怕的不是“看不懂源码”，而是**选错入口**：入口错了，可以在巨大调用栈里看一整晚，最后只得到一句“Spring 好复杂”。
 
 这张表的目标是：把“现象”直接映射到**层次（定义/候选/实例）**，再映射到**章节入口/断点抓手/Lab 证据链**。
 
-| 现象（你看到的） | 先判断你卡在哪一层 | 推荐章节入口（最短路径） | 建议断点（抓住分支） | 对应 LabTest（证据链） |
+| 现象（观察到的） | 先判断读者卡在哪一层 | 推荐章节入口（最短路径） | 建议断点（抓住分支） | 对应 LabTest（证据链） |
 |---|---|---|---|---|
 | Bean 根本没注册出来（扫描/导入/`@Bean` 像没生效） | 定义层（BeanDefinition 图没长出来） | [18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)<br>[12. 注解为何生效（bootstrap）](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) | `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`<br>`ConfigurationClassPostProcessor#processConfigBeanDefinitions` | `SpringCoreBeansRegistryPostProcessorLabTest`<br>`SpringCoreBeansBootstrapInternalsLabTest` |
 | `@Autowired` 为 null / `@PostConstruct` 没跑（尤其是自己 new BeanFactory） | 实例层（规则没装上：BPP 缺失） | [12. 注解为何生效（bootstrap）](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) | `PostProcessorRegistrationDelegate#registerBeanPostProcessors`<br>`AutowiredAnnotationBeanPostProcessor#postProcessProperties`<br>`InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization` | `SpringCoreBeansBootstrapInternalsLabTest`<br>`SpringCoreBeansBeanFactoryApiLabTest` |
 | 启动即报错 vs 第一次 `getBean` 才报错 | refresh 第 9 步 vs on-demand | [18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md) | `DefaultListableBeanFactory#preInstantiateSingletons`<br>`AbstractBeanFactory#doGetBean` | `SpringCoreBeansPreInstantiationLabTest` |
 | 单个注入歧义（NoUniqueBeanDefinitionException） | 候选层（候选集合收敛失败） | [33. 候选选择与顺序](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) | `DefaultListableBeanFactory#doResolveDependency` | `SpringCoreBeansInjectionAmbiguityLabTest`<br>`SpringCoreBeansAutowireCandidateSelectionLabTest` |
 | 循环依赖：setter 能救、constructor 就死；或 early reference 形态奇怪 | 实例层（创建窗口 + 缓存/early reference） | [18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)<br>[16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md) | `DefaultSingletonBeanRegistry#getSingleton/addSingletonFactory`<br>`AbstractAutowireCapableBeanFactory#doCreateBean`（earlySingletonExposure） | `SpringCoreBeansCircularDependencyBoundaryLabTest`<br>`SpringCoreBeansEarlyReferenceLabTest` |
-| 代理不生效 / 自调用绕过 / 你以为有 AOP 但没有 | 实例层（BPP 包装阶段） | [31. BPP 如何把 Bean 换成 Proxy](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md) | `BeanPostProcessor#postProcessAfterInitialization` | `SpringCoreBeansProxyingPhaseLabTest` |
-| `getBean(\"x\")` 拿到的不是你以为的类型，`&x` 又变了 | 实例层（FactoryBean 语义） | [08. FactoryBean：& 前缀与产品对象](../part-01-ioc-container/08-factorybean.md)<br>[18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md) | `AbstractBeanFactory#getObjectForBeanInstance` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
+| 代理不生效 / 自调用绕过 / 容易误以为有 AOP 但没有 | 实例层（BPP 包装阶段） | [31. BPP 如何把 Bean 换成 Proxy](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md) | `BeanPostProcessor#postProcessAfterInitialization` | `SpringCoreBeansProxyingPhaseLabTest` |
+| `getBean(\"x\")` 拿到的不是容易误以为的类型，`&x` 又变了 | 实例层（FactoryBean 语义） | [08. FactoryBean：& 前缀与产品对象](../part-01-ioc-container/08-factorybean.md)<br>[18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md) | `AbstractBeanFactory#getObjectForBeanInstance` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
 
-你不需要一次性把表背下来，但建议你每次排障都强制自己走一遍“表的流程”：
+无需一次性把表背下来，但建议读者每次排障都强制自己走一遍“表的流程”：
 
 1. 我现在看到的是定义层问题、候选层问题，还是实例层问题？
 2. 我应该把断点打在 refresh 的哪个阶段？
@@ -177,7 +177,7 @@
 
 - **容器与注册表**：`BeanDefinitionRegistry`（接口语义）
 - **最常见实现**：`DefaultListableBeanFactory`（既是 `BeanFactory` 也是 Registry）
-- **定义对象**：`BeanDefinition` / `RootBeanDefinition`（实际项目里你常看到的是 Root）
+- **定义对象**：`BeanDefinition` / `RootBeanDefinition`（实际项目里读者常看到的是 Root）
 
 定义层最关键的“会动定义”的入口：
 
@@ -202,7 +202,7 @@
 实例层最关键的“会动实例/替换实例”的入口：
 
 - `InstantiationAwareBeanPostProcessor`：能影响实例化/属性填充（例如决定构造器、提前返回代理等）
-- `BeanPostProcessor`：before/after init 可包装代理（你看到的 AOP/事务代理基本都在这里出现）
+- `BeanPostProcessor`：before/after init 可包装代理（观察到的 AOP/事务代理基本都在这里出现）
 
 对应章节：
 
@@ -212,7 +212,7 @@
 
 ### 2.3 缓存与“循环依赖能不能救”：单例的三层缓存
 
-循环依赖/提前暴露/early reference 这条线，如果你只记“三级缓存”会很虚；建议你把它落到这几个对象上：
+循环依赖/提前暴露/early reference 这条线，若只记“三级缓存”会很虚；建议读者把它落到这几个对象上：
 
 - `DefaultSingletonBeanRegistry`：单例缓存与 early reference 的核心所在
 - 关键动作：`getSingleton(...)`、提前暴露（singletonFactory）、early reference 生成
@@ -222,9 +222,9 @@
 - [09. 循环依赖概览](../part-01-ioc-container/09-circular-dependencies.md)
 - [16. early reference 与循环依赖：getEarlyBeanReference](../part-03-container-internals/16-early-reference-and-circular.md)
 
-### 2.4 深挖时最容易忽略的三件事（但它们决定了你看到的“真相”）
+### 2.4 深挖时最容易忽略的三件事（但它们决定了观察到的“真相”）
 
-很多“看起来像魔法”的现象，其实不是藏在 `doCreateBean(...)` 里，而是藏在下面三件事里：
+很多“看起来像隐式行为”的现象，其实不是藏在 `doCreateBean(...)` 里，而是藏在下面三件事里：
 
 对应章节：
 
@@ -241,7 +241,7 @@
 - 依赖解析：`DependencyDescriptor`（注入点类型/泛型/注解）、候选集合（按类型查出来的 beanNames）、最终选中的 beanName
 - 单例缓存：`singletonObjects / earlySingletonObjects / singletonFactories` 的大小变化
 
-这些观察点能帮你回答：
+这些观察点能帮读者回答：
 
 - “我现在看到的是 **定义层**（BeanDefinition）还是 **实例层**（对象）？”
 - “我现在处在 refresh 的哪个阶段？”
@@ -254,10 +254,10 @@
 - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
 - `DefaultListableBeanFactory#preInstantiateSingletons`
 
-你会建立一个非常关键的直觉：
+可以建立一个非常关键的直觉：
 
 - “**先把 PostProcessor 装好**，再批量创建单例”
-- 很多“魔法”其实都发生在“创建任何业务 bean 之前”
+- 很多“隐式行为”其实都发生在“创建任何业务 bean 之前”
 
 ### 3.2 看清“一个 Bean 的诞生”：从 doCreateBean 切入
 
@@ -285,11 +285,11 @@
 
 ### 3.4 看清“最终生效的定义长什么样”：从 merged BeanDefinition 切入
 
-如果你在 `doCreateBean` 里看到一个 `RootBeanDefinition`，但你不确定它从哪来、为什么它和 registry 里的定义不一样：
+若在 `doCreateBean` 里看到一个 `RootBeanDefinition`，但读者不确定它从哪来、为什么它和 registry 里的定义不一样：
 
-建议你从 merged definition 入口切：
+建议从 merged definition 入口切：
 
-固定观察点（强烈建议你每次都看同一组）：
+固定观察点（强烈建议读者每次都看同一组）：
 
 - `beanName`
 - `mbd`（`RootBeanDefinition`）
@@ -299,7 +299,7 @@
 
 ### 3.5 看清“能注入但不是 Bean”：从 ResolvableDependency 切入
 
-当你遇到“这个类型能注入，但 `getBean(type)` 拿不到”时，很多时候不是注册阶段出错，而是你命中了另一条解析通道：
+当遇到“这个类型能注入，但 `getBean(type)` 拿不到”时，很多时候不是注册阶段出错，而是读者命中了另一条解析通道：
 
 - `DefaultListableBeanFactory#registerResolvableDependency`（把类型 -> 值 放进 resolvableDependencies）
 - `DefaultListableBeanFactory#doResolveDependency`（依赖解析主流程，会优先命中 resolvableDependencies）
@@ -309,12 +309,12 @@
 
 - `descriptor`（`DependencyDescriptor`：注入点的抽象）
 - `descriptor.getDependencyType()`（注入点要的到底是什么类型？）
-- `resolvableDependencies`（Map 里有哪些条目？你的类型是否在里面？）
+- `resolvableDependencies`（Map 里有哪些条目？相应的类型是否在里面？）
 - “没命中后走到哪里”：`findAutowireCandidates(...)`（按 bean 候选集查）
 
 ### 3.6 看清“依赖图怎么记录/为什么销毁顺序是那样”：从 dependentBeanMap 切入
 
-你在排障时经常想回答：
+在排障时经常想回答：
 
 - “到底谁依赖谁？”
 - “为什么 stop/destroy 先停它再停我？”
@@ -331,11 +331,11 @@
 
 ### 练习 0：把“容器主线时间线”走通一次（强烈推荐作为第一条）
 
-这个练习跑通后，你再去看 [06. Post Processors](../part-01-ioc-container/017-06-post-processors.md) / [12. 容器启动与基础设施](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) / [14. Post-Processor 排序](../part-03-container-internals/14-post-processor-ordering.md) / [31. 代理发生的阶段](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md) / [16. 提前引用与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md) / [15. 预实例化短路](../part-03-container-internals/15-pre-instantiation-short-circuit.md)，会非常顺。
+这个练习跑通后，读者再去看 [06. Post Processors](../part-01-ioc-container/017-06-post-processors.md) / [12. 容器启动与基础设施](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) / [14. Post-Processor 排序](../part-03-container-internals/14-post-processor-ordering.md) / [31. 代理发生的阶段](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md) / [16. 提前引用与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md) / [15. 预实例化短路](../part-03-container-internals/15-pre-instantiation-short-circuit.md)，会非常顺。
 
 ### 练习 A：从 BeanDefinition 到实例（最适合刚开始深挖）
 
-目标：你要能用自己的话把“定义层”与“实例层”串起来。
+目标：应能够用自己的话把“定义层”与“实例层”串起来。
 
 ### 练习 B：让注入阶段“可见”（最适合理清阶段感）
 
@@ -349,7 +349,7 @@
 
 ### 练习 D：把 merged 看出“手感”（RootBeanDefinition 从哪里来）
 
-目标：你要能解释清楚：
+目标：应能够解释清楚：
 
 - registry 的 child definition 为什么看不到 parent 的元数据
 - merged `RootBeanDefinition` 到底把哪些信息合并进来了
@@ -357,7 +357,7 @@
 
 ### 练习 E：用 bean graph 输出复盘一次“为什么注入的是它”
 
-目标：你要能用“排障流程语言”复盘一次：
+目标：应能够用“排障流程语言”复盘一次：
 
 - 候选集合是什么
 - 为什么最后选中的是 `@Primary`
@@ -365,16 +365,16 @@
 
 ### 练习 F：看一次 ResolvableDependency 命中（能注入但不是 bean）
 
-目标：你要能解释清楚：
+目标：应能够解释清楚：
 
 - 为什么它参与 autowiring，但不参与 bean 查找/生命周期/依赖图记录
 - 这类机制适合框架内部，不适合放业务对象
 
 ---
 
-## 5. 读完本章你应该获得什么
+## 5. 读完本章应当获得什么
 
-如果本章有效，你应该能做到：
+如果本章有效，应能够做到：
 
 - 能把“Bean 三层模型”落到 **4 个固定断点入口**：`refresh` / `doCreateBean` / `doResolveDependency` / `getMergedBeanDefinition`
 - 能把任何“现象描述”翻译成“分层排障问题”：定义层（有没有注册/条件是否满足）→ 解析层（候选集合与收敛）→ 实例层（生命周期/代理替换）
@@ -402,14 +402,14 @@
 - 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest test`
 
-本章不新增概念，而是给你一套“深挖路线”，让你能在 IDE 里通过断点和测试，把容器行为看成**可追踪的过程**。
+本章不新增概念，而是给读者一套“深挖路线”，使读者能够在 IDE 里通过断点和测试，把容器行为看成**可追踪的过程**。
 
 ## 0. 准备工作：把“深挖”做成可重复的实验
 
 - **跑太大**：直接 `spring-boot:run` 看全量启动，断点会炸，信息密度反而低
 - **看太散**：没有固定入口与观察点，今天看 A、明天看 B，很难形成“可复用的路径”
 
-本模块的设计是：用 **JUnit 测试当最小启动器**，把你要看的机制切成可闭环的实验。
+本模块的设计是：用 **JUnit 测试当最小启动器**，把需要看的机制切成可闭环的实验。
 
 ### 0.1 推荐运行方式（命令行也能精确到方法）
 
@@ -423,16 +423,16 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest#beanDefinitionIsNotTheBeanInstance test
 ```
 
-> 你也可以直接在 IDE 里右键运行某个 `@Test` 方法；命令行写法的价值在于“可复制、可分享、可复现”。
+> 读者也可以直接在 IDE 里右键运行某个 `@Test` 方法；命令行写法的价值在于“可复制、可分享、可复现”。
 
 ### 0.2 一个高收益习惯：所有断点都先加“降噪条件”
 
 容器内部会创建大量基础设施 bean（processors、internal bean、代理相关 bean）。
-如果你不加条件断点，很容易被“无关的命中次数”淹没。
+若不加条件断点，很容易被“无关的命中次数”淹没。
 
-如果你现在的目标是“先把主线跑通”，而不是立刻深挖每个细节，可以按下面 10 个最小实验走一遍。
+若现在的目标是“先把主线跑通”，而不是立刻深挖每个细节，可以按下面 10 个最小实验走一遍。
 
-约束很简单：**每一步只要求你写 1–2 句可复述结论**（定义层/实例层/时机/顺序/断点入口），不要求背源码。
+约束很简单：**每一步只要求读者写 1–2 句可复述结论**（定义层/实例层/时机/顺序/断点入口），不要求背源码。
 
 运行方式（推荐精确到方法，噪声最小）：
 
@@ -444,24 +444,24 @@ mvn -pl :spring-core-beans -Dtest=<TestClass>#<testMethod> test
 
 1) 定义层 vs 实例层：`BeanDefinition != bean instance`
    - 入口：`SpringCoreBeansContainerLabTest#beanDefinitionIsNotTheBeanInstance`
-   - 你要写：两句话说明“定义层/实例层”，以及“为什么最终 `getBean()` 可能不是原始实例（proxy）”
+   - 需要写：两句话说明“定义层/实例层”，以及“为什么最终 `getBean()` 可能不是原始实例（proxy）”
 
 2) refresh 6 步粗粒度流程图（1 行/步即可）
    - 入口：任意能 refresh 的最小 Lab（同上即可）
-   - 你要画：注册定义 → BFPP/BDRPP → 注册 BPP → 创建单例 → 收尾事件（抓住阶段边界即可）
+   - 需要画：注册定义 → BFPP/BDRPP → 注册 BPP → 创建单例 → 收尾事件（抓住阶段边界即可）
 
 3) BeanDefinition 从哪里来（列 3 条入口 + 各 1 句定位方法）
    - 入口：阅读 [02](../part-01-ioc-container/02-bean-registration.md) + 跑 `SpringCoreBeansBootstrapInternalsLabTest`
-   - 你要写：扫描 / `@Bean` / `@Import`（selector/registrar）各自如何落到 registry
+   - 需要写：扫描 / `@Bean` / `@Import`（selector/registrar）各自如何落到 registry
 
 4) 注入歧义：用 `@Primary` 与 `@Qualifier` 各修一次并解释差异
    - 入口：`SpringCoreBeansInjectionAmbiguityLabTest`
 
 5) 候选选择 vs 排序/链路：别把 `@Order` 当“选谁注入”
    - 入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`
-   - 你要写：`@Primary/@Priority/@Order` 哪些影响“单依赖选择”，哪些影响“集合/链路顺序”
+   - 需要写：`@Primary/@Priority/@Order` 哪些影响“单依赖选择”，哪些影响“集合/链路顺序”
 
-6) prototype 注入 singleton 的坑：为什么“看起来像单例”？给出 1 个修复方案
+6) prototype 注入 singleton 的误区：为什么“看起来像单例”？给出 1 个修复方案
    - 入口：`SpringCoreBeansLabTest`（prototype 相关用例）
 
 7) 生命周期：`@PostConstruct` 触发时机 + prototype 销毁语义（各 1 句）
@@ -475,33 +475,33 @@ mvn -pl :spring-core-beans -Dtest=<TestClass>#<testMethod> test
 
 10) 排障闭环：从异常信息找到 1 个“最有效”的断点入口，并解释为什么
    - 入口：`SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansBeanGraphDebugLabTest`
-   - 你要写：注入失败优先看 `doResolveDependency`；代理/替换优先看 `doCreateBean`/`postProcessAfterInitialization`
+   - 需要写：注入失败优先看 `doResolveDependency`；代理/替换优先看 `doCreateBean`/`postProcessAfterInitialization`
 
-如果你在断点里不知道“下一步该去哪”，就回到这三条主线：你当前是在时间线的哪个阶段？你在看定义还是实例？有哪些扩展点可能在改它？
+若在断点里不知道“下一步该去哪”，就回到这三条主线：读者当前是在时间线的哪个阶段？在看定义还是实例？有哪些扩展点可能在改它？
 
 1) **Merged `RootBeanDefinition`**：registry 里保存的是“原始定义”，创建时真正参与计算/缓存的是“合并后的定义”
-   - 你在断点里经常看到的 `RootBeanDefinition`，往往来自 `getMergedLocalBeanDefinition(...)`
-   - 这也解释了：为什么你 `getBeanDefinition(beanName)` 看不到某些元数据，但创建时又“都有了”
+   - 在断点里经常看到的 `RootBeanDefinition`，往往来自 `getMergedLocalBeanDefinition(...)`
+   - 这也解释了：为什么读者 `getBeanDefinition(beanName)` 看不到某些元数据，但创建时又“都有了”
 2) **ResolvableDependency（可解析但非 bean）**：有些依赖参与 autowiring，但它根本不是 BeanDefinition 注册的 bean
    - 典型例子：`BeanFactory` / `ApplicationContext` 等“容器对象”为什么能注入？
 3) **依赖关系记录（dependentBeanMap）**：容器会记录“谁依赖谁”，它影响：
    - 销毁顺序（谁先 stop / 谁后 destroy）
-   - 你能否用 `getDependenciesForBean(beanName)` 复盘“依赖图”
+   - 应能够否用 `getDependenciesForBean(beanName)` 复盘“依赖图”
 
 - [35. BeanDefinition 的合并（MergedBeanDefinition）](../part-04-wiring-and-boundaries/35-merged-bean-definition.md)
 - [20. registerResolvableDependency：能注入，但它不是 Bean](../part-04-wiring-and-boundaries/20-resolvable-dependency.md)
 - [19. dependsOn：强制初始化顺序（即使没有显式依赖）](../part-04-wiring-and-boundaries/19-depends-on.md)
 - [11. 调试与自检：异常 → 断点入口 + bean graph](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 
-## 3. 断点清单：你想“看见什么”，就打哪一类断点
+## 3. 断点清单：若希望“看见什么”，就打哪一类断点
 
-本仓库已经把很多点做成了可运行的 Labs；建议你用“测试 + 断点”方式学习（比跑 Boot 全量启动更聚焦）。
+本仓库已经把很多点做成了可运行的 Labs；建议读者用“测试 + 断点”方式学习（比跑 Boot 全量启动更聚焦）。
 
 ### 3.0 断点怎么打才不痛苦：位置 + 条件 + 观察点
 
-如果你只记一句话：**断点不是“打在入口”，而是“打在你能拿到关键信息的那一行”**。
+若只记一句话：**断点不是“打在入口”，而是“打在应能够拿到关键信息的那一行”**。
 
-建议你给每类断点配一组固定观察点（watch / evaluate）：
+建议读者给每类断点配一组固定观察点（watch / evaluate）：
 
 建议断点（看整体阶段划分，不建议一步步单步到天荒地老）：
 
@@ -534,7 +534,7 @@ mvn -pl :spring-core-beans -Dtest=<TestClass>#<testMethod> test
    - `AbstractAutowireCapableBeanFactory#populateBean`（注入发生点）
    - `AbstractAutowireCapableBeanFactory#initializeBean`（Aware/BPP/init callbacks）
    - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（最常见的 proxy/替换发生点）
-3) 你应该得到的“阶段感”：
+3) 应当得到的“阶段感”：
    - instantiate → populate → initialize 的顺序是稳定的
    - BPP 的返回值会成为“最终暴露对象”（因此类型/行为可能变化）
 
@@ -567,14 +567,14 @@ mvn -pl :spring-core-beans -Dtest=<TestClass>#<testMethod> test
 - 能把问题定位到：定义层（注册/条件/顺序）还是实例层（注入/代理/回调）
 - 能用断点验证自己的推理，而不是靠日志碰运气
 
-回到概念章继续读也不会“太简单”了：因为你已经知道每个概念在源码里对应哪里、能怎么证明。
+回到概念章继续读也不会“太简单”了：因为读者已经知道每个概念在源码里对应哪里、能怎么证明。
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 推荐断点：`AbstractApplicationContext#refresh`、`AbstractAutowireCapableBeanFactory#doCreateBean`、`DefaultListableBeanFactory#doResolveDependency`
 
-## 常见坑与边界
+## 常见误区与边界
 
 注意：依赖图是 **beanName 级别** 的记录。
-如果你的依赖来自 ResolvableDependency，它不是 beanName，因此不会像普通 bean 一样出现在依赖图里。
+若的依赖来自 ResolvableDependency，它不是 beanName，因此不会像普通 bean 一样出现在依赖图里。
 
 ## 小结与下一章
 
@@ -601,18 +601,17 @@ mvn -pl :spring-core-beans -Dtest=<TestClass>#<testMethod> test
 
 ## 面试怎么用本章（把“会看文档”升级为“会答题”）
 
-你可以把本章当作“面试训练的路线图”，训练目标不是背概念，而是形成稳定输出：
+可以把本章当作“面试训练的路线图”，训练目标不是背概念，而是形成稳定输出：
 
 1) **先给结论**：一句话说清“它是什么/解决什么”。
 2) **再给时机**：它发生在 refresh 的哪一段（definition/creation/after-init）。
 3) **最后给证据链**：点名 1–2 个关键方法 + 3 个 watch list + 1 个可跑 Lab。
 
-推荐你用同一套结构回答所有题（见 `appendix/93-interview-playbook.md` 的“标准结构”），再回到本章用“现象→章节→断点→Lab”把答案跑出来。
+推荐读者用同一套结构回答所有题（见 `appendix/93-interview-playbook.md` 的“标准结构”），再回到本章用“现象→章节→断点→Lab”把答案跑出来。
 
-## 一句话自检
-
-你应该能用 2–3 句话向别人解释：
+## 自检要点
+应能够用 2–3 句话向别人解释：
 
 1) 为什么本模块推荐“先跑 Lab 再读正文”？
-2) 当你遇到注入失败/代理不生效/循环依赖时，你会如何用“现象→章节→断点→Lab”走一遍闭环？
-3) 你下一次学习/排障的入口应该从哪里进（Knowledge Map / Debugger Pack / Branch Matrix）？
+2) 当遇到注入失败/代理不生效/循环依赖时，可以如何用“现象→章节→断点→Lab”走一遍闭环？
+3) 读者下一次学习/排障的入口应该从哪里进（Knowledge Map / Debugger Pack / Branch Matrix）？

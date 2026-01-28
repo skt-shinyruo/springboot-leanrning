@@ -21,7 +21,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -38,9 +38,9 @@
 
 ### 1.1 `GenericApplicationContext` 默认不处理注解
 
-如果你直接用 `GenericApplicationContext` 注册 bean：
+若直接用 `GenericApplicationContext` 注册 bean：
 
-这不是 bug，而是：你没有把“注解解析与回调”的那套基础设施装进去。
+这不是 bug，而是：读者没有把“注解解析与回调”的那套基础设施装进去。
 
 对应测试：
 
@@ -58,7 +58,7 @@
 
 ### 1.2 注册 annotation processors 后，注解才会被处理
 
-当你调用：
+当调用：
 
 - `AnnotationConfigUtils.registerAnnotationConfigProcessors(context)`
 
@@ -77,9 +77,9 @@
 
 很多人学 Spring 注解会陷入“背注解名”的状态，但源码级理解的抓手应该是：**是哪一个处理器在什么阶段动了手**。
 
-你可以把“注解为什么能工作”拆成下面这张表（只列最核心的几条，足够覆盖 80% 排障场景）：
+可以把“注解为什么能工作”拆成下面这张表（只列最核心的几条，足够覆盖 80% 排障场景）：
 
-| 你看到的能力（现象） | 关键处理器 | 处理器类型 | 关键方法（断点入口） | refresh 落点（阶段） |
+| 观察到的能力（现象） | 关键处理器 | 处理器类型 | 关键方法（断点入口） | refresh 落点（阶段） |
 |---|---|---|---|---|
 | `@Configuration/@Bean/@Import/@ComponentScan` 能扩张定义图 | `ConfigurationClassPostProcessor` | `BeanDefinitionRegistryPostProcessor` + `BeanFactoryPostProcessor` | `postProcessBeanDefinitionRegistry`<br>`processConfigBeanDefinitions` | 第 5 步：`invokeBeanFactoryPostProcessors`（定义阶段） |
 | `@Autowired/@Value` 能注入字段/方法/构造器参数 | `AutowiredAnnotationBeanPostProcessor` | `SmartInstantiationAwareBeanPostProcessor`（BPP） | `determineCandidateConstructors`（构造器分支）<br>`postProcessProperties`（属性填充分支） | 第 6 步：`registerBeanPostProcessors`（装规则）<br>创建阶段：`populateBean` / 构造器解析 |
@@ -95,12 +95,12 @@
 
 ### 1.3 源码解析：为什么 `AnnotationConfigApplicationContext` “默认就有注解能力”？
 
-你前面看到的结论是：
+读者前面看到的结论是：
 
 - `GenericApplicationContext` 默认不处理 `@Autowired/@PostConstruct/@Bean/...`
 - 手工调用 `AnnotationConfigUtils.registerAnnotationConfigProcessors(context)` 后，注解才“生效”
 
-但真实项目里你经常并没有手工调用这句——因为你用的是 `AnnotationConfigApplicationContext`（以及 Spring Boot 创建的各种 `ApplicationContext` 实现），它们在 bootstrap 阶段就把这套基础设施装配好了。
+但真实项目里读者经常并没有手工调用这句——因为读者用的是 `AnnotationConfigApplicationContext`（以及 Spring Boot 创建的各种 `ApplicationContext` 实现），它们在 bootstrap 阶段就把这套基础设施装配好了。
 
 **关键点：注解能力不是“refresh 时突然出现的”，而是容器在构造/初始化阶段就把一组 internal processors 注册到了 registry。**
 
@@ -117,7 +117,7 @@ AnnotatedBeanDefinitionReader(registry):
   AnnotationConfigUtils.registerAnnotationConfigProcessors(registry)
 ```
 
-因此你在 `AnnotationConfigApplicationContext` 里天然就会看到那几个 internal processors 的 BeanDefinition（例如 internalAutowiredAnnotationProcessor 等），而 `GenericApplicationContext` 不会。
+因此在 `AnnotationConfigApplicationContext` 里天然就会看到那几个 internal processors 的 BeanDefinition（例如 internalAutowiredAnnotationProcessor 等），而 `GenericApplicationContext` 不会。
 
 #### 1.3.2 重要的时机差异：“注册进 registry” ≠ “已经生效”
 
@@ -131,13 +131,13 @@ AnnotatedBeanDefinitionReader(registry):
    - `@Autowired/@Resource` 才会在属性填充阶段被处理
    - `@PostConstruct` 才会在初始化回调链里被触发
 
-你把这一段与 [06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](../part-01-ioc-container/017-06-post-processors.md) 的 `PostProcessorRegistrationDelegate` 两段算法对起来，就能得到一个稳定排障结论：
+读者把这一段与 [06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](../part-01-ioc-container/017-06-post-processors.md) 的 `PostProcessorRegistrationDelegate` 两段算法对起来，就能得到一个稳定排障结论：
 
 - **registry 里有处理器，但 BeanFactory 的 BPP 列表里没有它 ⇒ 注解不会生效**
 
 #### 1.3.3 把“时机差异”画成时间线：定义层注册 → 处理器执行 → 规则装载 → 创建链路命中
 
-如果你把这一章只记成一句话，那就记成：
+若将这一章只记成一句话，那就记成：
 
 > 注解能力是一套“处理器 + 时机”的组合：先注册定义，再执行 BFPP/BDRPP 扩张定义，再注册 BPP 装规则，最后在创建链路里真正命中。
 
@@ -159,9 +159,9 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
   - populateBean / initializeBean 命中 BPP：@Autowired/@PostConstruct/... 才真正发生
 ```
 
-#### 1.3.4 反例（最常见的坑）：在 BDRPP/BFPP 阶段过早 `getBean()` 会让对象错过 BPP
+#### 1.3.4 反例（最常见的误区）：在 BDRPP/BFPP 阶段过早 `getBean()` 会让对象错过 BPP
 
-一个非常“真实世界”的坑是：你在 BFPP/BDRPP 执行阶段就调用了 `getBean()`（例如为了拿一个辅助对象做注册），这会导致：
+一个非常“真实世界”的误区是：在 BFPP/BDRPP 执行阶段就调用了 `getBean()`（例如为了拿一个辅助对象做注册），这会导致：
 
 - bean 在 “BPP 还没注册完” 之前就被创建了
 - 于是它会错过注入、生命周期回调、甚至代理包装
@@ -172,7 +172,7 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 ## 可复现闭环（基于 `SpringCoreBeansBootstrapInternalsLabTest`）
 
-跑完这些用例，你至少要能复述 3 条结论：
+跑完这些用例，至少应能够复述 3 条结论：
 
 1) **注解能力来自基础设施处理器**  
    - 断点：`registerAnnotationConfigProcessors`  
@@ -208,7 +208,7 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 - **误解 3：把“容器没装处理器”当成业务 bug**
   - 学机制时请优先问：当前容器有没有注册对应的 BFPP/BPP？
 
-- `AbstractApplicationContext#refresh`：容器启动总入口；你能在这里建立“先装处理器、再建实例”的时间线
+- `AbstractApplicationContext#refresh`：容器启动总入口；应能够在这里建立“先装处理器、再建实例”的时间线
 - `AnnotationConfigUtils#registerAnnotationConfigProcessors`：把让注解生效的一组 BFPP/BPP 注册进容器（本章的关键动作）
 - `ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry`：解析 `@Configuration/@Bean/@Import` 并注册额外的 `BeanDefinition`
 - `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：属性填充阶段处理 `@Autowired/@Value`（没注册它就不会注入）
@@ -216,7 +216,7 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 入口：
 
-你应该看到：
+应当看到：
 
 - 定义层：`registerAnnotationConfigProcessors` 把 internal processors 作为 BeanDefinition 放进 registry
 - refresh 前半段：`invokeBeanFactoryPostProcessors` 里 `ConfigurationClassPostProcessor` 才真正解析 `@Configuration/@Bean`
@@ -240,7 +240,7 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
-你遇到的“注解不生效”，几乎都能先用两问把范围缩到 1/2：
+遇到的“注解不生效”，几乎都能先用两问把范围缩到 1/2：
 
 1) **是不是“规则根本没装进来”？**（定义层 / registry 层）
    - 症状：`@Configuration/@Bean/@Import/@ComponentScan` 看起来完全没生效；容器里压根没有对应 BeanDefinition
@@ -257,7 +257,7 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 ## 源码最短路径（call chain）
 
-> 目标：当你怀疑“注解没生效”时，用最短调用链回答两个问题：
+> 目标：当读者怀疑“注解没生效”时，用最短调用链回答两个问题：
 >
 > 1) 相关处理器有没有被**注册**？（定义层）
 > 2) 相关处理器有没有在 bean 创建链路里被**调用**？（实例层）
@@ -287,7 +287,7 @@ GenericApplicationContext#refresh
                            -> InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization (@PostConstruct)
 ```
 
-把这条最短链路走通，你会得到一个非常稳定的定位策略：
+把这条最短链路走通，可以得到一个非常稳定的定位策略：
 
 1) `@Bean/@Import/@ComponentScan` “不生效”优先看 **定义层**：`invokeBeanFactoryPostProcessors` 是否执行到 `ConfigurationClassPostProcessor`
 2) `@Autowired/@Resource/@PostConstruct` “不生效”优先看 **实例层**：`registerBeanPostProcessors` 是否把对应 BPP 装进链路
@@ -305,7 +305,7 @@ GenericApplicationContext#refresh
 - `registry.containsBeanDefinition("org.springframework.context.annotation.internalAutowiredAnnotationProcessor")`（`AutowiredAnnotationBeanPostProcessor`）
 - `registry.containsBeanDefinition("org.springframework.context.annotation.internalCommonAnnotationProcessor")`（`CommonAnnotationBeanPostProcessor`）
 
-> 说明：这些是 Spring 内部的 “internal*Processor” beanName。你不需要背全，但用它们能非常快地确认“注解能力有没有被装进来”。
+> 说明：这些是 Spring 内部的 “internal*Processor” beanName。无需背全，但用它们能非常快地确认“注解能力有没有被装进来”。
 
 ### 2) 再确认：处理器有没有“进 BeanFactory”（实例层）
 
@@ -313,7 +313,7 @@ GenericApplicationContext#refresh
 
 - `beanFactory.getBeanPostProcessors()`：看最终列表里是否包含 `AutowiredAnnotationBeanPostProcessor` / `CommonAnnotationBeanPostProcessor`
 
-如果你只记一个判断条件，就记这个：
+若只记一个判断条件，就记这个：
 
 - **`beanFactory.getBeanPostProcessors()` 里没有对应处理器 ⇒ 注解一定不会生效**（后面所有“注入/回调没发生”都能解释）
 
@@ -335,7 +335,7 @@ GenericApplicationContext#refresh
 
 **反例：我用 `GenericApplicationContext` 注册了 bean，容器也能启动，但 `@Autowired/@Resource/@PostConstruct` 全都不生效（字段是 null、回调没跑）。**
 
-- 你没有调用 `AnnotationConfigUtils.registerAnnotationConfigProcessors(...)`
+- 读者没有调用 `AnnotationConfigUtils.registerAnnotationConfigProcessors(...)`
   - 所以 `registerBeanPostProcessors` 阶段看不到 `AutowiredAnnotationBeanPostProcessor` / `CommonAnnotationBeanPostProcessor`
 - 因为 BPP 根本没装上：
   - `@Autowired` 的 `postProcessProperties` 不会命中 ⇒ 字段保持 `null`
@@ -347,11 +347,10 @@ GenericApplicationContext#refresh
 - 要么用 `AnnotationConfigApplicationContext`（默认自带 annotation processors）
 - 要么在 `GenericApplicationContext` 中显式调用 `AnnotationConfigUtils.registerAnnotationConfigProcessors(context)` 再 `refresh()`
 
-## 一句话自检
-
+## 自检要点
 - 常问：为什么 `GenericApplicationContext` 里 `@Autowired/@PostConstruct` 默认不生效？
-  - 答题要点：因为 annotation processors（BPP/BFPP）没有注册进容器；注解只是元数据，不是语言魔法。
-- 常见追问：你如何用断点证明“处理器已经注册但尚未生效”？
+  - 答题要点：因为 annotation processors（BPP/BFPP）没有注册进容器；注解只是元数据，不是语言隐式行为。
+- 常见追问：如何用断点证明“处理器已经注册但尚未生效”？
   - 答题要点：`registerAnnotationConfigProcessors` 只注册 BeanDefinition（定义层）；必须经过 `invokeBeanFactoryPostProcessors` 与 `registerBeanPostProcessors` 才会进入创建链路（实例层）。
 - 常见追问：遇到“字段为 null / `@PostConstruct` 没跑”，第一步该查什么？
   - 答题要点：先查 `beanFactory.getBeanPostProcessors()` 是否包含 `AutowiredAnnotationBeanPostProcessor/CommonAnnotationBeanPostProcessor`；没有就先补基础设施，而不是先怀疑业务逻辑。
@@ -374,38 +373,38 @@ GenericApplicationContext#refresh
 ### Q2：`GenericApplicationContext` vs `AnnotationConfigApplicationContext` 的根因差异是什么？Spring Boot 为什么默认“都能用”？
 
 - 标准答案（可复述）：
-  - `AnnotationConfigApplicationContext` 默认会安装 annotation config 的基础设施；`GenericApplicationContext` 默认是“裸容器”，需要你显式注册 processors。Spring Boot 启动时使用的是具备完整 bootstrap 的 ApplicationContext，并在启动流程里装配并触发这些基础设施处理器。
+  - `AnnotationConfigApplicationContext` 默认会安装 annotation config 的基础设施；`GenericApplicationContext` 默认是“裸容器”，需要读者显式注册 processors。Spring Boot 启动时使用的是具备完整 bootstrap 的 ApplicationContext，并在启动流程里装配并触发这些基础设施处理器。
 - 证据链（方法级）：
   - `AnnotationConfigUtils#registerAnnotationConfigProcessors`（是否被调用）
   - `beanFactory.getBeanPostProcessors()`（是否装入 BPP 链）
 
-### Q3：面试官让你“给一个断点闭环”，你会怎么证明上面两点？
+### Q3：面试官让读者“给一个断点闭环”，可以怎么证明上面两点？
 
 - 标准答案（可复述）：
   - 从 `AbstractApplicationContext#refresh` 入手，依次命中 `invokeBeanFactoryPostProcessors` 与 `registerBeanPostProcessors`，再落到 `AutowiredAnnotationBeanPostProcessor#postProcessProperties` 与 `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`，用 `beanName` 条件断点把噪音压到最低。
 
-## 常见坑与边界
+## 常见误区与边界
 
 这是一个非常高频的误区：很多人看到 registry 里有这些 internal processors，就以为注解已经“能用”。
 
-### 坑 1：只把 processor 注册成了 BeanDefinition，但没把 BPP 装进拦截链
+### 误区 1：只把 processor 注册成了 BeanDefinition，但没把 BPP 装进拦截链
 
-- 你会看到：registry 里能查到 `internalAutowiredAnnotationProcessor`
+- 可以观察到：registry 里能查到 `internalAutowiredAnnotationProcessor`
 - 但 `beanFactory.getBeanPostProcessors()` 里没有 `AutowiredAnnotationBeanPostProcessor`
 - 结果：`populateBean` 不会触发注入逻辑，字段/参数保持默认值（`null/0/false`）
 
-### 坑 2：过早 `getBean`（在 BPP 注册之前就把 bean 创建出来了）
+### 误区 2：过早 `getBean`（在 BPP 注册之前就把 bean 创建出来了）
 
-即使你最终注册了 BPP，如果目标 bean 在它之前就已经被创建（例如在 BFPP 阶段过早触发 `getBean`），你仍然会看到：
+即使读者最终注册了 BPP，如果目标 bean 在它之前就已经被创建（例如在 BFPP 阶段过早触发 `getBean`），读者仍然会看到：
 
 - Bean 存在，但注入/回调缺失
 - 或者“第一次创建不生效，第二次才生效”（其实是第二次创建的是另一个 bean/另一个 context）
 
 定位策略：回到 refresh 主线，看目标 bean 的创建时机是不是早于 `registerBeanPostProcessors`。
 
-### 坑 3：把“注解不生效”误判为“依赖没引入”
+### 误区 3：把“注解不生效”误判为“依赖没引入”
 
-在这个仓库的最小场景里，依赖都在，但只要你跳过 `registerAnnotationConfigProcessors` 这一步，注解同样不会生效。
+在这个仓库的最小场景里，依赖都在，但只要读者跳过 `registerAnnotationConfigProcessors` 这一步，注解同样不会生效。
 因此排障顺序应该是：**先看处理器是否装配/是否执行，再看依赖是否缺失**。
 
 
@@ -430,7 +429,7 @@ GenericApplicationContext#refresh
 
 在 `AbstractAutowireCapableBeanFactory#populateBean` / `#initializeBean` 附近 watch/evaluate：
 
-- `beanName`：你关心的目标 bean 是否就在当前栈上
+- `beanName`：关注的目标 bean 是否就在当前栈上
 - `this.beanPostProcessors`：注入/生命周期相关 BPP 是否在列表里（没有就不要继续“猜注解为什么没生效”）
 - `pvs`（PropertyValues）：在 `populateBean` 里是否被注入处理器补充/改写
 - `wrappedBean` / `exposedObject`：`initializeBean` 之后返回的对象是否被包装/替换（代理/替身）

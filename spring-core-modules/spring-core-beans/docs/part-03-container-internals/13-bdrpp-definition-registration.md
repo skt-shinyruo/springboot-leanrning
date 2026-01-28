@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -37,11 +37,11 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 - BFPP 只能修改已有定义  
 **断点建议**：`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`
 
-## 2. 现象：你没有显式注册 bean，但它依然出现了
+## 2. 现象：未显式注册 bean，但它依然出现了
 
-- 你只注册了一个 BDRPP
+- 读者只注册了一个 BDRPP
 - BDRPP 在 `postProcessBeanDefinitionRegistry(...)` 里注册了 `registeredBean` 的定义
-- refresh 之后，你能直接 `getBean(RegisteredBean.class)`
+- refresh 之后，应能够直接 `getBean(RegisteredBean.class)`
 
 这说明：**BDRPP 能把“定义”塞进容器，从而让 bean 真正成为容器的一部分**。
 
@@ -51,7 +51,7 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 - 之后 BFPP 再修改这个 `BeanDefinition` 的属性
 - 最终实例化出的对象反映了 BFPP 的修改结果
 
-你应该记住：
+应当记住：
 
 - **BDRPP 能“新增定义”**
 - **BFPP 更常见的用途是“修改定义”**
@@ -82,7 +82,7 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 ## 可复现闭环（基于 `SpringCoreBeansRegistryPostProcessorLabTest`）
 
-跑完这组用例，你至少要能复述 3 条结论：
+完成该组用例后，至少应能够复述 3 条结论：
 
 1) **BDRPP 能动态注册定义**  
    - 断点：`postProcessBeanDefinitionRegistry`  
@@ -96,7 +96,7 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
-你可以用一句话把本章的适用范围钉死：
+可以用一句话把本章的适用范围钉死：
 
 > **只要问题是“这个 BeanDefinition 到底从哪里来的/为什么会出现/为什么会被改写”，就优先回到 BDRPP/BFPP（定义层）。**
 
@@ -109,7 +109,7 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
   - 对应章节：[14](14-post-processor-ordering.md)、[15](15-pre-instantiation-short-circuit.md)、[31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
 ## 源码最短路径（call chain）
 
-> 目标：当你想回答“这个 bean 为什么会出现（我明明没注册）”或“为什么 BFPP 能改到 BDRPP 注册的定义”时，用最短调用链把问题钉在 refresh 的精确阶段。
+> 目标：当需要回答“这个 bean 为什么会出现（我明明没注册）”或“为什么 BFPP 能改到 BDRPP 注册的定义”时，用最短调用链把问题钉在 refresh 的精确阶段。
 
 从 `refresh()` 进入“注册阶段”的最短主干（只列关键节点）：
 
@@ -117,13 +117,13 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 - **BDRPP/BFPP 都发生在 refresh 的“前半段”（定义层）**，而 BPP 注册与单例实例化发生在后面。
 
-如果你在调用栈里看到了：
+若在调用栈里看到了：
 
 - `invokeBeanFactoryPostProcessors` → `postProcessBeanDefinitionRegistry`
-  那你处理的是“定义从哪里来的”问题（本章）
-- 如果你要追“最初的定义入口”（扫描/`@Bean`/`@Import`/registrar），先回到 [02](../part-01-ioc-container/02-bean-registration.md)
+  那读者处理的是“定义从哪里来的”问题（本章）
+- 若要追“最初的定义入口”（扫描/`@Bean`/`@Import`/registrar），先回到 [02](../part-01-ioc-container/02-bean-registration.md)
 - `registerBeanPostProcessors` / `preInstantiateSingletons` / `doCreateBean`
-  那你处理的是“实例如何被创建/被包装”问题（见 [14](14-post-processor-ordering.md)、[25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)、[31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
+  那读者处理的是“实例如何被创建/被包装”问题（见 [14](14-post-processor-ordering.md)、[25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)、[31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
 
 ## 固定观察点（watch list）
 
@@ -131,7 +131,7 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 在 `BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry` 里建议 watch/evaluate：
 
-- `registry.containsBeanDefinition("registeredBean")`（或你的目标 beanName）
+- `registry.containsBeanDefinition("registeredBean")`（或相应的目标 beanName）
 - `registry.getBeanDefinition("registeredBean")`（定义的关键字段：class/parentName/propertyValues/scope）
 
 在 `DefaultListableBeanFactory#registerBeanDefinition` 里建议 watch/evaluate：
@@ -149,7 +149,7 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 ### 3) 看 BFPP 是否改到了 BDRPP 注册的定义
 
-在你的 BFPP（`BeanFactoryPostProcessor#postProcessBeanFactory`）里建议 watch/evaluate：
+在相应的 BFPP（`BeanFactoryPostProcessor#postProcessBeanFactory`）里建议 watch/evaluate：
 
 - `beanFactory.containsBeanDefinition("registeredBean")`：确认 BDRPP 注册的定义已经存在
 - `beanFactory.getBeanDefinition("registeredBean").getPropertyValues()`：确认 BFPP 对定义的修改是否生效
@@ -159,27 +159,27 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 **反例：我在 BDRPP/BFPP 阶段调用 `getBean()`，结果某些 BPP/代理/回调“神秘失效”或顺序变得反直觉。**
 
-这类问题的本质是：你把“应该在实例阶段发生的创建”提前到了“处理器阶段”。
+这类问题的本质是：读者把“应该在实例阶段发生的创建”提前到了“处理器阶段”。
 
 - 在 `BeanDefinitionRegistryPostProcessor#postProcessBeanFactory` 里调用 `beanFactory.getBean("earlyTarget")`
   - 此时 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 还没跑
-  - `beanFactory.getBeanPostProcessors()` 里还没有你的 `BeanPostProcessor`
+  - `beanFactory.getBeanPostProcessors()` 里还没有相应的 `BeanPostProcessor`
   - **所以 `earlyTarget` 会在“没有 BPP 的世界”里被创建出来**
 - refresh 后半段注册了 BPP，但已经太晚：
   - `earlyTarget` 已经在单例缓存里，`preInstantiateSingletons` 不会再重建它
-  - 最终你看到：同一个容器里有的 bean 被 BPP 处理了，有的没有（非常反直觉）
+  - 最终读者看到：同一个容器里有的 bean 被 BPP 处理了，有的没有（非常反直觉）
 
 这就是为什么很多框架/基础设施会强调：
 
 - BDRPP/BFPP 阶段尽量只处理“定义”，不要拿“实例”（需要实例层行为时，把逻辑放到 BPP/SmartInitializingSingleton 等更合适的阶段）
 
-## 5. 一句话自检
+## 5. 自检要点
 
 - 常问：BDRPP 和 BFPP 的本质差别是什么？为什么说 BDRPP 更“早、更强”？
   - 答题要点：BDRPP 能在 registry 阶段新增/改名/批量注册 `BeanDefinition`；BFPP 更常用于修改已有定义；二者都发生在 refresh 前半段（定义层）。
 - 常见追问：为什么不建议在 BDRPP/BFPP 里 `getBean()`？
   - 答题要点：会触发过早实例化，导致后续 BPP 来不及介入/顺序变得反直觉，最终出现“同一容器里有的 bean 被处理、有的没被处理”。
-- 常见追问：你如何用断点证明“某个 bean 是 BDRPP 动态注册出来的”？
+- 常见追问：如何用断点证明“某个 bean 是 BDRPP 动态注册出来的”？
   - 答题要点：在 `postProcessBeanDefinitionRegistry` 与 `registerBeanDefinition` 加条件断点（beanName），确认定义进入 registry 的时机与来源。
 
 ## 源码与断点
@@ -205,11 +205,11 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 `SpringCoreBeansRegistryPostProcessorLabTest.beanDefinitionRegistryPostProcessor_canRegisterNewBeanDefinitions()` 里：
 
-你应该看到：只注册了 BDRPP，但 refresh 后目标 bean 已可 `getBean`（因为定义在注册阶段被动态加入 registry）。
+应当看到：只注册了 BDRPP，但 refresh 后目标 bean 已可 `getBean`（因为定义在注册阶段被动态加入 registry）。
 
 `SpringCoreBeansRegistryPostProcessorLabTest.bdrppRunsBeforeRegularBeanFactoryPostProcessor()` 里展示：
 
-你应该看到：BDRPP 先注册定义，随后 BFPP 才能拿到并修改该定义（最终实例反映 BFPP 的修改）。
+应当看到：BDRPP 先注册定义，随后 BFPP 才能拿到并修改该定义（最终实例反映 BFPP 的修改）。
 
 ## 源码锚点（建议从这里下断点）
 
@@ -227,16 +227,16 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 建议断点：
 
-1) 你在 Lab 里实现的 BDRPP：`postProcessBeanDefinitionRegistry(...)`（观察：这里注册了哪些 beanName/定义）
+1) 在 Lab 里实现的 BDRPP：`postProcessBeanDefinitionRegistry(...)`（观察：这里注册了哪些 beanName/定义）
 2) `DefaultListableBeanFactory#registerBeanDefinition`（观察：注册时机在 refresh 早期，且会做冲突/覆盖检查）
-3) 你在 Lab 里实现的 BFPP：`postProcessBeanFactory(...)`（观察：它能拿到并修改 BDRPP 刚注册的定义）
+3) 在 Lab 里实现的 BFPP：`postProcessBeanFactory(...)`（观察：它能拿到并修改 BDRPP 刚注册的定义）
 4) `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`（观察：为什么 BDRPP 能先于普通 BFPP）
 5) （可选）`DefaultListableBeanFactory#preInstantiateSingletons`（观察：定义注册/修改完成后才进入实例化阶段）
 
 - “我没显式注册，但某个 bean 却出现了/多了很多 bean” → **优先定义层**：是否有 BDRPP/registrar 在动态注册定义？（本章 Lab）
 - “我动态注册的 bean 找不到/没进容器” → **优先定义层**：`postProcessBeanDefinitionRegistry` 是否被调用？是否真的 `registerBeanDefinition` 成功？
 - “bean 在，但属性/构造参数不符合预期” → **优先定义层（修改定义）**：BFPP 是否在 BDRPP 之后运行、是否覆盖了定义元数据？（对照本章第 3 节）
-- “在 post-processor 阶段 `getBean()` 引发奇怪顺序/代理缺失” → **优先实例层的时机问题**：你可能触发了过早实例化，导致后续 BPP 来不及介入（对照 [14](14-post-processor-ordering.md)、[25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)）
+- “在 post-processor 阶段 `getBean()` 引发奇怪顺序/代理缺失” → **优先实例层的时机问题**：读者可能触发了过早实例化，导致后续 BPP 来不及介入（对照 [14](14-post-processor-ordering.md)、[25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)）
 
 > 目标：在 debugger 里只看少数几个结构/变量，就能确认“定义到底有没有被注册进去、注册发生在哪、后续有没有被改”。
 
@@ -248,7 +248,7 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRegistryPostProcessorLabTest.java`
   - `getBeanDuringPostProcessing_instantiatesTooEarly_andSkipsLaterBeanPostProcessors()`
 
-你在断点里应该看到什么（用于纠错）：
+在断点里应该看到什么（用于纠错）：
 
 断点建议（把反例看“实”）：
 
@@ -256,28 +256,28 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 2) `PostProcessorRegistrationDelegate#registerBeanPostProcessors`：确认 BPP 是在这一步才进入 `beanFactory.getBeanPostProcessors()` 的
 3) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`：对 `earlyTarget/lateTarget` 加条件断点，观察谁命中、谁没命中
 
-- 你能解释清楚：为什么 BFPP 能修改 BDRPP 注册的定义？（提示：因为 BDRPP 更早）
+- 应能够解释清楚：为什么 BFPP 能修改 BDRPP 注册的定义？（提示：因为 BDRPP 更早）
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRegistryPostProcessorLabTest.java`
 推荐断点：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`、`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`、`DefaultListableBeanFactory#registerBeanDefinition`
 
-## 常见坑与边界
+## 常见误区与边界
 
-### 常见坑
+### 常见误区
 
-- **坑 1：在 BDRPP/BFPP 里 `getBean()` 触发提前实例化**
+- **误区 1：在 BDRPP/BFPP 里 `getBean()` 触发提前实例化**
   - post-processor 阶段本质是“定义层”的工作。
-  - 如果你在这里强行拿实例，可能导致：
+  - 若在这里强行拿实例，可能导致：
     - 某些 BPP 没机会介入
     - 生命周期顺序变得反直觉
 
-- **坑 2：beanName 冲突**
+- **误区 2：beanName 冲突**
   - BDRPP 动态注册时必须保证名称唯一，否则会覆盖或直接报错（取决于容器配置）。
 
-- **坑 3：以为 `@Order` 会改变“分组”（PriorityOrdered/Ordered/others）**
+- **误区 3：以为 `@Order` 会改变“分组”（PriorityOrdered/Ordered/others）**
   - 分组本质上看接口类型，不看注解；`@Order` 只影响“组内排序”（且前提是它确实进入了会被 sort 的列表）。
   - 对应章节：[14](14-post-processor-ordering.md)
 
-- **坑 4：把“注解生效”误认为是 BDRPP 自己完成的**
+- **误区 4：把“注解生效”误认为是 BDRPP 自己完成的**
   - BDRPP 负责把注解世界翻译成 BeanDefinition（图扩张），但 `@Autowired/@PostConstruct/@Resource` 这类行为依赖 BPP 在创建阶段介入。
   - 对应章节：[022-12](022-12-container-bootstrap-and-infrastructure.md)
 

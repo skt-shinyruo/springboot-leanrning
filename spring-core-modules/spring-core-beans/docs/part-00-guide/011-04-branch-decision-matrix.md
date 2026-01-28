@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 这章是“排障索引页”：你遇到一个现象时，不要先全局搜代码，而是先把它定位到某个分支点（if/then）。
+    - 这章是“排障索引页”：遇到一个现象时，不要先全局搜代码，而是先把它定位到某个分支点（if/then）。
     - 分支矩阵的价值在于“可复现”：每个分支都应该能在本仓库的 LabTest 里跑出来，而不是靠脑补。
     - 学会用最少观察点做最大判断：一个关键方法 + 3 个变量，往往足够把问题收敛到根因。
     - 先学会“读异常 cause chain”：很多错误的外层异常是 `BeanCreationException`/`UnsatisfiedDependencyException`，真正的分支点往往藏在 root cause。
@@ -26,15 +26,15 @@
 排障最怕两件事：
 
 1) 现象很像，但根因不在同一阶段
-2) 你下了很多断点，却没有一套“判断规则”
+2) 读者下了很多断点，却没有一套“判断规则”
 
-Branch Decision Matrix 的目的就是把“判断规则”显式写出来：你只要回答几个 if/then，就能定位到该下断点的位置。
+Branch Decision Matrix 的目的就是把“判断规则”显式写出来：读者只要回答几个 if/then，就能定位到该下断点的位置。
 
 ---
 
 ## 0. 先学会读异常 cause chain（别被外层异常骗了）
 
-Spring 容器的“外层异常”非常容易误导你，因为它们经常只是包装（wrap）：
+Spring 容器的“外层异常”非常容易误导读者，因为它们经常只是包装（wrap）：
 
 - `BeanCreationException`：只是说“创建 bean 失败”，但失败点可能在 instantiate / populate / initialize / BPP / destroy 的任何一步。
 - `UnsatisfiedDependencyException`：只是说“依赖没满足”，但 root cause 通常是：
@@ -43,13 +43,13 @@ Spring 容器的“外层异常”非常容易误导你，因为它们经常只�
   - `BeanCurrentlyInCreationException`（循环依赖/创建窗口期）
   - 类型转换/值解析异常（populateBean 阶段）
 
-因此你排障的固定第一步是：
+因此读者排障的固定第一步是：
 
 1) 先打开异常的 **root cause**（最底层 `cause`）
 2) 再把 root cause 映射到“阶段 + 关键方法 + watch list”
 3) 最后再选 Lab 复现（用断言把分支固化）
 
-> 你会发现：很多“看起来像 DI 的问题”，其实是 `@Value`/类型转换/FactoryBean 类型推断导致的。
+> 可以发现：很多“看起来像 DI 的问题”，其实是 `@Value`/类型转换/FactoryBean 类型推断导致的。
 
 ## 1. 分支矩阵（现象 → 阶段 → 方法 → 观察点 → Lab）
 
@@ -70,24 +70,24 @@ Spring 容器的“外层异常”非常容易误导你，因为它们经常只�
 | `BeanCurrentlyInCreationException` | 是 constructor cycle？还是“早期引用介入的窗口期”？ | 单例创建 / 循环依赖 | `DefaultSingletonBeanRegistry#beforeSingletonCreation` / `getSingleton` | `singletonsCurrentlyInCreation`、`allowCircularReferences` | `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest` |
 | `Circular depends-on relationship` | 是定义层 dependsOn 拓扑环，不要误判成三级缓存循环依赖 | 创建入口（dependsOn） | `AbstractBeanFactory#doGetBean` / `DefaultSingletonBeanRegistry#isDependent` | `mbd.getDependsOn()`、`dependentBeanMap` | `SpringCoreBeansDependsOnLabTest` |
 | `BeanDefinitionOverrideException` / “Cannot register bean definition … already exists” | 是否禁止覆盖？覆盖发生在谁注册得更晚？ | 定义层注册 | `DefaultListableBeanFactory#registerBeanDefinition` | `allowBeanDefinitionOverriding`、旧/新 BD source | overriding 相关 Lab / 注册相关 Lab |
-| `BeanNotOfRequiredTypeException` | 你要的是 factory 还是 product？或者被代理后类型发生变化？ | 查找/注入 | `AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#isTypeMatch` | beanName 是否含 `&`、`predictedType`、`targetType` | FactoryBean / proxy 相关 Lab |
+| `BeanNotOfRequiredTypeException` | 需要的是 factory 还是 product？或者被代理后类型发生变化？ | 查找/注入 | `AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#isTypeMatch` | beanName 是否含 `&`、`predictedType`、`targetType` | FactoryBean / proxy 相关 Lab |
 
 ---
 
 ## 2. 如何使用这张表（固定套路）
 
-当你拿到一个异常/现象时，按这个顺序：
+当读者拿到一个异常/现象时，按这个顺序：
 
 1) **先找现象行**：它属于注入/占位符/代理/循环依赖哪一类？
 2) **回答分流问题**：把“可能原因”缩成 1–2 个分支
 3) **直接跳到关键方法下断点**：只看 watch list，不在栈里漫游
-4) **用对应 Lab 复现**：确认你理解的是机制，而不是项目偶然
+4) **用对应 Lab 复现**：确认读者理解的是机制，而不是项目偶然
 
 ---
 
 ## 面试怎么用这张表（把排障套路复用成答题套路）
 
-面试里很多题其实是“给你一个现象，让你解释机制”。你可以把答题过程复用为：
+面试里很多题其实是“给读者一个现象，让读者解释机制”。可以把答题过程复用为：
 
 1) 先把现象放回阶段：definition / creation / after-init（对应 refresh 时间线）
 2) 再用 1 个关键断点给证据（不靠“我觉得”）
@@ -95,9 +95,8 @@ Spring 容器的“外层异常”非常容易误导你，因为它们经常只�
 
 推荐复习入口：`appendix/93-interview-playbook.md`（每题都对应“阶段 + 关键方法 + 可跑 Lab”）。
 
-## 一句话自检
-
-你应该能做到：
+## 自检要点
+应能够做到：
 
 1) 看到 `NoUniqueBeanDefinitionException`，能立刻说出“下哪个断点、看哪三个变量”。
 2) 看到 `@Value(\"${missing}\")` 原样字符串，能立刻判断 strict/non-strict 并给出修复路径。

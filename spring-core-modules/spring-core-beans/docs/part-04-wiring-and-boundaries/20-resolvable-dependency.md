@@ -3,8 +3,8 @@
 ## 导读
 
 - 本章主题：**registerResolvableDependency：能注入，但它不是 Bean**
-- 这章专治一种“看起来像魔法”的现象：
-  你能 `@Autowired` 进来一个东西，但它**不是 BeanDefinition**、`getBean(类型)` 也找不到它。
+- 这章专治一种“看起来像隐式行为”的现象：
+  应能够 `@Autowired` 进来一个东西，但它**不是 BeanDefinition**、`getBean(类型)` 也找不到它。
 
 !!! summary "本章要点"
 
@@ -42,7 +42,7 @@
 
 ## 1. 方法级入口：注入是怎么进入 `doResolveDependency` 的？
 
-你不需要记住所有注入触发点，但你必须知道**最后汇聚点**：
+无需记住所有注入触发点，但必须知道**最后汇聚点**：
 
 - 汇聚点：`DefaultListableBeanFactory#resolveDependency` → `doResolveDependency`
 
@@ -89,7 +89,7 @@
 
 - `DefaultListableBeanFactory#doResolveDependency`
 
-你在断点里通常会看到类似流程（表达的是顺序，不是源码逐行复刻）：
+在断点里通常会看到类似流程（表达的是顺序，不是源码逐行复刻）：
 
 1) 处理快捷路径（`Optional` / `ObjectProvider` / `@Lazy` 等）
 2) 处理 `@Value`（字符串/表达式）
@@ -133,14 +133,14 @@
 
 - `AbstractApplicationContext#prepareBeanFactory`
 
-这里会为你注册一批基础设施对象（不同 Spring 版本略有差异，但核心思想一致），常见包括：
+这里会为读者注册一批基础设施对象（不同 Spring 版本略有差异，但核心思想一致），常见包括：
 
 - `BeanFactory` / `ApplicationContext`
 - `ResourceLoader`
 - `ApplicationEventPublisher`
 - `Environment`
 
-你要确认“我的注入为什么能命中？”最直接的方法不是猜，而是：
+需要确认“我的注入为什么能命中？”最直接的方法不是猜，而是：
 
 - 在 `prepareBeanFactory` 或 `registerResolvableDependency` 下断点，看注册了哪些 type
 - 在 `doResolveDependency` 的 resolvableDependencies 命中分支下断点，看命中了哪一条
@@ -151,13 +151,13 @@
 
 适用场景：
 
-- 你要注入一个“**按线程/按请求动态变化**”的上下文对象（例如 requestId），但它不是 Spring Bean（或者你不想把它做成 Bean + Scope）
-- 你要把“获取动作”延迟到注入发生时（而不是注册时就固定一个实例）
+- 需要注入一个“**按线程/按请求动态变化**”的上下文对象（例如 requestId），但它不是 Spring Bean（或者读者不想把它做成 Bean + Scope）
+- 需要把“获取动作”延迟到注入发生时（而不是注册时就固定一个实例）
 
 反例与警告：
 
 - 不要用它塞业务单例对象来“绕过” BeanDefinition（这会让生命周期、代理、AOP 变得不可预测）
-- 如果你想要真正的生命周期/代理/范围语义，应该用 **Scope/ScopedProxy** 或 **Provider/ObjectProvider**（见第 28/30 章）
+- 若想要真正的生命周期/代理/范围语义，应该用 **Scope/ScopedProxy** 或 **Provider/ObjectProvider**（见第 28/30 章）
 
 ## 5. 它和 `*Aware` 是什么关系？
 
@@ -168,13 +168,13 @@
 - `*Aware`：实例创建之后的回调阶段命中
   典型入口：`AbstractAutowireCapableBeanFactory#invokeAwareMethods`
 
-你可以这样记：
+可以这样记：
 
-> **ResolvableDependency 是“像注入一样给你一个对象”；Aware 是“给你一个回调机会”。**
+> **ResolvableDependency 是“像注入一样给读者一个对象”；Aware 是“给读者一个回调机会”。**
 
 ## 可复现闭环（基于 `SpringCoreBeansResolvableDependencyLabTest`）
 
-跑完该 Lab，你至少要能复述 3 条结论：
+跑完该 Lab，至少应能够复述 3 条结论：
 
 1) **能注入但不可 getBean**  
    - 断点：`doResolveDependency`  
@@ -190,17 +190,17 @@
 
 | 现象/报错 | 最可能原因 | 证据链（方法级） | 推荐修复 |
 | --- | --- | --- | --- |
-| `@Autowired` 成功，但 `getBean(类型)` 失败 | 这是 resolvable dependency，不是 bean | `doResolveDependency` 命中 `resolvableDependencies`；`getBean` 查不到对应 BeanDefinition | 接受它的定位；如果你需要 bean 语义，就改成注册 BeanDefinition（`registerBeanDefinition`/`registerSingleton`） |
-| 你自己注册了 `registerResolvableDependency`，但注入点还是报 `NoSuchBeanDefinitionException`/`UnsatisfiedDependencyException` | 注册到了**另一个** `BeanFactory`（父子容器/测试 context 变化） | `prepareBeanFactory`/自定义注册处断点看目标工厂；`doResolveDependency` 里 map 是否包含该 key | 确认注册发生在“注入发生的那个 context”的 `BeanFactory` 上 |
-| 你以为 `@Qualifier` 能约束它，但没有效果 | resolvableDependencies 按 type 命中，不走候选选择 | 命中发生在 `doResolveDependency` 的 resolvableDependencies 分支，未进入 `findAutowireCandidates` | 如果你需要 Qualifier 语义，就别用 resolvableDependency；改为注册多个 bean + Qualifier |
-| 你把一个对象塞进 resolvableDependencies，期望它被 AOP/后置处理器增强，但没有 | 它不是 bean，不会走 BPP 链 | 不经过 `createBean` / `initializeBean` / `applyBeanPostProcessors...` | 需要增强就让它成为 bean，或把增强逻辑放在你自己的 factory/provider 里 |
+| `@Autowired` 成功，但 `getBean(类型)` 失败 | 这是 resolvable dependency，不是 bean | `doResolveDependency` 命中 `resolvableDependencies`；`getBean` 查不到对应 BeanDefinition | 接受它的定位；如果需要 bean 语义，就改成注册 BeanDefinition（`registerBeanDefinition`/`registerSingleton`） |
+| 读者自己注册了 `registerResolvableDependency`，但注入点还是报 `NoSuchBeanDefinitionException`/`UnsatisfiedDependencyException` | 注册到了**另一个** `BeanFactory`（父子容器/测试 context 变化） | `prepareBeanFactory`/自定义注册处断点看目标工厂；`doResolveDependency` 里 map 是否包含该 key | 确认注册发生在“注入发生的那个 context”的 `BeanFactory` 上 |
+| 容易误以为 `@Qualifier` 能约束它，但没有效果 | resolvableDependencies 按 type 命中，不走候选选择 | 命中发生在 `doResolveDependency` 的 resolvableDependencies 分支，未进入 `findAutowireCandidates` | 如果需要 Qualifier 语义，就别用 resolvableDependency；改为注册多个 bean + Qualifier |
+| 读者把一个对象塞进 resolvableDependencies，期望它被 AOP/后置处理器增强，但没有 | 它不是 bean，不会走 BPP 链 | 不经过 `createBean` / `initializeBean` / `applyBeanPostProcessors...` | 需要增强就让它成为 bean，或把增强逻辑放在读者自己的 factory/provider 里 |
 
 ## 7. 断点闭环（建议照做一次）
 
 ### 7.1 推荐断点（按收益排序）
 
 1) `AbstractApplicationContext#prepareBeanFactory`：看默认注册了哪些 resolvable dependencies
-2) `DefaultListableBeanFactory#registerResolvableDependency`：看你的 type/value 如何进入 map
+2) `DefaultListableBeanFactory#registerResolvableDependency`：看相应的 type/value 如何进入 map
 3) `DefaultListableBeanFactory#doResolveDependency`：看注入点命中的是 resolvableDependencies 还是候选 bean
 4) `AutowireUtils#resolveAutowiringValue`：value 是 `ObjectFactory` 时，看它何时解包
 
@@ -228,14 +228,13 @@
 - 标准答案：不适合。ResolvableDependency 按 type 直接命中，跳过候选收敛逻辑；要 Qualifier 就应该走候选选择（注册多个 bean）。
 - 方法级证据链：命中在 `doResolveDependency` 的 resolvableDependencies 分支，没有进入 `determineAutowireCandidate`（见第 33 章）。
 
-## 一句话自检
-
+## 自检要点
 ResolvableDependency = **注入时可解析的 type→value 映射**；命中在 `doResolveDependency`；它不是 bean，因此没有 BeanDefinition/生命周期/BPP/AOP 增强。
 
 ## 小结与下一章
 
-- 本章完成后：你要把三件事分清楚：**能注入**、**能 getBean**、**会不会走生命周期/代理**。
-- 下一章我们进入父子容器：同一个 type 在不同 `ApplicationContext` 下为何“可见性不同、覆盖规则不同”。
+- 本章完成后：需要把三件事分清楚：**能注入**、**能 getBean**、**会不会走生命周期/代理**。
+- 下一章将进入父子容器：同一个 type 在不同 `ApplicationContext` 下为何“可见性不同、覆盖规则不同”。
 
 ### 对应 Lab/Test
 

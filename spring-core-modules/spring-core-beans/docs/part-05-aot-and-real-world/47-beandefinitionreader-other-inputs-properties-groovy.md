@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -83,7 +83,7 @@ BeanDefinitionReader 的价值在于：
 - registry：`DefaultListableBeanFactory`
 - 输入：`beans.properties`
 
-你应该观察到：
+应当观察到：
 
 - reader 先把 properties 解析成 BeanDefinition 并注册
 - `getBean()` 时才会创建实例并完成属性填充
@@ -93,7 +93,7 @@ BeanDefinitionReader 的价值在于：
 适用场景：
 
 - DSL 风格配置（历史上常见于 Spring 生态中的脚本化配置）
-- 你想把“定义层输入”做成更可读的脚本
+- 若希望把“定义层输入”做成更可读的脚本
 
 本仓库的最小示例：
 
@@ -110,11 +110,11 @@ BeanDefinitionReader 的价值在于：
 
 ## 3. 原理：Reader 把“输入”落到定义层主线的哪个位置？
 
-你可以把 Reader 放回容器主线去理解：
+可以把 Reader 放回容器主线去理解：
 
-1) 你选择某个输入源（properties/groovy/xml/annotations）
+1) 读者选择某个输入源（properties/groovy/xml/annotations）
 2) 对应的 Reader 把它解析为 **BeanDefinition** 并注册进 Registry（定义层）
-3) 之后你 refresh context 或调用 getBean：
+3) 之后读者 refresh context 或调用 getBean：
    - BeanFactory 根据定义创建实例（实例层）
    - 执行注入、回调、BPP 等（生命周期链路）
 
@@ -133,7 +133,7 @@ BeanDefinitionReader 的价值在于：
 
 - 注册了哪些 beanName（数量/名称是否符合预期）
 - BeanDefinition 的 beanClassName / propertyValues / constructorArgs
-- refresh/getBean 的时机：你是否把“注册定义”和“创建实例”混为一谈
+- refresh/getBean 的时机：是否能够把“注册定义”和“创建实例”混为一谈
 
 ---
 
@@ -185,7 +185,7 @@ Groovy reader 的典型断点：
 
 - `GroovyBeanDefinitionReader#loadBeanDefinitions`：groovy script 解析入口
 
-## 常见坑与边界
+## 常见误区与边界
 
 ### 常见误区
 
@@ -215,11 +215,10 @@ Groovy reader 的典型断点：
 - 最小复现：
   - `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest` / `SpringCoreBeansGroovyBeanDefinitionReaderLabTest`
 
-## 一句话自检
-
-- 你能解释清楚：BeanDefinitionReader 做的是“注册配方”还是“创建对象”吗？为什么这个区分重要？
-- 你能说出：Properties/Groovy 这类输入最终落到 Spring 的哪一种统一产物上吗？（提示：BeanDefinition）
-- 你遇到“Reader 加载失败/资源不存在/脚本解析失败”时，最短断点入口在哪？
+## 自检要点
+- 应能够解释清楚：BeanDefinitionReader 做的是“注册配方”还是“创建对象”吗？为什么这个区分重要？
+- 应能够说出：Properties/Groovy 这类输入最终落到 Spring 的哪一种统一产物上吗？（提示：BeanDefinition）
+- 遇到“Reader 加载失败/资源不存在/脚本解析失败”时，最短断点入口在哪？
 
 ## 小结与下一章
 

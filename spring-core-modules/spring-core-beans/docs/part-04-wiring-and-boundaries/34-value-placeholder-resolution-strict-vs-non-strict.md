@@ -10,7 +10,7 @@
     - `@Value` 本身不“读配置”，它把字符串交给 BeanFactory 的 **embedded value resolver** 解析（`${...}`/`#{...}`），再进入后续注入/转换。
     - 默认情况下（本章 Lab 的最小纯容器），embedded value resolver 往往委托给 `Environment.resolvePlaceholders(..)`，它是 **non-strict**：缺失 key 时，`${...}` 可能原样保留，不一定 fail-fast。
     - 想要 strict fail-fast，典型方式是注册 `PropertySourcesPlaceholderConfigurer`（BFPP）：把“缺失占位符就失败”的策略显式安装到容器早期流程里。
-    - 默认值语法 `${key:default}` 是你在 strict/non-strict 都应该掌握的“兜底手段”：缺失 key 时不会失败，而是注入 default（本仓库 Lab 已补齐对照）。
+    - 默认值语法 `${key:default}` 是在 strict/non-strict 都应该掌握的“兜底手段”：缺失 key 时不会失败，而是注入 default（本仓库 Lab 已补齐对照）。
     - 排障时先拆三件事：**占位符解析（本章）**、**SpEL 求值**、**类型转换**（见 [44](../part-05-aot-and-real-world/44-spel-and-value-expression.md)、[36](36-type-conversion-and-beanwrapper.md)）。
 
 !!! example "本章配套实验（先跑再读）"
@@ -25,7 +25,7 @@
 > 为什么我写了 `@Value("${demo.missing}")`，应用居然没启动失败？
 > 注入进来的值甚至变成了字符串 `"${demo.missing}"`？
 
-先说结论（背这句就够排 80% 的坑）：
+先说结论（背这句就够排 80% 的误区）：
 
 > **占位符解析是否 strict，不是 @Value 决定的，而是 BeanFactory 里安装的 embedded value resolver 决定的。**
 
@@ -42,7 +42,7 @@
 
 ## 1. 先把链路拆开：`@Value` 不是“直接读 Environment”
 
-把 `@Value` 想清楚，你就不会把问题误判成“配置没加载”或“环境没生效”：
+把 `@Value` 想清楚，读者就不会把问题误判成“配置没加载”或“环境没生效”：
 
 1) `@Value` 注解先被基础设施处理器识别（通常是 `AutowiredAnnotationBeanPostProcessor`）
 2) 它把注解里的字符串（例如 `"${demo.present}"`）交给 `BeanFactory#resolveEmbeddedValue`
@@ -60,7 +60,7 @@
 
 - `SpringCoreBeansValuePlaceholderResolutionLabTest#defaultEmbeddedValueResolver_resolvesExistingProperty_butLeavesMissingPlaceholderUnresolved`
 
-你会观察到两个稳定现象：
+可以观察到两个稳定现象：
 
 - `demo.present` 存在 → `@Value("${demo.present}")` 注入为 `"hello"`
 - `demo.missing` 缺失 → `@Value("${demo.missing}")` 注入为 `"${demo.missing}"`（没有 fail-fast）
@@ -70,7 +70,7 @@
 - 默认 embedded value resolver 往往委托给 `Environment.resolvePlaceholders(..)`
 - `resolvePlaceholders(..)` 默认是 **non-strict**：解析不到时可能保留原样 `"${...}"`
 
-> 这类行为最大的坑在于：系统能启动，但你在运行中才发现“配置没生效”，排障成本更高。
+> 这类行为最大的误区在于：系统能启动，但在运行中才发现“配置没生效”，排障成本更高。
 
 ---
 
@@ -85,7 +85,7 @@
 - `PropertySourcesPlaceholderConfigurer`
   - 并设置 `ignoreUnresolvablePlaceholders = false`
 
-你会观察到：
+可以观察到：
 
 - `refresh()` 直接失败
 - root cause 包含 “Could not resolve placeholder 'demo.missing'”
@@ -104,7 +104,7 @@
 
 很多团队走 strict 的原因是：他们宁可启动失败，也不想“原样字符串通过”。
 
-但 strict 并不意味着你必须“所有 key 都必须配置齐全”。你应该掌握一个更工程化的兜底：
+但 strict 并不意味着必须“所有 key 都必须配置齐全”。应当掌握一个更工程化的兜底：
 
 - `${demo.missing:default-value}`
 
@@ -112,12 +112,12 @@
 
 - `SpringCoreBeansValuePlaceholderResolutionLabTest#propertySourcesPlaceholderConfigurer_strictMode_allowsMissingPlaceholderWhenDefaultValueIsProvided`
 
-你会看到：
+可以观察到：
 
 - strict 模式仍然存在（缺失 key 会 fail-fast）
-- 但当你显式提供 default value 时，缺失 key 不会失败，注入变得可控
+- 但当读者显式提供 default value 时，缺失 key 不会失败，注入变得可控
 
-这能帮助你把“必须配置”的项与“可选配置”的项区分开来。
+这能帮助读者把“必须配置”的项与“可选配置”的项区分开来。
 
 ---
 
@@ -138,7 +138,7 @@
 
 ---
 
-## 6. 排障分流：先确定你卡在“解析/求值/转换”的哪一步
+## 6. 排障分流：先确定读者卡在“解析/求值/转换”的哪一步
 
 | 现象 | 最可能根因 | 下一步 |
 | --- | --- | --- |
@@ -152,14 +152,14 @@
 
 ## 源码调用链（方法级）：`${...}` 到底在哪一步被解析
 
-你在排 `@Value` 时，最容易误诊的是把“占位符解析 / SpEL 求值 / 类型转换”混为一谈。本章只关心第一步（占位符解析），最短调用链如下：
+在排 `@Value` 时，最容易误诊的是把“占位符解析 / SpEL 求值 / 类型转换”混为一谈。本章只关心第一步（占位符解析），最短调用链如下：
 
 1) 注入点入口：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`（识别 `@Value` 并触发解析）
 2) 解析入口：`AbstractBeanFactory#resolveEmbeddedValue`（把 `"${...}"` 交给 embedded value resolvers 逐个处理）
 3) strict 策略来源：`PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`（BFPP，在定义阶段安装/替换 resolver）
 4) 默认（non-strict）来源：`AbstractApplicationContext#prepareBeanFactory`（安装默认 embedded value resolver）
 
-你在 `resolveEmbeddedValue` 里看“输入/输出字符串是否仍包含 `${`”，就能快速判断 strict/non-strict 是否生效。
+在 `resolveEmbeddedValue` 里看“输入/输出字符串是否仍包含 `${`”，就能快速判断 strict/non-strict 是否生效。
 
 ## 面试常问（`@Value`：strict vs non-strict）
 
@@ -182,15 +182,14 @@
   - 求值：`StandardBeanExpressionResolver#evaluate`（见 [44](../part-05-aot-and-real-world/44-spel-and-value-expression.md)）
   - 转换：`TypeConverterDelegate#convertIfNecessary`（见 [36](36-type-conversion-and-beanwrapper.md)）
 
-## 一句话自检
-
-- 你能解释清楚：为什么有时缺失 `${...}` 会“原样字符串通过”，有时会 fail-fast 吗？
+## 自检要点
+- 应能够解释清楚：为什么有时缺失 `${...}` 会“原样字符串通过”，有时会 fail-fast 吗？
 - strict/non-strict 是谁决定的？是 `@Value` 注解本身吗？（提示：embedded value resolver / `PropertySourcesPlaceholderConfigurer`）
-- 你如何在排障时快速分清：这是占位符解析问题、SpEL 求值问题、还是类型转换问题？（提示：三连分层）
+- 如何在排障时快速分清：这是占位符解析问题、SpEL 求值问题、还是类型转换问题？（提示：三连分层）
 
 ## 小结与下一章
 
-这一章你只要记住两件事就够了：
+这一章读者只要记住两件事就够了：
 
 1) `@Value` 是否 strict 取决于 embedded value resolver（不是注解本身）
 2) strict fail-fast 的典型来源是 `PropertySourcesPlaceholderConfigurer`（BFPP，早期介入）

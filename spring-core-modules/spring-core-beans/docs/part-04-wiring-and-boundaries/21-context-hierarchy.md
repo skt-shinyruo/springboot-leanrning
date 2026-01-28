@@ -10,7 +10,7 @@
     - 可见性规则只有一句话：**child 能向上查 parent；parent 完全不知道 child。**
     - “覆盖/override”在 hierarchy 里依然是 **name-based**：child 的同名 beanName 只影响 child 自己的查找结果，不会反向影响 parent。
     - `containsBean(name)` 与 `containsLocalBean(name)` 是排障利器：前者包含 parent fallback，后者只看本地 registry（本仓库 Lab 已补齐对照）。
-    - 一旦你“把 ancestors 也算进候选集”（例如 `BeanFactoryUtils.beanOfTypeIncludingAncestors`），按类型就更容易出现多候选歧义（本仓库 Lab 已补齐可复现异常）。
+    - 一旦读者“把 ancestors 也算进候选集”（例如 `BeanFactoryUtils.beanOfTypeIncludingAncestors`），按类型就更容易出现多候选歧义（本仓库 Lab 已补齐可复现异常）。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -24,7 +24,7 @@
 
 ## 机制主线
 
-当你进入真实工程或复杂测试环境，很容易遇到“多个 ApplicationContext”。
+当读者进入真实工程或复杂测试环境，很容易遇到“多个 ApplicationContext”。
 
 - parent/child context 的可见性规则
 - child 的“覆盖”只发生在 child 内部
@@ -45,7 +45,7 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
   - `childContext_canSeeParentBeans_butParentCannotSeeChildBeans()`（同一个测试同时覆盖：可见性 + name-based override）
 
-你应该观察到：
+应当观察到：
 
 - child 可以 `getBean(ParentOnlyBean.class)`（它其实来自 parent）
 - parent 无法 `getBean(ChildOnlyBean.class)`
@@ -81,7 +81,7 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansContextHierarchyLabTest`）
 
-跑完该 Lab，你至少要能复述 3 条结论：
+跑完该 Lab，至少应能够复述 3 条结论：
 
 1) **child 能看到 parent，parent 看不到 child**  
    - 断点：`doGetBean`  
@@ -161,18 +161,18 @@
 - “按类型注入出现歧义（parent/child 都有同类型）” → **实例层（候选解析）**：需要 `@Qualifier/@Primary` 等规则收敛（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)/[33](33-autowire-candidate-selection-primary-priority-order.md)）
 - “以为这是 Boot 专属现象” → **容器机制**：parent/child 是 `ApplicationContext` 层面的通用能力（本章 Lab 用小容器也能复现）
 
-- 你能解释清楚：为什么 child 可以拿到 parent 的 bean，但 parent 拿不到 child 的 bean 吗？
+- 应能够解释清楚：为什么 child 可以拿到 parent 的 bean，但 parent 拿不到 child 的 bean 吗？
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
 推荐断点：`BeanFactoryUtils#beanNamesForTypeIncludingAncestors`、`AbstractBeanFactory#doGetBean`、`AbstractApplicationContext#setParent`
 
-## 常见坑与边界
+## 常见误区与边界
 
-### 常见坑
+### 常见误区
 
-- **坑 1：按类型注入时可能出现歧义**
+- **误区 1：按类型注入时可能出现歧义**
   - 如果 parent 与 child 都有同类型的 bean，按类型注入/查找可能变成多候选。
 
-- **坑 2：以为 child 覆盖会影响 parent**
+- **误区 2：以为 child 覆盖会影响 parent**
   - 不会。parent 完全不知道 child 的存在。
 
 ## 小结与下一章

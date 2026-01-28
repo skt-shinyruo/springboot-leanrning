@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -32,9 +32,9 @@
 
 ## 1. 一个可断言的顺序（比看日志更可靠）
 
-读者 C 的目标不是“背顺序”，而是：**当你看到一个对象行为不对时，能判断它到底处在生命周期的哪一段、被哪些扩展点改过**。
+读者 C 的目标不是“背顺序”，而是：**当读者看到一个对象行为不对时，能判断它到底处在生命周期的哪一段、被哪些扩展点改过**。
 
-下面给一个“够你排障”的顺序表（把它当成 `initializeBean` 周边的时间线）：
+下面给一个“够读者排障”的顺序表（把它当成 `initializeBean` 周边的时间线）：
 
 1. 实例化（constructor / factory method）
 2. 属性填充（依赖注入）→ `populateBean`
@@ -92,7 +92,7 @@
 
 prototype 的语义是：
 
-- 容器帮你创建并注入
+- 容器帮读者创建并注入
 - **但容器通常不负责管理它的“生命周期终点”**
 
 所以：
@@ -115,14 +115,14 @@ prototype 的语义是：
 4) `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`：`@PostConstruct` 触发点
 5) `DisposableBeanAdapter#destroy`：销毁链路统一入口（close context 时命中）
 
-你应该看到：
+应当看到：
 
 - singleton 的 init callbacks 稳定发生在 BPP(before) 与 BPP(after) 之间
-- prototype 在容器 close 时不会被自动 destroy（除非你自己显式管理）
+- prototype 在容器 close 时不会被自动 destroy（除非读者自己显式管理）
 
 ## 可复现闭环（基于 `SpringCoreBeansBootstrapInternalsLabTest`）
 
-跑完这组用例，你至少要能复述 3 条结论：
+完成该组用例后，至少应能够复述 3 条结论：
 
 1) **注解回调依赖基础设施处理器**  
    - 断点：`registerAnnotationConfigProcessors`  
@@ -143,7 +143,7 @@ prototype 的语义是：
 
 ## 3. 源码调用链（方法级）：初始化与销毁发生在哪里？
 
-这章你只需要记住两个“串联点”：
+这章读者只需要记住两个“串联点”：
 
 - 初始化串联点：`AbstractAutowireCapableBeanFactory#initializeBean`
 - 销毁串联点：`DisposableBeanAdapter#destroy`
@@ -205,23 +205,23 @@ prototype 的语义是：
 - 证据链（方法级）：
   - `AbstractAutowireCapableBeanFactory#initializeBean`
 
-## 6. 一句话自检
+## 6. 自检要点
 
-你应该能回答：
+应能够回答：
 
 1) init callbacks 为什么夹在 before/after-init BPP 之间？
 2) prototype 默认为什么不会触发销毁回调？
-3) 当你怀疑“回调没执行/执行顺序怪”，你会先看哪两个断点？（提示：`initializeBean` 与 `destroySingletons`）
+3) 当读者怀疑“回调没执行/执行顺序怪”，可先看哪两个断点？（提示：`initializeBean` 与 `destroySingletons`）
 
-## 常见坑与边界
+## 常见误区与边界
 
-> 注意：顺序表的意义是“能定位”，不是“每次都一模一样”。当 BPP 数量与排序变化时（见 [14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序](14-post-processor-ordering.md)、[25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)），你看到的实际调用栈会变化，但大方向依然稳定。
+> 注意：顺序表的意义是“能定位”，不是“每次都一模一样”。当 BPP 数量与排序变化时（见 [14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序](14-post-processor-ordering.md)、[25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)），观察到的实际调用栈会变化，但大方向依然稳定。
 
-- **坑 1：在 `@PostConstruct` 做重 IO**
+- **误区 1：在 `@PostConstruct` 做重 IO**
   - 会拉长启动时间，也更难测试与复用。
-- **坑 2：误以为 prototype 会自动销毁**
-  - 你必须明确“谁负责 close/cleanup”，否则资源泄漏很隐蔽。
-- **坑 3：BPP 本身也是特殊 bean**
+- **误区 2：误以为 prototype 会自动销毁**
+  - 必须明确“谁负责 close/cleanup”，否则资源泄漏很隐蔽。
+- **误区 3：BPP 本身也是特殊 bean**
   - BPP 会很早被实例化、很早被注册；在 BPP 构造器里依赖复杂 bean，容易触发“过早创建”与“错过后续处理器”。
 
 ## 小结与下一章

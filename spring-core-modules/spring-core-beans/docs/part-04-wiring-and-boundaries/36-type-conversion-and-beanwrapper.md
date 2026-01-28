@@ -9,7 +9,7 @@
 
     - Spring 里的“类型转换”不是一个点，而是两条常见链路：**定义层 property values**（`populateBean/applyPropertyValues`）与 **注入点 `@Value`**（`resolveEmbeddedValue` → `convertIfNecessary`）。
     - 真正负责“写属性 + 触发 convert”的组件通常是 `BeanWrapper`（`BeanWrapperImpl`）；真正负责“怎么转”的决策点通常在 `TypeConverterDelegate#convertIfNecessary`。
-    - `ConversionService` 是现代主力；`PropertyEditor` 是历史兼容（仍可能在栈里出现）。你要能解释两者谁优先、各自在哪些路径里出现。
+    - `ConversionService` 是现代主力；`PropertyEditor` 是历史兼容（仍可能在栈里出现）。应能够解释两者谁优先、各自在哪些路径里出现。
     - 最常见的误归因：把 **Boot Binder（@ConfigurationProperties）** 的转换链路当成 **Bean 注入/属性填充** 的转换链路 —— 两者不是一个系统。
 
 !!! example "本章配套实验（先跑再读）"
@@ -27,13 +27,13 @@
 > 为什么注入到 Bean 的属性/字段里时能变成 `int` / `Duration` / 自定义值对象？
 > 以及：为什么有时候它又完全不转、或者转错、或者报错？
 
-先把你可能遇到的“转换问题”分成三类（这是本章最重要的分流）：
+先将常见的“转换问题”分成三类（这是本章最重要的分流）：
 
 1) **占位符/SpEL 解析问题**：`${...}` 没解析出来，值还是 `"${...}"` 或表达式报错
 2) **类型转换问题**：字符串解析出来了，但 `String -> TargetType` 失败（或走错转换器）
-3) **系统搞错了**：你以为是 Spring 的注入转换，其实是 Boot Binder（`@ConfigurationProperties`）或别的绑定系统
+3) **系统搞错了**：容易误以为是 Spring 的注入转换，其实是 Boot Binder（`@ConfigurationProperties`）或别的绑定系统
 
-本章只讲第 2 类，并且把第 1/3 类的“怎么快速排除”也给你。
+本章只讲第 2 类，并且把第 1/3 类的“怎么快速排除”也给读者。
 
 ---
 
@@ -44,7 +44,7 @@
 **结果**：转换成功则写入属性；失败则抛 `TypeMismatchException` / `ConversionNotSupportedException`  
 **断点建议**：`TypeConverterDelegate#convertIfNecessary`
 
-## 1. 两条你必须区分的链路：property values vs `@Value`
+## 1. 两条必须区分的链路：property values vs `@Value`
 
 ### 1.1 定义层 property values（BeanDefinition 的值）→ 实例属性
 
@@ -77,16 +77,16 @@
 
 这也是为什么占位符章节（[34](34-value-placeholder-resolution-strict-vs-non-strict.md)）和本章经常一起出现：
 
-- 你必须先确定：**字符串到底解析成了什么**，再谈转换。
+- 必须先确定：**字符串到底解析成了什么**，再谈转换。
 
 ### 1.3 属性路径解析与 auto-grow：BeanWrapper 处理“复杂属性”的方式
 
-当你看到类似 `order.items[0].price` 或 `props[\"k\"]` 的属性路径时：
+当读者看到类似 `order.items[0].price` 或 `props[\"k\"]` 的属性路径时：
 
 - 解析与写入主要发生在 `BeanWrapperImpl` / `AbstractPropertyAccessor`
 - `autoGrowNestedPaths` 决定“中间对象是否自动创建”
 
-典型坑：
+典型误区：
 
 - 中间对象为 `null` 且未允许 auto-grow → 抛 `NullValueInNestedPathException`
 - 集合/Map 下标越界或 key 缺失 → 抛 `InvalidPropertyException`
@@ -100,11 +100,11 @@
 
 ## 2. 一个核心决策点：`TypeConverterDelegate#convertIfNecessary`
 
-无论你走 property values 还是 `@Value`，当你怀疑“转换不对/没生效”时，最值得盯住的点通常是：
+无论读者走 property values 还是 `@Value`，当读者怀疑“转换不对/没生效”时，最值得盯住的点通常是：
 
 - `TypeConverterDelegate#convertIfNecessary`
 
-你在这里能同时看到：
+在这里能同时看到：
 
 - 目标类型（`TypeDescriptor`/`requiredType`）
 - 原始值（通常是 `String`）
@@ -117,7 +117,7 @@
 
 ## 3. 最小可运行实验（让“转换发生在哪”可断言）
 
-建议你先跑（方法级更快）：
+建议读者先跑（方法级更快）：
 
 - `SpringCoreBeansTypeConversionLabTest#stringPropertyValue_canBeConvertedToIntDuringPopulateBean`
 
@@ -125,7 +125,7 @@
 
 - `SpringCoreBeansTypeConversionLabTest`（类级）
 
-如果你想把“BeanWrapper/TypeConverter 这套能力不仅用于容器注入”也一起看见，再跑：
+若想把“BeanWrapper/TypeConverter 这套能力不仅用于容器注入”也一起看见，再跑：
 
 - `SpringCoreBeansBeansSupportUtilitiesLabTest`
 
@@ -141,18 +141,18 @@
 2) `BeanWrapperImpl#setPropertyValue`（写属性的入口，能拿到 propertyName）
 3) `TypeConverterDelegate#convertIfNecessary`（转换决策点）
 4) `AbstractBeanFactory#resolveEmbeddedValue`（只在 `@Value` 场景需要：先确认字符串解析结果）
-5) `GenericConversionService#convert`（只在你确认走 ConversionService 分支时再下）
+5) `GenericConversionService#convert`（只在读者确认走 ConversionService 分支时再下）
 
 ### 4.2 条件断点模板（降低噪声）
 
-在 `applyPropertyValues` 或 `setPropertyValue` 处建议用条件断点（按你的 Lab 里的 beanName/propertyName 调整）：
+在 `applyPropertyValues` 或 `setPropertyValue` 处建议用条件断点（按相应的 Lab 里的 beanName/propertyName 调整）：
 
 - `\"serverPortHolder\".equals(beanName)`
 - `\"userIdConsumer\".equals(beanName)`
 - `\"port\".equals(propertyName)`
 - `\"userId\".equals(propertyName)`
 
-如果你只是想确认“有没有发生类型转换”，加一个更粗的过滤也很有效：
+若只是想确认“有没有发生类型转换”，加一个更粗的过滤也很有效：
 
 - `value instanceof String`
 
@@ -161,7 +161,7 @@
 在转换相关断点里，建议固定盯这些变量/结构：
 
 - `beanName`：当前装配的 bean
-- `propertyName`：当前写入的属性（如果你在 BeanWrapper 层）
+- `propertyName`：当前写入的属性（若在 BeanWrapper 层）
 - `newValue` / `originalValue`：转换前原始值（通常是 String）
 - `requiredType` / `TypeDescriptor`：目标类型（非常关键）
 - `conversionService`：当前 BeanFactory 是否安装了 ConversionService
@@ -169,7 +169,7 @@
 
 ---
 
-## 5. 排障分流：你到底该看哪一章/哪条链？
+## 5. 排障分流：读者到底该看哪一章/哪条链？
 
 把常见问题按“现象 → 诊断 → 入口断点”压缩成一张分流表（建议收藏，排障时直接用）：
 
@@ -179,26 +179,26 @@
 | `@ConfigurationProperties` 能转，`@Value` 转不了 | Binder vs 注入链路混淆（两套系统） | 先把场景缩小到本模块纯容器 Lab，再看本章 1.2/2 |
 | 自定义 `Converter` 写了但完全没生效 | ConversionService 没被安装到 BeanFactory；或走了 PropertyEditor 分支 | 断点 `TypeConverterDelegate#convertIfNecessary` 看 conversionService 是否为 null |
 | 报 `TypeMismatchException` / `ConversionNotSupportedException` | 字符串已解析，但没有合适 converter/editor | `convertIfNecessary` 看 requiredType 与分支 |
-| 你怀疑是“属性注入”但断点没进 `applyPropertyValues` | 可能是构造注入或 @Value 注入（BPP 路径） | 去 [30](30-injection-phase-field-vs-constructor.md) 看注入阶段分流 |
+| 读者怀疑是“属性注入”但断点没进 `applyPropertyValues` | 可能是构造注入或 @Value 注入（BPP 路径） | 去 [30](30-injection-phase-field-vs-constructor.md) 看注入阶段分流 |
 
 ---
 
-## 6. `ConversionService` vs `PropertyEditor`：你需要知道的边界
+## 6. `ConversionService` vs `PropertyEditor`：需要知道的边界
 
 ### 6.1 ConversionService（现代主力）
 
-在现代 Spring 项目里，绝大多数你“可控且可测试”的转换都应该走 `ConversionService`：
+在现代 Spring 项目里，绝大多数读者“可控且可测试”的转换都应该走 `ConversionService`：
 
-- 你可以注册自定义 `Converter`（或 `GenericConverter`）
+- 可以注册自定义 `Converter`（或 `GenericConverter`）
 - 它能通过 `TypeDescriptor` 感知泛型/注入点信息（比传统 PropertyEditor 更强）
 
-排障时你要确认的核心事实是：
+排障时需要确认的核心事实是：
 
 > 当前 BeanFactory 上到底有没有安装 ConversionService？（不是“我写没写 bean”。）
 
 ### 6.2 PropertyEditor（历史兼容，仍可能出现）
 
-你仍可能在栈里看到 PropertyEditor，原因通常是：
+读者仍可能在栈里看到 PropertyEditor，原因通常是：
 
 - Spring 内部为历史兼容注册了一批 editor（例如资源类的 editor）
 - 某些 legacy 路径仍会尝试 `findCustomEditor(...)`
@@ -206,7 +206,7 @@
 因此这类问题的处理建议是：
 
 - **理解它的存在与优先级**（避免看到 editor 分支就慌）
-- **工程上尽量别再新增自定义 PropertyEditor**（除非你维护的是历史系统）
+- **工程上尽量别再新增自定义 PropertyEditor**（除非读者维护的是历史系统）
 
 ---
 
@@ -216,7 +216,7 @@
 
 > BeanWrapper/TypeConverter/ConversionService 不是“只在注入时用”，它是 Spring 内部大量工具类的通用能力底座。
 
-当你在真实项目里看到这些 support 工具类（或类似设计）时，你应该能把它们和本章的“转换决策点”联系起来：
+当在真实项目里看到这些 support 工具类（或类似设计）时，应能够把它们和本章的“转换决策点”联系起来：
 
 - “我手里拿到的输入是 String，但目标 API 要的是某个强类型”
 - “Spring 会不会帮我把 String 转成目标类型？如果会，走哪条链？”
@@ -235,7 +235,7 @@
 - 最小复现：
   - `SpringCoreBeansTypeConversionLabTest`
 
-### Q2：ConversionService 和 PropertyEditor 谁优先？你如何在断点里证明“这次走了哪条分支”？
+### Q2：ConversionService 和 PropertyEditor 谁优先？如何在断点里证明“这次走了哪条分支”？
 
 - 标准答案（可复述）：
   - ConversionService 是现代主力；PropertyEditor 更多是历史兼容分支。排障时不靠“猜优先级”，而是在 `convertIfNecessary` 里看 `conversionService` 是否为 null、是否命中 editor 分支。
@@ -250,15 +250,14 @@
   - 注入系统：`resolveEmbeddedValue` / `populateBean` / `convertIfNecessary`
   - Binder 系统：走的是 Boot 的 binder 链路（不在本章主线）
 
-## 一句话自检
-
-- 你能解释清楚：`@Value` 的“值注入”大致经历哪三步吗？（提示：占位符/SpEL → 类型转换）
-- 你能指出：类型转换的关键决策点在哪个方法里吗？（提示：`convertIfNecessary`）
-- 你能说明：ConversionService 与 PropertyEditor 的职责边界是什么，以及为什么 Boot Binder 的转换不等于注入转换吗？
+## 自检要点
+- 应能够解释清楚：`@Value` 的“值注入”大致经历哪三步吗？（提示：占位符/SpEL → 类型转换）
+- 应能够指出：类型转换的关键决策点在哪个方法里吗？（提示：`convertIfNecessary`）
+- 应能够说明：ConversionService 与 PropertyEditor 的职责边界是什么，以及为什么 Boot Binder 的转换不等于注入转换吗？
 
 ## 小结与下一章
 
-这一章你只要记住三件事就够了：
+这一章读者只要记住三件事就够了：
 
 1) 两条链路：property values（`populateBean/applyPropertyValues`） vs `@Value`（`resolveEmbeddedValue` → `convertIfNecessary`）
 2) 一个决策点：`TypeConverterDelegate#convertIfNecessary`（在这里看清到底走 ConversionService 还是 PropertyEditor）
@@ -271,6 +270,6 @@
 - Lab：`SpringCoreBeansBeansSupportUtilitiesLabTest` / `SpringCoreBeansTypeConversionLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
 
-上一章：[35. MergedBeanDefinition：合并后的 RootBeanDefinition](35-merged-bean-definition.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md)
+上一章：[35. MergedBeanDefinition：合并后的 RootBeanDefinition](35-merged-bean-definition.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md)
 
 <!-- BOOKIFY:END -->

@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -18,12 +18,12 @@
 
 ## 机制主线
 
-当你进入真实项目，`@Qualifier("beanName")` 常常不够用：
+当读者进入真实项目，`@Qualifier("beanName")` 常常不够用：
 
-- 你希望限定条件有“业务语义”（例如 `@Cn` / `@Internal` / `@ReadOnly`）
-- 你希望团队统一约束（避免到处写字符串 beanName）
+- 读者希望限定条件有“业务语义”（例如 `@Cn` / `@Internal` / `@ReadOnly`）
+- 读者希望团队统一约束（避免到处写字符串 beanName）
 
-这就需要你理解：**Qualifier 的本质是“候选收敛规则”**，而不是“改名”。
+这就需要读者理解：**Qualifier 的本质是“候选收敛规则”**，而不是“改名”。
 
 ---
 
@@ -43,7 +43,7 @@
 3) 在候选 bean 上标注 `@Cn`（作为候选元数据）
 4) 在注入点也标注 `@Cn`（作为收敛条件）
 
-因此你应该能把它放回依赖解析主线：
+因此应能够把它放回依赖解析主线：
 
 - 候选收集：`findAutowireCandidates`
 - 候选收敛：`determineAutowireCandidate`
@@ -89,7 +89,7 @@
 - `DefaultListableBeanFactory#findAutowireCandidates`（候选集合）
 - `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`（Qualifier 匹配过滤）
 
-如果你要解释最终选中规则：
+若要解释最终选中规则：
 
 - `DefaultListableBeanFactory#determineAutowireCandidate`
 
@@ -99,10 +99,10 @@
 
 ---
 
-你应该能回答：
+应能够回答：
 
 - 自定义 Qualifier（meta-annotation）如何参与候选收敛？它影响的是“候选收集”还是“候选收敛”阶段？
-- 当候选有多个实现时，你如何用 2 个断点证明“哪些候选被过滤/为什么被过滤”？
+- 当候选有多个实现时，如何用 2 个断点证明“哪些候选被过滤/为什么被过滤”？
 - 为什么说它能把“字符串 Qualifier”提升为“带业务语义的类型约束”？（好处与边界是什么）
 
 ---
@@ -134,14 +134,14 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 
 ## 3. 源码 / 断点建议（把“为什么注入的是它”讲成可复述算法）
 
-只需要 2 个断点，你就能在真实项目里解释“为什么注入的是它”：
+只需要 2 个断点，即可在真实项目里解释“为什么注入的是它”：
 
-建议观察点（你下断点时应该盯住这些变量）：
+建议观察点（设置断点时应该盯住这些变量）：
 
 - 自定义 Qualifier 是如何参与候选收敛的？
-- 你会在哪两个方法下断点证明“候选集合如何被过滤”？
+- 可以在哪两个方法下断点证明“候选集合如何被过滤”？
 
-## 常见坑与边界
+## 常见误区与边界
 
 - [03. 依赖注入解析：类型/名称/@Qualifier/@Primary](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 - [33. 候选选择与优先级：@Primary/@Priority/@Order 的边界](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
@@ -153,13 +153,13 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 2) **误区：把 Qualifier 当作 beanName**
    - Qualifier 是过滤条件，beanName 只是可能参与收敛的一种信号。
 
-## 排障决策表（Qualifier：为什么注入的不是你想要的那个）
+## 排障决策表（Qualifier：为什么注入的不是若希望要的那个）
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |
 | 注入到了“不是我想要的那个实现” | 候选收敛规则没表达清楚（缺 Qualifier/Primary 冲突） | `DefaultListableBeanFactory#determineAutowireCandidate`；看最终 winner 如何选出 | 在注入点用 `@Qualifier`（或自定义 Qualifier）显式缩小候选；避免“靠默认” | `SpringCoreBeansCustomQualifierLabTest` |
 | `NoUniqueBeanDefinitionException` | 单依赖没有唯一胜者 | `findAutowireCandidates` 看候选集合；`isAutowireCandidate` 看过滤是否生效 | 明确 `@Qualifier` / `@Primary`；必要时拆分类型或引入语义标签 | 同上 |
-| 你以为 `@Primary` 会覆盖一切但实际被“压过” | 注入点带了更强限定（Qualifier） | `AutowireCandidateResolver#isAutowireCandidate` / `QualifierAnnotationAutowireCandidateResolver` | 认识强信号优先级：Qualifier > Primary（单依赖收敛） | 结合 [33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) |
+| 容易误以为 `@Primary` 会覆盖一切但实际被“压过” | 注入点带了更强限定（Qualifier） | `AutowireCandidateResolver#isAutowireCandidate` / `QualifierAnnotationAutowireCandidateResolver` | 认识强信号优先级：Qualifier > Primary（单依赖收敛） | 结合 [33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) |
 
 ## 面试常问（自定义 Qualifier / meta-annotation）
 
@@ -181,11 +181,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 - 证据链（方法级）：
   - `QualifierAnnotationAutowireCandidateResolver`（或同类 resolver）的 `isAutowireCandidate` 分支
 
-## 一句话自检
-
-- 你能解释清楚：自定义 Qualifier 解决的是“候选收敛”的哪一类问题吗？它和 `@Primary` 的边界是什么？
-- 你能说出：候选集合是在依赖解析的哪个方法里被过滤/收敛的吗？（提示：`doResolveDependency` / candidate resolver）
-- 你能给出：如何用一个最小 LabTest + 两个断点把“为什么注入的是它”讲成可复述算法？
+## 自检要点
+- 应能够解释清楚：自定义 Qualifier 解决的是“候选收敛”的哪一类问题吗？它和 `@Primary` 的边界是什么？
+- 应能够说出：候选集合是在依赖解析的哪个方法里被过滤/收敛的吗？（提示：`doResolveDependency` / candidate resolver）
+- 应能够给出：如何用一个最小 LabTest + 两个断点把“为什么注入的是它”讲成可复述算法？
 
 ## 小结与下一章
 

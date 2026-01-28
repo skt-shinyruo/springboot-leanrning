@@ -20,12 +20,12 @@
 
 ## 机制主线
 
-当你注册两个同名 bean 时，会发生什么？
+当读者注册两个同名 bean 时，会发生什么？
 
 - 有的环境里：**最后一个覆盖前一个**
 - 有的环境里：**直接报错**
 
-这不是玄学，是容器的一个开关控制的：
+这不是黑箱，是容器的一个开关控制的：
 
 - `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(...)`
 
@@ -36,7 +36,7 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
   - `whenBeanDefinitionOverridingIsAllowed_lastDefinitionWins()`（证据：同名注册两次，最后一个生效）
 
-你会看到：
+可以观察到：
 
 - 同名 `duplicate` 注册两次
 - 最终 `getBean(Marker.class)` 得到的是第二次注册的定义
@@ -55,7 +55,7 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
   - `whenBeanDefinitionOverridingIsDisallowed_registeringSameBeanNameFailsFast()`（证据：第二次注册直接抛异常）
 
-你会看到：
+可以观察到：
 
 - 第二次注册直接抛 `BeanDefinitionOverrideException`
 - 甚至还不需要 refresh，注册阶段就失败
@@ -65,7 +65,7 @@
 在纯 Spring 容器里，覆盖与否只由 `DefaultListableBeanFactory` 的开关决定；  
 在 Spring Boot 中，开关通常会被 `SpringApplication` 或配置项提前设置。
 
-你需要明确“是谁设置了开关”：
+需要明确“是谁设置了开关”：
 
 - 代码路径：`SpringApplication#setAllowBeanDefinitionOverriding(...)`
 - 配置路径：`spring.main.allow-bean-definition-overriding`
@@ -84,14 +84,14 @@
 1) **注册阶段**：`registerBeanDefinition` 决定“覆盖或失败”
 2) **实例阶段**：`getBean` 先检查 `singletonObjects`，若已存在则直接返回
 
-排障时你需要同时看两处：
+排障时需要同时看两处：
 
 - `DefaultListableBeanFactory#getBeanDefinition(beanName)`：定义是否已被覆盖
 - `DefaultSingletonBeanRegistry#singletonObjects`：实例是否仍是旧对象
 
 ## 5. 为什么这个点重要？
 
-因为它会影响你在工程里“怎么理解装配冲突”：
+因为它会影响在工程里“怎么理解装配冲突”：
 
 - `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding`：覆盖开关本身（决定同名注册是覆盖还是 fail-fast）
 - `DefaultListableBeanFactory#registerBeanDefinition`：同名冲突发生的主入口（抛 `BeanDefinitionOverrideException` 的常见位置）
@@ -102,7 +102,7 @@
 可观测性补充（本仓库提供的排障小工具）：
 
 - `BeanDefinitionOriginDumper.dump(beanFactory, beanName)`：把 beanDefinition 的 resourceDescription/source/factoryMethod 等“来源线索”打印出来
-  - 对应 Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`（允许覆盖场景会输出 dump，你能直接看到最终保留下来的来源标记）
+  - 对应 Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`（允许覆盖场景会输出 dump，应能够直接看到最终保留下来的来源标记）
 
 入口：
 
@@ -124,7 +124,7 @@
 
 ## 可复现闭环（用本仓库 Lab/Test 跑一遍）
 
-你至少要能跑出并复述三条结论：
+至少应能够跑出并复述三条结论：
 
 1) **允许覆盖：后注册 wins**  
    - 断点：`registerBeanDefinition`  
@@ -135,13 +135,13 @@
 3) **覆盖不影响已创建单例**  
    - 断点：`AbstractBeanFactory#doGetBean`  
    - 断言：已有 `singletonObjects` 时直接返回旧对象
-## 7. 一句话自检
+## 7. 自检要点
 
 - 常问：BeanDefinition overriding 解决的是什么问题？
   - 答题要点：解决“同名 BeanDefinition 冲突”的定义层问题；开关决定是 last-wins 还是 fail-fast。
 - 常见追问：overriding 和“按类型注入歧义（NoUnique）”是一回事吗？
   - 答题要点：不是；overriding 是 name-based 定义冲突；注入歧义是 type-based 候选收敛问题。
-- 常见追问：你如何用断点证明“冲突发生在注册阶段，而不是实例化阶段”？
+- 常见追问：如何用断点证明“冲突发生在注册阶段，而不是实例化阶段”？
   - 答题要点：在 `registerBeanDefinition` 处观察分支；fail-fast 场景甚至不需要 refresh 就会抛 `BeanDefinitionOverrideException`。
 
 ## 8. 面试常问（overriding 与注入歧义不是一回事）
@@ -157,16 +157,16 @@
 | --- | --- | --- | --- | --- |
 | 启动期 `BeanDefinitionOverrideException` | 禁止 overriding（fail-fast）且同名重复注册 | 断点 `DefaultListableBeanFactory#registerBeanDefinition`；看 `isAllowBeanDefinitionOverriding` | 改名/去重；或明确开启 overriding（但要承担可观测性成本） | `SpringCoreBeansBeanDefinitionOverridingLabTest` |
 | 启动正常但行为“像被悄悄改了” | 允许 overriding（last-wins），后注册覆盖前注册 | `getBeanDefinition(beanName)` 对照 source/resource/factoryMethod；看第二次注册发生点 | 优先禁止 overriding；或完善来源追踪与命名规范 | `SpringCoreBeansBeanDefinitionOriginLabTest` + overriding Lab |
-| 你想用 overriding 解决注入歧义 | 概念误用：这是 type-based 的候选收敛问题 | `doResolveDependency`→`findAutowireCandidates` | 使用 `@Qualifier/@Primary/@Priority` 收敛，或让 auto-config back-off | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md) |
+| 若希望用 overriding 解决注入歧义 | 概念误用：这是 type-based 的候选收敛问题 | `doResolveDependency`→`findAutowireCandidates` | 使用 `@Qualifier/@Primary/@Priority` 收敛，或让 auto-config back-off | [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md) |
 
-## 10. 常见坑与边界
+## 10. 常见误区与边界
 
-### 常见坑
+### 常见误区
 
-- **坑 1：把覆盖当成“解决歧义”的手段**
+- **误区 1：把覆盖当成“解决歧义”的手段**
   - 覆盖解决的是“同名冲突”，不是“同类型多实现注入”的歧义。
 
-- **坑 2：不同环境默认值不同**
+- **误区 2：不同环境默认值不同**
   - Boot 环境与纯 Spring 容器的默认行为可能不同；不要靠猜。
 
 ## 小结与下一章

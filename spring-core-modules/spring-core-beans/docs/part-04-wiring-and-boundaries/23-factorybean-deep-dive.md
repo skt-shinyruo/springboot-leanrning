@@ -65,12 +65,12 @@
 
 ## 2. product 也参与“按类型查找”
 
-这件事之所以容易让人困惑，是因为你脑子里常有两个“bean”：
+这件事之所以容易让人困惑，是因为读者脑子里常有两个“bean”：
 
 - **factory**：实现了 `FactoryBean` 的那个对象（它自己也是 bean）
 - **product**：`FactoryBean#getObject()` 生产出来的对象（它才是默认暴露给业务的 bean）
 
-当你做“按类型查找/注入”时（例如 `getBean(SomeType.class)` 或 `@Autowired SomeType`），Spring 的默认语义是：
+当读者做“按类型查找/注入”时（例如 `getBean(SomeType.class)` 或 `@Autowired SomeType`），Spring 的默认语义是：
 
 > **把 FactoryBean 当作“生产线”，按类型匹配的是 product 的类型。**
 
@@ -78,7 +78,7 @@
 
 容器需要回答一个问题：这个工厂“生产什么类型”？
 
-### 2.2 为什么不要把 getObjectType 当成“随便写写”
+### 2.2 为什么不要把 getObjectType 当成“随意填写”
 
 - `getObjectType()` 返回 `null` / 不稳定（偶尔变）
 - 或者为了推断类型去做昂贵/有副作用的动作
@@ -94,7 +94,7 @@
 
 - `getObjectType()`：它生产的对象类型
 
-所以你可以：
+所以可以：
 
 - `getBean(Value.class)` 拿到 product（即使容器里没有直接注册 `Value` 的 BeanDefinition）
 
@@ -113,7 +113,7 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
   - `productVsFactoryVsProvider_whenFactoryBeanProductIsNotCached()`（对照：direct injection vs ObjectProvider，每次是否能拿到新 product）
 
-你应该观察到：
+应当观察到：
 
 - 当 `isSingleton() == true`：多次 `getBean(Value.class)` 返回同一个 product 实例
 - 当 `isSingleton() == false`：每次 `getBean(Value.class)` 都会重新调用 `getObject()` 产生新实例
@@ -121,15 +121,15 @@
 学习重点：
 
 - **isSingleton 控制的是 product 的缓存语义**
-- factory bean 自己通常仍然是容器管理的 singleton（除非你显式把它定义成 prototype）
+- factory bean 自己通常仍然是容器管理的 singleton（除非读者显式把它定义成 prototype）
 
 ### 3.1 一个很容易混淆的点：factory bean 自己仍是普通 bean
 
-你应该能解释清楚这句话：
+应能够解释清楚这句话：
 
 > **FactoryBean 的“特殊”只发生在 `getBean("name")` 返回值上；FactoryBean 本身仍然是一个普通 bean（默认 singleton）。**
 
-所以你会看到这种对照现象：
+所以可以观察到这种对照现象：
 
 - `getBean("&valueFactory")` 拿到的 factory 引用通常是同一个（singleton）
 - 但 `getBean(Value.class)` 拿到的 product 可能每次都不同（当 `isSingleton=false`）
@@ -148,7 +148,7 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
 
-跑完该 Lab，你至少要能复述 3 条结论：
+跑完该 Lab，至少应能够复述 3 条结论：
 
 1) **`"name"` vs `"&name"` 的分流**  
    - 断点：`getObjectForBeanInstance`  
@@ -188,7 +188,7 @@
 
 - “我 `getBean("name")` 拿到的不是工厂而是产品” → **实例层（FactoryBean 语义）**：这是 Spring 的特殊规则；要拿工厂请用 `&name`（本章第 1 节）
 - “按类型发现/条件装配行为很怪” → **定义层（类型元数据）**：检查 `getObjectType()` 是否可靠（见 [29](29-factorybean-edge-cases.md)）
-- “product 缓存像是坏了/每次 get 都创建新对象” → **实例层（缓存语义）**：检查 `isSingleton()` 返回值是否与你期望一致（本章第 3 节）
+- “product 缓存像是坏了/每次 get 都创建新对象” → **实例层（缓存语义）**：检查 `isSingleton()` 返回值是否与读者期望一致（本章第 3 节）
 - “以为 factory 的 scope 就等于 product 的 scope” → **实例层概念澄清**：`isSingleton()` 控制的是 product 缓存，不是 factory 自己的 scope（本章第 3 节）
 
 ## 5. 面试常问（FactoryBean 深挖）
@@ -248,30 +248,30 @@
 
 建议断点：
 
-1) 你在 Lab 里的 `FactoryBean#getObject()` / `getObjectType()` / `isSingleton()`：观察 product 创建次数与类型声明
+1) 在 Lab 里的 `FactoryBean#getObject()` / `getObjectType()` / `isSingleton()`：观察 product 创建次数与类型声明
 2) `AbstractBeanFactory#getObjectForBeanInstance`：观察 `getBean("name")` 与 `getBean("&name")` 在这里分叉
 3) `FactoryBeanRegistrySupport#getObjectFromFactoryBean`：观察容器何时调用 `getObject()`，以及返回值如何被处理
 4) `FactoryBeanRegistrySupport#getCachedObjectForFactoryBean`：对照 `isSingleton()` 为 true/false 时缓存是否命中
 
-- 你能解释清楚：为什么 `&beanName` 可以拿到 factory 自己吗？
-- 你能解释清楚：`isSingleton()` 控制的是“product 是否缓存”而不是“factory 是否单例”吗？
+- 应能够解释清楚：为什么 `&beanName` 可以拿到 factory 自己吗？
+- 应能够解释清楚：`isSingleton()` 控制的是“product 是否缓存”而不是“factory 是否单例”吗？
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java`
 推荐断点：`AbstractBeanFactory#getType`、`AbstractBeanFactory#getObjectForBeanInstance`、`FactoryBeanRegistrySupport#getObjectFromFactoryBean`
 
-## 常见坑与边界
+## 常见误区与边界
 
 - 首选：`FactoryBean#getObjectType()`
-- 如果 `getObjectType()` 信息不足（返回 `null`），某些查找路径会选择 **不去实例化 factory**（尤其 `allowEagerInit=false` 时），于是你会看到“按类型找不到但按名字能拿到”的现象（见 [29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](29-factorybean-edge-cases.md)）。
+- 如果 `getObjectType()` 信息不足（返回 `null`），某些查找路径会选择 **不去实例化 factory**（尤其 `allowEagerInit=false` 时），于是可以观察到“按类型找不到但按名字能拿到”的现象（见 [29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](29-factorybean-edge-cases.md)）。
 
-工程里最常见的坑之一：
+工程里最常见的误区之一：
 
-## 4. 常见坑
+## 4. 常见误区
 
-- **坑 1：`getObjectType()` 返回 null 或者返回不准**
+- **误区 1：`getObjectType()` 返回 null 或者返回不准**
   - 会影响按类型匹配与某些条件判断。
 
-- **坑 2：`isSingleton()` 返回与真实行为不一致**
-  - 容器会按你声明的语义缓存/不缓存；声明错了很容易造成“看起来像缓存 bug”。
+- **误区 2：`isSingleton()` 返回与真实行为不一致**
+  - 容器会按读者声明的语义缓存/不缓存；声明错了很容易造成“看起来像缓存 bug”。
 
 ## 小结与下一章
 

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -60,13 +60,13 @@
 `@Configuration(proxyBeanMethods = true)`（默认 true 的经典行为）：
 
 - Spring 会对配置类做增强（通常是 CGLIB 子类）
-- 当你调用 `@Bean` 方法时，会被拦截并重定向到容器
-- 因此即便你在 `@Bean` 方法里直接调用另一个 `@Bean` 方法，也能维持“单例语义”
+- 当调用 `@Bean` 方法时，会被拦截并重定向到容器
+- 因此即便在 `@Bean` 方法里直接调用另一个 `@Bean` 方法，也能维持“单例语义”
 
 `@Configuration(proxyBeanMethods = false)`（Lite 模式 / 更偏性能）：
 
 - Spring 不会为“方法调用语义”提供额外保障
-- 你在方法体里直接调用另一个 `@Bean` 方法，就是一次普通 Java 方法调用
+- 在方法体里直接调用另一个 `@Bean` 方法，就是一次普通 Java 方法调用
 - 这可能会产生额外实例（绕过容器缓存）
 
 ### 1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
@@ -80,20 +80,20 @@
 
 建议先把“现象”做成可断言的闭环（别靠日志猜）：
 
-### 2.1 你到底在对比什么？
+### 2.1 读者到底在对比什么？
 
 两种模式都能把 `@Bean` 注册进容器；差异在于：**配置类自身是否会被增强（enhance）**，从而拦截 `@Bean` 方法调用。
 
 - `@Configuration(proxyBeanMethods=true)`（默认）
-  - 配置类会被 CGLIB 增强（你常会在类名里看到 `$$SpringCGLIB$$`）。
+  - 配置类会被 CGLIB 增强（读者常会在类名里看到 `$$SpringCGLIB$$`）。
   - 在同一个配置类里，`@Bean` 方法互相调用时，会被拦截并改成 **从容器取 bean**。
-  - 结果：你在 `@Bean` 方法里调用另一个 `@Bean` 方法，仍能保持 singleton 语义（同一个实例）。
+  - 结果：在 `@Bean` 方法里调用另一个 `@Bean` 方法，仍能保持 singleton 语义（同一个实例）。
 - `@Configuration(proxyBeanMethods=false)`
   - 配置类不会拦截 `@Bean` 方法调用。
   - 在配置类内部互相调用 `@Bean` 方法，本质就是 **普通 Java 方法调用**。
-  - 结果：你可能 new 出“额外对象”，即使容器里的对应 bean 依然是 singleton。
+  - 结果：读者可能 new 出“额外对象”，即使容器里的对应 bean 依然是 singleton。
 
-> 关键点：`proxyBeanMethods=false` 不是“Bean 变多例”，而是“你在配置类里手写的互调绕过了容器语义”。
+> 关键点：`proxyBeanMethods=false` 不是“Bean 变多例”，而是“在配置类里手写的互调绕过了容器语义”。
 
 对应测试：
 
@@ -102,14 +102,14 @@
   - `configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance()`（proxy=false：互调是普通 Java 调用）
   - `liteConfiguration_componentWithBeanMethods_doesNotEnhance_beanMethodInterCallsCreateExtraInstance()`（Lite 模式：`@Component + @Bean` 不会增强）
 
-你会看到：
+可以观察到：
 
 - proxy=true：`configB()` 内调用 `configA()`，拿到的是容器里的同一个 `ConfigA`
 - proxy=false：方法体直接调用导致 new 出另一个 `ConfigA`
 
 ## 3. 最推荐的写法：用“方法参数”声明依赖
 
-如果你写：
+若编写：
 
 ```java
 @Bean
@@ -143,7 +143,7 @@ ConfigB configB(ConfigA a) {
 - （对照）容器里同名 bean 的获取路径：
   - `AbstractBeanFactory#doGetBean`：证明“从容器拿到的那个对象”与“方法互调返回的对象”是否一致
 
-## 5. 你应该能回答的 2 个问题
+## 5. 应能够回答的 2 个问题
 
 1) `proxyBeanMethods` 影响的到底是什么？（提示：不是“这个 bean 是否是单例”，而是“配置类里方法调用会不会走容器”）
 2) 为什么在大规模应用里，经常把 `proxyBeanMethods` 设为 false？
@@ -194,36 +194,36 @@ ConfigB configB(ConfigA a) {
 - 对比入口（直接从测试方法开始打断点）：
   - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsTruePreservesSingletonSemanticsForBeanMethodCalls`
   - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance`
-- 你要观察的不是“能不能注入”，而是 **配置类内部 `@Bean` 方法互相调用时：返回的是容器 singleton，还是一个新的 Java 对象**。
+- 需要观察的不是“能不能注入”，而是 **配置类内部 `@Bean` 方法互相调用时：返回的是容器 singleton，还是一个新的 Java 对象**。
 
 - `SpringCoreBeansContainerLabTest.configurationProxyBeanMethodsTruePreservesSingletonSemanticsForBeanMethodCalls()`
 - `SpringCoreBeansContainerLabTest.configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance()`
 
 ## 4. 源码锚点（建议从这里下断点）
 
-如果你想把 `proxyBeanMethods` 的本质打穿（读者 C 目标），建议至少走一遍下面的断点闭环：
+若想把 `proxyBeanMethods` 的本质打穿（读者 C 目标），建议至少走一遍下面的断点闭环：
 
 - 配置类 bean 的运行时 class：是否出现 `$$SpringCGLIB$$`
 - `@Bean` 方法互调时的调用栈：是否进入 `BeanMethodInterceptor`
 
-下一章我们讲另一个“名字相同但拿到的东西不同”的概念：`FactoryBean`。
+下一章将讲另一个“名字相同但拿到的东西不同”的概念：`FactoryBean`。
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 推荐断点：`ConfigurationClassPostProcessor#postProcessBeanFactory`、`ConfigurationClassEnhancer#enhance`
 
-## 常见坑与边界
+## 常见误区与边界
 
-- **坑 1：`proxyBeanMethods=false` + `@Bean` 方法互调**
-  - 现象：容器里 bean 依然是单例，但你在配置类内部互调会 new 出“额外对象”
+- **误区 1：`proxyBeanMethods=false` + `@Bean` 方法互调**
+  - 现象：容器里 bean 依然是单例，但在配置类内部互调会 new 出“额外对象”
   - 证据链：`SpringCoreBeansContainerLabTest.configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance()`
   - 修复：避免互调；改成“方法参数注入”（让依赖解析回到容器）
-- **坑 2：Lite 模式（`@Component + @Bean`）没有增强**
-  - 现象：你以为“写了 @Bean 就等于 @Configuration”，结果互调语义与 proxy=false 一样（不会拦截）
+- **误区 2：Lite 模式（`@Component + @Bean`）没有增强**
+  - 现象：容易误以为“写了 @Bean 就等于 @Configuration”，结果互调语义与 proxy=false 一样（不会拦截）
   - 证据链：`SpringCoreBeansContainerLabTest.liteConfiguration_componentWithBeanMethods_doesNotEnhance_beanMethodInterCallsCreateExtraInstance()`
   - 修复：把配置类显式改成 `@Configuration`（并明确 `proxyBeanMethods`）；或者同样避免互调
-- **坑 3：误把它当成“scope 语义变化”**
-  - 澄清：bean 还是单例；变的是“你在配置类里写的 Java 调用有没有被容器拦截并重定向”
-  - 经验法则：只要你看到“配置类内部互调 @Bean 方法”，就默认它是风险点，优先改成“参数注入”
-- **坑 4：跨配置类/自调用导致“绕过容器”或触发循环依赖**
+- **误区 3：误把它当成“scope 语义变化”**
+  - 澄清：bean 还是单例；变的是“在配置类里写的 Java 调用有没有被容器拦截并重定向”
+  - 经验法则：只要读者看到“配置类内部互调 @Bean 方法”，就默认它是风险点，优先改成“参数注入”
+- **误区 4：跨配置类/自调用导致“绕过容器”或触发循环依赖**
   - 现象：final/private 方法无法被增强；互调时提前触发 `getBean`，可能让循环依赖更早暴露
   - 修复：避免在 `@Bean` 方法体内互调；用方法参数注入或拆分配置类
 
@@ -233,7 +233,7 @@ ConfigB configB(ConfigA a) {
 | --- | --- | --- | --- | --- |
 | `@Bean` 方法互调出现“额外实例”（对象不相等） | `proxyBeanMethods=false` 或 Lite 模式导致没有增强 | 观察配置类运行时 class 是否包含 `$$SpringCGLIB$$`；互调时调用栈是否进入 `BeanMethodInterceptor#intercept` | 避免 `@Bean` 方法互调；改用方法参数注入；必要时显式 `@Configuration(proxyBeanMethods=true)` | `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance` |
 | 明明写了 `@Bean`，但行为像普通组件（互调不走容器） | Lite 模式（`@Component + @Bean`）默认不增强 | 断点 `ConfigurationClassPostProcessor#processConfigBeanDefinitions` 看 Full/Lite 判定；运行时 class 不增强 | 视需求改成 Full `@Configuration`；或同样避免互调 | `SpringCoreBeansContainerLabTest#liteConfiguration_componentWithBeanMethods_doesNotEnhance_beanMethodInterCallsCreateExtraInstance` |
-| 你以为“这是 scope 问题”但其实不是 | 混淆了“bean 是否单例”与“方法调用是否走容器” | 对照：容器 `getBean` 仍返回同一个 singleton；互调返回的是方法体 new | 把依赖解析交回容器（参数注入），不要在方法里 new | 同上两条对照用例 |
+| 容易误以为“这是 scope 问题”但其实不是 | 混淆了“bean 是否单例”与“方法调用是否走容器” | 对照：容器 `getBean` 仍返回同一个 singleton；互调返回的是方法体 new | 把依赖解析交回容器（参数注入），不要在方法里 new | 同上两条对照用例 |
 
 ## 小结与下一章
 
@@ -250,10 +250,9 @@ ConfigB configB(ConfigA a) {
 
 <!-- BOOKIFY:END -->
 
-## 一句话自检
-
-你应该能回答：
+## 自检要点
+应能够回答：
 
 1) `@Configuration` 的增强解决了什么问题？（提示：@Bean 方法调用语义）
 2) `proxyBeanMethods` 为 true/false 时，行为差异在哪里体现？
-3) 你如何在调试器里证明“同一个 @Bean 方法多次调用是否返回同一对象”？
+3) 如何在调试器里证明“同一个 @Bean 方法多次调用是否返回同一对象”？

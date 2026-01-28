@@ -30,7 +30,7 @@
 1) **概念边界**：`${...}` 和 `#{...}` 到底分别属于哪条链路？
 2) **排障边界**：值注入失败时，怎么把问题快速定位到“解析/求值/转换”的哪一步？
 
-先给结论（你背这 4 句就够排障）：
+先给结论（读者背这 4 句就够排障）：
 
 1) `${...}` 是 **占位符解析**（通常来自 Environment/PropertySources），本质是“把字符串里的 key 替换成值”。
 2) `#{...}` 是 **SpEL 求值**（可以计算/引用 bean/调用方法），本质是“执行表达式并产生一个对象”。
@@ -69,7 +69,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 
 ## 2. 源码最短路径（call chain）：从 @Value 到最终注入
 
-你可以把 `@Value` 注入链路压缩成这条“最短可跟栈”：
+可以把 `@Value` 注入链路压缩成这条“最短可跟栈”：
 
 1) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：识别 `@Value` 注入点
 2) `BeanFactory#resolveEmbeddedValue`（常见落点：`AbstractBeanFactory#resolveEmbeddedValue`）：解析字符串
@@ -78,13 +78,13 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 3) `TypeConverter#convertIfNecessary`：把解析/求值结果转换成注入点目标类型
 4) 注入到字段/参数（属性填充或构造注入）
 
-你只要把这条链路记住，就不会再把“值注入失败”当成玄学。
+读者只要把这条链路记住，就不会再把“值注入失败”当成黑箱。
 
 ---
 
 ## 3. 三连排障（强烈推荐把这张表背下来）
 
-| 现象 | 最可能根因 | 你要去哪看（断点/变量） |
+| 现象 | 最可能根因 | 需要去哪看（断点/变量） |
 | --- | --- | --- |
 | 值是 `"${demo.missing}"` 原样字符串 | non-strict 占位符解析放行了缺失 key | `resolveEmbeddedValue` 输入/输出；对照 [34] |
 | 直接启动失败：Could not resolve placeholder | strict fail-fast（更健康） | `PropertySourcesPlaceholderConfigurer` 是否启用；对照 [34] |
@@ -110,7 +110,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 - 目标类型：注入点类型（字段类型/参数类型）
 - 异常 root cause：`NumberFormatException` / `SpelEvaluationException` / `IllegalArgumentException` 等
 
-## 常见坑与边界
+## 常见误区与边界
 
 1) **把“类型转换失败”误以为 “SpEL 失败”**
    - 典型：`@Value("#{ 'not-a-number' }") private int n;`
@@ -132,7 +132,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 3) 表达式求值：`StandardBeanExpressionResolver#evaluate`（只在 `#{...}` 场景触发）
 4) 类型转换：`TypeConverterDelegate#convertIfNecessary`（把求值结果/字符串转成注入点类型）
 
-你在断点里把“字符串解析前后值 / SpEL 求值结果类型 / requiredType”三件事看清楚，就能快速定位是第几步出问题。
+在断点里把“字符串解析前后值 / SpEL 求值结果类型 / requiredType”三件事看清楚，就能快速定位是第几步出问题。
 
 ## 面试常问（SpEL / @Value：区分链路比背语法更重要）
 
@@ -153,15 +153,14 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 - 最小复现：
   - `SpringCoreBeansSpelValueLabTest`（配合本章断点/Watch List）
 
-## 一句话自检
-
-- 你能解释清楚：`${...}` 与 `#{...}` 分别属于哪条链路吗？（占位符解析 vs 表达式求值）
-- 你遇到值注入失败时，能否按“三连”收敛：解析（placeholder）→ 计算（SpEL）→ 转换（TypeConverter）？
-- 你能说出：最短断点链路该打在哪 3 个方法上，把上面三步分别看见吗？
+## 自检要点
+- 应能够解释清楚：`${...}` 与 `#{...}` 分别属于哪条链路吗？（占位符解析 vs 表达式求值）
+- 遇到值注入失败时，能否按“三连”收敛：解析（placeholder）→ 计算（SpEL）→ 转换（TypeConverter）？
+- 应能够说出：最短断点链路该打在哪 3 个方法上，把上面三步分别看见吗？
 
 ## 小结与下一章
 
-这一章的目标不是“会写 SpEL”，而是：当 `@Value` 出问题时，你能 **在 1 分钟内定位是解析/求值/转换的哪一步**。
+这一章的目标不是“会写 SpEL”，而是：当 `@Value` 出问题时，应能够 **在 1 分钟内定位是解析/求值/转换的哪一步**。
 
 <!-- BOOKIFY:START -->
 

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -31,7 +31,7 @@
 
 ## 机制主线
 
-这一章不是教你“如何构建 native image”，而是回答一个更关键的问题：
+这一章不是教读者“如何构建 native image”，而是回答一个更关键的问题：
 
 > **为什么同一套 Spring 应用，在 JVM 模式里能工作，但切到 AOT/Native 就可能失败？**
 
@@ -39,14 +39,14 @@
 
 ## 1. 结论先行：AOT/Native 改变了什么？
 
-你可以把 JVM 与 Native 的差异理解为：
+可以把 JVM 与 Native 的差异理解为：
 
 - **JVM（open-world）**：运行期反射/代理/资源扫描默认可用，许多“动态能力”在运行时临时决定  
 - **Native（closed-world）**：运行期能力被收紧，**必须在构建期声明**（否则镜像里没有）
 
 因此在 Spring 世界里，AOT/Native 的核心问题往往不是“业务逻辑”，而是：
 
-- 你有没有把“运行期才知道的需求”前置成 **构建期契约**？
+- 读者有没有把“运行期才知道的需求”前置成 **构建期契约**？
 - 这些契约是否被 **Spring AOT 基础设施**发现与汇总？
 
 ### 机制讲透：条件 → 分支 → 结果
@@ -66,11 +66,11 @@
 - “这个代理需要生成”
 - “这个资源需要打包进镜像”
 
-你暂时不需要记住所有 hints 的分类，只需要建立一个工程直觉：
+读者暂时不需要记住所有 hints 的分类，只需要建立一个工程直觉：
 
 > **AOT/Native 下失败的很多问题，本质都是 “hints 缺失”。**
 
-你可以把 RuntimeHints 理解成“构建期白名单”：
+可以把 RuntimeHints 理解成“构建期白名单”：
 
 - **反射**：哪些类/方法/构造器可以被反射访问  
 - **代理**：哪些接口/类允许生成代理  
@@ -93,7 +93,7 @@
 
 ---
 
-## 3. 你在真实项目里会遇到的典型现象（症状表）
+## 3. 在真实项目里会遇到的典型现象（症状表）
 
 下面这些“看起来像业务 bug”的问题，常见根因其实是 AOT/Native 约束：
 
@@ -102,7 +102,7 @@
 - **资源缺失**：配置文件/模板/静态资源在 native 中找不到  
 - **运行期扫描失效**：JVM 下能扫描到，Native 下扫描不到  
 
-这一章的目标是让你知道：这些问题都可以被归类到“契约缺失”，并能落到一个具体入口：
+这一章的目标是让读者知道：这些问题都可以被归类到“契约缺失”，并能落到一个具体入口：
 
 - **RuntimeHints**（声明反射/代理/资源等需求）
 
@@ -112,7 +112,7 @@
 
 本模块的 Lab 采用的策略是：**不构建 native image，也能验证“契约是否存在”**。
 
-你可以在 JVM 单测里：
+可以在 JVM 单测里：
 
 - 注册 hints（`RuntimeHintsRegistrar`）
 - 用 `RuntimeHintsPredicates` 断言某个反射/资源/代理是否已被声明
@@ -124,14 +124,14 @@
 
 ---
 
-学习阶段你只需要能回答两件事：
+学习阶段读者只需要能回答两件事：
 
 1) hints 在哪里被“注册/汇总”？
 2) 我怎么证明“现在 hints 有/没有”？
 
-- `RuntimeHintsRegistrar#registerHints`（你定义的注册入口）
+- `RuntimeHintsRegistrar#registerHints`（读者定义的注册入口）
 
-当你想把 AOT 放回 `spring-beans` 的真实基础设施时（而不是只停留在“我自己写 hints”）：
+当需要把 AOT 放回 `spring-beans` 的真实基础设施时（而不是只停留在“我自己写 hints”）：
 
 - `AotServices#factories`（定位 `META-INF/spring/aot.factories` 的加载入口）
 - `AotServices.Loader#load`（观察：某个 service interface 最终加载到了哪些实现类）
@@ -141,7 +141,7 @@
 
 ---
 
-如果你把这一章读成一句话，就是：
+本章可概括为：
 
 > **AOT/Native 的本质是“把运行期能力需求前置成构建期契约”，而 RuntimeHints 是这份契约的表达方式。**
 
@@ -163,11 +163,11 @@
 学习阶段只要抓住一个主线：**AOT/Native 把很多“运行时的猜测与反射”前移到“构建期的显式声明”**。
 
 - JVM：反射、动态代理、类路径扫描等“运行期能力”默认可用（成本是启动慢/内存大/可预知性较差）。
-- Native（AOT）：运行期能力被收紧（换来启动快/内存小/可预知性强），你必须在构建期把需求“说清楚”。
+- Native（AOT）：运行期能力被收紧（换来启动快/内存小/可预知性强），必须在构建期把需求“说清楚”。
 
-1) 你有没有用到反射？（例如框架要反射调用构造器/方法/字段）
-2) 你有没有用到动态代理？（JDK/CGLIB proxy）
-3) 你有没有依赖运行期扫描/注册？（classpath 扫描、动态注册 bean 定义）
+1) 读者有没有用到反射？（例如框架要反射调用构造器/方法/字段）
+2) 读者有没有用到动态代理？（JDK/CGLIB proxy）
+3) 读者有没有依赖运行期扫描/注册？（classpath 扫描、动态注册 bean 定义）
 4) 这些需求能不能在构建期被推导/声明？
 
 下一章会把它落成“可断言”的最小实验：[41. RuntimeHints 入门](41-runtimehints-basics.md)。
@@ -180,7 +180,7 @@
 ## 4. 复现入口（可运行）
 
 > 注意：本模块的 AOT Lab **不构建 native image**。
-> 我们用 JVM 单测验证“构建期契约”的存在性（hints 是否注册），以保证可复现与低成本。
+> 采用 JVM 单测验证“构建期契约”的存在性（hints 是否注册），以保证可复现与低成本。
 
 - 入口测试：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java`
@@ -202,11 +202,11 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 
 > **AOT/Native 的关键是把“运行期才能知道的事”变成“构建期必须说清楚的事”。**
 
-下一章我们用一个最小可断言实验把 RuntimeHints 的注册与验证跑通：
+下一章将用一个最小可断言实验把 RuntimeHints 的注册与验证跑通：
 
 - [41. RuntimeHints 入门：如何把“需求”变成可验证的契约](41-runtimehints-basics.md)
 
-## 常见坑与边界
+## 常见误区与边界
 
 ### 常见误区（把“JVM 能跑”误当成“Native 也能跑”）
 
@@ -238,18 +238,17 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 - 标准答案（可复述）：
   - 解决反射/资源/代理等“运行期能力可用性”的契约问题；不解决业务逻辑正确性、条件装配语义、生命周期/时机等逻辑问题。
 
-### Q3：你如何用证据链证明“没注册就不会命中”？
+### Q3：如何用证据链证明“没注册就不会命中”？
 
 - 标准答案（可复述）：
   - 用对照测试：一个场景注册 hints、一个不注册；用 predicates/断言验证 hints 是否存在，并把 registrar 的加载入口写清楚（factories/aot.factories）。
 - 最小复现：
   - `SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAotFactoriesLabTest`
 
-## 一句话自检
-
-- 你能用一句话解释：为什么“JVM 能跑”不等于“Native 能跑”吗？（提示：运行期信息在 Native 下不可得）
-- 你能说出：RuntimeHints 的作用域是什么、解决什么问题、解决不了什么问题吗？
-- 如果你要把一个 AOT/Native 失败变成“可复现证据链”，你会优先写一个什么样的最小对照测试？
+## 自检要点
+- 应能够用一句话解释：为什么“JVM 能跑”不等于“Native 能跑”吗？（提示：运行期信息在 Native 下不可得）
+- 应能够说出：RuntimeHints 的作用域是什么、解决什么问题、解决不了什么问题吗？
+- 若要把一个 AOT/Native 失败变成“可复现证据链”，可以优先写一个什么样的最小对照测试？
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->

@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -20,7 +20,7 @@
 
 这一章解决“遗留项目/三方组件里非常常见，但新手几乎没系统学过”的问题：
 
-结论先讲清楚：XML namespace 扩展不是魔法，它本质是一个“插件系统”：
+结论先讲清楚：XML namespace 扩展不是隐式行为，它本质是一个“插件系统”：
 
 - `spring.handlers`：把 **namespace URI → NamespaceHandler 类** 映射起来
 - `spring.schemas`：把 **XSD URL → classpath 里的 xsd 文件** 映射起来（避免网络拉取）
@@ -28,7 +28,7 @@
 
 ---
 
-配套资源（你可以用来定位/排障）：
+配套资源（可以用来定位/排障）：
 
 - `META-INF/spring.handlers`（namespace URI → Handler）
 - `META-INF/spring.schemas`（XSD URL → 本地资源）
@@ -59,9 +59,9 @@
 
 ---
 
-## 2. 怎么用：最小可用写法（你需要的最小 4 件套）
+## 2. 怎么用：最小可用写法（需要的最小 4 件套）
 
-如果你要做一个最小 namespace 扩展，最少需要：
+若要做一个最小 namespace 扩展，最少需要：
 
 1) 一个 namespace URI（例如 `http://learning.springboot/schema/demo`）
 2) 一个 `NamespaceHandler`（把不同元素名绑定到 parser）
@@ -76,7 +76,7 @@
 
 ## 3. 原理：把自定义元素放回容器定义层主线
 
-你只要记住一条主线就能解释清楚：
+读者只要记住一条主线就能解释清楚：
 
 1) `XmlBeanDefinitionReader` 读取 XML → 得到 DOM Document
 2) `DefaultBeanDefinitionDocumentReader` 遍历子节点
@@ -99,14 +99,14 @@
 3) `BeanDefinitionParserDelegate#parseCustomElement`（进入自定义元素分支）
 4) `DefaultNamespaceHandlerResolver#resolve`（spring.handlers 映射解析）
 5) `NamespaceHandlerSupport#parse`（handler 分派到具体 parser）
-6) 你自己的 `BeanDefinitionParser#parse`（注册 BeanDefinition）
+6) 读者自己的 `BeanDefinitionParser#parse`（注册 BeanDefinition）
 7) `DefaultListableBeanFactory#registerBeanDefinition`（最终入库）
 
 ---
 
 ## 错误分型（快速判断）
 
-你遇到 namespace 相关异常时，优先做三分法：
+遇到 namespace 相关异常时，优先做三分法：
 
 1) **资源错误**：`spring.schemas` 未命中、XSD 资源找不到  
 2) **解析错误**：XML 结构不合法/namespace 未识别（document 级失败）  
@@ -135,7 +135,7 @@
 
 ### 复现/验证补充说明（来自原文迁移）
 
-> **XML 里那些看起来像魔法的 `<context:...>` / `<tx:...>` 到底是怎么变成 BeanDefinition 的？我自己能不能做一个？出问题怎么断点排？**
+> **XML 里那些看起来像隐式行为的 `<context:...>` / `<tx:...>` 到底是怎么变成 BeanDefinition 的？我自己能不能做一个？出问题怎么断点排？**
 
 ## 0. 复现入口（可运行）
 
@@ -165,18 +165,18 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
 
 最推荐的断点组合（从入口到闭环）：
 
-### 4.2 观察点（你下断点时应该盯这些变量）
+### 4.2 观察点（设置断点时应该盯这些变量）
 
 1) **误区：自定义 namespace = 自定义标签语法**
-   - 真实本质：你是在写“把 XML 转成 BeanDefinition 的解析器”。
+   - 真实本质：读者是在写“把 XML 转成 BeanDefinition 的解析器”。
 2) **误区：XSD 一定会去网上下载**
    - Spring 通过 `spring.schemas` 把 URL 映射到 classpath，正常不需要网络。
 3) **误区：看见 `<tx:...>` 就以为是 transaction 模块的“运行时能力”**
    - `<tx:...>` 更多是“定义层注册基础设施 bean”，运行时能力通常由 BPP/代理实现。
 
-## 常见坑与边界
+## 常见误区与边界
 
-- namespace URI：是否与你在 `spring.handlers` 的 key 一致（注意 `http\://` 的转义）
+- namespace URI：是否与在 `spring.handlers` 的 key 一致（注意 `http\://` 的转义）
 - element 的 localName：是否命中 handler 里注册的 parser key
 - `parserContext.getRegistry()`：最终是否把 beanDefinition 注册进了正确 registry
 - `BeanDefinition` 内容：
@@ -184,10 +184,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
 - XSD 解析：
   - `spring.schemas` 是否命中（避免网络访问）
 
-### 常见误区（以及为什么你在真实项目里会踩）
+### 常见误区（以及为什么在真实项目里会遇到）
 
 1) **误区：namespace 扩展是“XML 语法糖”**
-   - 本质上你在扩展的是“定义层输入”：把 element 解析成 BeanDefinition 并注册进 registry。
+   - 本质上在扩展的是“定义层输入”：把 element 解析成 BeanDefinition 并注册进 registry。
 2) **误区：XSD/handler 的加载失败只会影响这一小块配置**
    - 实际上它会让整个 XML 文档解析失败，直接卡在定义阶段，应用甚至不会进入创建业务 bean 的阶段。
 3) **误区：排障只看 XML 文本**
@@ -211,11 +211,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
 - 标准答案（可复述）：
   - 因为它的产物仍然是 BeanDefinition；实例怎么创建/怎么注入/怎么增强依旧走容器主线（`doCreateBean`、BPP 链等），namespace 只是换了一种输入语法。
 
-## 一句话自检
-
-- 你能解释清楚：XML namespace 扩展发生在定义阶段还是创建阶段吗？输出产物是什么？
-- 你能说出：`spring.handlers` 与 `spring.schemas` 分别负责解决什么问题吗？（提示：handler 映射 vs XSD 映射）
-- 你遇到 `<xxx:...>` 不生效时，最短的断点链路应该从哪里进？
+## 自检要点
+- 应能够解释清楚：XML namespace 扩展发生在定义阶段还是创建阶段吗？输出产物是什么？
+- 应能够说出：`spring.handlers` 与 `spring.schemas` 分别负责解决什么问题吗？（提示：handler 映射 vs XSD 映射）
+- 遇到 `<xxx:...>` 不生效时，最短的断点链路应该从哪里进？
 
 ## 小结与下一章
 

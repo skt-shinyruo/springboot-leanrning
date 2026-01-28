@@ -4,7 +4,7 @@
 
 - 本章主题：**候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界**
 - 这章解决一个高频误判：把“集合排序”当成“单依赖选择”。
-  你看到的很多 NoUnique/注入错对象问题，本质是候选收敛规则没理清。
+  许多 NoUnique/注入错对象问题，本质是候选收敛规则没理清。
 
 !!! summary "本章要点"
 
@@ -19,9 +19,9 @@
 
 ## 机制主线：先问“注入的是一个，还是一组？”
 
-你排障时第一问永远是：
+读者排障时第一问永远是：
 
-| 场景 | 注入点长什么样 | 你想要的结果 | 主要规则 |
+| 场景 | 注入点长什么样 | 若希望要的结果 | 主要规则 |
 | --- | --- | --- | --- |
 | 单依赖注入 | `T` / `private final T t` | 必须唯一胜者 | 候选收集 → 候选收敛（Primary/Qualifier/name/Priority…） |
 | 集合注入 | `List<T>` / `Map<String,T>` / `ObjectProvider<T>` | 注入全部候选并尽量稳定排序 | 收集全部候选 → 排序（Order/Ordered/Priority） |
@@ -62,7 +62,7 @@
 
 ## 2. 单依赖注入：胜者是怎么选出来的？
 
-把规则压缩成你能复述的版本（学习阶段不用背全分支）：
+把规则压缩成应能够复述的版本（学习阶段不用背全分支）：
 
 1) **Qualifier（最强）**：注入点显式指定 ⇒ 先过滤/匹配
 2) **Primary（默认胜者）**：多个候选时优先选 primary
@@ -74,7 +74,7 @@
 
 ## 3. 集合注入：`@Order` 到底管什么？
 
-当你注入 `List<T>` 或使用 `ObjectProvider<T>.orderedStream()` 时：
+当读者注入 `List<T>` 或使用 `ObjectProvider<T>.orderedStream()` 时：
 
 - 容器会收集全部候选
 - 然后按排序规则排序
@@ -83,7 +83,7 @@
 
 - `AnnotationAwareOrderComparator#sort`
 
-因此你会观察到：
+因此可以观察到：
 
 - `@Order(0)` 的候选排在 `@Order(1)` 前（数字越小越靠前）
 - 但这不会让单依赖注入“自动挑一个”
@@ -93,8 +93,8 @@
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |
 | `NoUniqueBeanDefinitionException` | 单依赖注入候选太多且无法收敛 | `doResolveDependency` 看 `matchingBeans`；`determineAutowireCandidate` 走到 fail-fast | 用 `@Qualifier/@Primary/@Priority` 收敛；或让多余候选 back-off | `SpringCoreBeansAutowireCandidateSelectionLabTest` |
-| 你加了 `@Order` 但仍 NoUnique | 概念误用：`@Order` 只管集合排序 | `determineAutowireCandidate` 分支里看不到 `@Order` 决策 | 回到单依赖规则：Qualifier/Primary/Priority | 同上（order 不解决 single） |
-| 注入到了“不是我想要的那个” | by-name fallback 或 Primary/Priority 规则与你预期不同 | 看 `dependencyName` 与 beanName 是否匹配；看 primaryCandidate | 显式 `@Qualifier`；减少隐式 by-name 依赖 | `SpringCoreBeansAutowireCandidateSelectionLabTest`（by-name 用例） |
+| 读者加了 `@Order` 但仍 NoUnique | 概念误用：`@Order` 只管集合排序 | `determineAutowireCandidate` 分支里看不到 `@Order` 决策 | 回到单依赖规则：Qualifier/Primary/Priority | 同上（order 不解决 single） |
+| 注入到了“不是我想要的那个” | by-name fallback 或 Primary/Priority 规则与读者预期不同 | 看 `dependencyName` 与 beanName 是否匹配；看 primaryCandidate | 显式 `@Qualifier`；减少隐式 by-name 依赖 | `SpringCoreBeansAutowireCandidateSelectionLabTest`（by-name 用例） |
 | 集合顺序不稳定/不符合预期 | 没有明确 order 信息；或排序入口没走 orderedStream | 看是否走 `AnnotationAwareOrderComparator#sort`；List/Map 注入路径 | 给候选加 `@Order`/实现 `Ordered`；使用 `orderedStream()` | `SpringCoreBeansAutowireCandidateSelectionLabTest`（集合排序用例） |
 
 ## 5. 断点闭环（建议照做一次）
@@ -137,13 +137,12 @@
 - 标准答案（可复述）：
   - `@Priority` 常在没有更强信号时作为单依赖 tie-break，也会影响集合排序；`@Order` 更偏集合排序信号，不负责单依赖选胜者。
 
-## 一句话自检
-
-你应该能用 3 句回答：
+## 自检要点
+应能够用 3 句回答：
 
 1) 单依赖注入与集合注入的根本差异是什么？
 2) `@Order/@Priority/@Primary/@Qualifier` 分别解决什么问题？
-3) 你如何用断点证明“by-name fallback 真的发生了”？（提示：dependencyName 与 beanName）
+3) 如何用断点证明“by-name fallback 真的发生了”？（提示：dependencyName 与 beanName）
 
 <!-- BOOKIFY:START -->
 

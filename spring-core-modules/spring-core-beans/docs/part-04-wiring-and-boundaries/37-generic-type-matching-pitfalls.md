@@ -1,13 +1,13 @@
-# 37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失
+# 37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
 
 ## 导读
 
-- 本章主题：**37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失**
+- 本章主题：**37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -18,17 +18,17 @@
 
 ## 机制主线
 
-这一章要把一件“看起来是玄学”的事变成可解释、可复现、可排障的结论：
+这一章要把一件“看起来是黑箱”的事变成可解释、可复现、可排障的结论：
 
-> **Spring 的“泛型匹配”不是魔法，它依赖 `ResolvableType`，而 `ResolvableType` 的准确性依赖候选 bean 是否能提供稳定的类型元信息。**
+> **Spring 的“泛型匹配”不是隐式行为，它依赖 `ResolvableType`，而 `ResolvableType` 的准确性依赖候选 bean 是否能提供稳定的类型元信息。**
 
-所以你遇到“`Handler<String>` 注入失败”的时候，真正要问的不是“泛型是不是坏了”，而是：
+所以遇到“`Handler<String>` 注入失败”的时候，真正要问的不是“泛型是不是坏了”，而是：
 
 1) Spring 在注入点看到的目标类型（`descriptor.getResolvableType()`）到底是什么？
 2) Spring 在候选 bean 上看到的候选类型（`beanFactory.getType(beanName)` / `BeanDefinition#getResolvableType` / `FactoryBean#getObjectType`）到底是什么？
 3) 两者在泛型参数层面能不能对上？
 
-把这三件事打通，这章你就掌握了。
+把这三件事打通，这章读者就掌握了。
 
 ---
 
@@ -43,7 +43,7 @@
 
 当 Spring 需要做“按类型（含泛型）匹配”时，候选 bean 的类型信息主要来自三条路径（按可靠性排序）：
 
-1) **BeanDefinition（class metadata）**：你提供了 beanClass（或 targetType）
+1) **BeanDefinition（class metadata）**：读者提供了 beanClass（或 targetType）
    - 优点：容器在“定义层”就能做匹配，不必实例化对象
    - 典型：`RootBeanDefinition(StringHandler.class)`
 2) **FactoryBean 的 product type**：通过 `FactoryBean#getObjectType()`（以及一些预测机制）
@@ -66,9 +66,9 @@
 - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
 
-## 常见坑与边界
+## 常见误区与边界
 
-这一章解决一个“看起来很合理，但在真实项目里经常踩坑”的问题：
+这一章解决一个“看起来很合理，但在真实项目里经常易错点”的问题：
 
 > 我明明在容器里有一个 `Handler<String>`，
 > 为什么按 `Handler<String>`（带泛型）去找/注入时，Spring 却说“没有候选”？
@@ -103,7 +103,7 @@
 - 推荐运行命令：
   - 类级：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest test`
   - 方法级（更快）：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenTypeInfoIsLost test`
-- 你将断言/观察到：
+- 读者将断言/观察到：
   - 容器“看起来”注册了一个 `T` 的实现，但在按 `ResolvableType` 匹配时可能失配（尤其是代理/手工注册实例时）
   - 结论不是“泛型不能用”，而是“泛型匹配依赖可被保留的类型信息”，要知道何时会丢
 
@@ -126,7 +126,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
    - 代理实现的是原始接口 `Handler`，运行时很难保留 `Handler<String>` 的泛型参数
    - 因此按 `Handler` 能找到，但按 `Handler<String>` 会失配
 
-你应该把这个现象记成一句话：
+应当把这个现象记成一句话：
 
 > **“泛型匹配依赖类型信息；一旦候选从‘类定义’退化为‘运行时代理实例’，泛型信息可能就不再可靠。”**
 
@@ -134,7 +134,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 ## 3. 再加两步（本仓库已补齐）：如何证明“能修复”
 
-仅仅知道“会失败”还不够。你还应该知道两类“能修复/能规避”的路线，并能用 Lab 证明它们：
+仅仅知道“会失败”还不够。读者还应该知道两类“能修复/能规避”的路线，并能用 Lab 证明它们：
 
 ### 3.1 规避路线：不要让候选退化成“只有运行时代理实例”
 
@@ -154,14 +154,14 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 它演示了一个非常工程化的技巧：
 
-- 当你的候选必须是“运行时对象/代理对象”，但你又想让它参与泛型匹配
-- 你可以在 BeanDefinition 上显式设置 target type（`ResolvableType`），让容器在定义层做正确匹配
+- 当相应的候选必须是“运行时对象/代理对象”，但读者又想让它参与泛型匹配
+- 可以在 BeanDefinition 上显式设置 target type（`ResolvableType`），让容器在定义层做正确匹配
 
-这不是“黑魔法”，而是把“不可靠的运行时类型信息”替换成“可靠的定义层元信息”。
+这不是“黑箱机制”，而是把“不可靠的运行时类型信息”替换成“可靠的定义层元信息”。
 
 ---
 
-## 4. 真实项目里你会在哪些地方遇到它？
+## 4. 真实项目里可以在哪些地方遇到它？
 
 常见触发点：
 
@@ -176,11 +176,11 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 ## 5. 怎么避免/修复（工程建议）
 
-1) 如果你依赖“按泛型精确匹配”，尽量让候选以 **BeanDefinition + class metadata** 的形式进入容器
+1) 若依赖“按泛型精确匹配”，尽量让候选以 **BeanDefinition + class metadata** 的形式进入容器
    - 让容器在定义层就能看到目标类，从而更可靠地计算 ResolvableType
 2) 对运行时代理场景，不要过度依赖“按泛型查找”
    - 更稳妥的方式通常是：原始类型 + `@Qualifier`（或显式命名）来表达意图
-3) 如果你必须让“运行时对象”参与泛型匹配
+3) 如果必须让“运行时对象”参与泛型匹配
    - 推荐：在 BeanDefinition 上显式声明 target type（`ResolvableType`），让容器在定义层做匹配（见本章第 3.2 节 Lab）
    - 退而求其次：用 name/Qualifier 把意图表达清楚（把“泛型参数”从“匹配条件”降级为“业务语义”）
 
@@ -190,10 +190,10 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 ### 5.1 推荐断点（候选收敛与泛型匹配的关键点）
 
-- 依赖解析主线（你需要看到候选如何收敛）：
+- 依赖解析主线（需要看到候选如何收敛）：
   - `DefaultListableBeanFactory#doResolveDependency`
   - `DefaultListableBeanFactory#findAutowireCandidates`
-- 泛型匹配关键点（你需要看到 ResolvableType 如何参与匹配）：
+- 泛型匹配关键点（需要看到 ResolvableType 如何参与匹配）：
   - `GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
   - `ResolvableType#forClass`
 
@@ -201,9 +201,9 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 在 `DefaultListableBeanFactory#doResolveDependency` 上建议使用条件断点：
 
-- 按依赖类型过滤（示例：你的泛型接口/父类）：
+- 按依赖类型过滤（示例：相应的泛型接口/父类）：
   - `descriptor.getDependencyType().getName().contains(\"YourService\")`
-- 按 beanName 过滤（当你已知目标候选名称时）：
+- 按 beanName 过滤（当读者已知目标候选名称时）：
   - `\"yourBeanName\".equals(beanName)`
 
 ### 5.3 推荐观察点（watch list）
@@ -220,7 +220,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 
 ---
 
-## 面试常问（泛型匹配：ResolvableType 为什么会“看不见”你的泛型）
+## 面试常问（泛型匹配：ResolvableType 为什么会“看不见”相应的泛型）
 
 ### Q1：为什么按 `Handler<String>` 注入可能失败，但按原始类型 `Handler` 又能成功？
 
@@ -240,11 +240,10 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 - 最小复现：
   - `SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canBeRestoredByProvidingTargetTypeMetadata_evenIfRuntimeInstanceIsAProxy`
 
-## 一句话自检
-
-- 你能解释清楚：为什么“泛型注入”在遇到代理/桥接方法时容易失去类型信息吗？（提示：运行时类型 vs 声明时类型）
-- 你知道 Spring 用什么抽象来表达泛型类型信息吗？（提示：`ResolvableType`）
-- 你遇到“按泛型注入失败”时，第一步会去哪下断点/看哪个变量来确认类型信息有没有丢？（提示：依赖解析与 type matching 路径）
+## 自检要点
+- 应能够解释清楚：为什么“泛型注入”在遇到代理/桥接方法时容易失去类型信息吗？（提示：运行时类型 vs 声明时类型）
+- 读者知道 Spring 用什么抽象来表达泛型类型信息吗？（提示：`ResolvableType`）
+- 遇到“按泛型注入失败”时，第一步会去哪下断点/看哪个变量来确认类型信息有没有丢？（提示：依赖解析与 type matching 路径）
 
 ## 小结与下一章
 
