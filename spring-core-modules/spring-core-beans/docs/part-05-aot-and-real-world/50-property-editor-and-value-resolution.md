@@ -25,6 +25,20 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：BeanDefinition 中存在“定义层 value”  
+**分支**：`BeanDefinitionValueResolver` 先解析引用/集合/占位符 → `TypeConverterDelegate` 再做类型转换  
+**结果**：最终值写入属性（或因转换失败抛异常）  
+**断点建议**：`BeanDefinitionValueResolver#resolveValueIfNecessary`
+
+## 0. `${...}` vs `#{...}` 的职责边界（先分清再排障）
+
+- `${...}`：占位符解析（Environment/PropertySources）  
+- `#{...}`：SpEL 求值（表达式计算/bean 引用）  
+
+它们都会在 **值解析之后** 再进入类型转换。误判这一步，是“注入失败排障”最大噪声源。
+
 本章有 2 个入口测试：
 
 你要观察的现象：
@@ -134,6 +148,23 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 - `propertyName`（哪个属性触发的转换）
 
 ---
+
+### 4.4 属性路径解析与 auto-grow（复杂属性常见坑）
+
+当你的属性路径包含嵌套/集合/Map 时，BeanWrapper 会走更复杂的路径解析：
+
+- `order.items[0].price`
+- `props[\"k\"]`
+
+常见边界：
+
+- 中间对象为 `null` 且未启用 auto-grow → `NullValueInNestedPathException`
+- 集合下标越界 / Map key 不存在 → `InvalidPropertyException`
+
+断点入口：
+
+- `BeanWrapperImpl#setPropertyValue`
+- `AbstractNestablePropertyAccessor#processLocalProperty`
 
 ---
 

@@ -31,7 +31,13 @@
 
 入口测试：
 
+- `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
+- `SpringCoreBeansGroovyBeanDefinitionReaderLabTest`
+
 对应资源文件：
+
+- `spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.properties`
+- `spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/reader/beans.groovy`
 
 ---
 
@@ -54,6 +60,13 @@ BeanDefinitionReader 的价值在于：
 > 让“新的输入源”以插件形式接入容器定义层，而不用改容器核心。
 
 ---
+
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：选择不同输入源（properties / groovy / xml / 注解）  
+**分支**：对应 Reader 解析 → `BeanDefinition` 注册  
+**结果**：实例化统一走 BeanFactory 主线  
+**断点建议**：`AbstractBeanDefinitionReader#loadBeanDefinitions`
 
 ## 2. 怎么用：两种典型 reader 的最小闭环
 

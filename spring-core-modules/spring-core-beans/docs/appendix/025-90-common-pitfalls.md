@@ -45,7 +45,14 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+本章把“常见坑”统一归因到 4 类主线：
+
+1) **定义层**：BeanDefinition 注册/覆盖/条件装配
+2) **实例层**：createBean → populateBean → initializeBean
+3) **代理替换**：BPP 可能替换最终暴露对象
+4) **依赖解析**：候选收集 → 收敛 → by-name/Qualifier/Primary
+
+排障时先判层，再下断点，效率最高。
 
 ## 源码与断点
 
@@ -90,6 +97,11 @@
 
 见：[04. Scope 与 prototype 注入陷阱](../part-01-ioc-container/015-04-scope-and-prototype.md)
 
+- 现象：prototype 注入 singleton 后“看起来像单例”
+- 证据链：`AbstractBeanFactory#doGetBean` → `AbstractAutowireCapableBeanFactory#populateBean`
+- 修复：`ObjectProvider` / `@Lookup` / scoped proxy
+- 验证：`SpringCoreBeansCustomScopeLabTest` / `SpringCoreBeansContainerLabTest`
+
 ### 2) 以为 `@Order` 能解决“单个依赖注入的歧义”
 
 事实：
@@ -98,6 +110,21 @@
 - 单依赖选择优先看 `@Primary`、`@Qualifier` 等
 
 见：[03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
+
+- 现象：集合注入顺序不稳定
+- 证据链：`AnnotationAwareOrderComparator#sort`
+- 修复：显式 `@Order`/`Ordered`，或使用 `orderedStream()`
+- 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
+
+- 现象：写了 `@Qualifier` 但仍注入失败/注入错实现
+- 证据链：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
+- 修复：确保注入点与候选都标注匹配；避免靠 `@Order`
+- 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
+
+- 现象：单依赖注入报 `NoUniqueBeanDefinitionException`，误以为 `@Order` 能解决
+- 证据链：`DefaultListableBeanFactory#doResolveDependency` → `determineAutowireCandidate`
+- 修复：`@Qualifier` / `@Primary` / `@Priority` 收敛
+- 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
 ### 3) 在 `@Configuration(proxyBeanMethods=false)` 里互相调用 `@Bean` 方法
 
@@ -110,6 +137,11 @@
 - 用 `@Bean` 方法参数声明依赖
 
 见：[07. @Configuration 增强](../part-01-ioc-container/018-07-configuration-enhancement.md)
+
+- 现象：`proxyBeanMethods=false` 时出现多实例/方法互调失效
+- 证据链：`ConfigurationClassPostProcessor` → `ConfigurationClassEnhancer`
+- 修复：改用方法参数注入或开启 `proxyBeanMethods=true`
+- 验证：`SpringCoreBeansContainerLabTest`（lite/configuration 互调用例）
 
 ### 4) 把 `FactoryBean` 当作“普通 bean”
 
@@ -125,6 +157,11 @@
 
 见：[08. FactoryBean](../part-01-ioc-container/08-factorybean.md)
 
+- 现象：`getBean("x")` 拿到的不是 FactoryBean 本体
+- 证据链：`AbstractBeanFactory#getObjectForBeanInstance`（`&` 分支）
+- 修复：需要工厂本体时使用 `&beanName`
+- 验证：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
+
 ### 5) 认为“循环依赖能跑起来就没问题”
 
 事实：
@@ -134,6 +171,11 @@
 - Boot 环境里可能默认更严格，直接不让你启动
 
 见：[09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md)
+
+- 现象：setter 循环勉强可启动，但运行期行为不稳定
+- 证据链：`DefaultSingletonBeanRegistry#singletonFactories` / `getEarlyBeanReference`
+- 修复：打破循环；避免构造器环；必要时引入代理或拆分职责
+- 验证：`SpringCoreBeansCircularDependencyBoundaryLabTest`
 
 ### 6) 认为“自动装配就是自动注入”
 
@@ -148,6 +190,11 @@
 
 见：[10. Boot 自动装配](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) 与 [11. 调试](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 
+- 现象：以为“自动装配=自动注入”，实际只是定义层导入
+- 证据链：`AutoConfigurationImportSelector` / `BeanDefinitionRegistry`
+- 修复：区分“导入定义”与“实例化注入”，用条件报告定位
+- 验证：`SpringCoreBeansAutoConfigurationLabTest`
+
 ### 7) 把 `applicationContext.getBean()` 当成日常依赖注入方式
 
 事实：
@@ -160,6 +207,11 @@
 - 只有在确实需要“延迟/可选/按需获取”时才用 `ObjectProvider`
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 推荐断点：`DefaultListableBeanFactory#doResolveDependency`、`AbstractAutowireCapableBeanFactory#populateBean`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+
+- 现象：服务定位导致依赖关系隐式化、测试困难
+- 证据链：`DefaultListableBeanFactory#doResolveDependency`
+- 修复：优先构造器注入；必要时 `ObjectProvider`
+- 验证：`SpringCoreBeansLabTest`
 
 ### 8) 以为 `@Qualifier` 是“写了就行”
 
@@ -197,6 +249,11 @@
 
 见：[03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md) 与 [`@Resource` 注入](../part-04-wiring-and-boundaries/32-resource-injection-name-first.md)
 
+- 现象：`@Primary` 未生效，被 `@Qualifier/@Resource` 覆盖
+- 证据链：`DefaultListableBeanFactory#determineAutowireCandidate`
+- 修复：显式限定优先级，避免混用策略
+- 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
+
 ### 10) 以为集合注入的顺序“默认就稳定”
 
 典型症状：
@@ -227,6 +284,11 @@
 
 见：[05. 生命周期：初始化、销毁与回调](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md) 与 [12. 容器启动与基础设施处理器](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
 
+- 现象：以为 `@PostConstruct` 在构造器前触发
+- 证据链：`AbstractAutowireCapableBeanFactory#initializeBean` → `InitDestroyAnnotationBeanPostProcessor`
+- 修复：构造器只做轻量初始化，依赖使用放到初始化阶段
+- 验证：`SpringCoreBeansLifecycleCallbackOrderLabTest`
+
 ### 12) 以为 BPP “只是改属性”，不会把 bean 换成另一个对象
 
 事实：
@@ -239,6 +301,11 @@
 - 对应 Lab/Test：`SpringCoreBeansProxyingPhaseLabTest#beanPostProcessorCanReturnAProxyAsTheFinalExposedBean_andSelfInvocationStillBypassesTheProxy`
 
 见：[31. 代理/替换阶段：BPP 如何把 Bean 换成 Proxy](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
+
+- 现象：bean 被代理/替换导致类型不匹配或自调用失效
+- 证据链：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+- 修复：确认代理类型（JDK/CGLIB），避免 self-invocation
+- 验证：`SpringCoreBeansProxyingPhaseLabTest`
 
 ### 13) 以为循环依赖“只要能启动就等于没问题”
 
@@ -253,6 +320,11 @@
 
 见：[09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md) 与 [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md)
 
+- 现象：循环依赖启动成功但运行期异常/代理不一致
+- 证据链：`DefaultSingletonBeanRegistry#addSingletonFactory` / `getEarlyBeanReference`
+- 修复：拆分依赖/引入事件/避免构造器环
+- 验证：`SpringCoreBeansEarlyReferenceLabTest`
+
 ### 14) 以为 `FactoryBean` 只影响 `getBean("name")` 的返回值
 
 事实：
@@ -266,6 +338,11 @@
 
 见：[08. FactoryBean](../part-01-ioc-container/08-factorybean.md)、[23. FactoryBean 深潜](../part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)、[29. FactoryBean 边界](../part-04-wiring-and-boundaries/29-factorybean-edge-cases.md)
 
+- 现象：按类型扫描/条件判断找不到 FactoryBean product
+- 证据链：`FactoryBeanRegistrySupport#getTypeForFactoryBean` / `isTypeMatch`
+- 修复：保证 `getObjectType()` 稳定；必要时允许 eager init
+- 验证：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
+
 ### 15) 以为 `proxyBeanMethods=false` 只是“性能优化”，不会影响语义
 
 事实：
@@ -278,6 +355,11 @@
 - 对应 Lab/Test：
   - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsTruePreservesSingletonSemanticsForBeanMethodCalls`
   - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance`
+
+- 现象：`proxyBeanMethods=false` 导致互调产生新实例
+- 证据链：`ConfigurationClassEnhancer` / `@Configuration` 代理是否生效
+- 修复：改为参数注入或开启 `proxyBeanMethods=true`
+- 验证：`SpringCoreBeansContainerLabTest`
 
 见：[07. @Configuration 增强](../part-01-ioc-container/018-07-configuration-enhancement.md)
 
@@ -299,6 +381,11 @@
 
 见：[37. 泛型匹配与注入坑](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
 
+- 现象：按泛型类型找不到候选（但按原始类型可用）
+- 证据链：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
+- 修复：避免让候选退化为代理实例；显式提供 target type
+- 验证：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
+
 ### 17) 以为“类型转换只发生在 @Value”，与 BeanDefinition/属性填充无关
 
 典型症状：
@@ -316,6 +403,11 @@
 - 对应 Lab/Test：`SpringCoreBeansTypeConversionLabTest`
 
 见：[36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)
+
+- 现象：定义层字符串在属性填充阶段被转换成目标类型
+- 证据链：`AbstractAutowireCapableBeanFactory#applyPropertyValues` → `TypeConverterDelegate#convertIfNecessary`
+- 修复：注册 ConversionService/PropertyEditor；区分占位符与转换
+- 验证：`SpringCoreBeansTypeConversionLabTest`
 
 ### 18) 以为 `@Autowired` 永远只按类型，不会按名字回退（by-name fallback）
 
@@ -344,6 +436,11 @@
 
 - 生产代码里不要“依赖 by-name fallback 的侥幸收敛”，优先显式表达依赖关系：`@Qualifier` / `@Primary`
 
+- 现象：多候选下 `@Autowired` 未报错，重构后行为变化
+- 证据链：`DefaultListableBeanFactory#determineAutowireCandidate`（by-name 分支）
+- 修复：显式 `@Qualifier` / `@Primary`，避免隐式 by-name
+- 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
+
 ### 19) 混淆 `ObjectProvider#getIfAvailable()` 与 `getIfUnique()`（以及多候选时的行为）
 
 典型症状：
@@ -364,6 +461,11 @@
 
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#resolveDependency`
+
+- 现象：多候选时 `getIfUnique()` 返回 null / `getIfAvailable()` 行为不符合预期
+- 证据链：`DefaultListableBeanFactory#resolveDependency`
+- 修复：明确语义（唯一性 vs 可用性），必要时显式限定
+- 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
 ### 20) 以为 `@Primary` “覆盖一切”，忽略了更强的限定信号（`@Qualifier` / `@Resource`）
 
@@ -387,6 +489,11 @@
 
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#determineAutowireCandidate`
+
+- 现象：`@Primary` 未生效，最终注入被更强限定覆盖
+- 证据链：`DefaultListableBeanFactory#determineAutowireCandidate`
+- 修复：明确限定规则优先级；避免混用导致误判
+- 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
 ## 面试常问（把“坑点”说成标准答案）
 

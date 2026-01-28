@@ -506,7 +506,7 @@
   - 针对“1. 是什么：BeanFactory 在 Spring 体系里的位置”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansBeanFactoryApiLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 49. [ ] 第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”
+### 49. [√] 第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md`
 - 现状速记：关键锚点：`AotServices#factories` / `AotServices.Loader#load` / `ApplicationContext#refresh`；配套 Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
@@ -517,7 +517,7 @@
   - 针对“1. 结论先行：AOT/Native 改变了什么？”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansAotFactoriesLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 50. [ ] 41. RuntimeHints 入门：把构建期契约跑通
+### 50. [√] 41. RuntimeHints 入门：把构建期契约跑通
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
 - 现状速记：关键锚点：`Class#getDeclaredMethods` / `ClassLoader#getResource` / `Constructor#newInstance`；配套 Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
@@ -528,7 +528,7 @@
   - 针对“机制主线：把“运行期能力需求”前置成“构建期契约””补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansAotRuntimeHintsLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 51. [ ] 42. XML → BeanDefinitionReader：定义层解析与错误分型
+### 51. [√] 42. XML → BeanDefinitionReader：定义层解析与错误分型
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `BeanDefinitionParserDelegate#parseBeanDefinitionElement`；配套 Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
@@ -538,7 +538,7 @@
   - 针对“1. 结论先行：XML 的价值不在“写法”，而在“链路””补细：把该解析分支的关键对象（reader/parser/delegate）与关键数据结构补齐。
   - 补充可复现闭环：以 `SpringCoreBeansXmlBeanDefinitionReaderLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 52. [ ] 43. 容器外对象注入：AutowireCapableBeanFactory
+### 52. [√] 43. 容器外对象注入：AutowireCapableBeanFactory
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#initializeBean` / `AbstractAutowireCapableBeanFactory#populateBean`；配套 Lab：`SpringCoreBeansAutowireCapableBeanFactoryLabTest`
@@ -549,7 +549,7 @@
   - 针对“1. 结论先行：注入 ≠ 生命周期托管 ≠ 代理替换”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansAutowireCapableBeanFactoryLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 53. [ ] 44. SpEL 与 `@Value("#{...}")`：表达式解析链路
+### 53. [√] 44. SpEL 与 `@Value("#{...}")`：表达式解析链路
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#resolveEmbeddedValue` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties` / `BeanFactory#resolveEmbeddedValue`；配套 Lab：`SpringCoreBeansSpelValueLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
@@ -560,7 +560,7 @@
   - 针对“1. 先跑 Lab：把“链路拆分”固定成断言”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansSpelValueLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 54. [ ] 45. 自定义 Qualifier：meta-annotation 与候选收敛
+### 54. [√] 45. 自定义 Qualifier：meta-annotation 与候选收敛
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md`
 - 现状速记：关键锚点：`AutowireCandidateResolver#isAutowireCandidate` / `DefaultListableBeanFactory#determineAutowireCandidate` / `DefaultListableBeanFactory#findAutowireCandidates`；配套 Lab：`SpringCoreBeansCustomQualifierLabTest`
@@ -571,7 +571,7 @@
   - 针对“1. 结论先行：自定义 Qualifier 的本质”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansCustomQualifierLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 55. [ ] 46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
+### 55. [√] 46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/46-xml-namespace-extension.md`
 - 现状速记：关键锚点：`BeanDefinitionParser#parse` / `BeanDefinitionParserDelegate#parseCustomElement` / `DefaultBeanDefinitionDocumentReader#parseBeanDefinitions`；配套 Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
@@ -581,7 +581,7 @@
   - 针对“1. 是什么：namespace 扩展解决的是什么问题？”补细：把该解析分支的关键对象（reader/parser/delegate）与关键数据结构补齐。
   - 补充可复现闭环：以 `SpringCoreBeansXmlNamespaceExtensionLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 56. [ ] 47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy
+### 56. [√] 47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/47-beandefinitionreader-other-inputs-properties-groovy.md`
 - 现状速记：关键锚点：`AbstractBeanDefinitionReader#loadBeanDefinitions` / `DefaultListableBeanFactory#registerBeanDefinition` / `GroovyBeanDefinitionReader#loadBeanDefinitions`；配套 Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
@@ -591,7 +591,7 @@
   - 针对“1. 是什么：为什么要有 BeanDefinitionReader 家族？”补细：把该解析分支的关键对象（reader/parser/delegate）与关键数据结构补齐。
   - 补充可复现闭环：以 `SpringCoreBeansGroovyBeanDefinitionReaderLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 57. [ ] 48. 方法注入（Method Injection）：replaced-method / MethodReplacer
+### 57. [√] 48. 方法注入（Method Injection）：replaced-method / MethodReplacer
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/48-method-injection-replaced-method.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#createBeanInstance` / `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection` / `AbstractBeanDefinition#getMethodOverrides`；配套 Lab：`SpringCoreBeansReplacedMethodLabTest`
@@ -602,7 +602,7 @@
   - 针对“1. 是什么：它解决什么问题？不解决什么问题？”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansReplacedMethodLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 58. [ ] 49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
+### 58. [√] 49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/49-built-in-factorybeans-gallery.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#getObjectForBeanInstance` / `BeanFactoryUtils#isFactoryDereference`；配套 Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
@@ -613,7 +613,7 @@
   - 针对“1. 是什么：内置 FactoryBean 解决的是什么问题？”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
   - 补充可复现闭环：以 `SpringCoreBeansBuiltInFactoryBeansLabTest` 为主入口，把本章关键结论各自绑定到一个可断言场景。
 
-### 59. [ ] 50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象
+### 59. [√] 50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyPropertyValues` / `AbstractBeanFactory#resolveEmbeddedValue` / `AbstractNestablePropertyAccessor#setPropertyValue`；配套 Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
@@ -624,7 +624,7 @@
   - 补充 conversion pipeline：BeanWrapper/TypeConverterDelegate/ConversionService/PropertyEditor 的选择顺序与排障入口。
   - 补充属性路径解析：nested path、集合/Map 属性写入、auto-grow 的边界与误区。
 
-### 60. [ ] 第 25 章：90. 常见坑清单（建议反复对照）
+### 60. [√] 第 25 章：90. 常见坑清单（建议反复对照）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#populateBean`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest`
@@ -633,7 +633,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansAutowireCandidateSelectionLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 61. [ ] 第 26 章：99. 自测题：你是否真的理解了？
+### 61. [√] 第 26 章：99. 自测题：你是否真的理解了？
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#initializeBean`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
@@ -642,7 +642,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansAutowireCandidateSelectionLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 62. [ ] 91. 术语表（Glossary）
+### 62. [√] 91. 术语表（Glossary）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/91-glossary.md`
 - 现状速记：关键锚点：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#getSingleton`；配套 Lab：`SpringCoreBeansContainerLabTest`
@@ -651,7 +651,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansContainerLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 63. [ ] 92. 知识地图（Knowledge Map）：从现象直达章节/断点/Lab
+### 63. [√] 92. 知识地图（Knowledge Map）：从现象直达章节/断点/Lab
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractBeanFactory#resolveEmbeddedValue` / `CachedIntrospectionResults#forClass`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanDefinitionOverridingLabTest`
@@ -660,7 +660,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansAutowireCandidateSelectionLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 64. [ ] 93. 面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC
+### 64. [√] 93. 面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/93-interview-playbook.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#initializeBean`；配套 Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest`
@@ -669,7 +669,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansAotFactoriesLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 65. [ ] 94. 生产排障清单（Troubleshooting Checklist）：从症状到证据链
+### 65. [√] 94. 生产排障清单（Troubleshooting Checklist）：从症状到证据链
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractBeanFactory#doGetBean`；配套 Lab：`SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest`
@@ -678,7 +678,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansAotRuntimeHintsLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 66. [ ] 95. spring-beans Public API 索引（Spring Framework 6.2.15）
+### 66. [√] 95. spring-beans Public API 索引（Spring Framework 6.2.15）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/95-spring-beans-public-api-index.md`
 - 现状速记：关键锚点：（本章未显式列出）；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansIocBranchMatrixLabTest`
@@ -687,7 +687,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansBreakpointPackLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 67. [ ] 96. spring-beans Public API Gap 清单（按包/机制域分批深化）
+### 67. [√] 96. spring-beans Public API Gap 清单（按包/机制域分批深化）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/96-spring-beans-public-api-gap.md`
 - 现状速记：关键锚点：（本章未显式列出）；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansIocBranchMatrixLabTest`
@@ -696,7 +696,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansBreakpointPackLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 68. [ ] 97. Explore/Debug 用例（可选启用，不影响默认回归）
+### 68. [√] 97. Explore/Debug 用例（可选启用，不影响默认回归）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `CachedIntrospectionResults#acceptClassLoader` / `CachedIntrospectionResults#forClass`；配套 Lab：（本章未显式列出）
@@ -705,7 +705,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐可复现/可断言入口，避免只能口述。
 
-### 69. [ ] 98. Debugger Pack（断点包总入口）
+### 69. [√] 98. Debugger Pack（断点包总入口）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansIocBranchMatrixLabTest`
@@ -714,7 +714,7 @@
   - 补充“误归因对照”：把最常见的错误归因写成可推导的反例（说明为什么错、错在什么分支/阶段）。
   - 补充可运行入口：为关键条目补齐与 `SpringCoreBeansBreakpointPackLabTest` 类似的可复现/可断言入口，避免只能口述。
 
-### 70. [ ] 99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本
+### 70. [√] 99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#populateBean` / `DefaultListableBeanFactory#determineAutowireCandidate`；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansMainlineCallChainLabTest`
@@ -725,6 +725,6 @@
 
 ## 贯穿式支撑任务（每批迭代都要做）
 
-- [ ] 安全与合规自检：确保新增示例/脚本不引入明文密钥，不建议高风险生产操作。
-- [ ] 术语与结论一致性回归：对同一机制的关键结论不自相矛盾（以代码行为为准）。
-- [ ] 可运行回归策略：若本批涉及 Lab/Test 变更，运行 `spring-core-beans` 模块测试并记录结果。
+- [√] 安全与合规自检：确保新增示例/脚本不引入明文密钥，不建议高风险生产操作。
+- [√] 术语与结论一致性回归：对同一机制的关键结论不自相矛盾（以代码行为为准）。
+- [-] 可运行回归策略：若本批涉及 Lab/Test 变更，运行 `spring-core-beans` 模块测试并记录结果。（本批未改测试，未运行）

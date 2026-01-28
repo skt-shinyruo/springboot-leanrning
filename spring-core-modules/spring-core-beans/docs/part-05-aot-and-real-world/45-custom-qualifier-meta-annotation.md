@@ -27,6 +27,13 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：注入点与候选 bean 同时标注自定义 Qualifier  
+**分支**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` 做匹配过滤  
+**结果**：候选集合被缩小 → winner 选择更稳定  
+**断点建议**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
+
 ## 1. 结论先行：自定义 Qualifier 的本质
 
 自定义 Qualifier 的做法通常是：
@@ -46,6 +53,30 @@
 
 - [03. 依赖注入解析：候选收集→候选收敛→最终注入](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 - [33. 候选选择与优先级：@Primary/@Priority/@Order 的边界](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
+
+## DependencyDescriptor 深挖：注入点语义决定“Qualifier 是否生效”
+
+`DependencyDescriptor` 是注入点语义的入口：
+
+- `descriptor.getAnnotations()`：注入点是否存在自定义 Qualifier  
+- `descriptor.getDependencyType()`：候选收集的类型基线  
+- `descriptor.getDependencyName()`：by-name fallback 的隐式输入  
+
+**结论**：Qualifier 不是“改 beanName”，而是“让 resolver 在候选收敛时多一个过滤条件”。
+
+## 依赖解析分支树（简化版）
+
+1) **快捷路径**：Optional/Provider/@Lazy/@Value  
+2) **候选收集**：`findAutowireCandidates`  
+3) **Qualifier 过滤**：`isAutowireCandidate`  
+4) **winner 收敛**：Primary → by-name → Priority  
+5) **失败**：无法唯一 → `NoUniqueBeanDefinitionException`
+
+## 关键变量（断点里只看这些）
+
+- `candidates`：候选集合（过滤前后差异）  
+- `qualifiedName` / `value`：Qualifier 的匹配输入  
+- `dependencyName`：by-name fallback 的关键输入  
 
 - 两个同类型候选（两个实现）
 - 通过自定义 Qualifier 把候选收敛到 1 个

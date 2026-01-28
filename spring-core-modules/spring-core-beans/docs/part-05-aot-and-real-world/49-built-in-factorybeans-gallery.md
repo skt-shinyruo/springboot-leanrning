@@ -35,6 +35,13 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：`getBean` 命中的是 FactoryBean  
+**分支**：默认返回 product；`&` 前缀返回 factory 本体  
+**结果**：product 的缓存语义取决于 `FactoryBean#isSingleton`  
+**断点建议**：`AbstractBeanFactory#getObjectForBeanInstance`
+
 入口测试：
 
 - `SpringCoreBeansBuiltInFactoryBeansLabTest#builtInFactoryBeans_methodInvoking_and_serviceLocator_and_factoryDereference`（& 前缀 + product/factory + 缓存语义）
@@ -121,6 +128,18 @@
 > `isSingleton` 不是 bean scope，它描述的是 product 的缓存语义。
 
 ---
+
+## 3.1 FactoryBean 与代理/循环依赖的交叉边界
+
+当 FactoryBean 的 product 参与 AOP 或循环依赖时，需要额外注意：
+
+- product 可能被 BPP 替换为 proxy（最终暴露对象不一定是原始 product）
+- 如果发生 early reference，**early 形态与最终形态**可能不一致
+
+排障要点：
+
+- 断点 `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`：观察 early 形态  
+- 断点 `applyBeanPostProcessorsAfterInitialization`：观察最终替换  
 
 ### 4.1 `&beanName` 分支（你排障最常用的入口）
 

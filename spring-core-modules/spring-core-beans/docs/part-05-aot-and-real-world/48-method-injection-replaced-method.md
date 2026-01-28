@@ -39,6 +39,13 @@
 - 测试：`SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides`
 - XML：`spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：BeanDefinition 存在 `MethodOverrides`  
+**分支**：实例化走 `instantiateWithMethodInjection`（CGLIB 子类化）  
+**结果**：目标方法被替换为 `MethodReplacer` 的实现  
+**断点建议**：`AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`
+
 ## 1. 是什么：它解决什么问题？不解决什么问题？
 
 它解决的问题：
@@ -64,6 +71,30 @@
 - 目标对象的 class 变成了 CGLIB enhanced class（可用 `Enhancer.isEnhanced` 观察）
 
 ---
+
+## 2.1 与 `@Lookup` 的差异与选型
+
+两者都属于“方法注入”，但机制与场景不同：
+
+- `replaced-method`：**替换方法实现**（完全由 `MethodReplacer` 接管）  
+- `@Lookup`：**方法返回值由容器按需提供**（常用于 prototype 注入）  
+
+选型建议：
+
+- 需要“按调用返回不同 bean” → `@Lookup`  
+- 需要“把方法实现整体替换掉” → `replaced-method`  
+
+## 2.2 AOT/Native 风险与替代
+
+`replaced-method` 依赖 CGLIB 子类化与方法覆写：
+
+- 在 AOT/Native 场景中更脆弱（字节码生成/反射可见性受限）  
+- final 类/方法直接不可用  
+
+替代思路：
+
+- 改为显式策略接口 + 注入实现  
+- 或用 `@Lookup` / `ObjectProvider` 解决动态返回需求  
 
 ## 3. 原理：把现象放回容器主线（它发生在哪个阶段？）
 

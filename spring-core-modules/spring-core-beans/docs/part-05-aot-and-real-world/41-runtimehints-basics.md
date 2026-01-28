@@ -30,6 +30,13 @@
 > **我需要对哪些类型做反射？我需要哪些动态代理？我需要哪些 classpath 资源？**
 > 这些信息必须在构建期提前收集并固化，才能让 native image 在运行期具备等价能力。
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：运行期需要反射/代理/资源访问  
+**分支**：是否通过 `RuntimeHintsRegistrar` 注册能力  
+**结果**：未注册 → native 运行期失败；已注册 → 可被单测断言保证  
+**断点建议**：`RuntimeHintsRegistrar#registerHints`
+
 ## 1. RuntimeHints 是什么？（你要记住的最小集合）
 
 RuntimeHints 不是“配置文件”，它更像是一棵“契约对象树”。最常见的几类：

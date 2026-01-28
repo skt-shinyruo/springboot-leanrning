@@ -32,6 +32,24 @@
 
 ---
 
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：对象不是 Spring 创建的  
+**分支**：是否显式调用 `autowireBean/initializeBean/destroyBean`  
+**结果**：不调用 → 注解/回调不生效；调用 → 只补齐被调用的那一段管道  
+**断点建议**：`AutowireCapableBeanFactory#initializeBean`
+
+## 集成案例（真实项目高频）：第三方回调对象如何“补齐注入”
+
+典型场景：框架回调/监听器由第三方创建，但你希望它能注入 Spring 依赖。
+
+最小实践路径：
+
+1) `autowireBean`：把依赖塞进去  
+2) `initializeBean`：触发 `@PostConstruct` 与 BPP（拿到最终对象）  
+
+> 关键提醒：一定要使用 `initializeBean` 的返回值，否则你可能丢失代理语义。
+
 ## 1. 结论先行：注入 ≠ 生命周期托管 ≠ 代理替换
 
 对容器外对象，你能做到的事情通常分成三层：

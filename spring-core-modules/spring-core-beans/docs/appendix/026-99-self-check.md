@@ -23,6 +23,15 @@
 
 ## 导读
 
+### 统一答题结构（每题至少包含 4 个要素）
+
+- **现象**：你观察到的行为/报错（最好能复现）
+- **证据链**：1 个入口方法 + 2–3 个关键分支/变量
+- **修复**：最小可行动作（配置/代码/调用方式）
+- **验证**：对应 Lab/Test（方法级更佳）
+
+> 本页所有问题都要求你按“现象→证据链→修复→验证”给出可复述答案。
+
 ## 从 Book Matrix 进入（主线最小集合）
 
 - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
@@ -56,6 +65,8 @@
 
 ## 心智模型（对应 01/06）
 
+验证入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
+
 - 你能不能用一句话区分：`BeanDefinition`（定义元数据） vs bean instance（运行时对象）？
 - BFPP/BPP/BDRPP 分别“改的是定义还是实例”？它们在哪个阶段发生？
 - 你能不能复述 `ApplicationContext#refresh()` 的关键阶段（至少说清：什么时候跑 BFPP，什么时候注册/执行 BPP，什么时候开始创建非 lazy singleton）？
@@ -85,6 +96,8 @@
 
 ## 依赖注入（对应 03）
 
+验证入口：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest`
+
 - 当一个接口有两个实现时，`@Autowired` 单注入会发生什么？你会优先用 `@Qualifier` 还是 `@Primary`，为什么？
 - `@Order` 能不能解决单注入歧义？它主要解决什么问题？
 - `@Priority` 能不能作为“默认实现”方案？它与 `@Primary` 的优先级如何？（建议用 Lab 验证，不要靠猜）
@@ -96,6 +109,8 @@
 
 ## Scope 与生命周期（对应 04/05）
 
+验证入口：`SpringCoreBeansLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
+
 - `singleton` 与 `prototype` 的真实语义分别是什么？它们的“创建时机/销毁时机”有什么根本区别？
 - prototype 注入 singleton 后为什么“看起来像单例”？你能给出 2 种正确的解决方式吗？
 - 你能不能写出（或复述）初始化阶段的回调顺序：BPP before-init / `@PostConstruct` / `afterPropertiesSet` / initMethod / BPP after-init？
@@ -105,6 +120,8 @@
 12) 为什么 prototype 的 `@PreDestroy` 常常不会触发？
 
 ## 机制题（对应 07/08/09）
+
+验证入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 
 - 为什么 `@Configuration(proxyBeanMethods=false)` 下，配置类内部 `@Bean` 方法互调可能 new 出额外对象？最推荐的写法是什么？
 - `FactoryBean` 的两条硬规则是什么？（提示：`name` vs `&name`）
@@ -118,6 +135,8 @@
 
 ## H. 值解析与类型转换（对应 34/36）
 
+验证入口：`SpringCoreBeansValuePlaceholderResolutionLabTest` / `SpringCoreBeansTypeConversionLabTest`
+
 - 你能不能说清 `@Value` 的链路：先做 `${...}`/SpEL 解析，再做类型转换？核心断点打在哪里？
 - 你能不能解释“为什么在 BFPP 里把 property value 写成字符串，最后能注入到 `int` 属性里”？这属于 bean 创建的哪个阶段？
 - 你要让字符串能注入为自定义值对象（例如 `UserId`），你会把 Converter 注册在哪里？它怎么被安装进 BeanFactory？
@@ -127,6 +146,8 @@
 
 ## I. 泛型匹配与注入坑（对应 37/29）
 
+验证入口：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
+
 - 你能不能用一句话解释：为什么按 `Handler` 能找到，但按 `Handler<String>` 找不到？
 - `ResolvableType` 在这个问题里扮演什么角色？
 - 为什么“候选是运行时 proxy 实例”时，泛型信息更容易丢失？
@@ -135,6 +156,8 @@
 19) 你会用什么工程策略避免“靠泛型匹配做关键依赖注入”带来的不确定性？
 
 ## J. 候选收敛决策树（对应 33/32/37）
+
+验证入口：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansResourceInjectionLabTest`
 
 > 这一组题专门练“注入失败/注错”的排障能力：你要能把现象落到候选收敛的具体分支上。
 

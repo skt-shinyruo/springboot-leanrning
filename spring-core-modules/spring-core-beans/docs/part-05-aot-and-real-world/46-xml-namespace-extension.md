@@ -30,6 +30,18 @@
 
 配套资源（你可以用来定位/排障）：
 
+- `META-INF/spring.handlers`（namespace URI → Handler）
+- `META-INF/spring.schemas`（XSD URL → 本地资源）
+- 自定义 XSD 文件（classpath 内）
+- 对应的 `NamespaceHandler` / `BeanDefinitionParser` 实现类
+
+### 机制讲透：条件 → 分支 → 结果
+
+**条件**：XML 元素属于自定义 namespace  
+**分支**：`parseCustomElement` → `NamespaceHandlerResolver` → `BeanDefinitionParser`  
+**结果**：生成并注册 `BeanDefinition`，进入统一创建主线  
+**断点建议**：`BeanDefinitionParserDelegate#parseCustomElement`
+
 ---
 
 ## 1. 是什么：namespace 扩展解决的是什么问题？
@@ -89,6 +101,22 @@
 5) `NamespaceHandlerSupport#parse`（handler 分派到具体 parser）
 6) 你自己的 `BeanDefinitionParser#parse`（注册 BeanDefinition）
 7) `DefaultListableBeanFactory#registerBeanDefinition`（最终入库）
+
+---
+
+## 错误分型（快速判断）
+
+你遇到 namespace 相关异常时，优先做三分法：
+
+1) **资源错误**：`spring.schemas` 未命中、XSD 资源找不到  
+2) **解析错误**：XML 结构不合法/namespace 未识别（document 级失败）  
+3) **语义错误**：Parser 解析属性失败/抛异常（element 级失败）  
+
+对应入口：
+
+- 资源：`DefaultNamespaceHandlerResolver#resolve` / `NamespaceHandlerResolver`  
+- 解析：`XmlBeanDefinitionReader#loadBeanDefinitions`  
+- 语义：自定义 `BeanDefinitionParser#parse`  
 
 ---
 
