@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansInjectionPhaseLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“注入发生在哪一步”的证据链：构造器注入 vs 属性填充 vs @PostConstruct。
+    - B（边界反例）：反例：field injection 在构造器不可用导致 NPE；循环依赖更难排；测试隔离更差。
+    - C（排障 SOP）：排障：注入时机误判导致的 bug 如何定位（第一断点与变量）。
+    - D（断点观察）：断点：ConstructorResolver、populateBean、postProcessProperties。
+    - E（面试复述）：面试追问：为什么更推荐构造器注入？给出证据链与工程理由。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解决两个“非常折磨人但非常核心”的问题：

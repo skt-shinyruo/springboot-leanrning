@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“namespace resolution→handler→parser→BeanDefinition”的证据链。
+    - B（边界反例）：反例：spring.handlers 缺失、schemaLocation 错误、parser 抛错的分型。
+    - C（排障 SOP）：排障 SOP：namespace 解析失败如何定位到 handler 加载/资源缺失/解析异常。
+    - D（断点观察）：断点：NamespaceHandlerResolver、handler mapping 加载点、parse 入口。
+    - E（面试复述）：面试追问：XML 扩展机制与注解扩展机制（processor）有何异同？
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解决“遗留项目/三方组件里非常常见，但新手几乎没系统学过”的问题：

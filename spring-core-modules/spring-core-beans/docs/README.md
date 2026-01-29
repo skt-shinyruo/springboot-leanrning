@@ -34,9 +34,27 @@
 
 - 30 分钟快启：`part-00-guide/012-01-quickstart-30min.md`
 - 深挖导读（症状驱动导航）：`part-00-guide/011-00-deep-dive-guide.md`
+- 全章“内容级再加深”策略（A–E 维度，按章节给出补强方向）：`deepening-strategies/README.md`
 - 核心七件套（检查表 + 对应章节/Lab）：`appendix/92-knowledge-map.md`（第 0 节）
 - Debugger Pack（断点包总入口）：`appendix/98-debugger-pack.md`
 - 团队内训讲义（可直接开讲的课时脚本）：`appendix/99-team-training-kit.md`
+
+## 症状驱动导航（快速定位）
+
+> 更系统的“症状 → 章节 → 断点 → Lab”导航见：`part-00-guide/011-00-deep-dive-guide.md`。
+
+| 现象/报错（读者视角） | 直达章节（最短路径） | 备注（先分层再追栈） |
+| --- | --- | --- |
+| `NoSuchBeanDefinitionException` / “@Bean/@Component 好像没生效” | [02. Bean 注册入口](part-01-ioc-container/02-bean-registration.md)、[12. 注解为何生效（bootstrap）](part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、[10. Boot 自动装配影响链路](part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) | 优先判定“定义层有没有注册 BeanDefinition” |
+| `NoUniqueBeanDefinitionException` / 多实现注入歧义 | [03. 依赖注入解析](part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择 vs 顺序](part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) | 收敛：`@Primary/@Qualifier/@Priority` |
+| “循环依赖”报错 / `BeanCurrentlyInCreationException` | [09. 循环依赖（现象与规避）](part-01-ioc-container/09-circular-dependencies.md)、[16. early reference 与循环依赖](part-03-container-internals/16-early-reference-and-circular.md) | 先区分 constructor vs setter；再看 early reference 参与者 |
+| lazy bean 启动期被拉起 / “明明 @Lazy 还被提前创建” | [19. dependsOn](part-04-wiring-and-boundaries/19-depends-on.md)、[18. Lazy 语义](part-04-wiring-and-boundaries/023-18-lazy-semantics.md) | `dependsOn` 会显式 `getBean(dep)`，可强制拉起 lazy-init |
+| “拿到的是 proxy” / AOP 行为异常 / self-invocation | [31. 代理产生阶段（BPP 替换）](part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)、[15. 实例化前短路（pre）](part-03-container-internals/15-pre-instantiation-short-circuit.md) | 先定位是 pre/early/after-init 哪个窗口替换对象 |
+| `@Value(\"${...}\")` 解析失败 / 值不符合预期 | [34. 占位符解析（strict vs non-strict）](part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)、[38. Environment/PropertySource](part-04-wiring-and-boundaries/38-environment-and-propertysource.md) | 关注 PropertySource precedence 与 placeholder resolver |
+| `@Resource` 注入错对象 / “为什么像按名称找？” | [32. @Resource name-first](part-04-wiring-and-boundaries/32-resource-injection-name-first.md)、[22. beanName/alias](part-04-wiring-and-boundaries/22-bean-names-and-aliases.md) | name-first + alias 会共同影响最终命中 |
+| FactoryBean 搞混 `&` / “按类型发现/注入失效” | [08. FactoryBean（基础）](part-01-ioc-container/08-factorybean.md)、[23. FactoryBean 深潜](part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)、[29. FactoryBean 边界](part-04-wiring-and-boundaries/29-factorybean-edge-cases.md) | 关键点：`getObjectType/isSingleton` 对 type matching 的影响 |
+| 后处理器顺序导致“偶发不生效”/手工注册 BPP 陷阱 | [14. Ordering](part-03-container-internals/14-post-processor-ordering.md)、[25. 手工添加 BPP](part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md) | 先看 `PriorityOrdered/Ordered`，再看是否绕过默认注册流程 |
+| AOT/Native 运行期缺失反射/代理/资源 | [40. AOT 总览](part-05-aot-and-real-world/024-40-aot-and-native-overview.md)、[41. RuntimeHints](part-05-aot-and-real-world/41-runtimehints-basics.md) | 用 registrar + 单测把“构建期契约”钉死 |
 
 ## 目录
 
@@ -129,11 +147,21 @@
 - [97. Explore/Debug 用例（可选启用，不影响默认回归）](appendix/97-explore-debug-tests.md)
 - [Debugger Pack（断点包总入口）](appendix/98-debugger-pack.md)
 - [99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本](appendix/99-team-training-kit.md)
+- [内容级再加深策略（按章节 A–E）](deepening-strategies/README.md)
 
 ## 自检要点
 - 是否能够已经能按“主线 → 分支 → 证据链”的方式学习：先跑 Lab，再带着断点读章节？
 - 是否能够能把一个现象先分层：定义阶段（BeanDefinition/processor） vs 创建阶段（getBean/doCreateBean/BPP）？
 - 是否能够能在 1 分钟内从目录定位到：对应章节 + 对应 LabTest + 建议断点入口？
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：为症状导航表补“证据链入口方法提示”（例如依赖解析从 `doResolveDependency` 进，代理替换从 `applyBeanPostProcessorsAfterInitialization` 进）。
+    - B（边界反例）：为每个症状补 1 个“最常见误诊反例”（例如把 `Circular depends-on relationship` 当三级缓存循环依赖）。
+    - C（排障 SOP）：把常见异常按“定义层失败/实例层失败/运行期行为异常”分型，并提供第一断点入口。
+    - D（断点观察）：与 Debugger Pack/断点地图互链：目录页告诉读者何时用“断点地图（主线）”，何时用“Debugger Pack（专题）”。
+    - E（面试复述）：把面试题库与章节绑定：提供“面试题 → 章节 → Lab”的跳转入口，帮助读者用证据链回答。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

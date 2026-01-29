@@ -235,6 +235,17 @@ ResolvableDependency = **注入时可解析的 type→value 映射**；命中在
 
 - 本章完成后：需要把三件事分清楚：**能注入**、**能 getBean**、**会不会走生命周期/代理**。
 - 下一章将进入父子容器：同一个 type 在不同 `ApplicationContext` 下为何“可见性不同、覆盖规则不同”。
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“命中在 doResolveDependency 之前”的证据链，并对比 bean candidates 分支。
+    - B（边界反例）：反例：滥用导致候选收敛被绕过、与 @Qualifier 选择语义冲突。
+    - C（排障 SOP）：排障：为什么能注入但 getBeansOfType 查不到？如何证明不是 BeanDefinition。
+    - D（断点观察）：断点：resolvableDependencies 命中、AutowireUtils 解包、Aware 回调对照。
+    - E（面试复述）：面试追问：它与 *Aware 的边界与适用场景。
+<!-- AE-DEEPENING:END -->
+
+<!-- BOOKIFY:START -->
 
 ### 对应 Lab/Test
 
@@ -242,3 +253,5 @@ ResolvableDependency = **注入时可解析的 type→value 映射**；命中在
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
 
 上一章：[19. dependsOn：强制初始化顺序（即使没有显式依赖）](19-depends-on.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[21. 父子 ApplicationContext：可见性与覆盖边界](21-context-hierarchy.md)
+
+<!-- BOOKIFY:END -->

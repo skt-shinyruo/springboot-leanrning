@@ -19,6 +19,9 @@
 - Branch Matrix（Proxy）：`SpringCoreAopProxyBranchMatrixLabTest`
 - Branch Matrix（AutoProxy）：`SpringCoreAopAutoProxyBranchMatrixLabTest`
 - Branch Matrix（Stacking）：`SpringCoreAopStackingBranchMatrixLabTest`
+- proceed 嵌套（调用链顺序可断言）：`SpringCoreAopProceedNestingLabTest`
+- 真实基础设施叠加（Tx/Cache/Security）：`SpringCoreAopRealWorldStackingLabTest`
+- 并发/性能边界（ThreadLocal 不串线）：`SpringCoreAopProxyConcurrencyLabTest`
 
 ## 断点：代理创建（决定“有没有 AOP”）
 
@@ -30,11 +33,16 @@
 - `org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept`
 - `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
 
+## 断点：链条组装（决定“这次调用挂了哪些拦截器”）
+
+- `org.springframework.aop.framework.DefaultAdvisorChainFactory#getInterceptorsAndDynamicInterceptionAdvice`
+
 ## Watchpoints（建议）
 
 - `AopUtils.isAopProxy(bean)` / `AopUtils.isCglibProxy(bean)`
 - `Advised#getAdvisors()`（advisor 列表与顺序）
 - 调用栈是否进入 `ReflectiveMethodInvocation#proceed`（否则没有走 AOP）
+- `interceptorsAndDynamicMethodMatchers` / `currentInterceptorIndex`（链条顺序与执行推进）
 
 ## 排障入口（Playbook）
 
@@ -51,4 +59,3 @@
 上一章：[part-00-guide/00-deep-dive-guide.md](029-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](029-04-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
-

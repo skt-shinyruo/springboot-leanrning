@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansPreInstantiationLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“短路跳过了什么/仍会做什么”的证据链（构造器/populate/initialize/销毁等）。
+    - B（边界反例）：反例：短路导致字段注入没发生、生命周期回调不符合预期、代理链难以追踪。
+    - C（排障 SOP）：排障：为什么构造器没执行但 bean 仍存在？第一断点如何定位到短路发生点。
+    - D（断点观察）：断点：resolveBeforeInstantiation、postProcessBeforeInstantiation 关键入口与 watch list。
+    - E（面试复述）：面试追问：短路与 after-init proxy 有何区别？如何用证据链证明。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章讲一个“非常像隐式行为”的容器机制：

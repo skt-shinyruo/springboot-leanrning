@@ -22,6 +22,15 @@
       - `containsLocalBean_differsFromContainsBean_inChildContext`
       - `typeLookupIncludingAncestors_canBecomeAmbiguous_whenParentAndChildBothProvideSameType`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“可见性规则与搜索顺序”的方法级证据链（child→parent）。
+    - B（边界反例）：反例：同名 bean 覆盖、同 type 不可见、event/环境继承误判。
+    - C（排障 SOP）：排障：多 context 场景 bean 不可见/注入到错误上下文的 SOP。
+    - D（断点观察）：断点：父子容器查找、registerSingleton/registerBeanDefinition 的覆盖点。
+    - E（面试复述）：面试追问：为什么说 ApplicationContext 在 BeanFactory 之上增加设施？与 hierarchy 如何关联。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 当读者进入真实工程或复杂测试环境，很容易遇到“多个 ApplicationContext”。

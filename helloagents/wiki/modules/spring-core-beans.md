@@ -8,6 +8,9 @@
 
 - **Responsibility:** 提供 Bean 机制的系统文档与可运行 Labs/Exercises，用于建立源码级心智模型与排障能力。
 - **Docs Reading:** 推荐从 `spring-core-modules/spring-core-beans/docs/README.md` 开始（书本目录 + Part 划分）；主线可按 Part 顺读，每章顶部提供“上一章｜目录｜下一章”导航，降低章节切换成本。
+- **内容级再加深（A–E 维度策略清单）:** `spring-core-modules/spring-core-beans/docs/deepening-strategies/README.md`（按 Part/章节给出“证据链/反例/排障/断点/面试复述”补强方向）
+- **内容级再加深（已写入正文）:** 各章节已内嵌 `AE-DEEPENING` 提示块（位于 `## 机制主线` 前），用于把 A–E 维度的“下一步怎么深挖”直接落到正文阅读路径里
+- **症状快速定位（目录页入口）:** `spring-core-modules/spring-core-beans/docs/README.md`（新增“症状驱动导航（快速定位）”，用于从现象直达章节与证据链入口）
 - **Start Here（30 分钟快启）:** 先跑 3 个最小实验建立容器主线直觉，再进入深潜：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`。
 - **Auto-Config 顺序（Boot/容器交汇点）:** `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
 - **断点地图（可复用清单）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
@@ -34,7 +37,7 @@
 - **Docs 教程一致性修复（2026-01-26）:** 完成 beans 模块 docs 全章“教程化”补齐：统一补齐排障分流/常见坑/面试常问/一句话自检，清理空标题与层级问题；并将 `refresh() → doCreateBean()` 主线章书本化（导读/实验入口/分支决策表/BOOKIFY 导航）。
 - **Highlights:** 在补齐类型转换/泛型匹配章节与 Labs 闭环的基础上，进一步统一 docs 的“上一章｜目录｜下一章”导航与“复现入口（可运行）”块；新增 JSR-330 `@Inject`/`Provider<T>` 对照 Lab，并增强 testsupport dumper 让排障输出更结构化；补齐 3 类易翻车边界机制 Labs（编程式注册差异 / allowRawInjectionDespiteWrapping / prototype 销毁语义），并将入口落位到 docs/04、docs/05、docs/16、docs/25；新增 Part 05（AOT/RuntimeHints/XML/容器外对象/SpEL/自定义 Qualifier）与对应 Labs，并新增面试复述模板与生产排障清单用于体系化复盘；同时为 Exercises 补齐对应 Solution（默认参与回归），并在 docs/README 收敛“章节↔Lab↔Exercise↔Solution”对照表与运行建议，补强 ImportSelector 等新手高频卡点的“源码主线/断点/观察点”；进一步补齐 Spring Framework `spring-beans` 体系的 5 组“真实世界常见但容易缺失”的机制闭环（docs 46–50：XML namespace 扩展 / Properties+Groovy Reader / replaced-method 方法注入 / 内置 FactoryBean / PropertyEditor+值解析），并新增对应 Labs（默认参与回归）；补齐 Spring Framework `BeanFactory API` 与 `Environment Abstraction` 两类常用但容易“只会用不会解释”的主题：新增 docs/38–39 与对应可断言 Labs（默认参与回归）；新增 spring-beans Public API 索引（docs Appendix 95/96）用于“按类型检索/可审计”，并补齐 aot.factories/AotServices 与 ServiceLoader*FactoryBean 的闭环，新增 Explore/Debug 用例（docs Appendix 97，显式开关启用，不影响默认回归）；并补齐 `org.springframework.beans.support`（ArgumentConvertingMethodInvoker/ResourceEditorRegistrar/PropertyComparator/PagedListHolder/SortDefinition）闭环，新增可运行 Lab，并将 Appendix 96 Gap 归零；本次进一步把 Part 05 与 Appendix（90/99/91–95）从“要点”升级为“机制讲透 + 方法级调用链 + 排障/面试复述模板”，并补齐 RuntimeHints/AOT/SpEL/FactoryBean/值解析等章节的可复现闭环；并对 `spring-core-beans/docs` 与 `spring-core-beans/README.md` 全量完成书面化改写（去第二人称/俚语/口语化措辞），提升“可复述/可归档/可交付”的文本风格一致性。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-28
+- **Last Updated:** 2026-01-29
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
@@ -73,6 +76,9 @@
 ## Specifications
 
 ### Requirement: 深化 spring-core-beans 文档与 Labs（源码级）
+
+- 当前方案包（逐章补强策略）：`helloagents/plan/202601291033_spring-core-beans-docs-deepening/`
+- 状态：已完成 Solution Design（2026-01-29），待进入 ~exec 执行阶段把建议落到 `spring-core-modules/spring-core-beans/docs/` 与对应 Lab/Test
 **Module:** spring-core-beans
 将 `spring-core-beans` 文档从“概念解释”升级为“源码级可验证”：每个关键主题都能通过可运行的测试实验复现，并在文档中给出断点入口与观察点。
 

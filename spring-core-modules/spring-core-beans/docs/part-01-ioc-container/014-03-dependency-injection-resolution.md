@@ -411,6 +411,15 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 1) 当候选不止一个时，Spring 的“候选收集→候选收敛→最终注入”主线分别在哪个方法里发生？
 2) 单依赖注入里 `@Order` 为什么不生效？真正决定单依赖选择的是哪些信号？
 3) 如何在 `doResolveDependency` 里用 3 个变量解释“为什么注入的是它/为什么失败”？
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“候选收集→收敛→最终选择”的算法骨架（最短调用链 + 关键 if/return）。
+    - B（边界反例）：反例：@Order 不能选单候选、by-name fallback 的边界、泛型信息丢失导致匹配失败。
+    - C（排障 SOP）：“注入失败分型”与 SOP：NoSuch/NoUnique/UnsatisfiedDependency/类型不匹配，各自第一断点入口与观察点。
+    - D（断点观察）：“依赖解析断点组”：`doResolveDependency`、候选收集、candidate 决策点、value 注入分支。
+    - E（面试复述）：“面试追问”：@Primary/@Qualifier/@Priority 谁更强？为什么？如何证明。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

@@ -60,9 +60,9 @@ AutoProxyCreator 之所以“强”，不是因为它“会代理”，而是因
   - `BeanPostProcessor#postProcessAfterInitialization`
 
 > 对应 beans 深挖章节：
-> - `docs/beans/spring-core-beans/part-03-container-internals/15-pre-instantiation-short-circuit.md`
-> - `docs/beans/spring-core-beans/part-03-container-internals/16-early-reference-and-circular.md`
-> - `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+> - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md`
+> - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+> - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
 
 ---
 

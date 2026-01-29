@@ -21,6 +21,8 @@
 | 自调用边界 | 同 bean 内部调用 | advice 不生效（绕过 proxy） | `SpringCoreAopLabTest` | 调用栈不进 `CglibAopProxy` |
 | ExposeProxy | 开启 exposeProxy | 允许从 AopContext 获取 proxy 再调用 | `SpringCoreAopExposeProxyLabTest` | `AopContext.currentProxy()` |
 | 多层代理顺序 | 多个 advisor/嵌套 proceed | order 影响执行顺序 | `SpringCoreAopRealWorldStackingLabTest` | advisors 顺序 / proceed 链 |
+| this vs target 命中差异 | JDK vs CGLIB 代理类型不同 | JDK 下 `this(实现类)` 不命中、`target(实现类)` 命中 | `SpringCoreAopPointcutExpressionsLabTest` | `AopUtils.isJdkDynamicProxy` / pointcut 表达式 |
+| 并发上下文隔离 | 同一 proxy 被多线程并发调用 | ThreadLocal 状态不跨线程串线 | `SpringCoreAopProxyConcurrencyLabTest` | 线程名 / ThreadLocal 值 / `proceed()` |
 
 ## 推荐运行命令
 
@@ -41,4 +43,3 @@
 上一章：[part-00-guide/02-breakpoint-map.md](029-02-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-proxy-fundamentals/01-aop-proxy-mental-model.md](../part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
 
 <!-- BOOKIFY:END -->
-

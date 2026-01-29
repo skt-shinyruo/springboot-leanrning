@@ -18,6 +18,15 @@
     - Lab：`SpringCoreBeansSmartLifecycleLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartLifecycleLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）： phase 排序算法的证据链与关键列表快照。
+    - B（边界反例）：反例：autoStartup 与 isRunning 误判、stop 未执行导致资源泄漏。
+    - C（排障 SOP）：排障：为什么组件没启动/没停止？如何从 phase/依赖/状态收敛。
+    - D（断点观察）：断点：LifecycleProcessor、start/stop 调度点与观察变量。
+    - E（面试复述）：面试追问：SmartLifecycle 与普通 init/destroy 的边界与适用场景。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 `SmartLifecycle` 是容器提供的“启动/停止阶段”扩展点。

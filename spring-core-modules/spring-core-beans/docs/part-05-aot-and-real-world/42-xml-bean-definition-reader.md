@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“Resource→Reader→registerBeanDefinition”的最短证据链与关键入口。
+    - B（边界反例）：反例：schema 不匹配/namespace 扩展缺失/属性类型转换失败的误判对照。
+    - C（排障 SOP）：排障 SOP：把 BeanDefinitionStoreException 分型到解析/注册/转换哪个阶段。
+    - D（断点观察）：断点：loadBeanDefinitions、doRegisterBeanDefinitions、注册入口。
+    - E（面试复述）：面试追问：XML 解析与注解解析最终为什么都落到 BeanDefinition？如何证明。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解决一个“读者不一定天天写，但读者一定会遇到”的问题：

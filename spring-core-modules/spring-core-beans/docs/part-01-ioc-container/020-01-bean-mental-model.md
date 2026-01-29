@@ -167,6 +167,15 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 - 本章把 Bean 的最小心智模型固定成“四个对象”：BeanDefinition / merged RootBeanDefinition / raw instance / exposed object。
 - 下一章开始进入 Boot 的自动装配：可以观察到“定义层”的复杂度显著上升，但排障方法论不变（先分层，再证据链）。
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：把 pre/early/after-init 三个替换窗口做成“证据链对照表”，并给每类窗口的关键入口方法。
+    - B（边界反例）：反例：early reference 与最终代理不一致导致的行为差异；FactoryBean 造成的“看起来类型不对”。
+    - C（排障 SOP）：排障：看到异常先分层到定义/实例/最终对象，并给第一断点入口。
+    - D（断点观察）：“如何快速识别 proxy/wrapper”：调试器判别方法与代理链定位。
+    - E（面试复述）：面试追问：BeanFactory vs ApplicationContext 的差异如何落到 refresh 证据链。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

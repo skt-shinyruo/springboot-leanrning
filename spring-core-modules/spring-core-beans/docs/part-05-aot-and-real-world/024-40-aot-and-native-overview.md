@@ -29,6 +29,15 @@
     - Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotFactoriesLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“失败分型→缺口类型”的证据链：反射/代理/资源/序列化分别对应什么提示。
+    - B（边界反例）：反例：盲目全量放开反射的风险（安全/体积/可维护性）。
+    - C（排障 SOP）：排障 SOP：如何从 native 报错快速归类并定位到要补的 hints。
+    - D（断点观察）：观察点：RuntimeHints 的类别与注册入口如何看见。
+    - E（面试复述）：面试追问：为什么 RuntimeHints 是“可测试的契约”？如何证明。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章不是教读者“如何构建 native image”，而是回答一个更关键的问题：

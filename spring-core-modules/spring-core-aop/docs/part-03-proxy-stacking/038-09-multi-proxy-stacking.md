@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 37 章：08. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](../part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 39 章：10 real world stacking playbook](039-10-real-world-stacking-playbook.md)
+上一章：[第 42 章：11. 并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）](../part-02-perf-concurrency/042-11-proxy-concurrency-perf.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 39 章：10 real world stacking playbook](039-10-real-world-stacking-playbook.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -38,6 +38,10 @@
 - 安全（方法级鉴权）
 
 这一章的目标是让你能做到：
+
+- 能区分两种叠加形态：**单 proxy 多 advisors** vs **多层 proxy（套娃）**
+- 能区分两套顺序系统：**BPP 顺序（容器阶段）** vs **Advisor/Interceptor 顺序（调用阶段）**
+- 能在调试器里直接把“叠加实体”看见：`Advised#getAdvisors()` + 拦截器链组装/执行断点
 
 ---
 
@@ -84,10 +88,13 @@
 
 相关入口（容器时间线）：
 
+- `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（BPP 注册与排序）
+- `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（按顺序应用 BPP）
+
 对应 beans 深挖：
 
-- `docs/beans/spring-core-beans/part-03-container-internals/14-post-processor-ordering.md`
-- `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+- `spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
+- `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
 
 ### 2.2 顺序 2：Advisor/Interceptor 顺序（调用阶段）
 
@@ -127,6 +134,10 @@ AutoProxyCreator 主线详见：[07 - AutoProxyCreator 主线](../part-02-autopr
 
 ---
 
+## 4. Debug 方法：怎么把链条“看见”
+
+> 目标：把“叠加”从概念变成可观察的对象（proxy/advisors/chain），并且能定位“顺序怪”的归属。
+
 ### 4.1 第一步：确认你拿到的是不是 proxy
 
 - `AopUtils.isAopProxy(bean)`
@@ -162,13 +173,19 @@ AutoProxyCreator 主线详见：[07 - AutoProxyCreator 主线](../part-02-autopr
 
 ---
 
-1) **单 proxy 多 advisors**：同一个 proxy 上挂多个“模拟 Tx/Cache/Security” 的 advisors，顺序与 proceed 嵌套可断言  
-2) **多层 proxy**：显式再包一层 proxy，演示 nested proxy 的识别与拆解
+## 5. Labs：把“叠加”做成可断言结论
 
-如果你要进一步把“模拟 advisors”升级为“真实基础设施”：
+本模块提供两个层次的验证入口：
 
-- 容器阶段：`AbstractAutoProxyCreator#wrapIfNecessary/createProxy`
-- 调用阶段：`ReflectiveMethodInvocation#proceed`
+1) **单 proxy 多 advisors（主流形态）**：同一个 proxy 上挂多个“模拟 Tx/Cache/Security” 的 advisors，顺序与 proceed 嵌套可断言
+   - `SpringCoreAopMultiProxyStackingLabTest#multiple_advisors_are_applied_within_a_single_proxy_by_default`
+2) **多层 proxy（套娃）**：显式再包一层 proxy，演示 nested proxy 的识别与拆解
+   - `SpringCoreAopMultiProxyStackingLabTest#nested_proxy_can_wrap_an_existing_proxy_and_is_detectable_via_target_introspection`
+
+如果你要进一步把“模拟 advisors”升级为“真实基础设施”（`@Transactional/@Cacheable/@PreAuthorize`），建议直接跑：
+
+- `SpringCoreAopRealWorldStackingLabTest`（Tx/Cache/Method Security + 自定义 AOP 同链路可观察/可断言）
+- 配套 playbook：见 [10. real-world-stacking-playbook](039-10-real-world-stacking-playbook.md)
 
 ---
 
@@ -208,23 +225,6 @@ AutoProxyCreator 主线详见：[07 - AutoProxyCreator 主线](../part-02-autopr
 
 这种形态如果你没意识到，很容易导致调试误判（比如你在某一层看不到期望的 advisors）。
 
-## 4. Debug 方法：怎么把链条“看见”
-
-断点：
-
-## 5. Labs：把“叠加”做成可断言结论
-
-本模块提供一个专门的 Lab：
-
-- `SpringCoreAopMultiProxyStackingLabTest`
-
-它会同时验证：
-
-- 真实叠加集成 Lab：`SpringCoreAopRealWorldStackingLabTest`
-- 配套 Debug Playbook：见 [10. real-world-stacking-playbook](039-10-real-world-stacking-playbook.md)
-
-建议断点配合：
-
 ## 常见坑与边界
 
 ### 坑点 1：把“顺序问题”一股脑归到 `@Order`，忽略了 BPP 顺序与 advisor 顺序是两套系统
@@ -249,6 +249,6 @@ AutoProxyCreator 主线详见：[07 - AutoProxyCreator 主线](../part-02-autopr
 
 - Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopRealWorldStackingLabTest`
 
-上一章：[08-pointcut-expression-system](../part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[10-real-world-stacking-playbook](039-10-real-world-stacking-playbook.md)
+上一章：[11-proxy-concurrency-perf](../part-02-perf-concurrency/042-11-proxy-concurrency-perf.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[10-real-world-stacking-playbook](039-10-real-world-stacking-playbook.md)
 
 <!-- BOOKIFY:END -->

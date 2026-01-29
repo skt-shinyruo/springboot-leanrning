@@ -105,7 +105,7 @@ mvn -pl :spring-boot-web-mvc test
 | 表单校验回显（BindingResult） | [docs/part-02/02](docs/part-02-view-mvc/02-form-binding-validation-prg.md) | `MvcUserController` + `user-form.html` | 为什么校验失败不会抛异常，而是回到表单页 |
 | 错误页与 Accept | [docs/part-02/03](docs/part-02-view-mvc/03-error-pages-and-content-negotiation.md) | `templates/error/*` + `MvcExceptionHandler` | 为什么同一个错误在浏览器和脚本里长得不一样 |
 
-> 想从机制层理解“校验为什么有时不生效”，可进一步阅读 `docs/validation/spring-core-validation/part-01-validation-core/03-method-validation-proxy.md`（方法参数校验与代理）。
+> 想从机制层理解“校验为什么有时不生效”，可进一步阅读 `spring-core-modules/spring-core-validation/docs/part-01-validation-core/160-03-method-validation-proxy.md`（方法参数校验与代理）。
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

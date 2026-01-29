@@ -29,6 +29,15 @@
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansResolvableDependencyLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：把“分层”再下沉为“第一断点入口选择器”（定义层/实例层/最终对象）并给最短调用链。
+    - B（边界反例）：“新手调试反例”：断点不命中/代理层过深/过早 getBean 导致现象偏移等。
+    - C（排障 SOP）：把现有症状导航升级为“3 步 SOP”：症状→分层→第一断点（并给 watch list）。
+    - D（断点观察）：“断点稳定性注记”：哪些断点跨版本稳定，哪些可能漂移。
+    - E（面试复述）：“复述训练法”：把每章的“自检要点”转成面试追问的回答框架。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 若觉得 [01. Bean 心智模型](../part-01-ioc-container/020-01-bean-mental-model.md) 这类“概念章”看完仍然不过瘾，通常不是因为它讲错了，而是因为读者已经进入下一阶段：

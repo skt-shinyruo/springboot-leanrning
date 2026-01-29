@@ -17,6 +17,15 @@
     - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“主线分层索引 + 最短调用链”：让读者能快速定位到 instantiate/populate/initialize/代理替换/缓存窗口。
+    - B（边界反例）：反例：每个关键分支给 1 个失败/偏差案例（FactoryBean、@Lazy 注入点、dependsOn、parent、prototype guard）。
+    - C（排障 SOP）：“现象→阶段→关键方法→必看变量→Lab”映射的覆盖率，确保常见症状都能被快速定位。
+    - D（断点观察）：“断点组”与判定标准：不只给断点，还给“看到什么变量意味着走了哪条分支”。
+    - E（面试复述）：“主线复述题”：让读者能用证据链回答“Bean 是怎么变成对象的”。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。

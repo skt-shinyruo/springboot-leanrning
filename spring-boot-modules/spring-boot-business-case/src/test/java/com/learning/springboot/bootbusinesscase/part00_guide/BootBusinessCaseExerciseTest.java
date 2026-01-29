@@ -124,8 +124,8 @@ class BootBusinessCaseExerciseTest {
                         3) 用 `rollbackFor=...`（或等价方式）修改规则，再用测试证明回滚生效。
 
                         建议阅读：
-                        - `docs/tx/spring-core-tx/part-01-transaction-basics/03-rollback-rules.md`
-                        - `docs/tx/spring-core-tx/part-01-transaction-basics/01-transaction-boundary.md`
+                        - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/056-03-rollback-rules.md`
+                        - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/054-01-transaction-boundary.md`
                         """)
                 .isFalse();
     }
@@ -143,8 +143,8 @@ class BootBusinessCaseExerciseTest {
                         3) 实现一种规避方式（拆分 bean / 注入自身代理 / exposeProxy 等）。
 
                         建议阅读：
-                        - `docs/aop/spring-core-aop/part-01-proxy-fundamentals/03-self-invocation.md`
-                        - `docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md`
+                        - `spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md`
+                        - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md`
                         """)
                 .isFalse();
     }
@@ -162,7 +162,7 @@ class BootBusinessCaseExerciseTest {
                         3) 用测试断言：only rollback 时 AFTER_ROLLBACK 会触发。
 
                         建议阅读：
-                        - `docs/events/spring-core-events/part-02-async-and-transactional/07-transactional-event-listener.md`
+                        - `spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/135-07-transactional-event-listener.md`
                         """)
                 .isFalse();
     }

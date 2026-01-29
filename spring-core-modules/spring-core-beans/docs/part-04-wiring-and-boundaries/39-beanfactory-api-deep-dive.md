@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanFactoryApiLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“接口能力→可观察行为”的证据链：Listable/Configurable 等接口意味着哪些行为窗口。
+    - B（边界反例）：反例：手工 new BeanFactory 时注解不工作/占位符不解析/代理不出现的误判。
+    - C（排障 SOP）：排障：当怀疑容器能力缺失时如何快速确认（processor 是否安装、哪条主线缺环）。
+    - D（断点观察）：断点：手工 bootstrap 的装配点、processor 注册点、注入解析入口。
+    - E（面试复述）：面试追问：BeanFactory vs ApplicationContext 的差异如何落到“能力清单 + 证据链”。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解决一个常见“源码阅读/排障”卡点：

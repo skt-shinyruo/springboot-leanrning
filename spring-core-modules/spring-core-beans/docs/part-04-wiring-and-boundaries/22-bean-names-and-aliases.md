@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansBeanNameAliasLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanNameAliasLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“alias 注册结构与 lookup 路径”的证据链，并对比按类型发现。
+    - B（边界反例）：反例：@Resource 注入错对象、FactoryBean `&` 前缀误判、覆盖策略冲突。
+    - C（排障 SOP）：排障：按名注入/按名获取行为异常时如何定位 alias 与 canonicalName。
+    - D（断点观察）： watch list：aliasMap、canonicalName、beanName 解析入口。
+    - E（面试复述）：面试追问：为什么说“@Resource 更像按名称找”？alias 如何影响它。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 很多人第一次见 alias 都会把它当成“复制一个 bean”。

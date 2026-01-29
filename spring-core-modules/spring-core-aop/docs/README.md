@@ -18,6 +18,7 @@
 - [代理调试](part-01-proxy-fundamentals/035-06-debugging.md)
 - [AutoProxyCreator 主线](part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)
 - [切点表达式系统](part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md)
+- [并发/性能边界：同一 proxy 并发调用（ThreadLocal 不串线）](part-02-perf-concurrency/042-11-proxy-concurrency-perf.md)
 - [多层代理叠加](part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
 - [叠加排障手册](part-03-proxy-stacking/039-10-real-world-stacking-playbook.md)
 
@@ -26,6 +27,7 @@
 - 断点地图（排障优先）：[029-02-breakpoint-map.md](part-00-guide/029-02-breakpoint-map.md)
 - AOP 调用链（源码主线锚点）：[029-01-aop-invocation-call-chain.md](part-00-guide/029-01-aop-invocation-call-chain.md)
 - 关键分支矩阵（If/Then 收敛）：[029-04-branch-decision-matrix.md](part-00-guide/029-04-branch-decision-matrix.md)
+- 并发/性能边界（ThreadLocal 不串线）：[042-11-proxy-concurrency-perf.md](part-02-perf-concurrency/042-11-proxy-concurrency-perf.md)
 - 排障 playbook：[040-90-common-pitfalls.md](appendix/040-90-common-pitfalls.md)
 - 自检清单：[041-99-self-check.md](appendix/041-99-self-check.md)
 - 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`

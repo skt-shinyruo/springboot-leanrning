@@ -15,6 +15,15 @@
 
     - Lab：`SpringCoreBeansContainerLabTest`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：为关键术语补“对应证据链入口方法”，避免术语解释与源码脱节。
+    - B（边界反例）：易混词反例：BeanDefinition vs bean instance vs exposed object；BFPP vs BPP vs BDRPP 等。
+    - C（排障 SOP）：“术语误诊”排障提示：遇到某词汇时如何避免错误联想。
+    - D（断点观察）：为核心术语补“看见它”的断点/观察点。
+    - E（面试复述）：将术语映射到面试题：术语解释必须能给出证据链与反例。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这份术语表的目标不是“背概念”，而是解决两个学习痛点：

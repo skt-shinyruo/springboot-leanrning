@@ -266,6 +266,15 @@ addBeanPostProcessor(bpp):
 1) `addBeanPostProcessor` 为什么不会按 Ordered 排序？（它直接改最终 list，绕过 registerBeanPostProcessors 的排序输入）
 2) 怎么判断是“顺序问题”还是“时机问题”？（先看最终 list；再看目标 bean 是否在链完整之前被创建）
 3) `registerSingleton` 为什么容易让人误诊？（它绕开 doCreateBean，因此不会自动注入/BPP/init）
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“绕过默认注册流程导致顺序变化”的证据链与关键列表快照。
+    - B（边界反例）：反例：增强偶发不生效、代理链丢失、@Autowired/@Value 行为偏移。
+    - C（排障 SOP）：排障：当怀疑 BPP 顺序问题时的第一断点入口与关键观察变量。
+    - D（断点观察）：断点：addBeanPostProcessor、registerBeanPostProcessors、排序位置对照。
+    - E（面试复述）：面试追问：为什么强烈不建议业务侧手工注册 BPP？可证明的副作用有哪些。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

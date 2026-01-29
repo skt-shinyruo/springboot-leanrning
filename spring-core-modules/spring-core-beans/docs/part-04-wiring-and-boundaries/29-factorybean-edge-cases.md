@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“type matching 失效”的算法证据链（条件判断/候选收集如何受影响）。
+    - B（边界反例）：反例：按类型注入失效但 getBean(name) 仍可用、条件装配误判。
+    - C（排障 SOP）：排障 SOP：先确认是否 FactoryBean，再看 getObjectType/isSingleton 与缓存路径。
+    - D（断点观察）：断点：type match 分支、FactoryBean objectType 读取点。
+    - E（面试复述）：面试追问：为什么 getObjectType 这么关键？如何用证据链解释。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 `FactoryBean` 的核心机制读者已经在 [23 章](23-factorybean-deep-dive.md) 学过了。

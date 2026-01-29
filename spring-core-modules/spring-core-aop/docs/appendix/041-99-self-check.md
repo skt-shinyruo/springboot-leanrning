@@ -10,10 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 40 章：90. 常见坑清单（建议反复对照）](040-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 42 章：织入主线（LTW/CTW）](../README.md)
+上一章：[第 40 章：90. 常见坑清单（建议反复对照）](040-90-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
+
+这份自测题的推荐用法是：
+
+1. **先不看代码**，尝试回答（写下你的结论与理由）
+2. **再去跑对应 Lab/Test**，用断言验证你的理解
+3. 最后回读对应章节，把“结论 → 证据链 → 可复述叙事”补齐
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -36,6 +42,11 @@
 
 ## 机制主线
 
+本章并不是要你“背术语”，而是检查你是否能把 AOP 讲成一条可验证的主线：
+
+- proxy 什么时候产生、为什么产生（容器阶段）
+- 调用怎么进入 proxy、链条怎么组装、`proceed()` 为什么会嵌套（调用阶段）
+- 不生效怎么分流定位（call path / pointcut / proxy limits / stacking / 并发边界）
 
 ## 代理与入口（对应 01/00）
 
@@ -45,7 +56,9 @@
 
 !!! example "本章配套实验（先跑再读）"
 
-    - （未提取到实验入口）
+    - Book Matrix：`SpringCoreAopBookMatrixLabTest`
+    - Branch Matrix：`SpringCoreAopProxyBranchMatrixLabTest` / `SpringCoreAopAutoProxyBranchMatrixLabTest` / `SpringCoreAopStackingBranchMatrixLabTest`
+    - Labs：`SpringCoreAopLabTest` / `SpringCoreAopProxyMechanicsLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopRealWorldStackingLabTest`
 
 ## 自调用与解决策略（对应 03/05）
 
@@ -65,9 +78,38 @@
 
 ## AutoProxyCreator 主线（对应 07/00）
 
+- AutoProxyCreator 为什么说本质是一个 `BeanPostProcessor`？它为什么是 `SmartInstantiationAwareBeanPostProcessor`？
+- 你能不能说清：候选 Advisors 从哪里来？（`@Aspect` 解析、基础设施 advisors、显式声明的 `Advisor` bean）
+- 你能不能把“决策管线”复述成 5 步：跳过/拿候选/筛 eligible/创建 proxy/暴露最终 bean？
+- 你在源码里想看“为什么这个 bean 会/不会被代理”，应该去哪两个观察点？
+  - 提示：eligible advisors + canApply（以及链条组装）
+
+对应验证入口：
+
+- `SpringCoreAopAutoProxyCreatorInternalsLabTest#autoProxyCreator_isRegisteredAsBeanPostProcessor_whenEnableAspectJAutoProxyIsUsed`
+- `SpringCoreAopAutoProxyCreatorInternalsLabTest#advisor_pointcut_and_advice_form_a_pipeline_that_results_in_a_proxy_and_an_interceptor_chain`
 
 ## pointcut 表达式系统（对应 08）
 
+- `execution` 与 `within` 的区别是什么？你会怎么避免“范围太宽/太窄”的误判？
+- `this(实现类)` 与 `target(实现类)` 的区别是什么？为什么在 JDK proxy 下结果会不同？
+- `args(...)` 为什么更偏运行时？什么时候不建议用它？
+- `@annotation/@within/@target` 的差异是什么？你会如何在项目里验证你的理解？
+
+对应验证入口：
+
+- `SpringCoreAopPointcutExpressionsLabTest#this_vs_target_differs_between_JdkProxy_and_CglibProxy`
+- 练习：`SpringCoreAopExerciseTest#exercise_changePointcutStyle`
+
+## 并发 / 性能（对应 11）
+
+- 同一个 proxy 为什么可以被并发调用？什么状态会在并发下串线？
+- 为什么“把上下文写到 aspect 字段里”是危险的？ThreadLocal 的正确用法是什么？
+- ThreadLocal 忘记清理会导致什么问题（尤其在线程池里）？
+
+对应验证入口：
+
+- `SpringCoreAopProxyConcurrencyLabTest#proxyInvocation_isThreadIsolated_underConcurrentCalls`
 
 ## H. 多切面/多代理叠加（对应 09）
 

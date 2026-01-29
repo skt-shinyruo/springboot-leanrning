@@ -29,6 +29,15 @@
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` / `SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansStaticBeanFactoryPostProcessorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“能/不能做什么”的方法级证明：为什么 BPP 不可靠改定义，为什么 BFPP 拿不到实例态。
+    - B（边界反例）：反例：错误时机 getBean 导致 BPP 链不完整、手工注册破坏顺序的坑位。
+    - C（排障 SOP）：排障：某注解不生效/某增强不生效/代理不出现时，先定位缺哪个处理器与顺序问题。
+    - D（断点观察）：断点：processor 收集/排序/注册/执行的关键入口方法。
+    - E（面试复述）：面试追问：BDRPP 为什么更强？与 ImportBeanDefinitionRegistrar 的边界如何说明。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章是理解 Spring “高级用法”的关键。许多看似“隐式行为”的特性，本质都是某个 post-processor 在某个阶段做了事。

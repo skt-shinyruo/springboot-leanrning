@@ -19,6 +19,9 @@
 - spring-core-beans：在模块 README 与知识地图中新增“核心七件套”导航（概念 → 章节 → Lab），用于查漏与快速跳转
 - spring-core-beans：深化 `02-bean-registration.md`（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”
 - spring-core-beans：继续深化 `02-bean-registration.md`（方法级源码调用链/排障决策表/面试标准答案），补齐“可追踪/可定位/可背诵”交付
+- spring-core-beans：docs 目录页新增“症状驱动导航（快速定位）”，并补齐 19/20/41 三章 BOOKIFY 标记以统一书本化导航一致性
+- spring-core-beans：新增“内容级再加深策略（A–E）”目录（`spring-core-beans/docs/deepening-strategies/`），并在模块 README 与 docs 目录页补齐入口，便于按章做二次深化
+- spring-core-beans：将 A–E 维度策略以 `AE-DEEPENING` 提示块写入全章正文（默认置于 `## 机制主线` 前），让“怎么深挖/怎么证明”在章内可直接使用
 - 文档结构调整：以各模块 `*/docs/` 为唯一事实来源（SSOT），仓库根 `docs/` 收敛为仅保留 `docs/SUMMARY.md`（全站目录/导航 SSOT），并删除 `docs/book/` 与旧 `docs/<topic>/...` 内容副本。
 - spring-core-beans：docs 目录入口补充 Debugger Pack 链接，同步知识库入口索引
 - spring-core-beans：重写 09/16/97 三章（循环依赖 / early reference / Explore/Debug），补齐“可跑实验 + 断点/观察点 + 常见坑/工程策略”的教程闭环
@@ -77,7 +80,7 @@
 - GitHub Pages：不再提供自动构建与发布 workflow（如需发布请自行配置）。
 - `helloagents`：新增学习路线图 `helloagents/wiki/learning-path.md`，并在 `helloagents/wiki/overview.md` 与四模块页（Beans/AOP/Tx/Web MVC）增加 Start Here/路线图入口，收敛新读者的“先跑什么/再读什么”路径。
 - `spring-core-beans`：新增 30 分钟快启章节（Start Here），并系统补齐/强化 docs（容器主线、BPP 顺序、FactoryBean、循环依赖、AOT/真实世界等）与可运行证据链；同时更新 `scripts/generate-spring-beans-public-api-index.py` 并重新生成 Appendix 95/96（补齐“坑点与排障”）。
-- `spring-core-beans`：新增“主线叙事”章节：从 `AbstractApplicationContext#refresh` 走到 `AbstractAutowireCapableBeanFactory#doCreateBean`，聚焦关键方法与关键分支，并在导读/目录页增加入口：`docs/beans/spring-core-beans/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`。
+- `spring-core-beans`：新增“主线叙事”章节：从 `AbstractApplicationContext#refresh` 走到 `AbstractAutowireCapableBeanFactory#doCreateBean`，聚焦关键方法与关键分支，并在导读/目录页增加入口：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`。
 - `spring-core-beans`：在主线叙事章补充“分支决策表”（现象 → 阶段 → 关键方法 → 必看变量 → LabTest），把主线叙事进一步压缩成可复用排障套路。
 - `spring-core-beans`：继续深化主线叙事与导读：补齐 `preInstantiateSingletons` 的关键分支伪代码（FactoryBean/SmartFactoryBean/SmartInitializingSingleton/background init），补齐 `doGetBean` 的关键分支（dependsOn/parent fallback/prototype guard）；同时在 bootstrap 章新增“处理器速查表 + 时机时间线 + 过早 getBean 反例”，在深挖指南新增“症状驱动导航（现象→章节→断点→Lab）”速查表。
 - `springboot-web-mvc`：深化“DispatcherServlet 主链路”章节：补齐 `doDispatch` → `processDispatchResult` 的关键方法/关键分支（multipart/async/exception/afterCompletion），并补齐“FilterChain → ExceptionResolvers → Spring Boot `/error`”完整叙事（含 async 两次 dispatch 时间线 + 证据链）；进一步补齐 ERROR vs ASYNC dispatch 对照（DispatcherType=ERROR/ASYNC）与分支决策表，降低排障误判成本。
@@ -158,6 +161,7 @@
 - 深化 `spring-core-aop` 核心章节：新增 docs/00（深挖指南）与 docs/99（自测题），扩写 docs/01-06、docs/90（常见坑），补齐源码断点入口/观察点与排障闭环。
 - 二次深化 `spring-core-aop`：新增 docs/07-09（AutoProxyCreator 主线 / pointcut 表达式系统 / 多代理叠加与顺序），并新增 4 组 Labs 覆盖 BPP 主线、proceed 嵌套、this vs target、以及多 advisor vs 套娃 proxy 的可断言闭环；同时在 `spring-core-beans` 的 BPP/代理/顺序章节补齐 AutoProxyCreator 承接与跨模块链接。
 - 三次深化 `spring-core-aop`：新增 docs/10（真实叠加 Debug Playbook）与集成 Lab（Tx/Cache/Method Security），把“多代理叠加”落到真实基础设施断点与可断言语义，并更新 README/深挖指南/多代理章节导航。
+- `spring-core-aop`：补齐 docs/11 并发/性能章节（042-11），修正 pointcut→并发→叠加的前后章导航，并同步模块 README/Labs/Exercises 内的学习指引路径（去掉旧 `docs/<topic>/<module>/...` 引用）。
 - 新增 `spring-core-aop-weaving`：AspectJ weaving 深挖模块（LTW/CTW），覆盖 `call`/`execution`、constructor、field `get/set`、`withincode`/`cflow` 等 join point 与表达式，并提供 docs + Labs/Exercises 可验证闭环。
 - `spring-core-aop`/`spring-core-events`/`spring-core-tx`：补齐 DemoRunner 结构化输出（`AOP:`/`EVENTS:`/`TX:` 前缀），在 events 增加可控的异常传播演示（特定输入触发 throwing listener）；`spring-core-tx` 新增“自调用绕过事务”Lab，并同步 README/根 README/progress 的入口索引。
 - `spring-core-aop`/`spring-core-events`/`spring-core-profiles`/`spring-core-resources`/`spring-core-tx`/`spring-core-validation`：对齐 docs Part 目录结构与 src/main+src/test 分包结构（语义化 Part 命名），并同步修复 README/文档中的源码路径与跨模块引用；保持各模块 `*Application` 入口包名不变。

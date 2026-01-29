@@ -29,6 +29,15 @@
     - Lab：`SpringCoreBeansContainerLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）： full vs lite 的判定链路与证据点（为什么会/不会增强）。
+    - B（边界反例）：反例：proxyBeanMethods=false 导致的“多次调用多次 new”，以及与 AOP 代理的混淆点。
+    - C（排障 SOP）：排障：明明写了 @Bean 却拿到多个实例/依赖不一致时如何定位。
+    - D（断点观察）：断点：配置类解析、增强生成、@Bean 方法拦截的关键入口。
+    - E（面试复述）：面试追问：配置类增强与 AOP 代理有何不同？如何证明。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解释一个经常让人“以为 Spring 坏了”的现象：

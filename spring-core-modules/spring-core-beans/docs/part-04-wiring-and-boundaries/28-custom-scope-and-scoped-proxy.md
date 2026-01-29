@@ -20,6 +20,15 @@
     - Lab：`SpringCoreBeansCustomScopeLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）： scope 契约（get/remove/registerDestructionCallback）的证据链与典型实现骨架。
+    - B（边界反例）：反例：thread-local 泄漏、销毁回调不执行、代理导致类型信息丢失。
+    - C（排障 SOP）：排障：scope 失效/对象“串线程”/销毁不执行如何定位。
+    - D（断点观察）：断点：Scope#get、scoped proxy 创建与目标解析入口。
+    - E（面试复述）：面试追问：何时不该自定义 scope？替代方案怎么选。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 Spring 的 scope 机制是可扩展的：可以注册自定义 scope。

@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“BeanDefinitionValueResolver→convertIfNecessary”的完整证据链，并与占位符/SpEL/转换三连对齐。
+    - B（边界反例）：反例：值看似解析但其实占位符没解析；editor 与 converter 混用导致行为不一致。
+    - C（排障 SOP）：排障 SOP：TypeMismatch/BeanCreationException 的分型定位（解析/求值/转换）。
+    - D（断点观察）：断点：value resolver、property value 应用、TypeConverterDelegate 转换路径。
+    - E（面试复述）：面试追问：PropertyEditor 的历史定位与为何仍会在某些路径出现。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 新手在学 Spring Beans 时最容易卡在一个“看起来像黑盒”的问题上：

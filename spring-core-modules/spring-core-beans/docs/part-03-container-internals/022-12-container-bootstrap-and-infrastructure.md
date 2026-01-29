@@ -30,6 +30,15 @@
     - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“注解能力→处理器→生效窗口”的证据链对照表，并落到具体入口方法。
+    - B（边界反例）：反例：缺失基础设施时哪些注解不生效；过早 getBean 导致处理器未注册。
+    - C（排障 SOP）：排障：@Autowired/@Value/@PostConstruct 不生效时的第一断点入口。
+    - D（断点观察）：断点：处理器注册与执行顺序的关键锚点 + watch list。
+    - E（面试复述）：面试追问：为什么说“注解能工作不是魔法，是处理器装进了 refresh 主线”。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章回答一个很容易被忽略的问题：

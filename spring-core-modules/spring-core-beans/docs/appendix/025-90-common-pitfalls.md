@@ -43,6 +43,15 @@
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansTypeConversionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：为每类误区补“最短证据链入口方法”链接（避免只给结论）。
+    - B（边界反例）：为高频误区补“反例对照”：如何一眼区分相似但本质不同的问题（如 depends-on 环 vs 循环依赖）。
+    - C（排障 SOP）：把误区映射到排障 SOP：遇到该误区的典型症状与第一断点入口。
+    - D（断点观察）：断点建议：每类误区给最小断点组与 watch list。
+    - E（面试复述）：把误区转成面试追问（追问“为什么/如何证明/反例是什么”）。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 本章把“常见误区”统一归因到 4 类主线：

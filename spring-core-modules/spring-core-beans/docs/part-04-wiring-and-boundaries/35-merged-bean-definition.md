@@ -21,6 +21,15 @@
       - `mergedBeanDefinition_combinesParentAndChildMetadata_andTriggersMergedDefinitionPostProcessor`
       - `mergedBeanDefinition_inheritsAndOverridesMetadata_fromParentAndChild`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“合并触发点与缓存语义”的证据链（merged 什么时候生成/什么时候复用）。
+    - B（边界反例）：反例：你看到的 BeanDefinition 与最终行为不一致（原因往往在 merged）。
+    - C（排障 SOP）：排障：注解元信息处理异常/属性不生效时如何先确认 merged BD。
+    - D（断点观察）：断点：getMergedLocalBeanDefinition、applyMergedBeanDefinitionPostProcessors。
+    - E（面试复述）：面试追问：为什么 MBPP（MergedBeanDefinitionPostProcessor）重要？如何证明它的窗口期。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 很多人在深挖 Spring 容器源码时会遇到一个“卡点”：

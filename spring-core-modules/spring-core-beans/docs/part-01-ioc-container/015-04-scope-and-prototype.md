@@ -29,6 +29,15 @@
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“prototype 注入 singleton 为什么像单例”的证据链（注入时机 vs 创建时机）。
+    - B（边界反例）：反例：prototype 循环依赖、prototype 销毁不自动、scoped proxy 的 equals/hashCode/序列化坑。
+    - C（排障 SOP）：排障：资源泄漏/生命周期错觉/线程隔离不生效时如何定位。
+    - D（断点观察）：断点：scope get/remove、scoped proxy 触发目标创建的入口。
+    - E（面试复述）：面试追问：@Lookup/ObjectProvider/scoped proxy 的选择策略。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章的主题是：**scope 不是“对象的特性”，而是“容器如何管理对象的策略”。**

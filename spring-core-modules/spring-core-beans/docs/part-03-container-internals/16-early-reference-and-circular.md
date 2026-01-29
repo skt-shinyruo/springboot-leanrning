@@ -257,6 +257,15 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 1) `getEarlyBeanReference` 解决什么？（循环依赖窗口期让 early reference 尽量等于最终 proxy/wrapper 形态）
 2) 为什么需要它？（避免 raw 注入绕过代理，避免 early 与 final 形态不一致）
 3) `allowRawInjectionDespiteWrapping` 是什么态度？（做不到一致时的风险开关：默认 fail-fast，打开就是读者接受“绕过代理”的隐患）
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：三级缓存的“写入/读出时间点”与对象类型（raw/early/final）的证据链对照。
+    - B（边界反例）：反例：early 与 final 不一致的真实后果（事务/AOP/懒代理叠加），以及 allowRawInjectionDespiteWrapping 的边界。
+    - C（排障 SOP）：排障：如何从异常/行为差异定位到“early window 参与者是谁”。
+    - D（断点观察）：断点：addSingletonFactory/getEarlyBeanReference/after-init proxy 的对照断点组。
+    - E（面试复述）：面试追问：为什么说“能解不等于安全”？用哪条证据链回答。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

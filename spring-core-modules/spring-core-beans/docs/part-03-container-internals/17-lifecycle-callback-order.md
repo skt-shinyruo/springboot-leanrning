@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“顺序与触发点”证据链：关键入口方法串起每类回调，并明确 raw vs exposed。
+    - B（边界反例）：反例：prototype 不销毁的误判、destroy 顺序与 dependent 图的交互。
+    - C（排障 SOP）：排障：初始化/销毁顺序异常、回调没触发的第一断点入口。
+    - D（断点观察）： watch list：disposableBeans、dependentBeanMap、回调注册点。
+    - E（面试复述）：面试追问：SmartInitializingSingleton/SmartLifecycle 与普通生命周期回调的边界。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 很多“容器行为”只有把生命周期顺序看清楚才能解释。

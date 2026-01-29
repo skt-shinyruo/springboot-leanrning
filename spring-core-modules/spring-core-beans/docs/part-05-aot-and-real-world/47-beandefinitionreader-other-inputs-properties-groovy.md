@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“输入层对比”并强调共同落点：最终都落到 BeanDefinition 与注册表。
+    - B（边界反例）：反例：格式错误/类型转换失败/引用不存在的分型。
+    - C（排障 SOP）：排障：输入层失败如何快速定位到 reader 与 value resolver。
+    - D（断点观察）：断点：reader 入口、registerBeanDefinition、值解析入口。
+    - E（面试复述）：面试追问：为什么 Spring 能支持多输入？核心抽象是什么？
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解决一个“源码视角必须掌握，但现代项目里容易被忽略”的问题：

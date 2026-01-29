@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“getBean vs &getBean”的证据链与缓存语义（FactoryBean 自身 vs product）。
+    - B（边界反例）：反例：getObjectType 返回 null 导致 type matching 失效、isSingleton 声明不一致导致缓存错觉。
+    - C（排障 SOP）：排障：按类型发现/条件装配/注入失败时如何判断是 FactoryBean 语义导致。
+    - D（断点观察）：断点：FactoryBean product 获取与缓存命中的关键入口。
+    - E（面试复述）：面试追问：FactoryBean 在 Boot auto-config 中为何高频出现？如何解释它的价值与风险。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 `FactoryBean` 是 Spring 里一个非常“老牌但重要”的扩展点，常见于各种框架集成（ORM、RPC、代理生成等）。

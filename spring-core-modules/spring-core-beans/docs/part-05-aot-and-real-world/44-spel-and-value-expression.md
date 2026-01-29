@@ -23,6 +23,15 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansSpelValueLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“解析→求值→注入”的证据链与关键入口方法，并与 ${} 占位符对照。
+    - B（边界反例）：反例：表达式注入风险、把 SpEL 与占位符混用导致误诊。
+    - C（排障 SOP）：排障 SOP：表达式失败如何定位是 parser/上下文/变量/类型转换哪一环。
+    - D（断点观察）：断点：SpEL parser、evaluation context、value injection 分支。
+    - E（面试复述）：面试追问：为什么 SpEL 在某些场景是危险的？如何给出安全建议。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解决两类“很常见但很难讲清”的问题：

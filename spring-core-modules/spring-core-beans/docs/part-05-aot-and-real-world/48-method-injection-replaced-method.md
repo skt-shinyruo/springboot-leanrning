@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansReplacedMethodLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“它如何实现”的证据链：CGLIB 子类与方法拦截发生点。
+    - B（边界反例）：反例：final 限制、代理叠加、AOT 下的限制与 hint 需求。
+    - C（排障 SOP）：排障：方法注入不生效/行为偏差如何定位到代理生成与拦截器。
+    - D（断点观察）：断点：子类生成、方法拦截、目标解析入口。
+    - E（面试复述）：面试追问：@Lookup 与 replaced-method 的差异与选择策略。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解决一个“读者可能没在新项目里写过，但在读源码/排障时经常看到”的问题：

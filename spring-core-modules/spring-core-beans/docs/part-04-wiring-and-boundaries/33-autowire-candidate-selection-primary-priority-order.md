@@ -143,6 +143,15 @@
 1) 单依赖注入与集合注入的根本差异是什么？
 2) `@Order/@Priority/@Primary/@Qualifier` 分别解决什么问题？
 3) 如何用断点证明“by-name fallback 真的发生了”？（提示：dependencyName 与 beanName）
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“选择 vs 排序”的证据链：单注入 vs 集合注入两条路径的决策点。
+    - B（边界反例）：反例：@Order 不能解决单注入歧义；by-name fallback 的边界。
+    - C（排障 SOP）：排障：NoUnique 发生时按哪条路径收敛（先看 @Primary/@Qualifier，再看 @Priority，再看 by-name）。
+    - D（断点观察）：断点：candidate 决策点、orderedStream/collection injection 排序点。
+    - E（面试复述）：面试追问：@Primary 与 @Priority 谁更强？给出可证明解释。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

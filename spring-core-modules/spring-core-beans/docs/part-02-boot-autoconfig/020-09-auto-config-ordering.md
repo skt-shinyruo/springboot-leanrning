@@ -160,6 +160,15 @@
 1) 为什么跨 auto-config 的 `@ConditionalOnBean` 会出现“偶发不匹配”？（提示：顺序未定义 + 条件评估有时机）
 2) `@AutoConfiguration(after=...)` 解决的是什么问题？（提示：把隐式依赖变成显式排序规则）
 3) 可以用哪 2 个断点把“排序→条件评估→定义是否注册”走成证据链？
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“顺序影响条件命中”的证据链：导入顺序/条件评估时机/定义是否已存在三者如何交互。
+    - B（边界反例）：反例：@AutoConfigureBefore/After/Order 的边界；同一条件在不同阶段评估导致的“看似偶发”。
+    - C（排障 SOP）：排障：如何把“偶发失效”归因到顺序、条件、或者定义覆盖/替换。
+    - D（断点观察）：断点：auto-config 导入、条件评估、BeanDefinition 注册关键入口。
+    - E（面试复述）：面试追问：为什么建议把条件写成“可确定性强”的形式？如何解释 matchIfMissing 等三态。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“checkGenericTypeMatch 的决策链”与关键变量（ResolvableType 推断结果）。
+    - B（边界反例）：反例：代理/桥接方法/父类擦除导致的泛型信息丢失与匹配失败。
+    - C（排障 SOP）：排障：为什么 List<Foo> 注入失败？如何在依赖解析入口处证明是泛型不匹配。
+    - D（断点观察）：断点：generic match、candidate resolver、type descriptor 对照。
+    - E（面试复述）：面试追问：泛型匹配在 Spring 里如何实现？为什么代理会影响它？
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章要把一件“看起来是黑箱”的事变成可解释、可复现、可排障的结论：

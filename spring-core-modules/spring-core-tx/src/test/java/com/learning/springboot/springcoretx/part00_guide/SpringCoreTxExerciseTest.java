@@ -39,7 +39,7 @@ class SpringCoreTxExerciseTest {
                         3) 在内层用 REQUIRES_NEW 插入一条“独立事务”记录，证明它能独立提交。
 
                         建议阅读：
-                        - `docs/tx/spring-core-tx/part-01-transaction-basics/04-propagation.md`
+                        - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/057-04-propagation.md`
                         """)
                 .isFalse();
     }
@@ -57,8 +57,8 @@ class SpringCoreTxExerciseTest {
                         3) 选择一种规避方式：拆分 bean / 注入自身代理 / exposeProxy。
 
                         建议阅读：
-                        - `docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md`
-                        - `docs/aop/spring-core-aop/part-01-proxy-fundamentals/03-self-invocation.md`
+                        - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md`
+                        - `spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md`
                         """)
                 .isFalse();
     }
@@ -76,7 +76,7 @@ class SpringCoreTxExerciseTest {
                         3) 再用 `rollbackFor = ...` 修改规则，并用断言证明回滚发生。
 
                         建议阅读：
-                        - `docs/tx/spring-core-tx/part-01-transaction-basics/03-rollback-rules.md`
+                        - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/056-03-rollback-rules.md`
                         """)
                 .isFalse();
     }
@@ -94,7 +94,7 @@ class SpringCoreTxExerciseTest {
                         3) 把结论写成可重复的测试（比看日志可靠）。
 
                         建议阅读：
-                        - `docs/tx/spring-core-tx/part-02-template-and-debugging/06-debugging.md`
+                        - `spring-core-modules/spring-core-tx/docs/part-02-template-and-debugging/059-06-debugging.md`
                         """)
                 .isFalse();
     }
@@ -120,7 +120,7 @@ class SpringCoreTxExerciseTest {
                         3) 重新运行本测试，观察断言变化。
 
                         建议阅读：
-                        - `docs/tx/spring-core-tx/part-01-transaction-basics/01-transaction-boundary.md`
+                        - `spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/054-01-transaction-boundary.md`
                         """)
                 .isEqualTo(2);
     }

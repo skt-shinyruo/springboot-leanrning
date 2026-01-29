@@ -8,7 +8,7 @@
 
 - **Responsibility:** 提供 AOP 的最小可运行示例与测试实验，帮助理解代理行为与切面生效边界。
 - **Status:** 🚧In Development
-- **Last Updated:** 2026-01-23
+- **Last Updated:** 2026-01-29
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
@@ -29,6 +29,7 @@
 - docs：`spring-core-modules/spring-core-aop/docs/part-00-guide/`（深挖指南）
 - docs：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/`（代理基础/自调用/限制/调试）
 - docs：`spring-core-modules/spring-core-aop/docs/part-02-autoproxy-and-pointcuts/`（AutoProxyCreator 主线/pointcut 系统）
+- docs：`spring-core-modules/spring-core-aop/docs/part-02-perf-concurrency/`（并发/性能边界：同一 proxy 并发调用隔离）
 - docs：`spring-core-modules/spring-core-aop/docs/part-03-proxy-stacking/`（多代理叠加/真实项目 playbook）
 - docs：`spring-core-modules/spring-core-aop/docs/appendix/`（常见坑/自测题）
 - src(main)：`spring-core-modules/spring-core-aop/src/main/java/com/learning/springboot/springcoreaop/SpringCoreAopApplication.java`（入口，包名保持不变）
@@ -43,6 +44,7 @@
 - 入口：`spring-core-modules/spring-core-aop/docs/README.md`
 - 断点地图：`spring-core-modules/spring-core-aop/docs/part-00-guide/029-02-breakpoint-map.md`
 - 关键分支矩阵：`spring-core-modules/spring-core-aop/docs/part-00-guide/029-04-branch-decision-matrix.md`
+- 并发/性能边界：`spring-core-modules/spring-core-aop/docs/part-02-perf-concurrency/042-11-proxy-concurrency-perf.md`
 - 排障 playbook：`spring-core-modules/spring-core-aop/docs/appendix/040-90-common-pitfalls.md`
 - 自检清单：`spring-core-modules/spring-core-aop/docs/appendix/041-99-self-check.md`
 - Branch Matrix（关键分支入口）：

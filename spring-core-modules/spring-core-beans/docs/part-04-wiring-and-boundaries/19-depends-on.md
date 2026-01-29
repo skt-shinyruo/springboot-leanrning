@@ -221,6 +221,17 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 
 - 本章完成后：请把 `dependsOn` 和 “注入依赖/循环依赖/后处理器顺序”明确分家；排障时优先用方法级证据链判定问题属于**定义层**还是**实例层**。
 - 下一章将讲 “能注入但不是 Bean”：`registerResolvableDependency`，它经常和 `*Aware` 搞混，但两者的生效点完全不同。
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“doGetBean 内 dependsOn 处理”的关键分支证据链（包含依赖图写入点）。
+    - B（边界反例）：反例：Circular depends-on 与三级缓存循环依赖的误判对照。
+    - C（排障 SOP）：排障：lazy-init 被拉起、关闭顺序反直觉、写错 beanName 的三类 SOP。
+    - D（断点观察）： watch list：dependentBeanMap/dependenciesForBeanMap 的判定标准。
+    - E（面试复述）：面试追问：dependsOn 为什么不等于注入依赖？如何证明。
+<!-- AE-DEEPENING:END -->
+
+<!-- BOOKIFY:START -->
 
 ### 对应 Lab/Test
 
@@ -228,3 +239,5 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
 
 上一章：[18. @Lazy 的真实语义：延迟的是谁、延迟到哪一步](023-18-lazy-semantics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[20. registerResolvableDependency：能注入，但它不是 Bean](20-resolvable-dependency.md)
+
+<!-- BOOKIFY:END -->

@@ -47,8 +47,9 @@ mvn -pl :spring-core-aop test
 8. [Pointcut 表达式系统：execution/within/this/target/args/@annotation/...](docs/part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md)
 9. [多切面/多代理叠加与顺序：AOP/Tx/Cache/Security](docs/part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
 10. [真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证](docs/part-03-proxy-stacking/039-10-real-world-stacking-playbook.md)
-11. [常见坑清单（建议反复对照）](docs/appendix/040-90-common-pitfalls.md)
-12. [自测题：你是否真的理解了 AOP？](docs/appendix/041-99-self-check.md)
+11. [并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）](docs/part-02-perf-concurrency/042-11-proxy-concurrency-perf.md)
+12. [常见坑清单（建议反复对照）](docs/appendix/040-90-common-pitfalls.md)
+13. [自测题：你是否真的理解了 AOP？](docs/appendix/041-99-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -63,6 +64,7 @@ mvn -pl :spring-core-aop test
 | Lab | `src/test/java/com/learning/springboot/springcoreaop/part02_autoproxy_and_pointcuts/SpringCoreAopPointcutExpressionsLabTest.java` | pointcut 误判最小复现：this vs target（JDK/CGLIB 差异） | ⭐⭐⭐ | `docs/08`、`docs/02` |
 | Lab | `src/test/java/com/learning/springboot/springcoreaop/part03_proxy_stacking/SpringCoreAopMultiProxyStackingLabTest.java` | 多 advisor vs 多层 proxy（套娃）+ 顺序与观察方法 | ⭐⭐⭐ | `docs/09`、`docs/06`、`docs/07` |
 | Lab | `src/test/java/com/learning/springboot/springcoreaop/part03_proxy_stacking/SpringCoreAopRealWorldStackingLabTest.java` | 真实叠加：Tx/Cache/Method Security 与自定义 AOP 同链路可断言 | ⭐⭐⭐ | `docs/10`、`docs/09`、`docs/00` |
+| Lab | `src/test/java/com/learning/springboot/springcoreaop/part02_perf_concurrency/SpringCoreAopProxyConcurrencyLabTest.java` | 并发/性能边界：同一 proxy 并发调用（ThreadLocal 不串线） | ⭐⭐⭐ | `docs/11` |
 | Exercise | `src/test/java/com/learning/springboot/springcoreaop/SpringCoreAopExerciseTest.java` | exposeProxy/多切面顺序/pointcut 风格等练习 | ⭐⭐–⭐⭐⭐ | 先把 Labs 理解透再做 |
 
 ## 概念 → 在本模块哪里能“看见”
@@ -76,6 +78,7 @@ mvn -pl :spring-core-aop test
 | 多个切面顺序怎么控制 | [docs/06](docs/part-01-proxy-fundamentals/035-06-debugging.md) | `SpringCoreAopProxyMechanicsLabTest#adviceOrderingCanBeControlledWithOrderAnnotation` | `@Order` 对 advice 链的影响 |
 | AutoProxyCreator 为什么是 BPP | [docs/07](docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md) | `SpringCoreAopAutoProxyCreatorInternalsLabTest` | 代理何时产生、Advisor 如何筛选、为什么这个 bean 会/不会被代理 |
 | pointcut 最常见误判（this vs target） | [docs/08](docs/part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md) | `SpringCoreAopPointcutExpressionsLabTest` | 为什么同一表达式在 JDK/CGLIB 下命中不同、如何用断言验证 |
+| 并发/性能边界（ThreadLocal 不串线） | [docs/11](docs/part-02-perf-concurrency/042-11-proxy-concurrency-perf.md) | `SpringCoreAopProxyConcurrencyLabTest` + `CorrelationIdAspect` | 为什么 proxy 可并发调用，但 per-invocation 状态必须线程隔离/可清理 |
 | 多 advisor vs 多层 proxy（套娃） | [docs/09](docs/part-03-proxy-stacking/038-09-multi-proxy-stacking.md) | `SpringCoreAopMultiProxyStackingLabTest` | “叠加”到底是什么形态、顺序问题如何分流定位 |
 | 真实叠加（Tx/Cache/Security）排障 | [docs/10](docs/part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) | `SpringCoreAopRealWorldStackingLabTest` | 真实基础设施下如何用断点与断言定位“不生效/被绕过/短路/顺序怪” |
 

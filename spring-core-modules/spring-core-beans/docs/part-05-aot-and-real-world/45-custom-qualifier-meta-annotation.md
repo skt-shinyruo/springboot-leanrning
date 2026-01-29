@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansCustomQualifierLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“Qualifier 决策发生点”的证据链：最终由哪个 resolver 判定命中。
+    - B（边界反例）：反例：多个 Qualifier 叠加、meta 嵌套过深导致可读性差与误命中。
+    - C（排障 SOP）：排障：Qualifier 不生效/命中错对象时如何定位到 resolver 的判定过程。
+    - D（断点观察）：断点：candidate resolver、qualifier match 入口与关键变量。
+    - E（面试复述）：面试追问：为什么推荐用 meta-annotation 而不是字符串 qualifier？优势与风险是什么。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 当读者进入真实项目，`@Qualifier("beanName")` 常常不够用：

@@ -28,6 +28,15 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“type matching 算法与 getObjectType/isSingleton”的证据链，并给关键分支快照。
+    - B（边界反例）：反例：getObjectType=null 导致条件误判/按类型发现失败；SmartFactoryBean 与 eager init 的边界。
+    - C（排障 SOP）：排障：为什么按类型注入/条件装配“看起来偶发失效”，如何先判断是否 FactoryBean 语义导致。
+    - D（断点观察）：断点：FactoryBeanRegistrySupport 缓存、getObjectFromFactoryBean 调用链。
+    - E（面试复述）：面试追问：FactoryBean 的价值与高频坑点，如何用证据链解释两个缓存。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 `FactoryBean` 是 Spring 里非常“容器味”的机制：

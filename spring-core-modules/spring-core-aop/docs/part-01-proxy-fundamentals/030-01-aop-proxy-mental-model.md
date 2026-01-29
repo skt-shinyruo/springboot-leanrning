@@ -36,6 +36,12 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 
 ## 你需要记住的 3 件事
 
+1. **代理对象可能不是目标对象（Proxy ≠ Target）**
+   - 你注入/拿到的 bean 可能是一个 proxy，而不是你的实现类本身。
+   - 这会影响：类型判断（`instanceof`）、`getClass()`、以及调试时看到的调用栈。
+2. **advice 生效的前提：调用必须“经过代理”（Call Path）**
+   - 外部（其它 bean / Controller / Test）调用：通常会经过 proxy → advice 生效。
+   - 同类内部 `this.xxx()` 调用：不会经过 proxy → advice 不生效（见 [03. self-invocation](032-03-self-invocation.md)）。
 3. **AOP 的本质是“在调用链上插一段逻辑”**
    - `@Around` 最直观：`joinPoint.proceed()` 前后都能做事（计时、鉴权、日志、事务等）。
 
@@ -67,6 +73,10 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 - `interceptorsAndDynamicMethodMatchers`：这次调用的拦截器链条（顺序非常关键）
 
 建议你按这个顺序跑（每个都能快速闭环）：
+
+1. `SpringCoreAopLabTest#tracedBusinessServiceIsAnAopProxy`：确认你拿到的是 proxy
+2. `SpringCoreAopLabTest#adviceIsAppliedToTracedMethod`：确认 advice 真的执行
+3. `SpringCoreAopLabTest#selfInvocationDoesNotTriggerAdviceForInnerMethod`：确认 call path 决定生效与否
 
 ## 对照代码（最小闭环）
 
@@ -151,12 +161,6 @@ mvn -pl :spring-core-aop test
 - 一句话总结：AOP 心智模型：代理（Proxy）+ 入口（Call Path） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
 - 回到主线：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 - 下一章：见页尾导航（顺读不迷路）。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
-
-## 一句话总结
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-AOP 心智模型：代理（Proxy）+ 入口（Call Path） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->

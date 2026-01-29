@@ -262,6 +262,15 @@
 1) 两条链路：property values（`populateBean/applyPropertyValues`） vs `@Value`（`resolveEmbeddedValue` → `convertIfNecessary`）
 2) 一个决策点：`TypeConverterDelegate#convertIfNecessary`（在这里看清到底走 ConversionService 还是 PropertyEditor）
 3) 一个高频误区：别把 Boot Binder 的转换当成注入转换
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“属性访问 vs 类型转换”的证据链：populateBean → BeanWrapper → TypeConverterDelegate。
+    - B（边界反例）：反例：占位符没解析导致转换失败、集合/枚举/日期转换链路误判。
+    - C（排障 SOP）：排障：TypeMismatch/ConversionFailed 的 SOP（先定位 propertyPath，再定位 requiredType 与分支）。
+    - D（断点观察）：断点：setPropertyValues、convertIfNecessary、converter/editor 命中路径。
+    - E（面试复述）：面试追问：PropertyEditor 为什么还存在？与 ConversionService 的边界与迁移建议。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

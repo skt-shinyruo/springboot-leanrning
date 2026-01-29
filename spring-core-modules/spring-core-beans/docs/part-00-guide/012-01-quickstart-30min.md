@@ -192,6 +192,15 @@
    - 证据链：`AbstractBeanFactory#getObjectForBeanInstance` / `FactoryBeanRegistrySupport#getObjectFromFactoryBean`  
    - 对应 Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：为每个实验补“机制证据链入口”：跑完后下一步去哪下断点证明结论。
+    - B（边界反例）：“常见偏差反例”：为什么你可能看不到预期现象（版本差异/代理/初始化顺序等）。
+    - C（排障 SOP）：“从实验到排障”：实验结论如何映射到生产排障（第一断点在哪里）。
+    - D（断点观察）：“断点闭环路径”：每个实验推荐 3–5 个断点与 watch list。
+    - E（面试复述）：“3 分钟复述训练”：每个实验给 1 个面试式回答模板。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 30 分钟快启只做三件事：

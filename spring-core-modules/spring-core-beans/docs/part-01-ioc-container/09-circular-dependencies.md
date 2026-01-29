@@ -246,6 +246,15 @@ setter 注入能“让环跑起来”的前提是：读者愿意接受半初始�
 1) constructor cycle 为什么 fail-fast？（依赖发生在实例化之前，没有 early exposure 窗口）
 2) setter cycle 为什么可能成功？（singleton 创建窗口期 + early exposure + `getSingleton(..., allowEarlyReference=true)`）
 3) 工程上如何处理？（重构消环优先；延迟依赖是折中；setter 不是默认解法）
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“构造器失败 vs setter 可能成功”的完整证据链（三级缓存写入/读出窗口）。
+    - B（边界反例）：反例：prototype 循环依赖、AOP 介入导致 early/final 不一致、allowCircularReferences=false 的行为差异。
+    - C（排障 SOP）：排障：如何从异常信息分型到“构造器环/属性环/depends-on 环/代理导致环”。
+    - D（断点观察）：断点：三级缓存、early reference 回调、包装/代理替换入口。
+    - E（面试复述）：面试追问：为什么说“能解不等于安全”？如何用证据链回答。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

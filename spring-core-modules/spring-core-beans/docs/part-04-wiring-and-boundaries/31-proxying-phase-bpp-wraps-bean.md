@@ -165,6 +165,15 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 1) 代理最常见在哪个方法级替换点产生？（提示：after-init BPP）
 2) 为什么 self-invocation 一定绕过代理？
 3) 如何用断点证明“是谁把对象换成了 proxy”？
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“proxy 替换发生点”的证据链，并对比 pre/early/after-init 三类替换。
+    - B（边界反例）：反例：self-invocation 绕过代理、多个代理叠加导致行为偏移。
+    - C（排障 SOP）：排障：为什么看起来“代理没生效”？如何用调用栈证明绕过代理。
+    - D（断点观察）：断点：postProcessAfterInitialization、getEarlyBeanReference、AOP auto-proxy 入口。
+    - E（面试复述）：面试追问：如何解释 self-invocation 的根因与常见修复策略。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

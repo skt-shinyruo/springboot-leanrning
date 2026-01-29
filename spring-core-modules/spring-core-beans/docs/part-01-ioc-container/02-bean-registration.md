@@ -667,6 +667,15 @@ AbstractBeanFactory#doGetBean(beanName)
 1) Bean 注册的“第一性对象”是什么？（提示：BeanDefinition，而不是实例）
 2) `registerBeanDefinition` vs `registerSingleton` 的根本差异是什么？
 3) 为什么“注册时机”会决定 AOP/注解/回调是否生效？
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“最终注册 BeanDefinition 的统一落点”与最短调用链，明确不同入口最终汇聚到哪里。
+    - B（边界反例）： Import 体系反例：ImportSelector/DeferredImportSelector/Registrar 的典型误用与排障点。
+    - C（排障 SOP）：“注册失败分型”：没注册/被条件排除/名字冲突/覆盖策略冲突，第一断点入口分别是什么。
+    - D（断点观察）：“注册阶段断点组”：registry 写入点、配置类解析点、条件评估点。
+    - E（面试复述）：“面试追问”：为什么说“注册的第一性对象是 BeanDefinition”，如何证明。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

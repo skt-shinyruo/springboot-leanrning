@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 39 章：10 real world stacking playbook](../part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](041-99-self-check.md)
+上一章：[第 39 章：10. 真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证](../part-03-proxy-stacking/039-10-real-world-stacking-playbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 41 章：99. 自测题：你是否真的理解了 AOP？](041-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -45,7 +45,20 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+本章不是“再讲一遍机制”，而是把 Spring AOP 最常见的误判收敛成一份 **可复现、可对照、可验证** 的排障手册。
+
+建议你用一个统一心智模型读本章（不会迷路）：
+
+1. **先确认 call path**：调用有没有走进 proxy？（自调用/绕过 Spring bean 是最高频根因）
+2. **再确认 proxy 事实**：有没有 proxy？是什么 proxy？（JDK/CGLIB 会影响类型边界与 this/target 命中）
+3. **再确认 advisor/chain**：proxy 上有没有你期望的 advisor？这次调用的拦截器链里有没有它？
+4. **最后再谈边界与叠加**：final/private/static/构造期调用、多 advisor 顺序、多层 proxy（套娃）、以及并发下的上下文隔离
+
+本章的每个坑条目都尽量给出：
+
+- 可复现入口（优先用本仓库的 Lab/Test）
+- 推荐断点 / 观察点（来自断点地图）
+- 推荐回读章节（从“排障”回到“理解”的闭环）
 
 ## 源码与断点
 

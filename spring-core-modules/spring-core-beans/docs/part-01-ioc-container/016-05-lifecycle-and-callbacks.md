@@ -29,6 +29,15 @@
     - Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansAwareInfrastructureLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansAwareInfrastructureLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“完整顺序 + 关键窗口”的证据链（Aware/BPP/init/destroy）并明确发生在 raw 还是 exposed。
+    - B（边界反例）：反例：init 抛异常导致 destroy 不执行、prototype 不自动销毁、代理与回调顺序误判。
+    - C（排障 SOP）：排障：初始化卡死/销毁不执行/回调顺序不符的第一断点入口。
+    - D（断点观察）： watch list：回调触发前后关键变量（如 wrappedBean、exposed object 变化）。
+    - E（面试复述）：面试追问：哪些回调能替代哪些？为什么推荐构造器注入+PostConstruct。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章解决两个问题：

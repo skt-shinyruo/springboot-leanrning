@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest` / `SpringCoreBeansProfileRegistrationLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansEnvironmentPropertySourceLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“最终取值→来源”的证据链：PropertySources 顺序如何影响 getProperty。
+    - B（边界反例）：反例：值被覆盖但不自知、profile/条件导致 property source 不同。
+    - C（排障 SOP）：排障 SOP：从“值不对/找不到/被覆盖”三类症状回推 propertySources 与 resolver。
+    - D（断点观察）： watch list：MutablePropertySources 顺序、property resolver 命中路径。
+    - E（面试复述）：面试追问：Environment abstraction 与 Boot config data 的关系如何解释。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章补齐一个“读者每天都在用，但很少系统化理解”的核心机制：

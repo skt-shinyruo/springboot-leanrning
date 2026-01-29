@@ -193,6 +193,15 @@
 
 1) `@Value` 是否 strict 取决于 embedded value resolver（不是注解本身）
 2) strict fail-fast 的典型来源是 `PropertySourcesPlaceholderConfigurer`（BFPP，早期介入）
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“resolveEmbeddedValue → placeholder resolver”的最短证据链，并区分 ${} 与 #{}。
+    - B（边界反例）：反例：把占位符解析/SpEL 求值/类型转换混为一谈导致误诊。
+    - C（排障 SOP）：排障 SOP：三连分层（占位符→SpEL→转换），每层第一断点入口与判断标准。
+    - D（断点观察）： watch list：embeddedValueResolver、propertySources、missing key 处理策略。
+    - E（面试复述）：面试追问：strict 策略是谁决定的？为什么不建议默认 non-strict？
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansSmartInitializingSingletonLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“触发窗口”证据链（preInstantiateSingletons 完成后的回调触发点）。
+    - B（边界反例）：反例：lazy 单例不在其中；过早初始化导致副作用。
+    - C（排障 SOP）：排障：为什么 hook 没触发/触发顺序不符期望？
+    - D（断点观察）：断点：afterSingletonsInstantiated 的触发点与执行顺序观察。
+    - E（面试复述）：面试追问：它与 ContextRefreshedEvent 的差异与选择策略。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 有时候需要一个“容器已经把主要单例都创建完”的时机点，比如：

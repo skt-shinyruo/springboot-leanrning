@@ -183,6 +183,15 @@
 
 1) `@Resource` 为什么更像 name-first？（默认用字段名当 beanName；由 CommonAnnotationBeanPostProcessor 处理）
 2) 为什么在某些容器里它完全不生效？（没注册 annotation processors，注解无人处理）
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）： name-first 的完整决策链（name 指定/默认字段名/fallback type）的证据链。
+    - B（边界反例）：反例：alias/同名覆盖导致注入错对象；与 @Primary/@Qualifier 的误对比。
+    - C（排障 SOP）：排障：@Resource 注入错对象时的 SOP（先查 beanName/alias，再查 type）。
+    - D（断点观察）：断点：CommonAnnotationBeanPostProcessor 与依赖解析入口对照。
+    - E（面试复述）：面试追问：@Resource vs @Autowired 的选择策略，如何用证据链说明差异。
+<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 

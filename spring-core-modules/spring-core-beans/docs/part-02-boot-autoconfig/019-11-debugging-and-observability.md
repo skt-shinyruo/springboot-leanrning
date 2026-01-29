@@ -29,6 +29,15 @@
     - Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“定义层可观测证据链”：如何证明一个 BeanDefinition 是谁注册的、何时注册的、是否被后处理器改写。
+    - B（边界反例）：反例：debug 日志误读、条件评估报告与真实注册行为不一致时的定位方法。
+    - C（排障 SOP）：排障 SOP：从“容器里没有/有但不是我想要的/被 proxy 了/值不对”四类症状分别如何收敛。
+    - D（断点观察）：观察点：ConditionEvaluationReport、beanDefinition 来源、auto-config import 列表（以及它们的查看方式）。
+    - E（面试复述）：面试追问：Boot 为什么会影响 Bean 图？如何用证据链解释 back-off。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 理解 Spring 容器的最快方式，是让“不可见的机制”变得可观察。

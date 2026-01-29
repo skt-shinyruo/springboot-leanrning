@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansAutowireCapableBeanFactoryLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAutowireCapableBeanFactoryLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“外部对象注入的能力边界”证据链：能做什么、不能做什么（生命周期/代理/销毁）。
+    - B（边界反例）：反例：误以为外部对象等同容器托管导致的资源泄漏与代理不生效。
+    - C（排障 SOP）：排障：外部对象注入后行为不符合预期时如何定位到“没走哪条容器主线”。
+    - D（断点观察）：断点：autowireBean/initializeBean/applyBeanPostProcessors 的调用路径对照。
+    - E（面试复述）：面试追问：什么时候应该用它，什么时候应该重构为容器托管？
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 真实项目里读者一定会遇到这种场景：

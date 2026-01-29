@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansRegistryPostProcessorLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRegistryPostProcessorLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“动态加定义”进入主线的证据链：何时被调用、对 registry 造成什么影响。
+    - B（边界反例）：反例：滥用导致 bean graph 难以推断；与 ImportBeanDefinitionRegistrar 混用导致时机误判。
+    - C（排障 SOP）：排障：为什么某个 bean “凭空出现/出现顺序异常/条件判断异常”。
+    - D（断点观察）：断点：invokeBeanFactoryPostProcessors 内部对 BDRPP 的分组与执行顺序。
+    - E（面试复述）：面试追问：BDRPP 与 BFPP 的边界与适用场景如何解释并证明。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章聚焦一个比 BFPP 更“早、更强”的扩展点：

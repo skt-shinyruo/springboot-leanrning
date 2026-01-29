@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticBeanPostProcessorLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“排序算法骨架”与关键列表快照（收集→排序→执行），让读者能在断点里看见顺序如何被决定。
+    - B（边界反例）：反例：programmatic 注册绕过默认排序；@Order 与 @Priority 的边界误判。
+    - C（排障 SOP）：排障：增强偶发不生效/顺序错乱时的第一入口与观察点。
+    - D（断点观察）：断点：排序发生点、processor 列表构建点、注册点。
+    - E（面试复述）：面试追问：为什么 PriorityOrdered 必须先于 Ordered？否则会出现什么可证明的问题。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 ### 默认基础设施处理器（为什么它们的顺序很重要）

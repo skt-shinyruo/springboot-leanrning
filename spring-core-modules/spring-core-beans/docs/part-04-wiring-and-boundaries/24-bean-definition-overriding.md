@@ -18,6 +18,15 @@
     - Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“覆盖发生在注册阶段”的证据链与配置入口（Framework/Boot 差异需明确）。
+    - B（边界反例）：反例：覆盖导致注入命中改变但不易察觉；与 auto-config back-off 的交互误判。
+    - C（排障 SOP）：排障：同名 bean 冲突/覆盖导致行为偏差的 SOP（先看谁注册、后看覆盖策略）。
+    - D（断点观察）：观察点：注册冲突位置、BeanDefinition 源信息（如 resourceDescription）。
+    - E（面试复述）：面试追问：为什么团队通常不建议默认允许覆盖？如何给出工程化理由与证据。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 当读者注册两个同名 bean 时，会发生什么？

@@ -16,6 +16,15 @@
     - Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBuiltInFactoryBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansServiceLoaderFactoryBeansLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：按“行为模型”补证据链：反射调用型/服务定位型/代理生成型分别在哪个窗口替换最终对象。
+    - B（边界反例）：反例：把它们当普通 bean 导致的类型误判与调试困难。
+    - C（排障 SOP）：排障：看到某个内置 FactoryBean 时如何判断最终暴露对象、以及按类型发现的边界。
+    - D（断点观察）：断点：FactoryBean product 获取与缓存命中点。
+    - E（面试复述）：面试追问：为什么内置 FactoryBean 很常见？它们解决了什么抽象问题？
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 这一章补齐一个“读者不一定会手写，但排障/读源码时必遇到”的知识点：

@@ -33,6 +33,15 @@
     - Lab：`SpringCoreBeansLazyLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansLazyLabTest.java`
 
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：“两类 Lazy 的证据链对照”：lazy-init 的创建时机 vs 注入点 @Lazy 的代理时机。
+    - B（边界反例）：反例：懒代理叠加 AOP/循环依赖时的偏差；final 类/方法限制。
+    - C（排障 SOP）：排障：为什么你看到 lazy bean 被提前创建？如何判断是 dependsOn 拉起还是 proxy 触发。
+    - D（断点观察）：断点：代理创建点、首次触发目标创建点、注入解析分支。
+    - E（面试复述）：面试追问：@Lazy 与 ObjectProvider 的选择策略与边界。
+<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 懒加载经常被误用：很多人以为“加了 `@Lazy` 就不会启动慢了”，但实际效果取决于读者把 lazy 放在哪里。
