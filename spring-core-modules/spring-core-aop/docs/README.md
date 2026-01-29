@@ -2,6 +2,16 @@
 
 > 这一模块建议“从代理主线顺读”：先把代理心智模型与边界打牢，再进入 AutoProxyCreator 的主线，最后处理真实世界的多层代理叠加与排障。
 
+## Beans 前置（强烈建议先读一次）
+
+AOP 文档的很多“看起来像 AOP 的问题”，根因其实发生在 **Bean 创建阶段**（什么时候被替换成 proxy / early reference 如何参与循环依赖）。
+
+建议先用 Beans 的两章把“代理替换发生在哪个阶段”建立成稳定心智模型：
+
+- [Beans Why Index（基础问题索引）](../../spring-core-beans/docs/part-00-guide/009-00-why-index.md)
+- [Beans：代理替换发生在哪个阶段](../../spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
+- [Beans：early reference 与循环依赖](../../spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md)
+
 ## 从这里开始（建议顺序）
 
 1. [主线时间线](part-00-guide/028-03-mainline-timeline.md)

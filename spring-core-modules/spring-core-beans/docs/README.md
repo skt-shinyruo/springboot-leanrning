@@ -32,6 +32,7 @@
 
 ## 推荐从这里开始
 
+- 基础问题索引（Why Index）：三级缓存 / three level cache / early reference / proxy 替换 → [00. Why Index（基础问题索引）](part-00-guide/009-00-why-index.md)
 - 30 分钟快启：`part-00-guide/012-01-quickstart-30min.md`
 - 深挖导读（症状驱动导航）：`part-00-guide/011-00-deep-dive-guide.md`
 - 全章“内容级再加深”策略（A–E 维度，按章节给出补强方向）：`deepening-strategies/README.md`
@@ -48,6 +49,7 @@
 | `NoSuchBeanDefinitionException` / “@Bean/@Component 好像没生效” | [02. Bean 注册入口](part-01-ioc-container/02-bean-registration.md)、[12. 注解为何生效（bootstrap）](part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、[10. Boot 自动装配影响链路](part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) | 优先判定“定义层有没有注册 BeanDefinition” |
 | `NoUniqueBeanDefinitionException` / 多实现注入歧义 | [03. 依赖注入解析](part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择 vs 顺序](part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) | 收敛：`@Primary/@Qualifier/@Priority` |
 | “循环依赖”报错 / `BeanCurrentlyInCreationException` | [09. 循环依赖（现象与规避）](part-01-ioc-container/09-circular-dependencies.md)、[16. early reference 与循环依赖](part-03-container-internals/16-early-reference-and-circular.md) | 先区分 constructor vs setter；再看 early reference 参与者 |
+| “为什么 Spring 要用三级缓存？” / `three level cache` / `earlySingletonObjects` / `singletonFactories` | [00. Why Index（基础问题索引）](part-00-guide/009-00-why-index.md)、[09. 循环依赖](part-01-ioc-container/09-circular-dependencies.md)、[16. early reference](part-03-container-internals/16-early-reference-and-circular.md) | 先抓住“final/early/factory 三类语义”与“early 形态一致性（raw vs proxy）” |
 | lazy bean 启动期被拉起 / “明明 @Lazy 还被提前创建” | [19. dependsOn](part-04-wiring-and-boundaries/19-depends-on.md)、[18. Lazy 语义](part-04-wiring-and-boundaries/023-18-lazy-semantics.md) | `dependsOn` 会显式 `getBean(dep)`，可强制拉起 lazy-init |
 | “拿到的是 proxy” / AOP 行为异常 / self-invocation | [31. 代理产生阶段（BPP 替换）](part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)、[15. 实例化前短路（pre）](part-03-container-internals/15-pre-instantiation-short-circuit.md) | 先定位是 pre/early/after-init 哪个窗口替换对象 |
 | `@Value(\"${...}\")` 解析失败 / 值不符合预期 | [34. 占位符解析（strict vs non-strict）](part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)、[38. Environment/PropertySource](part-04-wiring-and-boundaries/38-environment-and-propertysource.md) | 关注 PropertySource precedence 与 placeholder resolver |

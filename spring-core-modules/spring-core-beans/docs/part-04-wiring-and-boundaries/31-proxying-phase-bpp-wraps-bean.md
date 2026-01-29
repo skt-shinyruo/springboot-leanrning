@@ -23,6 +23,27 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
 
+## 为什么最终暴露对象会变化？（统一解释：缓存解决“时机”，BPP 决定“形态”）
+
+> 如果你遇到的困惑是“我明明看到 bean 已经 new 出来了，为什么最终注入/获取时却变成了 proxy？”  
+> 建议先把这个索引页看完（答案先行）：[`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)。
+
+这一章是 Beans ↔ AOP 的关键桥接点：它把“代理”放回 IoC 容器视角解释清楚。
+
+请先记住一句话（后续所有排障都围绕它展开）：
+
+> **容器对外返回的是最终暴露对象（exposed object），而不是原始实例；BPP 允许在创建过程中返回替身对象（proxy/wrapper）。**
+
+把它与循环依赖放在一起看，会更清晰：
+
+- **三级缓存**解决的是：循环依赖窗口期“什么时候可以交付引用”（final/early/factory 三类语义）
+- **BPP/`getEarlyBeanReference`**解决的是：窗口期“交付出去的引用到底是什么形态”（raw 还是 proxy），并尽量做到 early == final
+
+跨模块前置（建议只读 1 次，之后就能在两边自由切换）：
+
+- AOP 心智模型（call path/self-invocation）：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+- AOP 容器主线（为什么 AutoProxyCreator 是 BPP）：[07. AOP 的容器主线：AutoProxyCreator 作为 BPP](../../../spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)
+
 ## 机制主线：容器允许“换对象”
 
 Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展点返回“另一个对象”作为最终结果。

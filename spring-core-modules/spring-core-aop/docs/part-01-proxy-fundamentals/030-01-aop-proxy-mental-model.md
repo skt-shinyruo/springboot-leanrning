@@ -18,6 +18,14 @@
 - 本章主题：**01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
 
+!!! tip "前置：把“代理替换发生在哪个阶段”放回容器主线（强烈建议只读一次）"
+
+    很多读者在 AOP 里卡住的根因是：对 **Bean 创建阶段** 没有稳定心智模型（什么时候允许“换对象”、early reference 如何参与循环依赖）。
+
+    - Beans 基础问题索引（Why Index）：`../../../spring-core-beans/docs/part-00-guide/009-00-why-index.md`
+    - Beans：代理替换发生在哪个阶段（exposed object / BPP 替身对象）：`../../../spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+    - Beans：early reference 与循环依赖（raw vs wrapped 一致性）：`../../../spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+
 !!! summary "本章要点"
 
     - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。

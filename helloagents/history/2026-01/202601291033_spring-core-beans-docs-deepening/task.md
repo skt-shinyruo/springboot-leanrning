@@ -2,7 +2,7 @@
 
 > 说明：本任务清单关注“如何把逐章建议落实到实际文档/实验/索引”。逐章的具体建议已写在 `chapters/*.md`。
 
-> Note：本次按你的偏好执行，不要求迁移到 `helloagents/history/`；方案包保留在 `helloagents/plan/` 以便继续增量迭代。
+> Note：原本按偏好保留在 `helloagents/plan/`；已于 2026-01-29 按确认迁移到 `helloagents/history/2026-01/` 归档。
 
 ## A. 入口与导航（优先）
 

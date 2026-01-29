@@ -1,6 +1,6 @@
 # 任务清单（逐章深度完善：执行阶段）
 
-> Note：本次以 `~exec` 执行，按你的要求 **不迁移** 到 `helloagents/history/`，保留在 `helloagents/plan/` 以便继续增量迭代。
+> Note：原本按偏好保留在 `helloagents/plan/`；已于 2026-01-29 按确认迁移到 `helloagents/history/2026-01/` 归档。
 
 ## A. 入口与导航（优先）
 

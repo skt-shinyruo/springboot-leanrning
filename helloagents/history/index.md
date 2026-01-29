@@ -8,9 +8,12 @@
 
 | 时间戳 | 变更名称 | 类型 | 状态 | 方案包路径 |
 | --- | --- | --- | --- | --- |
+| 202601291517 | beans_aop_explainability_upgrade | Enhancement | ✅Completed | [202601291517_beans-aop-explainability-upgrade](2026-01/202601291517_beans-aop-explainability-upgrade/) |
 | 202601291256 | spring_core_beans_ae_into_chapters | Enhancement | ✅Completed | [202601291256_spring-core-beans-ae-into-chapters](2026-01/202601291256_spring-core-beans-ae-into-chapters/) |
+| 202601291227 | spring_core_aop_docs_deepening | Enhancement | ✅Completed | [202601291227_spring-core-aop-docs-deepening](2026-01/202601291227_spring-core-aop-docs-deepening/) |
 | 202601291213 | spring_core_beans_content_deepen | Enhancement | ✅Completed | [202601291213_spring-core-beans-content-deepen](2026-01/202601291213_spring-core-beans-content-deepen/) |
 | 202601291111 | spring_core_beans_chapter_deepening | Enhancement | ✅Completed | [202601291111_spring-core-beans-chapter-deepening](2026-01/202601291111_spring-core-beans-chapter-deepening/) |
+| 202601291033 | spring_core_beans_docs_deepening | Enhancement | ✅Completed | [202601291033_spring-core-beans-docs-deepening](2026-01/202601291033_spring-core-beans-docs-deepening/) |
 | 202601281326 | spring_core_beans_docs_formalize | Enhancement | ✅Completed | [202601281326_spring_core_beans_docs_formalize](2026-01/202601281326_spring_core_beans_docs_formalize/) |
 | 202601281041 | spring_core_beans_deepen_per_chapter | Enhancement | ✅Completed | [202601281041_spring_core_beans_deepen_per_chapter](2026-01/202601281041_spring_core_beans_deepen_per_chapter/) |
 | 202601272227 | spring_core_beans_docs_tutorial_v2_all | Enhancement | ✅Completed | [202601272227_spring_core_beans_docs_tutorial_v2_all](2026-01/202601272227_spring_core_beans_docs_tutorial_v2_all/) |
@@ -90,7 +93,10 @@
 
 ### 2026-01
 
+- [202601291517_beans-aop-explainability-upgrade](2026-01/202601291517_beans-aop-explainability-upgrade/) - beans + aop：基础知识可解释性升级（Why Index + 最短证据链 + 跨模块互链）
+- [202601291227_spring-core-aop-docs-deepening](2026-01/202601291227_spring-core-aop-docs-deepening/) - spring-core-aop：逐章深度完善（docs + Lab/Test + 断点/排障闭环一致性补强）
 - [202601291111_spring-core-beans-chapter-deepening](2026-01/202601291111_spring-core-beans-chapter-deepening/) - spring-core-beans：目录页新增“症状驱动导航（快速定位）”并补齐 19/20/41 三章 BOOKIFY 标记
+- [202601291033_spring-core-beans-docs-deepening](2026-01/202601291033_spring-core-beans-docs-deepening/) - spring-core-beans：逐章深度完善（按章节给出补充/完善/深入策略并落地到 docs/Lab）
 - [202601271944_spring_core_beans_bean_registration_callchain_and_playbook](2026-01/202601271944_spring_core_beans_bean_registration_callchain_and_playbook/) - spring-core-beans：进一步深化 02-bean-registration（方法级调用链 + 排障决策表 + 面试标准答案），用于源码进阶/面试/内训/排障
 - [202601271739_spring_core_beans_bean_registration_deepen](2026-01/202601271739_spring_core_beans_bean_registration_deepen/) - spring-core-beans：深化 02-bean-registration（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”
 - [202601271554_spring_core_beans_docs_tutorial_upgrade](2026-01/202601271554_spring_core_beans_docs_tutorial_upgrade/) - spring-core-beans：新增团队内训讲义（60/90/120 分钟课时脚本），并接入 docs 目录页/知识地图/Debugger Pack 导航

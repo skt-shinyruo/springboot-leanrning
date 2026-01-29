@@ -18,6 +18,10 @@
 
 - 路线图：`helloagents/wiki/learning-path.md`
 - Docs Index：`spring-core-modules/spring-core-aop/docs/README.md`
+- Beans 前置（强烈建议只读一次，后续 AOP 排障会更稳定）：
+  - `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`（Why Index：三级缓存/early reference/proxy 替换）
+  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`（代理替换发生在哪个阶段）
+  - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`（early reference 与形态一致性）
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopLabTest#adviceIsAppliedToTracedMethod test`
   - 对应测试类：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopLabTest.java`

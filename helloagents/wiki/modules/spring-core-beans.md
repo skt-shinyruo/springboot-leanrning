@@ -8,6 +8,7 @@
 
 - **Responsibility:** 提供 Bean 机制的系统文档与可运行 Labs/Exercises，用于建立源码级心智模型与排障能力。
 - **Docs Reading:** 推荐从 `spring-core-modules/spring-core-beans/docs/README.md` 开始（书本目录 + Part 划分）；主线可按 Part 顺读，每章顶部提供“上一章｜目录｜下一章”导航，降低章节切换成本。
+- **Why Index（基础问题索引 / SSOT）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`（覆盖：三级缓存/three level cache、early reference、raw vs wrapped、proxy 替换；并提供跨模块回链到 AOP）
 - **内容级再加深（A–E 维度策略清单）:** `spring-core-modules/spring-core-beans/docs/deepening-strategies/README.md`（按 Part/章节给出“证据链/反例/排障/断点/面试复述”补强方向）
 - **内容级再加深（已写入正文）:** 各章节已内嵌 `AE-DEEPENING` 提示块（位于 `## 机制主线` 前），用于把 A–E 维度的“下一步怎么深挖”直接落到正文阅读路径里
 - **症状快速定位（目录页入口）:** `spring-core-modules/spring-core-beans/docs/README.md`（新增“症状驱动导航（快速定位）”，用于从现象直达章节与证据链入口）

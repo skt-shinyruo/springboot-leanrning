@@ -4,6 +4,24 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/README.md](docs/README.md)。
 
+## 基础问题索引（Why Index）：先把“为什么”讲清楚
+
+如果你已经顺读过 `docs/09`（循环依赖）与 `docs/16`（early reference），但仍然很难回答类似：
+
+- 为什么 Spring 要用三级缓存（three level cache）？
+- 为什么会出现 raw vs wrapped（allowRawInjectionDespiteWrapping）？
+- 为什么我拿到的 bean 可能是 proxy（exposed object 会变化）？
+
+建议先看这份“答案先行”的索引页（每个问题都绑定最短证据链：Lab + 断点 + watch list）：
+
+- `docs/part-00-guide/009-00-why-index.md`
+
+最短可运行入口（10 分钟闭环）：
+
+```bash
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEarlyReferenceLabTest test
+```
+
 ## 症状快速定位（从问题直达章节）
 
 如果你是带着具体问题来的（报错/现象驱动），建议先看 `docs/README.md` 的“症状驱动导航（快速定位）”，再回到对应章节按“证据链（方法级）+ 可运行 Lab”闭环。

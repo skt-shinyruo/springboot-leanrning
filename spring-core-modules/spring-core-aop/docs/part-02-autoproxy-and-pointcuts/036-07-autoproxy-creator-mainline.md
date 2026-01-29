@@ -60,9 +60,11 @@ AutoProxyCreator 之所以“强”，不是因为它“会代理”，而是因
   - `BeanPostProcessor#postProcessAfterInitialization`
 
 > 对应 beans 深挖章节：
-> - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md`
-> - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
-> - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+> 对应 beans 深挖章节（建议按“主线 → 分支”顺序，只要读 1 次就能在两边自由切换）：
+> - [18. refresh 主线：`refresh()` → `doCreateBean()`](../../../spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md)
+> - [15. 实例化前短路（pre-instantiation short-circuit）](../../../spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md)
+> - [16. early reference 与循环依赖：`getEarlyBeanReference`](../../../spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md)
+> - [31. 代理替换阶段：BPP 如何把 Bean 换成 Proxy（exposed object）](../../../spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
 
 ---
 

@@ -23,6 +23,48 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansCircularDependencyBoundaryLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
+## 一页式最短证据链（10 分钟）：看见 factory 层价值 + early 形态决策
+
+> 如果你读完 `09. 循环依赖` 仍然困惑“为什么需要三级缓存 / 为什么不是二级缓存”，请先看：  
+> - [`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)（答案先行）  
+> - AOP 前置心智模型：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+
+这一章的目标不是再重复“三级缓存长什么样”，而是让你在断点里看见两件事：
+
+1) **factory 层的价值：只有真正需要 early reference 时才创建它（延迟创建）**  
+2) **early 的形态要尽量等于 final：`getEarlyBeanReference` 让 BPP/AOP 决策 early reference 是 raw 还是 proxy（形态一致性）**
+
+### Step 1：跑一个最小用例（先把现象固定成断言）
+
+```bash
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEarlyReferenceLabTest test
+```
+
+如果你想把“带着隐患硬跑 vs fail-fast”的态度也一起验证：
+
+```bash
+mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabTest test
+```
+
+### Step 2：下 3 个断点（只要这 3 个就能闭环）
+
+1) `DefaultSingletonBeanRegistry#getSingleton`  
+2) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`  
+3) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+
+### Step 3：watch list（3–5 个点足够支撑复述）
+
+- `singletonObjects` / `earlySingletonObjects` / `singletonFactories`（三层命中）
+- `allowEarlyReference`（是否允许走 early 分支）
+- `earlySingletonExposure`（是否进入 early exposure 窗口）
+- `earlySingletonReference` vs `exposedObject`（early 与 final 是否一致）
+
+### Step 4：你应该能复述的 3 句话（3 分钟闭环）
+
+1) 三级缓存解决的是“什么时候能交付引用”（final/early/factory 三类语义，factory 让 early 引用按需创建）。  
+2) `getEarlyBeanReference` 解决的是“交付出去的 early 引用是什么形态”（raw vs proxy），并尽量做到 early == final。  
+3) 如果做不到一致，Spring 默认 fail-fast；打开 `allowRawInjectionDespiteWrapping` 就是读者接受“绕过代理”的隐患。
+
 ## 机制主线：early reference 的“时机”与“形态”
 
 上一章（[09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md)）读者已经建立了一个关键事实：

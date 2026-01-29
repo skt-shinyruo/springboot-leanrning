@@ -5,6 +5,8 @@
 ## [Unreleased]
 ### Added
 - `spring-core-beans` 补齐缺失章节：`020-09-auto-config-ordering.md`
+- `spring-core-beans`：新增基础问题索引（Why Index），为“三级缓存 / early reference / raw vs wrapped / proxy 替换”等高频问题提供答案先行入口与 10 分钟证据链（Lab/断点/watch list）。
+- `spring-core-aop`：docs 增加 Beans 前置导航与跨模块互链（Beans ↔ AOP），降低“需要拼图才能理解”的成本。
 
 ### Added
 - spring-core-beans：新增 Debugger Pack 文档与主线/断点/排障/性能入口测试套件

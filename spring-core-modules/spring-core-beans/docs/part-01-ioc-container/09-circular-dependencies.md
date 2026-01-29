@@ -68,6 +68,33 @@
 
 ---
 
+## 1.2 为什么读者看完仍不懂“为什么要三级缓存”？（桥接：2-level vs 3-level）
+
+> 如果你此刻的核心困惑是“为什么不是二级缓存就够”，建议先看一眼：  
+> - [`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)（答案先行 + 10 分钟证据链）  
+> - AOP 前置心智模型：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+
+读者之所以会在“三级缓存”这里卡住，通常是因为把它误当成“多一个 Map 的实现细节”，而忽略了它在设计上解决的是两个更本质的问题：
+
+1) **只在真的需要 early reference 时才创建它（按需/延迟）**  
+2) **让 early reference 的形态（raw vs proxy）可被 BPP/AOP 决策，并尽量做到 early == final（一致性）**
+
+把它压缩成一句话：
+
+> 二级缓存只能缓存“对象”；三级缓存额外缓存了“按需生成 early reference 的能力（ObjectFactory）”，从而把“创建时机 + 形态决策”钉死在可控窗口里。
+
+### 二级 vs 三级：差别不在“多一层”，而在“什么时候做决定”
+
+| 方案 | 你能存什么 | 会遇到的典型问题 | 为什么会卡在 AOP/代理上 |
+| --- | --- | --- | --- |
+| 2-level（final + early） | 只能存对象（raw 或 proxy） | 要么“所有 bean 都提前生成 early 引用/early proxy”（不必要成本），要么“先放 raw，后面再换成 proxy”（raw 注入绕过代理/一致性失败） | proxy/wrapper 的生成点本来就在 BPP 链上；如果 early 阶段交出去的是 raw，而 final 阶段变成 proxy，就出现 early ≠ final |
+| 3-level（final + early + factory） | 既能存对象，也能存“生成对象的工厂（ObjectFactory）” | 只有真正出现循环注入、确实需要 early 引用时才创建；并且创建时会走 `getEarlyBeanReference`，尽量让 early 与 final 对齐 | factory 把“是否需要 early / early 形态是什么”延迟到需求出现的那一刻，让 BPP/AOP 在正确窗口介入 |
+
+如果你希望把“二级 vs 三级”的论证走到方法级证据链，下一章应该读：
+
+- [`16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？`](../part-03-container-internals/16-early-reference-and-circular.md)（把 raw vs wrapped 与一致性保护讲透）
+- [`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)（把“最终暴露对象可能变化”的容器视角讲透）
+
 ## 2. 三层缓存的真实语义：final / early / factory
 
 循环依赖相关的缓存都在 `DefaultSingletonBeanRegistry` 里。无需背字段名，但必须能把三类语义对上：
