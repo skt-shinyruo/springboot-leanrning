@@ -1,18 +1,25 @@
 package com.learning.springboot.springcorebeans.part04_wiring_and_boundaries;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.lang.reflect.Proxy;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -24,6 +31,7 @@ class SpringCoreBeansCustomScopeLabTest {
 
     private static final AtomicLong sequence = new AtomicLong();
     private static final AtomicLong prototypeSequence = new AtomicLong();
+    private static final AtomicLong destroyed = new AtomicLong();
 
     @Test
     void threadScope_createsOneInstancePerThread_whenAccessedDirectly() throws Exception {
@@ -92,6 +100,33 @@ class SpringCoreBeansCustomScopeLabTest {
     }
 
     @Test
+    void scopedProxy_registersScopedTargetBeanDefinition_andInterfacesProxyRequiresInterfaceInjection() throws Exception {
+        sequence.set(0);
+
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ProxyThreadScopeInterfacesConfiguration.class)) {
+            DefaultListableBeanFactory beanFactory = context.getDefaultListableBeanFactory();
+            assertThat(beanFactory.containsBeanDefinition("threadScopedCounter")).isTrue();
+            assertThat(beanFactory.containsBeanDefinition("scopedTarget.threadScopedCounter")).isTrue();
+
+            InterfaceConsumer consumer = context.getBean(InterfaceConsumer.class);
+
+            Observation o1 = runInThread(consumer::currentId);
+            Observation o2 = runInThread(consumer::currentId);
+
+            System.out.println("OBSERVE: ScopedProxyMode.INTERFACES => JDK proxy; inject by interface, not concrete class");
+            System.out.println("OBSERVE: scopedTarget.<beanName> is a real BeanDefinition registered by the container");
+
+            assertThat(o1.first()).isEqualTo(o1.second());
+            assertThat(o2.first()).isEqualTo(o2.second());
+            assertThat(o1.first()).isNotEqualTo(o2.first());
+
+            ThreadScopedCounter counterByConcreteType = context.getBean(ThreadScopedCounter.class);
+            System.out.println("OBSERVE: getBean(ThreadScopedCounter.class) can resolve to scopedTarget.<beanName> (target bean), not the JDK proxy");
+            assertThat(Proxy.isProxyClass(counterByConcreteType.getClass())).isFalse();
+        }
+    }
+
+    @Test
     void prototypeInjectedIntoSingleton_isResolvedOnce_butObjectProviderCanObtainFreshPrototypeEachCall() {
         prototypeSequence.set(0);
 
@@ -113,6 +148,34 @@ class SpringCoreBeansCustomScopeLabTest {
         }
     }
 
+    @Test
+    void customScope_canTriggerDestructionCallbacks_whenScopeEnds() {
+        sequence.set(0);
+        destroyed.set(0);
+        SwitchableScopeConfiguration.SCOPE.reset();
+
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SwitchableScopeConfiguration.class)) {
+            SwitchableScopeConfiguration.SCOPE.setConversationId("A");
+            DestroyAwareCounter a1 = context.getBean(DestroyAwareCounter.class);
+            DestroyAwareCounter a2 = context.getBean(DestroyAwareCounter.class);
+            assertThat(a1.id()).isEqualTo(a2.id());
+
+            SwitchableScopeConfiguration.SCOPE.setConversationId("B");
+            DestroyAwareCounter b1 = context.getBean(DestroyAwareCounter.class);
+            assertThat(b1.id()).isNotEqualTo(a1.id());
+
+            assertThat(destroyed.get()).isZero();
+
+            SwitchableScopeConfiguration.SCOPE.clearScope("A");
+            assertThat(destroyed.get()).isEqualTo(1);
+
+            SwitchableScopeConfiguration.SCOPE.clearScope("B");
+            assertThat(destroyed.get()).isEqualTo(2);
+
+            System.out.println("OBSERVE: destruction callbacks are registered by the container, but executed by the Scope implementation");
+        }
+    }
+
     private static Observation runInThread(Callable<Long> task) throws Exception {
         ExecutorService executor = Executors.newFixedThreadPool(1);
         try {
@@ -130,14 +193,19 @@ class SpringCoreBeansCustomScopeLabTest {
     record Observation(long first, long second) {
     }
 
-    static class ThreadScopedCounter {
+    interface Counter {
+        long id();
+    }
+
+    static class ThreadScopedCounter implements Counter {
         private final long id;
 
         ThreadScopedCounter() {
             this.id = sequence.incrementAndGet();
         }
 
-        long id() {
+        @Override
+        public long id() {
             return id;
         }
     }
@@ -163,6 +231,18 @@ class SpringCoreBeansCustomScopeLabTest {
 
         long currentId() {
             return counterProvider.getObject().id();
+        }
+    }
+
+    static class InterfaceConsumer {
+        private final Counter counter;
+
+        InterfaceConsumer(Counter counter) {
+            this.counter = counter;
+        }
+
+        long currentId() {
+            return counter.id();
         }
     }
 
@@ -211,6 +291,26 @@ class SpringCoreBeansCustomScopeLabTest {
         }
     }
 
+    @Configuration
+    static class ProxyThreadScopeInterfacesConfiguration {
+
+        @Bean
+        static BeanFactoryPostProcessor registerThreadScope() {
+            return beanFactory -> ((ConfigurableBeanFactory) beanFactory).registerScope("thread", new SimpleThreadScope());
+        }
+
+        @Bean
+        @Scope(value = "thread", proxyMode = ScopedProxyMode.INTERFACES)
+        Counter threadScopedCounter() {
+            return new ThreadScopedCounter();
+        }
+
+        @Bean
+        InterfaceConsumer interfaceConsumer(Counter counter) {
+            return new InterfaceConsumer(counter);
+        }
+    }
+
     static class PrototypeCounter {
         private final long id;
 
@@ -220,6 +320,91 @@ class SpringCoreBeansCustomScopeLabTest {
 
         long id() {
             return id;
+        }
+    }
+
+    static class DestroyAwareCounter implements DisposableBean {
+        private final long id;
+
+        DestroyAwareCounter(long id) {
+            this.id = id;
+        }
+
+        long id() {
+            return id;
+        }
+
+        @Override
+        public void destroy() {
+            destroyed.incrementAndGet();
+        }
+    }
+
+    static class SwitchableScope implements org.springframework.beans.factory.config.Scope {
+        private final AtomicReference<String> conversationId = new AtomicReference<>("default");
+        private final ConcurrentHashMap<String, ConcurrentHashMap<String, Object>> scopedObjects = new ConcurrentHashMap<>();
+        private final ConcurrentHashMap<String, ConcurrentHashMap<String, Runnable>> destructionCallbacks = new ConcurrentHashMap<>();
+
+        void setConversationId(String id) {
+            this.conversationId.set(id);
+        }
+
+        void clearScope(String id) {
+            ConcurrentHashMap<String, Runnable> callbacks = destructionCallbacks.remove(id);
+            if (callbacks != null) {
+                callbacks.values().forEach(Runnable::run);
+            }
+            scopedObjects.remove(id);
+        }
+
+        void reset() {
+            for (String id : scopedObjects.keySet().toArray(new String[0])) {
+                clearScope(id);
+            }
+            for (String id : destructionCallbacks.keySet().toArray(new String[0])) {
+                clearScope(id);
+            }
+            this.conversationId.set("default");
+        }
+
+        @Override
+        public Object get(String name, ObjectFactory<?> objectFactory) {
+            String id = this.conversationId.get();
+            ConcurrentHashMap<String, Object> objects =
+                    scopedObjects.computeIfAbsent(id, ignored -> new ConcurrentHashMap<>());
+            return objects.computeIfAbsent(name, ignored -> objectFactory.getObject());
+        }
+
+        @Override
+        public Object remove(String name) {
+            String id = this.conversationId.get();
+            ConcurrentHashMap<String, Runnable> callbacks = destructionCallbacks.get(id);
+            if (callbacks != null) {
+                Runnable callback = callbacks.remove(name);
+                if (callback != null) {
+                    callback.run();
+                }
+            }
+            ConcurrentHashMap<String, Object> objects = scopedObjects.get(id);
+            return objects == null ? null : objects.remove(name);
+        }
+
+        @Override
+        public void registerDestructionCallback(String name, Runnable callback) {
+            String id = this.conversationId.get();
+            ConcurrentHashMap<String, Runnable> callbacks =
+                    destructionCallbacks.computeIfAbsent(id, ignored -> new ConcurrentHashMap<>());
+            callbacks.put(name, callback);
+        }
+
+        @Override
+        public Object resolveContextualObject(String key) {
+            return null;
+        }
+
+        @Override
+        public String getConversationId() {
+            return this.conversationId.get();
         }
     }
 
@@ -264,6 +449,22 @@ class SpringCoreBeansCustomScopeLabTest {
         @Bean
         PrototypeProviderConsumer prototypeProviderConsumer(ObjectProvider<PrototypeCounter> provider) {
             return new PrototypeProviderConsumer(provider);
+        }
+    }
+
+    @Configuration
+    static class SwitchableScopeConfiguration {
+        static final SwitchableScope SCOPE = new SwitchableScope();
+
+        @Bean
+        static BeanFactoryPostProcessor registerSwitchableScope() {
+            return beanFactory -> ((ConfigurableBeanFactory) beanFactory).registerScope("switchable", SCOPE);
+        }
+
+        @Bean
+        @Scope("switchable")
+        DestroyAwareCounter destroyAwareCounter() {
+            return new DestroyAwareCounter(sequence.incrementAndGet());
         }
     }
 }

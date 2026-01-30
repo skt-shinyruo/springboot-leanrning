@@ -44,15 +44,15 @@
 
 ### Boot 自动装配的角色分工（调试时先记住这 4 类）
 
-- **导入清单**：`AutoConfigurationImportSelector#selectImports`  
-- **排序器**：`AutoConfigurationImportSorter`（决定先后）  
-- **条件评估**：`ConditionEvaluator#shouldSkip`  
+- **导入清单**：`AutoConfigurationImportSelector#selectImports`
+- **排序器**：`AutoConfigurationImportSorter`（决定先后）
+- **条件评估**：`ConditionEvaluator#shouldSkip`
 - **定义注册**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions`
 
 ### 顺序 vs 条件：为什么“偶发失效”往往是顺序问题
 
-排序决定“谁先注册”；条件评估在特定阶段触发。  
-当一个 Auto-Config 依赖“前一个配置先注册某个 bean”才能通过条件时，**顺序一变就像“偶发失效”**。  
+排序决定“谁先注册”；条件评估在特定阶段触发。
+当一个 Auto-Config 依赖“前一个配置先注册某个 bean”才能通过条件时，**顺序一变就像“偶发失效”**。
 调试时优先看：导入顺序 → 条件报告 → BeanDefinition 来源。
 
 ## 0. 观测对象总览：读者其实只是在看 5 类东西
@@ -77,9 +77,9 @@
 
 ### 0.1 机制讲透：条件 → 分支 → 结果（观测对象版）
 
-**条件**：需要解决的是“定义/候选/注入/最终对象”的哪一类问题  
-**分支**：进入对应入口方法（`getBeanDefinition` / `findAutowireCandidates` / `doResolveDependency` / `applyBeanPostProcessorsAfterInitialization`）  
-**结果**：把“现象”归位到明确的数据结构变化，而不是停留在日志猜测  
+**条件**：需要解决的是“定义/候选/注入/最终对象”的哪一类问题
+**分支**：进入对应入口方法（`getBeanDefinition` / `findAutowireCandidates` / `doResolveDependency` / `applyBeanPostProcessorsAfterInitialization`）
+**结果**：把“现象”归位到明确的数据结构变化，而不是停留在日志猜测
 **断点建议**：`DefaultListableBeanFactory#doResolveDependency`
 
 ## 1. 最简单也最有效：查容器里到底有哪些 Bean
@@ -148,8 +148,8 @@
 
 ### 4.1 可断言诊断（把“生效/失效”做成测试）
 
-- 用 `ApplicationContextRunner` 构建最小上下文  
-- 用 `ConditionEvaluationReport` 断言某个 Auto-Config 是否生效  
+- 用 `ApplicationContextRunner` 构建最小上下文
+- 用 `ConditionEvaluationReport` 断言某个 Auto-Config 是否生效
 - 用 `beanDefinition.getSource()` 反推定义来源（避免“以为是我注册的”）
 
 ## 5. 日志：把容器行为“吵”出来
@@ -185,14 +185,14 @@
 
 完成该组用例后，至少应能够复述 3 条结论：
 
-1) **自动装配是否生效可被断言**  
-   - 断点：`ConditionEvaluationReport#get`  
+1) **自动装配是否生效可被断言**
+   - 断点：`ConditionEvaluationReport#get`
    - 断言：report 中存在对应的 match/no-match 结果
-2) **导入顺序会影响条件判断**  
-   - 断点：`AutoConfigurationImportSorter`  
+2) **导入顺序会影响条件判断**
+   - 断点：`AutoConfigurationImportSorter`
    - 断言：排序改变后某些条件结果不同
-3) **定义来源可追溯**  
-   - 断点：`registerBeanDefinition`  
+3) **定义来源可追溯**
+   - 断点：`registerBeanDefinition`
    - 断言：`beanDefinition.getSource()` 指向 Auto-Config 类
 
 ## 7. 代理定位闭环：为什么它是 proxy？
@@ -363,6 +363,29 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 ```bash
 mvn -pl :spring-core-beans spring-boot:run
 ```
+
+## 补充：异常信息背后的“注入点元数据”（DependencyDescriptor / `MethodParameter`）
+
+当你在真实项目里遇到 `NoSuchBeanDefinitionException` / `NoUniqueBeanDefinitionException` 时，不要第一时间“猜是不是没扫描到”。
+更高收益的起手式是：把异常当成“注入点元数据的摘要”，快速还原三件事：
+
+1. **注入点要的是什么？**（类型/泛型/是否 required）
+2. **注入点带了哪些限定信号？**（`@Qualifier/@Primary/@Lazy/@Resource` 等）
+3. **注入点来自哪里？**（字段还是构造器/方法参数）
+
+在源码里，这些信息最终都收敛到 `DependencyDescriptor`：
+
+- 字段注入：`descriptor.getField() != null`
+- 参数注入：`descriptor.getMethodParameter() != null`（底层是 `org.springframework.core.MethodParameter`）
+
+**建议的“从异常秒跳断点”路线（稳定、可复用）：**
+
+- 入口：`DefaultListableBeanFactory#doResolveDependency(...)`
+- 固定观察点：
+  - `descriptor`（看注入点元数据）
+  - `dependencyType / resolvableType`（看“到底要什么”）
+  - `candidates`（看“有哪些可能”）
+  - `autowiredBeanNames`（看“最后选了谁/为什么”）
 
 ## 11. 异常 → 断点入口（从报错秒跳到正确抓手）
 

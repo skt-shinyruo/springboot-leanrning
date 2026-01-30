@@ -6,9 +6,12 @@ package com.learning.springboot.springcorebeans.testsupport;
  */
 
 import java.util.Objects;
+import java.util.StringJoiner;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.AutowireCandidateQualifier;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -53,6 +56,8 @@ public final class BeanDefinitionOriginDumper {
         sb.append(indent).append("- role: ").append(roleName(bd.getRole())).append('\n');
         sb.append(indent).append("- primary: ").append(bd.isPrimary()).append('\n');
         sb.append(indent).append("- autowireCandidate: ").append(bd.isAutowireCandidate()).append('\n');
+        sb.append(indent).append("- lazyInit: ").append(bd.isLazyInit()).append('\n');
+        sb.append(indent).append("- dependsOn: ").append(formatDependsOn(bd.getDependsOn())).append('\n');
 
         sb.append(indent).append("- resourceDescription: ")
                 .append(Objects.toString(bd.getResourceDescription(), "(null)")).append('\n');
@@ -63,6 +68,11 @@ public final class BeanDefinitionOriginDumper {
             sb.append(indent).append("- factoryBeanName: ").append(Objects.toString(abd.getFactoryBeanName(), "(null)")).append('\n');
             sb.append(indent).append("- factoryMethodName: ").append(Objects.toString(abd.getFactoryMethodName(), "(null)")).append('\n');
             sb.append(indent).append("- synthetic: ").append(abd.isSynthetic()).append('\n');
+            sb.append(indent).append("- abstract: ").append(abd.isAbstract()).append('\n');
+            sb.append(indent).append("- description: ").append(Objects.toString(abd.getDescription(), "(null)")).append('\n');
+            sb.append(indent).append("- initMethodName: ").append(Objects.toString(abd.getInitMethodName(), "(null)")).append('\n');
+            sb.append(indent).append("- destroyMethodName: ").append(Objects.toString(abd.getDestroyMethodName(), "(null)")).append('\n');
+            sb.append(indent).append("- qualifiers: ").append(formatQualifiers(abd)).append('\n');
         }
     }
 
@@ -78,5 +88,45 @@ public final class BeanDefinitionOriginDumper {
             default -> String.valueOf(role);
         };
     }
-}
 
+    private static String formatDependsOn(String[] dependsOn) {
+        if (dependsOn == null || dependsOn.length == 0) {
+            return "(none)";
+        }
+        StringJoiner joiner = new StringJoiner(", ", "[", "]");
+        for (String dep : dependsOn) {
+            joiner.add(dep);
+        }
+        return joiner.toString();
+    }
+
+    private static String formatQualifiers(AbstractBeanDefinition abd) {
+        if (abd.getQualifiers().isEmpty()) {
+            return "(none)";
+        }
+
+        TreeMap<String, AutowireCandidateQualifier> sorted = new TreeMap<>();
+        for (AutowireCandidateQualifier qualifier : abd.getQualifiers()) {
+            sorted.put(qualifier.getTypeName(), qualifier);
+        }
+
+        StringJoiner joiner = new StringJoiner(", ", "[", "]");
+        for (AutowireCandidateQualifier qualifier : sorted.values()) {
+            joiner.add(formatQualifier(qualifier));
+        }
+        return joiner.toString();
+    }
+
+    private static String formatQualifier(AutowireCandidateQualifier qualifier) {
+        StringJoiner joiner = new StringJoiner(", ", qualifier.getTypeName() + "{", "}");
+        String[] names = qualifier.attributeNames();
+        TreeMap<String, Object> sorted = new TreeMap<>();
+        for (String name : names) {
+            sorted.put(name, qualifier.getAttribute(name));
+        }
+        for (var entry : sorted.entrySet()) {
+            joiner.add(entry.getKey() + "=" + Objects.toString(entry.getValue(), "(null)"));
+        }
+        return joiner.toString();
+    }
+}

@@ -1,4 +1,19 @@
 # 15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation` / `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation`
+    - 推荐 Lab：`SpringCoreBeansPreInstantiationLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序](14-post-processor-ordering.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[16. early reference 与循环依赖：getEarlyBeanReference](16-early-reference-and-circular.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 

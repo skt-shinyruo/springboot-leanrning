@@ -1,4 +1,19 @@
 # 第 11 章：关键分支矩阵（Branch Decision Matrix）
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：关键分支矩阵（Branch Decision Matrix）
+    - 怎么使用：建议先跑本章推荐 Lab，把主线/断点闭环跑通，再回到正文按“时间线/分支矩阵/证据链”定位机制窗口；最后用自检题把表达固化成可复述答案。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`DefaultListableBeanFactory#doResolveDependency` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue`
+    - 推荐 Lab：`LabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean](010-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 12 章：00 - Deep Dive Guide（spring-core-beans）](011-00-deep-dive-guide.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 

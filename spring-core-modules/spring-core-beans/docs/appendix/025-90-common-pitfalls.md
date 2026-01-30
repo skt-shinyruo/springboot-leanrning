@@ -504,6 +504,16 @@
 - 修复：明确限定规则优先级；避免混用导致误判
 - 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
+### 21) 以为 scoped proxy “把 prototype 变成单例”（忽略 `ScopedProxyMode` 与 `scopedTarget.*`）
+
+典型错误认知：看到注入点拿到的是同一个对象引用，就断言“prototype 失效了”。
+但 scoped proxy 的语义是“注入 proxy（通常是单例）”，真实 target 按 scope 创建；容器里会同时存在：
+
+- `beanName`：proxy
+- `scopedTarget.beanName`：真实目标
+
+因此排障时必须先判定你拿到的是 proxy 还是 target；同时要把 `ScopedProxyMode.INTERFACES` / `TARGET_CLASS` 的差异（JDK vs CGLIB）纳入修复建议。
+
 ## 面试常问（把“误区”说成标准答案）
 
 > 目标：读者不是背“误区列表”，而是能把“现象 → 结论 → 证据链（方法级）→ 修复”说成一段可复述答案。

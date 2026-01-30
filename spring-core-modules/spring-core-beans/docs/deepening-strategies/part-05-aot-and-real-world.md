@@ -2,6 +2,11 @@
 
 本 Part 的再加深重点：把“输入层解析 + AOT 契约”做成可运行、可断言、可排障的工程知识，避免只停留在 API 介绍。
 
+## 执行化提示（Real World 的“可运行契约”）
+
+- 输入层（XML/Properties/Groovy）章节：优先补“错误分型 → 入口方法 → 断点 → 断言”，让读者能把异常归因到解析/注册/转换阶段。
+- AOT 章节：优先补“hints 作为可测试契约”的落地方式（registrar + 测试断言），避免只靠 native 失败再补。
+
 ### 40. AOT / Native 总览：为什么 JVM 能跑 ≠ Native 能跑
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md`
@@ -111,4 +116,3 @@
   - C：补排障 SOP：TypeMismatch/BeanCreationException 的分型定位（解析/求值/转换）。
   - D：补断点：value resolver、property value 应用、TypeConverterDelegate 转换路径。
   - E：补面试追问：PropertyEditor 的历史定位与为何仍会在某些路径出现。
-

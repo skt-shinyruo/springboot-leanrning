@@ -108,6 +108,29 @@
 
 ---
 
+## 补充：注入点 `@Lazy` 的内部实现（不是 lazy-init，而是“延迟解析代理”）
+
+注入点 `@Lazy` 最容易被误判为“等同于 lazy-init”，但它的本质是：**在依赖解析阶段直接返回一个 proxy，把解析/创建目标对象推迟到首次调用**。
+
+源码层面，它通常落在这样一条链路上（读者不要求背，但要能在断点里看见）：
+
+- `DefaultListableBeanFactory#doResolveDependency(...)` 解析注入点
+- `AutowireCandidateResolver` 判断注入点是否带 `@Lazy`
+- 典型实现：`ContextAnnotationAutowireCandidateResolver#getLazyResolutionProxyIfNecessary(...)`
+  - 创建 `ProxyFactory`
+  - 绑定 `LazyDependencyTargetSource`（内部通过 `ObjectFactory` 在首次调用时拿到真实 target）
+
+**为什么这很重要？**
+
+- 它解释了：为什么你注入到的是 proxy、为什么 `@PostConstruct`/初始化回调要到“首次使用”才发生；
+- 也解释了：为什么你“明明没配 lazy-init”，却观察到“对象没有在启动期创建”。
+
+**关联阅读：**
+
+- 候选解析与注入点元数据：`014-03-dependency-injection-resolution.md`
+- 代理替换发生点：`31-proxying-phase-bpp-wraps-bean.md`
+- scope/prototype 与延迟获取：`015-04-scope-and-prototype.md`
+
 ## 可复现闭环（基于 `SpringCoreBeansLazyLabTest`）
 
 跑完该 Lab，至少应能够复述 3 条结论：

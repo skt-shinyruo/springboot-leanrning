@@ -81,6 +81,26 @@ public class SpringCoreBeansContainerLabTest {
     }
 
     @Test
+    void configurationProxyBeanMethodsFalse_stillPreservesSingleton_whenUsingMethodParameterInjection() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(NonProxiedConfigWithMethodParameterInjection.class)) {
+            ConfigA aFromContainer = context.getBean(ConfigA.class);
+            ConfigB b = context.getBean(ConfigB.class);
+
+            assertThat(b.a()).isSameAs(aFromContainer);
+        }
+    }
+
+    @Test
+    void liteConfiguration_stillPreservesSingleton_whenUsingMethodParameterInjection() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(LiteConfigWithMethodParameterInjection.class)) {
+            ConfigA aFromContainer = context.getBean(ConfigA.class);
+            ConfigB b = context.getBean(ConfigB.class);
+
+            assertThat(b.a()).isSameAs(aFromContainer);
+        }
+    }
+
+    @Test
     void factoryBeanByNameReturnsProductAndAmpersandReturnsFactory() throws Exception {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(FactoryBeanConfig.class)) {
             Long first = context.getBean("sequence", Long.class);
@@ -105,6 +125,20 @@ public class SpringCoreBeansContainerLabTest {
             long first = consumer.nextId();
             long second = consumer.nextId();
             assertThat(first).isNotEqualTo(second);
+        }
+    }
+
+    @Test
+    void prototypeInjectedIntoSingleton_isResolvedOnce_butObjectProviderCanObtainFreshPrototypeEachCall() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            context.register(PrototypeIdGenerator.class, DirectPrototypeConsumer.class, ProviderPrototypeConsumer.class);
+            context.refresh();
+
+            DirectPrototypeConsumer direct = context.getBean(DirectPrototypeConsumer.class);
+            ProviderPrototypeConsumer provider = context.getBean(ProviderPrototypeConsumer.class);
+
+            assertThat(direct.currentId()).isEqualTo(direct.currentId());
+            assertThat(provider.newId()).isNotEqualTo(provider.newId());
         }
     }
 
@@ -198,6 +232,19 @@ public class SpringCoreBeansContainerLabTest {
         }
     }
 
+    @Configuration(proxyBeanMethods = false)
+    static class NonProxiedConfigWithMethodParameterInjection {
+        @Bean
+        ConfigA configA() {
+            return new ConfigA();
+        }
+
+        @Bean
+        ConfigB configB(ConfigA a) {
+            return new ConfigB(a);
+        }
+    }
+
     @Component
     static class LiteConfig {
         @Bean
@@ -208,6 +255,19 @@ public class SpringCoreBeansContainerLabTest {
         @Bean
         ConfigB configB() {
             return new ConfigB(configA());
+        }
+    }
+
+    @Component
+    static class LiteConfigWithMethodParameterInjection {
+        @Bean
+        ConfigA configA() {
+            return new ConfigA();
+        }
+
+        @Bean
+        ConfigB configB(ConfigA a) {
+            return new ConfigB(a);
         }
     }
 

@@ -172,6 +172,12 @@
 28) alias 会不会影响候选选择？它主要影响哪些匹配路径（按名匹配、qualifier 匹配）？
 29) 什么时候应该避免 relying on by-name fallback？可以如何把依赖关系改写得更明确？
 
+## K. 注入点元数据（对应 03/07）
+
+1. 字段注入点与构造器参数注入点在 Spring 内部对应什么元数据对象？你在断点里如何区分它们？（提示：`DependencyDescriptor#getField()` / `#getMethodParameter()`）
+2. 为什么“看起来同样是 `T`”，但泛型注入（例如 `Handler<String>`）在某些场景会出现误判？你用哪个对象证明这是“注入点元数据/ResolvableType”的问题，而不是“候选没注册”的问题？
+3. `@Bean` 工厂方法参数解析的入口在哪里？你如何证明它并不依赖 `@Configuration` 的增强（`proxyBeanMethods`）？
+
 ## 动手题（建议直接做 Exercises）
 
 这些题都已经在本模块的 Exercises 里给出（默认 `@Disabled`）：

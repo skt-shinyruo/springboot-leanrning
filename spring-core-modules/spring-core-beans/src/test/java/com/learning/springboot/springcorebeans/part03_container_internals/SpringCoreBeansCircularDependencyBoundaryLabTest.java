@@ -8,9 +8,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.lang.reflect.Proxy;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCurrentlyInCreationException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -87,6 +89,49 @@ public class SpringCoreBeansCircularDependencyBoundaryLabTest {
 
         System.out.println("OBSERVE: allowCircularReferences=false => even setter/field cycles fail-fast");
         System.out.println("OBSERVE: this is often a safer default in large systems (it forces explicit refactoring)");
+    }
+
+    @Test
+    void setterCycleWithAfterInitWrapping_prefersConsistency_whenAllowRawInjectionDespiteWrappingIsFalse() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
+            beanFactory.setAllowCircularReferences(true);
+            beanFactory.setAllowRawInjectionDespiteWrapping(false);
+            context.register(WrappingSetterCycleConfig.class);
+            context.refresh();
+
+            WrappedAlpha alphaFromContext = context.getBean(WrappedAlpha.class);
+            WrappingBeta beta = context.getBean(WrappingBeta.class);
+
+            System.out.println("OBSERVE: allowRawInjectionDespiteWrapping=false protects consistency in circular refs");
+            System.out.println("OBSERVE: the container prefers 'early == final': it injects a proxy early so dependents don't hold the raw instance");
+
+            assertThat(Proxy.isProxyClass(alphaFromContext.getClass())).isTrue();
+            assertThat(Proxy.isProxyClass(beta.alpha().getClass())).isTrue();
+            assertThat(beta.alpha()).isSameAs(alphaFromContext);
+        }
+    }
+
+    @Test
+    void setterCycleWithAfterInitWrapping_succeedsButMayInjectRaw_whenAllowRawInjectionDespiteWrappingIsTrue() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
+            beanFactory.setAllowCircularReferences(true);
+            beanFactory.setAllowRawInjectionDespiteWrapping(true);
+            context.register(WrappingSetterCycleConfig.class);
+            context.refresh();
+
+            WrappedAlpha alphaFromContext = context.getBean(WrappedAlpha.class);
+            WrappingBeta beta = context.getBean(WrappingBeta.class);
+
+            System.out.println("OBSERVE: allowRawInjectionDespiteWrapping=true can let a setter cycle 'succeed' even if final bean is wrapped");
+            System.out.println("OBSERVE: beta may hold a raw reference while the container exposes a proxy as the final bean");
+
+            assertThat(Proxy.isProxyClass(alphaFromContext.getClass())).isTrue();
+            assertThat(Proxy.isProxyClass(beta.alpha().getClass())).isFalse();
+            assertThat(beta.alpha()).isNotSameAs(alphaFromContext);
+            assertThat(beta.alpha().id()).isEqualTo("alpha");
+        }
     }
 
     interface Alpha {
@@ -254,6 +299,77 @@ public class SpringCoreBeansCircularDependencyBoundaryLabTest {
 
         SetterAlpha alpha() {
             return alpha;
+        }
+    }
+
+    interface WrappedAlpha {
+        String id();
+    }
+
+    static class WrappedAlphaImpl implements WrappedAlpha {
+        private WrappingBeta beta;
+
+        @Autowired
+        void setBeta(WrappingBeta beta) {
+            this.beta = beta;
+        }
+
+        @Override
+        public String id() {
+            return "alpha";
+        }
+
+        WrappingBeta beta() {
+            return beta;
+        }
+    }
+
+    static class WrappingBeta {
+        private WrappedAlpha alpha;
+
+        @Autowired
+        void setAlpha(WrappedAlpha alpha) {
+            this.alpha = alpha;
+        }
+
+        WrappedAlpha alpha() {
+            return alpha;
+        }
+    }
+
+    static class AfterInitJdkWrappingBpp implements BeanPostProcessor {
+        @Override
+        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+            if (!(bean instanceof WrappedAlpha target)) {
+                return bean;
+            }
+            if (Proxy.isProxyClass(bean.getClass())) {
+                return bean;
+            }
+            return Proxy.newProxyInstance(
+                    WrappedAlpha.class.getClassLoader(),
+                    new Class<?>[]{WrappedAlpha.class},
+                    (proxy, method, args) -> method.invoke(target, args)
+            );
+        }
+    }
+
+    @Configuration
+    static class WrappingSetterCycleConfig {
+
+        @Bean
+        WrappedAlpha alpha() {
+            return new WrappedAlphaImpl();
+        }
+
+        @Bean
+        WrappingBeta beta() {
+            return new WrappingBeta();
+        }
+
+        @Bean
+        BeanPostProcessor afterInitJdkWrappingBpp() {
+            return new AfterInitJdkWrappingBpp();
         }
     }
 }

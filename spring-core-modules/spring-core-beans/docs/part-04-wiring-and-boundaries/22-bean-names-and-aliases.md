@@ -1,4 +1,19 @@
 # 22. Bean 名称与 alias：同一个实例，多一个名字
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：22. Bean 名称与 alias：同一个实例，多一个名字
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`SimpleAliasRegistry#canonicalName` / `SimpleAliasRegistry#registerAlias` / `AbstractBeanFactory#transformedBeanName`
+    - 推荐 Lab：`SpringCoreBeansBeanNameAliasLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[21. 父子 ApplicationContext：可见性与覆盖边界](21-context-hierarchy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[23. FactoryBean 深挖：getObjectType/isSingleton 与缓存](23-factorybean-deep-dive.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -174,6 +189,13 @@
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+
+## 自检要点
+应能够解释清楚：
+
+1) **alias 的本质是什么？**（同一个实例，多一个名字；canonicalName/aliasMap 如何参与解析）
+2) **为什么 `@Resource` 更像“按名称找 Bean”？alias 会如何影响注入结果？**
+3) **看到 `&beanName` 时，你如何判断这是 FactoryBean 还是 product？**（结合 `getBean` vs `&getBean` 的语义）
 
 <!-- BOOKIFY:START -->
 

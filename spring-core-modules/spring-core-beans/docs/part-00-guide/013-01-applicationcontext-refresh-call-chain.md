@@ -28,6 +28,17 @@
 
     - Lab：`SpringCoreBeansContainerLabTest`
 
+## 章节验收口径（10/30/3：refresh 主线）
+
+本章的定位是“容器主线总览”，验收标准建议更偏方法论而不是背诵：
+
+- **10 分钟**：能把 refresh 分成“定义层扩张 → 规则装载 → 对象创建”三幕，并能说清楚每幕最常见的故障类型。
+- **30 分钟**：能用 3 个锚点断点（BFPP/BDRPP、BPP、预实例化）把一次启动过程串起来，且能解释一次真实异常属于哪一幕。
+- **3 个链接（可继续深挖）**：本章只提供“地图”，细节必须跳转到对应章节完成证明：
+  - refresh → doCreateBean 主线：`18-refresh-to-bean-creation-mainline.md`
+  - 处理器排序与两段式算法：`14-post-processor-ordering.md`
+  - early reference 与循环依赖：`16-early-reference-and-circular.md`
+
 ## 主线伪代码（把 refresh 当成“时间线”读）
 
 无需一次性背完所有步骤，但必须能把“关键阶段”按顺序复述出来（这样断点才打得准）。

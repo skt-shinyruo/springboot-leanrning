@@ -1,4 +1,19 @@
 # 41. RuntimeHints 入门：把构建期契约跑通
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：RuntimeHints 入门：把构建期契约跑通
+    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+    - 源码入口：`Class#getDeclaredMethods` / `Constructor#newInstance` / `ClassLoader#getResource`
+    - 推荐 Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[42. XML → BeanDefinitionReader：定义层解析与错误分型](42-xml-bean-definition-reader.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 

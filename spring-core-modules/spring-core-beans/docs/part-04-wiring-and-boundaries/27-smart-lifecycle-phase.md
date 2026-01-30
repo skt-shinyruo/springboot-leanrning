@@ -1,4 +1,19 @@
 # 27. SmartLifecycle：start/stop 时机与 phase 顺序
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：27. SmartLifecycle：start/stop 时机与 phase 顺序
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`LifecycleProcessor#onRefresh` / `DefaultLifecycleProcessor#startBeans` / `DefaultLifecycleProcessor#stopBeans`
+    - 推荐 Lab：`SpringCoreBeansSmartLifecycleLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[26. SmartInitializingSingleton：容器就绪后回调](26-smart-initializing-singleton.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[28. 自定义 scope 与 scoped proxy：线程 scope 复现](28-custom-scope-and-scoped-proxy.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -186,6 +201,13 @@
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+
+## 自检要点
+应能够解释清楚：
+
+1) **phase 的排序规则是什么？为什么 phase 会影响“启动/停止顺序”？**
+2) **autoStartup/isRunning 的边界是什么？什么时候会出现“看似没启动/没停止”？**
+3) **SmartLifecycle 与 init/destroy 的关系是什么？各自解决的是哪个阶段的问题？**
 
 <!-- BOOKIFY:START -->
 

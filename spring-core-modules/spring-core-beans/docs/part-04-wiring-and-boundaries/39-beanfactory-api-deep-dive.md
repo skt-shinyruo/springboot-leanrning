@@ -1,4 +1,19 @@
 # 39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`PostProcessorRegistrationDelegate#registerBeanPostProcessors` / `DefaultListableBeanFactory#doResolveDependency` / `AbstractBeanFactory#doGetBean`
+    - 推荐 Lab：`SpringCoreBeansBeanFactoryApiLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](38-environment-and-propertysource.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 

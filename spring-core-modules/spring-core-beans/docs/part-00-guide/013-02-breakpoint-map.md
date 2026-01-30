@@ -153,6 +153,20 @@
 - `autowiredBeanName`（最终候选是否收敛成功）  
 **结论**：如果 Qualifier 未参与收敛，优先检查注入点是否被 `AutowiredAnnotationBeanPostProcessor` 正确解析。
 
+## 条件断点模板（降噪）：让断点“只为目标 bean 服务”
+
+断点地图如果不配“降噪条件”，体验会非常差（一次 refresh 会进同一个方法上千次）。建议把条件断点当成默认习惯：
+
+1. **按 beanName 过滤（最常用）**
+   - `beanName.equals(\"xxx\")`
+   - `mbd.getBeanClassName().contains(\"Foo\")`（类名过滤）
+2. **按阶段过滤（避免打到不相关阶段）**
+   - 只在 `isEagerInit` / `isSingletonCurrentlyInCreation` 等关键分支为 true 时停住
+3. **按“候选收敛”过滤**
+   - 只在 `candidates.size() > 1` 或出现 `@Qualifier/@Primary` 决策点时停住
+
+> 目标：把“能看到”升级成“只看到需要看的”。这也是为什么本模块大量章节都强调 watch list：观察点比断点位置更决定效率。
+
 ## 常见误区与边界
 
 - 只盯某个注解：建议先把“发生在 refresh 的哪一段”确定下来（C1-C7）。

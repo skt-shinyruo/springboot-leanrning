@@ -58,11 +58,11 @@
 
 ### 1.1.1 机制讲透：条件 → 分支 → 结果
 
-**条件**：是否注册 annotation processors  
-**分支**：`AnnotationConfigUtils.registerAnnotationConfigProcessors` 是否被调用  
-**结果**：  
-- 未注册 → `@Autowired/@PostConstruct` 不生效  
-- 已注册 → 注解能力进入 refresh 主线  
+**条件**：是否注册 annotation processors
+**分支**：`AnnotationConfigUtils.registerAnnotationConfigProcessors` 是否被调用
+**结果**：
+- 未注册 → `@Autowired/@PostConstruct` 不生效
+- 已注册 → 注解能力进入 refresh 主线
 **断点建议**：`AnnotationConfigUtils#registerAnnotationConfigProcessors`
 
 ### 1.2 注册 annotation processors 后，注解才会被处理
@@ -98,8 +98,8 @@
 
 ### 1.2.2 处理器时机与排序算法（为什么要分阶段）
 
-- **BDRPP/BFPP**：按 `PriorityOrdered → Ordered → 无序` 分组执行  
-- **BPP 注册**：同样按分组注册，必须在大量 bean 创建前完成  
+- **BDRPP/BFPP**：按 `PriorityOrdered → Ordered → 无序` 分组执行
+- **BPP 注册**：同样按分组注册，必须在大量 bean 创建前完成
 - **原因**：处理器本身可能注册新的处理器/定义，必须“先稳定定义，再进入实例化”
 
 ### 1.3 源码解析：为什么 `AnnotationConfigApplicationContext` “默认就有注解能力”？
@@ -179,18 +179,33 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 
 - `SpringCoreBeansRegistryPostProcessorLabTest`
 
+## 补充：如何识别“基础设施 Bean”（`ROLE_INFRASTRUCTURE`）以及它对排障的意义
+
+本章的主角（各类 processors）在很多场景里会表现得“像是容器自带魔法”，其中一个原因是：它们往往被标记为基础设施角色。
+
+在 Spring 内部，`BeanDefinition` 有一个 **role** 概念（常见值：`ROLE_APPLICATION` / `ROLE_SUPPORT` / `ROLE_INFRASTRUCTURE`）。
+对排障的意义在于：
+
+- 当你在“列出 Bean 列表/追溯来源”时，如果不区分 role，很容易把关键处理器淹没在一堆业务 bean 里；
+- 当你在排查“为什么注解不生效”时，反而应该优先确认：对应的基础设施处理器是否已注册、是否已按顺序执行、是否已装进拦截链。
+
+**建议的观察点：**
+
+- 找到对应 `BeanDefinition`，观察 `getRole()` / `getSource()` / `getResourceDescription()`（这类元信息经常能快速定位“它从哪里来的”）
+- 对照本章的“处理器速查表”，把“应该存在的基础设施”与“实际存在的基础设施”做一次差异比对（不要凭感觉）。
+
 ## 可复现闭环（基于 `SpringCoreBeansBootstrapInternalsLabTest`）
 
 跑完这些用例，至少应能够复述 3 条结论：
 
-1) **注解能力来自基础设施处理器**  
-   - 断点：`registerAnnotationConfigProcessors`  
+1) **注解能力来自基础设施处理器**
+   - 断点：`registerAnnotationConfigProcessors`
    - 断言：不注册 → `@Autowired/@PostConstruct` 不生效
-2) **定义层处理先于实例层**  
-   - 断点：`invokeBeanFactoryPostProcessors`  
+2) **定义层处理先于实例层**
+   - 断点：`invokeBeanFactoryPostProcessors`
    - 断言：`@Configuration/@Bean` 解析发生在 refresh 前半段
-3) **BPP 注册时机决定注解是否生效**  
-   - 断点：`registerBeanPostProcessors`  
+3) **BPP 注册时机决定注解是否生效**
+   - 断点：`registerBeanPostProcessors`
    - 断言：BPP 未就位时创建的 bean 会错过注解处理
 
 ## 2. `@Bean` 为什么能“变成 BeanDefinition”？

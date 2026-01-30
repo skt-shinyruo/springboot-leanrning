@@ -1,4 +1,19 @@
 # 28. 自定义 Scope + scoped proxy：thread scope 的真实语义
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：28. 自定义 Scope + scoped proxy：thread scope 的真实语义
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`AbstractBeanFactory#doGetBean` / `Scope#get` / `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly`
+    - 推荐 Lab：`SpringCoreBeansCustomScopeLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[27. SmartLifecycle：phase 与 start/stop 顺序](27-smart-lifecycle-phase.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[29. FactoryBean 边界误区：泛型/代理/对象类型推断](29-factorybean-edge-cases.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -223,6 +238,13 @@ prototype 是最典型的例子。
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+
+## 自检要点
+应能够解释清楚：
+
+1) **Scope 契约的 3 个关键方法各自负责什么？**（get/remove/registerDestructionCallback）
+2) **为什么 scoped proxy 能解决“把短生命周期对象注入长生命周期对象”的问题？目标对象什么时候才创建？**
+3) **自定义 scope 的最大坑是什么？**（thread-local 泄漏/销毁回调不执行/代理导致类型信息丢失）
 
 <!-- BOOKIFY:START -->
 

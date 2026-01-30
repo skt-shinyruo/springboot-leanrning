@@ -2,6 +2,11 @@
 
 本 Part 的再加深重点：工程边界与真实坑位（Lazy/dependsOn/resolvable dependency/层级/命名/FactoryBean/代理/占位符/转换/泛型匹配等），要求每章都能提供可复现反例与排障 SOP。
 
+## 执行化提示（边界章的“可复现反例”优先）
+
+- 每章至少补 1 个“误诊对照”：现象相似但机制不同（例如 depends-on 环 vs 循环依赖）。
+- 每章至少补 1 个“第一断点入口 + watch list”：让读者能在 1 分钟内把问题钉在正确分支。
+
 ### 18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md`
@@ -221,4 +226,3 @@
   - C：补排障：当怀疑容器能力缺失时如何快速确认（processor 是否安装、哪条主线缺环）。
   - D：补断点：手工 bootstrap 的装配点、processor 注册点、注入解析入口。
   - E：补面试追问：BeanFactory vs ApplicationContext 的差异如何落到“能力清单 + 证据链”。
-

@@ -1,4 +1,19 @@
 # 09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
+    - 怎么使用：建议先跑本章推荐 Lab/Exercise，再结合条件评估报告（ConditionEvaluationReport）把“为什么装配/为什么 back-off/为什么顺序影响结果”用证据链讲清楚。
+    - 原理：Boot 的自动配置本质是“导入 + 条件评估 + 定义注册”，最终仍落到 BeanDefinition 与 refresh 主线（定义层→实例层→最终暴露对象）。
+    - 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions`
+    - 推荐 Lab：`SpringCoreBeansAutoConfigurationOrderingLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[09. 循环依赖：现象、原因与规避（constructor vs setter）](../part-01-ioc-container/09-circular-dependencies.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](021-10-spring-boot-auto-configuration.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 

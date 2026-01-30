@@ -76,10 +76,10 @@
 
 ### 1.4 机制讲透：BFPP 如何改变最终行为（可跑的例子）
 
-**条件**：定义层被改写（BeanDefinition 里的属性/占位符被替换）  
-**分支**：`postProcessBeanFactory` 在实例化前执行  
-**结果**：最终实例读到的是“被改写后的配方”，而不是原始定义  
-**可跑证据**：`SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansContainerLabTest`  
+- **条件**：定义层被改写（BeanDefinition 里的属性/占位符被替换）
+- **分支**：`postProcessBeanFactory` 在实例化前执行
+- **结果**：最终实例读到的是“被改写后的配方”，而不是原始定义
+- **可跑证据**：`SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansContainerLabTest`
 
 ## 2. BPP：`BeanPostProcessor`
 
@@ -112,6 +112,38 @@
 | `AutowiredAnnotationBeanPostProcessor` | `@Autowired/@Value` 注入 | 实例层（BPP） |
 | `CommonAnnotationBeanPostProcessor` | `@PostConstruct/@PreDestroy` | 实例层（BPP/DestructionAware） |
 | `ApplicationContextAwareProcessor` | Aware 系列回调 | 实例层（BPP） |
+
+### 2.5 进阶：四类 BPP 介入点速查（把“能改什么”说清楚）
+
+当读者开始用 BPP 写业务扩展/排障时，最容易踩的坑不是“不会写”，而是**不知道 BPP 介入的是哪一段、能改到哪一层**。建议把 BPP 分成四类能力来记（不是接口名字背诵，而是“介入点”）：
+
+1. **实例化前（可能短路）**：典型接口 `InstantiationAwareBeanPostProcessor`
+   - 方法级锚点（建议断点）：
+     - `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`（返回非 null 会短路：跳过目标 bean 的实例化与后续 populate/initialize 主线）
+     - `InstantiationAwareBeanPostProcessor#postProcessAfterInstantiation`（返回 false 会跳过属性填充）
+     - `InstantiationAwareBeanPostProcessor#postProcessProperties`（属性注入介入点：不要误当 init 回调）
+   - 能做：在对象还没创建前返回一个替代对象（经常导致“完全跳过 doCreateBean 的后半段”）
+2. **early reference（循环依赖救援/代理提前）**：典型接口 `SmartInstantiationAwareBeanPostProcessor`
+   - 方法级锚点（建议断点）：
+     - `SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference`（三级缓存/early exposure 的代理入口；与循环依赖强相关）
+   - 能做：在三级缓存阶段就提供 early bean reference（常见于 AOP 提前暴露代理）
+3. **merged definition（定义合并后再补充）**：典型接口 `MergedBeanDefinitionPostProcessor`
+   - 方法级锚点（建议断点）：
+     - `MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition`（定义层与实例层的桥：在 RootBeanDefinition 就绪后触发）
+   - 能做：在“最终生效的 RootBeanDefinition”层面做准备工作（影响注入/回调/缓存判断）
+4. **销毁前（清理/回调补齐）**：典型接口 `DestructionAwareBeanPostProcessor`
+   - 方法级锚点（建议断点）：
+     - `DestructionAwareBeanPostProcessor#postProcessBeforeDestruction`（destroy 链路入口之一；与 16 章销毁链路互链）
+   - 能做：在 destroy 链路触发前执行回调（很多 `@PreDestroy`/资源清理问题会落在这里）
+
+把这张“介入点地图”连起来，你就能回答：为什么某个 bean 看起来“错过了某些处理器”？为什么有的代理发生得很早、有的很晚？
+
+**关联阅读（把这张图落到本仓库可断言闭环）：**
+
+- 实例化前短路：`15-pre-instantiation-short-circuit.md`
+- early reference：`16-early-reference-and-circular.md`
+- merged definition：`35-merged-bean-definition.md`
+- 销毁链路：`17-lifecycle-callback-order.md`
 
 ## 3. 顺序（Ordering）：为什么同一个扩展点里顺序也很重要
 
@@ -216,6 +248,22 @@ invokeBeanFactoryPostProcessors(beanFactory):
 > **BPP 是“创建时拦截链”，不是“创建后补丁”。**
 > 某个 bean 如果在 BPP 链未完整时就被创建，那么后续 BPP 不会 retroactively 生效。
 
+识别信号（非常典型）：
+
+当你在日志里看到 `BeanPostProcessorChecker` 类似提示时，通常意味着“某个 bean 过早创建，错过了部分 BPP（尤其是 auto-proxying）”：
+
+> Bean 'xxx' of type [...] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+它**意味着**：
+
+- 这个 bean 的创建时机早于某些 BPP 的注册完成，后续 BPP 不会 retroactively 补上
+
+它**不意味着**：
+
+- 一定是循环依赖
+- 一定是 AOP/事务“坏了”
+- 一定要“强行修复”（有时只是基础设施 bean 的正常时序）
+
 在资料里经常看到一句建议：
 
 > “BFPP/BPP 这种 post-processor 类型的 @Bean，尽量声明为 `static`。”
@@ -251,6 +299,11 @@ BFPP 本该在“定义层”工作，若在里面直接拿 bean（实例层）�
 
 - 后续的 BPP 没机会介入
 - 生命周期回调顺序变得反直觉
+
+证据入口（对照最清晰）：
+
+- `SpringCoreBeansEarlyGetBeanMissesBppLabTest`
+  - 对照结论：正常情况下目标 bean 会被 after-init BPP 包装成 proxy；但在 BFPP 阶段过早 `getBean` 会让它以 raw 形态进入 singleton cache，从而错过后续 BPP（且不会 retroactive 补上）
 
 ### 4.2 BPP 写成“全局修改器”导致不可预测
 
@@ -296,6 +349,8 @@ BFPP 本该在“定义层”工作，若在里面直接拿 bean（实例层）�
 
 - BFPP 改定义（改配方，再影响实例）：
   - `SpringCoreBeansContainerLabTest#beanFactoryPostProcessorCanModifyBeanDefinitionBeforeInstantiation`
+- BFPP 过早 `getBean`（实例层提前创建，导致错过后续 BPP）：
+  - `SpringCoreBeansEarlyGetBeanMissesBppLabTest`
 - BPP 改实例（初始化后改对象/替换对象）：
   - `SpringCoreBeansContainerLabTest#beanPostProcessorCanModifyBeanInstanceAfterInitialization`
 - 顺序规则（PriorityOrdered/Ordered/无序）：
@@ -324,14 +379,14 @@ BFPP 本该在“定义层”工作，若在里面直接拿 bean（实例层）�
 
 完成该 Lab 后，至少应能够用 3 条结论解释 BFPP/BPP 的差异：
 
-1) **BFPP 改定义，不改实例**  
-   - 断点：`postProcessBeanFactory` → `createBean`  
+1) **BFPP 改定义，不改实例**
+   - 断点：`postProcessBeanFactory` → `createBean`
    - 断言：实例读到的是“被改写后的配方”
-2) **BPP 改实例，可替换对象**  
-   - 断点：`applyBeanPostProcessorsAfterInitialization`  
+2) **BPP 改实例，可替换对象**
+   - 断点：`applyBeanPostProcessorsAfterInitialization`
    - 断言：`result != bean` 时暴露对象发生替换
-3) **时机决定是否生效**  
-   - 断点：`invokeBeanFactoryPostProcessors` vs `registerBeanPostProcessors`  
+3) **时机决定是否生效**
+   - 断点：`invokeBeanFactoryPostProcessors` vs `registerBeanPostProcessors`
    - 断言：过早 `getBean` 会让目标 bean 错过后续 BPP
 
 ## 常见误区与边界（补一段“能落到源码的答案”）
@@ -386,8 +441,8 @@ registerBeanPostProcessors(beanFactory):
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` / `SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansStaticBeanFactoryPostProcessorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+- Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyGetBeanMissesBppLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` / `SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
+- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansStaticBeanFactoryPostProcessorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansEarlyGetBeanMissesBppLabTest.java`
 
 上一章：[05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](016-05-lifecycle-and-callbacks.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07. @Configuration 增强：proxyBeanMethods 与 @Bean 语义](018-07-configuration-enhancement.md)
 

@@ -29,6 +29,19 @@ public class SpringCoreBeansFactoryBeanEdgeCasesLabTest {
     }
 
     @Test
+    void factoryBeanWithWrongObjectType_canBreakTypeBasedDiscovery_evenIfProductTypeIsActuallyCorrect() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(WrongTypeConfig.class)) {
+            String[] namesWithoutEagerInit = context.getBeanFactory().getBeanNamesForType(Value.class, true, false);
+
+            System.out.println("OBSERVE: if FactoryBean.getObjectType() lies, type-based discovery can miss a valid product");
+            assertThat(namesWithoutEagerInit).doesNotContain("wrongTypedValue");
+
+            Value value = context.getBean("wrongTypedValue", Value.class);
+            assertThat(value.origin()).isEqualTo("wrongType");
+        }
+    }
+
+    @Test
     void factoryBeanWithNullObjectType_isNotDiscoverableAsProductType_butFactoryItselfIsStillRetrievable() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class)) {
             Object factory = context.getBean("&unknownValue");
@@ -109,6 +122,23 @@ public class SpringCoreBeansFactoryBeanEdgeCasesLabTest {
         }
     }
 
+    static class WrongObjectTypeFactoryBean implements FactoryBean<Value> {
+        @Override
+        public Value getObject() {
+            return new Value("wrongType");
+        }
+
+        @Override
+        public Class<?> getObjectType() {
+            return String.class;
+        }
+
+        @Override
+        public boolean isSingleton() {
+            return false;
+        }
+    }
+
     @Configuration
     static class Config {
         @Bean(name = "knownValue")
@@ -119,6 +149,14 @@ public class SpringCoreBeansFactoryBeanEdgeCasesLabTest {
         @Bean(name = "unknownValue")
         FactoryBean<Value> unknownTypeFactoryBean() {
             return new UnknownTypeFactoryBean();
+        }
+    }
+
+    @Configuration
+    static class WrongTypeConfig {
+        @Bean(name = "wrongTypedValue")
+        FactoryBean<Value> wrongObjectTypeFactoryBean() {
+            return new WrongObjectTypeFactoryBean();
         }
     }
 

@@ -16,6 +16,8 @@
 - 删除仓库根 `scripts/` 目录（包含测试/运行快捷脚本与文档批处理脚本），并清理文档/知识库中的引用
 
 ### Changed
+- 深度完善 `spring-core-beans` 文档：补齐注入点元数据（`MethodParameter`）、scoped proxy（`ScopedProxyMode`）等关键边界，并补全 AOT/基础设施/懒加载等章节的证据链闭环
+- `spring-core-beans`：深挖 Part 01 IoC Container（注册/注入解析/scope/生命周期/BPP/@Configuration/FactoryBean/循环依赖/心智模型），新增“可断点可复现”的证据链闭环与最小观测 testsupport（`BeanDefinitionOriginDumper` / `DependencyDescriptorDumper`）
 - spring-core-beans：对 `spring-core-beans/docs` 与 `spring-core-beans/README.md` 全量书面化改写（去第二人称/俚语/口语化措辞），保持机制深度不变，提升文档可复述性与严谨性观感。
 - spring-core-beans：深化 Part-05（AOT/RuntimeHints/XML/SpEL/Qualifier/FactoryBean/值解析）与 Appendix（90/99/91–95），补齐“机制讲透 + 方法级调用链 + 排障/面试复述模板”的教程闭环。
 - spring-core-beans：在模块 README 与知识地图中新增“核心七件套”导航（概念 → 章节 → Lab），用于查漏与快速跳转

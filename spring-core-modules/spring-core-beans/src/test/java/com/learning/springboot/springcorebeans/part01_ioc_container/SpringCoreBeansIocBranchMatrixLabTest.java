@@ -8,9 +8,9 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @SelectClasses({
+        SpringCoreBeansBeanDefinitionRegistrationDiffLabTest.class,
         SpringCoreBeansBeanFactoryVsApplicationContextLabTest.class,
         SpringCoreBeansComponentScanLabTest.class,
         SpringCoreBeansImportLabTest.class
 })
 class SpringCoreBeansIocBranchMatrixLabTest {}
-

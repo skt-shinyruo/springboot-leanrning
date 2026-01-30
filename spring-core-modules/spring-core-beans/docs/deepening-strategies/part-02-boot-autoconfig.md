@@ -2,6 +2,11 @@
 
 本 Part 的再加深重点：把 Boot 的复杂度映射回“定义层/条件/导入/顺序”的可证明链路，并提供可复现反例与排障 SOP。
 
+## 执行化提示（把“看不见的条件”变成“可证明事实”）
+
+- 每个结论都要落到“导入列表 + 条件上下文 + BeanDefinition 注册表”三件套：能在断点里看见，且能用 Lab 固化。
+- 反例优先：把“看似偶发”写成“顺序/条件/覆盖”的可复现分型，避免停留在日志解释。
+
 ### 第 19 章：11. 调试与自检：如何“看见”容器正在做什么
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
@@ -31,4 +36,3 @@
   - C：补排障：从“bean 没注册/注册了但不是我想要的”到“第一断点入口”的 SOP。
   - D：补 watch list：导入列表、条件上下文、BeanDefinition 注册表的关键对象快照。
   - E：补面试追问：auto-config 的 back-off 与覆盖策略如何解释且可证明。
-

@@ -1,4 +1,19 @@
 # 49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
+    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+    - 源码入口：`BeanFactory#getBean(...)` / `FactoryBean#isSingleton` / `AbstractBeanFactory#getObjectForBeanInstance`
+    - 推荐 Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[48. 方法注入：replaced-method / MethodReplacer（实例化策略分支）](48-method-injection-replaced-method.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象](50-property-editor-and-value-resolution.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 

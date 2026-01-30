@@ -1,4 +1,19 @@
 # 第 09 章：00. 基础问题索引（Why Index）：把高频“为什么”做成可验证闭环
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：009-00-why-index
+    - 怎么使用：建议先跑本章推荐 Lab，把主线/断点闭环跑通，再回到正文按“时间线/分支矩阵/证据链”定位机制窗口；最后用自检题把表达固化成可复述答案。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton` / `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+    - 推荐 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean](010-03-mainline-timeline.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 这页解决什么问题
 
@@ -190,3 +205,42 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopExposeProxyLabTest#exposeProxyAllow
 
 - AOP：[03. self-invocation：为什么 `this.inner()` 不会被拦截](../../../spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md)
 - Beans（补齐容器视角）：[`31. 代理替换发生在哪个阶段`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
+
+## 面试常问（Why Index）
+
+1) **为什么说“三级缓存不是为了让所有循环依赖都能启动”？它真正解决的是什么？**
+   - 结论：三级缓存解决的是“singleton 创建窗口期的 early reference 交付能力”，并把 early 形态的决定权交给 `getEarlyBeanReference`，尽量保证 early == final。
+   - 证据链（方法级）：`DefaultSingletonBeanRegistry#addSingletonFactory` → `#getSingleton(allowEarlyReference=true)` → `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`。
+
+2) **为什么 `getEarlyBeanReference` 是“形态一致性”的关键？raw vs wrapped 的风险是什么？**
+   - 结论：如果 dependent bean 拿到 raw，而最终对外暴露是 wrapped/proxy，会出现拦截失效（事务/安全/缓存）或被 fail-fast。
+   - 证据链：`getEarlyBeanReference`（early window） vs `applyBeanPostProcessorsAfterInitialization`（after-init window）的对照。
+
+3) **为什么 self-invocation 会绕过 AOP？如何用证据链证明“绕过的是 call path”而不是“没有代理”？**
+   - 结论：代理只拦截“通过代理对象发起的调用”；`this.inner()` 不经 proxy，自然无拦截器链。
+   - 证据链：先证明 `getBean()` 拿到的是 proxy（isAopProxy），再证明内部调用走的是 `this`（调用栈/断点）。
+
+## 自检要点
+应能够做到：
+
+1) 用 3 句复述 Why-01/03：结论是什么、证据链入口方法是什么、最常见误区是什么。
+2) 在 IDE 里下 3 个稳定锚点断点，并用 watch list 解释“什么时候命中 final/early/factory”“什么时候会触发 early reference”。
+3) 遇到真实问题时，能把症状先分层（定义/创建/代理/值解析），再回到本页选择最短闭环入口（章节 + Lab + 断点）。
+
+
+<!-- AE-DEEPENING:START -->
+!!! tip "内容级再加深（A–E 维度）"
+
+    - A（证据链）：把 Why-01/03 的断点闭环补成可复用模板：固定 3 个断点 + 固定 5 个变量 + 固定 3 条可断言结论。
+    - B（边界反例）：补三组易混对照：depends-on 环 vs 三级缓存循环依赖、constructor 环 vs setter 环、early proxy vs after-init proxy。
+    - C（排障 SOP）：把常见症状分型为：没注册/没创建/创建了但被短路/创建了但被换壳/值解析失败，并给出第一断点入口。
+    - D（断点观察）：把本页的断点与 `013-02-breakpoint-map.md`、`098-debugger-pack.md` 互链，形成“主线断点 + 专题断点”的组合入口。
+    - E（面试复述）：为 Why-01/03/05 各补 1 个追问：结论→证据链→反例→修复策略（可证明）。
+<!-- AE-DEEPENING:END -->
+
+
+<!-- BOOKIFY:START -->
+
+上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean](010-03-mainline-timeline.md)
+
+<!-- BOOKIFY:END -->

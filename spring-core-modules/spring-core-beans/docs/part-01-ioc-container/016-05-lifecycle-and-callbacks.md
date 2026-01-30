@@ -118,10 +118,10 @@ doCreateBean(beanName, mbd):
 
 ### 1.2.1 关键分支与变量（不要漏掉这些“条件开关”）
 
-- `mbd.isSingleton()`：是否走 early reference（prototype 通常不会进入）  
-- `mbd.isSynthetic()`：是否跳过部分 BPP（基础设施 bean 的常见开关）  
-- `hasInstantiationAwareBeanPostProcessors`：是否允许“实例化前短路”（`postProcessBeforeInstantiation`）  
-- `mbd.hasPropertyValues()` / `hasAutowiredAnnotation`：是否进入属性填充与依赖注入  
+- `mbd.isSingleton()`：是否走 early reference（prototype 通常不会进入）
+- `mbd.isSynthetic()`：是否跳过部分 BPP（基础设施 bean 的常见开关）
+- `hasInstantiationAwareBeanPostProcessors`：是否允许“实例化前短路”（`postProcessBeforeInstantiation`）
+- `mbd.hasPropertyValues()` / `hasAutowiredAnnotation`：是否进入属性填充与依赖注入
 - `mbd.hasDestroyMethod()` / `requiresDestruction`：是否登记销毁回调
 
 其中“最易误述/最易出错”的点是第 5 步：**initializeBean 里 after-init BPP 可能返回 proxy**。
@@ -149,9 +149,13 @@ initializeBean(beanName, bean, mbd):
 
 - **`@PostConstruct` / `afterPropertiesSet`**：发生在 **raw bean** 上（proxy 还未产生）
 - **after-init BPP**：可能返回 **proxy**，此后容器对外暴露的是 proxy
-- **`@PreDestroy`**：通常由 `DestructionAwareBeanPostProcessor` 触发，仍然作用在 target 上  
+- **`@PreDestroy`**：通常由 `DestructionAwareBeanPostProcessor` 触发，仍然作用在 target 上
   - 若依赖 `DisposableBean` 接口，且 proxy 不实现该接口，容易出现“销毁回调没进”的误判
 - **`SmartInitializingSingleton`**：在单例全部实例化后回调，通常作用于 **最终暴露对象**（可能是 proxy）
+
+证据入口（建议先跑一次再背结论）：
+
+- `SpringCoreBeansLifecycleRawVsProxyLabTest#postConstructRunsOnRaw_butFinalExposedBeanMayBeProxy`
 
 ### 1.4 销毁主线：singleton 的 destroy callbacks 在哪触发？
 
@@ -184,6 +188,26 @@ destroySingletons():
 - 读者走完整 `ApplicationContext#refresh` 主线后，就正常了
 
 ---
+
+## 补充：`@PostConstruct/@PreDestroy` 的“触发者”其实是 BPP（而不是语法魔法）
+
+很多人能背出“`@PostConstruct` 在初始化阶段执行”，但解释不清两件关键事实：
+
+1. **它是谁触发的？** —— 触发者不是 JVM，也不是注解本身，而是一个 `BeanPostProcessor`（典型实现是 `InitDestroyAnnotationBeanPostProcessor`）。
+2. **它发生在回调链的哪个位置？** —— `@PostConstruct` 通常发生在 `postProcessBeforeInitialization` 这一段；而 `@PreDestroy` 则走销毁链路（常见落点：`DestructionAwareBeanPostProcessor#postProcessBeforeDestruction` / `DisposableBeanAdapter`）。
+
+把这两个事实补齐，你在排障时才能回答“为什么我这里没执行/执行顺序不对/看起来对代理不生效”：
+
+- **为什么回调像是发生在 raw bean 上？**
+  默认链路里，init 回调发生在 `applyBeanPostProcessorsBeforeInitialization` 之后、`applyBeanPostProcessorsAfterInitialization` 之前；如果 proxy 是在 after 阶段生成的，那么回调自然发生在 raw bean 上。
+- **什么时候回调会发生在 proxy 上？**
+  只有当对象在更早阶段就被替换（例如实例化前短路 / early reference 返回 proxy）时，你观察到的“回调对象”才会变。
+
+**建议把它做成可复用的断点闭环（3 分钟）：**
+
+- `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization(...)`
+- `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeDestruction(...)`
+- `DisposableBeanAdapter#destroy(...)` / `#invokeDestroyMethods(...)`
 
 ## 2. Aware 系列回调：真实作用、触发者与发生时机
 
@@ -270,14 +294,14 @@ destroySingletons():
 
 把“何时做事”分成 3 层，会更不容易误判：
 
-1) **Bean 内部初始化（bean-level）**：只关心“这个 bean 自己可用”  
-   - 典型入口：`@PostConstruct` / `afterPropertiesSet` / `initMethod`  
+1) **Bean 内部初始化（bean-level）**：只关心“这个 bean 自己可用”
+   - 典型入口：`@PostConstruct` / `afterPropertiesSet` / `initMethod`
    - 关键边界：**依赖已注入，但 proxy 可能还没产生**（见 1.3）
-2) **容器就绪（container-level）**：关心“容器里一批 bean 已经就绪”  
-   - 典型入口：`SmartInitializingSingleton`（非 lazy 单例都创建完之后）  
+2) **容器就绪（container-level）**：关心“容器里一批 bean 已经就绪”
+   - 典型入口：`SmartInitializingSingleton`（非 lazy 单例都创建完之后）
    - 典型入口：`ContextRefreshedEvent`（refresh 收尾事件）
-3) **应用就绪/启动停止（application-level）**：关心“应用何时对外服务/如何优雅停机”  
-   - 典型入口：`SmartLifecycle`（start/stop 纳入容器生命周期，并可 phase 排序）  
+3) **应用就绪/启动停止（application-level）**：关心“应用何时对外服务/如何优雅停机”
+   - 典型入口：`SmartLifecycle`（start/stop 纳入容器生命周期，并可 phase 排序）
    - Spring Boot 场景：`ApplicationRunner` / `ApplicationReadyEvent`（更上层的应用生命周期钩子）
 
 为了把时机说清楚，给一个“refresh 尾部窗口”的极简时间线（只保留选型需要的相对顺序）：
@@ -422,11 +446,11 @@ void init() {
 
 用这一组测试把“回调依赖基础设施”的结论固化成断言：
 
-1) **`BeanFactoryAware` 不依赖 BPP，裸 `BeanFactory` 也能触发**  
-   - 断言：`beanFactory()` 非空  
-2) **`ApplicationContextAware` 依赖基础设施 BPP**  
-   - 断言：没有 `ApplicationContextAwareProcessor` 时为 null  
-3) **回调触发点在 before-init**  
+1) **`BeanFactoryAware` 不依赖 BPP，裸 `BeanFactory` 也能触发**
+   - 断言：`beanFactory()` 非空
+2) **`ApplicationContextAware` 依赖基础设施 BPP**
+   - 断言：没有 `ApplicationContextAwareProcessor` 时为 null
+3) **回调触发点在 before-init**
    - 断点：`BeanPostProcessor#postProcessBeforeInitialization`
 
 ---

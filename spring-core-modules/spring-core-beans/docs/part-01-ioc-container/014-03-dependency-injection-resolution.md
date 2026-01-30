@@ -51,14 +51,55 @@
 
 **两个对照注入点（应能够解释差异）：**
 
-1) 字段注入（依赖名可见）：  
-   - `@Autowired private Worker secondaryWorker;`  
+1) 字段注入（依赖名可见）：
+   - `@Autowired private Worker secondaryWorker;`
    - `dependencyName = secondaryWorker`，可能触发 by-name fallback
-2) 构造器注入（依赖名来自参数）：  
-   - `public Consumer(Worker worker)`  
-   - `dependencyName = worker`，如果候选>1 且无 Qualifier/Primary，容易歧义
+2) 构造器注入（依赖名来自参数）：
+   - `public Consumer(Worker worker)`
+   - `dependencyName` **可能是** `worker`（需要参数名可发现，例如开启 `-parameters`），也可能是 `(null)`/`arg0`（此时 by-name fallback 证据链就会断掉）
+   - 因此：by-name fallback 在“构造器参数注入”上不如字段注入稳定，工程上更推荐用 `@Qualifier/@Primary` 把规则写死
+
+本仓库给了一个最小可观察入口（建议先跑再读）：
+
+- testsupport：`DependencyDescriptorDumper`
+- Lab：`SpringCoreBeansDependencyDescriptorMetadataLabTest`
 
 ---
+
+### 0.2 注入点元数据：Field vs `MethodParameter`（把“我以为要注入什么”变成可观察对象）
+
+很多依赖注入排障卡在一句话：**“注入点到底要的是什么类型/名字/限定条件？”**
+在 Spring 里，这个问题最终会落到 `DependencyDescriptor` 里保存的注入点元数据：
+
+- **字段注入点**：`descriptor.getField()` 不为 null（拿到的是 `java.lang.reflect.Field`）
+- **构造器/方法参数注入点**：`descriptor.getMethodParameter()` 不为 null（拿到的是 `org.springframework.core.MethodParameter`）
+
+这一区分在“只按类型注入”的场景里看起来无关紧要，但在下面这些情况里会直接影响候选解析结果（也解释了为什么你“明明看起来一样”，结果却不同）：
+
+1. **泛型信息的保真度不同**：参数注入点通常能保留更完整的泛型上下文（`ResolvableType` 解析时会用到），字段注入点在某些桥接/继承场景更容易丢上下文。
+2. **注入点上的注解集合不同**：`@Qualifier/@Lazy/@Value/@Resource` 等限定信号是跟着注入点走的——字段 vs 参数能携带的注解集合与组合形式不同（尤其是元注解与组合注解）。
+3. **参数名（by-name 证据链）**：当你在排查“为什么会 by-name 回退”时，参数名是否可发现（`-parameters` / debug info）会影响你能否在断点里把证据链补齐。
+   - 证据入口：`SpringCoreBeansDependencyDescriptorMetadataLabTest` 会打印 `MethodParameter#getParameterName()` 的发现结果（有的工程会是 `null`，这不是 Spring “随机”，而是参数名元数据缺失）
+
+**建议的断点验证方式（不增加新章节也能完成闭环）：**
+
+- 在 `DefaultListableBeanFactory#resolveDependency(...)` / `doResolveDependency(...)` 处观察：
+  - `descriptor.getField()` vs `descriptor.getMethodParameter()`
+  - `descriptor.getResolvableType()` / `descriptor.getDependencyType()`
+  - `descriptor.getDependencyName()`（不要只看它的值，要追它是怎么来的）
+- 把同一组候选分别用“字段注入”和“构造器参数注入”写两份，观察 `candidates` 集合与收敛路径是否一致（这比“背规则”更稳）。
+
+本仓库对应的“可观察对象”工具：
+
+- testsupport：`DependencyDescriptorDumper`（把 Field/MethodParameter 的差异固化为稳定输出）
+- testsupport 单测：`DependencyDescriptorDumperLabTest`
+- Lab：`SpringCoreBeansDependencyDescriptorMetadataLabTest`
+
+**关联阅读（把能力拼起来）：**
+
+- 注入阶段差异：`30-injection-phase-field-vs-constructor.md`
+- 泛型匹配坑位：`37-generic-type-matching-pitfalls.md`
+- 自定义 `@Qualifier` 元注解：`45-custom-qualifier-meta-annotation.md`
 
 ## 1. 本模块里的最小例子：两个 `TextFormatter`
 
@@ -94,17 +135,17 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 
 把 `doResolveDependency` 看成“分支树”会更容易排障：
 
-1) **快捷路径**：`Optional` / `ObjectProvider` / `@Lazy` / `@Value`  
+1) **快捷路径**：`Optional` / `ObjectProvider` / `@Lazy` / `@Value`
    - 现象：走 `resolveMultipleBeans` 或 `suggestedValue`，不会进入“候选收敛”
-2) **resolvableDependencies**  
+2) **resolvableDependencies**
    - 现象：能注入 `BeanFactory/ApplicationContext` 等，但它们不是 Bean
-3) **候选收集**（by type）  
+3) **候选收集**（by type）
    - 现象：`matchingBeans` 为空 → `NoSuchBeanDefinitionException`
-4) **候选收敛**（Qualifier/Primary/Name/Priority）  
+4) **候选收敛**（Qualifier/Primary/Name/Priority）
    - 现象：候选>1 且缩不下来 → `NoUniqueBeanDefinitionException`
-5) **集合注入与排序**  
+5) **集合注入与排序**
    - 现象：`@Order/@Priority` 影响 List/Stream 顺序，但不选唯一候选
-6) **fallback**  
+6) **fallback**
    - 现象：by-name / suggestedName 等兜底路径影响最终选择
 
 ### 2.1 三条“早返回通道”（很多人以为没走到候选收集，其实是提前返回了）
@@ -113,9 +154,17 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 
 - **resolvableDependencies 命中**：允许注入但不一定是 bean（例如 `BeanFactory`/`ApplicationContext` 等）。见：[20. ResolvableDependency：为什么有些东西能注入但不是 Bean？](../part-04-wiring-and-boundaries/20-resolvable-dependency.md)
 - **值注入（@Value / 占位符 / SpEL）**：从 resolver 拿到 suggested value 后直接 `convertIfNecessary`（不会走“按类型找候选”）。
+- **注入点 `@Lazy`（懒解析代理）**：`@Lazy` 既可以标在 BeanDefinition 上（影响“什么时候创建”），也可以标在注入点上（影响“注入的是什么”）。注入点的 `@Lazy` 会在依赖解析阶段由 resolver 尝试返回一个 lazy-resolution proxy（同样不会走候选收敛）。
 - **集合/流/Provider 通道**：`List/Map/Stream/ObjectProvider/Optional` 会走 `resolveMultipleBeans(...)`，它解决的是“收集全部”，不是“选唯一”。
 
 > 排障提示：在断点里没看到候选集合变化时，先问自己：是不是命中这些早返回分支了？
+
+建议读者把这两个“最常见早返回”打一次断点验证（不要背结论）：
+
+- `@Value`：`AutowireCandidateResolver#getSuggestedValue` / `DefaultListableBeanFactory#doResolveDependency`（suggestedValue 分支）
+  - 关联阅读：[34. `@Value` 占位符解析：strict vs non-strict](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)
+- 注入点 `@Lazy`：`ContextAnnotationAutowireCandidateResolver#getLazyResolutionProxyIfNecessary`
+  - 关联阅读：[023. `@Lazy` 语义与边界](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
 
 ### 2.2 需要关注的第一个变量：`matchingBeans` / `candidates`
 
@@ -133,13 +182,36 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 | --- | --- | --- |
 | `descriptor` | 注入点描述（类型/限定符/是否 required） | 决定候选筛选维度 |
 | `matchingBeans` | 候选集合（beanName → candidate） | 决定是否进入收敛 |
-| `dependencyName` | 字段/参数名 | by-name fallback 重要输入 |
+| `dependencyName` | 字段/参数名（参数名可能缺失） | by-name fallback 重要输入（但对构造器参数不够稳定） |
 | `suggestedName` | resolver 推导名称（如 Qualifier 值） | 可能直接命中候选 |
 | `primaryCandidate` | 唯一 `@Primary` 候选 | 单依赖优先级高 |
 | `highestPriorityCandidate` | `@Priority` tie-break | 兜底路径 |
 | `autowiredBeanName` | 最终选中的 beanName | 最终结论落点 |
 
 ---
+
+### 2.4 候选筛选的幕后主角：AutowireCandidateResolver（Qualifier/Lazy/泛型/FactoryBean）
+
+很多“为什么候选集合不是我以为的那几个”的问题，最终会落到：**候选并不是纯按类型收集完才收敛**，而是在收集阶段就会被 resolver 过滤与改写。
+
+最短入口链路：
+
+- `DefaultListableBeanFactory#findAutowireCandidates(...)`
+  - `isAutowireCandidate(beanName, descriptor)`（这里会回调 resolver）
+
+在注解驱动的容器里，`autowireCandidateResolver` 通常是：
+
+- `ContextAnnotationAutowireCandidateResolver`
+  - `QualifierAnnotationAutowireCandidateResolver`（`@Qualifier` / 元注解）
+  - `GenericTypeAwareAutowireCandidateResolver`（泛型匹配：`checkGenericTypeMatch`）
+
+你在断点里应该能观察到它解决的 4 类问题：
+
+1) **`@Qualifier`（含元注解）**：注入点的限定信号如何进入 `descriptor`，以及如何过滤候选（`isAutowireCandidate`）
+2) **注入点 `@Lazy`**：是否返回 lazy-resolution proxy（`getLazyResolutionProxyIfNecessary`），从而绕开“选唯一候选”的痛点（但也会带来 proxy 语义）
+3) **`@Value`**：是否存在 `suggestedValue`（走值注入分支，根本不进入候选收集/收敛）
+4) **FactoryBean product 类型匹配**：候选的“类型”可能来自 FactoryBean 的 `getObjectType()` / BeanDefinition 的 targetType
+   - 如果 `getObjectType()` 误报/返回 null，可能导致候选集合“多了/少了”，最终表现为 NoSuch/NoUnique 或注入到意外对象（见 [08. FactoryBean](08-factorybean.md)）
 
 ## 3. 候选收敛（narrow down）：从候选集合缩到唯一候选
 
@@ -180,6 +252,20 @@ determineAutowireCandidate(candidates, descriptor):
 - 候选集合为什么是这些（collect）
 - 哪个规则把候选收敛到 1 个（narrow down）
 
+#### 3.1.1 by-name fallback：触发条件、证据链与 alias 边界
+
+很多人把“按名称收敛”理解成“只要名字对就会发生”。更准确的说法是：
+
+- by-name fallback 是 **候选收敛阶段** 的一个分支，只在“候选>1 且没有更强信号把集合缩到 1 个”时才可能触发
+- 它依赖 `DependencyDescriptor#getDependencyName()`（字段名 / 参数名），因此对“参数名是否可见”（编译参数 `-parameters`、调试信息、ParameterNameDiscoverer）非常敏感
+- 名字匹配不是只比对 beanName：`matchesBeanName(...)` 会把 alias 也算作“名字命中”（这也是 alias 影响注入解析的关键原因）
+
+证据链（建议读者直接跑起来验证一次）：
+
+- 入口：`SpringCoreBeansAutowireCandidateSelectionLabTest#byNameFallback_canMatchAlias_forAutowiredFieldInjection`
+- 断点：`DefaultListableBeanFactory#determineAutowireCandidate` → `descriptor.getDependencyName()` / `matchesBeanName(...)`
+- 互链：02 章的 “beanName、alias 与名字变换”——见 [02. Bean 注册入口：2.5.1](02-bean-registration.md)
+
 ### 3.2 `@Qualifier`：它是“缩小候选集合”的规则，不是改名
 
 - `@Qualifier("xxx")` 的意义是“候选必须匹配这个 qualifier 条件”
@@ -191,6 +277,14 @@ determineAutowireCandidate(candidates, descriptor):
 - `autowireCandidateResolver.isAutowireCandidate(...)` 过滤后的候选集合
 
 > 补充：自定义 qualifier（meta-annotation）也属于同一体系：最终仍然会落在 resolver 的匹配逻辑上。
+
+最短可验证路线（只做 1 个用例就够）：
+
+1) 定义一个注解 `@MyQualifier`，让它以 `@Qualifier` 作为元注解（并允许携带 value）
+2) 给候选实现类或 `@Bean` 方法打上 `@MyQualifier("x")`
+3) 在注入点上也打上 `@MyQualifier("x")`，观察 `matchingBeans` 如何被缩小，以及 resolver 在哪里读到限定信号
+
+参考（含可运行示例）：[45. 自定义 Qualifier 元注解](../part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md)
 
 ### 3.3 `@Primary` vs `@Qualifier`：怎么选？
 
@@ -247,14 +341,48 @@ static class SingleWorkerConsumer {
 
 ### 3.6 机制讲透：候选收集 → 收敛 → 最终注入（条件→分支→结果）
 
-**条件**：候选集合 > 1，且注入点没有明确限定  
-**分支**：`determineAutowireCandidate` 依次尝试 Qualifier → Primary → by-name → Priority  
-**结果**：  
-- 仍然无法缩小 → `NoUniqueBeanDefinitionException`  
-- 命中唯一候选 → 注入完成  
+**条件**：候选集合 > 1，且注入点没有明确限定
+**分支**：`determineAutowireCandidate` 依次尝试 Qualifier → Primary → by-name → Priority
+**结果**：
+- 仍然无法缩小 → `NoUniqueBeanDefinitionException`
+- 命中唯一候选 → 注入完成
 **证据链断点**：`DefaultListableBeanFactory#doResolveDependency`（观察 `matchingBeans` 与 `autowiredBeanName` 的变化）
 
 ---
+
+### 3.7 反例集 + 修复策略（最常见误判 TOP5）
+
+> 这一节的目标不是“背结论”，而是把你最容易踩坑的点变成“有证据链的排障套路”。
+
+1) **误判：`@Order` 能解决单依赖歧义**
+   - 现象：依然 `NoUniqueBeanDefinitionException`
+   - 证据链：`determineAutowireCandidate` 不会读取 `@Order`（它影响的是集合排序）
+   - 修复：用 `@Qualifier`（精确）/ `@Primary`（默认）/ `@Priority`（最后 tie-break）
+   - 入口：`SpringCoreBeansAutowireCandidateSelectionLabTest#orderAnnotation_doesNotResolveSingleInjectionAmbiguity`
+
+2) **误判：泛型一定能缩窄候选**
+   - 现象：`Handler<String>` 注入失败或候选集合“看起来不对”
+   - 关键事实：泛型匹配依赖 type metadata（BeanDefinition targetType / 运行时 class signature）。候选若通过 `registerSingleton` 注册成 JDK proxy，常会丢失泛型信息
+   - 修复：保留 BeanDefinition 元数据（定义层注册）；必要时显式提供 targetType；工程上不要把泛型当作唯一限定信号
+   - 入口：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`（appendix）
+
+3) **误判：FactoryBean 的 product 类型“肯定能被 Spring 推出来”**
+   - 现象：候选集合被污染（多了/少了），最终 NoSuch/NoUnique 或注入到意外对象
+   - 关键事实：FactoryBean 的 product 类型匹配高度依赖 `getObjectType()` 与缓存语义
+   - 修复：实现正确的 `getObjectType()`；必要时提供更明确的 targetType；并在文档/测试里固化反例
+   - 关联：见 [08. FactoryBean](08-factorybean.md)
+
+4) **误判：by-name fallback 在构造器参数注入上和字段注入一样可靠**
+   - 现象：字段注入能选中，但构造器参数注入仍 NoUnique（或根本不走 by-name）
+   - 关键事实：构造器参数名可能不可发现（未开启 `-parameters` 等），`descriptor.getDependencyName()` 可能是 `(null)`/`arg0`
+   - 修复：用 `@Qualifier/@Primary` 写死规则；或显式开启参数名元数据以补齐证据链
+   - 入口：`SpringCoreBeansDependencyDescriptorMetadataLabTest`（会打印 parameterName discovery 结果）
+
+5) **误判：`@Qualifier("beanName")` 等价于“把 bean 改名”**
+   - 现象：改名/alias 后注入失败，或以为 Qualifier 会影响 `getBean("...")`
+   - 关键事实：Qualifier 是候选过滤/建议名信号，不是 beanName 本身；名字/alias 仍然走 `BeanDefinitionRegistry`/`ConfigurableBeanFactory#registerAlias`
+   - 修复：把“名字层”和“限定层”拆开理解，分别在断点里验证（见本章 3.2 与 3.1.1）
+   - 互链：02 章 “beanName、alias 与名字变换”——见 [02. Bean 注册入口：2.5.1](02-bean-registration.md)
 
 ## 4. 可选依赖与延迟解析：Optional / required=false / ObjectProvider
 
@@ -334,16 +462,20 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 - `descriptor.getDependencyType()`：注入点要什么类型（最重要）
 - `descriptor.getDependencyName()`：注入点的名字（字段名/参数名；by-name 分支会用到）
 - `descriptor.isRequired()`：是否必填（决定是否允许返回 null）
+- `autowireCandidateResolver.getSuggestedValue(descriptor)`：是否存在 `@Value`（若有则会走值注入分支）
+- `autowireCandidateResolver.getSuggestedName(descriptor)`：是否存在 suggestedName（常见来源：`@Qualifier("name")`）
 - `this.resolvableDependencies`：是否命中“能注入但不是 bean”的特殊依赖
 - `matchingBeans` / `findAutowireCandidates(...)` 的返回值：候选集合（by type 的结果）
 - `matchingBeans.keySet()`：候选 beanName 列表
+- `autowiredBeanNames`（如果当前入口方法有这个参数）：最终注入涉及的 beanName 集合（排障“到底注入了谁/依赖了谁”很有用）
 - `autowireCandidateResolver`：候选筛选器（`@Qualifier` 的关键逻辑通常在这里）
 
 在 `determineAutowireCandidate(...)` 里重点看这些“收敛点”：
 
-- `determinePrimaryCandidate(...)`：是否存在 `@Primary`
-- `determineHighestPriorityCandidate(...)`：是否有 `@Priority` 参与 tie-break
-- `descriptor.getDependencyName()` / `matchesBeanName(...)`：是否出现“按名称收敛”
+- `primaryCandidate`：是否存在唯一 `@Primary`（若有会直接返回）
+- `dependencyName` / `matchesBeanName(...)`：by-name fallback 是否命中（含 alias）
+- `suggestedName` / `matchesBeanName(...)`：suggestedName 是否命中（常见来源：Qualifier 值）
+- `priorityCandidate`：是否有 `@Priority` 参与最后 tie-break（注意：它在 by-name 之后）
 
 ### 6.3 异常 → 下一步断点（速查）
 
@@ -361,14 +493,14 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 
 把“候选收集→收敛→注入”跑成 3 个可断言结论：
 
-1) **`@Order` 只影响集合注入顺序，不解决单依赖歧义**  
-   - 断点：`resolveMultipleBeans` / `AnnotationAwareOrderComparator`  
+1) **`@Order` 只影响集合注入顺序，不解决单依赖歧义**
+   - 断点：`resolveMultipleBeans` / `AnnotationAwareOrderComparator`
    - 现象：集合注入有序，单注入仍 `NoUnique`
-2) **单依赖收敛优先级：Qualifier > Primary > Priority > by-name**  
-   - 断点：`determineAutowireCandidate`（依次观察 `primaryCandidate` / `highestPriorityCandidate`）  
-   - 现象：`@Qualifier` 可显式绕开 `@Primary`
-3) **泛型与 ObjectProvider 会改变收敛结果**  
-   - 断点：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`  
+2) **单依赖收敛优先级（可复述版）：Qualifier（先过滤） > Primary > by-name（dependencyName/suggestedName，含 alias） > Priority（最后 tie-break）**
+   - 断点：`determineAutowireCandidate`（依次观察 `primaryCandidate` / `dependencyName` 命中 / `suggestedName` 命中 / `priorityCandidate`）
+   - 现象：`@Qualifier` 可显式绕开 `@Primary`；`@Primary` 会盖过 by-name fallback；by-name 也可以命中 alias（见本章 3.1.1）
+3) **泛型与 ObjectProvider 会改变收敛结果**
+   - 断点：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
    - 现象：`getIfUnique()` 可能返回 null，`orderedStream()` 遵循排序
 
 ---

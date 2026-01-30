@@ -2,6 +2,11 @@
 
 本 Part 的再加深重点：把注册/注入/生命周期/扩展点进一步下压到“算法级决策点”，并补齐真实工程边界（FactoryBean/泛型/循环依赖/代理叠加）。
 
+## 执行化提示（IoC 核心章的“深度落点”）
+
+- 优先把“算法级决策点”写进正文：入口方法（在哪里做选择）+ 关键变量（用什么信息做选择）+ 失败分型（为什么会 NoSuch/NoUnique）。
+- 反例要可复现：每章至少绑定 1 个 Lab/断点闭环，用断言与 watch list 证明“边界触发条件”。
+
 ### 02. Bean 注册入口：扫描、@Bean、@Import、registrar
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
@@ -91,4 +96,3 @@
   - C：补排障：如何从异常信息分型到“构造器环/属性环/depends-on 环/代理导致环”。
   - D：补断点：三级缓存、early reference 回调、包装/代理替换入口。
   - E：补面试追问：为什么说“能解不等于安全”？如何用证据链回答。
-

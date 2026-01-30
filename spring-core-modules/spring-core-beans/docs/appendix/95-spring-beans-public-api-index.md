@@ -6,6 +6,21 @@
 -->
 
 # 95. spring-beans Public API 索引（Spring Framework 6.2.15）
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：spring-beans Public API Index（索引）
+    - 怎么使用：先按本索引把 API 定位到包/机制域，再回到对应章节用断点与 Lab 把行为证明出来；遇到排障场景优先用索引反查“入口方法/关键数据结构”。
+    - 原理：Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。
+    - 源码入口：`org.springframework.beans.factory.BeanFactory` / `org.springframework.beans.factory.support.DefaultListableBeanFactory#getBean`
+    - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[94. 生产排障清单（Troubleshooting Checklist）](94-production-troubleshooting-checklist.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[96. spring-beans Public API Gap 清单](96-spring-beans-public-api-gap.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 

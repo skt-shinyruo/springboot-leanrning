@@ -78,8 +78,8 @@
 
 ### Requirement: 深化 spring-core-beans 文档与 Labs（源码级）
 
-- 当前方案包（逐章补强策略）：`helloagents/plan/202601291033_spring-core-beans-docs-deepening/`
-- 状态：已完成 Solution Design（2026-01-29），待进入 ~exec 执行阶段把建议落到 `spring-core-modules/spring-core-beans/docs/` 与对应 Lab/Test
+- 本轮方案包（Part 01 IoC Container 深化）：`helloagents/history/2026-01/202601301812_spring_core_beans_part01_ioc_container_deepening_solution/`
+- 状态：已完成实现与回归测试并归档（2026-01-30）
 **Module:** spring-core-beans
 将 `spring-core-beans` 文档从“概念解释”升级为“源码级可验证”：每个关键主题都能通过可运行的测试实验复现，并在文档中给出断点入口与观察点。
 
@@ -88,6 +88,14 @@
 - 提供最小 Lab，使用户能在本地打断点观察 BFPP/BPP/单例实例化发生的顺序
 
 #### Scenario: 能从注入报错反推候选选择过程
+- 文档给出“异常文本 → 依赖解析主线 → 收敛点”的可复述路径（`NoSuchBeanDefinition` / `NoUniqueBeanDefinition` / `UnsatisfiedDependency`）
+- 能明确：候选收集（`findAutowireCandidates`）与候选收敛（`determineAutowireCandidate`）的边界
+- 对应可复现闭环入口：
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/DependencyDescriptorDumperLabTest.java`
+
+#### Scenario: 能区分 Field vs MethodParameter 注入点元数据，并用断点解释候选收敛差异
 - 文档明确候选收集与缩小过程（@Qualifier/@Primary/by-name fallback（依赖名匹配 beanName）/@Priority/名称匹配/集合注入排序）
 - 提供 Lab 覆盖：多实现歧义、@Primary、@Qualifier、by-name fallback、泛型收敛、集合注入排序、以及 `ObjectProvider#getIfUnique()` 的可选/多候选语义
 
@@ -99,15 +107,24 @@
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansEnvironmentPropertySourceLabTest.java`
 
 #### Scenario: 能把 BeanFactory API 当作“最小容器”理解（并解释与 ApplicationContext 的边界）
-- 能解释：为什么 plain BeanFactory 不会自动启用注解注入/生命周期（需要显式 BPP），以及 BPP 安装顺序/时机的影响
+- 能解释：plain BeanFactory 不会自动启用注解注入/生命周期（需要显式安装 BPP），以及 BPP 安装顺序/时机的影响
 - 能给出最小可运行路径：`DefaultListableBeanFactory` + 手动注册 annotation processors + `addBeanPostProcessor` 的可断言对照
 - 对应可复现闭环入口：
   - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanFactoryApiLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanFactoryVsApplicationContextLabTest.java`
+
+#### Scenario: 能解释 scoped proxy 的双 Bean 名语义（beanName vs scopedTarget.*）与 ScopedProxyMode 的取舍
+- 能解释：scoped proxy 会产生“双定义”（`<beanName>` 代理 + `scopedTarget.<beanName>` 目标），以及它为何是“用一致性换可用性”
+- 能解释：`ScopedProxyMode.INTERFACES` vs `TARGET_CLASS` 的取舍（类型可注入性 / 代理形态 / 调试成本）
+- 对应可复现闭环入口：
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
+  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
 
 #### Scenario: 能讲清循环依赖“能救/不能救”的边界（含代理介入）
 - 文档解释三层缓存与 early reference 的真实语义
-- 提供 Lab 覆盖：构造器循环失败、setter 循环可能成功、代理介入导致 early reference 行为变化
+- 提供 Lab 覆盖：构造器循环失败、setter 循环可能成功、以及 `allowRawInjectionDespiteWrapping` 对 early==final 一致性的影响
 - 对应可复现闭环入口：
   - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
   - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
@@ -116,12 +133,23 @@
 #### Scenario: 能把 Bean 三层模型映射到关键类与扩展点
 - 文档明确：BeanDefinition/实例/生命周期 三层与关键参与者的关系
 - 提供 Lab 使用户能在断点里看到这些对象在何时出现与被修改
+ - 对应可复现闭环入口：
+   - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
+   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanCreationTraceLabTest.java`
+   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanDefinitionOriginDumperLabTest.java`
 
 #### Scenario: 能把 AOP/事务等“代理能力”放回容器时间线解释（BPP 视角）
 - 能解释 AutoProxyCreator 作为典型 BPP 如何在 pre/early/after-init 介入，导致最终暴露对象可能是 proxy
 - 能分清“BPP 包裹顺序（容器阶段）”与“advisor/interceptor 顺序（调用阶段）”，并能给出跨模块的断点闭环路径
 
 #### Scenario: 能把 post-processor 的“顺序与时机”讲成源码算法（Ordering + programmatic 注册）
+ - 能用 `PostProcessorRegistrationDelegate` 的两段算法解释：为什么 BFPP/BDRPP 更早、为什么 BPP 注册发生在 refresh 中前段、以及顺序如何由“三段分组 + comparator”决定
+ - 能解释 `BeanPostProcessorChecker` 的信号含义：哪些 bean “错过了后续 BPP”，以及如何从日志回到过早 `getBean()` 的证据链
+ - 对应可复现闭环入口：
+   - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
+   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansEarlyGetBeanMissesBppLabTest.java`
+
+#### Scenario: 能识别基础设施 Bean（ROLE_INFRASTRUCTURE）并用于注解能力/处理器排障
 - 能用 `PostProcessorRegistrationDelegate` 的两段算法解释：为什么 BFPP/BDRPP 更早、为什么 BPP 注册发生在 refresh 中前段、以及顺序如何由“三段分组 + comparator”决定
 - 能解释 `addBeanPostProcessor` 的 list 语义：为什么它绕过容器排序、为什么执行顺序 = 注册顺序、以及“BPP 不会 retroactive”的时机陷阱
 - 对应可复现闭环入口：

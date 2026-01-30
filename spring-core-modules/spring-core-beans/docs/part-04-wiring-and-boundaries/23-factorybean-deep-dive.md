@@ -1,4 +1,19 @@
 # 23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`FactoryBean#isSingleton()` / `AbstractBeanFactory#getObjectForBeanInstance` / `FactoryBean#getObject()`
+    - 推荐 Lab：`SpringCoreBeansContainerLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[22. beanName 与 alias：命名规则与别名本质](22-bean-names-and-aliases.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[24. BeanDefinition 覆盖：同名定义的冲突策略](24-bean-definition-overriding.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -285,6 +300,13 @@
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+
+## 自检要点
+应能够解释清楚：
+
+1) **`getBean(name)` 与 `getBean(&name)` 的差别是什么？两个缓存各自缓存的是什么？**
+2) **type matching 为什么经常在 FactoryBean 场景“看似偶发失效”？**（`getObjectType/isSingleton`、allowEagerInit、缓存命中路径）
+3) **如何用断点证明“最终暴露对象是 product 还是 factory”？**（`getObjectForBeanInstance` / `getObjectFromFactoryBean`）
 
 <!-- BOOKIFY:START -->
 

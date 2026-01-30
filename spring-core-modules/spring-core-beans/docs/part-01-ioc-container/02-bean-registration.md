@@ -1,4 +1,19 @@
 # 02. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：Bean 注册入口：扫描、@Bean、@Import、registrar
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#registerSingleton` / `ClassPathBeanDefinitionScanner#doScan`
+    - 推荐 Lab：`SpringCoreBeansComponentScanLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[第 13 章：01. `ApplicationContext#refresh` 调用链（主线）](../part-00-guide/013-01-applicationcontext-refresh-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](08-factorybean.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -13,14 +28,19 @@
 
 !!! example "本章配套实验（先跑再读）"
 
+    - Lab（字段级证据链入口，强烈建议先跑）：
+      - `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest`
     - Lab（注册入口对照）：
       - `SpringCoreBeansComponentScanLabTest`
       - `SpringCoreBeansImportLabTest`
       - `SpringCoreBeansProgrammaticRegistrationLabTest`
     - Test file：
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanDefinitionRegistrationDiffLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansComponentScanLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansImportLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticRegistrationLabTest.java`
+
+    - 说明：`SpringCoreBeansProgrammaticRegistrationLabTest` 位于 Part 04，但它同时服务于本章的“定义层 vs 实例层”对照（把边界问题放在 wiring & boundaries 更利于工程化理解）。
 
 ## 章节验收口径（10/30/3：教程化闭环）
 
@@ -35,27 +55,26 @@
 
 ## 机制讲透：注册入口的条件 → 分支 → 结果（可断点证明）
 
-**条件**：读者是“注册定义”还是“注册实例”，以及注册发生的时机  
-**分支**：  
-- `registerBeanDefinition`（定义层）  
-- `registerSingleton`（实例层）  
-
-**结果**：  
-- 定义层注册 → 会参与 BFPP/BPP/生命周期（注入/回调/代理可生效）  
-- 实例层注册 → 直接入单例缓存，**不会 retroactive 触发注入/BPP**  
-
-**断点建议**：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#registerSingleton`  
-**关键变量**：`beanDefinition.getSource()` / `factoryMethodName` / `allowBeanDefinitionOverriding`
+- **条件**：读者是“注册定义”还是“注册实例”，以及注册发生的时机
+- **分支**：
+  - `registerBeanDefinition`（定义层）
+  - `registerSingleton`（实例层）
+- **结果**：
+  - 定义层注册 → 会参与 BFPP/BPP/生命周期（注入/回调/代理可生效）
+  - 实例层注册 → 直接入单例缓存，**不会 retroactive 触发注入/BPP**
+- **断点建议**：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#registerSingleton`
+- **关键变量**：`beanDefinition.getSource()` / `factoryMethodName` / `allowBeanDefinitionOverriding`
 
 ## 关键分支解释（围绕 refresh 的 if/then）
 
-- **注册发生在 BFPP/BDRPP 之前？**  
-  - 是：定义仍可被加工（注解/占位符/注册表扩张）  
+- **注册发生在 BFPP/BDRPP 之前？**
+  - 是：定义仍可被加工（注解/占位符/注册表扩张）
   - 否：可能错过定义层加工
-- **注册发生在 BPP 之前？**  
-  - 是：实例创建可被完整 BPP 链处理  
+- **注册发生在 BPP 之前？**
+  - 是：实例创建可被完整 BPP 链处理
   - 否：容易出现“过早出生”的 bean（错过代理/注解处理）
 - **是否允许覆盖**：`allowBeanDefinitionOverriding` 决定同名定义能否被后注册覆盖
+  - 补充：纯 Spring 容器里该开关通常默认 **允许**（方便覆盖/重定义），但 Spring Boot 工程里多数场景默认 **禁止**（同名直接报错），需要显式开启 `spring.main.allow-bean-definition-overriding=true`（或自定义 `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(true)`）
 
 ## 机制主线：注册 = 先注册定义，再按定义造实例
 
@@ -74,16 +93,43 @@
 
 > `BeanDefinition` 描述的是“如何创建一个 bean 实例”的元数据（class、scope、factoryMethod、propertyValues、constructorArgs…）。
 
-在断点里应该能看见它至少包含：
+在断点里应该能看见它至少包含（只列“会影响后续行为/排障分层”的关键字段）：
 
-- beanName（注册名）
-- beanClass / beanClassName（要造的类型）
+- beanName（注册名；可能还有 alias）
+- beanClassName / beanClass（要造的类型；扫描入口通常能直接看到）
+- factoryBeanName / factoryMethodName（若来自 `@Bean` 工厂方法，这两个字段是第一线索）
 - scope（singleton/prototype/自定义 scope）
-- role / source（来源：扫描/@Bean/@Import/XML…）
+- lazyInit（是否延迟创建；影响 `preInstantiateSingletons` 与“什么时候才会创建”）
+- dependsOn（强制初始化/销毁顺序；常见于基础设施/资源依赖）
+- autowireCandidate / primary / qualifiers（参与候选收集与收敛；决定“能不能注入/注入选谁”）
+- role / source / resourceDescription（来源线索：扫描/@Bean/@Import/XML…；排障时用于反推入口）
+
+> 读者不要把这些字段当作“元数据而已”。它们会在后续的「依赖解析」「生命周期」「后处理器」「FactoryBean」「循环依赖」等分支中被读取。
+
+**字段 → 行为（最短读取点）速查：**
+
+| 字段 | 什么时候被读取 | 方法级锚点（建议断点） | 影响的行为 | 推荐跳转 |
+| --- | --- | --- | --- | --- |
+| `scope` | 获取/创建 bean 时 | `AbstractBeanFactory#doGetBean` | singleton 缓存 vs prototype 每次创建 | [第 15 章：04. Scope 与 prototype 注入陷阱](015-04-scope-and-prototype.md) / [09. 循环依赖](09-circular-dependencies.md) |
+| `lazyInit` | 容器预实例化与按需创建 | `DefaultListableBeanFactory#preInstantiateSingletons` | 是否在 refresh 期间创建 | [023. `@Lazy` 语义与边界](../part-04-wiring-and-boundaries/023-18-lazy-semantics.md) |
+| `dependsOn` | 创建前强制拉起依赖 | `AbstractBeanFactory#doGetBean`（读取 `mbd.getDependsOn()`） | 初始化/销毁顺序被强制化（并可能拉起 lazy） | [19. dependsOn：强制初始化顺序](../part-04-wiring-and-boundaries/19-depends-on.md) / [第 16 章：05. 生命周期](016-05-lifecycle-and-callbacks.md) |
+| `autowireCandidate/primary/qualifiers` | 依赖解析（候选收集/收敛） | `DefaultListableBeanFactory#doResolveDependency` | 候选集合收敛与最终选择 | [第 14 章：03. 依赖注入解析](014-03-dependency-injection-resolution.md) |
 
 对应观察点：
 
 - `DefaultListableBeanFactory#registerBeanDefinition(beanName, beanDefinition)`
+
+### 1.1 不同注册入口的 BeanDefinition “形态”对照（以本仓库 Lab 为准）
+
+这张表的目标不是让你背实现类名（它会随版本微调），而是让你在断点里用 **稳定字段组合** 反推出“它来自哪个入口”：
+
+| 入口 | 你在断点里最稳定能看到的线索 | 常见误判 | 最短证据入口 |
+| --- | --- | --- | --- |
+| 扫描（`@ComponentScan`/`scan(...)`） | `beanClassName` 通常不为空；`factoryMethodName` 通常为空；`source/resourceDescription` 常指向 classpath 元数据 | 误以为“扫描=实例化”；其实只注册定义 | `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` / `SpringCoreBeansComponentScanLabTest` |
+| `@Configuration` + `@Bean` | `factoryBeanName/factoryMethodName` 通常不为空（工厂方法定义）；`beanClassName` 可能不是最关键线索 | 把 `proxyBeanMethods` 当成“是否注册”；其实它影响的是方法调用语义 | `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` / `SpringCoreBeansContainerLabTest` |
+| `@Import(ImportBeanDefinitionRegistrar)` | registrar 自己 `registry.registerBeanDefinition(...)`；`source/resourceDescription` 往往能被 registrar 写成排障线索 | 误以为 registrar “直接造对象”；其实仍然在定义层 | `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` / `SpringCoreBeansImportLabTest` |
+| 编程式 `registerBeanDefinition` | 你手工 new 的 `BeanDefinition`；是否可被 BFPP/BDRPP 加工取决于注册时机 | refresh 之后再注册，期待 BFPP 生效 | `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` / `SpringCoreBeansProgrammaticRegistrationLabTest` |
+| 实例层 `registerSingleton` | **没有 BeanDefinition**；只在 `singletonObjects` 有实例 | 误以为“注册完成=注入/BPP/回调都会补上” | `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` / `SpringCoreBeansProgrammaticRegistrationLabTest` |
 
 ---
 
@@ -141,6 +187,16 @@ Lab：`SpringCoreBeansImportLabTest`
 - 实例层注册（慎用）：`registerSingleton`
   - 只把对象放进单例缓存，不会 retroactive 触发注入/BPP/init
 
+如果你确实处在“对象已经由外部创建，但还想让 Spring 帮你补齐注入/回调”的场景，**不要误以为 `registerSingleton` 会自动补齐这些能力**。
+更接近你想要的能力组合通常是：
+
+- `AutowireCapableBeanFactory#autowireBean`（补注入）
+- `AutowireCapableBeanFactory#initializeBean`（触发 init callbacks / BPP 链）
+
+但也要明确边界：这类“补救”依赖调用时机与容器状态，仍可能错过某些排序/代理替换窗口；因此工程上优先级仍应是“能定义层注册就不要实例层塞对象”。
+
+对应深入（外部对象如何接入容器能力）：[43. 容器外对象注入：AutowireCapableBeanFactory](../part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md)
+
 对应章节（深入）：[25. 手工添加 BPP：顺序与时机](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)
 
 Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`
@@ -158,6 +214,37 @@ Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`
 | `@Import(ImportBeanDefinitionRegistrar)` | 定义层（直接操作 registry） | `ImportBeanDefinitionRegistrar#registerBeanDefinitions` → `registry.registerBeanDefinition` | 同上 | registrar 没被 `ConfigurationClassPostProcessor` 发现（配置类没被解析） | `SpringCoreBeansImportLabTest` |
 | `registerBeanDefinition/registerBean` | 定义层 | 调用的 API → `BeanDefinitionRegistry#registerBeanDefinition` | 同上 | 在 refresh 之后才注册：错过 BFPP/BDRPP 的定义层加工 | `SpringCoreBeansProgrammaticRegistrationLabTest` |
 | `registerSingleton` | 实例层（单例缓存） | 调用的 API → `SingletonBeanRegistry#registerSingleton` | `DefaultSingletonBeanRegistry#singletonObjects` | 不会 retroactive 注入/BPP/init；`beanDefinitionMap` 里也没有 | `SpringCoreBeansProgrammaticRegistrationLabTest` |
+
+#### 2.5.1 beanName、alias 与“名字变换”（不要和实例混在一起）
+
+这一节补上“注册阶段经常被忽略、但排障时极关键”的名字层：
+
+1) **beanName 从哪来？（生成入口）**
+
+- 扫描：`@Component` 默认用 `AnnotationBeanNameGenerator`（短类名 decapitalize），也可用 `@Component("explicitName")` 显式指定（更细：见 3.3.3 的“断点闭环”）
+- `@Bean`：默认以 **方法名** 作为 beanName；可用 `@Bean(name = "...")` 或 `@Bean(name = {"primary", "alias1", "alias2"})`
+- 断点抓手：在 `registerBeanDefinition` 断点里直接看 `beanName`（不要只看类型）
+
+2) **alias 从哪来？（alias 的入口）**
+
+- `@Bean(name = {"primaryName", "aliasName"})`：第一个是主名，其余是 alias
+- `ConfigurableBeanFactory#registerAlias(primaryName, aliasName)`：显式注册（常用于兼容旧名/灰度迁移）
+
+3) **alias 影响什么？（影响 lookup 与某些“按名收敛”路径）**
+
+- `getBean("aliasName")` 与 `getBean("primaryName")` 返回同一实例（alias 不会创建第二个对象）
+- `@Resource` 是 name-first：字段名/显式 name 会先参与匹配（包含 alias 的情况）；因此重构字段名/alias 时更容易出现隐性回归
+- `@Autowired` 的 by-name fallback（当候选>1 且缺少明确限定信号时）也可能命中 alias（它最终会走 “matches bean name” 的路径；详见 [第 14 章：03. 注入解析](014-03-dependency-injection-resolution.md) 的收敛决策树）
+
+4) **交叉：`&` 前缀与 `scopedTarget.*`（看起来像名字，其实是语义分流）**
+
+- `&beanName`：FactoryBean 场景下用于获取 “factory 本体”（见 [08. `FactoryBean`](08-factorybean.md)）
+- `scopedTarget.<beanName>`：scoped proxy 会在容器里额外注册一个 target 定义（见 [第 15 章：04. Scope 与 prototype](015-04-scope-and-prototype.md)）
+
+建议读者把“名字层”单独跑一遍（避免后续把注入问题误判为注册问题）：
+
+- 文档：[`22. Bean 名称与 alias：同一个实例，多一个名字`](../part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)
+- Lab：`SpringCoreBeansBeanNameAliasLabTest` / `SpringCoreBeansResourceInjectionLabTest`
 
 ### 2.6 证据链：3 分钟证明“注册了什么”（建议每次都按这个套路）
 
@@ -217,14 +304,14 @@ Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`
 
 至少应能够用 3 个断言讲清楚“扫描注册”的关键结论：
 
-1) **扫描注册写入的是 BeanDefinition，不是实例**  
-   - 断点：`ClassPathBeanDefinitionScanner#doScan` → `registerBeanDefinition`  
+1) **扫描注册写入的是 BeanDefinition，不是实例**
+   - 断点：`ClassPathBeanDefinitionScanner#doScan` → `registerBeanDefinition`
    - 断言：`beanDefinitionMap` 增长但 `singletonObjects` 仍为空
-2) **来源可以通过 source/factoryMethodName 反推**  
-   - 断点：`registerBeanDefinition`  
+2) **来源可以通过 source/factoryMethodName 反推**
+   - 断点：`registerBeanDefinition`
    - 断言：`beanDefinition.getSource()` 指向扫描来源
-3) **时机决定能否被后处理器看见**  
-   - 断点：`invokeBeanFactoryPostProcessors`  
+3) **时机决定能否被后处理器看见**
+   - 断点：`invokeBeanFactoryPostProcessors`
    - 断言：注册发生在 BFPP/BDRPP 之前 → 定义可被加工
 
 ## 3. 注册发生在 refresh 的哪一段？（时机决定能力）
@@ -329,6 +416,15 @@ AnnotationConfigApplicationContext#scan(basePackages)
 排障提示：
 
 - 若发现 `ComponentScanAnnotationParser#parse` 从未命中，但 `ClassPathBeanDefinitionScanner#doScan` 命中了：说明读者走的是 `scan(...)` API，而不是 `@ComponentScan` 注解。
+
+#### 3.3.3 beanName 是在哪一步生成的？（BeanNameGenerator）
+
+很多“按名排障 / alias / by-name fallback”的问题，本质上卡在：**beanName 到底是谁在什么时间点生成的**。
+
+- 扫描场景：`ClassPathBeanDefinitionScanner#doScan` 会对每个候选组件调用 `BeanNameGenerator#generateBeanName(candidate, registry)` 生成 beanName（默认实现是 `AnnotationBeanNameGenerator`）
+- 断点闭环：在 `BeanNameGenerator#generateBeanName` 打断点，观察输入的 `BeanDefinition`（常见是 `ScannedGenericBeanDefinition`）与输出 `beanName`，即可解释“为何这个类最终叫这个名字”
+- 注解注册场景（`AnnotationConfigApplicationContext#register` / `AnnotatedBeanDefinitionReader`）：同样会走 `BeanNameGenerator`（但 `@Bean` 工厂方法默认是方法名，不走 generator）
+- 不要混淆：有些代码（尤其是 registrar / programmatic）会用 `BeanDefinitionReaderUtils.registerWithGeneratedName(...)`，它走的是 `BeanDefinitionReaderUtils#generateBeanName(...)` 这一套（不是 `BeanNameGenerator`）
 
 ### 3.4 `@Configuration` + `@Bean`：工厂方法定义是怎么注册的？
 
@@ -661,6 +757,17 @@ AbstractBeanFactory#doGetBean(beanName)
 - 加分项：
   - 能解释 `@Resource` 更像按名称（见 32 章），以及 by-name fallback 的边界
 
+## 面试常问（Bean 注册）
+
+1) **为什么说“注册的第一性对象是 BeanDefinition”，而不是 bean instance？**
+   - 要点：定义层注册的产物是“配方”，实例要等到创建阶段按定义产生；定义能被 BFPP/BDRPP 加工，实例能被 BPP 增强/换壳。
+
+2) **定义层注册（registerBeanDefinition）与实例层注册（registerSingleton）有什么本质区别？**
+   - 要点：定义层会走完整创建管线（注入/回调/代理）；实例层通常直接进单例缓存，不会 retroactive 补注入/补代理。
+
+3) **`@Import`/Registrar 与 BDRPP 的边界是什么？为什么它们都在“定义层”但时机与能力不同？**
+   - 要点：Import 体系发生在配置类解析阶段；BDRPP 是 refresh 早期的统一调度点，能动态加定义并影响后续 BFPP/BPP 链路。
+
 ## 自检要点
 应能够用 3 句答题：
 
@@ -681,6 +788,7 @@ AbstractBeanFactory#doGetBean(beanName)
 
 ### 对应 Lab/Test
 
+- Lab：`SpringCoreBeansBeanDefinitionRegistrationDiffLabTest`
 - Lab：`SpringCoreBeansComponentScanLabTest`
 - Lab：`SpringCoreBeansImportLabTest`
 - Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`

@@ -53,12 +53,12 @@
 
 ### 机制讲透：三层模型 + 最终对象（条件 → 分支 → 结果）
 
-**条件**：bean 是否走完整 `doCreateBean`，以及是否被 BPP/early reference 替换  
-**分支**：`applyBeanPostProcessorsAfterInitialization` / `getEarlyBeanReference`  
-**结果**：  
-- 走完整创建链 → 有机会被 after-init BPP 替换成 proxy  
-- 进入 early reference → 最终对象可能不是 raw instance  
-**断点建议**：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+- **条件**：bean 是否走完整 `doCreateBean`，以及是否被 BPP/early reference 替换
+- **分支**：`applyBeanPostProcessorsAfterInitialization` / `getEarlyBeanReference`
+- **结果**：
+  - 走完整创建链 → 有机会被 after-init BPP 替换成 proxy
+  - 进入 early reference → 最终对象可能不是 raw instance
+- **断点建议**：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
 ## 1. 四类对象一张表：读者到底在看什么？
 
@@ -68,6 +68,33 @@
 | merged `RootBeanDefinition` | 最终生效配方 | `AbstractBeanFactory#getMergedLocalBeanDefinition(beanName)` | “为什么最终是 Root？parent 合并后哪些元数据生效？” |
 | raw instance（原始实例） | 刚创建出来的对象 | `doCreateBean` 内部的 `bean`/`bw.getWrappedInstance()` | “构造器/工厂方法到底有没有执行？注入发生了吗？” |
 | exposed object（最终暴露对象） | 容器对外的最终返回 | `initializeBean` 之后的返回值 / `getBean()` 的结果 | “为什么我拿到的是 proxy？是谁把它换掉的？” |
+
+### 1.1 四类对象在典型“变形场景”里的映射（最容易把读者绕晕的 4 类）
+
+> 目的：不增加术语负担，只把“我看到的对象到底代表谁”固定成可复述规则。
+
+1) **FactoryBean：`getBean(name)` 可能拿到的是“产品”，不是“工厂”**
+   - raw instance：FactoryBean 本身（工厂对象）
+   - exposed object：`FactoryBean#getObject()` 的返回（产品对象）
+   - 关键入口：`AbstractBeanFactory#getObjectForBeanInstance`
+   - 识别口令：`&name` 才能拿到工厂本体（见 [08](08-factorybean.md)）
+
+2) **scoped proxy：你拿到的是“代理”，真实目标对象在另一个 beanName 下**
+   - 定义层：通常会出现 `scopedTarget.<beanName>`（目标定义）+ `<beanName>`（代理定义）
+   - raw instance：目标对象（按 scope 创建/缓存）
+   - exposed object：代理对象（通常是 singleton 代理，但每次调用可路由到不同目标）
+   - 关键入口：定义层改写（`ScopedProxyMode`）+ 运行期取值（`ScopedObject#getTargetObject`）
+   - 关联章节：scope 主线见 [04](015-04-scope-and-prototype.md)，深入见 [28](../part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md)
+
+3) **循环依赖（early reference）：容器给过依赖方“暂时引用”，但最终对外对象可能不同**
+   - early：`getEarlyBeanReference` 可能返回 raw，也可能返回 proxy（由 BPP/AOP 决策）
+   - final：`applyBeanPostProcessorsAfterInitialization` 可能再次替换成最终 proxy/wrapper
+   - 风险点：early 与 final 不一致 → raw 注入绕过代理 / fail-fast（见 [09](09-circular-dependencies.md)、[16](../part-03-container-internals/16-early-reference-and-circular.md)）
+
+4) **ResolvableDependency / 外部对象：能注入但不是“可枚举 Bean”**
+   - 表象：`@Autowired` 成功，但 `getBeanDefinitionNames`/`getBeansOfType` 找不到
+   - 原因：注入走的是依赖解析链路（实例层），不一定依赖 `BeanDefinition`（定义层）
+   - 关联章节：见本章「能注入 ≠ 一定是 Bean」与 [20](../part-04-wiring-and-boundaries/20-resolvable-dependency.md)、[43](../part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md)
 
 ## 2. 方法级主线：refresh → doCreateBean → 最终暴露对象
 
@@ -82,9 +109,9 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 ### 2.1 关键分支解释（围绕 refresh 的 if/then）
 
-- **是否预实例化**：`mbd.isLazyInit()` 决定是否在 `preInstantiateSingletons` 被创建  
-- **是否走 BPP 链**：BPP 注册发生在 `registerBeanPostProcessors`，过早创建会错过  
-- **是否进入 early reference**：循环依赖窗口期决定最终暴露对象形态  
+- **是否预实例化**：`mbd.isLazyInit()` 决定是否在 `preInstantiateSingletons` 被创建
+- **是否走 BPP 链**：BPP 注册发生在 `registerBeanPostProcessors`，过早创建会错过
+- **是否进入 early reference**：循环依赖窗口期决定最终暴露对象形态
 - **是否为 FactoryBean**：`getObjectForBeanInstance` 决定拿到的是工厂还是产品
 
 单个 bean 的创建主线（方法级锚点）：
@@ -99,14 +126,14 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 跑完该 Lab，至少应能够复述 3 条结论：
 
-1) **raw instance 与最终暴露对象可能不同**  
-   - 断点：`applyBeanPostProcessorsAfterInitialization`  
+1) **raw instance 与最终暴露对象可能不同**
+   - 断点：`applyBeanPostProcessorsAfterInitialization`
    - 断言：`result != bean`
-2) **注入发生在 populateBean 阶段**  
-   - 断点：`populateBean`  
+2) **注入发生在 populateBean 阶段**
+   - 断点：`populateBean`
    - 断言：属性填充发生在初始化之前
-3) **最终暴露对象在 initializeBean 之后确定**  
-   - 断点：`initializeBean`  
+3) **最终暴露对象在 initializeBean 之后确定**
+   - 断点：`initializeBean`
    - 断言：`getBean()` 拿到的是 initialize 之后的返回值
 
 ## 3. 三个“最终对象被替换”的高频入口
@@ -120,6 +147,38 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 3) **初始化后替换（after-init）**：`postProcessAfterInitialization`
    - 典型：AOP/事务/懒代理等最常见 proxy 产生点（见 [31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
 
+> 补充两个“看起来像替换，但本质是 getBean 返回语义不同”的高频来源：
+>
+> 4) **FactoryBean 产品语义**：`getObjectForBeanInstance` 决定 `getBean(name)` 返回“工厂”还是“产品”
+> 5) **scoped proxy 的双定义**：`beanName` 对应 proxy，`scopedTarget.beanName` 对应真实目标（见 [04](015-04-scope-and-prototype.md)）
+
+## 补充：能注入 ≠ 一定是 Bean（ResolvableDependency / 外部对象）
+
+当你把“Bean 三层模型”用到真实排障里，会遇到一个非常高频的反直觉点：
+
+- **有些东西你能 `@Autowired` 注入到字段/参数里，但它并不是一个“可枚举的 Bean”**；
+- 这类对象通常来自两条路径：
+  1. **ResolvableDependency**：容器预置的一些可注入对象（例如 `ApplicationContext`、`Environment` 等），它们不一定对应一个 `BeanDefinition`；
+  2. **外部对象 + AutowireCapableBeanFactory**：对象是“你 new 出来的”，但你让容器帮你做依赖注入/回调（它依然会触发依赖解析链路）。
+
+把这个边界放回三层模型里，读者才能解释“为什么我在容器里搜不到它、但注入却成功了”，也能避免把问题误判成“没注册 Bean”。
+
+### 方法级证据链（建议至少跑一次）
+
+1) ResolvableDependency 的证据链（容器预置、但不是 BeanDefinition）
+   - 注册位置：`AbstractApplicationContext#prepareBeanFactory`
+   - 关键 API：`DefaultListableBeanFactory#registerResolvableDependency`
+   - 命中位置：`DefaultListableBeanFactory#doResolveDependency`（会优先检查 resolvableDependencies）
+
+2) 外部对象的证据链（对象不是容器创建，但能力来自容器）
+   - 入口：`AutowireCapableBeanFactory#autowireBean` / `initializeBean` / `destroyBean`
+   - 关键结论：容器可以给它“注入与回调”，但它不是容器生命周期自动托管的 bean（除非你显式注册/销毁）
+
+**关联阅读（建议顺序）：**
+
+- `20-resolvable-dependency.md`（能注入但不是 Bean）
+- `43-autowirecapablebeanfactory-external-objects.md`（外部对象如何接入容器能力）
+
 ## 4. 排障决策表（把“我感觉”变成“我能证明”）
 
 | 现象 | 先分层到哪里 | 证据（断点/观察点） | 最可能根因 | 修复思路 |
@@ -128,17 +187,20 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 | 注入报 `NoUniqueBeanDefinitionException` | 实例层（依赖解析） | `doResolveDependency`→`findAutowireCandidates`→`determineAutowireCandidate` | 候选太多且没收敛信号 | 用 `@Qualifier/@Primary` 收敛；或让 auto-config back-off（见 [03](014-03-dependency-injection-resolution.md)、[33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)） |
 | 容易误以为拿到原对象但行为像 proxy | 实例层（最终暴露对象） | `applyBeanPostProcessorsAfterInitialization` 里 `result != bean` | after-init BPP 替换了对象 | 追到具体 BPP，再回看其注册顺序与触发条件（见 [31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)） |
 | “明明写了 @Bean，但容器里没有” | 定义层（注解基础设施） | `ConfigurationClassPostProcessor` 是否存在并执行 | 没装 annotation processors / 配置类没被解析 | 先把注解基础设施装起来（见 [22](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)） |
+| `BeanCurrentlyInCreationException`（循环依赖） | 实例层（创建窗口） | `doCreateBean`（`earlySingletonExposure`）+ `getSingleton(..., allowEarlyReference=true)` | 依赖图有环；或 early/final 一致性保护触发 | 优先消环；其次用 `ObjectProvider/@Lazy` 打断；不要靠“能启动”自欺（见 [09](09-circular-dependencies.md)） |
+| “注入成功但容器里搜不到” | 边界层（ResolvableDependency/外部对象） | `registerResolvableDependency` / `autowireBean` 是否被调用 | 这是容器提供的“可注入能力”，不是普通 bean | 回到本章补充与 [20](../part-04-wiring-and-boundaries/20-resolvable-dependency.md)、[43](../part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md) |
+| “类型看起来不对”（注入/获取拿到的不是预期类型） | 定义层 + 最终暴露层 | `getObjectForBeanInstance` / 是否存在 `scopedTarget.*` | FactoryBean 产品语义 / scoped proxy 双定义 | 先识别是 FactoryBean 还是 scoped proxy，再回到对应章节（见 [08](08-factorybean.md)、[04](015-04-scope-and-prototype.md)） |
 
 ## 5. 面试常问（标准答案 + 方法级证据链）
 
 ### Q1：BeanDefinition、bean instance、最终 `getBean()` 拿到的对象分别是什么？
 
 - 标准答案（可复述）：
-  - BeanDefinition 是配方；bean instance 是创建出来的原始对象；`getBean()` 返回最终暴露对象，可能被 short-circuit/early reference/after-init BPP 替换成 proxy/wrapper。
+  - BeanDefinition 是配方；bean instance 是创建出来的原始对象；`getBean()` 返回最终暴露对象。最终暴露对象可能来自 BPP 的替换（pre/early/after-init），也可能来自 `getBean` 的“语义转义”（FactoryBean 产品、scoped proxy）。
 - 证据链（方法级）：
   - 定义层：`registerBeanDefinition`
   - 创建层：`doCreateBean` / `populateBean` / `initializeBean`
-  - 最终暴露：`applyBeanPostProcessorsAfterInitialization` / `getEarlyBeanReference`
+  - 最终暴露：`applyBeanPostProcessorsAfterInitialization` / `getEarlyBeanReference` / `getObjectForBeanInstance`
 - 最小复现：
   - `SpringCoreBeansContainerLabTest.beanDefinitionIsNotTheBeanInstance`
   - `SpringCoreBeansProxyingPhaseLabTest`
@@ -151,7 +213,7 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 ### Q3：BeanFactory vs ApplicationContext 的核心差别是什么？
 
 - 标准答案（可复述）：
-  - BeanFactory 是底层容器（创建/注入/生命周期骨架）；ApplicationContext 在其之上增加应用级设施（事件、多语言、资源、环境）并在 `refresh` 中把这些设施接入主线。
+  - BeanFactory 是底层容器（创建/注入/生命周期骨架）；ApplicationContext 在其之上增加应用级设施（事件、多语言、资源、环境等），并在 `refresh` 中把这些设施接入主线，让它们变成“可注入、可观测、可协作”的能力。
 - 最小复现：
   - `SpringCoreBeansBeanFactoryVsApplicationContextLabTest`
 
@@ -171,7 +233,7 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 !!! tip "内容级再加深（A–E 维度）"
 
     - A（证据链）：把 pre/early/after-init 三个替换窗口做成“证据链对照表”，并给每类窗口的关键入口方法。
-    - B（边界反例）：反例：early reference 与最终代理不一致导致的行为差异；FactoryBean 造成的“看起来类型不对”。
+    - B（边界反例）：反例：early reference 与最终代理不一致导致的行为差异；FactoryBean/Scoped proxy 造成的“看起来类型不对/beanName 对不上”。
     - C（排障 SOP）：排障：看到异常先分层到定义/实例/最终对象，并给第一断点入口。
     - D（断点观察）：“如何快速识别 proxy/wrapper”：调试器判别方法与代理链定位。
     - E（面试复述）：面试追问：BeanFactory vs ApplicationContext 的差异如何落到 refresh 证据链。
@@ -181,8 +243,13 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+- Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansResolvableDependencyLabTest` / `SpringCoreBeansAutowireCapableBeanFactoryLabTest`
+- Test file：
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanFactoryVsApplicationContextLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAutowireCapableBeanFactoryLabTest.java`
 
 上一章：[11. 调试与自检：如何“看见”容器正在做什么](../part-02-boot-autoconfig/019-11-debugging-and-observability.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
 

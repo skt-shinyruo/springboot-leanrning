@@ -53,14 +53,14 @@
 
 ### 1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
 
-**条件**：当前 bean 的 scope 是 singleton 还是 prototype  
-**分支**：`AbstractBeanFactory#doGetBean`  
-- singleton：优先走缓存（`singletonObjects` / `earlySingletonObjects`）  
-- prototype：直接走 `createBean`，并设置 `isPrototypeCurrentlyInCreation`  
-**结果**：  
-- singleton 可以被循环依赖“部分救回”（有 early reference）  
-- prototype 循环依赖直接 fail-fast（不会进单例缓存）  
-**断点建议**：`AbstractBeanFactory#doGetBean`（观察 `mbd.isPrototype()` 与 `isPrototypeCurrentlyInCreation`）
+- **条件**：当前 bean 的 scope 是 singleton 还是 prototype
+- **分支**：`AbstractBeanFactory#doGetBean`
+  - singleton：优先走缓存（`singletonObjects` / `earlySingletonObjects`）
+  - prototype：直接走 `createBean`，并设置 `isPrototypeCurrentlyInCreation`
+- **结果**：
+  - singleton 可以被循环依赖“部分救回”（有 early reference）
+  - prototype 循环依赖直接 fail-fast（不会进单例缓存）
+- **断点建议**：`AbstractBeanFactory#doGetBean`（观察 `mbd.isPrototype()` 与 `isPrototypeCurrentlyInCreation`）
 
 ## 2. 本模块里应能够直接观察到的现象
 
@@ -75,8 +75,8 @@
 
 ## 2.1 prototype 的关键边界（创建 guard / 循环依赖 / 缓存差异）
 
-- **创建 guard**：prototype 不走 `singletonObjects`，每次 `getBean` 都走 `createBean`  
-- **循环依赖不可救**：prototype 没有 early reference 缓冲区，触发 `BeanCurrentlyInCreationException`  
+- **创建 guard**：prototype 不走 `singletonObjects`，每次 `getBean` 都走 `createBean`
+- **循环依赖不可救**：prototype 没有 early reference 缓冲区，触发 `BeanCurrentlyInCreationException`
 - **缓存差异本质**：singleton 是“容器托管 + 缓存复用”，prototype 是“一次性交付”
 
 ## 3. 为什么“prototype 注入 singleton”会看起来像单例？
@@ -141,6 +141,40 @@
 | `@Lookup` | 业务代码调用点更自然 | 依赖子类增强、对 final 限制敏感 | `LookupOverride` / `CglibSubclassingInstantiationStrategy` |
 | scoped proxy | 调用点透明 | 调试复杂、代理层级增加 | `ScopedProxyFactoryBean` / `ScopedObject` |
 
+### 6.2 写法与语义：`@Scope(proxyMode = ScopedProxyMode.XXX)` 不是“把 prototype 变成 singleton”
+
+scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但真实语义更像：
+
+- **容器里注入的是一个 proxy（通常是单例）**：它本身被缓存、可复用；
+- **proxy 每次方法调用再去拿 scope 内的真实 target**：target 的生命周期由 scope 决定；
+- **你在容器里往往会看到两个名字**：
+  - `beanName`：proxy（你注入到别处的那个）
+  - `scopedTarget.beanName`：真实目标（按 scope 创建/销毁的那个）
+
+> 关键纠偏：`scopedTarget.*` 不是“文档约定的命名”，而是容器真实注册出来的第二个 BeanDefinition（可以用 `beanFactory.containsBeanDefinition("scopedTarget.<beanName>")` 直接证明）。
+>
+> 证据入口：`SpringCoreBeansCustomScopeLabTest#scopedProxy_registersScopedTargetBeanDefinition_andInterfacesProxyRequiresInterfaceInjection`
+
+因此，scoped proxy 的正确使用方式是：把它当成“把获取 target 的动作延迟到运行时”的一种手段，而不是“强行改变对象生命周期”。
+
+在注解写法里，关键点就是 `ScopedProxyMode`：
+
+- `ScopedProxyMode.INTERFACES`：优先 JDK 动态代理（注入点是接口时更稳定）
+- `ScopedProxyMode.TARGET_CLASS`：CGLIB 子类代理（注入点是类/没有接口时常见）
+- `ScopedProxyMode.NO`：不创建 scoped proxy（等价于“按原始 scope 注入”）
+
+> 类型边界提示：`INTERFACES` 走 JDK proxy 时，按具体类类型 `getBean(ConcreteClass)` 往往会失败；这不是“scope 不生效”，而是代理实现方式决定的类型可见性边界（见上面的证据入口）。
+
+> 建议：把 scoped proxy 看成一种“边界工具”。当它被用于 prototype 注入 singleton 时，务必配合本章的证据链去证明它是否真的符合预期（尤其是 equals/hashCode、toString、序列化等边界）。
+
+### 6.3 Debug 证据链：如何一眼看出你注入的是 proxy 还是 target？
+
+一旦你怀疑 scoped proxy 造成“看起来像单例/像没生效”的问题，建议固定做三步（5 分钟闭环）：
+
+1. `applicationContext.getBean(\"beanName\")` 看类型：是否是代理类（JDK/CGLIB）
+2. `applicationContext.getBean(\"scopedTarget.beanName\")` 看类型：是否是原始类
+3. 对比两者的生命周期：同一次调用链里 target 是否变化？不同线程/请求里是否变化？
+
 ## 7. prototype 的销毁语义（容器默认不托管）
 
 这一点在真实工程里非常关键，因为它决定了“资源释放责任在谁”：
@@ -165,9 +199,14 @@
 
 ### 7.1 自定义 scope 的回收要点
 
-- 自定义 scope 要显式注册销毁回调：`Scope#registerDestructionCallback`  
-- 若 scope 生命周期结束（如请求/会话），必须主动触发回收，否则容易发生上下文泄漏  
+- 自定义 scope 要显式注册销毁回调：`Scope#registerDestructionCallback`
+- 若 scope 生命周期结束（如请求/会话），必须主动触发回收，否则容易发生上下文泄漏
 - 需要显式销毁时可用 `ConfigurableBeanFactory#destroyBean` 或 `destroyScopedBean`
+
+关键点（容易被忽略）：**容器负责“注册销毁回调”，但回调的“触发执行”由 scope 实现负责**。
+
+- 也就是说：如果 scope 实现从不在 scope end/remove 时执行这些 callback，那么 `@PreDestroy/DisposableBean` 就会“看起来不生效”
+- 证据入口：`SpringCoreBeansCustomScopeLabTest#customScope_canTriggerDestructionCallbacks_whenScopeEnds`（演示：Scope end 时执行 callbacks）
 
 ### 7.2 排障提示：什么时候应该怀疑是 prototype 销毁语义问题？
 
@@ -178,14 +217,14 @@
 
 至少应能够用 3 个断言讲清楚本章主线：
 
-1) **prototype 注入 singleton 会“冻结为同一个实例”**  
-   - 断点：`doResolveDependency` → `doGetBean("prototypeBean")`  
+1) **prototype 注入 singleton 会“冻结为同一个实例”**
+   - 断点：`doResolveDependency` → `doGetBean("prototypeBean")`
    - 断言：`DirectPrototypeConsumer.currentId()` 两次相同
-2) **`ObjectProvider` 能做到“每次调用新实例”**  
-   - 断点：`ObjectProvider#getObject`  
+2) **`ObjectProvider` 能做到“每次调用新实例”**
+   - 断点：`ObjectProvider#getObject`
    - 断言：`ProviderPrototypeConsumer.newId()` 两次不同
-3) **prototype destroy 不会自动触发**  
-   - 断点：`DefaultSingletonBeanRegistry#destroySingletons`  
+3) **prototype destroy 不会自动触发**
+   - 断点：`DefaultSingletonBeanRegistry#destroySingletons`
    - 断言：`@PreDestroy` 不执行，除非显式 `destroyBean`
 
 ## 8. 源码调用链（方法级）：prototype 为什么会“像单例”？

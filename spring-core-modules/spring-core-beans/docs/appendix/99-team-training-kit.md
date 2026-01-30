@@ -1,4 +1,19 @@
 # 99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：团队内训讲义（可直接开讲的课时脚本）
+    - 怎么使用：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`DefaultListableBeanFactory#doResolveDependency` / `DefaultListableBeanFactory#determineAutowireCandidate` / `AbstractAutowireCapableBeanFactory#populateBean`
+    - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[98. Debugger Pack（断点包总入口）](98-debugger-pack.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99. 自测题：是否能够真的理解了？](026-99-self-check.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -175,6 +190,13 @@
     - D（断点观察）： watch list 与判定标准：断点停下后看什么值才算“证据成立”。
     - E（面试复述）：将工具页变成训练脚本：面试复述/团队内训可直接引用其证据链与复现入口。
 <!-- AE-DEEPENING:END -->
+
+## 自检要点（讲师视角）
+应能够做到：
+
+1) **课前自检**：能跑通本课涉及的 Labs，并且知道每个 Lab 在证明哪条机制分支（主线/短路/early/after-init/值解析等）。
+2) **课中可证明**：能用 3–5 个稳定锚点断点把关键结论当场“看见并解释”（而不是只讲结论）。
+3) **课后可验收**：能用作业/自测题把学员能力验收到“能复述 + 能排障分流 + 能给证据链”。
 
 <!-- BOOKIFY:START -->
 

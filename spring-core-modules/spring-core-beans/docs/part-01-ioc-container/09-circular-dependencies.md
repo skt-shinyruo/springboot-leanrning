@@ -1,4 +1,19 @@
 # 09. 循环依赖：现象、原因与规避（constructor vs setter）
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：循环依赖：现象、原因与规避（constructor vs setter）
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean` / `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`
+    - 推荐 Lab：`SpringCoreBeansContainerLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](08-factorybean.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -32,14 +47,14 @@
 
 ### 机制讲透：constructor vs setter（条件 → 分支 → 结果）
 
-**条件**：依赖发生在“实例化前”还是“实例化后但初始化前”  
-**分支**：  
-- constructor 依赖 → `ConstructorResolver#autowireConstructor` 触发  
-- setter/field 依赖 → `populateBean` 触发  
-**结果**：  
-- constructor cycle：没有 early exposure 窗口 → fail-fast  
-- setter cycle：可能命中 early reference → 有时可救  
-**断点建议**：`ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean`
+- **条件**：依赖发生在“实例化前”还是“实例化后但初始化前”
+- **分支**：
+  - constructor 依赖 → `ConstructorResolver#autowireConstructor` 触发
+  - setter/field 依赖 → `populateBean` 触发
+- **结果**：
+  - constructor cycle：没有 early exposure 窗口 → fail-fast
+  - setter cycle：可能命中 early reference → 有时可救
+- **断点建议**：`ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean`
 
 ---
 
@@ -70,13 +85,13 @@
 
 ## 1.2 为什么读者看完仍不懂“为什么要三级缓存”？（桥接：2-level vs 3-level）
 
-> 如果你此刻的核心困惑是“为什么不是二级缓存就够”，建议先看一眼：  
-> - [`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)（答案先行 + 10 分钟证据链）  
+> 如果你此刻的核心困惑是“为什么不是二级缓存就够”，建议先看一眼：
+> - [`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)（答案先行 + 10 分钟证据链）
 > - AOP 前置心智模型：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
 
 读者之所以会在“三级缓存”这里卡住，通常是因为把它误当成“多一个 Map 的实现细节”，而忽略了它在设计上解决的是两个更本质的问题：
 
-1) **只在真的需要 early reference 时才创建它（按需/延迟）**  
+1) **只在真的需要 early reference 时才创建它（按需/延迟）**
 2) **让 early reference 的形态（raw vs proxy）可被 BPP/AOP 决策，并尽量做到 early == final（一致性）**
 
 把它压缩成一句话：
@@ -111,9 +126,29 @@
 
 ### 2.1 early reference 的生成链路（SmartInstantiationAwareBPP 介入）
 
-- 入口：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`  
-- 扩展点：`SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference`  
+- 入口：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+- 扩展点：`SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference`
 - 关键影响：代理通常在这里介入，决定 early 引用与最终暴露对象是否一致
+
+### 2.2 两个关键开关：`allowCircularReferences` vs `allowRawInjectionDespiteWrapping`
+
+把“循环依赖能不能救”说清楚，需要把 **机制（三级缓存）** 与 **策略开关（容器态度）** 分开。
+
+1) `DefaultListableBeanFactory#setAllowCircularReferences(boolean)`（简称 `allowCircularReferences`）
+   - 作用：是否允许 singleton 在创建窗口期做 early exposure（注册 `singletonFactory` 到三级缓存）。
+   - 影响结果：
+     - `true`：setter/field cycle **可能**被救活（取决于是否真的触发 `getSingleton(..., allowEarlyReference=true)`）
+     - `false`：即便是 setter/field cycle，也会更倾向 **fail-fast**（因为“救援窗口”被直接关掉）
+
+2) `AbstractAutowireCapableBeanFactory#setAllowRawInjectionDespiteWrapping(boolean)`（简称 `allowRawInjectionDespiteWrapping`）
+   - 作用：当容器发现 **依赖方已经注入了 raw early reference**，但当前 bean 在初始化阶段又被 after-init BPP 包装成 proxy/wrapper 时，是否允许继续启动。
+   - 影响结果：
+     - `false`：**一致性保护（推荐工程默认）**。容器会尽量保证 early == final：优先让 early reference 与最终暴露对象保持一致（例如让 early 也返回 proxy）；若无法做到一致，则可能 **fail-fast（信息包含 *raw version*）**。
+     - `true`：允许继续启动，但代价是：**一部分依赖方拿到的对象形态与容器最终暴露形态不一致**（极其隐蔽，属于“能跑但不可信”）。
+
+> 这两个开关解决的问题不同：
+> - `allowCircularReferences` 决定“救不救”（有没有 early exposure 窗口）
+> - `allowRawInjectionDespiteWrapping` 决定“救活后是否可控”（是否允许 raw 注入绕过最终包装）
 
 ---
 
@@ -169,23 +204,53 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 > 提醒：这一章到这里为止就够了。若希望进一步厘清“early reference 应该是 raw 还是 proxy”“raw vs wrapped 不一致为何会 fail-fast”，请去看 [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md)（那一章专门讲这个误区）。
 
+### 4.4 异常 → 断点入口速查（把“看报错”变成“可定位”）
+
+循环依赖相关报错，读者最容易掉进“看到一串 BeanCreationException 就开始猜”的陷阱。建议用下面的“异常 → 入口方法”来做第一跳定位：
+
+1) `BeanCurrentlyInCreationException`（典型信息包含 *currently in creation*）
+   - 含义：某个 bean 处于创建中，又被再次请求（环路信号，或 early reference 一致性校验失败）。
+   - 第一断点：`DefaultSingletonBeanRegistry#beforeSingletonCreation` / `getSingleton`
+   - 第二断点：`AbstractAutowireCapableBeanFactory#doCreateBean`（看 `earlySingletonExposure` / `exposedObject`）
+
+2) `BeanCurrentlyInCreationException` 且信息包含 *raw version*（非常关键）
+   - 含义：依赖方拿到了 raw early reference，但最终对象被 BPP 包装（proxy/wrapper），触发了 raw vs wrapped 不一致保护。
+   - 第一断点：`AbstractAutowireCapableBeanFactory#doCreateBean`（尾部一致性检查区域）
+   - 重点检查：`allowRawInjectionDespiteWrapping` 开关、`earlySingletonReference` 与 `exposedObject` 是否不同
+   - 备注：如果你没看到 *raw version* 异常，也不代表“没有风险”，也可能是容器通过 early proxy 等方式把 early 与 final 对齐；依然建议跑一遍本章 Lab 来确认实际注入形态
+
+3) `BeanCreationException` / `UnsatisfiedDependencyException`（外层包装）
+   - 含义：真正的环路通常藏在 root cause（`getRootCause()`）里。
+   - 第一动作：只看 root cause 的异常类型与信息，再回到上面两类路径定位。
+
 ---
 
 ## 排障配方：如何定位“环路边”并选择打断手段
 
-1) **先看异常 root cause**：`BeanCurrentlyInCreationException` 往往是内因  
-2) **锁定环路边**：  
-   - 断点：`DefaultSingletonBeanRegistry#beforeSingletonCreation`  
+1) **先看异常 root cause**：`BeanCurrentlyInCreationException` 往往是内因
+2) **锁定环路边**：
+   - 断点：`DefaultSingletonBeanRegistry#beforeSingletonCreation`
    - 观察：`dependentBeanMap` / `dependenciesForBeanMap`（谁依赖谁）
-3) **判断类型**：constructor / setter / prototype / dependsOn  
-4) **选择手段**：  
-   - `@Lazy`：引入代理，延后依赖获取  
-   - `ObjectProvider`：按需获取（更清晰、可测试）  
+3) **判断类型**：constructor / setter / prototype / dependsOn
+4) **选择手段**：
+   - `@Lazy`：引入代理，延后依赖获取
+   - `ObjectProvider`：按需获取（更清晰、可测试）
    - **重构**：拆依赖/引入中介（长期最优）
 
 ## 5. Framework vs Boot：策略差异（不要用“能启动”骗自己）
 
 在纯 Spring Framework 容器里，循环依赖策略通常更“宽松”；在 Spring Boot 里，启动过程往往会更倾向 fail-fast，并提供配置开关（例如 `spring.main.allow-circular-references`）。
+
+一个足够实用的记忆法是：
+
+- Spring Framework（纯容器）更偏“机制默认可用”（通常默认允许循环依赖救援）
+- Spring Boot（工程默认）更偏“安全默认”（Boot 2.6+ 默认倾向禁用，需要显式开启）
+
+建议把它理解成“一条策略映射链”，避免只记一个配置项：
+
+- Boot 配置（`spring.main.allow-circular-references`）
+  → `SpringApplication` 上的 allow-circular-references 策略
+  → `DefaultListableBeanFactory#setAllowCircularReferences(...)`
 
 学习阶段可以在不同容器之间切换来观察差异，但工程上请牢记：
 
@@ -217,15 +282,23 @@ setter 注入能“让环跑起来”的前提是：读者愿意接受半初始�
 
 跑完这些用例，应能够明确 3 个结论：
 
-1) **constructor cycle 直接 fail-fast**  
-   - 断点：`ConstructorResolver#autowireConstructor`  
+1) **constructor cycle 直接 fail-fast**
+   - 断点：`ConstructorResolver#autowireConstructor`
    - 断言：启动失败 + `BeanCurrentlyInCreationException`
-2) **`@Lazy`/`ObjectProvider` 可以打断 constructor 环**  
-   - 断点：`getObject()` / `ObjectFactory#getObject()`  
+2) **`@Lazy`/`ObjectProvider` 可以打断 constructor 环**
+   - 断点：`getObject()` / `ObjectFactory#getObject()`
    - 断言：依赖被延迟获取后启动成功
-3) **setter cycle 的“可救”来自 early exposure**  
-   - 断点：`addSingletonFactory` → `getSingleton(..., allowEarlyReference=true)`  
+3) **setter cycle 的“可救”来自 early exposure**
+   - 断点：`addSingletonFactory` → `getSingleton(..., allowEarlyReference=true)`
    - 断言：early 引用命中，环被临时打通
+
+4) **禁用 `allowCircularReferences` 后，setter/field cycle 也应 fail-fast**
+   - 断点：`doCreateBean`（观察 `earlySingletonExposure` 分支不再成立）
+   - 断言：fail-fast + root cause 为 `BeanCurrentlyInCreationException`
+
+5) **“能救 ≠ 安全”：allowRawInjectionDespiteWrapping 的两种结果**
+   - 当 `allowRawInjectionDespiteWrapping=false`：容器会保护一致性（优先 early==final；如果做不到一致则 fail-fast）
+   - 当 `allowRawInjectionDespiteWrapping=true`：可能启动成功，但应能观察到“依赖方持有 raw、容器对外暴露 proxy”的不一致（属于风险演示，不是工程推荐）
 
 ---
 
@@ -276,11 +349,11 @@ setter 注入能“让环跑起来”的前提是：读者愿意接受半初始�
 <!-- AE-DEEPENING:START -->
 !!! tip "内容级再加深（A–E 维度）"
 
-    - A（证据链）：“构造器失败 vs setter 可能成功”的完整证据链（三级缓存写入/读出窗口）。
-    - B（边界反例）：反例：prototype 循环依赖、AOP 介入导致 early/final 不一致、allowCircularReferences=false 的行为差异。
-    - C（排障 SOP）：排障：如何从异常信息分型到“构造器环/属性环/depends-on 环/代理导致环”。
-    - D（断点观察）：断点：三级缓存、early reference 回调、包装/代理替换入口。
-    - E（面试复述）：面试追问：为什么说“能解不等于安全”？如何用证据链回答。
+     - A（证据链）：“构造器失败 vs setter 可能成功”的完整证据链（三级缓存写入/读出窗口）。
+     - B（边界反例）：反例：prototype 循环依赖、AOP 介入导致 early/final 不一致、allowCircularReferences=false 的行为差异、allowRawInjectionDespiteWrapping=true 的风险演示。
+     - C（排障 SOP）：排障：如何从异常信息分型到“构造器环/属性环/depends-on 环/代理导致环”。
+     - D（断点观察）：断点：三级缓存、early reference 回调、包装/代理替换入口。
+     - E（面试复述）：面试追问：为什么说“能解不等于安全”？如何用证据链回答。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

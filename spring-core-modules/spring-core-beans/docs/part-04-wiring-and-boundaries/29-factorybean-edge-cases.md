@@ -1,4 +1,19 @@
 # 29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`FactoryBean#getObjectType()` / `FactoryBean#getObjectType()==null` / `DefaultListableBeanFactory#getBeanNamesForType`
+    - 推荐 Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[28. 自定义 scope 与 scoped proxy：线程 scope 复现](28-custom-scope-and-scoped-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[30. 注入发生在什么时候：field vs constructor](30-injection-phase-field-vs-constructor.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -191,6 +206,13 @@
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+
+## 自检要点
+应能够解释清楚：
+
+1) **`getObjectType()` 返回 null 会导致哪几类能力失效？**（按类型发现/条件装配/候选收集）
+2) **为什么 `allowEagerInit=false` 时更容易“看不到”某些 FactoryBean product？**
+3) **如何用断点证明“失败来自 type matching 分支，而不是 bean 根本没注册”？**
 
 <!-- BOOKIFY:START -->
 

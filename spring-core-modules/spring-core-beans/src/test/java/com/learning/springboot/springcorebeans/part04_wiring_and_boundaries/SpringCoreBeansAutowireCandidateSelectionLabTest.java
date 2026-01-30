@@ -93,6 +93,18 @@ class SpringCoreBeansAutowireCandidateSelectionLabTest {
     }
 
     @Test
+    void byNameFallback_canMatchAlias_forAutowiredFieldInjection() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AliasByNameFallbackConfig.class)) {
+            ByNameFallbackConsumer consumer = context.getBean(ByNameFallbackConsumer.class);
+
+            System.out.println("OBSERVE: by-name fallback can match alias (not only the primary beanName)");
+            System.out.println("OBSERVE: field name == aliasName (secondaryWorker) can narrow candidates to a single target");
+
+            assertThat(consumer.workerId()).isEqualTo("secondary");
+        }
+    }
+
+    @Test
     void primaryOverridesByNameFallback_forSingleInjection() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PrimaryOverridesByNameFallbackConfig.class)) {
             ByNameFallbackConsumer consumer = context.getBean(ByNameFallbackConsumer.class);
@@ -242,6 +254,24 @@ class SpringCoreBeansAutowireCandidateSelectionLabTest {
 
         @Bean
         Worker secondaryWorker() {
+            return () -> "secondary";
+        }
+
+        @Bean
+        ByNameFallbackConsumer byNameFallbackConsumer() {
+            return new ByNameFallbackConsumer();
+        }
+    }
+
+    @Configuration
+    static class AliasByNameFallbackConfig {
+        @Bean
+        Worker primaryWorker() {
+            return () -> "primary";
+        }
+
+        @Bean(name = {"realSecondaryWorker", "secondaryWorker"})
+        Worker realSecondaryWorker() {
             return () -> "secondary";
         }
 

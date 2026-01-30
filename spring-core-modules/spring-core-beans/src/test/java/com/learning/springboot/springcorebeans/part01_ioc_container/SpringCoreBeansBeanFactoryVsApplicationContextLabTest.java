@@ -48,6 +48,7 @@ class SpringCoreBeansBeanFactoryVsApplicationContextLabTest {
             assertThat(context).isInstanceOf(ApplicationEventPublisher.class);
             assertThat(context).isInstanceOf(MessageSource.class);
             assertThat(context).isInstanceOf(ResourceLoader.class);
+            assertThat(context.getEnvironment().getProperty("java.version")).isNotBlank();
 
             Resource resource = context.getResource("classpath:mockito-extensions/org.mockito.plugins.MockMaker");
             assertThat(resource.exists()).isTrue();
@@ -60,4 +61,3 @@ class SpringCoreBeansBeanFactoryVsApplicationContextLabTest {
     static class ExampleBean {
     }
 }
-

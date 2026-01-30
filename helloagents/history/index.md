@@ -93,6 +93,7 @@
 
 ### 2026-01
 
+- [202601301632_spring_core_beans_chapter_deepening_solution](2026-01/202601301632_spring_core_beans_chapter_deepening_solution/) - spring-core-beans 逐章内容深度完善
 - [202601291517_beans-aop-explainability-upgrade](2026-01/202601291517_beans-aop-explainability-upgrade/) - beans + aop：基础知识可解释性升级（Why Index + 最短证据链 + 跨模块互链）
 - [202601291227_spring-core-aop-docs-deepening](2026-01/202601291227_spring-core-aop-docs-deepening/) - spring-core-aop：逐章深度完善（docs + Lab/Test + 断点/排障闭环一致性补强）
 - [202601291111_spring-core-beans-chapter-deepening](2026-01/202601291111_spring-core-beans-chapter-deepening/) - spring-core-beans：目录页新增“症状驱动导航（快速定位）”并补齐 19/20/41 三章 BOOKIFY 标记
@@ -171,6 +172,8 @@
 ## Index
 | Timestamp | Feature Name | Type | Status | Solution Package Path |
 |-----------|--------------|------|--------|----------------------|
+| 202601301812 | spring-core-beans Part01 IoC Container 深化 | Enhancement | ✅Completed | [202601301812_spring_core_beans_part01_ioc_container_deepening_solution](2026-01/202601301812_spring_core_beans_part01_ioc_container_deepening_solution/) |
+| 202601301632 | spring-core-beans 逐章内容深度完善 | Refactor | ✅Completed | [202601301632_spring_core_beans_chapter_deepening_solution](2026-01/202601301632_spring_core_beans_chapter_deepening_solution/) |
 | 202601281326 | spring_core_beans_docs_formalize | Enhancement | ✅Completed | history/2026-01/202601281326_spring_core_beans_docs_formalize/ |
 | 202601281041 | spring_core_beans_deepen_per_chapter | Enhancement | ✅Completed | history/2026-01/202601281041_spring_core_beans_deepen_per_chapter/ |
 | 202601272227 | spring_core_beans_docs_tutorial_v2_all | Enhancement | ✅Completed | history/2026-01/202601272227_spring_core_beans_docs_tutorial_v2_all/ |

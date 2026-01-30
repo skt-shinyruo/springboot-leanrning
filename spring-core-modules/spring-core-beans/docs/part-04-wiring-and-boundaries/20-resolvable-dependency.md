@@ -1,4 +1,19 @@
 # 20. registerResolvableDependency：能注入，但它不是 Bean
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：registerResolvableDependency：能注入，但它不是 Bean
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`DefaultListableBeanFactory#resolvableDependencies` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultListableBeanFactory#resolveDependency`
+    - 推荐 Lab：`SpringCoreBeansResolvableDependencyLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[19. dependsOn：强制初始化顺序（即使没有显式依赖）](19-depends-on.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[21. 父子 ApplicationContext：可见性与覆盖边界](21-context-hierarchy.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 

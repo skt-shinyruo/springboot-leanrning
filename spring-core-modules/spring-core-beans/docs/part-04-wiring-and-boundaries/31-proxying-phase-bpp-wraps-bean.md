@@ -1,4 +1,19 @@
 # 31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`
+    - 推荐 Lab：`SpringCoreBeansBeanCreationTraceLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](30-injection-phase-field-vs-constructor.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](32-resource-injection-name-first.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -142,7 +157,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 | --- | --- | --- | --- | --- |
 | AOP/事务“不生效” | 调用没走 proxy（常见 self-invocation） | 断点 `applyBeanPostProcessorsAfterInitialization` 看是否替换；对照外部调用 vs `this.xxx()` | 让调用从容器注入的 proxy 进入；拆分 bean | `SpringCoreBeansProxyingPhaseLabTest` |
 | 按实现类 `getBean`/注入失败 | JDK proxy 只实现接口 | `Proxy.isProxyClass(...)`；注入点类型是实现类 | 按接口注入；或改 class-based proxy（注意 final） | `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansEarlyReferenceLabTest` |
-| 有时是原对象，有时是 proxy | 创建时机不同导致错过/命中 BPP | 对照 `registerBeanPostProcessors` 与目标 bean 创建时机；看是否过早 `getBean` | 避免在 BFPP/BDRPP 阶段过早创建；保证 BPP 链完整 | 结合 [14](14-post-processor-ordering.md)、[25](25-programmatic-bpp-registration.md) |
+| 有时是原对象，有时是 proxy | 创建时机不同导致错过/命中 BPP | 对照 `registerBeanPostProcessors` 与目标 bean 创建时机；看是否过早 `getBean` | 避免在 BFPP/BDRPP 阶段过早创建；保证 BPP 链完整 | 结合 [14](../part-03-container-internals/14-post-processor-ordering.md)、[25](25-programmatic-bpp-registration.md) |
 | 循环依赖中“类型突然不对” | early reference 形态与 final 形态不一致 | 断点 `getEarlyBeanReference`；看 raw vs wrapped 一致性检查 | 理解 early reference 边界；避免 constructor cycle；必要时调整注入类型 | `SpringCoreBeansEarlyReferenceLabTest` |
 
 ## 6. 断点闭环（建议照做一次）

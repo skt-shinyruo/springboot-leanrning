@@ -1,4 +1,19 @@
 # 26. SmartInitializingSingleton：所有单例都创建完之后再做事
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：26. SmartInitializingSingleton：所有单例都创建完之后再做事
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`SmartInitializingSingleton#afterSingletonsInstantiated` / `AbstractApplicationContext#finishBeanFactoryInitialization` / `DefaultListableBeanFactory#preInstantiateSingletons`
+    - 推荐 Lab：`SpringCoreBeansSmartInitializingSingletonLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](25-programmatic-bpp-registration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[27. SmartLifecycle：phase 与 start/stop 顺序](27-smart-lifecycle-phase.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -180,6 +195,13 @@ Spring 提供了一个非常明确的回调：
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+
+## 自检要点
+应能够解释清楚：
+
+1) **`afterSingletonsInstantiated` 发生在 refresh 的哪个窗口？它与 `preInstantiateSingletons` 的关系是什么？**
+2) **为什么 lazy 单例通常不在这个回调覆盖范围内？**（lazy-init 与按需创建语义）
+3) **SmartInitializingSingleton 与 ContextRefreshedEvent 各适合做什么？如何选择并证明？**
 
 <!-- BOOKIFY:START -->
 

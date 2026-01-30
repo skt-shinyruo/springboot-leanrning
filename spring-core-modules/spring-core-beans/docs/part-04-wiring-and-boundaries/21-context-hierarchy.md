@@ -1,4 +1,19 @@
 # 21. 父子 ApplicationContext：可见性与覆盖边界
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节学习卡片（五问闭环）"
+
+    - 知识点：21. 父子 ApplicationContext：可见性与覆盖边界
+    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    - 源码入口：`AbstractBeanFactory#doGetBean` / `AbstractApplicationContext#setParent` / `AbstractBeanFactory#containsLocalBean`
+    - 推荐 Lab：`SpringCoreBeansContextHierarchyLabTest`
+<!-- CHAPTER-CARD:END -->
+
+<!-- GLOBAL-BOOK-NAV:START -->
+上一章：[20. registerResolvableDependency：能注入，但它不是 Bean](20-resolvable-dependency.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[22. beanName 与 alias：命名规则与别名本质](22-bean-names-and-aliases.md)
+<!-- GLOBAL-BOOK-NAV:END -->
+
+
 
 ## 导读
 
@@ -187,6 +202,13 @@
 ## 小结与下一章
 
 - 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+
+## 自检要点
+应能够解释清楚：
+
+1) **child 为什么能看到 parent 的 bean，但 parent 看不到 child 的 bean？**（搜索顺序与可见性规则）
+2) **同名 bean 在父子容器中是什么语义？**（覆盖只在 child 查找链路生效，不会反向影响 parent）
+3) **parent/child 同类型 bean 造成注入歧义时，应该把问题归到哪一层？**（依赖解析/候选收敛：`@Qualifier/@Primary` 等）
 
 <!-- BOOKIFY:START -->
 

@@ -156,6 +156,16 @@
 
 ---
 
+## 可复现闭环（把 AOT/RuntimeHints 变成“能断言的事实”）
+
+本章如果只停留在概念层，会很容易变成“听过/见过但不会用”。建议至少完成一次可跑闭环：
+
+1. 跑 `SpringCoreBeansAotRuntimeHintsLabTest`：观察“未注册 hints 时不会命中”的反例
+2. 跑 `SpringCoreBeansAotFactoriesLabTest`：观察 `aot.factories`/`AotServices` 如何加载 `RuntimeHintsRegistrar`
+3. 汇总闭环：`SpringCoreBeansRuntimeHintsBoundaryLabTest`（把本章与后续小节串起来）
+
+完成这三步后，你就能用“证据链”回答：为什么 JVM 能跑、Native 不一定能跑；以及 RuntimeHints 解决的到底是哪一类问题（反射/资源/代理等）。
+
 ## 源码与断点
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。

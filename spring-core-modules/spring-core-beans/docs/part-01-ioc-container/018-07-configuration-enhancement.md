@@ -54,7 +54,7 @@
 - `ConfigurationClassParser#parse`
 - `ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsForConfigurationClass`
 
-它把 `@Configuration/@Bean/@Import` 翻译成 **BeanDefinition** 并注册进 registry；  
+它把 `@Configuration/@Bean/@Import` 翻译成 **BeanDefinition** 并注册进 registry；
 实例化发生在 refresh 后段的 `preInstantiateSingletons`（不是这里）。
 
 ## 增强机制细节（proxyBeanMethods=true 才发生）
@@ -80,11 +80,11 @@
 
 ### 1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
 
-**条件**：配置类是 Full（`@Configuration`）还是 Lite（`@Component + @Bean`），以及 `proxyBeanMethods` 取值  
-**分支**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` 标记 Full/Lite  
-**结果**：  
-- Full + proxy=true：`ConfigurationClassEnhancer` 介入，`@Bean` 方法互调走容器  
-- Lite 或 proxy=false：互调为普通 Java 调用，可能产生额外对象  
+**条件**：配置类是 Full（`@Configuration`）还是 Lite（`@Component + @Bean`），以及 `proxyBeanMethods` 取值
+**分支**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` 标记 Full/Lite
+**结果**：
+- Full + proxy=true：`ConfigurationClassEnhancer` 介入，`@Bean` 方法互调走容器
+- Lite 或 proxy=false：互调为普通 Java 调用，可能产生额外对象
 **断点建议**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConfigurationClassEnhancer#enhance`
 
 建议先把“现象”做成可断言的闭环（别靠日志猜）：
@@ -141,6 +141,22 @@ ConfigB configB(ConfigA a) {
 - `@Bean` 方法拦截入口（proxyBeanMethods=true 才会走到）：
   - `ConfigurationClassEnhancer.BeanMethodInterceptor#intercept`（内部类名可能随版本略有变化）
 
+### 3.1 为什么它更稳：方法参数注入点就是 `MethodParameter`（不靠“互相调用”也能拿到依赖）
+
+把依赖写在 `@Bean` 方法参数上，最大的收益不是“看起来更优雅”，而是它天然满足两个可验证的事实：
+
+1. **依赖解析发生在容器创建阶段（工厂方法参数解析）**
+   Spring 在调用 `@Bean` 工厂方法时，会把参数当作注入点来解析；这个注入点在内部就是 `org.springframework.core.MethodParameter`（你能在断点里直接看到）。
+2. **它不依赖配置类是否被 CGLIB 增强**
+   即便 `proxyBeanMethods=false`（不做配置类增强），工厂方法仍然由容器调用，参数解析仍会走标准的依赖解析链路；因此这条写法对“性能/语义/可测试性”的折中更可控。
+
+> 对照理解：问题往往出在“`@Bean` 方法里互相调用另一个 `@Bean` 方法”。这种写法在 `proxyBeanMethods=false` 时会退化成普通方法调用，绕开容器，自然也绕开了依赖解析/代理/生命周期等一整套机制。
+
+**建议的断点验证：**
+
+- `ConstructorResolver#resolveAutowiredArgument(...)`（参数解析入口）
+- 观察 `MethodParameter` / `DependencyDescriptor` 是如何被构造出来的
+
 ### 4.1 推荐观察点（watch list）
 
 - 配置类 bean 的运行时 class：
@@ -168,15 +184,19 @@ ConfigB configB(ConfigA a) {
 
 至少跑出 3 条可断言结论：
 
-1) **proxy=true 时，`@Bean` 方法互调会回到容器**  
-   - 断点：`BeanMethodInterceptor#intercept`  
+1) **proxy=true 时，`@Bean` 方法互调会回到容器**
+   - 断点：`BeanMethodInterceptor#intercept`
    - 断言：互调返回同一实例
-2) **proxy=false/Lite 时，互调是普通 Java 调用**  
-   - 断点：互调调用栈不进入 `intercept`  
+2) **proxy=false/Lite 时，互调是普通 Java 调用**
+   - 断点：互调调用栈不进入 `intercept`
    - 断言：方法体内 new 出额外实例
-3) **参数注入是最稳妥写法**  
-   - 断点：`doResolveDependency`  
-   - 断言：即使 proxy=false，容器注入仍保持单例语义
+3) **参数注入是最稳妥写法**
+   - 断点：`doResolveDependency`（方法参数注入点是 `MethodParameter`）
+   - 断言：即使 `proxyBeanMethods=false` 或 Lite 配置类不增强，**方法参数注入仍能保持容器语义（singleton 仍是同一实例）**
+   - 可跑入口：
+     - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalse_stillPreservesSingleton_whenUsingMethodParameterInjection`
+     - `SpringCoreBeansContainerLabTest#liteConfiguration_stillPreservesSingleton_whenUsingMethodParameterInjection`
+   - 关联章节：依赖解析的“候选收敛/注入点元数据证据链”见 [03](014-03-dependency-injection-resolution.md)
 
 ## 源码与断点
 
@@ -188,36 +208,6 @@ ConfigB configB(ConfigA a) {
 - 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreBeansContainerLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 0. 复现入口（可运行）
-
-- 入口测试（推荐先跑通再下断点）：
-  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
-- 推荐运行命令：
-  - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`
-
-## 2. 本模块的实验：一对比就明白
-
-- 对比入口（直接从测试方法开始打断点）：
-  - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsTruePreservesSingletonSemanticsForBeanMethodCalls`
-  - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance`
-- 需要观察的不是“能不能注入”，而是 **配置类内部 `@Bean` 方法互相调用时：返回的是容器 singleton，还是一个新的 Java 对象**。
-
-- `SpringCoreBeansContainerLabTest.configurationProxyBeanMethodsTruePreservesSingletonSemanticsForBeanMethodCalls()`
-- `SpringCoreBeansContainerLabTest.configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance()`
-
-## 4. 源码锚点（建议从这里下断点）
-
-若想把 `proxyBeanMethods` 的本质打穿（读者 C 目标），建议至少走一遍下面的断点闭环：
-
-- 配置类 bean 的运行时 class：是否出现 `$$SpringCGLIB$$`
-- `@Bean` 方法互调时的调用栈：是否进入 `BeanMethodInterceptor`
-
-下一章将讲另一个“名字相同但拿到的东西不同”的概念：`FactoryBean`。
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
-推荐断点：`ConfigurationClassPostProcessor#postProcessBeanFactory`、`ConfigurationClassEnhancer#enhance`
 
 ## 常见误区与边界
 
