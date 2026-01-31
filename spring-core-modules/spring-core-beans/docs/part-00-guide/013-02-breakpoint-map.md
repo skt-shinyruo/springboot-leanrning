@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：断点地图（容器主线：可复用断点/观察点清单）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
     - 推荐 Lab：`SpringCoreBeansLabTest`
@@ -16,18 +16,18 @@
 ## 导读
 
 - 本章目标：把 `spring-core-beans` 的“高频断点与观察点”收敛成一页纸，避免散落在多章。
-- 使用方式：先跑一个方法级 Lab，然后按本页断点清单逐段观察“定义层 → 实例层 → 代理层”的变化。
+- 使用方式：先运行一个方法级 Lab，然后按本页断点清单逐段观察“定义层 → 实例层 → 代理层”的变化。
 
 !!! summary "本章要点"
 
     - 容器排障的第一原则：**先证明“发生在 refresh 的哪一段”**（定义注册 / PP 执行 / 单例创建 / 初始化 / 代理替换）。
-    - 若希望看清的通常不是“某个注解怎么用”，而是：
+    - 若希望看清的通常不是“某个注解使用方式”，而是：
       1. **数据结构在哪里被写入**（registry / beanDefinitionMap / singletonObjects）
       2. **哪个分支决定了后续行为**（排序 / 短路 / early reference / candidate 收敛）
-      3. **读者拿到的对象到底是谁**（raw instance vs proxy）
+      3. **读者获取到的对象到底是谁**（raw instance vs proxy）
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansLabTest`
 
@@ -104,7 +104,7 @@
 - 观察点：
   - `wrappedBean` 与 `bean` 是否发生替换（proxying）
 - 决定性分支：
-  - `postProcessAfterInitialization` 是否返回代理（这通常决定“读者最终拿到的对象是谁”）
+  - `postProcessAfterInitialization` 是否返回代理（这通常决定“读者最终获取到的对象是谁”）
 
 ## 阶段内关键对象变化（断点地图补充）
 
@@ -119,11 +119,11 @@
 
 ## 主线高频分支最小集（断点地图版）
 
-无需记住所有分支，但必须能“看见”这 5 个最常见的分支触发点：
+无需记住所有分支，但必须能“观察到”这 5 个最常见的分支触发点：
 
 1) **singleton vs prototype**：`AbstractBeanFactory#doGetBean` → `mbd.isPrototype()`  
 2) **dependsOn 强制顺序**：`AbstractBeanFactory#getBean` → `mbd.getDependsOn()`  
-3) **parent BeanFactory 兜底**：`containsBeanDefinition(beanName)` 为 false → `parentBeanFactory.getBean`  
+3) **parent BeanFactory 回退**：`containsBeanDefinition(beanName)` 为 false → `parentBeanFactory.getBean`  
 4) **FactoryBean vs 产品对象**：`AbstractBeanFactory#getObjectForBeanInstance`  
 5) **类型匹配（含泛型）**：`AbstractBeanFactory#isTypeMatch` / `ResolvableType` 判定
 
@@ -132,11 +132,11 @@
 更完整的“入口测试 → 断点调用链”建议，优先看：
 
 - 30 分钟快启：`part-00-guide/012-01-quickstart-30min.md`
-- 深挖指南：`part-00-guide/011-00-deep-dive-guide.md`
+- 深入分析指南：`part-00-guide/011-00-deep-dive-guide.md`
 
 ## 最小可运行实验（Lab）
 
-建议先跑这些入口再下断点：
+可先运行这些入口再设置断点：
 
 - refresh 主线：`SpringCoreBeansBootstrapInternalsLabTest`
 - 依赖解析（候选收敛）：`SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans`
@@ -158,8 +158,8 @@
 断点地图如果不配“降噪条件”，体验会非常差（一次 refresh 会进同一个方法上千次）。建议把条件断点当成默认习惯：
 
 1. **按 beanName 过滤（最常用）**
-   - `beanName.equals(\"xxx\")`
-   - `mbd.getBeanClassName().contains(\"Foo\")`（类名过滤）
+   - `beanName.equals("xxx")`
+   - `mbd.getBeanClassName().contains("Foo")`（类名过滤）
 2. **按阶段过滤（避免打到不相关阶段）**
    - 只在 `isEagerInit` / `isSingletonCurrentlyInCreation` 等关键分支为 true 时停住
 3. **按“候选收敛”过滤**
@@ -182,7 +182,7 @@
     - A（证据链）：为每个断点补“它在证明什么分支”，避免断点清单变成“背方法名”。
     - B（边界反例）：“断点误用反例”：哪些断点会因为版本/环境差异不稳定，如何替代。
     - C（排障 SOP）：“从症状选择断点组”的决策表：注入/代理/循环依赖/占位符/FactoryBean 各选哪组。
-    - D（断点观察）：把 watch list 升级为“判定标准”：变量值如何判断你处在哪条分支。
+	    - D（断点观察）：把 watch list 升级为“判定标准”：变量值如何判定当前执行位于哪条分支。
     - E（面试复述）：“面试追问的断点证明”：给 3 个高频题对应的断点证明路径。
 <!-- AE-DEEPENING:END -->
 
@@ -199,13 +199,13 @@
 
 <!-- BOOKIFY:END -->
 
-## 面试怎么用（把断点地图变成“证据链话术”）
+## 面试使用方式（把断点地图变成“证据链话术”）
 
 面试里无需“背源码”，但需要能说清：
 
-1) 我会在哪个阶段下断点（refresh 哪一段）
-2) 我在断点里看哪 3 个变量就能下结论
-3) 我用哪个 Lab 复现并证明它
+1) 应在哪个阶段设置断点（refresh 哪一段）
+2) 在断点中观察哪 3 个变量即可下结论
+3) 用哪个 Lab 复现并证明它
 
 推荐复习入口：`appendix/93-interview-playbook.md` / `appendix/98-debugger-pack.md`
 
@@ -214,4 +214,4 @@
 
 1) 说出 refresh 主线、依赖解析、bean 创建、单例缓存、BPP 代理这五类问题各自的“第一断点”。
 2) 解释为什么“断点 + watch list”比“全局搜栈”更高效。
-3) 用本模块任意一个 Lab，把断点地图跑通一次并能复述观察到的关键变化。
+3) 用本模块任意一个 Lab，把断点地图完成验证一次并能复述观察到的关键变化。

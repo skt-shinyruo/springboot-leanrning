@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：循环依赖：现象、原因与规避（constructor vs setter）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean` / `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
@@ -18,17 +18,17 @@
 ## 导读
 
 - 本章主题：**循环依赖：现象、原因与规避（constructor vs setter）**
-- 阅读方式建议：先跑“constructor fail-fast vs setter 可能成功”的最小实验，再带着断点把“为什么能救/为什么救不了”的证据链走通。
+- 阅读方式建议：先运行“constructor fail-fast vs setter 可能成功”的最小实验，再带着断点把“为什么能救/为什么救不了”的证据链走通。
 
 !!! summary "本章要点"
 
     - 循环依赖不是“Spring 的黑箱机制题”，它首先是一个**依赖图/职责边界**问题：能启动不代表设计健康。
     - **constructor cycle 基本 fail-fast**：因为构造器依赖发生在实例化之前，容器还没机会产生“可注入的引用”。
-    - **setter cycle 有时能成功**：因为 singleton 创建过程中存在一个“提前暴露（early exposure）”窗口，容器可以先让依赖方拿到一个 early reference 把环跑起来。
+    - **setter cycle 有时能成功**：因为 singleton 创建过程中存在一个“提前暴露（early exposure）”窗口，容器可以先让依赖方获取到一个 early reference，从而使依赖环得以闭合。
     - “三级缓存”不是背字段名：它表达的是三种语义（final / early / factory），并把 early reference 的产生时机钉死在 `doCreateBean` 的窗口期。
     - 工程上优先级：**重构消环 > 延迟依赖（@Lazy/ObjectProvider）> 临时开关**；把所有注入改成 setter 只是在制造更隐蔽的故障。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
     - Test file：
@@ -41,11 +41,11 @@
 把循环依赖先分成两类（这是排障时最省脑的第一步）：
 
 1) **构造器循环依赖（constructor cycle）**：依赖发生在“实例化之前” → 容器没有 early exposure 的窗口 → 典型 fail-fast
-2) **属性/Setter 循环依赖（setter/field cycle）**：依赖发生在“实例已创建、但尚未完成初始化”的窗口期 → 容器可能提前暴露一个引用 → 有机会把环跑起来
+2) **属性/Setter 循环依赖（setter/field cycle）**：依赖发生在“实例已创建、但尚未完成初始化”的窗口期 → 容器可能提前暴露一个引用 → 有机会使依赖环得以闭合
 
 这也是为什么同样是“相互依赖”，表现会完全不同。
 
-### 机制讲透：constructor vs setter（条件 → 分支 → 结果）
+### 机制系统阐述：constructor vs setter（条件 → 分支 → 结果）
 
 - **条件**：依赖发生在“实例化前”还是“实例化后但初始化前”
 - **分支**：
@@ -58,14 +58,14 @@
 
 ---
 
-## 1. 先把现象固定成断言（不要靠脑补）
+## 1. 将现象固化为断言（避免主观推断）
 
-建议读者先跑完下面两类现象，保证应能够“用测试复现”，再进入源码断点：
+建议读者先运行完下面两类现象，保证应能够“用测试复现”，再进入源码断点：
 
 - constructor cycle（fail-fast）：`SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`
 - setter cycle（可能成功）：`SpringCoreBeansContainerLabTest#circularDependencyWithSettersMaySucceedViaEarlySingletonExposure`
 
-若希望把“打断 constructor 环”的工程手段也一起验证（而不是只背概念），再跑：
+若希望将“打断 constructor 环”的工程手段一并验证（而非仅停留在概念记忆），可再运行：
 
 - `SpringCoreBeansCircularDependencyBoundaryLabTest#constructorCycleCanBeBrokenViaLazyInjectionPointProxy`
 - `SpringCoreBeansCircularDependencyBoundaryLabTest#constructorCycleCanBeBrokenViaObjectProvider`
@@ -85,7 +85,7 @@
 
 ## 1.2 为什么读者看完仍不懂“为什么要三级缓存”？（桥接：2-level vs 3-level）
 
-> 如果你此刻的核心困惑是“为什么不是二级缓存就够”，建议先看一眼：
+> 若读者当前的核心困惑为“为什么不是二级缓存就够”，可先参阅：
 > - [`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)（答案先行 + 10 分钟证据链）
 > - AOP 前置心智模型：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
 
@@ -100,15 +100,15 @@
 
 ### 二级 vs 三级：差别不在“多一层”，而在“什么时候做决定”
 
-| 方案 | 你能存什么 | 会遇到的典型问题 | 为什么会卡在 AOP/代理上 |
+| 方案 | 可存储内容 | 会遇到的典型问题 | 为何常在 AOP/代理处受阻 |
 | --- | --- | --- | --- |
 | 2-level（final + early） | 只能存对象（raw 或 proxy） | 要么“所有 bean 都提前生成 early 引用/early proxy”（不必要成本），要么“先放 raw，后面再换成 proxy”（raw 注入绕过代理/一致性失败） | proxy/wrapper 的生成点本来就在 BPP 链上；如果 early 阶段交出去的是 raw，而 final 阶段变成 proxy，就出现 early ≠ final |
 | 3-level（final + early + factory） | 既能存对象，也能存“生成对象的工厂（ObjectFactory）” | 只有真正出现循环注入、确实需要 early 引用时才创建；并且创建时会走 `getEarlyBeanReference`，尽量让 early 与 final 对齐 | factory 把“是否需要 early / early 形态是什么”延迟到需求出现的那一刻，让 BPP/AOP 在正确窗口介入 |
 
-如果你希望把“二级 vs 三级”的论证走到方法级证据链，下一章应该读：
+如需将“二级 vs 三级”的论证推进到方法级证据链，下一章可参阅：
 
-- [`16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？`](../part-03-container-internals/16-early-reference-and-circular.md)（把 raw vs wrapped 与一致性保护讲透）
-- [`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)（把“最终暴露对象可能变化”的容器视角讲透）
+- [`16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？`](../part-03-container-internals/16-early-reference-and-circular.md)（把 raw vs wrapped 与一致性保护系统阐述）
+- [`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)（把“最终暴露对象可能变化”的容器视角系统阐述）
 
 ## 2. 三层缓存的真实语义：final / early / factory
 
@@ -144,7 +144,7 @@
    - 作用：当容器发现 **依赖方已经注入了 raw early reference**，但当前 bean 在初始化阶段又被 after-init BPP 包装成 proxy/wrapper 时，是否允许继续启动。
    - 影响结果：
      - `false`：**一致性保护（推荐工程默认）**。容器会尽量保证 early == final：优先让 early reference 与最终暴露对象保持一致（例如让 early 也返回 proxy）；若无法做到一致，则可能 **fail-fast（信息包含 *raw version*）**。
-     - `true`：允许继续启动，但代价是：**一部分依赖方拿到的对象形态与容器最终暴露形态不一致**（极其隐蔽，属于“能跑但不可信”）。
+     - `true`：允许继续启动，但代价是：**一部分依赖方获取到的对象形态与容器最终暴露形态不一致**（风险较高，属于“能够启动但不可靠”）。
 
 > 这两个开关解决的问题不同：
 > - `allowCircularReferences` 决定“救不救”（有没有 early exposure 窗口）
@@ -156,12 +156,12 @@
 
 把 `doCreateBean` 只看成 4 句话（足够读者对照断点理解）：
 
-1) **实例化**：先把 bean new 出来（此时还没有属性注入，也没有初始化回调）
+1) **实例化**：先创建 bean 实例（此时尚无属性注入，也无初始化回调）
 2) **（可选）提前暴露**：如果允许循环依赖，注册一个 `singletonFactory` 到三级缓存（还没产生 early object）
 3) **属性填充**：开始解析依赖并注入（setter/field 注入在这里发生）
 4) **初始化**：执行 Aware/@PostConstruct/afterPropertiesSet/initMethod，以及 after-init BPP 可能返回 proxy，然后把 final 对象放入一级缓存
 
-setter cycle 之所以“可能成功”，就在于第 2 步留下的窗口：**B 在创建时请求 A，`getSingleton(..., allowEarlyReference=true)` 可以从 factory 里拿到一个 early reference**。
+setter cycle 之所以“可能成功”，就在于第 2 步留下的窗口：**B 在创建时请求 A，`getSingleton(..., allowEarlyReference=true)` 可以从 factory 里获取到一个 early reference**。
 
 constructor cycle 之所以“基本无解”，就在于构造器依赖发生在第 1 步之前：**连实例都还没 new 出来，谈不上提前暴露**。
 
@@ -169,7 +169,7 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 ## 4. 断点闭环：从 `getSingleton` 看清“到底救没救”
 
-建议至少跑一次“看缓存变化”的断点闭环（跑一次，读者以后就很难再被“三级缓存神话”误导）。
+建议至少运行一次“观察缓存变化”的断点闭环（完成一次验证后，可避免再次被“三级缓存神话”误导）。
 
 ### 4.1 推荐断点（按收益排序）
 
@@ -195,18 +195,18 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 ### 4.3 应能够复述的“证据链”
 
-当读者跑 setter cycle 并在断点里看到下面这条链，就算真正掌握了：
+当读者运行 setter cycle 并在断点里看到下面这条链，可认为已形成可验证的理解闭环：
 
 1) 创建 A：`doCreateBean("a")` → `addSingletonFactory("a", ...)`（三级缓存出现工厂）
 2) 创建 B：注入时需要 A → `getSingleton("a", allowEarlyReference=true)`
 3) `getSingleton` 发现 A “in creation” 且存在 factory → 调用 factory 生成 early reference
-4) B 拿到 early reference 完成创建 → 回到 A 的 populate/initialize → 最终对象进入 `singletonObjects`
+4) B 获取到 early reference 完成创建 → 回到 A 的 populate/initialize → 最终对象进入 `singletonObjects`
 
 > 提醒：这一章到这里为止就够了。若希望进一步厘清“early reference 应该是 raw 还是 proxy”“raw vs wrapped 不一致为何会 fail-fast”，请去看 [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md)（那一章专门讲这个误区）。
 
-### 4.4 异常 → 断点入口速查（把“看报错”变成“可定位”）
+### 4.4 异常 → 断点入口速查（把“看异常”变成“可定位”）
 
-循环依赖相关报错，读者最容易掉进“看到一串 BeanCreationException 就开始猜”的陷阱。建议用下面的“异常 → 入口方法”来做第一跳定位：
+循环依赖相关异常，读者最容易掉进“看到一串 BeanCreationException 就开始猜”的陷阱。建议用下面的“异常 → 入口方法”来做第一跳定位：
 
 1) `BeanCurrentlyInCreationException`（典型信息包含 *currently in creation*）
    - 含义：某个 bean 处于创建中，又被再次请求（环路信号，或 early reference 一致性校验失败）。
@@ -214,20 +214,20 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
    - 第二断点：`AbstractAutowireCapableBeanFactory#doCreateBean`（看 `earlySingletonExposure` / `exposedObject`）
 
 2) `BeanCurrentlyInCreationException` 且信息包含 *raw version*（非常关键）
-   - 含义：依赖方拿到了 raw early reference，但最终对象被 BPP 包装（proxy/wrapper），触发了 raw vs wrapped 不一致保护。
+   - 含义：依赖方获取到了 raw early reference，但最终对象被 BPP 包装（proxy/wrapper），触发了 raw vs wrapped 不一致保护。
    - 第一断点：`AbstractAutowireCapableBeanFactory#doCreateBean`（尾部一致性检查区域）
    - 重点检查：`allowRawInjectionDespiteWrapping` 开关、`earlySingletonReference` 与 `exposedObject` 是否不同
-   - 备注：如果你没看到 *raw version* 异常，也不代表“没有风险”，也可能是容器通过 early proxy 等方式把 early 与 final 对齐；依然建议跑一遍本章 Lab 来确认实际注入形态
+   - 备注：若未观察到 *raw version* 异常信息，也不代表“没有风险”；也可能是容器通过 early proxy 等方式将 early 与 final 对齐。仍建议运行本章 Lab 以确认实际注入形态
 
 3) `BeanCreationException` / `UnsatisfiedDependencyException`（外层包装）
    - 含义：真正的环路通常藏在 root cause（`getRootCause()`）里。
-   - 第一动作：只看 root cause 的异常类型与信息，再回到上面两类路径定位。
+   - 建议首先关注 root cause 的异常类型与信息，再回到上面两类路径定位。
 
 ---
 
 ## 排障配方：如何定位“环路边”并选择打断手段
 
-1) **先看异常 root cause**：`BeanCurrentlyInCreationException` 往往是内因
+1) **优先定位异常根因（root cause）**：`BeanCurrentlyInCreationException` 往往是内因
 2) **锁定环路边**：
    - 断点：`DefaultSingletonBeanRegistry#beforeSingletonCreation`
    - 观察：`dependentBeanMap` / `dependenciesForBeanMap`（谁依赖谁）
@@ -237,7 +237,7 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
    - `ObjectProvider`：按需获取（更清晰、可测试）
    - **重构**：拆依赖/引入中介（长期最优）
 
-## 5. Framework vs Boot：策略差异（不要用“能启动”骗自己）
+## 5. Framework vs Boot：策略差异（避免以“能够启动”作为正确性的唯一判据）
 
 在纯 Spring Framework 容器里，循环依赖策略通常更“宽松”；在 Spring Boot 里，启动过程往往会更倾向 fail-fast，并提供配置开关（例如 `spring.main.allow-circular-references`）。
 
@@ -271,16 +271,16 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 
 ### 6.2 次选：延迟依赖打断环（了解代价后再用）
 
-- `ObjectProvider<T>`：把“构造时必须拿到”改成“用到时再拿”（依赖关系变成运行时分支）
+- `ObjectProvider<T>`：把“构造时必须获取到”改成“用到时再拿”（依赖关系变成运行时分支）
 - `@Lazy`（注入点代理）：把依赖解析延迟到第一次使用（多一层代理/调试复杂度上升）
 
 ### 6.3 不推荐：为了启动而把所有依赖改 setter
 
-setter 注入能“让环跑起来”的前提是：读者愿意接受半初始化窗口 + 更隐蔽的运行时问题。学习阶段可以用它理解机制，工程里通常是更糟的选择。
+setter 注入能够“使依赖环得以闭合”的前提是：需要接受半初始化窗口以及更隐蔽的运行时问题。学习阶段可用于理解机制；工程实践中通常不推荐。
 
 ## 可复现闭环（基于 `SpringCoreBeansCircularDependencyBoundaryLabTest`）
 
-跑完这些用例，应能够明确 3 个结论：
+运行完成这些用例，应能够明确 3 个结论：
 
 1) **constructor cycle 直接 fail-fast**
    - 断点：`ConstructorResolver#autowireConstructor`
@@ -316,7 +316,7 @@ setter 注入能“让环跑起来”的前提是：读者愿意接受半初始�
 ## 面试常问（循环依赖）
 
 1) **constructor cycle 为什么基本 fail-fast？setter cycle 为什么有时能救？**
-   - 要点：constructor 依赖发生在实例化之前，没有 early exposure 窗口；setter/field 依赖发生在实例已创建但未初始化完的窗口期，singleton 可以提前暴露引用把环跑起来。
+   - 要点：constructor 依赖发生在实例化之前，没有 early exposure 窗口；setter/field 依赖发生在实例已创建但未初始化完的窗口期，singleton 可以提前暴露引用，使依赖环得以闭合。
    - 证据链：`doCreateBean` 的 early exposure（`addSingletonFactory`）+ `getSingleton(beanName, allowEarlyReference)` 三层命中分支。
 
 2) **三级缓存到底解决了什么问题？它没解决什么？**

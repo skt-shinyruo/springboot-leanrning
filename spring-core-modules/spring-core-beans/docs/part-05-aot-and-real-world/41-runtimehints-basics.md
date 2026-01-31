@@ -1,33 +1,33 @@
-# 41. RuntimeHints 入门：把构建期契约跑通
+# 41. RuntimeHints 入门：把构建期契约完成验证
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：RuntimeHints 入门：把构建期契约跑通
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 知识点：RuntimeHints 入门：把构建期契约完成验证
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`Class#getDeclaredMethods` / `Constructor#newInstance` / `ClassLoader#getResource`
     - 推荐 Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[42. XML → BeanDefinitionReader：定义层解析与错误分型](42-xml-bean-definition-reader.md)
+上一章：[40. AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”](024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[42. XML → BeanDefinitionReader：定义层解析与错误分型](42-xml-bean-definition-reader.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
 
 ## 导读
 
-- 本章主题：**RuntimeHints 入门：把构建期契约跑通**
+- 本章主题：**RuntimeHints 入门：把构建期契约完成验证**
 - 目标只有一个：把 RuntimeHints 从“听说过”变成“能断言证明”。
   无需先会构建 native image，也能理解 RuntimeHints：因为它本质上是**可测试的契约数据结构**。
 
 !!! summary "本章要点"
 
-    - RuntimeHints 解决的是 “JVM 能跑 ≠ Native 能跑” 的核心矛盾：native image 默认对反射/动态代理/资源访问等能力是**受限**的。
+    - RuntimeHints 解决的是 “JVM 可运行 ≠ Native 可运行” 的核心矛盾：native image 默认对反射/动态代理/资源访问等能力是**受限**的。
     - RuntimeHints 的正确姿势是：**用 Registrar 注册 + 用单测断言**，把“需要哪些能力”变成可回归的构建期契约。
     - 需要记住的关键接口只有一个：`RuntimeHintsRegistrar#registerHints(RuntimeHints hints, ClassLoader classLoader)`。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java`
@@ -42,10 +42,10 @@
 
 但 native image 的世界里，这些能力往往需要“显式声明”。RuntimeHints 就是这个声明机制的统一入口：
 
-> **我需要对哪些类型做反射？我需要哪些动态代理？我需要哪些 classpath 资源？**
+> **需要对哪些类型做反射？需要哪些动态代理？需要哪些 classpath 资源？**
 > 这些信息必须在构建期提前收集并固化，才能让 native image 在运行期具备等价能力。
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：运行期需要反射/代理/资源访问  
 **分支**：是否通过 `RuntimeHintsRegistrar` 注册能力  
@@ -61,7 +61,7 @@ RuntimeHints 不是“配置文件”，它更像是一棵“契约对象树”�
 - 代理 hints：哪些接口需要创建 JDK 动态代理
 - 序列化/JNI/其他：视具体框架与场景而定
 
-无需背 API 全家桶，排障时只要能把“报错现象”映射到“该补哪类 hints”即可（见第 5 节决策表）。
+无需背 API 全家桶，排障时只要能把“异常现象”映射到“该补哪类 hints”即可（见第 5 节决策表）。
 
 ## 2. 方法级入口：RuntimeHints 是怎么被注册/收集的？
 
@@ -85,31 +85,31 @@ RuntimeHints 不是“配置文件”，它更像是一棵“契约对象树”�
 
 ## 3. 最小实践：用单测把契约“钉死”
 
-推荐读者形成固定套路（对应本章 Lab）：
+推荐读者形成固定流程（对应本章 Lab）：
 
 1) 写 registrar：只做一件事 —— 注册需要的 hints
 2) 写测试：断言 `RuntimeHints` 里确实包含了那条契约
-3) 未来每次 refactor：只要测试还绿，就能证明 native image 相关契约没被破坏
+3) 未来每次 refactor：只要测试仍通过，就能证明 native image 相关契约未被破坏
 
-这种方式比“到处贴 JSON 配置/靠打包失败再补”更工程化，也更适合团队内训与面试讲解。
+这种方式比“分散编写 JSON 配置/依赖打包失败后再补齐”更工程化，也更适合团队内训与面试讲解。
 
 ## 4. Debug / 断点建议：怎么把它从“黑箱”变成“可观察”？
 
-若只做 JVM 单测（推荐先做这个），断点收益最高的点通常是：
+若仅编写 JVM 单测（建议优先完成此项），断点收益最高的入口通常是：
 
 1) 相应的 `RuntimeHintsRegistrar#registerHints`：看读者到底注册了什么
 2) `RuntimeHints` 的具体写入点（reflection/resources/proxies 子对象的 register 方法）
 
 若要追 AOT 收集链路：
 
-- 先把“能断言的契约”写出来，再去追“谁调用了我的 registrar”
-- 否则读者很容易在 AOT 的大量框架代码里迷路（而且不同版本差异大）
+- 先将“可断言的契约”写出来，再追踪“谁调用了 registrar”
+- 否则读者容易在 AOT 的大量框架代码中丢失主线（且不同版本差异较大）
 
-## 5. 排障决策表（Native 报错 → 该补哪类 hints）
+## 5. 排障决策表（Native 异常 → 该补哪类 hints）
 
 | 现象（native 运行期） | 最可能缺失 | 需要补的 hints 类型 | 排查/修复路径 |
 | --- | --- | --- | --- |
-| 反射创建失败（构造器/方法不可访问、反射调用报错） | 类型/成员未声明可反射 | Reflection hints | 在 registrar 注册该类型的反射访问；用 JVM 单测断言 |
+| 反射创建失败（构造器/方法不可访问、反射调用异常） | 类型/成员未声明可反射 | Reflection hints | 在 registrar 注册该类型的反射访问；用 JVM 单测断言 |
 | JDK 动态代理失败（接口代理不可用） | 代理接口未声明 | Proxy hints | 注册需要代理的接口集合；确认代理创建点对应的接口列表 |
 | 资源读取不到（classpath 下文件/模板缺失） | 资源未被打包进镜像 | Resource hints | 注册资源路径/模式；用测试断言资源模式存在 |
 | 序列化相关异常 | 序列化元数据缺失 | Serialization hints | 仅在确实需要时注册；尽量减少可序列化类型集合 |
@@ -120,7 +120,7 @@ RuntimeHints 不是“配置文件”，它更像是一棵“契约对象树”�
 
 ### Q1：RuntimeHints 是什么？为什么需要它？
 
-- 标准答案：RuntimeHints 是 native image 的构建期契约，用于声明运行期需要的反射/代理/资源等能力；否则 native 环境下这些能力默认受限，JVM 能跑不代表 native 能跑。
+- 标准答案：RuntimeHints 是 native image 的构建期契约，用于声明运行期需要的反射/代理/资源等能力；否则 native 环境下这些能力默认受限，JVM 可运行不代表 native 可运行。
 - 方法级证据链：通过 `RuntimeHintsRegistrar#registerHints(RuntimeHints, ClassLoader)` 把契约写入 `RuntimeHints`；本章 Lab 用单测断言契约存在。
 
 ### Q2：为什么推荐用 Registrar + 单测，而不是直接写 JSON 配置？
@@ -128,10 +128,10 @@ RuntimeHints 不是“配置文件”，它更像是一棵“契约对象树”�
 - 标准答案：Registrar 可复用、可组合、可随代码 refactor；单测能回归验证契约不丢失；JSON 容易漂移且缺乏方法级证据链。
 - 方法级证据链：测试直接构造 `RuntimeHints` 并调用 registrar，再断言 hints 内容。
 
-### Q3：排 native 报错时，第一步怎么做？
+### Q3：排 native 异常时，第一步怎么做？
 
-- 标准答案：先把报错归类为“反射/代理/资源/序列化”之一，再补对应 hints；不要上来就全量放开反射。
-- 方法级证据链：看报错触发点（反射/代理/资源读取）→ 定位缺失类别 → 回到 registrar 增量注册并用单测锁定。
+- 标准答案：先把异常归类为“反射/代理/资源/序列化”之一，再补对应 hints；不要上来就全量放开反射。
+- 方法级证据链：看异常触发点（反射/代理/资源读取）→ 定位缺失类别 → 回到 registrar 增量注册并用单测锁定。
 
 ## 自检要点
 RuntimeHints = **构建期契约对象**；通过 `RuntimeHintsRegistrar#registerHints` 注册；用 JVM 单测断言契约，避免 native 打包阶段才“撞墙”。
@@ -145,7 +145,7 @@ RuntimeHints = **构建期契约对象**；通过 `RuntimeHintsRegistrar#registe
 
     - A（证据链）：“Registrar 注册→测试断言”的证据链范式（把契约钉死）。
     - B（边界反例）：反例：把 hints 当 JSON 配置到处贴导致漂移；过度开放反射导致安全面扩大。
-    - C（排障 SOP）：排障：反射/代理/资源缺失三类报错如何映射到 hints 类型。
+    - C（排障 SOP）：排障：反射/代理/资源缺失三类异常如何映射到 hints 类型。
     - D（断点观察）：断点：registerHints 与 hints 写入点（reflection/resources/proxies）的观察方法。
     - E（面试复述）：面试追问：为什么推荐 registrar + 单测，而不是靠 native 打包失败再补？
 <!-- AE-DEEPENING:END -->
@@ -157,6 +157,6 @@ RuntimeHints = **构建期契约对象**；通过 `RuntimeHintsRegistrar#registe
 - Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java`
 
-上一章：[40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[42. XML → BeanDefinitionReader：定义层解析与错误分型](42-xml-bean-definition-reader.md)
+上一章：[40. AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”](024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[42. XML → BeanDefinitionReader：定义层解析与错误分型](42-xml-bean-definition-reader.md)
 
 <!-- BOOKIFY:END -->

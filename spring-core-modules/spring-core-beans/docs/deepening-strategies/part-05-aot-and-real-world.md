@@ -7,23 +7,23 @@
 - 输入层（XML/Properties/Groovy）章节：优先补“错误分型 → 入口方法 → 断点 → 断言”，让读者能把异常归因到解析/注册/转换阶段。
 - AOT 章节：优先补“hints 作为可测试契约”的落地方式（registrar + 测试断言），避免只靠 native 失败再补。
 
-### 40. AOT / Native 总览：为什么 JVM 能跑 ≠ Native 能跑
+### 40. AOT / Native 总览：为什么 JVM 运行成功 ≠ Native 运行成功
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md`
 - 内容级加深策略：
   - A：补“失败分型→缺口类型”的证据链：反射/代理/资源/序列化分别对应什么提示。
   - B：补反例：盲目全量放开反射的风险（安全/体积/可维护性）。
-  - C：补排障 SOP：如何从 native 报错快速归类并定位到要补的 hints。
-  - D：补观察点：RuntimeHints 的类别与注册入口如何看见。
+  - C：补排障 SOP：如何从 native 异常快速归类并定位到要补的 hints。
+  - D：补观察点：RuntimeHints 的类别与注册入口如何观察到。
   - E：补面试追问：为什么 RuntimeHints 是“可测试的契约”？如何证明。
 
-### 41. RuntimeHints 入门：把构建期契约跑通
+### 41. RuntimeHints 入门：把构建期契约完成验证
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
 - 内容级加深策略：
   - A：补“Registrar 注册→测试断言”的证据链范式（把契约钉死）。
   - B：补反例：把 hints 当 JSON 配置到处贴导致漂移；过度开放反射导致安全面扩大。
-  - C：补排障：反射/代理/资源缺失三类报错如何映射到 hints 类型。
+  - C：补排障：反射/代理/资源缺失三类异常如何映射到 hints 类型。
   - D：补断点：registerHints 与 hints 写入点（reflection/resources/proxies）的观察方法。
   - E：补面试追问：为什么推荐 registrar + 单测，而不是靠 native 打包失败再补？
 
@@ -47,7 +47,7 @@
   - D：补断点：autowireBean/initializeBean/applyBeanPostProcessors 的调用路径对照。
   - E：补面试追问：什么时候应该用它，什么时候应该重构为容器托管？
 
-### 44. SpEL 与 `@Value(\"#{...}\")`：表达式解析链路
+### 44. SpEL 与 `@Value("#{...}")`：表达式解析链路
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
 - 内容级加深策略：
@@ -112,7 +112,7 @@
 - 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md`
 - 内容级加深策略：
   - A：补“BeanDefinitionValueResolver→convertIfNecessary”的完整证据链，并与占位符/SpEL/转换三连对齐。
-  - B：补反例：值看似解析但其实占位符没解析；editor 与 converter 混用导致行为不一致。
+  - B：补反例：值看似已解析，但根因在于占位符未解析；editor 与 converter 混用导致行为不一致。
   - C：补排障 SOP：TypeMismatch/BeanCreationException 的分型定位（解析/求值/转换）。
   - D：补断点：value resolver、property value 应用、TypeConverterDelegate 转换路径。
   - E：补面试追问：PropertyEditor 的历史定位与为何仍会在某些路径出现。

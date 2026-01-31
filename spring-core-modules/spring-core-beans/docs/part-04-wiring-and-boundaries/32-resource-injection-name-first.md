@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：`@Resource` 注入：为什么它更像“按名称找 Bean”？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`CommonAnnotationBeanPostProcessor#autowireResource` / `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored` / `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst`
     - 推荐 Lab：`SpringCoreBeansResourceInjectionLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**`@Resource` 注入：为什么它更像“按名称找 Bean”？**
-- 阅读方式建议：先用本章 Lab 跑出两个对照结论（没装处理器 → 注解无效；装了处理器 → name-first 稳定注入），再回到源码把“是谁在什么时候把字段赋值”的证据链走通。
+- 阅读方式建议：先运行本章 Lab 得到两个对照结论（没装处理器 → 注解无效；装了处理器 → name-first 稳定注入），再回到源码把“是谁在什么时候把字段赋值”的证据链走通。
 
 !!! summary "本章要点"
 
-    - `@Resource` 不是 “另一个 @Autowired”。它更像：**先按 name 找（字段名/显式 name），必要时才按 type 兜底**。
+    - `@Resource` 不是 “另一个 @Autowired”。它更像：**先按 name 找（字段名/显式 name），必要时才按 type 回退**。
     - `@Resource` 能工作，前提是容器里安装了 `CommonAnnotationBeanPostProcessor`（JSR-250/Jakarta 注解处理器）。没装处理器，注解就只是“写在代码上的字”。
     - name-first 的代价也很明确：**重构字段名/beanName/alias** 时更容易产生隐性回归；当需要要“按类型 + 候选规则”时，应切回 `@Autowired + @Qualifier/@Primary`。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansResourceInjectionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
@@ -41,14 +41,14 @@
 
 ---
 
-## 机制讲透：条件 → 分支 → 结果
+## 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：注入点标注 `@Resource`，且容器已注册 `CommonAnnotationBeanPostProcessor`  
 **分支**：`autowireResource` 先按 **name** 查找，找不到再 fallback 按 **type**  
 **结果**：命名稳定时注入可预测；命名失配时容易退化为“按类型歧义”  
 **断点建议**：`CommonAnnotationBeanPostProcessor#autowireResource`
 
-## DependencyDescriptor 深挖：`@Resource` 的注入点语义从哪来？
+## DependencyDescriptor 深入分析：`@Resource` 的注入点语义从哪来？
 
 虽然 `@Resource` 不是走 `AutowiredAnnotationBeanPostProcessor`，但它仍然要解析“注入点语义”：
 
@@ -64,7 +64,7 @@
 2) **fallback type**：name 未命中 → 按类型解析（可能触发多候选歧义）  
 3) **失败处理**：不可选依赖 → 抛异常；可选依赖 → 注入 `null`
 
-## 1. 先跑实验：没有处理器时，`@Resource` 会“完全失效”
+## 1. 先运行实验：没有处理器时，`@Resource` 会“完全失效”
 
 对应实验：
 
@@ -84,7 +84,7 @@
 
 ---
 
-## 2. 再跑实验：装上处理器后，`@Resource` 默认按字段名注入（name-first）
+## 2. 再运行实验：装上处理器后，`@Resource` 默认按字段名注入（name-first）
 
 对应实验：
 
@@ -108,7 +108,7 @@
 
 ## 3. 源码最短路径：是谁在什么时候把字段赋值的？
 
-> 目标：不要把 “@Resource 注入”想象成某个神秘行为，而是把它放回“属性填充阶段”里看见真实赋值点。
+> 目标：不要把 “@Resource 注入”想象成某个神秘行为，而是把它放回“属性填充阶段”里观察到真实赋值点。
 
 一条足够实用的最短链路是：
 
@@ -134,7 +134,7 @@
 - `field.getName()`：默认 resourceName（不写 name 时）
 - `resourceName`（若在 `autowireResource` 里）：最终用于查找的 beanName
 - `beanFactory.containsBean(resourceName)`：name-first 能否命中
-- （当走 fallback 时）`requiredType`：兜底的类型是什么，是否会多候选
+- （当走 fallback 时）`requiredType`：回退的类型是什么，是否会多候选
 
 ---
 
@@ -143,7 +143,7 @@
 | 现象 | 最可能根因 | 处理策略 |
 | --- | --- | --- |
 | 字段一直是 `null` | 容器没装 `CommonAnnotationBeanPostProcessor` | 注册 processors；或使用 Boot/AnnotationConfigApplicationContext |
-| 注入到了“不是我想要的那个” | 字段名/显式 name 与 beanName/alias 不一致 | 明确写 `@Resource(name=...)`；或改用 `@Autowired + @Qualifier` |
+| 注入到了“不是预期的那个” | 字段名/显式 name 与 beanName/alias 不一致 | 明确写 `@Resource(name=...)`；或改用 `@Autowired + @Qualifier` |
 | 报多候选/歧义异常 | name 未命中，fallback 走 type 时遇到多个候选 | 优先指定 name；或回到 [33](33-autowire-candidate-selection-primary-priority-order.md) 的候选规则 |
 
 ---

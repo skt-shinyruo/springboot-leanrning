@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`
     - 推荐 Lab：`SpringCoreBeansBeanCreationTraceLabTest`
@@ -27,7 +27,7 @@
     - self-invocation 之所以不生效，不是“事务没开”，而是 **调用链没有走到代理对象**（`this.xxx()` 永远绕过 proxy）。
     - 代理类型边界必须会排障：JDK proxy 只实现接口，class-based proxy 才是子类（类型可用性差异巨大）。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：
       - `SpringCoreBeansProxyingPhaseLabTest`
@@ -40,7 +40,7 @@
 
 ## 为什么最终暴露对象会变化？（统一解释：缓存解决“时机”，BPP 决定“形态”）
 
-> 如果你遇到的困惑是“我明明看到 bean 已经 new 出来了，为什么最终注入/获取时却变成了 proxy？”  
+> 若读者的困惑为“已观察到 bean 实例被创建，为何最终注入/获取时却变为 proxy？”  
 > 建议先把这个索引页看完（答案先行）：[`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)。
 
 这一章是 Beans ↔ AOP 的关键桥接点：它把“代理”放回 IoC 容器视角解释清楚。
@@ -68,7 +68,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 > **BPP 是创建时拦截链，不是创建后补丁。**
 > 一个 bean 如果在 BPP 链完整之前就创建了，后续 BPP 不会 retroactive 生效。
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：BPP 返回的 `result` 与原始 `bean` 不同  
 **分支**：`initializeBean` 在 after-init 阶段“用 result 替换 bean”  
@@ -118,7 +118,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 
 ## 3. self-invocation：为什么“看起来像配置问题”，本质是调用路径问题？
 
-当从容器拿到的是 proxy：
+当从容器获取到的是 proxy：
 
 - 外部调用：`proxy.outer()` ⇒ 走代理 ⇒ 拦截器链生效
 - 内部自调用：`this.inner()` ⇒ 直接调用目标对象方法 ⇒ **不走代理** ⇒ 拦截器链不生效
@@ -135,9 +135,9 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 
 ## 4. 必须知道的“三个替换点”（pre / early / after-init）
 
-很多排障会卡在这句误判上：
+排障时常受制于这一误判：
 
-> “我在某个断点里看到了原对象，所以最终就不可能是 proxy。”
+> “在某个断点中观察到原对象，因此认为最终不可能是 proxy。”
 
 错。容器存在三个常见替换点：
 
@@ -178,7 +178,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 
 ## 7. 面试常问（proxy 与 self-invocation）
 
-### Q1：为什么 `getBean()` 拿到的可能不是原始实例？最常见的替换点在哪？
+### Q1：为什么 `getBean()` 获取到的可能不是原始实例？最常见的替换点在哪？
 
 - 标准答案（可复述）：
   - 容器返回最终暴露对象；after-init BPP（`postProcessAfterInitialization`）是最常见的替换点，AOP/事务通常在这里返回 proxy。

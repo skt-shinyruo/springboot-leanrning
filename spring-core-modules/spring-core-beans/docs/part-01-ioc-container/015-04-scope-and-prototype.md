@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
@@ -16,15 +16,15 @@
 ## 导读
 
 - 本章主题：**04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
@@ -33,7 +33,7 @@
 !!! tip "内容级再加深（A–E 维度）"
 
     - A（证据链）：“prototype 注入 singleton 为什么像单例”的证据链（注入时机 vs 创建时机）。
-    - B（边界反例）：反例：prototype 循环依赖、prototype 销毁不自动、scoped proxy 的 equals/hashCode/序列化坑。
+    - B（边界反例）：反例：prototype 循环依赖、prototype 销毁不自动、scoped proxy 的 equals/hashCode/序列化易错点。
     - C（排障 SOP）：排障：资源泄漏/生命周期错觉/线程隔离不生效时如何定位。
     - D（断点观察）：断点：scope get/remove、scoped proxy 触发目标创建的入口。
     - E（面试复述）：面试追问：@Lookup/ObjectProvider/scoped proxy 的选择策略。
@@ -51,7 +51,7 @@
 - `singleton`：**同一个容器**里，这个 beanName 对应的实例只有一个
 - `prototype`：容器**每次创建/获取**都会创建一个新实例；容器通常不缓存它（也不负责销毁回调）
 
-### 1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
+### 1.1 机制系统阐述：条件 → 分支 → 结果（可断点验证）
 
 - **条件**：当前 bean 的 scope 是 singleton 还是 prototype
 - **分支**：`AbstractBeanFactory#doGetBean`
@@ -70,8 +70,8 @@
 - 直接注入：`DirectPrototypeConsumer`
 - Provider 延迟获取：`ProviderPrototypeConsumer`
 
-- `DirectPrototypeConsumer.currentId()` 连续两次拿到同一个 UUID
-- `ProviderPrototypeConsumer.newId()` 连续两次拿到不同 UUID
+- `DirectPrototypeConsumer.currentId()` 连续两次获取到同一个 UUID
+- `ProviderPrototypeConsumer.newId()` 连续两次获取到不同 UUID
 
 ## 2.1 prototype 的关键边界（创建 guard / 循环依赖 / 缓存差异）
 
@@ -147,8 +147,8 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 
 - **容器里注入的是一个 proxy（通常是单例）**：它本身被缓存、可复用；
 - **proxy 每次方法调用再去拿 scope 内的真实 target**：target 的生命周期由 scope 决定；
-- **你在容器里往往会看到两个名字**：
-  - `beanName`：proxy（你注入到别处的那个）
+- **在容器中往往会出现两个名称**：
+  - `beanName`：proxy（注入点处获取到的对象）
   - `scopedTarget.beanName`：真实目标（按 scope 创建/销毁的那个）
 
 > 关键纠偏：`scopedTarget.*` 不是“文档约定的命名”，而是容器真实注册出来的第二个 BeanDefinition（可以用 `beanFactory.containsBeanDefinition("scopedTarget.<beanName>")` 直接证明）。
@@ -163,23 +163,23 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 - `ScopedProxyMode.TARGET_CLASS`：CGLIB 子类代理（注入点是类/没有接口时常见）
 - `ScopedProxyMode.NO`：不创建 scoped proxy（等价于“按原始 scope 注入”）
 
-> 类型边界提示：`INTERFACES` 走 JDK proxy 时，按具体类类型 `getBean(ConcreteClass)` 往往会失败；这不是“scope 不生效”，而是代理实现方式决定的类型可见性边界（见上面的证据入口）。
+> 类型边界提示：`INTERFACES` 走 JDK proxy 时，按具体类类型 `getBean(ConcreteClass)` 往往会失败；这不是“scope 不生效”，而是代理实现方式决定的类型可见性边界（见前述证据入口）。
 
 > 建议：把 scoped proxy 看成一种“边界工具”。当它被用于 prototype 注入 singleton 时，务必配合本章的证据链去证明它是否真的符合预期（尤其是 equals/hashCode、toString、序列化等边界）。
 
-### 6.3 Debug 证据链：如何一眼看出你注入的是 proxy 还是 target？
+### 6.3 Debug 证据链：如何快速辨识注入的是 proxy 还是 target？
 
-一旦你怀疑 scoped proxy 造成“看起来像单例/像没生效”的问题，建议固定做三步（5 分钟闭环）：
+当怀疑 scoped proxy 造成“看起来像单例/像未生效”的问题时，可固定按三步进行（5 分钟闭环）：
 
-1. `applicationContext.getBean(\"beanName\")` 看类型：是否是代理类（JDK/CGLIB）
-2. `applicationContext.getBean(\"scopedTarget.beanName\")` 看类型：是否是原始类
+1. `applicationContext.getBean("beanName")` 看类型：是否是代理类（JDK/CGLIB）
+2. `applicationContext.getBean("scopedTarget.beanName")` 看类型：是否是原始类
 3. 对比两者的生命周期：同一次调用链里 target 是否变化？不同线程/请求里是否变化？
 
 ## 7. prototype 的销毁语义（容器默认不托管）
 
 这一点在真实工程里非常关键，因为它决定了“资源释放责任在谁”：
 
-- prototype 更像是：**容器帮读者 new，一次性交付**
+- prototype 更像是：**容器负责创建并一次性交付**
 - 而不是：**容器全程托管（创建 + 使用 + 销毁）**
 
 因此默认行为是：
@@ -189,7 +189,7 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 
 这也是为什么很多人会困惑：
 
-- “我写了 `@PreDestroy` / `DisposableBean#destroy`，为什么 prototype 看起来不执行？”
+- “已声明 `@PreDestroy` / `DisposableBean#destroy`，为什么 prototype 似乎未执行？”
   - 因为容器没有保存这些 prototype 实例的引用，无法在 close 时逐个回收
 
 应当观察到：
@@ -286,7 +286,7 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 - 最小复现：
   - `SpringCoreBeansLabTest.demonstratesPrototypeScopeBehavior`
 
-### Q2：怎么让 singleton 每次调用都拿到新的 prototype？
+### Q2：怎么让 singleton 每次调用都获取到新的 prototype？
 
 - 标准答案（可复述）：
   - 把“获取动作”延迟到使用时：优先用 `ObjectProvider#getObject()`；也可用 `@Lookup`（方法注入）或 scoped proxy（谨慎，debug 成本更高）。

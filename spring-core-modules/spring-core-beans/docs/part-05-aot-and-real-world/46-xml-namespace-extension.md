@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`BeanDefinitionParserDelegate#parseCustomElement` / `XmlBeanDefinitionReader#doLoadBeanDefinitions` / `DefaultBeanDefinitionDocumentReader#parseBeanDefinitions`
     - 推荐 Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
@@ -59,7 +59,7 @@
 - 自定义 XSD 文件（classpath 内）
 - 对应的 `NamespaceHandler` / `BeanDefinitionParser` 实现类
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：XML 元素属于自定义 namespace  
 **分支**：`parseCustomElement` → `NamespaceHandlerResolver` → `BeanDefinitionParser`  
@@ -83,7 +83,7 @@
 
 ---
 
-## 2. 怎么用：最小可用写法（需要的最小 4 件套）
+## 2. 使用方式：最小可用写法（需要的最小 4 件套）
 
 若要做一个最小 namespace 扩展，最少需要：
 
@@ -153,17 +153,17 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
-> **XML 里那些看起来像隐式行为的 `<context:...>` / `<tx:...>` 到底是怎么变成 BeanDefinition 的？我自己能不能做一个？出问题怎么断点排？**
+> **XML 中那些看起来像隐式行为的 `<context:...>` / `<tx:...>` 到底是如何变成 BeanDefinition 的？是否可以自定义扩展？出现问题时应如何设置断点定位？**
 
 ## 0. 复现入口（可运行）
 
-入口测试（建议先跑通再下断点）：
+入口测试（可先运行通再设置断点）：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlNamespaceExtensionLabTest.java`
 
@@ -195,7 +195,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
    - 真实本质：读者是在写“把 XML 转成 BeanDefinition 的解析器”。
 2) **误区：XSD 一定会去网上下载**
    - Spring 通过 `spring.schemas` 把 URL 映射到 classpath，正常不需要网络。
-3) **误区：看见 `<tx:...>` 就以为是 transaction 模块的“运行时能力”**
+3) **误区：观察到 `<tx:...>` 就以为是 transaction 模块的“运行时能力”**
    - `<tx:...>` 更多是“定义层注册基础设施 bean”，运行时能力通常由 BPP/代理实现。
 
 ## 常见误区与边界
@@ -213,9 +213,9 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
 1) **误区：namespace 扩展是“XML 语法糖”**
    - 本质上在扩展的是“定义层输入”：把 element 解析成 BeanDefinition 并注册进 registry。
 2) **误区：XSD/handler 的加载失败只会影响这一小块配置**
-   - 实际上它会让整个 XML 文档解析失败，直接卡在定义阶段，应用甚至不会进入创建业务 bean 的阶段。
+   - 实际上它会导致整个 XML 文档解析失败，使流程停留在定义阶段，应用甚至不会进入创建业务 bean 的阶段。
 3) **误区：排障只看 XML 文本**
-   - 更快的方式：从 `NamespaceHandlerResolver` 与 `BeanDefinitionParser` 下断点，直接看“有没有命中 handler/parser、最终注册了什么定义”。
+   - 更快的方式：从 `NamespaceHandlerResolver` 与 `BeanDefinitionParser` 设置断点，直接看“有没有命中 handler/parser、最终注册了什么定义”。
 
 ## 面试常问（XML namespace 扩展：扩展的不是对象，是“定义层翻译器”）
 

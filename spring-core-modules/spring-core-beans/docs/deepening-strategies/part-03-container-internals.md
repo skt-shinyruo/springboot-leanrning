@@ -31,7 +31,7 @@
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
 - 内容级加深策略：
-  - A：补“排序算法骨架”与关键列表快照（收集→排序→执行），让读者能在断点里看见顺序如何被决定。
+  - A：补“排序算法骨架”与关键列表快照（收集→排序→执行），让读者能在断点里观察到顺序如何被决定。
   - B：补反例：programmatic 注册绕过默认排序；@Order 与 @Priority 的边界误判。
   - C：补排障：增强偶发不生效/顺序错乱时的第一入口与观察点。
   - D：补断点：排序发生点、processor 列表构建点、注册点。

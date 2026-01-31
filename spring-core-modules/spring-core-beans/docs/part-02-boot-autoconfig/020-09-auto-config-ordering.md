@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
-    - 怎么使用：建议先跑本章推荐 Lab/Exercise，再结合条件评估报告（ConditionEvaluationReport）把“为什么装配/为什么 back-off/为什么顺序影响结果”用证据链讲清楚。
+    - 使用方式：可先运行本章推荐 Lab/Exercise，再结合条件评估报告（ConditionEvaluationReport）把“为什么装配/为什么 back-off/为什么顺序影响结果”用证据链讲清楚。
     - 原理：Boot 的自动配置本质是“导入 + 条件评估 + 定义注册”，最终仍落到 BeanDefinition 与 refresh 主线（定义层→实例层→最终暴露对象）。
     - 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions`
     - 推荐 Lab：`SpringCoreBeansAutoConfigurationOrderingLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？**
-- 阅读方式建议：先跑本章 Lab，看清楚“同一份条件、不同顺序，结果不同”的反直觉现象；再用断点把它放回 Boot 的 auto-config 导入与排序链路里理解。
+- 阅读方式建议：先运行本章 Lab，看清楚“同一份条件、不同顺序，结果不同”的反直觉现象；再用断点把它放回 Boot 的 auto-config 导入与排序链路里理解。
 
 !!! summary "本章要点"
 
-    - 在写 `@ConditionalOnBean` 时，隐含假设是“依赖的 bean 会在我之前注册/创建”。跨 auto-config 时，这个假设可能不成立：**顺序未定义就会不稳定**。
+    - 在写 `@ConditionalOnBean` 时，隐含假设是“依赖的 bean 会在其之前注册/创建”。跨 auto-config 时，这个假设可能不成立：**顺序未定义就会不稳定**。
     - 解决思路不是“调整 import 列表顺序”，而是让依赖关系显式化：例如用 `@AutoConfiguration(after=...)` 把顺序从“偶然”变成“确定”。
     - 排障时优先问：问题发生在“定义是否注册”还是“实例是否创建”？大多数 auto-config 顺序问题本质是 **定义层顺序**。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`
     - Test file：
@@ -50,7 +50,7 @@
 - 条件评估：`ConditionEvaluator#shouldSkip`  
 - 定义注册：`ConfigurationClassPostProcessor#processConfigBeanDefinitions`
 
-### 机制讲透：条件 → 分支 → 结果（顺序问题版）
+### 机制系统阐述：条件 → 分支 → 结果（顺序问题版）
 
 **条件**：依赖 Auto-Config 的 bean 是否已在定义层注册  
 **分支**：排序后的导入列表 → 条件评估 → 注册/跳过  
@@ -100,7 +100,7 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansAutoConfigurationOrderingLabTest`）
 
-跑完这些用例，应能够复述 3 条结论：
+运行完成这些用例，应能够复述 3 条结论：
 
 1) **顺序未定义时，条件评估可能失败**  
    - 断点：`ConditionEvaluator#shouldSkip`  
@@ -136,7 +136,7 @@
 2) **误区：把问题当成“bean 创建失败”**
    - 很多 auto-config 问题是“根本没注册定义”（定义层就被跳过了）。
 3) **误区：只看异常，不看 Condition 证据**
-   - 在 Boot 环境里，优先用 ConditionEvaluationReport 定位“为什么没匹配”，再去下断点。
+   - 在 Boot 环境里，优先用 ConditionEvaluationReport 定位“为什么没匹配”，再去设置断点。
 
 ## 源码调用链（方法级）：从“导入”到“条件评估”
 

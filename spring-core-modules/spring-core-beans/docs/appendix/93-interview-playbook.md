@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：面试复述模板：用“证据链”回答 Spring IoC
-    - 怎么使用：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`ApplicationContext#refresh` / `AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
     - 推荐 Lab：`SpringCoreBeansIocBranchMatrixLabTest`
@@ -18,7 +18,7 @@
 ## 导读
 
 - 本章主题：**面试复述模板：用“证据链”回答 Spring IoC**
-- 阅读方式建议：把本章当作“可复习题库”。每道题都给出：一句话结论 → 关键证据链（方法/数据结构）→ 对应 Lab。读者不靠背诵，而靠“能跑能断点”拿分。
+- 阅读方式建议：把本章当作“可复习题库”。每道题都给出：一句话结论 → 关键证据链（方法/数据结构）→ 对应 Lab。读者不依赖背诵，而以“可运行 + 可断点验证”作为得分依据。
 
 !!! summary "本章要点"
 
@@ -26,7 +26,7 @@
     - 复述最常见扣分点：只有结论没有证据；只有名词没有时机；只会说“三级缓存”但说不清它解决了什么问题。
     - 本章每题都给出“最小证据链入口”：至少能够说出 1 个关键方法 + 3 个观察点 + 1 个可运行 Lab。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab（建议作为复习入口总集合）：`SpringCoreBeansIocBranchMatrixLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansBreakpointPackLabTest`
 
@@ -37,7 +37,7 @@
 1) **一句话结论（What）**：读者主张的结论是什么？
 2) **关键约束（When/Where）**：它发生在 refresh 的哪一段？为什么这个时机决定了行为？
 3) **证据链（Evidence）**：关键方法/关键分支/关键数据结构是什么？
-4) **可复现入口（Repro）**：本仓库哪个 Lab 能跑出这个现象？
+4) **可复现入口（Repro）**：本仓库哪个 Lab 可复现该现象？
 
 下面按主题给出高频题模板。
 
@@ -141,7 +141,7 @@
 
 ### Q6：为什么 constructor cycle 基本 fail-fast，而 setter 有时能救？
 
-- 一句话结论：constructor 依赖发生在实例化之前，没有 early exposure 窗口；setter/field 依赖发生在实例已创建但未初始化完的窗口期，singleton 可以提前暴露引用把环跑起来。
+- 一句话结论：constructor 依赖发生在实例化之前，没有 early exposure 窗口；setter/field 依赖发生在实例已创建但未初始化完的窗口期，singleton 可以提前暴露引用，使依赖环得以闭合。
 - 证据链：
   - `doCreateBean` 的 early exposure（`addSingletonFactory`）
   - `getSingleton(beanName, allowEarlyReference)` 三层命中（final/early/factory）
@@ -166,11 +166,11 @@
 
 ---
 
-## 6. FactoryBean：为什么 getBean(\"name\") 拿到的不是工厂？
+## 6. FactoryBean：为什么 getBean("name") 获取到的不是工厂？
 
 ### Q8：`FactoryBean` 的 product vs factory 怎么区分？
 
-- 一句话结论：`getBean(\"name\")` 默认拿 product；`getBean(\"&name\")` 才拿 factory 本身。
+- 一句话结论：`getBean("name")` 默认拿 product；`getBean("&name")` 才拿 factory 本身。
 - 证据链：
   - `FactoryBeanRegistrySupport` 相关路径
   - 观察点：`&` 前缀分流
@@ -186,7 +186,7 @@
 
 ## 7. 值注入三连：占位符 / SpEL / 类型转换
 
-### Q9：`@Value(\"${missing}\")` 为什么可能不失败？
+### Q9：`@Value("${missing}")` 为什么可能不失败？
 
 - 一句话结论：取决于 embedded value resolver 是否 strict；默认可能 non-strict 原样保留 `${...}`；注册 `PropertySourcesPlaceholderConfigurer` 可使缺失占位符 fail-fast。
 - 证据链：`resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
@@ -281,7 +281,7 @@
 
 ---
 
-## 12. AOT / RuntimeHints：为什么“JVM 能跑”不等于“Native 能跑”？
+## 12. AOT / RuntimeHints：为什么“JVM 可运行”不等于“Native 可运行”？
 
 ### Q15：RuntimeHints 解决什么问题？如何用证据链证明“没注册就不会命中”？
 
@@ -334,16 +334,16 @@
 
 1) 任意挑一题，说出 1 个关键方法名 + 3 个 watch list + 1 个对应 Lab。
 2) 把“名词”翻译成“时机”：BFPP/BDRPP/BPP 分别发生在哪一段？
-3) 把“我觉得”替换成“我看见”：能在调试器里描述三层缓存/early reference/代理替换发生的瞬间。
+3) 把“主观判断”替换为“可观察事实”：能在调试器里描述三层缓存/early reference/代理替换发生的瞬间。
 
 ## 证据链 ≈ 调用链：面试里如何落到“方法级”
 
 这份 Playbook 里每题都写了“证据链”，但在面试里输出时，建议把它明确说成“调用链”（因为更具象）：
 
 - 最小调用链写法（推荐 3 行以内）：
-  1) 入口方法：我从哪个入口开始看（通常就是 LabTest 里最先命中的方法）。
+  1) 入口方法：从哪个入口开始看（通常就是 LabTest 里最先命中的方法）。
   2) 关键分支：在哪个方法里做决定（候选收敛/early reference/代理替换/值解析）。
-  3) 观察点：我看哪个变量/集合证明我的结论。
+  3) 观察点：观察哪个变量/集合以证明结论。
 
 若答题时能把这三行说出来，再补一个反例/误区，答案就会非常“像做过源码排障的人”。
 <!-- AE-DEEPENING:START -->

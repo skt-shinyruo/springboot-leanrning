@@ -3,14 +3,14 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`PropertySourcesPropertyResolver#getProperty` / `Environment#getProperty(...)` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions`
     - 推荐 Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](39-beanfactory-api-deep-dive.md)
+上一章：[37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界](39-beanfactory-api-deep-dive.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest` / `SpringCoreBeansProfileRegistrationLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansEnvironmentPropertySourceLabTest.java`
@@ -51,7 +51,7 @@
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：同一个 key 在多个 PropertySource 中同时存在  
 **分支**：按 `MutablePropertySources` 的顺序从前到后查找  
@@ -148,7 +148,7 @@ Spring 把“多个来源”组织成一个有序链表：
 
 ---
 
-## 5. 怎么用：最小可用手段（按“排障优先级”排序）
+## 5. 使用方式：最小可用手段（按“排障优先级”排序）
 
 ### 5.2 `@PropertySource`（适合“给一个默认文件来源”）
 
@@ -206,9 +206,9 @@ Spring 把“多个来源”组织成一个有序链表：
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest` / `SpringCoreBeansProfileRegistrationLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -218,7 +218,7 @@ Spring 把“多个来源”组织成一个有序链表：
 
 ## 0. 复现入口（可运行）
 
-本章新增 Lab（推荐先跑通再下断点）：
+本章新增 Lab（推荐先运行通再设置断点）：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansEnvironmentPropertySourceLabTest.java`
 
@@ -233,8 +233,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 - `SpringCoreBeansValuePlaceholderResolutionLabTest`（[34](34-value-placeholder-resolution-strict-vs-non-strict.md)）
 - `SpringCoreBeansProfileRegistrationLabTest`（profiles 的最小可复现）
 
-- “我在文件里配置了 `demo.key=foo`，但运行时却是 bar”
-- “我加了 @PropertySource 还是没生效”
+- “在配置文件中设置了 `demo.key=foo`，但运行时却是 bar”
+- “已添加 @PropertySource，但仍未生效”
 
 在断点里应该验证的是：
 
@@ -268,7 +268,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 
 1) **误区：`@PropertySource` 一定覆盖其它配置**
    - 实际是“按顺序”。更高优先级的 source 先命中就结束。
-2) **误区：我把 propertySource 加到 environment 里，已经创建过的 bean 会自动更新**
+2) **误区：把 propertySource 加到 environment 里，已经创建过的 bean 会自动更新**
    - 绝大多数场景不会。注入发生在创建时；后改 Environment 不会 retroactive。
 3) **误区：profiles 随时都能改**
    - profiles 影响的是“注册阶段”，必须在 refresh 前设置才有意义。
@@ -318,6 +318,6 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 - Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest` / `SpringCoreBeansProfileRegistrationLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansEnvironmentPropertySourceLabTest.java`
 
-上一章：[37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](39-beanfactory-api-deep-dive.md)
+上一章：[37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](37-generic-type-matching-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界](39-beanfactory-api-deep-dive.md)
 
 <!-- BOOKIFY:END -->

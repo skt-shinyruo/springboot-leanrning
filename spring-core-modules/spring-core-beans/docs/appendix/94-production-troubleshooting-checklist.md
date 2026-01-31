@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：生产排障清单：从症状到证据链
-    - 怎么使用：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultSingletonBeanRegistry#getSingleton`
     - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
@@ -26,7 +26,7 @@
     - 生产排障不要直接“猜改”：优先把现象缩小到最小容器/最小配置（本仓库的 Lab 就是为这一步准备的）。
     - 证据链要闭环：Symptoms → Repro → Evidence → Decision → Fix → Verify（少一步就容易复发）。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab（排障入口总集合）：
       - `SpringCoreBeansBreakpointPackLabTest`
@@ -56,7 +56,7 @@
 | 代理不生效（像绕过 AOP） | 创建/after-init | `applyBeanPostProcessorsAfterInitialization` | `part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md` | `SpringCoreBeansProxyingPhaseLabTest`（或对应分支矩阵） |
 | 循环依赖异常/行为诡异 | 创建层（窗口期） | `DefaultSingletonBeanRegistry#getSingleton` | `part-01-ioc-container/09-circular-dependencies.md` | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
 | `@Value` 值不对/缺失不失败 | 定义层 + 注入阶段 | `AbstractBeanFactory#resolveEmbeddedValue` | `part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md` | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
-| `FactoryBean` 拿到的不是容易误以为的对象 | getBean 分流 | `AbstractBeanFactory#doGetBean` | `part-01-ioc-container/08-factorybean.md` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
+| `FactoryBean` 获取到的不是容易误以为的对象 | getBean 分流 | `AbstractBeanFactory#doGetBean` | `part-01-ioc-container/08-factorybean.md` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
 | Boot 自动装配“偶发失效” | 定义层顺序 | `AutoConfigurationImportSelector#selectImports` | `part-02-boot-autoconfig/020-09-auto-config-ordering.md` | `SpringCoreBeansAutoConfigurationOrderingLabTest` |
 | XML/namespace 解析失败 | 定义层输入 | `XmlBeanDefinitionReader#loadBeanDefinitions` | `part-05-aot-and-real-world/42-xml-bean-definition-reader.md` | `SpringCoreBeansXmlBeanDefinitionReaderLabTest` |
 | AOT/Native 行为缺失（反射/资源） | 构建期契约 | `RuntimeHintsRegistrar#registerHints` | `part-05-aot-and-real-world/41-runtimehints-basics.md` | `SpringCoreBeansAotRuntimeHintsLabTest` |
@@ -78,8 +78,8 @@
 
 ### 1.3 Evidence（证据链）
 
-- 选 1 个关键方法下断点 + 3 个观察点（watch list）
-- 把“猜”变成“看见”：候选集合是什么？BPP 链顺序是什么？三层缓存状态是什么？
+- 选 1 个关键方法设置断点 + 3 个观察点（watch list）
+- 把“猜”变成“观察到”：候选集合是什么？BPP 链顺序是什么？三层缓存状态是什么？
 
 ### 1.4 Decision（分流决策）
 
@@ -88,19 +88,19 @@
 
 ### 1.5 Fix（修复）
 
-- 修复优先级：消除根因（设计/边界） > 改注入策略（Qualifier/Provider/Lazy） > 开关兜底（最后才用）
+- 修复优先级：消除根因（设计/边界） > 改注入策略（Qualifier/Provider/Lazy） > 开关回退（最后才用）
 
 ### 1.6 Verify（验证）
 
 - 写一个可回归的最小测试（或在现有 Lab 中补断言）
-- 再跑一遍主线回归（本模块 `mvn -pl :spring-core-beans test`）
+- 再运行一次主线回归（本模块 `mvn -pl :spring-core-beans test`）
 
 ---
 
 ## 1.7 误归因对照（生产最常见三错）
 
 - **错因**：把“代理不生效”归因到配置没开  
-  **纠正**：先看 BPP 链是否完整、bean 是否过早创建  
+  **纠正**：优先确认 BPP 链是否完整，以及 bean 是否过早创建  
 
 - **错因**：把 `NoUniqueBeanDefinition` 当成“自动装配坏了”  
   **纠正**：这是候选收敛规则没表达清楚（Qualifier/Primary/Priority）  
@@ -226,7 +226,7 @@
 
 1) **定位阶段**：先在 `AbstractApplicationContext#refresh`（或启动异常栈顶）确认自己处在 refresh 的哪一段。
 2) **锁定入口**：选择该现象的第一入口方法（例如 `doResolveDependency` / `getSingleton` / `resolveEmbeddedValue`）。
-3) **看见关键数据结构**：候选 Map / 三层缓存 / embedded value 解析前后值 / BPP 链顺序。
+3) **观察到关键数据结构**：候选 Map / 三层缓存 / embedded value 解析前后值 / BPP 链顺序。
 
 无需追完整条链，只要能用 2–3 个方法把“阶段→分支→结论”连起来即可。
 
@@ -236,7 +236,7 @@
 应能够做到：
 
 1) 任意一个 IoC 相关异常，先定位它属于 definition 还是 bean creation，再决定下哪个断点。
-2) 解释“为什么这个断点能证明我的结论”（而不是碰巧）。
+2) 解释“为什么这个断点能证明结论”（而不是碰巧）。
 3) 用本仓库的 Lab 复现同类机制边界，并把修复方案固化成可回归验证。
 <!-- AE-DEEPENING:START -->
 !!! tip "内容级再加深（A–E 维度）"

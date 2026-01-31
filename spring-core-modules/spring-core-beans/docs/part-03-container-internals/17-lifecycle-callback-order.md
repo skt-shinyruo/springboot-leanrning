@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`BeanPostProcessor#postProcessBeforeInitialization` / `InitializingBean#afterPropertiesSet` / `BeanPostProcessor#postProcessAfterInitialization`
     - 推荐 Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
@@ -163,7 +163,7 @@ prototype 的语义是：
 - “`@PostConstruct` 没触发/注入为 null” → **优先定义层/基础设施问题**：容器是否具备注解处理器？（见 [12](022-12-container-bootstrap-and-infrastructure.md)）
 - “`@PreDestroy` 没触发” → **优先实例层/生命周期语义问题**：是不是 prototype？context 是否真的 close？（本章第 2 节）
 - “BPP 里依赖复杂 bean 导致顺序怪异” → **实例层 + 顺序问题**：BPP 本身会很早创建/注册，必要时拆分依赖（对照 [14](14-post-processor-ordering.md)、[25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)）
-- “我以为 destroy 回调一定会执行” → **实例层 + scope 语义问题**：prototype 的销毁不由容器托管（本章第 2 节）
+- “误认为 destroy 回调一定会执行” → **实例层 + scope 语义问题**：prototype 的销毁不由容器托管（本章第 2 节）
 
 ## 3. 源码调用链（方法级）：初始化与销毁发生在哪里？
 
@@ -235,7 +235,7 @@ prototype 的语义是：
 
 1) init callbacks 为什么夹在 before/after-init BPP 之间？
 2) prototype 默认为什么不会触发销毁回调？
-3) 当读者怀疑“回调没执行/执行顺序怪”，可先看哪两个断点？（提示：`initializeBean` 与 `destroySingletons`）
+3) 当读者怀疑“回调未执行/执行顺序异常”，可优先关注哪两个断点？（提示：`initializeBean` 与 `destroySingletons`）
 
 ## 常见误区与边界
 

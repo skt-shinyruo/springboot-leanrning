@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`SpringCoreBeansPropertiesBeanDefinitionReaderLabTest#propertiesBeanDefinitionReader_registersBeanDefinitions_fromPropertiesFile` / `SpringCoreBeansGroovyBeanDefinitionReaderLabTest#groovyBeanDefinitionReader_registersBeanDefinitions_fromGroovyScript` / `AbstractBeanDefinitionReader#loadBeanDefinitions`
     - 推荐 Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
@@ -85,14 +85,14 @@ BeanDefinitionReader 的价值在于：
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：选择不同输入源（properties / groovy / xml / 注解）  
 **分支**：对应 Reader 解析 → `BeanDefinition` 注册  
 **结果**：实例化统一走 BeanFactory 主线  
 **断点建议**：`AbstractBeanDefinitionReader#loadBeanDefinitions`
 
-## 2. 怎么用：两种典型 reader 的最小闭环
+## 2. 使用方式：两种典型 reader 的最小闭环
 
 ### 2.1 PropertiesBeanDefinitionReader（遗留/轻量输入）
 
@@ -170,9 +170,9 @@ BeanDefinitionReader 的价值在于：
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -215,7 +215,7 @@ Groovy reader 的典型断点：
 
 1) **误区：Reader = 创建对象**
    - Reader 注册的是“配方”（BeanDefinition），对象创建发生在后续主线。
-2) **误区：我写的是 Groovy/Properties，所以不属于 beans 体系**
+2) **误区：使用 Groovy/Properties，因此不属于 beans 体系**
    - 恰恰相反：这些机制说明 beans 体系的抽象能力（输入可扩展，输出统一）。
 
 ## 排障决策表（BeanDefinitionReader：资源/解析/注册分型）
@@ -225,7 +225,7 @@ Groovy reader 的典型断点：
 | 资源不存在 / 路径错误 | 输入源（Resource） | 断点 `AbstractBeanDefinitionReader#loadBeanDefinitions`；看 `resourceDescription` | 修正路径/类路径；确认测试资源打包 | `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest` / `SpringCoreBeansGroovyBeanDefinitionReaderLabTest` |
 | 脚本/属性解析异常 | reader 解析阶段 | `PropertiesBeanDefinitionReader#loadBeanDefinitions` / `GroovyBeanDefinitionReader#loadBeanDefinitions` | 修正格式；Groovy 确认运行库依赖存在 | 同上 |
 | “看起来加载了，但容器里找不到 bean” | 注册阶段未落地 | 断点 `DefaultListableBeanFactory#registerBeanDefinition`；看是否真正写入 registry | 确认 beanName/定义是否冲突；排查覆盖策略 | 同上 |
-| 误以为这是“创建失败” | 其实还没进入创建阶段 | 先证明是否进入 `preInstantiateSingletons/doCreateBean` | 先把问题分型为“定义层 vs 实例层”再排查 | 结合 [18](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md) 主线 |
+| 误以为这是“创建失败” | 尚未进入创建阶段 | 先证明是否进入 `preInstantiateSingletons/doCreateBean` | 先把问题分型为“定义层 vs 实例层”再排查 | 结合 [18](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md) 主线 |
 
 ## 面试常问（Reader：输入可扩展，输出要统一）
 

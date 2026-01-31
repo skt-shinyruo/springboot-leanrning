@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：dependsOn：强制初始化顺序（即使没有显式依赖）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`AbstractBeanFactory#doGetBean` / `AbstractApplicationContext#refresh` / `DefaultListableBeanFactory#preInstantiateSingletons`
     - 推荐 Lab：`SpringCoreBeansDependsOnLabTest`
@@ -27,11 +27,11 @@
     - `dependsOn` 是 **BeanDefinition 元数据**，不会改变候选选择，不会让某个类型“变得可注入”。
     - 生效点在 `AbstractBeanFactory#doGetBean`：创建 bean A 之前，先读取 `mbd.getDependsOn()` 并 `getBean(dep)` 强行“拉起”依赖 bean。
     - Spring 会把这条关系记录到 `DefaultSingletonBeanRegistry` 的两张图里：
-      - `dependentBeanMap`：**dep → set(dependentBeans)**（谁依赖我）
-      - `dependenciesForBeanMap`：**bean → set(dependencies)**（我依赖谁）
+      - `dependentBeanMap`：**dep → set(dependentBeans)**（dep 被哪些 bean 依赖）
+      - `dependenciesForBeanMap`：**bean → set(dependencies)**（bean 依赖哪些 dep）
     - 关闭容器时，销毁顺序通常是初始化顺序的“逆序”，因为**先销毁 dependent，再销毁 dependency**。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansDependsOnLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
@@ -49,7 +49,7 @@
 
 > ⚠️ 建议：把 `dependsOn` 视为“最后手段”。能用显式依赖（构造注入/方法参数注入）就不要用它，因为**显式依赖更可维护、也更能被 IDE/测试/重构工具捕获**。
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：`mbd.getDependsOn()` 是否为空  
 **分支**：`AbstractBeanFactory#doGetBean` 先 `getBean(dep)` 再创建自身  
@@ -105,9 +105,9 @@
 Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的两张表：
 
 - `dependentBeanMap`：**dependency → dependentBeans**
-  可以把它理解为“我（dependency）被谁依赖”，因此它是关闭容器时计算销毁顺序的重要输入。
+  可以把它理解为“dependency 被哪些 bean 依赖”，因此它是关闭容器时计算销毁顺序的重要输入。
 - `dependenciesForBeanMap`：**bean → dependencies**
-  可以把它理解为“我（bean）依赖谁”，它更像是“正向邻接表”，排障时也常用。
+  可以把它理解为“bean 依赖哪些 dependency”，它更像是“正向邻接表”，排障时也常用。
 
 常用观察入口（建议直接在 debugger 里看）：
 
@@ -175,7 +175,7 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 
 ## 可复现闭环（基于 `SpringCoreBeansDependsOnLabTest`）
 
-跑完该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少应能够复述 3 条结论：
 
 1) **dependsOn 只影响顺序**  
    - 断点：`doGetBean` → `mbd.getDependsOn()`  
@@ -189,11 +189,11 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 
 ## 7. 排障决策表（初始化/关闭/异常消息 → 证据链）
 
-| 现象/报错 | 最可能原因 | 证据链（方法级） | 推荐修复 |
+| 现象/异常 | 最可能原因 | 证据链（方法级） | 推荐修复 |
 | --- | --- | --- | --- |
 | B 明明 lazy-init，但启动时就被创建了 | 有人对 B 写了 dependsOn（直接或间接） | `AbstractBeanFactory#doGetBean` → 读取 `mbd.getDependsOn()` → `getBean(B)` | 去掉 `dependsOn`；或者把“顺序依赖”改成显式 DI；或者用注入点 `@Lazy` / `ObjectProvider` |
 | 创建 A 时抛 `NoSuchBeanDefinitionException: No bean named 'xxx'` | `dependsOn` 写错了 beanName（或 alias 未生效） | `doGetBean(A)` → 遍历 dependsOn → `getBean("xxx")` 抛错 | 修正 beanName/alias；避免把 type 当成名字写进去 |
-| 报错包含 `Circular depends-on relationship` | 人为写了 `dependsOn A -> B -> A` 的拓扑环 | `doGetBean` → `isDependent` 检测环 → fail-fast | 打断环；不要误判为“循环依赖/三级缓存” |
+| 异常包含 `Circular depends-on relationship` | 人为写了 `dependsOn A -> B -> A` 的拓扑环 | `doGetBean` → `isDependent` 检测环 → fail-fast | 打断环；不要误判为“循环依赖/三级缓存” |
 | 关闭容器时销毁顺序“反直觉” | 读者真正写的是“依赖关系”，销毁必须逆序 | `destroySingletons` → `destroyBean` 递归销毁 dependent | 把资源释放逻辑放到正确的 bean；必要时重新设计生命周期（`SmartLifecycle`/phase） |
 
 ## 8. 断点闭环（建议照做一次）
@@ -235,7 +235,7 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 ## 小结与下一章
 
 - 本章完成后：请把 `dependsOn` 和 “注入依赖/循环依赖/后处理器顺序”明确分家；排障时优先用方法级证据链判定问题属于**定义层**还是**实例层**。
-- 下一章将讲 “能注入但不是 Bean”：`registerResolvableDependency`，它经常和 `*Aware` 搞混，但两者的生效点完全不同。
+- 下一章将讲 “能注入但不是 Bean”：`registerResolvableDependency`，它经常与 `*Aware` 混淆，但两者的生效点完全不同。
 <!-- AE-DEEPENING:START -->
 !!! tip "内容级再加深（A–E 维度）"
 

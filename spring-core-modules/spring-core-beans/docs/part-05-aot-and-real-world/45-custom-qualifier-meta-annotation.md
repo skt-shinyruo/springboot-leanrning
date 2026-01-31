@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：45. 自定义 Qualifier：meta-annotation 与候选收敛
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` / `DefaultListableBeanFactory#findAutowireCandidates` / `DefaultListableBeanFactory#determineAutowireCandidate`
     - 推荐 Lab：`SpringCoreBeansCustomQualifierLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**45. 自定义 Qualifier：meta-annotation 与候选收敛**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansCustomQualifierLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
@@ -51,7 +51,7 @@
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：注入点与候选 bean 同时标注自定义 Qualifier  
 **分支**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` 做匹配过滤  
@@ -78,7 +78,7 @@
 - [03. 依赖注入解析：候选收集→候选收敛→最终注入](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 - [33. 候选选择与优先级：@Primary/@Priority/@Order 的边界](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
 
-## DependencyDescriptor 深挖：注入点语义决定“Qualifier 是否生效”
+## DependencyDescriptor 深入分析：注入点语义决定“Qualifier 是否生效”
 
 `DependencyDescriptor` 是注入点语义的入口：
 
@@ -138,9 +138,9 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansCustomQualifierLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -163,7 +163,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 建议观察点（设置断点时应该盯住这些变量）：
 
 - 自定义 Qualifier 是如何参与候选收敛的？
-- 可以在哪两个方法下断点证明“候选集合如何被过滤”？
+- 可以在哪两个方法设置断点证明“候选集合如何被过滤”？
 
 ## 常见误区与边界
 
@@ -177,11 +177,11 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 2) **误区：把 Qualifier 当作 beanName**
    - Qualifier 是过滤条件，beanName 只是可能参与收敛的一种信号。
 
-## 排障决策表（Qualifier：为什么注入的不是若希望要的那个）
+## 排障决策表（Qualifier：为什么注入的不是所期望的那个）
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |
-| 注入到了“不是我想要的那个实现” | 候选收敛规则没表达清楚（缺 Qualifier/Primary 冲突） | `DefaultListableBeanFactory#determineAutowireCandidate`；看最终 winner 如何选出 | 在注入点用 `@Qualifier`（或自定义 Qualifier）显式缩小候选；避免“靠默认” | `SpringCoreBeansCustomQualifierLabTest` |
+| 注入到了“不是预期的实现” | 候选收敛规则没表达清楚（缺 Qualifier/Primary 冲突） | `DefaultListableBeanFactory#determineAutowireCandidate`；看最终 winner 如何选出 | 在注入点用 `@Qualifier`（或自定义 Qualifier）显式缩小候选；避免“靠默认” | `SpringCoreBeansCustomQualifierLabTest` |
 | `NoUniqueBeanDefinitionException` | 单依赖没有唯一胜者 | `findAutowireCandidates` 看候选集合；`isAutowireCandidate` 看过滤是否生效 | 明确 `@Qualifier` / `@Primary`；必要时拆分类型或引入语义标签 | 同上 |
 | 容易误以为 `@Primary` 会覆盖一切但实际被“压过” | 注入点带了更强限定（Qualifier） | `AutowireCandidateResolver#isAutowireCandidate` / `QualifierAnnotationAutowireCandidateResolver` | 认识强信号优先级：Qualifier > Primary（单依赖收敛） | 结合 [33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) |
 

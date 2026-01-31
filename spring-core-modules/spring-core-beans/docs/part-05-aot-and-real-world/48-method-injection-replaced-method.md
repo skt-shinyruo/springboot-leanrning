@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：48. 方法注入（Method Injection）：replaced-method / MethodReplacer
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides` / `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection` / `AbstractBeanDefinition#getMethodOverrides`
     - 推荐 Lab：`SpringCoreBeansReplacedMethodLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**48. 方法注入（Method Injection）：replaced-method / MethodReplacer**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansReplacedMethodLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
@@ -63,7 +63,7 @@
 - 测试：`SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides`
 - XML：`spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：BeanDefinition 存在 `MethodOverrides`  
 **分支**：实例化走 `instantiateWithMethodInjection`（CGLIB 子类化）  
@@ -85,7 +85,7 @@
 
 ---
 
-## 2. 怎么用：最小可用写法（XML）
+## 2. 使用方式：最小可用写法（XML）
 
 - 一个目标 bean（包含要被替换的方法）
 - 一个 `MethodReplacer`（实现 `reimplement(...)`）
@@ -157,9 +157,9 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansReplacedMethodLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 

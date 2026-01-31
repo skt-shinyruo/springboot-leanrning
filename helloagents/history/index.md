@@ -8,6 +8,7 @@
 
 | 时间戳 | 变更名称 | 类型 | 状态 | 方案包路径 |
 | --- | --- | --- | --- | --- |
+| 202601311526 | spring_core_beans_docs_formalize | Enhancement | ✅Completed | [202601311526_spring_core_beans_docs_formalize](2026-01/202601311526_spring_core_beans_docs_formalize/) |
 | 202601291517 | beans_aop_explainability_upgrade | Enhancement | ✅Completed | [202601291517_beans-aop-explainability-upgrade](2026-01/202601291517_beans-aop-explainability-upgrade/) |
 | 202601291256 | spring_core_beans_ae_into_chapters | Enhancement | ✅Completed | [202601291256_spring-core-beans-ae-into-chapters](2026-01/202601291256_spring-core-beans-ae-into-chapters/) |
 | 202601291227 | spring_core_aop_docs_deepening | Enhancement | ✅Completed | [202601291227_spring-core-aop-docs-deepening](2026-01/202601291227_spring-core-aop-docs-deepening/) |

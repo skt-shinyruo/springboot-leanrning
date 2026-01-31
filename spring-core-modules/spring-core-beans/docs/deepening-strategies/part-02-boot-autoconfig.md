@@ -4,16 +4,16 @@
 
 ## 执行化提示（把“看不见的条件”变成“可证明事实”）
 
-- 每个结论都要落到“导入列表 + 条件上下文 + BeanDefinition 注册表”三件套：能在断点里看见，且能用 Lab 固化。
+- 每个结论都要落到“导入列表 + 条件上下文 + BeanDefinition 注册表”三件套：能在断点里观察到，且能用 Lab 固化。
 - 反例优先：把“看似偶发”写成“顺序/条件/覆盖”的可复现分型，避免停留在日志解释。
 
-### 第 19 章：11. 调试与自检：如何“看见”容器正在做什么
+### 第 19 章：11. 调试与自检：如何“观察到”容器正在做什么
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
 - 内容级加深策略：
   - A：补“定义层可观测证据链”：如何证明一个 BeanDefinition 是谁注册的、何时注册的、是否被后处理器改写。
   - B：补反例：debug 日志误读、条件评估报告与真实注册行为不一致时的定位方法。
-  - C：补排障 SOP：从“容器里没有/有但不是我想要的/被 proxy 了/值不对”四类症状分别如何收敛。
+  - C：补排障 SOP：从“容器里没有/有但不是预期的实现/被 proxy 了/值不对”四类症状分别如何收敛。
   - D：补观察点：ConditionEvaluationReport、beanDefinition 来源、auto-config import 列表（以及它们的查看方式）。
   - E：补面试追问：Boot 为什么会影响 Bean 图？如何用证据链解释 back-off。
 
@@ -33,6 +33,6 @@
 - 内容级加深策略：
   - A：补“导入链路证据链”：候选收集→导入→注册 BeanDefinition 的关键链路与最短调用链。
   - B：补反例：用户 bean 顶掉 auto-config / conditionalOnMissingBean 被误判 / FactoryBean+type matching 导致条件误命中。
-  - C：补排障：从“bean 没注册/注册了但不是我想要的”到“第一断点入口”的 SOP。
+  - C：补排障：从“bean 没注册/注册了但不是预期的实现”到“第一断点入口”的 SOP。
   - D：补 watch list：导入列表、条件上下文、BeanDefinition 注册表的关键对象快照。
   - E：补面试追问：auto-config 的 back-off 与覆盖策略如何解释且可证明。

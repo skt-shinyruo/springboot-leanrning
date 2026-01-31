@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：依赖注入解析：类型/名称/@Qualifier/@Primary
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency` / `#findAutowireCandidates` / `#determineAutowireCandidate`
     - 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
@@ -16,15 +16,15 @@
 ## 导读
 
 - 本章主题：**03. 依赖注入解析：类型/名称/@Qualifier/@Primary**
-- 阅读方式建议：先跑一次“候选歧义”的最小 Lab，再回到正文按“候选收集 → 候选收敛 → 最终注入”把主线走通。
+- 阅读方式建议：先运行一次“候选歧义”的最小 Lab，再回到正文按“候选收集 → 候选收敛 → 最终注入”把主线走通。
 
 !!! summary "本章要点"
 
-    - 读者写下 `private final X x;` 时，Spring 做的不是“按类型找一个就行”，而是：**先收集候选（by type），再用一套规则缩小候选（by qualifier/primary/priority/name…）**。
+    - 读者写下 `private final X x;` 时，Spring 做的不是“按类型找一个即可”，而是：**先收集候选（by type），再用一套规则缩小候选（by qualifier/primary/priority/name…）**。
     - `@Order` 管的是“集合注入怎么排”，不是“单依赖注入选谁”。单依赖选谁主要看 `@Primary/@Qualifier`，必要时才用 `@Priority` 做 tie-break。
     - 排障不要靠猜：在 `doResolveDependency(...)` 里盯住固定观察点（dependencyType / candidates / selectedName），即可解释“为什么注入的是它/为什么失败”。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansOptionalInjectionLabTest` / `SpringCoreBeansJsr330InjectionLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansOptionalInjectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansJsr330InjectionLabTest.java`
@@ -40,7 +40,7 @@
 
 > 经验规则：不要在注入点上“赌 Spring 会选对”。如果候选>1 且读者没有写清楚规则，Spring 选择失败是一个非常好的保护。
 
-### 0.1 DependencyDescriptor 深挖：注入点到底“要什么”？
+### 0.1 DependencyDescriptor 深入分析：注入点到底“要什么”？
 
 `DependencyDescriptor` 是依赖解析的真正“需求描述”，应能够否解释它，决定了应能够否解释“为什么注入的是它”。重点看这些字段：
 
@@ -59,26 +59,26 @@
    - `dependencyName` **可能是** `worker`（需要参数名可发现，例如开启 `-parameters`），也可能是 `(null)`/`arg0`（此时 by-name fallback 证据链就会断掉）
    - 因此：by-name fallback 在“构造器参数注入”上不如字段注入稳定，工程上更推荐用 `@Qualifier/@Primary` 把规则写死
 
-本仓库给了一个最小可观察入口（建议先跑再读）：
+本仓库给了一个最小可观察入口（可先运行再读）：
 
 - testsupport：`DependencyDescriptorDumper`
 - Lab：`SpringCoreBeansDependencyDescriptorMetadataLabTest`
 
 ---
 
-### 0.2 注入点元数据：Field vs `MethodParameter`（把“我以为要注入什么”变成可观察对象）
+### 0.2 注入点元数据：Field vs `MethodParameter`（将“预期注入目标”转化为可观察对象）
 
-很多依赖注入排障卡在一句话：**“注入点到底要的是什么类型/名字/限定条件？”**
+依赖注入排障常聚焦于一个问题：**“注入点到底需要什么类型/名字/限定条件？”**
 在 Spring 里，这个问题最终会落到 `DependencyDescriptor` 里保存的注入点元数据：
 
-- **字段注入点**：`descriptor.getField()` 不为 null（拿到的是 `java.lang.reflect.Field`）
-- **构造器/方法参数注入点**：`descriptor.getMethodParameter()` 不为 null（拿到的是 `org.springframework.core.MethodParameter`）
+- **字段注入点**：`descriptor.getField()` 不为 null（获取到的是 `java.lang.reflect.Field`）
+- **构造器/方法参数注入点**：`descriptor.getMethodParameter()` 不为 null（获取到的是 `org.springframework.core.MethodParameter`）
 
-这一区分在“只按类型注入”的场景里看起来无关紧要，但在下面这些情况里会直接影响候选解析结果（也解释了为什么你“明明看起来一样”，结果却不同）：
+这一区分在“只按类型注入”的场景中看似无关紧要，但在下列情形下会直接影响候选解析结果（并解释为何在表面条件相同的情况下，结果仍可能不同）：
 
 1. **泛型信息的保真度不同**：参数注入点通常能保留更完整的泛型上下文（`ResolvableType` 解析时会用到），字段注入点在某些桥接/继承场景更容易丢上下文。
 2. **注入点上的注解集合不同**：`@Qualifier/@Lazy/@Value/@Resource` 等限定信号是跟着注入点走的——字段 vs 参数能携带的注解集合与组合形式不同（尤其是元注解与组合注解）。
-3. **参数名（by-name 证据链）**：当你在排查“为什么会 by-name 回退”时，参数名是否可发现（`-parameters` / debug info）会影响你能否在断点里把证据链补齐。
+3. **参数名（by-name 证据链）**：当排查“为何会 by-name 回退”时，参数名是否可发现（`-parameters` / debug info）会影响能否在断点中补齐证据链。
    - 证据入口：`SpringCoreBeansDependencyDescriptorMetadataLabTest` 会打印 `MethodParameter#getParameterName()` 的发现结果（有的工程会是 `null`，这不是 Spring “随机”，而是参数名元数据缺失）
 
 **建议的断点验证方式（不增加新章节也能完成闭环）：**
@@ -87,7 +87,7 @@
   - `descriptor.getField()` vs `descriptor.getMethodParameter()`
   - `descriptor.getResolvableType()` / `descriptor.getDependencyType()`
   - `descriptor.getDependencyName()`（不要只看它的值，要追它是怎么来的）
-- 把同一组候选分别用“字段注入”和“构造器参数注入”写两份，观察 `candidates` 集合与收敛路径是否一致（这比“背规则”更稳）。
+- 把同一组候选分别用“字段注入”和“构造器参数注入”写两份，观察 `candidates` 集合与收敛路径是否一致（该方式更便于对比与验证，可避免仅凭结论记忆）。
 
 本仓库对应的“可观察对象”工具：
 
@@ -98,7 +98,7 @@
 **关联阅读（把能力拼起来）：**
 
 - 注入阶段差异：`30-injection-phase-field-vs-constructor.md`
-- 泛型匹配坑位：`37-generic-type-matching-pitfalls.md`
+- 泛型匹配误区：`37-generic-type-matching-pitfalls.md`
 - 自定义 `@Qualifier` 元注解：`45-custom-qualifier-meta-annotation.md`
 
 ## 1. 本模块里的最小例子：两个 `TextFormatter`
@@ -129,7 +129,7 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#findAutowireCandidates`
 
-需要建立的直觉是：**by type 的候选集合通常不小**，需要先把它“看见”，再谈“为什么最终选中它”。
+需要建立的直觉是：**by type 的候选集合通常不小**，需要先把它“观察到”，再谈“为什么最终选中它”。
 
 ### 2.0 依赖解析分支树（全链路视角）
 
@@ -146,20 +146,20 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 5) **集合注入与排序**
    - 现象：`@Order/@Priority` 影响 List/Stream 顺序，但不选唯一候选
 6) **fallback**
-   - 现象：by-name / suggestedName 等兜底路径影响最终选择
+   - 现象：by-name / suggestedName 等回退路径影响最终选择
 
-### 2.1 三条“早返回通道”（很多人以为没走到候选收集，其实是提前返回了）
+### 2.1 三条“早返回通道”（常见误判：未进入候选收集，实际为提前返回）
 
 在 `doResolveDependency` 里，真实项目常见的三类提前返回：
 
 - **resolvableDependencies 命中**：允许注入但不一定是 bean（例如 `BeanFactory`/`ApplicationContext` 等）。见：[20. ResolvableDependency：为什么有些东西能注入但不是 Bean？](../part-04-wiring-and-boundaries/20-resolvable-dependency.md)
-- **值注入（@Value / 占位符 / SpEL）**：从 resolver 拿到 suggested value 后直接 `convertIfNecessary`（不会走“按类型找候选”）。
+- **值注入（@Value / 占位符 / SpEL）**：从 resolver 获取到 suggested value 后直接 `convertIfNecessary`（不会走“按类型找候选”）。
 - **注入点 `@Lazy`（懒解析代理）**：`@Lazy` 既可以标在 BeanDefinition 上（影响“什么时候创建”），也可以标在注入点上（影响“注入的是什么”）。注入点的 `@Lazy` 会在依赖解析阶段由 resolver 尝试返回一个 lazy-resolution proxy（同样不会走候选收敛）。
 - **集合/流/Provider 通道**：`List/Map/Stream/ObjectProvider/Optional` 会走 `resolveMultipleBeans(...)`，它解决的是“收集全部”，不是“选唯一”。
 
-> 排障提示：在断点里没看到候选集合变化时，先问自己：是不是命中这些早返回分支了？
+> 排障提示：若在断点中未观察到候选集合变化，可优先判断是否命中了这些“提前返回”分支。
 
-建议读者把这两个“最常见早返回”打一次断点验证（不要背结论）：
+建议读者对以下两类“最常见提前返回”通过断点进行一次验证，以建立可观察证据，而非仅记忆结论：
 
 - `@Value`：`AutowireCandidateResolver#getSuggestedValue` / `DefaultListableBeanFactory#doResolveDependency`（suggestedValue 分支）
   - 关联阅读：[34. `@Value` 占位符解析：strict vs non-strict](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)
@@ -169,12 +169,12 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 ### 2.2 需要关注的第一个变量：`matchingBeans` / `candidates`
 
 - `findAutowireCandidates(...)` 的结果通常是 `Map<String, Object>`（beanName → candidate instance / type holder）
-- 无需先看实例，先看 `matchingBeans.keySet()`：**候选 beanName 到底有哪些？**
+- 无需立即关注实例对象，可优先检查 `matchingBeans.keySet()`：**候选 beanName 的集合有哪些？**
 
 这一步就足够读者回答：
 
 - “容器里到底有哪些同类型实现？”
-- “是不是某个 auto-config/扫描把我没预期的 bean 也注册进来了？”
+- “是不是某个 auto-config/扫描把未预期的 bean 也注册进来了？”
 
 ### 2.3 关键变量速查表（把“为什么选它”变成可解释）
 
@@ -185,14 +185,14 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 | `dependencyName` | 字段/参数名（参数名可能缺失） | by-name fallback 重要输入（但对构造器参数不够稳定） |
 | `suggestedName` | resolver 推导名称（如 Qualifier 值） | 可能直接命中候选 |
 | `primaryCandidate` | 唯一 `@Primary` 候选 | 单依赖优先级高 |
-| `highestPriorityCandidate` | `@Priority` tie-break | 兜底路径 |
+| `highestPriorityCandidate` | `@Priority` tie-break | 回退路径 |
 | `autowiredBeanName` | 最终选中的 beanName | 最终结论落点 |
 
 ---
 
 ### 2.4 候选筛选的幕后主角：AutowireCandidateResolver（Qualifier/Lazy/泛型/FactoryBean）
 
-很多“为什么候选集合不是我以为的那几个”的问题，最终会落到：**候选并不是纯按类型收集完才收敛**，而是在收集阶段就会被 resolver 过滤与改写。
+很多“为什么候选集合不是预期的那几个”的问题，最终会落到：**候选并不是纯按类型收集完才收敛**，而是在收集阶段就会被 resolver 过滤与改写。
 
 最短入口链路：
 
@@ -205,7 +205,7 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
   - `QualifierAnnotationAutowireCandidateResolver`（`@Qualifier` / 元注解）
   - `GenericTypeAwareAutowireCandidateResolver`（泛型匹配：`checkGenericTypeMatch`）
 
-你在断点里应该能观察到它解决的 4 类问题：
+在断点中应能够观察到它解决的 4 类问题：
 
 1) **`@Qualifier`（含元注解）**：注入点的限定信号如何进入 `descriptor`，以及如何过滤候选（`isAutowireCandidate`）
 2) **注入点 `@Lazy`**：是否返回 lazy-resolution proxy（`getLazyResolutionProxyIfNecessary`），从而绕开“选唯一候选”的痛点（但也会带来 proxy 语义）
@@ -260,7 +260,7 @@ determineAutowireCandidate(candidates, descriptor):
 - 它依赖 `DependencyDescriptor#getDependencyName()`（字段名 / 参数名），因此对“参数名是否可见”（编译参数 `-parameters`、调试信息、ParameterNameDiscoverer）非常敏感
 - 名字匹配不是只比对 beanName：`matchesBeanName(...)` 会把 alias 也算作“名字命中”（这也是 alias 影响注入解析的关键原因）
 
-证据链（建议读者直接跑起来验证一次）：
+证据链（建议在本仓库中运行一次以完成验证）：
 
 - 入口：`SpringCoreBeansAutowireCandidateSelectionLabTest#byNameFallback_canMatchAlias_forAutowiredFieldInjection`
 - 断点：`DefaultListableBeanFactory#determineAutowireCandidate` → `descriptor.getDependencyName()` / `matchesBeanName(...)`
@@ -306,7 +306,7 @@ determineAutowireCandidate(candidates, descriptor):
 
 反例（应能够解释并用 Lab 验证）：
 
-> 我给 bean 加了 `@Order(1)`，以为就会优先被注入到单个依赖里，但依然 `NoUnique`。
+> 为 bean 添加 `@Order(1)` 后，预期其在单个依赖注入中具有更高优先级，但仍然出现 `NoUnique`。
 
 最小片段（省略无关方法体）：
 
@@ -339,7 +339,7 @@ static class SingleWorkerConsumer {
 
 详见：[32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](../part-04-wiring-and-boundaries/32-resource-injection-name-first.md)
 
-### 3.6 机制讲透：候选收集 → 收敛 → 最终注入（条件→分支→结果）
+### 3.6 机制系统阐述：候选收集 → 收敛 → 最终注入（条件→分支→结果）
 
 **条件**：候选集合 > 1，且注入点没有明确限定
 **分支**：`determineAutowireCandidate` 依次尝试 Qualifier → Primary → by-name → Priority
@@ -352,7 +352,7 @@ static class SingleWorkerConsumer {
 
 ### 3.7 反例集 + 修复策略（最常见误判 TOP5）
 
-> 这一节的目标不是“背结论”，而是把你最容易踩坑的点变成“有证据链的排障套路”。
+> 这一节的目标不是“背结论”，而是将最容易产生误区的点转化为“具备证据链的排障方法”。
 
 1) **误判：`@Order` 能解决单依赖歧义**
    - 现象：依然 `NoUniqueBeanDefinitionException`
@@ -391,7 +391,7 @@ static class SingleWorkerConsumer {
 ### 4.1 可选依赖：三种常见写法
 
 1) `@Autowired(required=false)`（更偏 field/setter 注入）
-   - 缺失时：不报错，注入 `null`
+   - 缺失时：不异常，注入 `null`
    - 适合：兼容性开关、可插拔依赖（但要注意 null 处理）
 2) `Optional<T>`（更偏 constructor/方法参数注入）
    - 缺失时：注入 `Optional.empty()`
@@ -412,8 +412,8 @@ static class SingleWorkerConsumer {
 
 它表达的是：
 
-- 我不要求读者立刻注入一个具体对象
-- 我要求读者给我一个“将来可以向容器要对象”的入口
+- 不要求在注入时立刻得到一个具体对象
+- 提供一个“将来可以向容器获取对象”的入口
 
 它对 prototype 注入 singleton 尤其重要，[04 章](015-04-scope-and-prototype.md)会详细解释。
 
@@ -491,7 +491,7 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 
 ## 可复现闭环（基于 `SpringCoreBeansAutowireCandidateSelectionLabTest`）
 
-把“候选收集→收敛→注入”跑成 3 个可断言结论：
+把“候选收集→收敛→注入”归纳为 3 个可断言结论：
 
 1) **`@Order` 只影响集合注入顺序，不解决单依赖歧义**
    - 断点：`resolveMultipleBeans` / `AnnotationAwareOrderComparator`
@@ -519,7 +519,7 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
   - `SpringCoreBeansJsr330InjectionLabTest`
 - 推荐命令：
   - `mvn -pl :spring-core-beans test`
-  - 或单跑：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLabTest test`
+  - 或单独运行：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLabTest test`
 
 ## 面试常问（依赖注入解析）
 

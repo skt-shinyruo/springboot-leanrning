@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`BeanDefinition#getResolvableType` / `FactoryBean#getObjectType` / `GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
     - 推荐 Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
@@ -56,7 +56,7 @@
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：注入点是带泛型的 `ResolvableType`，候选类型信息不完整  
 **分支**：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch` 发现泛型参数无法匹配  
@@ -86,15 +86,15 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ## 常见误区与边界
 
 这一章解决一个“看起来很合理，但在真实项目里经常易错点”的问题：
 
-> 我明明在容器里有一个 `Handler<String>`，
+> 明明容器里有一个 `Handler<String>`，
 > 为什么按 `Handler<String>`（带泛型）去找/注入时，Spring 却说“没有候选”？
 > 但按原始类型 `Handler`（不带泛型）又能找到？
 
@@ -122,7 +122,7 @@
 
 ### 2.1 复现入口（可运行）
 
-- 入口测试（推荐先跑通再下断点）：
+- 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
 - 推荐运行命令：
   - 类级：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest test`
@@ -135,7 +135,7 @@
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
 
-建议直接跑：
+建议直接运行：
 
 ```bash
 mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest test
@@ -192,7 +192,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 1) **JDK 动态代理（接口代理）**
    - 代理类只实现接口，泛型参数在运行时往往不可见/不可推断
 2) **手工注册 singleton 实例**（`registerSingleton`）
-   - 容器拿到的是一个对象，不一定能反推出“它原本的泛型语义”
+   - 容器获取到的是一个对象，不一定能反推出“它原本的泛型语义”
 3) **FactoryBean 的类型预测**
    - `FactoryBean#getObjectType()` 返回不准确/为 `null` 时，按类型发现会出现边界问题（见 [23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义](23-factorybean-deep-dive.md) 与 [29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](29-factorybean-edge-cases.md)）
 
@@ -226,9 +226,9 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 在 `DefaultListableBeanFactory#doResolveDependency` 上建议使用条件断点：
 
 - 按依赖类型过滤（示例：相应的泛型接口/父类）：
-  - `descriptor.getDependencyType().getName().contains(\"YourService\")`
+  - `descriptor.getDependencyType().getName().contains("YourService")`
 - 按 beanName 过滤（当读者已知目标候选名称时）：
-  - `\"yourBeanName\".equals(beanName)`
+  - `"yourBeanName".equals(beanName)`
 
 ### 5.3 推荐观察点（watch list）
 
@@ -237,7 +237,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 - `candidateName` / `candidate`：候选集合与当前候选
 - `beanFactory.getType(candidateName)`：容器推断的候选类型（可能因为代理/FactoryBean 变得不可靠）
 
-## 源码锚点（建议从这里下断点）
+## 源码锚点（建议从这里设置断点）
 
 - `ResolvableType`：泛型类型描述的核心抽象
 - `DefaultListableBeanFactory#getBeanNamesForType(ResolvableType ...)`：按 ResolvableType 查找候选的入口之一
@@ -267,7 +267,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 ## 自检要点
 - 应能够解释清楚：为什么“泛型注入”在遇到代理/桥接方法时容易失去类型信息吗？（提示：运行时类型 vs 声明时类型）
 - 读者知道 Spring 用什么抽象来表达泛型类型信息吗？（提示：`ResolvableType`）
-- 遇到“按泛型注入失败”时，第一步会去哪下断点/看哪个变量来确认类型信息有没有丢？（提示：依赖解析与 type matching 路径）
+- 遇到“按泛型注入失败”时，第一步会去哪设置断点/看哪个变量来确认类型信息有没有丢？（提示：依赖解析与 type matching 路径）
 
 ## 小结与下一章
 

@@ -18,13 +18,14 @@
 ### Changed
 - 深度完善 `spring-core-beans` 文档：补齐注入点元数据（`MethodParameter`）、scoped proxy（`ScopedProxyMode`）等关键边界，并补全 AOT/基础设施/懒加载等章节的证据链闭环
 - `spring-core-beans`：深挖 Part 01 IoC Container（注册/注入解析/scope/生命周期/BPP/@Configuration/FactoryBean/循环依赖/心智模型），新增“可断点可复现”的证据链闭环与最小观测 testsupport（`BeanDefinitionOriginDumper` / `DependencyDescriptorDumper`）
-- spring-core-beans：对 `spring-core-beans/docs` 与 `spring-core-beans/README.md` 全量书面化改写（去第二人称/俚语/口语化措辞），保持机制深度不变，提升文档可复述性与严谨性观感。
+- spring-core-beans：对 `spring-core-modules/spring-core-beans/docs` 与 `spring-core-modules/spring-core-beans/README.md` 全量书面化改写（去第二人称/俚语/口语化措辞），保持机制深度不变，提升文档可复述性与严谨性观感。
+- spring-core-beans：进一步逐句修订 `spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`，以更具说明性的书面叙述替换口号式表述，强化论证连续性与可验证性表达。
 - spring-core-beans：深化 Part-05（AOT/RuntimeHints/XML/SpEL/Qualifier/FactoryBean/值解析）与 Appendix（90/99/91–95），补齐“机制讲透 + 方法级调用链 + 排障/面试复述模板”的教程闭环。
 - spring-core-beans：在模块 README 与知识地图中新增“核心七件套”导航（概念 → 章节 → Lab），用于查漏与快速跳转
 - spring-core-beans：深化 `02-bean-registration.md`（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”
 - spring-core-beans：继续深化 `02-bean-registration.md`（方法级源码调用链/排障决策表/面试标准答案），补齐“可追踪/可定位/可背诵”交付
 - spring-core-beans：docs 目录页新增“症状驱动导航（快速定位）”，并补齐 19/20/41 三章 BOOKIFY 标记以统一书本化导航一致性
-- spring-core-beans：新增“内容级再加深策略（A–E）”目录（`spring-core-beans/docs/deepening-strategies/`），并在模块 README 与 docs 目录页补齐入口，便于按章做二次深化
+- spring-core-beans：新增“内容级再加深策略（A–E）”目录（`spring-core-modules/spring-core-beans/docs/deepening-strategies/`），并在模块 README 与 docs 目录页补齐入口，便于按章做二次深化
 - spring-core-beans：将 A–E 维度策略以 `AE-DEEPENING` 提示块写入全章正文（默认置于 `## 机制主线` 前），让“怎么深挖/怎么证明”在章内可直接使用
 - 文档结构调整：以各模块 `*/docs/` 为唯一事实来源（SSOT），仓库根 `docs/` 收敛为仅保留 `docs/SUMMARY.md`（全站目录/导航 SSOT），并删除 `docs/book/` 与旧 `docs/<topic>/...` 内容副本。
 - spring-core-beans：docs 目录入口补充 Debugger Pack 链接，同步知识库入口索引

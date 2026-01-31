@@ -1,6 +1,6 @@
 # 逐章内容级再加深建议（part-04-wiring-and-boundaries）
 
-本 Part 的再加深重点：工程边界与真实坑位（Lazy/dependsOn/resolvable dependency/层级/命名/FactoryBean/代理/占位符/转换/泛型匹配等），要求每章都能提供可复现反例与排障 SOP。
+本 Part 的再加深重点：工程边界与真实误区（Lazy/dependsOn/resolvable dependency/层级/命名/FactoryBean/代理/占位符/转换/泛型匹配等），要求每章都能提供可复现反例与排障 SOP。
 
 ## 执行化提示（边界章的“可复现反例”优先）
 
@@ -13,7 +13,7 @@
 - 内容级加深策略：
   - A：补“两类 Lazy 的证据链对照”：lazy-init 的创建时机 vs 注入点 @Lazy 的代理时机。
   - B：补反例：懒代理叠加 AOP/循环依赖时的偏差；final 类/方法限制。
-  - C：补排障：为什么你看到 lazy bean 被提前创建？如何判断是 dependsOn 拉起还是 proxy 触发。
+  - C：补排障：为什么读者可能观察到 lazy bean 被提前创建？如何判断是 dependsOn 拉起还是 proxy 触发。
   - D：补断点：代理创建点、首次触发目标创建点、注入解析分支。
   - E：补面试追问：@Lazy 与 ObjectProvider 的选择策略与边界。
 
@@ -65,7 +65,7 @@
   - B：补反例：getObjectType=null 导致条件误判/按类型发现失败；SmartFactoryBean 与 eager init 的边界。
   - C：补排障：为什么按类型注入/条件装配“看起来偶发失效”，如何先判断是否 FactoryBean 语义导致。
   - D：补断点：FactoryBeanRegistrySupport 缓存、getObjectFromFactoryBean 调用链。
-  - E：补面试追问：FactoryBean 的价值与高频坑点，如何用证据链解释两个缓存。
+  - E：补面试追问：FactoryBean 的价值与高频易错点，如何用证据链解释两个缓存。
 
 ### 24. BeanDefinition 覆盖（overriding）
 
@@ -73,7 +73,7 @@
 - 内容级加深策略：
   - A：补“覆盖发生在注册阶段”的证据链与配置入口（Framework/Boot 差异需明确）。
   - B：补反例：覆盖导致注入命中改变但不易察觉；与 auto-config back-off 的交互误判。
-  - C：补排障：同名 bean 冲突/覆盖导致行为偏差的 SOP（先看谁注册、后看覆盖策略）。
+  - C：补排障：同名 bean 冲突/覆盖导致行为偏差的 SOP（优先核对注册来源，再核对覆盖策略）。
   - D：补观察点：注册冲突位置、BeanDefinition 源信息（如 resourceDescription）。
   - E：补面试追问：为什么团队通常不建议默认允许覆盖？如何给出工程化理由与证据。
 
@@ -123,7 +123,7 @@
 - 内容级加深策略：
   - A：补“type matching 失效”的算法证据链（条件判断/候选收集如何受影响）。
   - B：补反例：按类型注入失效但 getBean(name) 仍可用、条件装配误判。
-  - C：补排障 SOP：先确认是否 FactoryBean，再看 getObjectType/isSingleton 与缓存路径。
+  - C：补排障 SOP：优先确认是否为 FactoryBean，再核对 getObjectType/isSingleton 与缓存路径。
   - D：补断点：type match 分支、FactoryBean objectType 读取点。
   - E：补面试追问：为什么 getObjectType 这么关键？如何用证据链解释。
 
@@ -163,11 +163,11 @@
 - 内容级加深策略：
   - A：补“选择 vs 排序”的证据链：单注入 vs 集合注入两条路径的决策点。
   - B：补反例：@Order 不能解决单注入歧义；by-name fallback 的边界。
-  - C：补排障：NoUnique 发生时按哪条路径收敛（先看 @Primary/@Qualifier，再看 @Priority，再看 by-name）。
+  - C：补排障：NoUnique 发生时按哪条路径收敛（优先检查 @Primary/@Qualifier，再检查 @Priority，再检查 by-name）。
   - D：补断点：candidate 决策点、orderedStream/collection injection 排序点。
   - E：补面试追问：@Primary 与 @Priority 谁更强？给出可证明解释。
 
-### 34. `@Value(\"${...}\")` 占位符解析：strict vs non-strict
+### 34. `@Value("${...}")` 占位符解析：strict vs non-strict
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
 - 内容级加深策略：
@@ -182,7 +182,7 @@
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md`
 - 内容级加深策略：
   - A：补“合并触发点与缓存语义”的证据链（merged 什么时候生成/什么时候复用）。
-  - B：补反例：你看到的 BeanDefinition 与最终行为不一致（原因往往在 merged）。
+  - B：补反例：读者观察到的 BeanDefinition 与最终行为不一致（原因往往在 merged）。
   - C：补排障：注解元信息处理异常/属性不生效时如何先确认 merged BD。
   - D：补断点：getMergedLocalBeanDefinition、applyMergedBeanDefinitionPostProcessors。
   - E：补面试追问：为什么 MBPP（MergedBeanDefinitionPostProcessor）重要？如何证明它的窗口期。
@@ -197,7 +197,7 @@
   - D：补断点：setPropertyValues、convertIfNecessary、converter/editor 命中路径。
   - E：补面试追问：PropertyEditor 为什么还存在？与 ConversionService 的边界与迁移建议。
 
-### 37. 泛型匹配坑：ResolvableType 与代理导致类型信息丢失
+### 37. 泛型匹配陷阱：ResolvableType 与代理导致类型信息丢失
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`
 - 内容级加深策略：
@@ -217,7 +217,7 @@
   - D：补 watch list：MutablePropertySources 顺序、property resolver 命中路径。
   - E：补面试追问：Environment abstraction 与 Boot config data 的关系如何解释。
 
-### 39. BeanFactory API 深挖：接口族谱与手动 bootstrap 边界
+### 39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 边界
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
 - 内容级加深策略：

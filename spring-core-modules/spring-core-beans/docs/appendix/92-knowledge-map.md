@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：知识地图（从现象直达章节/断点/Lab）
-    - 怎么使用：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`DefaultSingletonBeanRegistry#getSingleton` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue`
     - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
@@ -23,11 +23,11 @@
 
 !!! summary "本章要点"
 
-    - 本模块的学习目标是“可验证”：每个关键机制都应该有 **对应 Lab（可跑）** 与 **断点入口（可看见）**。
+    - 本模块的学习目标是“可验证”：每个关键机制都应该有 **对应 Lab（可运行）** 与 **断点入口（可观察到）**。
     - 排障优先级：先定位阶段（refresh 的哪一段）→ 再定位关键方法（最短调用链）→ 再看最小观察点（watch list）。
-    - 读者 B/C 建议：遇到任何现象，先跑对应 Lab，把现象固定成断言，再去看章节，这样读者不会被“像是理解了”的幻觉欺骗。
+    - 读者 B/C 建议：遇到任何现象，先运行对应 Lab，把现象固定成断言，再去看章节，这样读者不会被“像是理解了”的幻觉欺骗。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab（总入口 / 断点包）：
       - `SpringCoreBeansBreakpointPackLabTest`
@@ -45,9 +45,9 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 
 读者真正需要的是一张地图：
 
-- 我现在看到什么现象？
+- 当前观察到什么现象？
 - 它属于哪一段（定义层/实例层/注入/初始化/缓存/代理）？
-- 我该去看哪一章、下哪几个断点、跑哪个 Lab？
+- 应参阅哪一章、设置哪些断点、运行哪个 Lab？
 
 下面这张表就是答案。
 
@@ -55,7 +55,7 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 
 ## 0. 核心七件套（概念 → 章节 → Lab）
 
-若希望先用一份“检查表”把 Spring Beans 的关键知识点框住，再按需深挖，本模块建议优先掌握下面 7 件事：
+若希望先用一份“检查表”把 Spring Beans 的关键知识点框住，再按需深入分析，本模块建议优先掌握下面 7 件事：
 
 | 核心点 | 章节入口（Docs） | 推荐 Lab/Test |
 | --- | --- | --- |
@@ -76,11 +76,11 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 | early reference / raw vs wrapped | [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md) | `getEarlyBeanReference` / `doCreateBean` 尾部检查 | `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
 | 代理不生效 / 顺序不对 | [31. 代理发生的阶段](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)、[25. 手工注册 BPP](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md) | `registerBeanPostProcessors` / `applyBeanPostProcessorsAfterInitialization` | `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
 | `@Resource` 注入怪异（字段名相关） | [32. @Resource name-first](../part-04-wiring-and-boundaries/32-resource-injection-name-first.md) | `CommonAnnotationBeanPostProcessor#postProcessProperties` | `SpringCoreBeansResourceInjectionLabTest` |
-| `@Value(\"${...}\")` 缺失不失败 / 原样字符串 | [34. 占位符 strict vs non-strict](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) | `AbstractBeanFactory#resolveEmbeddedValue` | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
+| `@Value("${...}")` 缺失不失败 / 原样字符串 | [34. 占位符 strict vs non-strict](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) | `AbstractBeanFactory#resolveEmbeddedValue` | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
 | “值注入”到底是占位符/SpEL/转换哪一步错？ | [44. SpEL 与 @Value](../part-05-aot-and-real-world/44-spel-and-value-expression.md)、[36. 类型转换](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md) | `resolveEmbeddedValue` / `convertIfNecessary` | `SpringCoreBeansTypeConversionLabTest` |
 | 若希望把 refresh → doCreateBean 主线打穿 | [18. refresh→创建主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)、[10. 主线时间线](../part-00-guide/010-03-mainline-timeline.md) | `AbstractApplicationContext#refresh` / `doCreateBean` | `SpringCoreBeansMainlineCallChainLabTest` |
 | 需要“从异常到断点入口”的方法论 | [11. Debugging and Observability](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)、[98. Debugger Pack](98-debugger-pack.md) | 见 Debugger Pack | `SpringCoreBeansBreakpointPackLabTest` |
-| 想“看见缓存/内部结构变化” | [97. Explore/Debug](97-explore-debug-tests.md) | `getSingleton` / `CachedIntrospectionResults#forClass` | `SpringCoreBeans*ExploreTest` |
+| 想“观察到缓存/内部结构变化” | [97. Explore/Debug](97-explore-debug-tests.md) | `getSingleton` / `CachedIntrospectionResults#forClass` | `SpringCoreBeans*ExploreTest` |
 
 ---
 
@@ -90,7 +90,7 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
   **常见误归因**：以为配置没加载  
   **正确分流**：先看 `resolveEmbeddedValue` 是否 strict；再看 SpEL/转换（[34]/[44]/[36]）  
 
-- **现象**：注入到了“不是我想要的实现”  
+- **现象**：注入到了“不是预期的实现”  
   **常见误归因**：以为 `@Order` 会影响单依赖  
   **正确分流**：看 `determineAutowireCandidate` 的收敛规则（[33]）  
 
@@ -98,7 +98,7 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
   **常见误归因**：以为“容器拿错类型”  
   **正确分流**：定位 BPP 替换点（[31]）  
 
-## 2. 推荐顺读路线（从“能跑”到“能解释”）
+## 2. 推荐顺读路线（从“可运行”到“能解释”）
 
 若希望按最省时间的顺序提升能力，建议：
 
@@ -106,7 +106,7 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 2) `part-00-guide/010-03-mainline-timeline.md`（时间线：把机制放回阶段）
 3) `part-03-container-internals/18-refresh-to-bean-creation-mainline.md`（主线叙事：refresh → doCreateBean）
 4) Part 01/04 的注入、代理、循环依赖关键章（按遇到的现象挑读）
-5) Appendix 的 Debugger Pack / Troubleshooting Checklist（把经验固化成套路）
+5) Appendix 的 Debugger Pack / Troubleshooting Checklist（把经验固化为流程）
 
 ---
 

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：21. 父子 ApplicationContext：可见性与覆盖边界
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`AbstractBeanFactory#doGetBean` / `AbstractApplicationContext#setParent` / `AbstractBeanFactory#containsLocalBean`
     - 推荐 Lab：`SpringCoreBeansContextHierarchyLabTest`
@@ -18,7 +18,7 @@
 ## 导读
 
 - 本章主题：**21. 父子 ApplicationContext：可见性与覆盖边界**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
@@ -28,11 +28,11 @@
     - 一旦读者“把 ancestors 也算进候选集”（例如 `BeanFactoryUtils.beanOfTypeIncludingAncestors`），按类型就更容易出现多候选歧义（本仓库 Lab 已补齐可复现异常）。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansContextHierarchyLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
-    - 建议先跑的方法：
+    - 可先运行的方法：
       - `childContext_canSeeParentBeans_butParentCannotSeeChildBeans`
       - `containsLocalBean_differsFromContainsBean_inChildContext`
       - `typeLookupIncludingAncestors_canBecomeAmbiguous_whenParentAndChildBothProvideSameType`
@@ -53,7 +53,7 @@
 - parent/child context 的可见性规则
 - child 的“覆盖”只发生在 child 内部
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：当前 BeanFactory 是否存在 parent  
 **分支**：`AbstractBeanFactory#doGetBean` 本地找不到就 fallback parent  
@@ -71,7 +71,7 @@
 
 应当观察到：
 
-- child 可以 `getBean(ParentOnlyBean.class)`（它其实来自 parent）
+- child 可以 `getBean(ParentOnlyBean.class)`（该对象来自 parent）
 - parent 无法 `getBean(ChildOnlyBean.class)`
 
 ## 2. 覆盖（override）是“按名字”的，并且只在 child 生效
@@ -94,7 +94,7 @@
 - `AbstractApplicationContext#setParent`：建立 parent/child 关系（没有 parent 就没有“向上可见”）
 - `AbstractBeanFactory#doGetBean`：查找链路的关键（child 找不到会委托 parent beanFactory）
 - `AbstractBeanFactory#containsLocalBean`：判断“本地是否存在某个名字”的入口（解释 override 是 name-based 且只在 child 生效）
-- `DefaultListableBeanFactory#containsBeanDefinition`：本地定义层查找（“我到底注册没注册”）
+- `DefaultListableBeanFactory#containsBeanDefinition`：本地定义层查找（用于确认“是否已注册”）
 - `BeanFactoryUtils#beanOfTypeIncludingAncestors`：按类型跨层查找的常见工具（也容易引发“多候选”）
 
 入口：
@@ -105,7 +105,7 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansContextHierarchyLabTest`）
 
-跑完该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少应能够复述 3 条结论：
 
 1) **child 能看到 parent，parent 看不到 child**  
    - 断点：`doGetBean`  
@@ -145,15 +145,15 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansContextHierarchyLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 0. 复现入口（可运行）
 
-- 入口测试（推荐先跑通再下断点）：
+- 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
 - 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContextHierarchyLabTest test`
@@ -166,14 +166,14 @@
 
 - `SpringCoreBeansContextHierarchyLabTest.childContext_canSeeParentBeans_butParentCannotSeeChildBeans()`
 
-## 源码锚点（建议从这里下断点）
+## 源码锚点（建议从这里设置断点）
 
 - `AbstractApplicationContext#getParent`：父子上下文关系（Context 层）
 - `AbstractBeanFactory#doGetBean`：本地找不到时的 parent fallback（BeanFactory 层）
 - `AbstractBeanFactory#containsBean` / `containsLocalBean`：排障“到底在哪个 context 里”的常用入口
 - `DefaultListableBeanFactory#setParentBeanFactory`：父工厂挂接点（Context refresh 时建立）
 
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
+## 断点闭环（用本仓库 Lab/Test 运行一次）
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
   - `childContext_canSeeParentBeans_butParentCannotSeeChildBeans()`
@@ -181,11 +181,11 @@
 建议断点：
 
 - “child 拿不到 parent 的 bean” → **优先定义层/上下文关系问题**：child 是否真的设置了 parent？parent 是否 refresh 并注册了该定义？
-- “我在 child 里覆盖了 bean，但 parent 的行为没变” → **这是预期（name-based、只在 child 生效）**：override 发生在查找链路上，不会反向影响 parent（本章第 2 节）
+- “在 child 中覆盖了 bean，但 parent 的行为未变化” → **这是预期（name-based、只在 child 生效）**：override 发生在查找链路上，不会反向影响 parent（本章第 2 节）
 - “按类型注入出现歧义（parent/child 都有同类型）” → **实例层（候选解析）**：需要 `@Qualifier/@Primary` 等规则收敛（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)/[33](33-autowire-candidate-selection-primary-priority-order.md)）
 - “以为这是 Boot 专属现象” → **容器机制**：parent/child 是 `ApplicationContext` 层面的通用能力（本章 Lab 用小容器也能复现）
 
-- 应能够解释清楚：为什么 child 可以拿到 parent 的 bean，但 parent 拿不到 child 的 bean 吗？
+- 应能够解释清楚：为什么 child 可以获取到 parent 的 bean，但 parent 拿不到 child 的 bean 吗？
 对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
 推荐断点：`BeanFactoryUtils#beanNamesForTypeIncludingAncestors`、`AbstractBeanFactory#doGetBean`、`AbstractApplicationContext#setParent`
 

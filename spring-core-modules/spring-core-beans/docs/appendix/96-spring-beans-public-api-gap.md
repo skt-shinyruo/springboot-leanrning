@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Public API Gap 清单（按包/机制域分批深化）
-    - 怎么使用：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`
     - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
@@ -22,11 +22,11 @@
 
 !!! summary "本章要点"
 
-    - Gap 清单的用途：把“我还没学透什么”显式化，避免学习停留在舒适区。
+    - Gap 清单的用途：把“尚未掌握的内容”显式化，避免学习停留在舒适区。
     - 本仓库的标准不是“写了文档就算学完”，而是：**Doc + Lab + 断点入口 + 自检复述** 四件套闭环。
     - 当读者发现某个 API/机制不在主线章节里：先在 [95](95-spring-beans-public-api-index.md) 查索引定位，再回到本章看是否已覆盖。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab（作为“覆盖闭环”入口的总集合）：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansIocBranchMatrixLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest`
 
@@ -47,8 +47,8 @@ Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审�
 一个 API/机制域被认为“已覆盖”，至少满足：
 
 1) 文档：解释“解决什么问题 / 关键约束是什么 / 常见误区在哪里”
-2) Lab：能跑出核心现象（最好能断言，而不是只打印）
-3) Debug：给出 2–5 个关键断点与 watch list（能看见关键数据结构变化）
+2) Lab：能够运行并复现核心现象（最好能断言，而不是只打印）
+3) Debug：给出 2–5 个关键断点与 watch list（能观察到关键数据结构变化）
 4) 自检：能用 2–3 句话复述（面试/复盘模板）
 
 ---
@@ -62,35 +62,35 @@ Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审�
 - 循环依赖与 early reference：✅ 已覆盖（Docs 09/16 + Labs）
 - `@Value` 占位符 / SpEL / 类型转换三连：✅ 已覆盖（Docs 34/44/36 + Labs）
 - programmatic 注册与 BPP/BFPP 时机：✅ 已覆盖（Docs 25 + Labs）
-- `FactoryBean` 深挖与边界：✅ 已覆盖（Docs 08/23/29 + Labs）
+- `FactoryBean` 深入分析与边界：✅ 已覆盖（Docs 08/23/29 + Labs）
 - XML/Reader/Namespace 扩展：✅ 已覆盖（Part 05 + Labs）
 - AOT/RuntimeHints：✅ 已覆盖（Part 05 + Labs）
 
-若发现某个机制域仍有真实缺口（“写了但不够深/无法断点/没有可复现入口”），建议直接按下面模板补齐：
+若发现某个机制域仍存在实际缺口（例如“内容不够深入/无法建立断点闭环/缺少可复现入口”），可按下面步骤补齐：
 
-1) 先在 [95](95-spring-beans-public-api-index.md) 定位 API 包/类
-2) 写一条最小 Lab 把现象固化
+1) 在 [95](95-spring-beans-public-api-index.md) 定位目标 API 包/类
+2) 编写一条最小 Lab，将现象固化为断言
 3) 在对应章节补齐断点闭环与常见误区
 
 ## 源码调用链（方法级）定位模板（Gap 场景）
 
-当在某个 API/机制域上出现 Gap，最容易走偏的方式是“看源码看到迷路”。更稳的套路是先把 **最短调用链** 固定下来：
+当在某个 API/机制域上出现 Gap，最容易偏离主线的方式是“在源码细节中长时间徘徊”。更稳妥的方法是优先将 **最短调用链** 固定下来：
 
-1) **先选入口（从 LabTest 进）**：能跑起来的入口比“从源码目录翻”更快收敛。
-2) **再锁 1 个关键方法**：通常是该机制域的“总入口”（例如 `doResolveDependency` / `doCreateBean` / `invokeBeanFactoryPostProcessors`）。
-3) **再锁 2 个关键分支/数据结构**：比如候选 Map、三层缓存、mergedBeanDefinition、embedded value 的解析前后值。
-4) **最后把链路写成 3 行**：入口 → 分支 → 结论（用于面试/复盘复述）。
+1) **选择入口（从 LabTest 进入）**：可运行入口通常比“从源码目录检索”更快收敛。
+2) **确定 1 个关键方法**：通常是该机制域的“总入口”（例如 `doResolveDependency` / `doCreateBean` / `invokeBeanFactoryPostProcessors`）。
+3) **确定 2 个关键分支/数据结构**：例如候选 Map、三层缓存、mergedBeanDefinition、embedded value 的解析前后值。
+4) **将链路整理为 3 行**：入口 → 分支 → 结论（用于面试/复盘复述）。
 
 无需把链路写成长篇大论；但必须能做到“方法级可指认”。
 
 ## 排障分流（Gap 视角：读者到底缺的是哪一段）
 
-| 现象 | 更像缺口在哪 | 建议先补哪类材料 |
+| 现象 | 更像缺口在哪 | 建议优先补充的材料 |
 | --- | --- | --- |
-| 读者知道结论，但一问“哪个方法证明”就卡住 | 调用链未固化 | 先补：章节里的“源码调用链（方法级）”与断点入口 |
-| 可以下断点，但不知道看哪些变量 | 可观测闭环不完整 | 先补：watch list（最小够用版）与条件断点模板 |
-| 应能够解释主线，但遇到边界就崩 | 边界用例缺失 | 先补：一个最小 Lab 把边界固化成断言 |
-| 应能够复现，但不知道怎么修 | 诊断→修复路径缺失 | 先补：排障决策表（Symptoms→Evidence→Fix→Verify） |
+| 读者知道结论，但无法指出“由哪个方法证明” | 调用链未固化 | 优先补充：章节中的“源码调用链（方法级）”与断点入口 |
+| 能设置断点，但不清楚应观察哪些变量 | 可观测闭环不完整 | 优先补充：watch list（最小够用版）与条件断点模板 |
+| 能解释主线，但在边界场景下无法继续推导 | 边界用例缺失 | 优先补充：一个最小 Lab，将边界固化为断言 |
+| 能复现问题，但不清楚如何修复 | 诊断→修复路径缺失 | 优先补充：排障决策表（Symptoms→Evidence→Fix→Verify） |
 
 ---
 

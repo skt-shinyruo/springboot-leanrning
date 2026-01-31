@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
@@ -16,15 +16,15 @@
 ## 导读
 
 - 本章主题：**06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` / `SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansStaticBeanFactoryPostProcessorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
@@ -33,7 +33,7 @@
 !!! tip "内容级再加深（A–E 维度）"
 
     - A（证据链）：“能/不能做什么”的方法级证明：为什么 BPP 不可靠改定义，为什么 BFPP 拿不到实例态。
-    - B（边界反例）：反例：错误时机 getBean 导致 BPP 链不完整、手工注册破坏顺序的坑位。
+    - B（边界反例）：反例：错误时机 getBean 导致 BPP 链不完整、手工注册破坏顺序的误区。
     - C（排障 SOP）：排障：某注解不生效/某增强不生效/代理不出现时，先定位缺哪个处理器与顺序问题。
     - D（断点观察）：断点：processor 收集/排序/注册/执行的关键入口方法。
     - E（面试复述）：面试追问：BDRPP 为什么更强？与 ImportBeanDefinitionRegistrar 的边界如何说明。
@@ -74,12 +74,12 @@
 
 也就是说：很多“注解配置能工作”，背后本身就依赖 BFPP/registry post-processor。
 
-### 1.4 机制讲透：BFPP 如何改变最终行为（可跑的例子）
+### 1.4 机制系统阐述：BFPP 如何改变最终行为（可运行示例）
 
 - **条件**：定义层被改写（BeanDefinition 里的属性/占位符被替换）
 - **分支**：`postProcessBeanFactory` 在实例化前执行
 - **结果**：最终实例读到的是“被改写后的配方”，而不是原始定义
-- **可跑证据**：`SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansContainerLabTest`
+- **可运行证据**：`SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` / `SpringCoreBeansContainerLabTest`
 
 ## 2. BPP：`BeanPostProcessor`
 
@@ -97,7 +97,7 @@
 
 - 工厂方法先创建一个 `ExampleBean`
 - BPP 在初始化后把它的 `value` 改成新值
-- 从容器拿到的最终对象反映出修改
+- 从容器获取到的最终对象反映出修改
 
 ### 2.3 BPP 与“容易误以为的对象”之间的差距
 
@@ -115,7 +115,7 @@
 
 ### 2.5 进阶：四类 BPP 介入点速查（把“能改什么”说清楚）
 
-当读者开始用 BPP 写业务扩展/排障时，最容易踩的坑不是“不会写”，而是**不知道 BPP 介入的是哪一段、能改到哪一层**。建议把 BPP 分成四类能力来记（不是接口名字背诵，而是“介入点”）：
+当读者开始使用 BPP 进行业务扩展或排障时，常见误区并非“不会编写”，而是**不清楚 BPP 的介入位置及其可影响的层次**。因此，可按“介入点”将 BPP 概括为四类能力，而非仅记忆接口名称：
 
 1. **实例化前（可能短路）**：典型接口 `InstantiationAwareBeanPostProcessor`
    - 方法级锚点（建议断点）：
@@ -136,7 +136,7 @@
      - `DestructionAwareBeanPostProcessor#postProcessBeforeDestruction`（destroy 链路入口之一；与 16 章销毁链路互链）
    - 能做：在 destroy 链路触发前执行回调（很多 `@PreDestroy`/资源清理问题会落在这里）
 
-把这张“介入点地图”连起来，你就能回答：为什么某个 bean 看起来“错过了某些处理器”？为什么有的代理发生得很早、有的很晚？
+将该“介入点地图”贯通后，可回答：为何某个 bean 似乎“错过了某些处理器”？为何某些代理发生较早，而另一些发生较晚？
 
 **关联阅读（把这张图落到本仓库可断言闭环）：**
 
@@ -184,7 +184,7 @@ Spring 通常用这些规则决定顺序：
 这也是为什么：
 
 - 许多“注解能工作”，本质是在 `invokeBeanFactoryPostProcessors` 阶段把注解世界翻译成 BeanDefinition，并注册了后续所需的基础设施处理器。
-- `BeanPostProcessor` 必须在大规模创建 bean 之前完成注册：否则某些 bean 会“过早出生”，错过后续 BPP（典型表现是 BeanPostProcessorChecker 提示）。
+- `BeanPostProcessor` 必须在大规模创建 bean 之前完成注册：否则部分 bean 可能过早实例化，从而错过后续 BPP 的处理（典型表现是 BeanPostProcessorChecker 提示）。
 - 在 BDRPP/BFPP 阶段调用 `getBean()` 会触发实例化，导致时序错乱：容易误以为在“改定义”，实际已经在“造对象”了。
 
 ## 3.3 源码解析：`PostProcessorRegistrationDelegate` 的两段核心算法
@@ -196,11 +196,11 @@ Spring 通常用这些规则决定顺序：
 
 ### 3.3.1 `invokeBeanFactoryPostProcessors`：为什么 BDRPP 会“先 registry 再 factory”，还要“反复扫描”
 
-这个方法的设计动机其实很朴素：
+该方法的设计动机较为直接：
 
 - **BDRPP 有能力在 registry 阶段注册新的 BeanDefinition**
 - 而新注册的 BeanDefinition 里，可能又包含新的 BDRPP/BFPP
-- 因此必须先把 registry 相关的事情跑到“稳定”（否则定义层永远不确定）
+- 因此必须先将 registry 相关处理推进至“稳定状态”（否则定义层将长期处于不确定）
 
 ```text
 invokeBeanFactoryPostProcessors(beanFactory):
@@ -248,21 +248,21 @@ invokeBeanFactoryPostProcessors(beanFactory):
 > **BPP 是“创建时拦截链”，不是“创建后补丁”。**
 > 某个 bean 如果在 BPP 链未完整时就被创建，那么后续 BPP 不会 retroactively 生效。
 
-识别信号（非常典型）：
+识别信号（典型表现）：
 
-当你在日志里看到 `BeanPostProcessorChecker` 类似提示时，通常意味着“某个 bean 过早创建，错过了部分 BPP（尤其是 auto-proxying）”：
+当在日志中看到 `BeanPostProcessorChecker` 的类似提示时，通常意味着“某个 bean 过早创建，错过了部分 BPP（尤其是 auto-proxying）”：
 
 > Bean 'xxx' of type [...] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 
 它**意味着**：
 
-- 这个 bean 的创建时机早于某些 BPP 的注册完成，后续 BPP 不会 retroactively 补上
+- 该 bean 的创建时机早于某些 BPP 的注册完成，后续 BPP 不会 retroactively 补偿生效
 
 它**不意味着**：
 
 - 一定是循环依赖
-- 一定是 AOP/事务“坏了”
-- 一定要“强行修复”（有时只是基础设施 bean 的正常时序）
+- 一定是 AOP/事务失效
+- 一定需要采取强制性修复措施（有时只是基础设施 bean 的正常时序）
 
 在资料里经常看到一句建议：
 
@@ -273,7 +273,7 @@ invokeBeanFactoryPostProcessors(beanFactory):
 - BFPP/BDRPP 的实例会在 `invokeBeanFactoryPostProcessors` 阶段被创建
 - 如果 BFPP 是一个 **non-static `@Bean` 工厂方法**，Spring 为了调用这个方法，就必须先实例化配置类（`@Configuration` bean）
 - 但配置类此时被创建得太早，会错过后续注册的普通 BPP（因为 BPP 链还没完整）
-- 如果 BFPP 是 **static `@Bean` 工厂方法**，Spring 可以直接调用静态工厂方法创建 BFPP，不需要提前实例化配置类，从而避免该配置类“过早出生”
+- 如果 BFPP 是 **static `@Bean` 工厂方法**，Spring 可以直接调用静态工厂方法创建 BFPP，不需要提前实例化配置类，从而避免配置类过早实例化
 
 最小片段（对比关键点：static vs non-static）：
 
@@ -337,7 +337,7 @@ BFPP 本该在“定义层”工作，若在里面直接拿 bean（实例层）�
 - BFPP、BPP、BDRPP 分别是什么？分别能做什么？
   - BDRPP：registry 阶段可新增/修改定义（让“图继续长大”）；BFPP：实例化前改定义（改配方）；BPP：创建链路中改实例/换 proxy（改最终暴露对象）。
 - 为什么很多 BFPP/BDRPP 建议写成 `static @Bean`？
-  - 让 post-processor 在定义阶段创建时不必先实例化配置类，避免配置类过早出生而错过后续 BPP（顺序陷阱可以用本仓库 Lab 证据化）。
+  - 让 post-processor 在定义阶段创建时不必先实例化配置类，避免配置类过早实例化而错过后续 BPP（顺序陷阱可用本仓库 Lab 进行证据化验证）。
 - 为什么会出现“某个 bean 没被所有 BPP 处理”的提示？
   - BPP 是创建时拦截链；bean 过早创建就会错过后续 BPP，后面的 BPP 不会 retroactively 生效。
 - 为什么在 BDRPP/BFPP 里 `getBean()` 很危险？
@@ -345,7 +345,7 @@ BFPP 本该在“定义层”工作，若在里面直接拿 bean（实例层）�
 - BPP 到底能不能“换掉对象”？
   - 能。初始化后链路（after-init）返回值就是最终暴露对象；这就是 AOP/事务等“换壳”的根。
 
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
+## 断点闭环（用本仓库 Lab/Test 运行一次）
 
 - BFPP 改定义（改配方，再影响实例）：
   - `SpringCoreBeansContainerLabTest#beanFactoryPostProcessorCanModifyBeanDefinitionBeforeInstantiation`
@@ -413,7 +413,7 @@ registerBeanPostProcessors(beanFactory):
 
 ## 最小可运行实验（Lab）
 
-- 本章推荐先跑这 5 个入口（覆盖定义层/实例层/顺序/时机/registry 扩张）：
+- 本章推荐先运行这 5 个入口（覆盖定义层/实例层/顺序/时机/registry 扩张）：
   - `SpringCoreBeansContainerLabTest`
   - `SpringCoreBeansPostProcessorOrderingLabTest`
   - `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
@@ -421,7 +421,7 @@ registerBeanPostProcessors(beanFactory):
   - `SpringCoreBeansRegistryPostProcessorLabTest`
 - 推荐命令：
   - `mvn -pl :spring-core-beans test`
-  - 或者单跑：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPostProcessorOrderingLabTest test`
+  - 或者单独运行：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPostProcessorOrderingLabTest test`
 
 ## 小结与下一章
 

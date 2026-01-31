@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`Environment#resolvePlaceholders` / `AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
     - 推荐 Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
@@ -18,17 +18,17 @@
 ## 导读
 
 - 本章主题：**`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast**
-- 阅读方式建议：先跑本章 Lab，把两种行为（缺失占位符“原样通过” vs fail-fast）固定成断言；再对照 `resolveEmbeddedValue` 与 `PropertySourcesPlaceholderConfigurer` 的断点，看清“到底是谁决定了 strict/non-strict”。
+- 阅读方式建议：先运行本章 Lab，把两种行为（缺失占位符“原样通过” vs fail-fast）固定成断言；再对照 `resolveEmbeddedValue` 与 `PropertySourcesPlaceholderConfigurer` 的断点，看清“到底是谁决定了 strict/non-strict”。
 
 !!! summary "本章要点"
 
     - `@Value` 本身不“读配置”，它把字符串交给 BeanFactory 的 **embedded value resolver** 解析（`${...}`/`#{...}`），再进入后续注入/转换。
     - 默认情况下（本章 Lab 的最小纯容器），embedded value resolver 往往委托给 `Environment.resolvePlaceholders(..)`，它是 **non-strict**：缺失 key 时，`${...}` 可能原样保留，不一定 fail-fast。
     - 想要 strict fail-fast，典型方式是注册 `PropertySourcesPlaceholderConfigurer`（BFPP）：把“缺失占位符就失败”的策略显式安装到容器早期流程里。
-    - 默认值语法 `${key:default}` 是在 strict/non-strict 都应该掌握的“兜底手段”：缺失 key 时不会失败，而是注入 default（本仓库 Lab 已补齐对照）。
+    - 默认值语法 `${key:default}` 是在 strict/non-strict 都应该掌握的“回退手段”：缺失 key 时不会失败，而是注入 default（本仓库 Lab 已补齐对照）。
     - 排障时先拆三件事：**占位符解析（本章）**、**SpEL 求值**、**类型转换**（见 [44](../part-05-aot-and-real-world/44-spel-and-value-expression.md)、[36](36-type-conversion-and-beanwrapper.md)）。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
@@ -37,7 +37,7 @@
 
 这一章回答一个在真实项目里非常折磨人的问题：
 
-> 为什么我写了 `@Value("${demo.missing}")`，应用居然没启动失败？
+> 为什么写了 `@Value("${demo.missing}")`，应用居然没有启动失败？
 > 注入进来的值甚至变成了字符串 `"${demo.missing}"`？
 
 先说结论（背这句就够排 80% 的误区）：
@@ -46,7 +46,7 @@
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：BeanFactory 安装了哪一种 embedded value resolver  
 **分支**：  
@@ -119,7 +119,7 @@
 
 很多团队走 strict 的原因是：他们宁可启动失败，也不想“原样字符串通过”。
 
-但 strict 并不意味着必须“所有 key 都必须配置齐全”。应当掌握一个更工程化的兜底：
+但 strict 并不意味着必须“所有 key 都必须配置齐全”。应当掌握一个更工程化的回退策略：
 
 - `${demo.missing:default-value}`
 
@@ -153,13 +153,13 @@
 
 ---
 
-## 6. 排障分流：先确定读者卡在“解析/求值/转换”的哪一步
+## 6. 排障分流：先确定问题停留在“解析/求值/转换”的哪一步
 
 | 现象 | 最可能根因 | 下一步 |
 | --- | --- | --- |
 | 值是 `"${demo.missing}"` 原样 | non-strict resolver 放行了缺失占位符 | 回到本章 2/3；考虑启用 strict |
 | 直接启动失败：Could not resolve placeholder | strict resolver fail-fast（更健康） | 修复 property source / key / 默认值策略 |
-| `${...}` 解析没问题，但 `#{...}` 报错 | SpEL 求值问题 | 去看 [44](../part-05-aot-and-real-world/44-spel-and-value-expression.md) |
+| `${...}` 解析没问题，但 `#{...}` 异常 | SpEL 求值问题 | 去看 [44](../part-05-aot-and-real-world/44-spel-and-value-expression.md) |
 | 解析出来是字符串，但注入到 `int/Duration/...` 失败 | 类型转换问题 | 去看 [36](36-type-conversion-and-beanwrapper.md) |
 | `@Value` 完全不生效（字段没注入） | 注解处理器未注册/容器能力不完整 | 回到 [12](../part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) |
 
@@ -191,7 +191,7 @@
 ### Q2：如何快速区分“占位符解析问题” vs “SpEL 求值问题” vs “类型转换问题”？
 
 - 标准答案（可复述）：
-  - 先在 `resolveEmbeddedValue` 看解析后的字符串；如果 `${...}` 还在，是解析问题；如果 `${...}` 已变成字符串但 `#{...}` 报错，是 SpEL 问题；如果字符串已正确但注入到目标类型失败，是类型转换问题（看 `convertIfNecessary`）。
+  - 先在 `resolveEmbeddedValue` 看解析后的字符串；如果 `${...}` 还在，是解析问题；如果 `${...}` 已变成字符串但 `#{...}` 异常，是 SpEL 问题；如果字符串已正确但注入到目标类型失败，是类型转换问题（看 `convertIfNecessary`）。
 - 证据链（方法级）：
   - 解析：`resolveEmbeddedValue`
   - 求值：`StandardBeanExpressionResolver#evaluate`（见 [44](../part-05-aot-and-real-world/44-spel-and-value-expression.md)）

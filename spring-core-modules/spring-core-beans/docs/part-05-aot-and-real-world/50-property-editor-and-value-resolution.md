@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`BeanDefinitionValueResolver#resolveValueIfNecessary` / `CustomEditorConfigurer#postProcessBeanFactory` / `PropertyEditorRegistrySupport#registerCustomEditor`
     - 推荐 Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBeanDefinitionValueResolutionLabTest.java`
@@ -35,21 +35,21 @@
 !!! tip "内容级再加深（A–E 维度）"
 
     - A（证据链）：“BeanDefinitionValueResolver→convertIfNecessary”的完整证据链，并与占位符/SpEL/转换三连对齐。
-    - B（边界反例）：反例：值看似解析但其实占位符没解析；editor 与 converter 混用导致行为不一致。
+    - B（边界反例）：反例：值看似已解析，但占位符未解析；editor 与 converter 混用导致行为不一致。
     - C（排障 SOP）：排障 SOP：TypeMismatch/BeanCreationException 的分型定位（解析/求值/转换）。
     - D（断点观察）：断点：value resolver、property value 应用、TypeConverterDelegate 转换路径。
     - E（面试复述）：面试追问：PropertyEditor 的历史定位与为何仍会在某些路径出现。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 
-新手在学 Spring Beans 时最容易卡在一个“看起来像黑盒”的问题上：
+初学者在学习 Spring Beans 时，最容易遇到一个“看起来像黑盒”的问题：
 
 1) **PropertyEditor（可插拔的类型转换）**：决定 “字符串怎么变成目标类型”
 2) **BeanDefinition 值解析（BeanDefinitionValueResolver）**：决定 “引用/集合/Map/Properties 等 value 怎么被解析成可注入的最终值”
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：BeanDefinition 中存在“定义层 value”  
 **分支**：`BeanDefinitionValueResolver` 先解析引用/集合/占位符 → `TypeConverterDelegate` 再做类型转换  
@@ -129,7 +129,7 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 3) **值解析：** 把“定义层 value”解析成可注入对象（引用/集合/占位符）
 4) **类型转换：** 把解析后的 value 转成目标属性类型（PropertyEditor/ConversionService）
 
-- “我注册了 BeanDefinition 就等于创建了对象” → 错
+- “注册了 BeanDefinition 就等于创建了对象” → 错
 - “类型转换发生在注册阶段” → 错，通常发生在属性填充阶段
 
 ---
@@ -178,7 +178,7 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 当相应的属性路径包含嵌套/集合/Map 时，BeanWrapper 会走更复杂的路径解析：
 
 - `order.items[0].price`
-- `props[\"k\"]`
+- `props["k"]`
 
 常见边界：
 
@@ -199,15 +199,15 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
-> **我在配置里写的是字符串/引用/集合，为什么运行起来就变成了对象？这一步发生在哪里？怎么断点证明？**
+> **在配置中写的是字符串/引用/集合，为什么运行时会变成对象？该步骤发生在何处？如何通过断点证明？**
 
-这一章把两个常被混在一起的机制拆开讲清楚，并用 Lab 使读者能够下断点验证：
+这一章将两个常被混淆的机制分别阐明，并用 Lab 使读者能够通过断点完成验证：
 
 ## 0. 复现入口（可运行）
 
@@ -224,7 +224,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPropertyEditorLabTest test
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLabTest test
 ```
 
-## 2. 怎么用：最小可用写法（以 Lab 为准）
+## 2. 使用方式：最小可用写法（以 Lab 为准）
 
 - `SpringCoreBeansPropertyEditorLabTest#HostAndPortEditor`
 - `SpringCoreBeansPropertyEditorLabTest#HostAndPortRegistrar`
@@ -270,7 +270,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 | --- | --- | --- | --- | --- |
 | 属性值是 `RuntimeBeanReference`，但最终没解析成对象 | 引用解析失败 / beanName 不存在 | 断点 `BeanDefinitionValueResolver#resolveValueIfNecessary`；看 `RuntimeBeanReference#getBeanName` | 修正 beanName/alias；确认定义是否注册 | `SpringCoreBeansBeanDefinitionValueResolutionLabTest` |
 | `TypedStringValue` 注入失败（TypeMismatch） | 转换链路没命中合适 converter/editor | 断点 `BeanWrapperImpl#setPropertyValues` / `TypeConverterDelegate#convertIfNecessary`；看 requiredType 与分支 | 安装/注册 ConversionService 或 PropertyEditor；区分占位符/SpEL/转换三连 | `SpringCoreBeansPropertyEditorLabTest`（配合 [36](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)） |
-| 容易误以为“值已经解析”，但其实是占位符没解析 | embedded value resolver non-strict 放行 | 断点 `AbstractBeanFactory#resolveEmbeddedValue` | 启用 strict 或补齐 property source/key | [34](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) |
+| 容易误以为“值已解析”，但占位符未解析 | embedded value resolver non-strict 放行 | 断点 `AbstractBeanFactory#resolveEmbeddedValue` | 启用 strict 或补齐 property source/key | [34](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) |
 | PropertyEditor 行为偶发、并发下异常 | editor 有状态且非线程安全 | 看 editor 是否复用、是否共享实例（setValue） | 避免共享 editor 实例；优先用 ConversionService | 结合本章与性能/并发相关用例复盘 |
 
 ## 面试常问（BeanDefinition 值解析：为什么它不是“单纯 setProperty”）

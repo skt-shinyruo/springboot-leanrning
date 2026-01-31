@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`AbstractBeanFactory#getMergedLocalBeanDefinition` / `DefaultListableBeanFactory#getMergedBeanDefinition` / `AbstractBeanFactory#getMergedLocalBeanDefinition(beanName)`
     - 推荐 Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
@@ -18,7 +18,7 @@
 ## 导读
 
 - 本章主题：**35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
@@ -28,11 +28,11 @@
     - `MergedBeanDefinitionPostProcessor` 的触发点很关键：它发生在 `doCreateBean` 中、`populateBean` 之前（实例已创建，但属性还没注入），非常适合做元数据准备/缓存。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
-    - 建议先跑的方法（按理解收益排序）：
+    - 可先运行的方法（按理解收益排序）：
       - `mergedBeanDefinition_combinesParentAndChildMetadata_andTriggersMergedDefinitionPostProcessor`
       - `mergedBeanDefinition_inheritsAndOverridesMetadata_fromParentAndChild`
 
@@ -40,14 +40,14 @@
 !!! tip "内容级再加深（A–E 维度）"
 
     - A（证据链）：“合并触发点与缓存语义”的证据链（merged 什么时候生成/什么时候复用）。
-    - B（边界反例）：反例：你看到的 BeanDefinition 与最终行为不一致（原因往往在 merged）。
+    - B（边界反例）：反例：调试器中观察到的 BeanDefinition 与最终行为不一致（原因往往在 merged）。
     - C（排障 SOP）：排障：注解元信息处理异常/属性不生效时如何先确认 merged BD。
     - D（断点观察）：断点：getMergedLocalBeanDefinition、applyMergedBeanDefinitionPostProcessors。
     - E（面试复述）：面试追问：为什么 MBPP（MergedBeanDefinitionPostProcessor）重要？如何证明它的窗口期。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 
-很多人在深挖 Spring 容器源码时会遇到一个“卡点”：
+很多人在深入分析 Spring 容器源码时会遇到一个“卡点”：
 
 答案基本都落在同一个机制上：**BeanDefinition 合并（merge）**。
 
@@ -55,7 +55,7 @@
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：bean 定义存在 parent/子定义或需要解析默认值  
 **分支**：`getMergedLocalBeanDefinition` 递归合并 parent → 生成 `RootBeanDefinition`  
@@ -64,9 +64,9 @@
 
 可以观察到 3 个关键现象：
 
-1) registry 里拿到的 child definition **仍然保留 parentName**，且看不到 parent 的元数据
-2) `getMergedBeanDefinition(...)` 拿到的是 **`RootBeanDefinition`**，并且已经把 parent 的元数据合并进来
-3) `MergedBeanDefinitionPostProcessor` 能拿到 merged 后的 `RootBeanDefinition`（可用于“预处理/缓存元数据”）
+1) registry 里获取到的 child definition **仍然保留 parentName**，且看不到 parent 的元数据
+2) `getMergedBeanDefinition(...)` 获取到的是 **`RootBeanDefinition`**，并且已经把 parent 的元数据合并进来
+3) `MergedBeanDefinitionPostProcessor` 能获取到 merged 后的 `RootBeanDefinition`（可用于“预处理/缓存元数据”）
 
 ---
 
@@ -109,16 +109,16 @@ getMergedLocalBeanDefinition(beanName):
 
 可以把它和 [00 章](../part-00-guide/011-00-deep-dive-guide.md) 的时间线对上：
 
-- 当容器准备创建某个 bean 时，它首先会确保拿到 merged definition
-- 拿到 merged 之后，才进入 `createBean → doCreateBean → populateBean → initializeBean` 这条链路
+- 当容器准备创建某个 bean 时，它首先会确保获取到 merged definition
+- 获取到 merged 之后，才进入 `createBean → doCreateBean → populateBean → initializeBean` 这条链路
 
 ### 3.1 merged 在 `createBean` 链路中的精确位置（在调用栈里应该看到什么）
 
-很多人“看不懂 merged”，本质原因是：只在 `doCreateBean` 附近看对象，但没有把 merged 放回更完整的时间线。
+对 merged 概念的常见困惑在于：仅在 `doCreateBean` 附近观察对象，而未将 merged 过程放回更完整的时间线中理解。
 
 一句话版的精确位置：
 
-- **merged definition 的计算/缓存发生在 `doGetBean` 阶段**：进入 `createBean(...)` 之前就拿到了 `RootBeanDefinition`
+- **merged definition 的计算/缓存发生在 `doGetBean` 阶段**：进入 `createBean(...)` 之前就获取到了 `RootBeanDefinition`
 - **`MergedBeanDefinitionPostProcessor` 的 hook 发生在 `doCreateBean` 阶段**：实例已创建，但属性还没填充（也就是 `populateBean(...)` 之前）
 
 ---
@@ -202,16 +202,16 @@ getMergedLocalBeanDefinition(beanName):
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
-- 明明我注册的是 `GenericBeanDefinition`（或者通过注解解析得到的定义），为什么调试时经常看到的是 `RootBeanDefinition`？
-- 我在 registry 里拿到的 `BeanDefinition` 看起来缺了很多信息（property、init-method 等），但创建时又“似乎被自动补齐了”？
+- 明明注册的是 `GenericBeanDefinition`（或者通过注解解析得到的定义），为什么调试时经常看到的是 `RootBeanDefinition`？
+- 在 registry 中获取到的 `BeanDefinition` 看起来缺了很多信息（property、init-method 等），但创建时又“似乎被自动补齐了”？
 
-## 1. 最小实验：用一个可断言的 Lab 把 merged 跑出来
+## 1. 最小实验：用一个可断言的 Lab 将 merged 过程复现出来
 
 对应 Lab：
 
@@ -232,7 +232,7 @@ getMergedLocalBeanDefinition(beanName):
 - `mbd.getParentName()`：原始 child 会保留 parentName；merged 后通常不再需要读者追 parent 链
 - `mergedBeanDefinitions`（或等价缓存结构）：容器缓存 merged definition 的地方（很多“为什么不变/还是旧的”都和它有关）
 
-**反例：我一直盯着 `getBeanDefinition(beanName)` 的返回值调试，越看越觉得“Spring 怎么不按我写的来”。**
+**反例：一直盯着 `getBeanDefinition(beanName)` 的返回值进行调试，越看越觉得“Spring 怎么不按预期生效”。**
 
 最小复现入口：
 
@@ -297,7 +297,7 @@ getMergedLocalBeanDefinition(beanName):
 
 - `AbstractBeanFactory#doGetBean(beanName, ...)`
   - `getMergedLocalBeanDefinition(beanName)`
-    - **这里拿到/计算/缓存 merged `RootBeanDefinition`（mbd）**
+    - **这里获取到/计算/缓存 merged `RootBeanDefinition`（mbd）**
   - `AbstractAutowireCapableBeanFactory#createBean(beanName, mbd, args)`
     - `doCreateBean(beanName, mbd, args)`
       - `createBeanInstance(...)`（实例化）

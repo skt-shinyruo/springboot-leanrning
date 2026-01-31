@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Explore/Debug 用例：如何开启、看什么、怎么把观察结果“用回主线”
-    - 怎么使用：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`DefaultSingletonBeanRegistry#getSingleton` / `DefaultSingletonBeanRegistry#addSingleton` / `DefaultSingletonBeanRegistry#addSingletonFactory`
     - 推荐 Lab：`SpringCoreBeansSingletonCacheExploreTest`
@@ -18,16 +18,16 @@
 ## 导读
 
 - 本章主题：**Explore/Debug 用例：如何开启、看什么、怎么把观察结果“用回主线”**
-- 阅读方式建议：先按本章命令跑一次 Explore 用例（让它真正执行起来），再带着“入口 → 观察点 → 断点/Watch List”去看源码与数据结构变化。
+- 阅读方式建议：先按本章命令运行一次 Explore 用例（确保用例可执行），再带着“入口 → 观察点 → 断点/Watch List”去看源码与数据结构变化。
 
 !!! summary "本章要点"
 
-    - Explore 用例的定位：**学习期的“显微镜”**——把 Spring 内部数据结构（缓存/表/映射）变化变成应能够在调试器里看见的东西。
+    - Explore 用例的定位：**学习期的“显微镜”**——把 Spring 内部数据结构（缓存/表/映射）变化变成应能够在调试器里观察到的东西。
     - 它们默认不运行：用 `@EnabledIfSystemProperty(named = "springcorebeans.explore", matches = "true")` 保护，避免 CI/回归因为“观察型断言”而不稳定。
     - 它们不是“生产诊断方案”：测试会用反射访问内部字段、依赖实现细节；Spring 升级后可能需要同步调整。
-    - 正确使用方式：先用 Core Labs 固化结论（可断言、稳定），再用 Explore 用例补齐“我想看见缓存怎么变”的证据链。
+    - 正确使用方式：先用 Core Labs 固化结论（可断言、稳定），再用 Explore 用例补齐“希望观察缓存如何变化”的证据链。
 
-!!! example "本章配套实验（Explore 用例，先跑再读）"
+!!! example "本章配套实验（Explore 用例，先运行再读）"
 
     - Explore Test（默认不参与回归）：
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansSingletonCacheExploreTest.java`
@@ -53,7 +53,7 @@ Explore 用例默认被系统属性 gate 掉，需要显式开启：
 
 - 系统属性：`-Dspringcorebeans.explore=true`
 
-### 1.1 只跑某一个 Explore 测试类（推荐）
+### 1.1 仅运行某一个 Explore 测试类（推荐）
 
 ```bash
 mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeansSingletonCacheExploreTest test
@@ -63,13 +63,13 @@ mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans
 mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeansCachedIntrospectionExploreTest test
 ```
 
-### 1.2 只跑 Explore 测试集合（两个一起跑）
+### 1.2 仅运行 Explore 测试集合（两个同时运行）
 
 ```bash
 mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans*ExploreTest test
 ```
 
-### 1.3 跑全量测试（包含 Core Labs + Explore）
+### 1.3 运行全量测试（包含 Core Labs + Explore）
 
 ```bash
 mvn -pl :spring-core-beans -Dspringcorebeans.explore=true test
@@ -152,29 +152,29 @@ Watch List（建议盯“缓存容器的 key/size”，不要依赖具体字段�
 
 推荐一个最省时间的学习闭环：
 
-1) 先跑一遍 Core Labs（不加 explore 开关）：`mvn -pl :spring-core-beans test`
-2) 再跑 Explore（加开关）：`mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans*ExploreTest test`
+1) 先运行一遍 Core Labs（不加 explore 开关）：`mvn -pl :spring-core-beans test`
+2) 再运行 Explore（加开关）：`mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans*ExploreTest test`
 3) 对照章节回主线：
    - 缓存/循环依赖：看 [09](../part-01-ioc-container/09-circular-dependencies.md) 与 [16](../part-03-container-internals/16-early-reference-and-circular.md)
    - 更系统的“从异常到断点入口”：看 [11. 调试与可观察性](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 
-可以发现：Explore 用例的价值不是“多了一堆测试”，而是“读者终于能在调试器里看见那个一直被口述的内部结构”。
+可以发现：Explore 用例的价值不是“多了一堆测试”，而是“读者终于能在调试器里观察到那个一直被口述的内部结构”。
 
 ---
 
-## 面试怎么用（把“我看见了”说成可复述答案）
+## 面试使用方式（将“观察结果”组织为可复述答案）
 
 Explore 用例本身不是面试题，但它能显著提升读者答题的“可信度”：
 
-1) 面试官问循环依赖/early reference：可以补一句“我在调试器里观察过三层缓存命中分支”，并能说出方法名：`getSingleton/addSingletonFactory/getEarlyBeanReference`。
-2) 面试官问属性填充/类型转换：可以补一句“我看过 JDK 内省缓存的命中/失效”，并能说出入口：`CachedIntrospectionResults#forClass`。
+1) 面试官问循环依赖/early reference：可以补充一句：“在调试器中观察过三层缓存命中分支”，并能说出方法名：`getSingleton/addSingletonFactory/getEarlyBeanReference`。
+2) 面试官问属性填充/类型转换：可以补充一句：“在调试器中观察过 JDK 内省缓存的命中/失效”，并能说出入口：`CachedIntrospectionResults#forClass`。
 3) 面试官追问“如何证明”：可以直接回指本章的 ExploreTest + 断点 + watch list。
 
 更标准的答题模板：`appendix/93-interview-playbook.md`
 
 ## 常见误区
 
-1) **用例没跑 / IDE 里看不到执行**
+1) **用例未运行 / IDE 中看不到执行**
    - 大概率是读者没加 `-Dspringcorebeans.explore=true`；这些用例默认是被 gate 掉的。
 2) **把 Explore 用例当成生产诊断手段**
    - Explore 用例依赖内部实现细节（反射读取字段等），生产排障请回到主线方法论与可观测性工具。
@@ -188,13 +188,13 @@ Explore 用例本身不是面试题，但它能显著提升读者答题的“可
 
 ## 小结与下一章
 
-- Explore 用例的目标是“看见”，不是“保证稳定结论”；稳定结论以 Core Labs 为准。
-- 跑通本章后，应能够在调试器里把“三级缓存”与“内省缓存”的变化看出来，并能把观察点准确复述给别人。
+- Explore 用例的目标是“观察到”，不是“保证稳定结论”；稳定结论以 Core Labs 为准。
+- 完成验证本章后，应能够在调试器里把“三级缓存”与“内省缓存”的变化看出来，并能把观察点准确复述给别人。
 <!-- AE-DEEPENING:START -->
 !!! tip "内容级再加深（A–E 维度）"
 
     - A（证据链）：为每个用例/断点包补“它在证明什么机制分支”，让工具页更可复用。
-    - B（边界反例）：“反例与踩坑点”：如何避免用例/断点被版本差异误导。
+    - B（边界反例）：“反例与误区点”：如何避免用例/断点被版本差异误导。
     - C（排障 SOP）：把工具页与排障清单/知识地图/目录页打通，形成统一导航。
     - D（断点观察）： watch list 与判定标准：断点停下后看什么值才算“证据成立”。
     - E（面试复述）：将工具页变成训练脚本：面试复述/团队内训可直接引用其证据链与复现入口。

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：28. 自定义 Scope + scoped proxy：thread scope 的真实语义
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`AbstractBeanFactory#doGetBean` / `Scope#get` / `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly`
     - 推荐 Lab：`SpringCoreBeansCustomScopeLabTest`
@@ -18,7 +18,7 @@
 ## 导读
 
 - 本章主题：**28. 自定义 Scope + scoped proxy：thread scope 的真实语义**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
@@ -30,7 +30,7 @@
     - 本仓库已补齐对照实验：thread scope 与 prototype 都能复现“冻结 vs 延迟解析”的差异。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansCustomScopeLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
@@ -54,7 +54,7 @@ Spring 的 scope 机制是可扩展的：可以注册自定义 scope。
 - scope 的“每次从容器获取”语义
 - 为什么把短生命周期 scope 注入到 singleton 里需要 `ObjectProvider` 或 scoped proxy
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：容器 `getBean` 时发现 bean 定义了 scope（`singleton`/`prototype`/自定义）  
 **分支**：`AbstractBeanFactory#doGetBean` 按 scope 分流  
@@ -86,7 +86,7 @@ Spring 的 scope 机制是可扩展的：可以注册自定义 scope。
 
 ## 2. 同类现象：prototype 注入 singleton 也会“冻结”
 
-很多人第一次理解 thread/request scope 时会觉得“这是自定义 scope 的特殊误区”。其实不是——它是一个更一般的事实：
+很多人在首次理解 thread/request scope 时会将其视为“自定义 scope 的特殊误区”。但并非如此——它是一个更一般的事实：
 
 > **只要“目标 bean 的生命周期比 consumer 短”，把它直接注入到 singleton 里，就会在注入那一刻被冻结。**
 
@@ -99,7 +99,7 @@ prototype 是最典型的例子。
 可以观察到：
 
 - direct injection：`PrototypeCounter` 被解析一次，consumer 内部持有固定引用
-- `ObjectProvider<PrototypeCounter>`：每次 `getObject()` 都能拿到新的 prototype 实例
+- `ObjectProvider<PrototypeCounter>`：每次 `getObject()` 都能获取到新的 prototype 实例
 
 ## 3. 解法 1：ObjectProvider（推荐，机制最直观）
 
@@ -154,7 +154,7 @@ prototype 是最典型的例子。
 ## 排障分流：这是定义层问题还是实例层问题？
 
 1) **“同一个 thread 里每次 getBean 都是新对象”** → 多半是 **定义层/注册问题**：确认 `registerScope("thread", ...)` 是否执行（看 `AbstractBeanFactory#registerScope`）。
-2) **“不同 thread 里拿到的是同一个对象”** → 多半是 **scope 实现问题**：看 `SimpleThreadScope#get` 是否真的按 thread 隔离缓存。
+2) **“不同 thread 里获取到的是同一个对象”** → 多半是 **scope 实现问题**：看 `SimpleThreadScope#get` 是否真的按 thread 隔离缓存。
 3) **“注入到 singleton 后看起来像单例（冻结）”** → **实例层语义**：注入只发生一次；用 `ObjectProvider` 或 scoped proxy 把解析推迟到“调用时”。
 
 ## 6. 面试常问（Scope / ScopedProxy）
@@ -170,15 +170,15 @@ prototype 是最典型的例子。
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansCustomScopeLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 0. 复现入口（可运行）
 
-- 入口测试（推荐先跑通再下断点）：
+- 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
 - 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomScopeLabTest test`
@@ -198,15 +198,15 @@ prototype 是最典型的例子。
 - **误区 2：scoped proxy 的调试成本**
   - 观察到的对象类型是 proxy，不是目标类；需要学会区分。
 
-## 源码锚点（建议从这里下断点）
+## 源码锚点（建议从这里设置断点）
 
 - `AbstractBeanFactory#doGetBean`：scope 分流入口（singleton/prototype/custom scope 都会在这里分叉）
-- `Scope#get`：自定义 scope 的核心回调（从这里决定“怎么拿到对象”）
+- `Scope#get`：自定义 scope 的核心回调（从这里决定“怎么获取到对象”）
 - `DefaultListableBeanFactory#registerScope`：注册自定义 scope 的入口
 - `ScopedProxyFactoryBean#getObject`：scoped proxy 的取值入口（代理如何在每次调用时解析真实目标）
 - `ScopedProxyUtils#createScopedProxy`：创建 scoped proxy 定义的辅助入口
 
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
+## 断点闭环（用本仓库 Lab/Test 运行一次）
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
   - `threadScope_createsOneInstancePerThread_whenAccessedDirectly()`
@@ -216,7 +216,7 @@ prototype 是最典型的例子。
 
 建议断点：
 
-- “thread scope 没起作用/所有线程都拿到同一个实例” → **优先定义层（scope 注册）**：是否真的 `registerScope("thread", ...)`？（看 `registerScope`）
+- “thread scope 没起作用/所有线程都获取到同一个实例” → **优先定义层（scope 注册）**：是否真的 `registerScope("thread", ...)`？（看 `registerScope`）
 - “把 scoped bean 注入 singleton 后总是同一个实例” → **实例层（注入时机）**：这是 direct injection 的冻结效应；用 provider 或 scoped proxy（本章第 2/3/4 节）
 - “调试时看到的类型是 proxy，不是目标类” → **实例层（代理语义）**：这是 scoped proxy 的预期形态（对照 [31](31-proxying-phase-bpp-wraps-bean.md)）
 - “想当然认为 scope 会自动传播到注入点” → **概念澄清**：scope 管的是“容器如何取对象”，不自动改变注入点的解析次数（本章第 5 节）
@@ -244,7 +244,7 @@ prototype 是最典型的例子。
 
 1) **Scope 契约的 3 个关键方法各自负责什么？**（get/remove/registerDestructionCallback）
 2) **为什么 scoped proxy 能解决“把短生命周期对象注入长生命周期对象”的问题？目标对象什么时候才创建？**
-3) **自定义 scope 的最大坑是什么？**（thread-local 泄漏/销毁回调不执行/代理导致类型信息丢失）
+3) **自定义 scope 的主要风险点是什么？**（thread-local 泄漏/销毁回调不执行/代理导致类型信息丢失）
 
 <!-- BOOKIFY:START -->
 

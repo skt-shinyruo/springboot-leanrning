@@ -3,14 +3,14 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：42. XML → BeanDefinitionReader：定义层解析与错误分型
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`XmlBeanDefinitionReader#loadBeanDefinitions` / `DefaultBeanDefinitionDocumentReader#registerBeanDefinitions` / `BeanDefinitionParserDelegate#parseBeanDefinitionElement`
     - 推荐 Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[41. RuntimeHints 入门：把构建期契约跑通](41-runtimehints-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[43. 容器外对象注入：AutowireCapableBeanFactory](43-autowirecapablebeanfactory-external-objects.md)
+上一章：[41. RuntimeHints 入门：把构建期契约完成验证](41-runtimehints-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[43. 容器外对象注入：AutowireCapableBeanFactory](43-autowirecapablebeanfactory-external-objects.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**42. XML → BeanDefinitionReader：定义层解析与错误分型**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java`
@@ -54,7 +54,7 @@ XML 只是其中一种输入形式。理解它的价值在于：它能让读者�
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：XML 能否被读取与正确解析  
 **分支**：资源读取 → XML 解析 → BeanDefinition 注册  
@@ -90,7 +90,7 @@ XML 这条链路的核心是：
 
 1) 入口：`XmlBeanDefinitionReader#loadBeanDefinitions`（读资源 + 进入 XML 解析）
 2) 解析：`DefaultBeanDefinitionDocumentReader#registerBeanDefinitions`（把 Document 变成一组 BeanDefinition）
-   - 进一步深挖：`BeanDefinitionParserDelegate#parseBeanDefinitionElement`
+   - 进一步深入分析：`BeanDefinitionParserDelegate#parseBeanDefinitionElement`
 3) 入库：`DefaultListableBeanFactory#registerBeanDefinition`（定义注册入口：冲突/覆盖/合法性检查）
 
 当需要把错误放回 refresh 主线理解时：
@@ -120,9 +120,9 @@ XML 这条链路的核心是：
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -138,7 +138,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 
 ## 3. 源码 / 断点建议（把“看 XML”变成“走链路”）
 
-建议观察点（下断点时优先盯这些变量）：
+建议观察点（设置断点时优先盯这些变量）：
 
 - `resource` / `resourceDescription`：到底读的是哪一个 XML（路径/类路径资源/文件资源）
 - `document` / `root`：XML 是否被正确解析成 Document（命名空间/元素结构是否符合预期）
@@ -160,7 +160,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 2) **误区：看到 `BeanDefinitionStoreException` 就直接全局搜字符串**
    - 更快的方式：从 `XmlBeanDefinitionReader#loadBeanDefinitions` 进，先确认 resource 与 schema/namespace，再定位到具体 element 的 parse。
 3) **误区：以为 XML 只会影响“创建对象”**
-   - XML 的核心价值是让读者把“输入形态”统一回 BeanDefinition：读者看的其实是“定义元数据”，不是实例本身。
+   - XML 的核心价值是让读者把“输入形态”统一回 BeanDefinition：读者看到的是“定义元数据”，不是实例本身。
 
 ## 面试常问（XML：Reader 到底做了什么）
 
@@ -203,6 +203,6 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 - Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java`
 
-上一章：[41. RuntimeHints 入门：把构建期契约跑通](41-runtimehints-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[43. 容器外对象注入：AutowireCapableBeanFactory](43-autowirecapablebeanfactory-external-objects.md)
+上一章：[41. RuntimeHints 入门：把构建期契约完成验证](41-runtimehints-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[43. 容器外对象注入：AutowireCapableBeanFactory](43-autowirecapablebeanfactory-external-objects.md)
 
 <!-- BOOKIFY:END -->

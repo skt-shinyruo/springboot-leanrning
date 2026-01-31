@@ -3,14 +3,14 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(...)` / `DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` / `DefaultListableBeanFactory#registerBeanDefinition`
     - 推荐 Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[23. FactoryBean 深挖：getObjectType/isSingleton 与缓存](23-factorybean-deep-dive.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](25-programmatic-bpp-registration.md)
+上一章：[23. FactoryBean 深入分析：getObjectType/isSingleton 与缓存](23-factorybean-deep-dive.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](25-programmatic-bpp-registration.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
@@ -18,7 +18,7 @@
 ## 导读
 
 - 本章主题：**24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
@@ -28,7 +28,7 @@
     - 排障关键不是“类型”，而是 **beanName + 来源**：谁先注册、谁后注册、最终 registry 里保存的是哪一个（本仓库 Lab 已补齐 BeanDefinition 来源 dump 的证据链）。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
@@ -38,7 +38,7 @@
 
     - A（证据链）：“覆盖发生在注册阶段”的证据链与配置入口（Framework/Boot 差异需明确）。
     - B（边界反例）：反例：覆盖导致注入命中改变但不易察觉；与 auto-config back-off 的交互误判。
-    - C（排障 SOP）：排障：同名 bean 冲突/覆盖导致行为偏差的 SOP（先看谁注册、后看覆盖策略）。
+    - C（排障 SOP）：排障：同名 bean 冲突/覆盖导致行为偏差的 SOP（优先核对注册来源，再核对覆盖策略）。
     - D（断点观察）：观察点：注册冲突位置、BeanDefinition 源信息（如 resourceDescription）。
     - E（面试复述）：面试追问：为什么团队通常不建议默认允许覆盖？如何给出工程化理由与证据。
 <!-- AE-DEEPENING:END -->
@@ -47,7 +47,7 @@
 当读者注册两个同名 bean 时，会发生什么？
 
 - 有的环境里：**最后一个覆盖前一个**
-- 有的环境里：**直接报错**
+- 有的环境里：**直接异常**
 
 这不是黑箱，是容器的一个开关控制的：
 
@@ -65,7 +65,7 @@
 - 同名 `duplicate` 注册两次
 - 最终 `getBean(Marker.class)` 得到的是第二次注册的定义
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：`DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` 为 `true`  
 **分支**：`registerBeanDefinition` 检测到同名时进入“覆盖”分支  
@@ -98,7 +98,7 @@
 
 ## 4. 定义层覆盖 vs 实例缓存：覆盖不会回滚已创建单例
 
-这是最容易造成“我明明覆盖了，但注入还是旧的”的原因：
+这是最容易导致“定义已覆盖，但注入仍为旧对象”的原因：
 
 - 覆盖只替换 **BeanDefinition**
 - `singletonObjects` 里的已创建实例 **不会自动清理/替换**
@@ -146,9 +146,9 @@
   - 关键入口：`DefaultListableBeanFactory#doResolveDependency`
   - 修复方向：`@Primary/@Qualifier` 或让自动配置 back-off（见 [03](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33](33-autowire-candidate-selection-primary-priority-order.md)、[10](../part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)）
 
-## 可复现闭环（用本仓库 Lab/Test 跑一遍）
+## 可复现闭环（用本仓库 Lab/Test 运行一次）
 
-至少应能够跑出并复述三条结论：
+至少应能够得到并复述三条结论：
 
 1) **允许覆盖：后注册 wins**  
    - 断点：`registerBeanDefinition`  
@@ -204,6 +204,6 @@
 - Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
 
-上一章：[23. FactoryBean 深挖：getObjectType/isSingleton 与缓存](23-factorybean-deep-dive.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](25-programmatic-bpp-registration.md)
+上一章：[23. FactoryBean 深入分析：getObjectType/isSingleton 与缓存](23-factorybean-deep-dive.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](25-programmatic-bpp-registration.md)
 
 <!-- BOOKIFY:END -->

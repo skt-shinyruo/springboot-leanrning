@@ -3,28 +3,28 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：`@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](017-06-post-processors.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 19 章：11. 调试与自检：如何“看见”容器正在做什么](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
+上一章：[第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](017-06-post-processors.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 19 章：11. 调试与自检：如何“观察到”容器正在做什么](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 - 本章主题：**07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
@@ -34,7 +34,7 @@
 
     - A（证据链）： full vs lite 的判定链路与证据点（为什么会/不会增强）。
     - B（边界反例）：反例：proxyBeanMethods=false 导致的“多次调用多次 new”，以及与 AOP 代理的混淆点。
-    - C（排障 SOP）：排障：明明写了 @Bean 却拿到多个实例/依赖不一致时如何定位。
+    - C（排障 SOP）：排障：明明写了 @Bean 却获取到多个实例/依赖不一致时如何定位。
     - D（断点观察）：断点：配置类解析、增强生成、@Bean 方法拦截的关键入口。
     - E（面试复述）：面试追问：配置类增强与 AOP 代理有何不同？如何证明。
 <!-- AE-DEEPENING:END -->
@@ -78,7 +78,7 @@
 - 在方法体里直接调用另一个 `@Bean` 方法，就是一次普通 Java 方法调用
 - 这可能会产生额外实例（绕过容器缓存）
 
-### 1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
+### 1.1 机制系统阐述：条件 → 分支 → 结果（可断点验证）
 
 **条件**：配置类是 Full（`@Configuration`）还是 Lite（`@Component + @Bean`），以及 `proxyBeanMethods` 取值
 **分支**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` 标记 Full/Lite
@@ -87,7 +87,7 @@
 - Lite 或 proxy=false：互调为普通 Java 调用，可能产生额外对象
 **断点建议**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConfigurationClassEnhancer#enhance`
 
-建议先把“现象”做成可断言的闭环（别靠日志猜）：
+建议将相关“现象”固化为可断言的验证闭环，而不宜仅凭日志推断：
 
 ### 2.1 读者到底在对比什么？
 
@@ -113,7 +113,7 @@
 
 可以观察到：
 
-- proxy=true：`configB()` 内调用 `configA()`，拿到的是容器里的同一个 `ConfigA`
+- proxy=true：`configB()` 内调用 `configA()`，获取到的是容器里的同一个 `ConfigA`
 - proxy=false：方法体直接调用导致 new 出另一个 `ConfigA`
 
 ## 3. 最推荐的写法：用“方法参数”声明依赖
@@ -141,12 +141,12 @@ ConfigB configB(ConfigA a) {
 - `@Bean` 方法拦截入口（proxyBeanMethods=true 才会走到）：
   - `ConfigurationClassEnhancer.BeanMethodInterceptor#intercept`（内部类名可能随版本略有变化）
 
-### 3.1 为什么它更稳：方法参数注入点就是 `MethodParameter`（不靠“互相调用”也能拿到依赖）
+### 3.1 为何该方式更为稳健：方法参数注入点即 `MethodParameter`（无需依赖“互相调用”亦可获取依赖）
 
 把依赖写在 `@Bean` 方法参数上，最大的收益不是“看起来更优雅”，而是它天然满足两个可验证的事实：
 
 1. **依赖解析发生在容器创建阶段（工厂方法参数解析）**
-   Spring 在调用 `@Bean` 工厂方法时，会把参数当作注入点来解析；这个注入点在内部就是 `org.springframework.core.MethodParameter`（你能在断点里直接看到）。
+   Spring 在调用 `@Bean` 工厂方法时，会把参数当作注入点来解析；该注入点在内部即 `org.springframework.core.MethodParameter`（可在断点中直接观察到）。
 2. **它不依赖配置类是否被 CGLIB 增强**
    即便 `proxyBeanMethods=false`（不做配置类增强），工厂方法仍然由容器调用，参数解析仍会走标准的依赖解析链路；因此这条写法对“性能/语义/可测试性”的折中更可控。
 
@@ -166,7 +166,7 @@ ConfigB configB(ConfigA a) {
   - 看调用栈是否进入 `ConfigurationClassEnhancer.BeanMethodInterceptor#intercept`
   - 看 `bean` / `beanName`：最终返回的是“容器里的单例”还是“方法体 new 出来的对象”
 - （对照）容器里同名 bean 的获取路径：
-  - `AbstractBeanFactory#doGetBean`：证明“从容器拿到的那个对象”与“方法互调返回的对象”是否一致
+  - `AbstractBeanFactory#doGetBean`：证明“从容器获取到的那个对象”与“方法互调返回的对象”是否一致
 
 ## 5. 应能够回答的 2 个问题
 
@@ -182,7 +182,7 @@ ConfigB configB(ConfigA a) {
 
 ## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
 
-至少跑出 3 条可断言结论：
+至少得到 3 条可断言结论：
 
 1) **proxy=true 时，`@Bean` 方法互调会回到容器**
    - 断点：`BeanMethodInterceptor#intercept`
@@ -193,7 +193,7 @@ ConfigB configB(ConfigA a) {
 3) **参数注入是最稳妥写法**
    - 断点：`doResolveDependency`（方法参数注入点是 `MethodParameter`）
    - 断言：即使 `proxyBeanMethods=false` 或 Lite 配置类不增强，**方法参数注入仍能保持容器语义（singleton 仍是同一实例）**
-   - 可跑入口：
+   - 可运行入口：
      - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalse_stillPreservesSingleton_whenUsingMethodParameterInjection`
      - `SpringCoreBeansContainerLabTest#liteConfiguration_stillPreservesSingleton_whenUsingMethodParameterInjection`
    - 关联章节：依赖解析的“候选收敛/注入点元数据证据链”见 [03](014-03-dependency-injection-resolution.md)
@@ -205,9 +205,9 @@ ConfigB configB(ConfigA a) {
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansContainerLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ## 常见误区与边界
 
@@ -232,7 +232,7 @@ ConfigB configB(ConfigA a) {
 | --- | --- | --- | --- | --- |
 | `@Bean` 方法互调出现“额外实例”（对象不相等） | `proxyBeanMethods=false` 或 Lite 模式导致没有增强 | 观察配置类运行时 class 是否包含 `$$SpringCGLIB$$`；互调时调用栈是否进入 `BeanMethodInterceptor#intercept` | 避免 `@Bean` 方法互调；改用方法参数注入；必要时显式 `@Configuration(proxyBeanMethods=true)` | `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance` |
 | 明明写了 `@Bean`，但行为像普通组件（互调不走容器） | Lite 模式（`@Component + @Bean`）默认不增强 | 断点 `ConfigurationClassPostProcessor#processConfigBeanDefinitions` 看 Full/Lite 判定；运行时 class 不增强 | 视需求改成 Full `@Configuration`；或同样避免互调 | `SpringCoreBeansContainerLabTest#liteConfiguration_componentWithBeanMethods_doesNotEnhance_beanMethodInterCallsCreateExtraInstance` |
-| 容易误以为“这是 scope 问题”但其实不是 | 混淆了“bean 是否单例”与“方法调用是否走容器” | 对照：容器 `getBean` 仍返回同一个 singleton；互调返回的是方法体 new | 把依赖解析交回容器（参数注入），不要在方法里 new | 同上两条对照用例 |
+| 容易误以为“这是 scope 问题”，但并非 scope 问题 | 混淆了“bean 是否单例”与“方法调用是否走容器” | 对照：容器 `getBean` 仍返回同一个 singleton；互调返回的是方法体 new | 把依赖解析交回容器（参数注入），不要在方法里 new | 同上两条对照用例 |
 
 ## 小结与下一章
 

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：27. SmartLifecycle：start/stop 时机与 phase 顺序
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`LifecycleProcessor#onRefresh` / `DefaultLifecycleProcessor#startBeans` / `DefaultLifecycleProcessor#stopBeans`
     - 推荐 Lab：`SpringCoreBeansSmartLifecycleLabTest`
@@ -18,7 +18,7 @@
 ## 导读
 
 - 本章主题：**27. SmartLifecycle：start/stop 时机与 phase 顺序**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
@@ -28,7 +28,7 @@
     - 对 `SmartLifecycle`，容器通常走 `stop(Runnable callback)`（支持异步 stop）：不调用 callback 可能导致关闭卡住直到超时（本仓库 Lab 已补齐“调用的是 stop(callback)”的证据）。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansSmartLifecycleLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartLifecycleLabTest.java`
@@ -48,11 +48,11 @@
 
 它非常适合表达：
 
-- 我希望在容器 refresh 完成后自动 start
-- 我希望在容器 close 时 stop
-- 并且我希望多个组件之间按 phase 排序
+- 希望在容器 refresh 完成后自动 start
+- 希望在容器 close 时 stop
+- 希望多个组件之间按 phase 排序
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：bean 实现 `SmartLifecycle`，且 `isAutoStartup()` 为 `true`  
 **分支**：`LifecycleProcessor#onRefresh` → `DefaultLifecycleProcessor#startBeans` 按 phase 升序启动  
@@ -91,7 +91,7 @@
 
 读者还应该补齐两个“真实项目更常见”的边界：
 
-- **autoStartup=false**：refresh 不会自动 start（否则很多“为什么它启动就跑起来了”讲不清）
+- **autoStartup=false**：refresh 不会自动 start（否则很多“为什么它在启动后即开始运行”难以解释清楚）
 - **stop(callback)**：容器为什么要 callback（否则 shutdown 可能卡住）
 
 对应实验（本仓库已补齐）：
@@ -122,7 +122,7 @@
 入口：
 
 - 入口测试（方法级）：`SpringCoreBeansSmartLifecycleLabTest#smartLifecycleStartsInPhaseOrder_andStopsInReverseOrder`
-- 推荐跑法：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSmartLifecycleLabTest#smartLifecycleStartsInPhaseOrder_andStopsInReverseOrder test`
+- 推荐运行方式：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSmartLifecycleLabTest#smartLifecycleStartsInPhaseOrder_andStopsInReverseOrder test`
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
@@ -144,15 +144,15 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansSmartLifecycleLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 0. 复现入口（可运行）
 
-- 入口测试（推荐先跑通再下断点）：
+- 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartLifecycleLabTest.java`
 - 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSmartLifecycleLabTest test`
@@ -165,14 +165,14 @@
 
 该实验中注册了两个 lifecycle：
 
-## 源码锚点（建议从这里下断点）
+## 源码锚点（建议从这里设置断点）
 
 - `AbstractApplicationContext#finishRefresh`：refresh 末尾阶段（触发生命周期处理器）
 - `DefaultLifecycleProcessor#onRefresh`：容器刷新完成后的生命周期启动入口
 - `DefaultLifecycleProcessor#startBeans`：按 phase 分组并启动的主算法
 - `SmartLifecycle#getPhase` / `isAutoStartup` / `start`：phase 与自动启动语义的关键接口
 
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
+## 断点闭环（用本仓库 Lab/Test 运行一次）
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartLifecycleLabTest.java`
   - `smartLifecycleStartsInPhaseOrder_andStopsInReverseOrder()`

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：91. 术语表（Glossary）
-    - 怎么使用：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`@Value("#{...}")` / `DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#getSingleton`
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**91. 术语表（Glossary）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest`
 
@@ -36,7 +36,7 @@
     - A（证据链）：为关键术语补“对应证据链入口方法”，避免术语解释与源码脱节。
     - B（边界反例）：易混词反例：BeanDefinition vs bean instance vs exposed object；BFPP vs BPP vs BDRPP 等。
     - C（排障 SOP）：“术语误诊”排障提示：遇到某词汇时如何避免错误联想。
-    - D（断点观察）：为核心术语补“看见它”的断点/观察点。
+    - D（断点观察）：为核心术语补“观察到它”的断点/观察点。
     - E（面试复述）：将术语映射到面试题：术语解释必须能给出证据链与反例。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
@@ -47,7 +47,7 @@
 
 遇到术语时，按下面 4 步快速落地：
 
-1) **现象**：它通常对应哪类问题/报错？  
+1) **现象**：它通常对应哪类问题/异常？  
 2) **证据链**：它在源码主线上出现在哪个方法？  
 3) **修复**：应能够做的最小动作是什么？  
 4) **验证**：哪个 Lab/Test 能复现并验证？  
@@ -56,7 +56,7 @@
 
 ## 容器与定义
 
-- **Bean**：被 Spring 容器管理的对象（最终 `getBean()` 拿到的“对外暴露对象”，可能是原始对象也可能是代理）。
+- **Bean**：被 Spring 容器管理的对象（最终 `getBean()` 获取到的“对外暴露对象”，可能是原始对象也可能是代理）。
   章节：[`01`](../part-01-ioc-container/020-01-bean-mental-model.md)
 - **BeanDefinition**：定义层元数据，描述“如何创建一个 bean”（class/factory method/scope/lazy/dependsOn/回调等）。
   章节：[`01`](../part-01-ioc-container/020-01-bean-mental-model.md)、[`35`](../part-04-wiring-and-boundaries/35-merged-bean-definition.md)
@@ -109,7 +109,7 @@
 
 - **Proxy（代理）**：容器最终暴露对象可能是代理而非原始实例，常见由 BPP 在 after-init 返回。
   章节：[`31`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
-- **FactoryBean**：注册在容器里的是工厂，`getBean("name")` 默认拿到 product，`getBean("&name")` 才拿到工厂本身。
+- **FactoryBean**：注册在容器里的是工厂，`getBean("name")` 默认获取到 product，`getBean("&name")` 才获取到工厂本身。
   章节：[`08`](../part-01-ioc-container/08-factorybean.md)、[`23`](../part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)、[`29`](../part-04-wiring-and-boundaries/29-factorybean-edge-cases.md)
 - **early reference（提前暴露引用）**：为缓解部分单例循环依赖，在“还没初始化完”时暴露早期引用（可能与代理交互）。
   章节：[`09`](../part-01-ioc-container/09-circular-dependencies.md)、[`16`](../part-03-container-internals/16-early-reference-and-circular.md)
@@ -149,13 +149,13 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansContainerLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
-> 验证入口（可跑）：`SpringCoreBeansContainerLabTest`
+> 验证入口（可运行）：`SpringCoreBeansContainerLabTest`
 
 ## 0. 复现入口（可运行）
 
@@ -165,8 +165,8 @@
 1) 读文档/看断点时遇到名词能快速定位“它到底是什么、在哪个阶段出现、影响什么”
 2) 把同一类名词放在一起对比，避免“记得名字但不知道边界”
 
-> 使用建议：遇到不熟的名词先来这里查 10 秒，再回到对应章节跑 Lab。
-> Part 05（AOT/XML/SpEL/容器外对象）相关术语请优先看上方“**AOT 与真实世界补齐**”小节。
+> 使用建议：遇到不熟悉的术语，可先在此处快速检索，再回到对应章节运行 Lab。
+> Part 05（AOT/XML/SpEL/容器外对象）相关术语请优先参阅上方“**AOT 与真实世界补齐**”小节。
 
 ## 常见误区与边界
 
@@ -185,7 +185,7 @@
 - **ResolvableType**：Spring 用来描述/匹配泛型的类型系统。
   章节：[`37`](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
 
-## 排障怎么用（术语 → 断点入口）
+## 排障使用方式（术语 → 断点入口）
 
 若在真实项目里看到异常/现象，先别急着“猜机制”，先把术语落到阶段与断点：
 
@@ -196,7 +196,7 @@
 
 更系统的分流表：`appendix/94-production-troubleshooting-checklist.md`
 
-## 面试怎么用（术语 → 结论 → 证据链）
+## 面试使用方式（术语 → 结论 → 证据链）
 
 术语表不是用来背的；面试/述职时需要做到的是“把术语放回调用链与时机”：
 
@@ -209,7 +209,7 @@
 ## 自检要点
 - 应能够把下面 5 个名词分别放到 refresh 主线的哪个阶段吗：`BeanDefinition` / BFPP/BDRPP / BPP / `doGetBean` / `doCreateBean`？
 - 应能够解释清楚：为什么同一个名词（例如 “processor”）在定义阶段与创建阶段的职责完全不同吗？
-- 是否能够能用术语表把“看到名词 → 关联章节 → 跑 Lab → 下断点验证”的链路跑通？
+- 是否能够用术语表把“看到名词 → 关联章节 → 运行 Lab → 设置断点验证”的链路完成验证？
 
 ## 小结与下一章
 

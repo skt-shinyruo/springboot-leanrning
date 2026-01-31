@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Debugger Pack（断点包总入口）
-    - 怎么使用：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
     - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**Debugger Pack（断点包总入口）**
-- 阅读方式建议：把本章当成“进入本模块的调试入口索引页”——先跑一条最小回归，再按本章的断点清单去看关键数据结构变化，最后回到对应章节补齐理论与边界。
+- 阅读方式建议：把本章当成“进入本模块的调试入口索引页”——先运行一条最小回归，再按本章的断点清单去看关键数据结构变化，最后回到对应章节补齐理论与边界。
 
 !!! summary "本章要点"
 
-    - Debugger Pack 的目标不是“讲知识”，而是给读者一套**可复用的断点入口**：遇到注入失败/循环依赖/代理不生效/占位符不对时，应该第一时间去哪下断点、看什么变量。
-    - 一旦能够在调试器里看见 `refresh → doCreateBean → populateBean → initializeBean` 的主线与关键分支，后续任何章节都会变得“可验证、可复述”。
-    - 读者 B/C 建议：每次读完一章，至少用本章的断点清单跑一次对应 Lab，把概念变成证据链。
+    - Debugger Pack 的目标不是“讲知识”，而是给读者一套**可复用的断点入口**：遇到注入失败/循环依赖/代理不生效/占位符不对时，应该第一时间去哪设置断点、看什么变量。
+    - 一旦能够在调试器里观察到 `refresh → doCreateBean → populateBean → initializeBean` 的主线与关键分支，后续任何章节都会变得“可验证、可复述”。
+    - 建议：每次读完一章，至少用本章的断点清单运行一次对应 Lab，将概念落实为证据链。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab（总入口/快速回归）：
       - `SpringCoreBeansBreakpointPackLabTest`
@@ -40,7 +40,7 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansIocBranchMatrixLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansInternalsBranchMatrixLabTest.java`
 
-## 机制主线：把“我感觉它应该这样”变成“我看到它就是这样”
+## 机制主线：将“主观判断”转化为“可观察事实”
 
 Spring IoC 的难点从来不是 API，而是：
 
@@ -54,8 +54,8 @@ Debugger Pack 的做法是：把常见问题压缩成 **断点入口 + 观察点
 
 ## 1. 使用方式（3 步闭环）
 
-1) **先跑一个可复现入口**（优先跑本章推荐 Lab，而不是直接在业务项目里迷路）
-2) **按本章断点清单下断点**（必要时用条件断点过滤 beanName）
+1) **运行一个可复现入口**（建议优先运行本章推荐 Lab，以避免在业务项目中丢失主线）
+2) **按本章断点清单设置断点**（必要时用条件断点过滤 beanName）
 3) **只盯 watch list**（避免在大型栈里被噪声淹没）
 
 推荐命令：
@@ -68,20 +68,20 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 
 可以用 Debugger Pack 给自己做一个非常明确的训练闭环（适用于源码进阶/团队内训/面试）：
 
-1) **10 分钟（可跑）**：跑通 `SpringCoreBeansBreakpointPackLabTest`，确保环境与入口 OK。
-2) **30 分钟（可看见）**：只用本章 2.x 的断点 + 本章 3 的 watch list，把主线数据结构变化看见。
+1) **10 分钟（可运行）**：完成验证 `SpringCoreBeansBreakpointPackLabTest`，确保环境与入口 OK。
+2) **30 分钟（可观察到）**：只用本章 2.x 的断点 + 本章 3 的 watch list，把主线数据结构变化观察到。
 3) **3 分钟（可复述）**：把观察到的现象复述成“结论 → 证据链（方法名）→ 反例/误区”，对标：`appendix/93-interview-playbook.md`。
 
 ## 1.1 团队内训如何用（可选）
 
 若正在做团队分享/内训，不建议“从目录按章讲完”。更高效的方式是：
 
-1) 先用本章断点包把主线跑通（建立共同的观察点与语言）
+1) 先用本章断点包把主线完成验证（建立共同的观察点与语言）
 2) 再按课时选择讲解深度（60/90/120 分钟脚本 + 互动题/作业）
 
 内训讲义入口：[`99-team-training-kit.md`](99-team-training-kit.md)
 
-## 1.3 面试怎么用（建议读者形成固定话术）
+## 1.3 面试使用方式（建议读者形成固定话术）
 
 - 题库入口：`appendix/93-interview-playbook.md`（每题都绑定“关键方法 + 观察点 + 对应 Lab”）
 - 排障入口：`appendix/94-production-troubleshooting-checklist.md`（Symptoms → Repro → Evidence → Decision → Fix → Verify）
@@ -159,10 +159,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 
 Debugger Pack 的目的不是“列断点”，而是帮读者形成一种稳定输出：
 
-1) **阶段**：我先把问题放回 refresh 主线的哪一段？
-2) **调用链**：我用哪 2–4 个方法名把链路串起来？（入口 → 分支 → 落点）
-3) **证据**：我在断点里看哪 3 个变量/集合证明结论？
-4) **修复**：我改的是“定义层（BeanDefinition）”还是“实例层（对象/代理）”，如何验证？
+1) **阶段**：应先将问题放回 refresh 主线的哪一段？
+2) **调用链**：用哪 2–4 个方法名将链路串起来？（入口 → 分支 → 落点）
+3) **证据**：在断点中观察哪 3 个变量/集合以证明结论？
+4) **修复**：修改的是“定义层（BeanDefinition）”还是“实例层（对象/代理）”，如何验证？
 
 如果应能够在 3 分钟内按这个卡片说完一个问题，读者就具备“源码进阶/面试/排障”三合一的能力闭环。
 
@@ -172,20 +172,20 @@ Debugger Pack 的目的不是“列断点”，而是帮读者形成一种稳定
 
 1) **只看异常，不看阶段**：同一个异常在不同阶段含义不同，必须先定位到 refresh 的哪一步。
 2) **下了断点但没有过滤**：不加 beanName 条件断点，大项目里可以被噪声淹没。
-3) **把“看见”当成“理解”**：断点只能提供证据链，真正的边界/代价要回到对应章节阅读。
+3) **把“观察到”当成“理解”**：断点只能提供证据链，真正的边界/代价要回到对应章节阅读。
 
 ---
 
 ## 自检要点
 应能够用 2 句复述：
 
-1) 我遇到注入失败/代理不生效/循环依赖时，第一断点下在哪（各给 1 个方法名）。
-2) 我在断点里只看哪 3 个变量/结构，就能判断自己处在 refresh/创建/注入的哪一步。
+1) 遇到注入失败/代理不生效/循环依赖时，第一断点应设置在哪（各给 1 个方法名）。
+2) 在断点中只观察哪 3 个变量/结构，就能判断当前处在 refresh/创建/注入的哪一步。
 <!-- AE-DEEPENING:START -->
 !!! tip "内容级再加深（A–E 维度）"
 
     - A（证据链）：为每个用例/断点包补“它在证明什么机制分支”，让工具页更可复用。
-    - B（边界反例）：“反例与踩坑点”：如何避免用例/断点被版本差异误导。
+    - B（边界反例）：“反例与误区点”：如何避免用例/断点被版本差异误导。
     - C（排障 SOP）：把工具页与排障清单/知识地图/目录页打通，形成统一导航。
     - D（断点观察）： watch list 与判定标准：断点停下后看什么值才算“证据成立”。
     - E（面试复述）：将工具页变成训练脚本：面试复述/团队内训可直接引用其证据链与复现入口。

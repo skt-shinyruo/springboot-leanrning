@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：自测题：是否能够真的理解了？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 使用方式：建议先运行本章推荐 Lab，将现象固化为断言，再结合正文理解机制；在真实项目中，常见路径包括：通过配置类/扫描/导入注册 Bean；通过注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
     - 推荐 Lab：`SpringCoreBeansLabTest`
@@ -16,16 +16,16 @@
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：自测题：是否能够真的理解了？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+- 一句话总结：自测题：是否能够真的理解了？ —— 建议先运行本章推荐 Lab，将现象固化为断言，再结合正文理解机制；在真实项目中，常见路径包括：通过配置类/扫描/导入注册 Bean；通过注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
 - 回到主线：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：见页尾导航（顺读不迷路）。
+- 下一章：见页尾导航（建议按顺序阅读，以保持主线连贯）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 ## 导读
 
 ### 统一答题结构（每题至少包含 4 个要素）
 
-- **现象**：读者观察到的行为/报错（最好能复现）
+- **现象**：读者观察到的行为/异常（最好能复现）
 - **证据链**：1 个入口方法 + 2–3 个关键分支/变量
 - **修复**：最小可行动作（配置/代码/调用方式）
 - **验证**：对应 Lab/Test（方法级更佳）
@@ -43,11 +43,11 @@
 - 配套资料：[`断点地图`](../part-00-guide/013-02-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/011-04-branch-decision-matrix.md)
 
 <!-- BOOKLIKE-V2:INTRO:START -->
-这一章围绕「自测题：是否能够真的理解了？」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+本章围绕「自测题：是否能够真的理解了？」展开：首先明确边界，再沿主线推进到关键分支，最后通过可运行入口验证结论。
 
 阅读建议：
-- 先看章首的“章节学习卡片/本章要点”，建立预期；
-- 推荐先跑一遍本章 Lab，再带着问题回到正文。
+- 建议先阅读章首的“章节学习卡片/本章要点”，建立预期；
+- 建议先运行一遍本章 Lab，再带着问题回到正文。
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 0. 复现入口（可运行）
@@ -67,9 +67,9 @@
 
 验证入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
 
-- 应能够不能用一句话区分：`BeanDefinition`（定义元数据） vs bean instance（运行时对象）？
+- 应能够用一句话区分：`BeanDefinition`（定义元数据） vs bean instance（运行时对象）？
 - BFPP/BPP/BDRPP 分别“改的是定义还是实例”？它们在哪个阶段发生？
-- 应能够不能复述 `ApplicationContext#refresh()` 的关键阶段（至少说清：什么时候跑 BFPP，什么时候注册/执行 BPP，什么时候开始创建非 lazy singleton）？
+- 应能够复述 `ApplicationContext#refresh()` 的关键阶段（至少说清：什么时候执行 BFPP，什么时候注册/执行 BPP，什么时候开始创建非 lazy singleton）？
 
 1) 用一句话解释：什么是 `BeanDefinition`？它与 Bean 实例的关系是什么？
 2) BFPP 与 BPP 的差别是什么？它们分别作用在“定义层”还是“实例层”？
@@ -86,10 +86,10 @@
 
     4) `@ComponentScan`、`@Bean`、`@Import` 这三种入口分别解决什么问题？
     5) `ImportSelector` 与 `ImportBeanDefinitionRegistrar` 的角色差异是什么？
-    6) 如何解释 Spring Boot 自动装配“从哪里拿到要导入的配置类列表”？
+    6) 如何解释 Spring Boot 自动装配“从哪里获取到要导入的配置类列表”？
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansBeanGraphDebugLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
@@ -130,7 +130,7 @@
 - 循环依赖为什么构造器基本救不了、setter 有时能救？early reference 的意义是什么？代理介入后为什么更复杂？
 
 13) `proxyBeanMethods=false` 下，为什么在 `@Bean` 方法体里互相调用可能会 new 出额外实例？
-14) 为什么 `getBean("sequence")` 拿到的是 Long 而不是 `SequenceFactoryBean`？
+14) 为什么 `getBean("sequence")` 获取到的是 Long 而不是 `SequenceFactoryBean`？
 15) 构造器循环依赖为什么必然失败？setter 循环为什么有时能成功？
 
 ## H. 值解析与类型转换（对应 34/36）
@@ -174,9 +174,9 @@
 
 ## K. 注入点元数据（对应 03/07）
 
-1. 字段注入点与构造器参数注入点在 Spring 内部对应什么元数据对象？你在断点里如何区分它们？（提示：`DependencyDescriptor#getField()` / `#getMethodParameter()`）
-2. 为什么“看起来同样是 `T`”，但泛型注入（例如 `Handler<String>`）在某些场景会出现误判？你用哪个对象证明这是“注入点元数据/ResolvableType”的问题，而不是“候选没注册”的问题？
-3. `@Bean` 工厂方法参数解析的入口在哪里？你如何证明它并不依赖 `@Configuration` 的增强（`proxyBeanMethods`）？
+1. 字段注入点与构造器参数注入点在 Spring 内部对应哪些元数据对象？在断点中可通过哪些方式区分它们？（提示：`DependencyDescriptor#getField()` / `#getMethodParameter()`）
+2. 为什么“看起来同样是 `T`”，但泛型注入（例如 `Handler<String>`）在某些场景会出现误判？可用哪个对象证明这是“注入点元数据/ResolvableType”的问题，而不是“候选未注册”的问题？
+3. `@Bean` 工厂方法参数解析的入口在哪里？可如何证明它并不依赖 `@Configuration` 的增强（`proxyBeanMethods`）？
 
 ## 动手题（建议直接做 Exercises）
 
@@ -184,7 +184,7 @@
 
 - 让 `FormattingService` 切换为 lower formatter（体会 `@Qualifier`）
 - 去掉 `@Qualifier`，改用 `@Primary` 解决歧义
-- 让 `DirectPrototypeConsumer` 每次都拿到新 id（体会 prototype 注入陷阱与解决方式）
+- 让 `DirectPrototypeConsumer` 每次都获取到新 id（体会 prototype 注入陷阱与解决方式）
 
 对应文件：
 
@@ -194,7 +194,7 @@
 
 ## First Pass（10 个最小闭环入口，按 Lab 自测）
 
-若不想一次性把整套章节都读完，想先把“主线 + 常见误区”跑通一遍，可以按下面 10 个入口做自测：每个入口只要求读者写 1–2 句结论（定义层/实例层/时机/顺序/断点入口）。
+若不想一次性把整套章节都读完，想先把“主线 + 常见误区”完成验证一遍，可以按下面 10 个入口做自测：每个入口只要求读者写 1–2 句结论（定义层/实例层/时机/顺序/断点入口）。
 
 1) 定义层 vs 实例层：`SpringCoreBeansContainerLabTest#beanDefinitionIsNotTheBeanInstance`
 2) refresh 阶段感：从 `AbstractApplicationContext#refresh` 走一遍 BFPP/BPP 的关键阶段（同上测试即可）
@@ -213,16 +213,16 @@
 - 观察点 1：运行本章推荐入口后，聚焦「自测题：是否能够真的理解了？」的生效时机/顺序/边界；断点/入口：`org.springframework.context.support.AbstractApplicationContext#refresh`；断言：应能够解释“为什么此处生效/为什么此处不生效”。
 - 观察点 2：运行本章推荐入口后，聚焦「自测题：是否能够真的理解了？」的生效时机/顺序/边界；断点/入口：`org.springframework.beans.factory.support.DefaultListableBeanFactory`；断言：应能够解释“为什么此处生效/为什么此处不生效”。
 - 观察点 3：运行本章推荐入口后，聚焦「自测题：是否能够真的理解了？」的生效时机/顺序/边界；断点/入口：`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`；断言：应能够解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``SpringCoreBeansLabTest`` 后，把上述观察点逐条对照，写出读者自己的 1–2 句结论（可复述）。
+- 建议：运行完成 ``SpringCoreBeansLabTest`` 后，把上述观察点逐条对照，写出读者自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->
 
-## 面试怎么用（把自测题“收敛成可复述答案”）
+## 面试使用方式（把自测题“收敛成可复述答案”）
 
 把这页当成“题库”，但答题时不要停留在名词解释。推荐读者按固定结构输出：
 
 1) **结论（1 句）**：先把边界说清楚（能/不能/发生在哪个阶段）。
 2) **证据链（方法级调用链）**：给出 1 个入口方法名 + 2–3 个关键分支/数据结构。
-3) **最小复现**：指向 1 个可跑的 LabTest（最好能到方法级）。
+3) **最小复现**：指向 1 个可运行的 LabTest（最好能到方法级）。
 4) **反例/误区**：给出 1 个“常见误归因”，说明为什么错。
 
 模板对照：`appendix/93-interview-playbook.md`
@@ -249,6 +249,6 @@
 - Exercise：`SpringCoreBeansExerciseTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 
-上一章：[99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本](99-team-training-kit.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[99. 团队内训讲义（Training Kit）：可直接用于授课的课时脚本](99-team-training-kit.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 
 <!-- BOOKIFY:END -->

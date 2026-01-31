@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`DependencyDescriptor#required` / `DependencyDescriptor#annotations` / `DependencyDescriptor#resolvableType`
     - 推荐 Lab：`SpringCoreBeansInjectionPhaseLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansInjectionPhaseLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
@@ -44,14 +44,14 @@
 
 这一章解决两个“非常折磨人但非常核心”的问题：
 
-1. 为什么我在构造器里访问 `@Autowired` 字段时，它永远是 `null`？
-2. 为什么构造器注入（constructor injection）却能在构造器里拿到依赖？
+1. 为什么在构造器里访问 `@Autowired` 字段时，它永远是 `null`？
+2. 为什么构造器注入（constructor injection）却能在构造器里获取到依赖？
 
 关键结论先给出：
 
 > **field injection 发生在“实例化之后”的属性填充阶段**，而 **constructor injection 发生在“实例化之前”的构造器解析阶段**。
 
-建议直接跑：
+建议直接运行：
 
 ## 1. 现象：field injection 在构造器里拿不到依赖
 
@@ -65,7 +65,7 @@
 2) **属性填充 / 注入阶段**（field/method injection 发生在这里）
 3) **初始化回调**（例如 `@PostConstruct`）
 
-## 2. 现象：constructor injection 在构造器里就能拿到依赖
+## 2. 现象：constructor injection 在构造器里就能获取到依赖
 
 - 一个无参构造器（`no-arg`）
 - 一个带参数的构造器，并用 `@Autowired` 标记为注入构造器（`autowired`）
@@ -78,7 +78,7 @@
 
 因此：constructor injection 的依赖在对象构造完成时就已经存在。
 
-## 2.1 DependencyDescriptor 深挖：解析“注入点语义”的核心对象
+## 2.1 DependencyDescriptor 深入分析：解析“注入点语义”的核心对象
 
 无论是构造器参数还是字段，最终都会被包装成 `DependencyDescriptor`：
 
@@ -87,7 +87,7 @@
 - `DependencyDescriptor#resolvableType`：泛型信息（决定按类型匹配是否精确）
 - `DependencyDescriptor#getDependencyName`：按名称回退时的候选名（`@Resource` 尤其依赖它）
 
-这就是“注入点语义”的单一入口，排障时优先看它。
+这就是“注入点语义”的单一入口；在排障过程中，建议优先从此处入手。
 
 ## 2.2 依赖解析分支树（简化版）
 
@@ -100,7 +100,7 @@
 5) **集合解析**：`Collection/Map/Stream/Array` 类型走“多候选路径”  
 6) **fallback**：可选依赖或容器默认值
 
-每个分支都可能改变“读者到底拿到哪个对象”的结论。
+每个分支都可能改变“读者到底获取到哪个对象”的结论。
 
 ## 2.3 关键变量解释（调试时只看这几项）
 
@@ -154,15 +154,15 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansInjectionPhaseLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
 ## 0. 复现入口（可运行）
 
-- 入口测试（推荐先跑通再下断点）：
+- 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
 - 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test`
@@ -179,26 +179,26 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 
 实验里 `ConstructorInjectedTarget` 同时提供：
 
-本章的 Lab 额外加了一个“探针 BPP”，在 `postProcessProperties(...)` 里记录快照，帮助在断点里“看见注入发生在这一段”。
+本章的 Lab 额外加了一个“探针 BPP”，在 `postProcessProperties(...)` 里记录快照，帮助在断点里“观察到注入发生在这一段”。
 
 ## 4. Debug / 观察建议
 
 建议读者用断点把“阶段感”建立起来：
 
-1. 在 `FieldInjectedTarget` 的构造器里下断点：可以观察到依赖为 `null`
-2. 在 `InjectionPhaseProbePostProcessor#postProcessProperties(...)` 下断点：这是属性填充阶段的入口之一
-3. 在 `FieldInjectedTarget#init(@PostConstruct)` 下断点：可以观察到依赖已可用
+1. 在 `FieldInjectedTarget` 的构造器里设置断点：可以观察到依赖为 `null`
+2. 在 `InjectionPhaseProbePostProcessor#postProcessProperties(...)` 设置断点：这是属性填充阶段的入口之一
+3. 在 `FieldInjectedTarget#init(@PostConstruct)` 设置断点：可以观察到依赖已可用
 4. 对照 `ConstructorInjectedTarget`：依赖在构造器内就已可用，并且会选择 `@Autowired` 构造器
 
-## 源码锚点（建议从这里下断点）
+## 源码锚点（建议从这里设置断点）
 
 - `AutowiredAnnotationBeanPostProcessor#determineCandidateConstructors`：决定“用哪个构造器做 constructor injection”的关键入口
 - `AbstractAutowireCapableBeanFactory#autowireConstructor`：构造器注入的核心路径（解析参数依赖并实例化）
 - `AbstractAutowireCapableBeanFactory#populateBean`：属性填充阶段入口（field/method injection 的舞台）
 - `InstantiationAwareBeanPostProcessor#postProcessProperties`：属性填充阶段的扩展点（`AutowiredAnnotationBeanPostProcessor` 正是靠它处理 field injection）
-- `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：`@Autowired/@Value` 等注解注入的直接入口（最适合下断点）
+- `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：`@Autowired/@Value` 等注解注入的直接入口（最适合设置断点）
 
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
+## 断点闭环（用本仓库 Lab/Test 运行一次）
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
 
@@ -244,7 +244,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 1) `FieldInjectedTarget` 构造器：观察此时 `@Autowired` 字段必然还是 `null`
 2) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：观察容器在属性填充阶段为字段赋值
 3) `FieldInjectedTarget#init(@PostConstruct)`：观察 init 阶段依赖已可用
-4) `AutowiredAnnotationBeanPostProcessor#determineCandidateConstructors`：观察 constructor injection 为什么能在构造器内拿到依赖（先选构造器再解析参数）
+4) `AutowiredAnnotationBeanPostProcessor#determineCandidateConstructors`：观察 constructor injection 为什么能在构造器内获取到依赖（先选构造器再解析参数）
 5) `AbstractAutowireCapableBeanFactory#autowireConstructor`：观察构造器参数依赖的解析与实例化路径
 
 <!-- BOOKIFY:START -->

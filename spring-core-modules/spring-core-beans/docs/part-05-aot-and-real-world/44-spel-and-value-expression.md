@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：44. SpEL 与 `@Value("#{...}")`：表达式解析链路
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`@Value("#{...}")` / `BeanFactory#resolveEmbeddedValue` / `AbstractBeanFactory#resolveEmbeddedValue`
     - 推荐 Lab：`SpringCoreBeansSpelValueLabTest`
@@ -18,7 +18,7 @@
 ## 导读
 
 - 本章主题：**44. SpEL 与 `@Value("#{...}")`：表达式解析链路**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
@@ -29,7 +29,7 @@
     - 最常见误判：把“类型转换失败（NumberFormatException 等）”误以为“SpEL 解析失败”；把“缺失占位符原样通过”误以为“配置没加载”。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：
       - `SpringCoreBeansSpelValueLabTest`（SpEL 引用 bean / 组合占位符 / 类型转换失败形态）
@@ -68,16 +68,16 @@
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：`@Value` 字符串包含 `${...}` 或 `#{...}`  
 **分支**：`resolveEmbeddedValue` 先做占位符解析，再做 SpEL 求值  
 **结果**：得到最终对象后再做类型转换并注入  
 **断点建议**：`AbstractBeanFactory#resolveEmbeddedValue`
 
-## 1. 先跑 Lab：把“链路拆分”固定成断言
+## 1. 先运行 Lab：把“链路拆分”固定成断言
 
-建议按这个顺序跑（从正常路径到失败分流）：
+建议按这个顺序运行（从正常路径到失败分流）：
 
 1) 引用 bean + 类型转换：`SpringCoreBeansSpelValueLabTest#valueWithSpel_canReferenceBeanAndResultIsConvertedToTargetType`
 2) 占位符 + SpEL 组合（解析顺序）：`SpringCoreBeansSpelValueLabTest#spelCanComposeWithPlaceholderResolution_placeholdersResolveFirst_thenExpressionIsEvaluated`
@@ -117,7 +117,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 
 ---
 
-## 4. 断点闭环（把“解析/求值/转换”三段分别看见）
+## 4. 断点闭环（把“解析/求值/转换”三段分别观察到）
 
 ### 4.1 推荐断点（按收益排序）
 
@@ -151,7 +151,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 
 本章的核心是把 `@Value` 的三步拆开看清楚（占位符 → SpEL → 类型转换），最短调用链如下：
 
-1) 注入点入口：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`（拿到原始字符串）
+1) 注入点入口：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`（获取到原始字符串）
 2) 解析入口：`AbstractBeanFactory#resolveEmbeddedValue`（处理 `${...}`）
 3) 表达式求值：`StandardBeanExpressionResolver#evaluate`（只在 `#{...}` 场景触发）
 4) 类型转换：`TypeConverterDelegate#convertIfNecessary`（把求值结果/字符串转成注入点类型）
@@ -173,14 +173,14 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 ### Q2：值注入失败时，如何快速判断是“解析/求值/转换”哪一步？
 
 - 标准答案（可复述）：
-  - 先看 `resolveEmbeddedValue` 输出（`${...}` 是否还在）；再看 `evaluate` 是否抛 `SpelEvaluationException`；最后看 `convertIfNecessary` 是否抛 `TypeMismatch/NumberFormat` 等转换异常。
+  - 应先检查 `resolveEmbeddedValue` 的输出（`${...}` 是否仍存在）；再检查 `evaluate` 是否抛出 `SpelEvaluationException`；最后检查 `convertIfNecessary` 是否抛出 `TypeMismatch/NumberFormat` 等转换异常。
 - 最小复现：
   - `SpringCoreBeansSpelValueLabTest`（配合本章断点/Watch List）
 
 ## 自检要点
 - 应能够解释清楚：`${...}` 与 `#{...}` 分别属于哪条链路吗？（占位符解析 vs 表达式求值）
 - 遇到值注入失败时，能否按“三连”收敛：解析（placeholder）→ 计算（SpEL）→ 转换（TypeConverter）？
-- 应能够说出：最短断点链路该打在哪 3 个方法上，把上面三步分别看见吗？
+- 应能够说出：最短断点链路该打在哪 3 个方法上，把上面三步分别观察到吗？
 
 ## 小结与下一章
 

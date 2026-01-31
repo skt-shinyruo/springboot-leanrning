@@ -3,14 +3,14 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：early reference 与循环依赖：getEarlyBeanReference 到底解决什么？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`DefaultSingletonBeanRegistry#getSingleton` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
     - 推荐 Lab：`SpringCoreBeansEarlyReferenceLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[15. 实例化前短路：还没 new 就拿到对象了？](15-pre-instantiation-short-circuit.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[17. 生命周期回调顺序：Aware/@PostConstruct/afterPropertiesSet/initMethod](17-lifecycle-callback-order.md)
+上一章：[15. 实例化前短路：还没 new 就获取到对象了？](15-pre-instantiation-short-circuit.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[17. 生命周期回调顺序：Aware/@PostConstruct/afterPropertiesSet/initMethod](17-lifecycle-callback-order.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
@@ -18,18 +18,18 @@
 ## 导读
 
 - 本章主题：**early reference 与循环依赖：getEarlyBeanReference 到底解决什么？**
-- 阅读方式建议：先跑一遍“early proxy”与“raw injection despite wrapping”两个实验，把“对象形态不一致”的误区变成可复现断言，再回到主线对照源码把证据链走通。
+- 阅读方式建议：先运行一遍“early proxy”与“raw injection despite wrapping”两个实验，把“对象形态不一致”的误区变成可复现断言，再回到主线对照源码把证据链走通。
 
 !!! summary "本章要点"
 
-    - `getEarlyBeanReference` 解决的不是“能不能拿到引用”，而是：**循环依赖窗口期拿到的 early reference 是否等于最终暴露形态（proxy/wrapper）**。
+    - `getEarlyBeanReference` 解决的不是“能不能获取到引用”，而是：**循环依赖窗口期获取到的 early reference 是否等于最终暴露形态（proxy/wrapper）**。
     - 只懂“三级缓存救 setter 环”还不够：一旦 AOP/代理介入，如果 early 是 raw、final 是 proxy，需要么 **fail-fast**，要么 **带着隐患启动（绕过代理）**。
     - 两个典型失败形态必须见过一次：
       - **按实现类注入 + JDK proxy** → 类型直接对不上（`BeanNotOfRequiredTypeException` 相关）
       - **raw 注入但最终 wrapping** → Spring 默认 fail-fast（raw vs wrapped 一致性保护）
     - 断点主线就三处：`getSingleton`（三层命中）→ `getEarlyBeanReference`（early 形态决定）→ `doCreateBean` 尾部一致性检查（raw vs wrapped）。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest`
     - Test file：
@@ -38,24 +38,24 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansCircularDependencyBoundaryLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
-## 一页式最短证据链（10 分钟）：看见 factory 层价值 + early 形态决策
+## 一页式最短证据链（10 分钟）：观察到 factory 层价值 + early 形态决策
 
-> 如果你读完 `09. 循环依赖` 仍然困惑“为什么需要三级缓存 / 为什么不是二级缓存”，请先看：  
+> 若读者在阅读 `09. 循环依赖` 后仍然困惑“为什么需要三级缓存 / 为什么不是二级缓存”，建议先参阅：  
 > - [`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)（答案先行）  
 > - AOP 前置心智模型：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
 
-这一章的目标不是再重复“三级缓存长什么样”，而是让你在断点里看见两件事：
+本章的目标并非重复描述“三级缓存的结构”，而是引导读者在断点中观察到两件事：
 
 1) **factory 层的价值：只有真正需要 early reference 时才创建它（延迟创建）**  
 2) **early 的形态要尽量等于 final：`getEarlyBeanReference` 让 BPP/AOP 决策 early reference 是 raw 还是 proxy（形态一致性）**
 
-### Step 1：跑一个最小用例（先把现象固定成断言）
+### Step 1：运行一个最小用例（将现象固化为断言）
 
 ```bash
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEarlyReferenceLabTest test
 ```
 
-如果你想把“带着隐患硬跑 vs fail-fast”的态度也一起验证：
+若希望同时验证“带着隐患继续运行 vs fail-fast”的差异：
 
 ```bash
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabTest test
@@ -74,7 +74,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 - `earlySingletonExposure`（是否进入 early exposure 窗口）
 - `earlySingletonReference` vs `exposedObject`（early 与 final 是否一致）
 
-### Step 4：你应该能复述的 3 句话（3 分钟闭环）
+### Step 4：读者应能够复述的 3 句话（3 分钟闭环）
 
 1) 三级缓存解决的是“什么时候能交付引用”（final/early/factory 三类语义，factory 让 early 引用按需创建）。  
 2) `getEarlyBeanReference` 解决的是“交付出去的 early 引用是什么形态”（raw vs proxy），并尽量做到 early == final。  
@@ -92,10 +92,10 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 若忽略“形态一致性”，就会遇到两类灾难：
 
-- **功能绕过**：依赖方拿到 raw，调用链绕过事务/安全/缓存等代理增强（见 [31. 代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
-- **类型爆炸**：final 是 JDK proxy，但读者按实现类注入/获取，直接类型不匹配
+- **功能绕过**：依赖方获取到 raw，调用链绕过事务/安全/缓存等代理增强（见 [31. 代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
+- **类型不匹配**：final 是 JDK proxy，但读者按实现类注入/获取，直接类型不匹配
 
-### 机制讲透：时机 → 形态 → 结果（可断点验证）
+### 机制系统阐述：时机 → 形态 → 结果（可断点验证）
 
 **条件**：是否进入 early exposure 窗口  
 **分支**：`getSingleton(..., allowEarlyReference=true)` → `getEarlyBeanReference`  
@@ -106,9 +106,9 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 ---
 
-## 1. 先跑实验：让问题变成“可见”的
+## 1. 先运行实验：让问题变成“可见”的
 
-推荐读者按下面顺序跑（从“成功路径”到“失败边界”）：
+建议按以下顺序运行（从“成功路径”到“失败边界”）：
 
 1) early proxy 成功路径：`SpringCoreBeansEarlyReferenceLabTest#getEarlyBeanReference_canProvideEarlyProxyDuringCircularDependencyResolution`
 2) 类型边界：`SpringCoreBeansEarlyReferenceLabTest#injectingConcreteTypeFailsWhenFinalBeanIsJdkProxy_duringCircularDependency`
@@ -126,7 +126,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 ---
 
-## 2. 需要同时记住的三件事（别拆开背）
+## 2. 需要同时记住的三件事（建议整体掌握）
 
 ### 2.1 三层缓存解决“时机问题”
 
@@ -173,14 +173,14 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAllowRawInjectionDespiteWrapping(boolean)` 这类开关表达态度：
 
-- 默认：宁可失败，也不要让系统带着“绕过代理”的隐患继续跑
-- 可以强行允许，但那是读者接受风险，不是 Spring 兜底
+- 默认：宁可失败，也不应让系统带着“绕过代理”的隐患继续运行
+- 可以强行允许，但那是读者接受风险，不是 Spring 的回退机制
 
 ---
 
 ## 3. 源码最短路径：把三件事串成一条证据链
 
-这一段的目标不是逐行复现源码，而是给读者一个“能在调试器里跑通”的最短路径（读者跑一次，就能把这章彻底记牢）。
+这一段的目标不是逐行复现源码，而是为读者提供一条“可在调试器中完成验证”的最短路径（完成一次验证即可形成可复用的证据链）。
 
 以 setter 循环依赖为例，关键链路可以压缩成：
 
@@ -212,7 +212,7 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 
 - `isSingletonCurrentlyInCreation(beanName)`
 - `singletonObjects` / `earlySingletonObjects` / `singletonFactories` 的 key 是否包含 beanName
-- `allowEarlyReference`（这一个值经常决定读者有没有机会拿到 early）
+- `allowEarlyReference`（这一个值经常决定读者有没有机会获取到 early）
 
 在 `doCreateBean` 里建议盯：
 
@@ -225,7 +225,7 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 
 ## 可复现闭环（基于 `SpringCoreBeansEarlyReferenceLabTest`）
 
-跑完该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少应能够复述 3 条结论：
 
 1) **early proxy 可在循环依赖窗口期提供一致形态**  
    - 断点：`getEarlyBeanReference`  
@@ -246,7 +246,7 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 - 读者按接口注入：OK（proxy 满足接口类型）
 - 读者按实现类注入：fail（proxy 不是实现类实例）
 
-这个失败在循环依赖里会更“早暴露”，因为 early 阶段读者可能就已经拿到了 proxy 形态。
+这个失败在循环依赖里会更“早暴露”，因为 early 阶段读者可能就已经获取到了 proxy 形态。
 
 对应实验：`SpringCoreBeansEarlyReferenceLabTest#injectingConcreteTypeFailsWhenFinalBeanIsJdkProxy_duringCircularDependency`
 
@@ -268,7 +268,7 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 
 需要把结论记成一句话：
 
-> `getEarlyBeanReference` 解决的是“尽量让 early == final”；`allowRawInjectionDespiteWrapping` 解决的是“如果做不到一致，要不要带着隐患硬跑”。
+> `getEarlyBeanReference` 解决的是“尽量让 early == final”；`allowRawInjectionDespiteWrapping` 解决的是“如果做不到一致，是否接受在存在隐患的情况下继续运行”。
 
 ---
 
@@ -290,8 +290,8 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
    - 先去 `doCreateBean` 尾部看一致性检查条件；再回到 `getEarlyBeanReference` 看 early 形态是否能提前变成 proxy。
 2) **循环依赖里事务/安全/缓存突然失效**
    - 高概率是 dependent bean 持有 raw 引用绕过 proxy；优先让 early 与 final 一致，或者消除循环依赖。
-3) **“我只是加了一个 AOP，就开始报循环依赖相关异常”**
-   - 代理改变了 final 形态，使 early/raw 与 final/proxy 的不一致暴露出来；这不是 AOP “制造了 bug”，而是它让读者看见了之前已经存在的边界。
+3) **“仅引入 AOP 后开始出现循环依赖相关异常”**
+   - 代理改变了 final 形态，使 early/raw 与 final/proxy 的不一致暴露出来；这不是 AOP “制造了 bug”，而是它让读者观察到了之前已经存在的边界。
 
 ## 面试常问（early reference：边界比结论更重要）
 
@@ -334,6 +334,6 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRawInjectionDespiteWrappingLabTest.java`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
-上一章：[15. 实例化前短路：还没 new 就拿到对象了？](15-pre-instantiation-short-circuit.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[17. 生命周期回调顺序：Aware/@PostConstruct/afterPropertiesSet/initMethod](17-lifecycle-callback-order.md)
+上一章：[15. 实例化前短路：还没 new 就获取到对象了？](15-pre-instantiation-short-circuit.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[17. 生命周期回调顺序：Aware/@PostConstruct/afterPropertiesSet/initMethod](17-lifecycle-callback-order.md)
 
 <!-- BOOKIFY:END -->

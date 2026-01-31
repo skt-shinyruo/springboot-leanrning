@@ -32,7 +32,7 @@
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
 - 内容级加深策略：
   - A：补“prototype 注入 singleton 为什么像单例”的证据链（注入时机 vs 创建时机）。
-  - B：补反例：prototype 循环依赖、prototype 销毁不自动、scoped proxy 的 equals/hashCode/序列化坑。
+  - B：补反例：prototype 循环依赖、prototype 销毁不自动、scoped proxy 的 equals/hashCode/序列化易错点。
   - C：补排障：资源泄漏/生命周期错觉/线程隔离不生效时如何定位。
   - D：补断点：scope get/remove、scoped proxy 触发目标创建的入口。
   - E：补面试追问：@Lookup/ObjectProvider/scoped proxy 的选择策略。
@@ -52,7 +52,7 @@
 - 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
 - 内容级加深策略：
   - A：补“能/不能做什么”的方法级证明：为什么 BPP 不可靠改定义，为什么 BFPP 拿不到实例态。
-  - B：补反例：错误时机 getBean 导致 BPP 链不完整、手工注册破坏顺序的坑位。
+  - B：补反例：错误时机 getBean 导致 BPP 链不完整、手工注册破坏顺序的误区。
   - C：补排障：某注解不生效/某增强不生效/代理不出现时，先定位缺哪个处理器与顺序问题。
   - D：补断点：processor 收集/排序/注册/执行的关键入口方法。
   - E：补面试追问：BDRPP 为什么更强？与 ImportBeanDefinitionRegistrar 的边界如何说明。
@@ -63,7 +63,7 @@
 - 内容级加深策略：
   - A：补 full vs lite 的判定链路与证据点（为什么会/不会增强）。
   - B：补反例：proxyBeanMethods=false 导致的“多次调用多次 new”，以及与 AOP 代理的混淆点。
-  - C：补排障：明明写了 @Bean 却拿到多个实例/依赖不一致时如何定位。
+  - C：补排障：明明写了 @Bean 却获取到多个实例/依赖不一致时如何定位。
   - D：补断点：配置类解析、增强生成、@Bean 方法拦截的关键入口。
   - E：补面试追问：配置类增强与 AOP 代理有何不同？如何证明。
 

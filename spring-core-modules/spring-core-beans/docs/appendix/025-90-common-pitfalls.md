@@ -3,21 +3,21 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：常见误区清单（建议反复对照）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
     - 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 26 章：99. 自测题：是否能够真的理解了？](026-99-self-check.md)
+上一章：[第 24 章：40. AOT / Native 总览：为什么“JVM 运行成功”不等于“Native 运行成功”](../part-05-aot-and-real-world/024-40-aot-and-native-overview.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 26 章：99. 自测题：是否能够真的理解了？](026-99-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 ### 排障模板（统一结构）
 
-当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口无法运行 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
 
 1. 症状（Symptoms）：观察到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
@@ -27,18 +27,18 @@
 3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[013-02-breakpoint-map.md](../part-00-guide/013-02-breakpoint-map.md)
 4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[011-04-branch-decision-matrix.md](../part-00-guide/011-04-branch-decision-matrix.md)
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
-6. 验证（Verify）：复跑入口 + 对照自检清单：[026-99-self-check.md](026-99-self-check.md)
+6. 验证（Verify）：重新运行入口 + 对照自检清单：[026-99-self-check.md](026-99-self-check.md)
 
 - 本章主题：**90. 常见误区清单（建议反复对照）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansTypeConversionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
@@ -61,7 +61,7 @@
 3) **代理替换**：BPP 可能替换最终暴露对象
 4) **依赖解析**：候选收集 → 收敛 → by-name/Qualifier/Primary
 
-排障时先判层，再下断点，效率最高。
+排障时先判层，再设置断点，效率最高。
 
 ## 源码与断点
 
@@ -70,13 +70,13 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ## 常见误区与边界
 
-> 这一节的目的不是“列口号”，而是把高频误判做成可复现的定位清单：每一条都能在本仓库的某个 Lab 里跑出来，并能下断点看见关键分支。
+> 这一节的目的不是“列口号”，而是把高频误判做成可复现的定位清单：每一条都能在本仓库的某个 Lab 中复现出来，并能设置断点观察到关键分支。
 
 ### 0. 复现入口（可运行）
 
@@ -111,12 +111,12 @@
 - 修复：`ObjectProvider` / `@Lookup` / scoped proxy
 - 验证：`SpringCoreBeansCustomScopeLabTest` / `SpringCoreBeansContainerLabTest`
 
-### 2) 以为 `@Order` 能解决“单个依赖注入的歧义”
+### 2) 误认为 `@Order` 能解决“单个依赖注入的歧义”
 
 事实：
 
 - `@Order` 更常用于集合注入的排序
-- 单依赖选择优先看 `@Primary`、`@Qualifier` 等
+- 单一依赖的候选选择应优先依据 `@Primary`、`@Qualifier` 等
 
 见：[03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 
@@ -156,7 +156,7 @@
 
 典型症状：
 
-- `getBean("name")` 拿到的类型不对
+- `getBean("name")` 获取到的类型不对
 - “怎么注入工厂本身？”
 
 核心记忆：
@@ -166,12 +166,12 @@
 
 见：[08. FactoryBean](../part-01-ioc-container/08-factorybean.md)
 
-- 现象：`getBean("x")` 拿到的不是 FactoryBean 本体
+- 现象：`getBean("x")` 获取到的不是 FactoryBean 本体
 - 证据链：`AbstractBeanFactory#getObjectForBeanInstance`（`&` 分支）
 - 修复：需要工厂本体时使用 `&beanName`
 - 验证：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 
-### 5) 认为“循环依赖能跑起来就没问题”
+### 5) 认为“循环依赖能够闭合就没有问题”
 
 事实：
 
@@ -222,7 +222,7 @@
 - 修复：优先构造器注入；必要时 `ObjectProvider`
 - 验证：`SpringCoreBeansLabTest`
 
-### 8) 以为 `@Qualifier` 是“写了就行”
+### 8) 以为 `@Qualifier` “写了即可生效”
 
 典型症状：
 
@@ -320,7 +320,7 @@
 
 事实：
 
-- setter 循环能救，靠的是“提前暴露引用”（early singleton exposure），这意味着读者可能拿到半初始化对象
+- setter 循环能救，靠的是“提前暴露引用”（early singleton exposure），这意味着读者可能获取到半初始化对象
 - 一旦代理介入，early 与 final 不一致会让问题更隐蔽（见 [16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](../part-03-container-internals/16-early-reference-and-circular.md)）
 
 如何验证：
@@ -339,7 +339,7 @@
 事实：
 
 - `FactoryBean` 还会影响：type matching、缓存语义、按类型发现（尤其 `getObjectType()`）
-- `getObjectType=null` + `allowEagerInit=false` 会导致“按类型找不到但按名字能拿到”的边界
+- `getObjectType=null` + `allowEagerInit=false` 会导致“按类型找不到但按名字能获取到”的边界
 
 如何验证：
 
@@ -445,7 +445,7 @@
 
 - 生产代码里不要“依赖 by-name fallback 的侥幸收敛”，优先显式表达依赖关系：`@Qualifier` / `@Primary`
 
-- 现象：多候选下 `@Autowired` 未报错，重构后行为变化
+- 现象：多候选下 `@Autowired` 未异常，重构后行为变化
 - 证据链：`DefaultListableBeanFactory#determineAutowireCandidate`（by-name 分支）
 - 修复：显式 `@Qualifier` / `@Primary`，避免隐式 by-name
 - 验证：`SpringCoreBeansAutowireCandidateSelectionLabTest`
@@ -481,7 +481,7 @@
 典型症状：
 
 - 容器里明明有一个 `@Primary`，但最终注入的却是另一个实现
-- 或者读者看见了 `@Primary`，就下意识认为“这就是默认实现”，却忘了注入点可能带了更强限定
+- 或者读者观察到了 `@Primary`，就下意识认为“这就是默认实现”，却忘了注入点可能带了更强限定
 
 事实：
 
@@ -506,13 +506,13 @@
 
 ### 21) 以为 scoped proxy “把 prototype 变成单例”（忽略 `ScopedProxyMode` 与 `scopedTarget.*`）
 
-典型错误认知：看到注入点拿到的是同一个对象引用，就断言“prototype 失效了”。
+典型错误认知：看到注入点获取到的是同一个对象引用，就断言“prototype 失效了”。
 但 scoped proxy 的语义是“注入 proxy（通常是单例）”，真实 target 按 scope 创建；容器里会同时存在：
 
 - `beanName`：proxy
 - `scopedTarget.beanName`：真实目标
 
-因此排障时必须先判定你拿到的是 proxy 还是 target；同时要把 `ScopedProxyMode.INTERFACES` / `TARGET_CLASS` 的差异（JDK vs CGLIB）纳入修复建议。
+因此在排障时，应首先判定当前获取的是 proxy 还是 target；同时将 `ScopedProxyMode.INTERFACES` / `TARGET_CLASS` 的差异（JDK vs CGLIB）纳入修复建议。
 
 ## 面试常问（把“误区”说成标准答案）
 
@@ -555,7 +555,7 @@
 ### Q4：循环依赖为什么“构造器死、setter 可能活”？三层缓存解决什么、不解决什么？
 
 - 标准答案（可复述）：
-  - setter 循环依赖可能在“提前暴露 early reference”的窗口期被打断；构造器注入没有“先实例化再注入”的窗口，通常 fail-fast。三层缓存的核心是：支持 early reference 的按需生成与区分 early/final，但它不承诺解决所有循环（比如构造器循环、或 raw/wrapped 不一致导致的失败）。
+  - setter 循环依赖可能在“提前暴露 early reference”的窗口期被打断；构造器注入没有“先实例化再注入”的窗口，通常 fail-fast。三层缓存的核心是：支持 early reference 的按需生成与区分 early/final，但它不承诺解决所有循环（例如构造器循环、或 raw/wrapped 不一致导致的失败）。
 - 证据链（方法级）：
   - 三层缓存入口：`DefaultSingletonBeanRegistry#getSingleton`
   - early exposure：`DefaultSingletonBeanRegistry#addSingletonFactory`
@@ -575,7 +575,7 @@
   - `SpringCoreBeansProxyingPhaseLabTest`
 
 ## 自检要点
-- 应能够否做到：拿到一个现象（注入失败/拿到 proxy/占位符没解析/启动阶段异常）就能先分层（定义层 vs 实例层），并跳到对应章节与 Lab？
+- 应能够否做到：获取到一个现象（注入失败/获取到 proxy/占位符没解析/启动阶段异常）就能先分层（定义层 vs 实例层），并跳到对应章节与 Lab？
 - 应能够否明确区分三件事：**候选选择（谁赢）**、**集合排序（谁先谁后）**、**初始化顺序（谁先创建）**？
 - 应能够否把“猜测”变成“证据链”：用一个 LabTest + 断点 + watch list 把结论固定为可复现事实？
 

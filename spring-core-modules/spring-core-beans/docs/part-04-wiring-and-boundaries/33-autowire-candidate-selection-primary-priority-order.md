@@ -3,14 +3,14 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`AutowiredAnnotationBeanPostProcessor#postProcessProperties` / `DefaultListableBeanFactory#doResolveDependency` / `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
     - 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](32-resource-injection-name-first.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[34. `@Value(\"${...}\")` 占位符解析：默认 non-strict vs strict fail-fast](34-value-placeholder-resolution-strict-vs-non-strict.md)
+上一章：[32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](32-resource-injection-name-first.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](34-value-placeholder-resolution-strict-vs-non-strict.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
@@ -27,7 +27,7 @@
     - **集合注入**注入的是“全部候选”，这时才谈排序；`@Order` 主要影响集合排序，不负责单依赖选胜者。
     - `@Qualifier` 是最强的“收敛信号”；`@Primary` 是默认胜者；`@Priority` 常作为 tie-break；by-name fallback 是隐式规则（不推荐依赖）。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
@@ -56,7 +56,7 @@
 
 - `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
 
-### DependencyDescriptor 深挖：注入点语义决定“走哪条分支”
+### DependencyDescriptor 深入分析：注入点语义决定“走哪条分支”
 
 `doResolveDependency` 的每一次决策，都基于 `DependencyDescriptor`：
 
@@ -109,7 +109,7 @@
 | --- | --- | --- | --- | --- |
 | `NoUniqueBeanDefinitionException` | 单依赖注入候选太多且无法收敛 | `doResolveDependency` 看 `matchingBeans`；`determineAutowireCandidate` 走到 fail-fast | 用 `@Qualifier/@Primary/@Priority` 收敛；或让多余候选 back-off | `SpringCoreBeansAutowireCandidateSelectionLabTest` |
 | 读者加了 `@Order` 但仍 NoUnique | 概念误用：`@Order` 只管集合排序 | `determineAutowireCandidate` 分支里看不到 `@Order` 决策 | 回到单依赖规则：Qualifier/Primary/Priority | 同上（order 不解决 single） |
-| 注入到了“不是我想要的那个” | by-name fallback 或 Primary/Priority 规则与读者预期不同 | 看 `dependencyName` 与 beanName 是否匹配；看 primaryCandidate | 显式 `@Qualifier`；减少隐式 by-name 依赖 | `SpringCoreBeansAutowireCandidateSelectionLabTest`（by-name 用例） |
+| 注入到了“不是预期的那个” | by-name fallback 或 Primary/Priority 规则与读者预期不同 | 看 `dependencyName` 与 beanName 是否匹配；看 primaryCandidate | 显式 `@Qualifier`；减少隐式 by-name 依赖 | `SpringCoreBeansAutowireCandidateSelectionLabTest`（by-name 用例） |
 | 集合顺序不稳定/不符合预期 | 没有明确 order 信息；或排序入口没走 orderedStream | 看是否走 `AnnotationAwareOrderComparator#sort`；List/Map 注入路径 | 给候选加 `@Order`/实现 `Ordered`；使用 `orderedStream()` | `SpringCoreBeansAutowireCandidateSelectionLabTest`（集合排序用例） |
 
 ## 5. 断点闭环（建议照做一次）
@@ -175,6 +175,6 @@
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
 
-上一章：[32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](32-resource-injection-name-first.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[34. `@Value(\"${...}\")` 占位符解析：默认 non-strict vs strict fail-fast](34-value-placeholder-resolution-strict-vs-non-strict.md)
+上一章：[32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](32-resource-injection-name-first.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](34-value-placeholder-resolution-strict-vs-non-strict.md)
 
 <!-- BOOKIFY:END -->

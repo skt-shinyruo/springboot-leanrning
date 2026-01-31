@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：registerResolvableDependency：能注入，但它不是 Bean
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`DefaultListableBeanFactory#resolvableDependencies` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultListableBeanFactory#resolveDependency`
     - 推荐 Lab：`SpringCoreBeansResolvableDependencyLabTest`
@@ -26,9 +26,9 @@
     - `registerResolvableDependency` 注册的是一张“特殊依赖表”：`DefaultListableBeanFactory#resolvableDependencies`（**type → value**），不是 BeanDefinition。
     - 命中位置在依赖解析主入口 `DefaultListableBeanFactory#doResolveDependency`：在“按类型找候选 bean”之前，会先尝试从 `resolvableDependencies` 里按可赋值关系匹配。
     - 所以它的典型外观是：**能注入（resolveDependency 命中）**，但**不是 bean（getBean/getBeansOfType 查不到）**。
-    - 这条机制经常与 `*Aware` 搞混：两者都能把“容器对象/上下文对象”交给业务 bean，但生效点和生命周期完全不同。
+    - 这条机制经常与 `*Aware` 混淆：两者都能把“容器对象/上下文对象”交给业务 bean，但生效点和生命周期完全不同。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansResolvableDependencyLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
@@ -40,7 +40,7 @@
 > `registerResolvableDependency` 是在告诉容器：**遇到注入点需要这个 type，就给它这个 value**。
 > 但这个 value **不进入 BeanDefinition 注册表**，也**不进单例池/生命周期/后置处理器链**。
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：依赖解析命中 `resolvableDependencies`  
 **分支**：`doResolveDependency` 在“找候选 bean”之前先检查特殊依赖表  
@@ -70,7 +70,7 @@
 3) `@Resource`（按名优先）
    `CommonAnnotationBeanPostProcessor` 最终也会走 `resolveDependency` 或 `getBean(name)`（见第 32 章）
 
-### 1.1 DependencyDescriptor 深挖（决定“能不能命中”）
+### 1.1 DependencyDescriptor 深入分析（决定“能不能命中”）
 
 - `required`：是否允许为 null（`@Autowired(required=false)` / Optional）  
 - `annotations`：`@Qualifier/@Lazy/@Value` 影响解析路径  
@@ -81,7 +81,7 @@
 1) 字段注入（有名字）：`@Autowired private Environment env;`  
 2) 构造器注入（名字来自参数）：`Consumer(Environment environment)`
 
-**本章的关键点**：在 `doResolveDependency` 内部，Spring 会在“找候选 bean”之前先看 `resolvableDependencies`。
+**本章的关键点**：在 `doResolveDependency` 内部，Spring 会在“查找候选 bean”之前先检查 `resolvableDependencies`。
 
 ## 2. 机制：`resolvableDependencies` 到底是什么？
 
@@ -155,10 +155,10 @@
 - `ApplicationEventPublisher`
 - `Environment`
 
-需要确认“我的注入为什么能命中？”最直接的方法不是猜，而是：
+需要确认“该注入为什么能命中？”最直接的方法不是猜，而是：
 
-- 在 `prepareBeanFactory` 或 `registerResolvableDependency` 下断点，看注册了哪些 type
-- 在 `doResolveDependency` 的 resolvableDependencies 命中分支下断点，看命中了哪一条
+- 在 `prepareBeanFactory` 或 `registerResolvableDependency` 设置断点，看注册了哪些 type
+- 在 `doResolveDependency` 的 resolvableDependencies 命中分支设置断点，看命中了哪一条
 
 ## 4. 高级用法：用 `ObjectFactory` 做“按需提供”
 
@@ -189,7 +189,7 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansResolvableDependencyLabTest`）
 
-跑完该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少应能够复述 3 条结论：
 
 1) **能注入但不可 getBean**  
    - 断点：`doResolveDependency`  
@@ -203,11 +203,11 @@
 
 ## 6. 排障决策表（能注入/不能 getBean/命中不了 → 证据链）
 
-| 现象/报错 | 最可能原因 | 证据链（方法级） | 推荐修复 |
+| 现象/异常 | 最可能原因 | 证据链（方法级） | 推荐修复 |
 | --- | --- | --- | --- |
 | `@Autowired` 成功，但 `getBean(类型)` 失败 | 这是 resolvable dependency，不是 bean | `doResolveDependency` 命中 `resolvableDependencies`；`getBean` 查不到对应 BeanDefinition | 接受它的定位；如果需要 bean 语义，就改成注册 BeanDefinition（`registerBeanDefinition`/`registerSingleton`） |
 | 读者自己注册了 `registerResolvableDependency`，但注入点还是报 `NoSuchBeanDefinitionException`/`UnsatisfiedDependencyException` | 注册到了**另一个** `BeanFactory`（父子容器/测试 context 变化） | `prepareBeanFactory`/自定义注册处断点看目标工厂；`doResolveDependency` 里 map 是否包含该 key | 确认注册发生在“注入发生的那个 context”的 `BeanFactory` 上 |
-| 容易误以为 `@Qualifier` 能约束它，但没有效果 | resolvableDependencies 按 type 命中，不走候选选择 | 命中发生在 `doResolveDependency` 的 resolvableDependencies 分支，未进入 `findAutowireCandidates` | 如果需要 Qualifier 语义，就别用 resolvableDependency；改为注册多个 bean + Qualifier |
+| 容易误以为 `@Qualifier` 能约束它，但没有效果 | resolvableDependencies 按 type 命中，不走候选选择 | 命中发生在 `doResolveDependency` 的 resolvableDependencies 分支，未进入 `findAutowireCandidates` | 若需要 Qualifier 语义，则不宜使用 resolvableDependency；应改为注册多个 bean，并通过 Qualifier 进行选择 |
 | 读者把一个对象塞进 resolvableDependencies，期望它被 AOP/后置处理器增强，但没有 | 它不是 bean，不会走 BPP 链 | 不经过 `createBean` / `initializeBean` / `applyBeanPostProcessors...` | 需要增强就让它成为 bean，或把增强逻辑放在读者自己的 factory/provider 里 |
 
 ## 7. 断点闭环（建议照做一次）
@@ -235,7 +235,7 @@
 
 ### Q2：它和 `*Aware` 的区别是什么？
 
-- 标准答案：ResolvableDependency 在“注入解析阶段”命中；`*Aware` 在“bean 实例创建后回调阶段”命中；两者都能拿到容器对象，但生命周期与可测试性不同。
+- 标准答案：ResolvableDependency 在“注入解析阶段”命中；`*Aware` 在“bean 实例创建后回调阶段”命中；两者都能获取到容器对象，但生命周期与可测试性不同。
 - 方法级证据链：`doResolveDependency` vs `invokeAwareMethods`。
 
 ### Q3：能不能用它来实现 `@Qualifier` 多实现选择？

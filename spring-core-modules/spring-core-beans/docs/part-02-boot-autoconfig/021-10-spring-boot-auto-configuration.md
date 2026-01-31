@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Spring Boot 自动装配如何影响 Bean（Auto-configuration）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
     - 推荐 Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest`
@@ -16,15 +16,15 @@
 ## 导读
 
 - 本章主题：**10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationImportOrderingLabTest` / `SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutoConfigurationOverrideMatrixLabTest` / `SpringCoreBeansBeanDefinitionOriginLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationImportOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansConditionEvaluationReportLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationBackoffTimingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationOverrideMatrixLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansBeanDefinitionOriginLabTest.java`
@@ -34,13 +34,13 @@
 
     - A（证据链）：“导入链路证据链”：候选收集→导入→注册 BeanDefinition 的关键链路与最短调用链。
     - B（边界反例）：反例：用户 bean 顶掉 auto-config / conditionalOnMissingBean 被误判 / FactoryBean+type matching 导致条件误命中。
-    - C（排障 SOP）：排障：从“bean 没注册/注册了但不是我想要的”到“第一断点入口”的 SOP。
+    - C（排障 SOP）：排障：从“bean 没注册/注册了但不是预期的实现”到“第一断点入口”的 SOP。
     - D（断点观察）： watch list：导入列表、条件上下文、BeanDefinition 注册表的关键对象快照。
     - E（面试复述）：面试追问：auto-config 的 back-off 与覆盖策略如何解释且可证明。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 
-可以发现它并不神秘：它本质上就是一套更系统化的 **配置导入（@Import）+ 条件判断（@Conditional...）+ bean 注册**。
+可以将其机制概括为一套更系统化的 **配置导入（@Import）+ 条件判断（@Conditional...）+ bean 注册**。
 
 ### 自动装配角色分工（先记住 4 个入口）
 
@@ -64,7 +64,7 @@
 - 读者没写某个 bean，但容器里确实有（自动配置注册的）
 - 读者写了某个 bean，自动配置反而“没生效”（条件失败，例如 `@ConditionalOnMissingBean` 不成立）
 
-### 1.1 机制讲透：条件 → 分支 → 结果（Boot 版）
+### 1.1 机制系统阐述：条件 → 分支 → 结果（Boot 版）
 
 **条件**：是否满足 `@Conditional*`（classpath/属性/已有 bean）  
 **分支**：`ConditionEvaluator#shouldSkip` 决定跳过/注册  
@@ -79,9 +79,9 @@
 
 理解上可以把它当作：
 
-- “请帮我导入一堆自动配置类”
+- “导入一组自动配置类”
 
-而“导入一堆类”的技术手段，与 [02 章](../part-01-ioc-container/02-bean-registration.md) 的 `@Import` 思想一致。
+而“导入一组类”的技术手段，与 [02 章](../part-01-ioc-container/02-bean-registration.md) 的 `@Import` 思想一致。
 
 ## 3. 自动配置类从哪里来？（类清单的来源）
 
@@ -108,7 +108,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 学习阶段无需背排序实现，但应能够做到：
 
-- 能在 `ConditionEvaluationReport` 里看见某个 auto-config 的 match/no-match 结果（先回答“为什么”）
+- 能在 `ConditionEvaluationReport` 里观察到某个 auto-config 的 match/no-match 结果（先回答“为什么”）
 - 能在断点里定位：auto-config 列表是在哪一步被导入、在哪一步被排序、在哪一步被条件过滤
 
 ### 3.2 源码调用链（方法级）：导入清单 → 排序 → 条件评估 → 注册定义
@@ -140,9 +140,9 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 - **Boot 2.x 常见入口**：`spring.factories`（历史机制，仍可能在一些场景里被兼容读取）
 - **Boot 3.x 主流入口**：`META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`
 
-这会直接影响你在排障时应该看哪类文件、下哪类断点，以及为什么“我明明引了依赖但自动配置没进来”有时不是条件问题，而是“清单压根没被导入”。
+这会直接影响排障时应检查的文件类别与断点入口，并解释为何“已引入依赖但自动配置未生效”有时并非条件问题，而是“清单未被导入”。
 
-> 实战建议：当你怀疑“自动配置类清单没进来”，不要从 `@Conditional` 开始猜；先把“清单是否被导入 + 导入顺序”用断点或条件报告证明出来。
+> 实战建议：当怀疑“自动配置类清单未导入”时，不宜从 `@Conditional` 开始推测；应先通过断点或条件报告验证“清单是否被导入 + 导入顺序”。
 
 ## 4. 为什么自动配置不是“全都生效”？——条件（Conditions）
 
@@ -170,10 +170,10 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 这个问题很适合用来区分“背概念”与“理解容器/自动装配时机”的人：
 
-这通常不是“Spring 乱了”，而是读者没把两个概念分开：
+这通常不是 Spring 行为异常，而是读者未将两个概念区分清楚：
 
 1) **条件评估发生在注册阶段**（不是应用 fully refreshed 后）
-2) **auto-configuration 的导入/处理顺序**会影响“当下能否看见某个 bean/定义”
+2) **auto-configuration 的导入/处理顺序**会影响“当下能否观察到某个 bean/定义”
 
 所以应能够回答：
 
@@ -194,14 +194,14 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 这也是为什么“看懂条件”比“背自动配置有哪些”更重要。
 
-### 5.1 back-off 的判断时机：为什么“我写了 Bean 但没有退让”？（排障闭环）
+### 5.1 back-off 的判断时机：为什么“定义了 Bean 但未触发退让”？（排障闭环）
 
 一个非常常见的工程现象：
 
 - 读者写了“同类型”的覆盖 bean（或者容易误以为读者写了）
 - 但 auto-config 并没有 back-off（导致容器里出现两个同类型 bean，后续注入可能歧义/非预期）
 
-面试官最喜欢追问应能够不能把它解释成“时机问题”，而不是背一句“用 @ConditionalOnMissingBean”。
+面试官最喜欢追问：应能够把它解释成“时机问题”，而不是仅背诵“用 @ConditionalOnMissingBean”。
 
 题目：`@ConditionalOnMissingBean` 的判断到底发生在什么时候？它是看“最终容器状态”吗？
 
@@ -228,7 +228,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 ## 可复现闭环（基于 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`）
 
-跑完该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少应能够复述 3 条结论：
 
 1) **back-off 是定义层时机问题**  
    - 断点：`ConditionEvaluator#shouldSkip`  
@@ -240,7 +240,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
    - 断点：`registerBeanDefinition`  
    - 断言：`beanDefinition.getSource()` 能定位到 auto-config 类
 
-## 6. 如何“看见”自动装配做了什么？
+## 6. 如何“观察到”自动装配做了什么？
 
 学习阶段建议掌握两种手段：
 
@@ -263,15 +263,15 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 ## 面试常问（自动配置与条件装配怎么定位）
 
 1) **如何定位“为什么某个自动配置生效/不生效”？（不靠猜日志）**
-   - 要点：先看 `ConditionEvaluationReport`（报告告诉读者 match / no match 的理由），再到 `OnBeanCondition#getMatchOutcome` / `SpringBootCondition#matches` 下断点确认“评估时机与输入是什么”。需要跨配置依赖时，再回到排序与 after/before 元数据（见本模块 ordering labs）。
+   - 要点：先看 `ConditionEvaluationReport`（报告告诉读者 match / no match 的理由），再到 `OnBeanCondition#getMatchOutcome` / `SpringBootCondition#matches` 设置断点确认“评估时机与输入是什么”。需要跨配置依赖时，再回到排序与 after/before 元数据（见本模块 ordering labs）。
 
 2) **如何定位“某个 bean 到底是谁注册的”？**
    - 要点：看 `BeanDefinition` 的来源字段（factoryBeanName/factoryMethodName/resource/source/role），把“来自哪个 auto-config / 哪个 @Bean 方法”变成可观测事实，而不是翻日志。
 
 3) **如何解释“为什么有时能启动、有时会因为 NoUnique 直接挂”？**
-   - 要点：重复候选不一定立刻爆，只有当出现单注入点时才需要收敛候选；修复要么确定化选择（`@Primary/@Qualifier`），要么让自动配置 back-off（从根上消除多余候选）。
+   - 要点：重复候选不一定立即暴露问题，只有当出现单注入点时才需要收敛候选；修复要么确定化选择（`@Primary/@Qualifier`），要么让自动配置 back-off（从根源消除多余候选）。
 
-## 8. 在本模块里如何“跑起来验证”（最小复现 + 断点闭环）
+## 8. 在本模块里如何“运行验证”（最小复现 + 断点闭环）
 
 这一章的目标是：把 Spring Boot 的自动装配从“黑箱”变成“可解释、可调试、可覆盖”的机制。
 
@@ -317,7 +317,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 - 定义层时机（关键闭环）：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
   - 结合读者自己的 registrar：`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`
   - 用它证明：**early registrar 能在条件评估前把 override 定义放进去；late registrar 则会绕过 back-off**
-- 最终炸点（当重复候选遇到单注入点）：`DefaultListableBeanFactory#doResolveDependency`
+- 最终触发点（当重复候选遇到单注入点）：`DefaultListableBeanFactory#doResolveDependency`
   - 继续走到：`findAutowireCandidates` → `determineAutowireCandidate`（Primary/Qualifier/name 的收敛分支）
 
 复现入口（可断言）：
@@ -335,7 +335,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 ### 8.1 Labs 清单（按主题）
 
-本模块提供了几组 Boot 自动装配实验（Labs），用最小可控的方式把“条件生效/失效、覆盖、定位、顺序”跑出来：
+本模块提供了几组 Boot 自动装配实验（Labs），以最小可控的方式复现“条件生效/失效、覆盖、定位、顺序”：
 
 - 对应测试：`src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationLabTest.java`
   - 使用 `ApplicationContextRunner`：更快、更聚焦，不需要启动完整应用
@@ -357,7 +357,7 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 - 对应测试：`src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationBackoffTimingLabTest.java`
   - 覆盖点：
     - back-off 的判断时机：为什么读者“写了覆盖 Bean”但 auto-config 没退让
-    - 用 early/late registrar 对照把“时机差异”跑成可断言结论，并给出断点闭环入口
+    - 用 early/late registrar 对照将“时机差异”整理为可断言结论，并给出断点闭环入口
 
 - 对应测试：`src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationImportOrderingLabTest.java`
   - 覆盖点：

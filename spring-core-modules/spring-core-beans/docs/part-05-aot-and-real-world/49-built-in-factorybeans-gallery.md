@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
-    - 怎么使用：建议先跑本章推荐 Lab，把输入层解析或 AOT 契约跑通；再回到正文用断点把关键分支（reader/hints/值解析）看见并能解释。
+    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
     - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
     - 源码入口：`BeanFactory#getBean(...)` / `FactoryBean#isSingleton` / `AbstractBeanFactory#getObjectForBeanInstance`
     - 推荐 Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBuiltInFactoryBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansServiceLoaderFactoryBeansLabTest.java`
@@ -44,7 +44,7 @@
 
 这一章补齐一个“读者不一定会手写，但排障/读源码时必遇到”的知识点：
 
-> **Spring 自带那么多 `*FactoryBean` 到底是干嘛的？`&beanName` 为什么能拿到另一个对象？**
+> **Spring 自带那么多 `*FactoryBean` 到底是干嘛的？`&beanName` 为什么能获取到另一个对象？**
 
 需要先把一件事讲清楚：
 
@@ -59,7 +59,7 @@
 
 ---
 
-### 机制讲透：条件 → 分支 → 结果
+### 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：`getBean` 命中的是 FactoryBean  
 **分支**：默认返回 product；`&` 前缀返回 factory 本体  
@@ -95,7 +95,7 @@
 
 ---
 
-## 2. 怎么用：两类最常见的内置 FactoryBean（最小可用心智）
+## 2. 使用方式：两类最常见的内置 FactoryBean（最小可用心智）
 
 ### 2.1 `MethodInvokingFactoryBean`（把“调用方法”变成一个 bean）
 
@@ -108,7 +108,7 @@
 这类 FactoryBean 的典型场景：
 
 - 遗留 XML 配置里把某些值/对象拼出来（不想写 Java 配置类）
-- 或者在排障时看见它，需要能判断“这个 bean 到底是值，还是值的工厂”
+- 或者在排障时观察到它，需要能判断“这个 bean 到底是值，还是值的工厂”
 
 ### 2.2 `ServiceLocatorFactoryBean`（把“按需查找”包装成代理）
 
@@ -215,9 +215,9 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -257,21 +257,21 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 5) **ServiceLoader*FactoryBean（SPI）**
    - `ServiceListFactoryBean#getObject` / `ServiceLoaderFactoryBean#getObject`（视具体类型略有差异）
 
-1) **误区：`getBean("x")` 就是拿到名为 x 的 bean 本体**
-   - 对 FactoryBean 来说，`getBean("x")` 默认拿到的是 product，不是 factory。
+1) **误区：`getBean("x")` 就是获取到名为 x 的 bean 本体**
+   - 对 FactoryBean 来说，`getBean("x")` 默认获取到的是 product，不是 factory。
 2) **误区：`MethodInvokingFactoryBean` 用来“生成随机值/时间戳”**
-   - 默认 `singleton=true`，结果会被缓存；容易误以为每次都会变，其实不会。
+   - 默认 `singleton=true`，结果会被缓存；容易误以为每次都会变化，但实际上不会。
 3) **误区：ServiceLocator 只是“语法糖”**
    - 它改变了依赖关系表达方式：从注入时确定 → 运行时决定；排障更难，慎用。
 
 ## 常见误区与边界
 
-但是注意：这是一种 **service locator 模式**，会把依赖关系从“注入点”挪到“调用点”，可读性更差，能不用就不用。
+需要注意：这是一种 **service locator 模式**，会把依赖关系从“注入点”迁移到“调用点”，可读性更差，应谨慎采用。
 
 ### 常见边界与误区（读者为什么会在真实项目里遇到）
 
-- **FactoryBean 双重身份永远要先确认**：读者拿到的是 product 还是 factory？（`&` 前缀）
-- **默认 singleton 缓存会“冻结结果”**：例如 MethodInvokingFactoryBean，容易误以为每次调用都变，其实是同一个 product 被缓存。
+- **FactoryBean 的双重身份应首先明确**：读者获取到的是 product 还是 factory？（`&` 前缀）
+- **默认 singleton 缓存会“冻结结果”**：例如 MethodInvokingFactoryBean，容易误以为每次调用都会变化，但实际上是同一个 product 被缓存。
 - **ServiceLocator 的排障成本更高**：它把依赖关系从“注入时”推迟到“调用时”，定位问题必须回到调用点追踪。
 
 ## 面试常问（内置 FactoryBean：识别模式比背清单更重要）
@@ -279,7 +279,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 ### Q1：看到 `XXXFactoryBean`，如何快速判断“容器对外暴露的到底是谁”？
 
 - 标准答案（可复述）：
-  - 默认 `getBean(\"name\")` 返回的是 product；`getBean(\"&name\")` 才是 FactoryBean 本体。先分清“名字语义”，再谈类型匹配与缓存语义。
+  - 默认 `getBean("name")` 返回的是 product；`getBean("&name")` 才是 FactoryBean 本体。应先明确“名称语义”，再讨论类型匹配与缓存语义。
 - 证据链（方法级）：
   - `AbstractBeanFactory#getObjectForBeanInstance`
   - `FactoryBeanRegistrySupport#getObjectFromFactoryBean`
@@ -294,7 +294,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 ## 自检要点
 - 应能够解释清楚：FactoryBean 的 product/factory 分流规则吗？什么时候必须用 `&name`？
 - 应能够说出：MethodInvoking/ServiceLocator/ServiceLoader 这几类 FactoryBean 各自把“依赖关系”放在了哪里吗？
-- 遇到“拿到的对象类型不对/每次返回都一样/调用时才失败”时，第一反应会去哪个章节/哪个断点入口？
+- 遇到“获取到的对象类型不对/每次返回都一样/调用时才失败”时，第一反应会去哪个章节/哪个断点入口？
 
 ## 小结与下一章
 

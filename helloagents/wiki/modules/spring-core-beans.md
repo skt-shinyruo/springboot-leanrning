@@ -8,11 +8,12 @@
 
 - **Responsibility:** 提供 Bean 机制的系统文档与可运行 Labs/Exercises，用于建立源码级心智模型与排障能力。
 - **Docs Reading:** 推荐从 `spring-core-modules/spring-core-beans/docs/README.md` 开始（书本目录 + Part 划分）；主线可按 Part 顺读，每章顶部提供“上一章｜目录｜下一章”导航，降低章节切换成本。
+- **Docs Tone:** `spring-core-beans` 文档全章采用教材化书面语，避免第二人称、俚语与口语化表达；保留术语、代码标识与引用路径的准确性。
 - **Why Index（基础问题索引 / SSOT）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`（覆盖：三级缓存/three level cache、early reference、raw vs wrapped、proxy 替换；并提供跨模块回链到 AOP）
 - **内容级再加深（A–E 维度策略清单）:** `spring-core-modules/spring-core-beans/docs/deepening-strategies/README.md`（按 Part/章节给出“证据链/反例/排障/断点/面试复述”补强方向）
 - **内容级再加深（已写入正文）:** 各章节已内嵌 `AE-DEEPENING` 提示块（位于 `## 机制主线` 前），用于把 A–E 维度的“下一步怎么深挖”直接落到正文阅读路径里
 - **症状快速定位（目录页入口）:** `spring-core-modules/spring-core-beans/docs/README.md`（新增“症状驱动导航（快速定位）”，用于从现象直达章节与证据链入口）
-- **Start Here（30 分钟快启）:** 先跑 3 个最小实验建立容器主线直觉，再进入深潜：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`。
+- **Start Here（30 分钟快启）:** 先运行 3 个最小实验建立容器主线直觉，再进入深潜：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`。
 - **Auto-Config 顺序（Boot/容器交汇点）:** `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
 - **断点地图（可复用清单）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
 - **循环依赖（现象→窗口期→规避）:** `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
@@ -23,7 +24,7 @@
 - **`@Value("${...}")` 占位符（strict vs non-strict）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
 - **类型转换（BeanWrapper/ConversionService）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
 - **Debugger Pack（断点包总入口）:** `spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`（聚合主线/分支/排障/性能并发入口）
-- **团队内训讲义（可直接开讲）:** `spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`（60/90/120 分钟课时脚本 + Labs/断点/互动题）
+- **团队内训讲义（可直接用于授课）:** `spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`（60/90/120 分钟课时脚本 + Labs/断点/互动题）
 - **关键分支矩阵（If/Then 决策表）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
 - **排障 playbook:** `spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
 - **自检清单:** `spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
@@ -32,7 +33,7 @@
 - **注解为何生效（bootstrap）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`（新增“处理器速查表 + 时机时间线 + 过早 getBean 反例”）
 - **深挖指南（症状驱动导航）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`（新增“按现象选章节/断点/Lab”的速查表）
 - **Learning Path（路线图）:** `helloagents/wiki/learning-path.md`（主线：Beans → AOP → Tx → Web MVC）
-- **第一个可运行入口（3 分钟开跑）:**
+- **第一个可运行入口（3 分钟启动）:**
   - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans test`
   - 对应测试类：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 - **Docs 教程一致性修复（2026-01-26）:** 完成 beans 模块 docs 全章“教程化”补齐：统一补齐排障分流/常见坑/面试常问/一句话自检，清理空标题与层级问题；并将 `refresh() → doCreateBean()` 主线章书本化（导读/实验入口/分支决策表/BOOKIFY 导航）。

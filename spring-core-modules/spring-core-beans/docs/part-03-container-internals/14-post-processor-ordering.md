@@ -3,14 +3,14 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`Ordered#getOrder()` / `PostProcessorRegistrationDelegate#sortPostProcessors` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
     - 推荐 Lab：`SpringCoreBeansPostProcessorOrderingLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[13. BeanDefinitionRegistryPostProcessor：定义注册再推进](13-bdrpp-definition-registration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[15. 实例化前短路：还没 new 就拿到对象了？](15-pre-instantiation-short-circuit.md)
+上一章：[13. BeanDefinitionRegistryPostProcessor：定义注册再推进](13-bdrpp-definition-registration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[15. 实例化前短路：还没 new 就获取到对象了？](15-pre-instantiation-short-circuit.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticBeanPostProcessorLabTest.java`
@@ -34,7 +34,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "内容级再加深（A–E 维度）"
 
-    - A（证据链）：“排序算法骨架”与关键列表快照（收集→排序→执行），让读者能在断点里看见顺序如何被决定。
+    - A（证据链）：“排序算法骨架”与关键列表快照（收集→排序→执行），让读者能在断点里观察到顺序如何被决定。
     - B（边界反例）：反例：programmatic 注册绕过默认排序；@Order 与 @Priority 的边界误判。
     - C（排障 SOP）：排障：增强偶发不生效/顺序错乱时的第一入口与观察点。
     - D（断点观察）：断点：排序发生点、processor 列表构建点、注册点。
@@ -226,7 +226,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 ## 可复现闭环（基于 `SpringCoreAopMultiProxyStackingLabTest`）
 
-跑完该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少应能够复述 3 条结论：
 
 1) **分段规则决定“谁先执行”**  
    - 断点：`sortPostProcessors`  
@@ -275,7 +275,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 ## 反例（counterexample）
 
-**反例：我明明让 BPP 实现了 `PriorityOrdered/Ordered`，为什么顺序还是不生效？**
+**反例：已让 BPP 实现了 `PriorityOrdered/Ordered`，为什么顺序仍不生效？**
 
 - 手工 `beanFactory.addBeanPostProcessor(...)` 注册的 BPP
   - **不会**走 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 的排序流程
@@ -292,7 +292,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 - 常问：`PriorityOrdered/Ordered/@Order` 三者谁更“强”？为什么？
   - 答题要点：分段规则按接口（PriorityOrdered/Ordered/others）决定；组内才按 order 值排序；`Ordered#getOrder()` 通常强于注解；`@Order` 是否生效取决于 comparator。
-- 常见追问：为什么我写了 `@Order`，但 post-processor 顺序没变？
+- 常见追问：为什么写了 `@Order`，但 post-processor 顺序没变？
   - 答题要点：`@Order` 不是“接口”，不会将处理器放入 Ordered 段；并且如果容器没使用 `AnnotationAwareOrderComparator`，也可能不会读注解。
 - 常见追问：为什么手工 `addBeanPostProcessor(...)` 的顺序看起来“不听 Ordered”？
   - 答题要点：手工注册绕过 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 的排序流程；最终顺序就是注册顺序（见 [25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)）。
@@ -304,9 +304,9 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
@@ -325,14 +325,14 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 - `SpringCoreBeansPostProcessorOrderingLabTest.beanPostProcessors_areAppliedInPriorityOrderedThenOrderedThenUnorderedOrder()`
 - `SpringCoreBeansPostProcessorOrderingLabTest.beanPostProcessors_withDifferentOrderValues_areSortedAscendingWithinOrderedGroup()`
 
-## 源码锚点（建议从这里下断点）
+## 源码锚点（建议从这里设置断点）
 
 - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`：BFPP/BDRPP 的分组 + 排序 + 多轮扫描算法
 - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`：BPP 的排序与注册时机（影响后续所有 bean 的创建）
 - `AnnotationAwareOrderComparator#sort`：排序器入口（`PriorityOrdered` / `Ordered` / `@Order` 的差异在这里体现）
 - `DefaultListableBeanFactory#addBeanPostProcessor`：手工注册 BPP 的路径（绕过排序，顺序只看注册先后）
 
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
+## 断点闭环（用本仓库 Lab/Test 运行一次）
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java`
   - `beanFactoryPostProcessors_areInvokedInPriorityOrderedThenOrderedThenUnorderedOrder()`
@@ -345,10 +345,10 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 3) `AnnotationAwareOrderComparator#sort`：观察排序输入（候选集合）与排序输出（最终顺序）
 4) 在 Lab 中定义的三个 processor（priority/ordered/unordered）入口方法：观察断言里记录的执行顺序是怎么来的
 
-- “某个 BFPP 改定义没生效/被覆盖了” → **定义层 + 顺序问题**：先确认它是否实现了 `PriorityOrdered/Ordered`，再看它是否比其他 BFPP 更早执行（本章 Lab）
+- “某个 BFPP 改定义没生效/被覆盖了” → **定义层 + 顺序问题**：优先确认它是否实现了 `PriorityOrdered/Ordered`，再确认它是否比其他 BFPP 更早执行（本章 Lab）
 - “某个 BPP 的代理/增强消失了或包裹顺序不对” → **实例层 + 顺序问题**：看 `registerBeanPostProcessors` 的排序与注册时机（对照 [31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
-- “我手工 `addBeanPostProcessor` 后，`Ordered` 反而不生效” → **实例层 + 注册方式问题**：手工注册的 BPP 不会走容器的排序流程（见 [25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)）
-- “我以为 `@Order` 能解决单依赖注入歧义” → **不是顺序问题，是候选选择问题**：转到 [33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
+- “手工 `addBeanPostProcessor` 后，`Ordered` 反而不生效” → **实例层 + 注册方式问题**：手工注册的 BPP 不会走容器的排序流程（见 [25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)）
+- “误认为 `@Order` 能解决单依赖注入歧义” → **不是顺序问题，是候选选择问题**：转到 [33](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
 
 一个非常实用的“断点分流口诀”：
 
@@ -441,7 +441,7 @@ registerBeanPostProcessors(beanFactory):
 ### Q1：`PriorityOrdered` / `Ordered` / `@Order` 的优先级关系是什么？
 
 - 标准答案（可复述）：
-  - 分组优先看接口：`PriorityOrdered` 最高、`Ordered` 次之、其余最后；组内再用 comparator（接口 `getOrder()` 优先于注解值），数字越小越靠前。
+  - 分组优先依据接口：`PriorityOrdered` 最高、`Ordered` 次之、其余最后；组内再用 comparator（接口 `getOrder()` 优先于注解值），数字越小越靠前。
 - 证据链（方法级）：
   - 注册入口：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`
   - 排序入口：`AnnotationAwareOrderComparator#sort`
@@ -481,6 +481,6 @@ registerBeanPostProcessors(beanFactory):
 - Lab：`SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
 - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticBeanPostProcessorLabTest.java`
 
-上一章：[13. BeanDefinitionRegistryPostProcessor：定义注册再推进](13-bdrpp-definition-registration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[15. 实例化前短路：还没 new 就拿到对象了？](15-pre-instantiation-short-circuit.md)
+上一章：[13. BeanDefinitionRegistryPostProcessor：定义注册再推进](13-bdrpp-definition-registration.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[15. 实例化前短路：还没 new 就获取到对象了？](15-pre-instantiation-short-circuit.md)
 
 <!-- BOOKIFY:END -->

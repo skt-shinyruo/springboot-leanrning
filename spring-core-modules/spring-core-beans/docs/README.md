@@ -2,69 +2,69 @@
 
 ## 导读
 
-- 这份文档是 `spring-core-beans` 模块的学习入口与目录页：把“读什么 / 怎么跑 / 从哪里下断点”串成一条线。
-- 本模块目标：把 IoC 容器从“会用 API”提升到“能解释机制、能下断点、能排障定位”。
-- 推荐学习方式：**先跑对应 Lab 固化现象，再回到章节读机制主线，最后按断点闭环把证据链走通**。
-- 本模块每章开头都提供“章节学习卡片（五问闭环）”：用最短信息回答“这章讲什么/怎么用/从哪里下断点/跑哪个 Lab”，并与上一章/下一章导航保持一致，便于连续阅读与复盘。
+- 本文件作为 `spring-core-beans` 模块的学习入口与目录页，用于将“阅读内容 / 运行方式 / 断点入口”组织为一条连续主线。
+- 本模块目标：把 IoC 容器从“会用 API”提升到“能解释机制、能设置断点、能排障定位”。
+- 推荐学习方式：**先运行对应 Lab 固化现象，再回到章节阅读机制主线，最后通过断点完成证据链验证**。
+- 本模块每章开头均提供“章节学习卡片（五问闭环）”：以最少信息回答“本章主题/使用方式/断点入口/对应 Lab”，并与上一章/下一章导航保持一致，便于连续阅读与复盘。
 
 ## 四条阅读路线（按读者分层：源码进阶 + 面试）
 
 - A（能用为主）：按目录顺读每章的“本章要点 + 最小实验”，遇到问题回看“常见误区”。
-- B（能断点为主）：每章至少跑一次对应 Lab，并按章节给出的 breakpoints/watch list 在调试器里看见关键数据结构变化。
+- B（能断点为主）：每章至少运行一次对应 Lab，并按章节给出的 breakpoints/watch list 在调试器中观察关键数据结构变化。
 - C（能排障/能解释为主）：把每章的“自检要点”当成面试/复盘模板；遇到真实问题时按章节的“排障分流表”定位到最短调用链。
-- D（面试冲刺为主）：先刷 `appendix/93-interview-playbook.md` 的题库，再回到对应章节用“证据链（方法级）+ 可运行 Lab”把答案证明出来（而不是背书）。
+- D（面试冲刺为主）：先阅读 `appendix/93-interview-playbook.md` 的题库，再回到对应章节，以“证据链（方法级）+ 可运行 Lab”完成论证（避免仅记忆结论）。
 
 ## 章节契约（教程化验收口径：10/30/3）
 
 可以把每一章都当成一个“可验收交付物”，按 10/30/3 三段闭环学习：
 
-1) **10 分钟最小闭环**：跑通本章 Lab/Test，看到预期现象（或断言）。
-2) **30 分钟深挖闭环**：命中关键断点（3–5 个稳定锚点）并通过 watch list 看见决定性变量。
+1) **10 分钟最小闭环**：运行本章 Lab/Test，观察预期现象（或断言）。
+2) **30 分钟深入闭环**：命中关键断点（3–5 个稳定锚点）并通过 watch list 观察决定性变量。
 3) **3 分钟复述闭环**：用“结论 → 证据链（关键方法）→ 反例/误区”复述本章核心机制（对标 `appendix/93` 的标准结构）。
 
-## 怎么跑（最小闭环）
+## 如何运行（最小闭环）
 
 - 运行本模块全部测试：
   - `mvn -pl :spring-core-beans test`
-- 只跑某个章节对应 Lab：
+- 仅运行某个章节对应 Lab：
   - `mvn -pl :spring-core-beans -Dtest=<TestClassName> test`
 - Explore/Debug（可选启用，不影响默认回归）：
   - `mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans*ExploreTest test`
 
-## 推荐从这里开始
+## 可从此处开始
 
 - 基础问题索引（Why Index）：三级缓存 / three level cache / early reference / proxy 替换 → [00. Why Index（基础问题索引）](part-00-guide/009-00-why-index.md)
 - 30 分钟快启：`part-00-guide/012-01-quickstart-30min.md`
-- 深挖导读（症状驱动导航）：`part-00-guide/011-00-deep-dive-guide.md`
+- 深入导读（症状驱动导航）：`part-00-guide/011-00-deep-dive-guide.md`
 - 全章“内容级再加深”策略（A–E 维度，按章节给出补强方向）：`deepening-strategies/README.md`
 - 核心七件套（检查表 + 对应章节/Lab）：`appendix/92-knowledge-map.md`（第 0 节）
 - Debugger Pack（断点包总入口）：`appendix/98-debugger-pack.md`
-- 团队内训讲义（可直接开讲的课时脚本）：`appendix/99-team-training-kit.md`
+- 团队内训讲义（可直接用于授课的课时脚本）：`appendix/99-team-training-kit.md`
 
 ## 症状驱动导航（快速定位）
 
 > 更系统的“症状 → 章节 → 断点 → Lab”导航见：`part-00-guide/011-00-deep-dive-guide.md`。
 
-| 现象/报错（读者视角） | 直达章节（最短路径） | 备注（先分层再追栈） |
+| 现象/异常（读者视角） | 直达章节（最短路径） | 备注（先分层再追栈） |
 | --- | --- | --- |
-| `NoSuchBeanDefinitionException` / “@Bean/@Component 好像没生效” | [02. Bean 注册入口](part-01-ioc-container/02-bean-registration.md)、[12. 注解为何生效（bootstrap）](part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、[10. Boot 自动装配影响链路](part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) | 优先判定“定义层有没有注册 BeanDefinition” |
+| `NoSuchBeanDefinitionException` / “@Bean/@Component 似乎未生效” | [02. Bean 注册入口](part-01-ioc-container/02-bean-registration.md)、[12. 注解为何生效（bootstrap）](part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)、[10. Boot 自动装配影响链路](part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) | 优先判定“定义层有没有注册 BeanDefinition” |
 | `NoUniqueBeanDefinitionException` / 多实现注入歧义 | [03. 依赖注入解析](part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择 vs 顺序](part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) | 收敛：`@Primary/@Qualifier/@Priority` |
-| “循环依赖”报错 / `BeanCurrentlyInCreationException` | [09. 循环依赖（现象与规避）](part-01-ioc-container/09-circular-dependencies.md)、[16. early reference 与循环依赖](part-03-container-internals/16-early-reference-and-circular.md) | 先区分 constructor vs setter；再看 early reference 参与者 |
-| “为什么 Spring 要用三级缓存？” / `three level cache` / `earlySingletonObjects` / `singletonFactories` | [00. Why Index（基础问题索引）](part-00-guide/009-00-why-index.md)、[09. 循环依赖](part-01-ioc-container/09-circular-dependencies.md)、[16. early reference](part-03-container-internals/16-early-reference-and-circular.md) | 先抓住“final/early/factory 三类语义”与“early 形态一致性（raw vs proxy）” |
+| “循环依赖”异常 / `BeanCurrentlyInCreationException` | [09. 循环依赖（现象与规避）](part-01-ioc-container/09-circular-dependencies.md)、[16. early reference 与循环依赖](part-03-container-internals/16-early-reference-and-circular.md) | 先区分 constructor vs setter；再看 early reference 参与者 |
+| “为什么 Spring 要用三级缓存？” / `three level cache` / `earlySingletonObjects` / `singletonFactories` | [00. Why Index（基础问题索引）](part-00-guide/009-00-why-index.md)、[09. 循环依赖](part-01-ioc-container/09-circular-dependencies.md)、[16. early reference](part-03-container-internals/16-early-reference-and-circular.md) | 优先把握“final/early/factory 三类语义”与“early 形态一致性（raw vs proxy）” |
 | lazy bean 启动期被拉起 / “明明 @Lazy 还被提前创建” | [19. dependsOn](part-04-wiring-and-boundaries/19-depends-on.md)、[18. Lazy 语义](part-04-wiring-and-boundaries/023-18-lazy-semantics.md) | `dependsOn` 会显式 `getBean(dep)`，可强制拉起 lazy-init |
-| “拿到的是 proxy” / AOP 行为异常 / self-invocation | [31. 代理产生阶段（BPP 替换）](part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)、[15. 实例化前短路（pre）](part-03-container-internals/15-pre-instantiation-short-circuit.md) | 先定位是 pre/early/after-init 哪个窗口替换对象 |
-| `@Value(\"${...}\")` 解析失败 / 值不符合预期 | [34. 占位符解析（strict vs non-strict）](part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)、[38. Environment/PropertySource](part-04-wiring-and-boundaries/38-environment-and-propertysource.md) | 关注 PropertySource precedence 与 placeholder resolver |
+| “获取到 proxy” / AOP 行为异常 / self-invocation | [31. 代理产生阶段（BPP 替换）](part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)、[15. 实例化前短路（pre）](part-03-container-internals/15-pre-instantiation-short-circuit.md) | 先定位是 pre/early/after-init 哪个窗口替换对象 |
+| `@Value("${...}")` 解析失败 / 值不符合预期 | [34. 占位符解析（strict vs non-strict）](part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)、[38. Environment/PropertySource](part-04-wiring-and-boundaries/38-environment-and-propertysource.md) | 关注 PropertySource precedence 与 placeholder resolver |
 | `@Resource` 注入错对象 / “为什么像按名称找？” | [32. @Resource name-first](part-04-wiring-and-boundaries/32-resource-injection-name-first.md)、[22. beanName/alias](part-04-wiring-and-boundaries/22-bean-names-and-aliases.md) | name-first + alias 会共同影响最终命中 |
-| FactoryBean 搞混 `&` / “按类型发现/注入失效” | [08. FactoryBean（基础）](part-01-ioc-container/08-factorybean.md)、[23. FactoryBean 深潜](part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)、[29. FactoryBean 边界](part-04-wiring-and-boundaries/29-factorybean-edge-cases.md) | 关键点：`getObjectType/isSingleton` 对 type matching 的影响 |
-| 后处理器顺序导致“偶发不生效”/手工注册 BPP 陷阱 | [14. Ordering](part-03-container-internals/14-post-processor-ordering.md)、[25. 手工添加 BPP](part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md) | 先看 `PriorityOrdered/Ordered`，再看是否绕过默认注册流程 |
+| FactoryBean 混淆 `&` / “按类型发现/注入失效” | [08. FactoryBean（基础）](part-01-ioc-container/08-factorybean.md)、[23. FactoryBean 深潜](part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)、[29. FactoryBean 边界](part-04-wiring-and-boundaries/29-factorybean-edge-cases.md) | 关键点：`getObjectType/isSingleton` 对 type matching 的影响 |
+| 后处理器顺序导致“偶发不生效”/手工注册 BPP 陷阱 | [14. Ordering](part-03-container-internals/14-post-processor-ordering.md)、[25. 手工添加 BPP](part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md) | 优先核对 `PriorityOrdered/Ordered` 的分组与排序；再确认是否绕过默认注册流程 |
 | AOT/Native 运行期缺失反射/代理/资源 | [40. AOT 总览](part-05-aot-and-real-world/024-40-aot-and-native-overview.md)、[41. RuntimeHints](part-05-aot-and-real-world/41-runtimehints-basics.md) | 用 registrar + 单测把“构建期契约”钉死 |
 
 ## 目录
 
-### Part 00：Guide（怎么学 / 从哪里下断点）
+### Part 00：Guide（怎么学 / 从哪里设置断点）
 
 - [第 10 章：主线时间线：Spring Core Beans（IoC 容器）](part-00-guide/010-03-mainline-timeline.md)
-- [第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点](part-00-guide/011-00-deep-dive-guide.md)
+- [第 11 章：00. 深入指南：将“Bean 三层模型”落实到源码与断点](part-00-guide/011-00-deep-dive-guide.md)
 - [第 11 章：04：关键分支矩阵（Beans Branch Decision Matrix）](part-00-guide/011-04-branch-decision-matrix.md)
 - [第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](part-00-guide/012-01-quickstart-30min.md)
 - [第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）](part-00-guide/013-01-applicationcontext-refresh-call-chain.md)
@@ -84,7 +84,7 @@
 
 ### Part 02：Boot Auto-Config（Boot 叠加后容器如何变复杂）
 
-- [第 19 章：11. 调试与自检：如何“看见”容器正在做什么](part-02-boot-autoconfig/019-11-debugging-and-observability.md)
+- [第 19 章：11. 调试与自检：如何观察容器正在执行的工作](part-02-boot-autoconfig/019-11-debugging-and-observability.md)
 - [020-09 Auto-Config Ordering（自动配置顺序）](part-02-boot-autoconfig/020-09-auto-config-ordering.md)
 - [第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
 
@@ -121,12 +121,12 @@
 - [36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)
 - [37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
 - [38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](part-04-wiring-and-boundaries/38-environment-and-propertysource.md)
-- [39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界](part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md)
+- [39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界](part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md)
 
 ### Part 05：AOT & Real World（XML/Reader/AOT/外部对象/SpEL/自定义 qualifier）
 
-- [第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”](part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
-- [41. RuntimeHints 入门：把构建期契约跑通](part-05-aot-and-real-world/41-runtimehints-basics.md)
+- [第 24 章：40. AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”](part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
+- [41. RuntimeHints 入门：完成构建期契约验证](part-05-aot-and-real-world/41-runtimehints-basics.md)
 - [42. XML → BeanDefinitionReader：定义层解析与错误分型](part-05-aot-and-real-world/42-xml-bean-definition-reader.md)
 - [43. 容器外对象注入：AutowireCapableBeanFactory](part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md)
 - [44. SpEL 与 `@Value("#{...}")`：表达式解析链路](part-05-aot-and-real-world/44-spel-and-value-expression.md)
@@ -139,7 +139,7 @@
 
 ### Appendix（术语表 / 速查 / 排障清单 / 索引）
 
-- [第 25 章：90. 常见误区清单（建议反复对照）](appendix/025-90-common-pitfalls.md)
+- [第 25 章：90. 常见误区清单（可反复对照）](appendix/025-90-common-pitfalls.md)
 - [第 26 章：99. 自测题：是否能够真的理解了？](appendix/026-99-self-check.md)
 - [91. 术语表（Glossary）](appendix/91-glossary.md)
 - [92. 知识地图（Concept → Chapter → Lab）](appendix/92-knowledge-map.md)
@@ -149,13 +149,13 @@
 - [96. spring-beans Public API 覆盖差距（Gap）清单（Spring Framework 6.2.15）](appendix/96-spring-beans-public-api-gap.md)
 - [97. Explore/Debug 用例（可选启用，不影响默认回归）](appendix/97-explore-debug-tests.md)
 - [Debugger Pack（断点包总入口）](appendix/98-debugger-pack.md)
-- [99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本](appendix/99-team-training-kit.md)
+- [99. 团队内训讲义（Training Kit）：可直接用于授课的课时脚本](appendix/99-team-training-kit.md)
 - [内容级再加深策略（按章节 A–E）](deepening-strategies/README.md)
 
 ## 自检要点
-- 是否能够已经能按“主线 → 分支 → 证据链”的方式学习：先跑 Lab，再带着断点读章节？
+- 是否能够按“主线 → 分支 → 证据链”的方式学习：先运行 Lab，再结合断点阅读章节？
 - 是否能够能把一个现象先分层：定义阶段（BeanDefinition/processor） vs 创建阶段（getBean/doCreateBean/BPP）？
-- 是否能够能在 1 分钟内从目录定位到：对应章节 + 对应 LabTest + 建议断点入口？
+- 是否能够在 1 分钟内从目录定位到：对应章节 + 对应 LabTest + 断点入口？
 <!-- AE-DEEPENING:START -->
 !!! tip "内容级再加深（A–E 维度）"
 
@@ -168,6 +168,6 @@
 
 <!-- BOOKIFY:START -->
 
-上一章：[00. 模块导读与路径建议（Start Here）](part-00-guide/012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](README.md) ｜ 下一章：[01. 深挖指南（症状驱动导航）](part-00-guide/011-00-deep-dive-guide.md)
+上一章：[00. 模块导读与路径说明（Start Here）](part-00-guide/012-01-quickstart-30min.md) ｜ 目录：[Docs TOC](README.md) ｜ 下一章：[01. 深入指南（症状驱动导航）](part-00-guide/011-00-deep-dive-guide.md)
 
 <!-- BOOKIFY:END -->

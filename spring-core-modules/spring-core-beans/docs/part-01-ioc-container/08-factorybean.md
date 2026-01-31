@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`FactoryBean#getObject()` / `AbstractBeanFactory#getObjectForBeanInstance` / `FactoryBean#isSingleton()`
     - 推荐 Lab：`SpringCoreBeansContainerLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
@@ -46,20 +46,20 @@
 
 这一章解决的问题是：
 
-> 为什么 `getBean("xxx")` 拿到的不是 `xxx` 这个类型本身，而是“它生产的对象”？
+> 为什么 `getBean("xxx")` 获取到的不是 `xxx` 这个类型本身，而是“它生产的对象”？
 
 ## 1. `FactoryBean` 的核心语义
 
 把它记成一句话就够了：
 
-> `FactoryBean<T>` 是一个“能生产 T 的工厂”；**容器里注册的是工厂本身**，但读者日常 `getBean("name")`/按类型注入拿到的往往是 **工厂生产出来的 product（T）**。
+> `FactoryBean<T>` 是一个“能生产 T 的工厂”；**容器里注册的是工厂本身**，但读者日常 `getBean("name")`/按类型注入获取到的往往是 **工厂生产出来的 product（T）**。
 
 ### 1.1 两个名字，两种语义（必须背下来）
 
 - `"name"` → product（`FactoryBean#getObject()` 的返回值）
 - `"&name"` → factory（`FactoryBean` 实例本身）
 
-### 1.1.1 机制讲透：条件 → 分支 → 结果（可断点验证）
+### 1.1.1 机制系统阐述：条件 → 分支 → 结果（可断点验证）
 
 - **条件**：beanName 是否以 `&` 开头
 - **分支**：`AbstractBeanFactory#getObjectForBeanInstance`
@@ -84,7 +84,7 @@
 - 优先依赖 `FactoryBean#getObjectType()` 的返回值做 type matching
 - 如果 `getObjectType()` 返回 `null`，很多 **按类型发现**（尤其 `allowEagerInit=false` 的路径）会失效
 
-这一点在复杂项目里非常常见：可以遇到“明明能按名字拿到，但按类型找不到”的怪现象。
+这一点在复杂项目里非常常见：可以遇到“明明能按名字获取到，但按类型找不到”的怪现象。
 
 ### 1.4 类型推断与缓存链路（需要知道这 3 个入口）
 
@@ -102,7 +102,7 @@
 
 - 容器默认把它当作“工厂”
 - **按 beanName 获取时返回的是 `T`（产品）**
-- 若想拿到工厂本身，需要在 beanName 前加 `&`
+- 若想获取到工厂本身，需要在 beanName 前加 `&`
 
 这就是很多人第一次碰到 `FactoryBean` 时的迷惑点。
 
@@ -142,9 +142,9 @@
 
 - 复杂对象的创建（需要大量配置、或创建过程昂贵）
 - 与外部系统集成时，把“连接/代理对象的创建”封装成 bean
-- 生成代理对象（容易误以为注入的是接口实现，其实是代理）
+- 生成代理对象（容易误以为注入的是接口实现，但实际为代理）
 
-若希望在源码里“看见” product/factory 与缓存发生在哪，建议从这几个点切入：
+若希望在源码里“观察到” product/factory 与缓存发生在哪，建议从这几个点切入：
 
 - `AbstractBeanFactory#doGetBean`：`getBean()` 总入口
 - `FactoryBeanRegistrySupport#getObjectFromFactoryBean`：从 factory 拿 product，并处理缓存
@@ -168,7 +168,7 @@
 1) **FactoryBean 到底是什么？它和“工厂模式”有什么不同？**
    - 要点：它是容器级扩展点：一个 beanName 同时代表“工厂本体”与“工厂产物”；默认对外暴露的是产物（product），不是工厂实例。
 
-2) **为什么 `getBean("x")` 拿到的是 product，而不是读者注册的 FactoryBean？**
+2) **为什么 `getBean("x")` 获取到的是 product，而不是读者注册的 FactoryBean？**
    - 要点：`AbstractBeanFactory#getObjectForBeanInstance` 会对 `FactoryBean` 做分流；`"x"` 返回 product；`"&x"` 才返回 factory。
 
 3) **`FactoryBean#isSingleton()` 的语义是什么？它决定了什么缓存？**
@@ -193,7 +193,7 @@
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
 - 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
 
-推荐断点锚点（从这里下断点，能最快把“产品 vs 工厂 vs 缓存 vs 类型匹配”打穿）：
+推荐断点锚点（从这里设置断点，能最快把“产品 vs 工厂 vs 缓存 vs 类型匹配”打穿）：
 
 - `AbstractBeanFactory#doGetBean`：`getBean()` 总入口（会走到 product/factory 分流）
 - `AbstractBeanFactory#getObjectForBeanInstance`：`"name"` vs `"&name"` 的分流与暴露语义（product / factory）
@@ -203,27 +203,27 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
+- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
 - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（或在 IDE 直接运行上面的测试类）
+- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ## 常见误区与边界
 
 ### 常见误区（高频误判）
 
-- 常问：`FactoryBean` 是什么？为什么 `getBean("x")` 拿到的是 product 而不是 factory？
-  - 答题要点：`FactoryBean<T>` 是“工厂 bean”；默认通过 beanName 暴露的是它生产的 product；用 `&beanName` 才能拿到 factory 本身。
+- 常问：`FactoryBean` 是什么？为什么 `getBean("x")` 获取到的是 product 而不是 factory？
+  - 答题要点：`FactoryBean<T>` 是“工厂 bean”；默认通过 beanName 暴露的是它生产的 product；用 `&beanName` 才能获取到 factory 本身。
 - 常见追问：`isSingleton()` 决定缓存的是什么？
   - 答题要点：决定 product 的缓存语义（缓存的是 product 不是 factory）；这会影响读者观测到的“是不是同一个对象”。
 - 常见追问：`getObjectType()` 返回 `null` / 返回错误类型 有什么误区？为什么 `allowEagerInit=false` 会放大它？
-  - 答题要点：会影响 type-based 查找与条件装配（例如 `@ConditionalOnMissingBean`）；如果 `getObjectType()` “说谎”，甚至会造成候选集合被污染（找不到本该找到的 product）。需要时对照 [23](../part-04-wiring-and-boundaries/23-factorybean-deep-dive.md) 与 [29](../part-04-wiring-and-boundaries/29-factorybean-edge-cases.md) 深挖。
+  - 答题要点：会影响 type-based 查找与条件装配（例如 `@ConditionalOnMissingBean`）；如果 `getObjectType()` “说谎”，甚至会造成候选集合被污染（找不到本该找到的 product）。需要时对照 [23](../part-04-wiring-and-boundaries/23-factorybean-deep-dive.md) 与 [29](../part-04-wiring-and-boundaries/29-factorybean-edge-cases.md) 深入分析。
 
 ## 排障决策表（FactoryBean：name/type/缓存三连）
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |
-| `getBean(\"x\")` 拿到的不是 FactoryBean 本体 | FactoryBean 的默认暴露语义：返回的是 product | 断点 `AbstractBeanFactory#getObjectForBeanInstance`；观察 beanName 是否带 `&` 前缀 | 用 `&x` 获取 factory；文档/代码里把语义写清楚 | `SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory` |
-| 按类型查找找不到（但按名字 `getBean(\"x\")` 可以） | `FactoryBean#getObjectType()` 返回 `null` / 返回错误类型 / 不稳定，导致 type discovery 失败或误判 | 断点 `AbstractBeanFactory#isTypeMatch` / `DefaultListableBeanFactory#getBeanNamesForType`；关注 `allowEagerInit` 分支 | 让 `getObjectType()` 可推断且真实；必要时允许 eager init（谨慎）；或用 name/Qualifier 规避 | `SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName` / `#factoryBeanWithWrongObjectType_canBreakTypeBasedDiscovery_evenIfProductTypeIsActuallyCorrect` |
+| `getBean("x")` 获取到的不是 FactoryBean 本体 | FactoryBean 的默认暴露语义：返回的是 product | 断点 `AbstractBeanFactory#getObjectForBeanInstance`；观察 beanName 是否带 `&` 前缀 | 用 `&x` 获取 factory；文档/代码里把语义写清楚 | `SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory` |
+| 按类型查找找不到（但按名字 `getBean("x")` 可以） | `FactoryBean#getObjectType()` 返回 `null` / 返回错误类型 / 不稳定，导致 type discovery 失败或误判 | 断点 `AbstractBeanFactory#isTypeMatch` / `DefaultListableBeanFactory#getBeanNamesForType`；关注 `allowEagerInit` 分支 | 让 `getObjectType()` 可推断且真实；必要时允许 eager init（谨慎）；或用 name/Qualifier 规避 | `SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName` / `#factoryBeanWithWrongObjectType_canBreakTypeBasedDiscovery_evenIfProductTypeIsActuallyCorrect` |
 | 容易误以为 `isSingleton()` 决定“工厂是否单例” | 误解：它决定的是 product 的缓存语义 | 断点 `FactoryBeanRegistrySupport#getObjectFromFactoryBean`；观察缓存命中与否 | 把“工厂本体 scope”与“产品缓存语义”分开理解与验证 | `SpringCoreBeansFactoryBeanDeepDiveLabTest#singletonFactoryBeanProduct_isCached_byTheContainer` / `#nonSingletonFactoryBeanProduct_isNotCached_byTheContainer` |
 
 ## 小结与下一章

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Bean 生命周期骨架（instantiate→populate→initialize→destroy）；初始化回调链（Aware / BPP / `@PostConstruct` / `afterPropertiesSet` / `initMethod` / after-init proxy）；销毁链路（DestructionAwareBPP / `@PreDestroy` / `DisposableBean` / `destroyMethod`）；Scope 语义（prototype 默认不自动销毁）；容器级生命周期钩子（`SmartInitializingSingleton` / `SmartLifecycle` / refresh 事件）。
-    - 怎么使用：先跑本章推荐 Lab，把“回调顺序/触发窗口/prototype 销毁边界/顺序控制/容器级 start-stop”固化为断言；回到正文用 `doCreateBean`/`initializeBean`/`destroySingletons` 把顺序映射到方法级证据链；最后用断点确认 raw vs exposed（proxy）以及依赖图（dependsOn/phase）是否符合预期。
+    - 使用方式：先运行本章推荐 Lab，把“回调顺序/触发窗口/prototype 销毁边界/顺序控制/容器级 start-stop”固化为断言；回到正文用 `doCreateBean`/`initializeBean`/`destroySingletons` 把顺序映射到方法级证据链；最后用断点确认 raw vs exposed（proxy）以及依赖图（dependsOn/phase）是否符合预期。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`AbstractAutowireCapableBeanFactory#doCreateBean` / `#populateBean` / `#initializeBean` / `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization` / `DefaultSingletonBeanRegistry#destroySingletons` / `DisposableBeanAdapter#destroy`
     - 推荐 Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansSmartInitializingSingletonLabTest` / `SpringCoreBeansSmartLifecycleLabTest`
@@ -16,7 +16,7 @@
 ## 导读
 
 - 本章主题：**05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）**
-- 阅读方式建议：先跑 `SpringCoreBeansLifecycleCallbackOrderLabTest` 把“顺序”变成断言，再回到正文把顺序映射到关键方法。
+- 阅读方式建议：先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest` 把“顺序”变成断言，再回到正文把顺序映射到关键方法。
 
 !!! summary "本章要点"
 
@@ -26,7 +26,7 @@
     - prototype 的销毁默认不由容器托管：`close()` 只会统一销毁 singleton，prototype 需要调用方显式销毁（或改造为更合适的生命周期模型）。
     - “顺序控制”有两类：`dependsOn` 只管初始化/销毁顺序；`SmartLifecycle` 通过 `phase` 管 start/stop 顺序（两者都不是注入规则）。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：
       - `SpringCoreBeansLifecycleCallbackOrderLabTest`
@@ -141,7 +141,7 @@ initializeBean(beanName, bean, mbd):
 
 几个“不要说错”的点（框架岗常追问）：
 
-1) **Aware 发生在 init callbacks 之前**：很多 init 逻辑需要先拿到 beanName/BeanFactory 等容器信息
+1) **Aware 发生在 init callbacks 之前**：很多 init 逻辑需要先获取到 beanName/BeanFactory 等容器信息
 2) **`@PostConstruct` 发生在 before-init BPP 链路中**：它不是“硬编码步骤”，而是某个 BPP 触发
 3) **after-init 可能返回代理**：最终暴露对象可能不是原始实例
 
@@ -153,7 +153,7 @@ initializeBean(beanName, bean, mbd):
   - 若依赖 `DisposableBean` 接口，且 proxy 不实现该接口，容易出现“销毁回调没进”的误判
 - **`SmartInitializingSingleton`**：在单例全部实例化后回调，通常作用于 **最终暴露对象**（可能是 proxy）
 
-证据入口（建议先跑一次再背结论）：
+证据入口（可先运行一次再背结论）：
 
 - `SpringCoreBeansLifecycleRawVsProxyLabTest#postConstructRunsOnRaw_butFinalExposedBeanMayBeProxy`
 
@@ -189,19 +189,19 @@ destroySingletons():
 
 ---
 
-## 补充：`@PostConstruct/@PreDestroy` 的“触发者”其实是 BPP（而不是语法魔法）
+## 补充：`@PostConstruct/@PreDestroy` 的“触发者”为 BPP（而不是语法魔法）
 
 很多人能背出“`@PostConstruct` 在初始化阶段执行”，但解释不清两件关键事实：
 
 1. **它是谁触发的？** —— 触发者不是 JVM，也不是注解本身，而是一个 `BeanPostProcessor`（典型实现是 `InitDestroyAnnotationBeanPostProcessor`）。
 2. **它发生在回调链的哪个位置？** —— `@PostConstruct` 通常发生在 `postProcessBeforeInitialization` 这一段；而 `@PreDestroy` 则走销毁链路（常见落点：`DestructionAwareBeanPostProcessor#postProcessBeforeDestruction` / `DisposableBeanAdapter`）。
 
-把这两个事实补齐，你在排障时才能回答“为什么我这里没执行/执行顺序不对/看起来对代理不生效”：
+补齐这两个事实后，可在排障时回答“为何此处未执行/执行顺序不符合预期/似乎对代理不生效”：
 
 - **为什么回调像是发生在 raw bean 上？**
   默认链路里，init 回调发生在 `applyBeanPostProcessorsBeforeInitialization` 之后、`applyBeanPostProcessorsAfterInitialization` 之前；如果 proxy 是在 after 阶段生成的，那么回调自然发生在 raw bean 上。
 - **什么时候回调会发生在 proxy 上？**
-  只有当对象在更早阶段就被替换（例如实例化前短路 / early reference 返回 proxy）时，你观察到的“回调对象”才会变。
+  只有当对象在更早阶段就被替换（例如实例化前短路 / early reference 返回 proxy）时，所观察到的“回调对象”才会发生变化。
 
 **建议把它做成可复用的断点闭环（3 分钟）：**
 
@@ -222,7 +222,7 @@ destroySingletons():
 - **Aware 发生在 initialize 阶段，不是 populate（注入）阶段。**
 - 注入通常已经完成（字段/构造器参数已经有值），Aware 是在此基础上把“容器信息”补给 bean，然后才进入 `@PostConstruct` 等 init 回调链路。
 
-对应可跑入口：
+对应可运行入口：
 
 - `SpringCoreBeansAwareInfrastructureLabTest`
 
@@ -234,7 +234,7 @@ destroySingletons():
 
 本仓库推荐的方式是：**用事件列表 + 断言把顺序固化**。
 
-可以直接跑：
+可直接运行：
 
 - `SpringCoreBeansLifecycleCallbackOrderLabTest`
 
@@ -343,7 +343,7 @@ void init() {
 - **需要 start/stop 与顺序**：用 `SmartLifecycle`（见 [`27`](../part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md)）
 - **Spring Boot 场景需要等应用就绪**：用 `ApplicationRunner` / `ApplicationReadyEvent`
 
-> 经验法则：`@PostConstruct` 适合“让自己可用”，不适合作为“跑一段需要 AOP/事务/异步语义的业务入口”。
+> 经验法则：`@PostConstruct` 适合“让自己可用”，不适合作为“执行一段需要 AOP/事务/异步语义的业务入口”。
 
 ### 4.7 顺序控制：`dependsOn` 影响初始化与销毁（但它不是注入规则）
 
@@ -353,7 +353,7 @@ void init() {
 - 销毁顺序：通常是依赖边的逆序（先销毁 dependent，再销毁 dependency）
 - 依赖图：关系会被写进 `DefaultSingletonBeanRegistry` 的 `dependentBeanMap` / `dependenciesForBeanMap`
 
-对应可跑证据：
+对应可运行证据：
 
 - `SpringCoreBeansDependsOnLabTest#dependsOn_forcesInitializationOrder_evenWithoutDirectDependencies`
 - `SpringCoreBeansDependsOnLabTest#dependsOn_triggersLazyDependencyInstantiation`
@@ -369,7 +369,7 @@ void init() {
 - stop：phase 反序
 - 对 `SmartLifecycle`，容器通常调用 `stop(Runnable callback)`（用于支持异步 stop）；**不调用 callback 可能导致关闭阶段等待超时**
 
-对应可跑证据：
+对应可运行证据：
 
 - `SpringCoreBeansSmartLifecycleLabTest#smartLifecycleStartsInPhaseOrder_andStopsInReverseOrder`
 - `SpringCoreBeansSmartLifecycleLabTest#containerStopsSmartLifecycle_viaStopCallbackMethod_notStopMethod`
@@ -398,7 +398,7 @@ void init() {
 
 - **prototype 的销毁不是容器的职责，而是“创建者（调用方）”的职责**
 
-原因并不神秘：
+其原因如下：
 
 - singleton：容器会缓存实例，并在 close 时统一遍历销毁（`destroySingletons` 主线）
 - prototype：容器每次 `getBean` 都 new 一个并返回给调用方，但通常不会把这些实例登记到“待销毁列表”里
@@ -407,7 +407,7 @@ void init() {
 
 - `ConfigurableBeanFactory#destroyBean(beanName, instance)`
 
-对应可跑入口：
+对应可运行入口：
 
 - `SpringCoreBeansPrototypeDestroySemanticsLabTest`
 
@@ -425,7 +425,7 @@ void init() {
 - `DefaultSingletonBeanRegistry#destroySingletons`
 - `DisposableBeanAdapter#destroy`
 
-补充断点（把“触发者/顺序/容器级生命周期”也看见）：
+补充断点（把“触发者/顺序/容器级生命周期”也观察到）：
 
 - `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`（`@PostConstruct`）
 - `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeDestruction`（`@PreDestroy`）
@@ -471,7 +471,7 @@ void init() {
   - `SpringCoreBeansSmartLifecycleLabTest`
 - 推荐命令：
   - `mvn -pl :spring-core-beans test`
-  - 或单跑：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleCallbackOrderLabTest test`
+  - 或单独运行：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleCallbackOrderLabTest test`
 
 ## 排障决策表（生命周期/回调：从“没执行”到“证据链”）
 
@@ -480,7 +480,7 @@ void init() {
 | `@PostConstruct` 没执行 | 没有对应 BPP；或 bean 不在容器托管链路里 | `beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`；断点 `applyBeanPostProcessorsBeforeInitialization` 是否命中目标 beanName | 确保走完整 `ApplicationContext#refresh`；不要绕过容器 new；必要时手动注册注解处理器 | `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansAwareInfrastructureLabTest` |
 | `afterPropertiesSet`/`initMethod` 没执行 | bean 没走 `initializeBean`（例如早期返回了短路对象/被替换导致误判） | 断点 `AbstractAutowireCapableBeanFactory#initializeBean`；观察 `exposedObject` 是否被替换 | 先确认创建主线是否命中 `initializeBean`；若被 proxy 替换，分清 raw vs exposed | `SpringCoreBeansLifecycleCallbackOrderLabTest` |
 | `@PreDestroy` 没执行 | context 没 close；或是 prototype（默认不托管销毁） | 断点 `AbstractApplicationContext#doClose` / `DefaultSingletonBeanRegistry#destroySingletons`；prototype 不会进入 `disposableBeans` | 确保关闭容器；prototype 需要调用方显式销毁（`destroyBean`） | `SpringCoreBeansPrototypeDestroySemanticsLabTest` |
-| 容易误以为“拿到的就是原对象”，但行为像被代理 | after-init BPP 返回了另一个对象（proxy/wrapper） | 断点 `applyBeanPostProcessorsAfterInitialization`；观察 `bean` vs `result` | 把“最终暴露对象”当作事实来源，不要假设 raw 就是 exposed | `SpringCoreBeansLifecycleCallbackOrderLabTest`（结合 creation trace） |
+| 容易误以为“获取到的就是原对象”，但行为像被代理 | after-init BPP 返回了另一个对象（proxy/wrapper） | 断点 `applyBeanPostProcessorsAfterInitialization`；观察 `bean` vs `result` | 把“最终暴露对象”当作事实来源，不要假设 raw 就是 exposed | `SpringCoreBeansLifecycleCallbackOrderLabTest`（结合 creation trace） |
 | `@PostConstruct` 里调用 `@Transactional/@Async` 方法不生效（看起来像没进拦截器） | proxy 尚未产生 + self-invocation 绕过 proxy | 断点 `applyBeanPostProcessorsBeforeInitialization` 与 `applyBeanPostProcessorsAfterInitialization` 对照：`@PostConstruct` 在 before-init；after-init 才可能替换为 proxy；对照 `SpringCoreBeansProxyingPhaseLabTest` 的 self-invocation 现象 | 把入口移到更靠后钩子（`SmartInitializingSingleton`/`SmartLifecycle`/Boot ready 事件），或改用显式模板（如 `TransactionTemplate`） | `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest` |
 | lazy bean 明明标了 lazy-init，但启动时就被创建 | 被 `dependsOn` 拉起（或被 eager consumer 依赖） | 断点 `AbstractBeanFactory#doGetBean`：读取 `mbd.getDependsOn()` 并 `getBean(dep)`；或在依赖解析 `doResolveDependency` 看到 eager consumer 触发创建 | 去掉 `dependsOn`，优先改显式 DI；或把 lazy 放到注入点（`@Lazy`/`ObjectProvider`） | `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansLazyLabTest` |
 | 组件未 start/stop（或顺序不符合预期） | `SmartLifecycle` 的 `isAutoStartup/phase` 误判，或 stop(callback) 未 callback | 断点 `DefaultLifecycleProcessor#startBeans`/`#stopBeans`，观察 phase 分组与调用点（stop 通常走 `stop(Runnable)`） | 实现正确的 `phase` 与 `isAutoStartup`；对 stop(callback) 必须调用 callback | `SpringCoreBeansSmartLifecycleLabTest` |
@@ -539,7 +539,7 @@ void init() {
 1) 初始化回调顺序大致如何（Aware / @PostConstruct / afterPropertiesSet / initMethod / after-init BPP）？
 2) prototype 的销毁为什么默认不会在 context close 时触发？如何在 Lab/断点里验证？
 3) 为什么在 `@PostConstruct` 里调用 `@Transactional/@Async` 经常“不生效”？应该换到哪个生命周期钩子？
-4) `dependsOn` 与 `SmartLifecycle phase` 分别解决哪类“顺序问题”？如何在断点里看见它们的生效点？
+4) `dependsOn` 与 `SmartLifecycle phase` 分别解决哪类“顺序问题”？如何在断点里观察到它们的生效点？
 5) 若怀疑“某个回调没执行/代理没生效”，可先定位到 refresh 的哪一段？下哪两个断点？
 
 <!-- BOOKIFY:START -->

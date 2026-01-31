@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
     - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
     - 源码入口：`InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation` / `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation`
     - 推荐 Lab：`SpringCoreBeansPreInstantiationLabTest`
@@ -18,15 +18,15 @@
 ## 导读
 
 - 本章主题：**15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansPreInstantiationLabTest`
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`
@@ -68,20 +68,20 @@
 
 这说明：**默认情况下，单例会在 refresh 阶段被创建**（非 lazy）。
 
-### 1.1 机制讲透：条件 → 分支 → 结果
+### 1.1 机制系统阐述：条件 → 分支 → 结果
 
 **条件**：是否有 IABPP 在 before-instantiation 阶段返回替身  
 **分支**：`resolveBeforeInstantiation` 返回非 null → 直接暴露  
 **结果**：  
 - 无短路：构造器执行，异常导致 refresh 失败  
-- 有短路：构造器不执行，容器拿到 proxy/替身
+- 有短路：构造器不执行，容器获取到 proxy/替身
 
 ## 2. 现象：短路后，构造器不再执行
 
 对应测试：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`
-  - `postProcessBeforeInstantiation_canShortCircuitDefaultInstantiationPath()`（证据：构造器调用次数为 0，拿到的是 proxy）
+  - `postProcessBeforeInstantiation_canShortCircuitDefaultInstantiationPath()`（证据：构造器调用次数为 0，获取到的是 proxy）
 
 示例中注册了一个 `InstantiationAwareBeanPostProcessor`：
 
@@ -131,10 +131,10 @@
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
-- “我写了 before-instantiation 的 BPP，但构造器还是执行了” → **实例层（时机/注册方式）**：BPP 是否在 refresh 前注册？是否真的被当作 BPP 注册进 BeanFactory？（对照 [25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)）
+- “已编写 before-instantiation 的 BPP，但构造器仍然执行” → **实例层（时机/注册方式）**：BPP 是否在 refresh 前注册？是否真的被当作 BPP 注册进 BeanFactory？（对照 [25](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)）
 - “短路后出现 `BeanNotOfRequiredTypeException`” → **实例层（暴露类型）**：返回对象的类型是否与容器期望类型兼容？（JDK proxy 只实现接口）
 - “短路后生命周期回调/注入行为变得反直觉” → **实例层（绕过默认流程）**：读者返回对象意味着读者可能绕过 `doCreateBean` 的部分阶段（可对照 [17](17-lifecycle-callback-order.md)、[30](../part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)）
-- “我以为这是 AOP/事务专属机制” → **实例层通用机制**：代理/替身的出现不止发生在 AOP（见 [31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
+- “误认为这是 AOP/事务专属机制” → **实例层通用机制**：代理/替身的出现不止发生在 AOP（见 [31](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)）
 
 ## 4. 源码调用链（方法级）：短路发生在哪个分支？
 
@@ -160,7 +160,7 @@
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |
 | 构造器还是执行了（短路没生效） | BPP 注册太晚 / 根本没进 BPP 链 | `beanFactory.getBeanPostProcessors()` 是否包含相应的 IABPP；`resolveBeforeInstantiation` 是否命中；`applyBeanPostProcessorsBeforeInstantiation` 是否返回 null | 确保在 refresh 前注册；不要在 BFPP/BDRPP 阶段过早创建目标 bean；必要时先用最小容器入口复现 | `SpringCoreBeansPreInstantiationLabTest` |
-| 构造器不执行但 `@Autowired/@PostConstruct` 也没发生 | 读者返回了“最终对象”，绕过了默认注入/初始化路径 | 对照：短路分支返回非 null；`doCreateBean/populateBean/initializeBean` 未命中目标 beanName | 这属于机制边界：如果需要注入/生命周期，别用 short-circuit；或把依赖迁移到代理内部/外部工厂 | `SpringCoreBeansPreInstantiationLabTest`（对照两条用例） |
+| 构造器不执行但 `@Autowired/@PostConstruct` 也未触发 | 扩展点直接返回“最终对象”，从而绕过默认注入/初始化路径 | 对照：短路分支返回非 null；`doCreateBean/populateBean/initializeBean` 未命中目标 beanName | 这属于机制边界：若需要注入/生命周期语义，不宜使用 short-circuit；可将依赖迁移至代理内部或外部工厂 | `SpringCoreBeansPreInstantiationLabTest`（对照两条用例） |
 | `BeanNotOfRequiredTypeException` | 返回对象类型不兼容（JDK proxy 只实现接口） | 观察返回对象类型；按实现类 `getBean(Impl.class)` 失败 | 让注入点按接口；或使用 class-based proxy（但注意 final 限制）；或改成 after-init 代理（更稳定） | `SpringCoreBeansPreInstantiationLabTest` |
 | 行为像 AOP，但找不到切面/事务配置 | 不是 AOP，而是 IABPP 的 before-instantiation short-circuit | `resolveBeforeInstantiation` 返回非 null；定位到具体哪个 IABPP 返回了替身 | 先在“创建链路”定位代理产生点，再回到“是谁注册了该 IABPP” | `SpringCoreBeansPreInstantiationLabTest` |
 
@@ -194,7 +194,7 @@
 应能够回答：
 
 1) 短路分支发生在 `createBean` 的哪个阶段？（提示：`resolveBeforeInstantiation`）
-2) 为什么短路是“高危扩展点”？（提示：绕过默认注入/初始化直觉）
+2) 为什么短路属于“高风险扩展点”？（要点：该分支会绕过默认注入/初始化路径）
 3) 可以用哪两个断点证明“短路真的发生了”？（提示：`resolveBeforeInstantiation` + 相应的 IABPP）
 
 ## 小结与下一章
