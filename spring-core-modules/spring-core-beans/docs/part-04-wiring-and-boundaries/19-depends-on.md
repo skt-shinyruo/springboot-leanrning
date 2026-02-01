@@ -237,13 +237,12 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 - 本章完成后：请把 `dependsOn` 和 “注入依赖/循环依赖/后处理器顺序”明确分家；排障时优先用方法级证据链判定问题属于**定义层**还是**实例层**。
 - 下一章将讲 “能注入但不是 Bean”：`registerResolvableDependency`，它经常与 `*Aware` 混淆，但两者的生效点完全不同。
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“doGetBean 内 dependsOn 处理”的关键分支证据链（包含依赖图写入点）。
-    - B（边界反例）：反例：Circular depends-on 与三级缓存循环依赖的误判对照。
-    - C（排障 SOP）：排障：lazy-init 被拉起、关闭顺序反直觉、写错 beanName 的三类 SOP。
-    - D（断点观察）： watch list：dependentBeanMap/dependenciesForBeanMap 的判定标准。
-    - E（面试复述）：面试追问：dependsOn 为什么不等于注入依赖？如何证明。
+    - 建议入口：先跑 `SpringCoreBeansDependsOnLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    - 第一断点：`AbstractBeanFactory#doGetBean`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“7. 排障决策表（初始化/关闭/异常消息 → 证据链）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

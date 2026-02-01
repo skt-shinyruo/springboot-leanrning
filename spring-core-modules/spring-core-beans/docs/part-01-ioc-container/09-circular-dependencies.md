@@ -87,7 +87,7 @@
 
 > 若读者当前的核心困惑为“为什么不是二级缓存就够”，可先参阅：
 > - [`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)（答案先行 + 10 分钟证据链）
-> - AOP 前置心智模型：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+> - AOP 前置理解：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)（为什么要跳：本章后面会用 raw vs proxy / early vs final 来解释“到底救没救”；验证什么：在 AOP 章先跑通一个最小 proxy 用例，并在“proxy 创建点 + 调用入口”各停一次，确认观察到的是“代理对象 + 调用路径”而不是“原始实例”）
 
 读者之所以会在“三级缓存”这里卡住，通常是因为把它误当成“多一个 Map 的实现细节”，而忽略了它在设计上解决的是两个更本质的问题：
 
@@ -347,13 +347,12 @@ setter 注入能够“使依赖环得以闭合”的前提是：需要接受半�
 2) setter cycle 为什么可能成功？（singleton 创建窗口期 + early exposure + `getSingleton(..., allowEarlyReference=true)`）
 3) 工程上如何处理？（重构消环优先；延迟依赖是折中；setter 不是默认解法）
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-     - A（证据链）：“构造器失败 vs setter 可能成功”的完整证据链（三级缓存写入/读出窗口）。
-     - B（边界反例）：反例：prototype 循环依赖、AOP 介入导致 early/final 不一致、allowCircularReferences=false 的行为差异、allowRawInjectionDespiteWrapping=true 的风险演示。
-     - C（排障 SOP）：排障：如何从异常信息分型到“构造器环/属性环/depends-on 环/代理导致环”。
-     - D（断点观察）：断点：三级缓存、early reference 回调、包装/代理替换入口。
-     - E（面试复述）：面试追问：为什么说“能解不等于安全”？如何用证据链回答。
+    - 建议入口：先跑 `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“排障配方：如何定位“环路边”并选择打断手段”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

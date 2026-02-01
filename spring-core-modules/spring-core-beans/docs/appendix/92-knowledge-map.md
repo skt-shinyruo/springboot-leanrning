@@ -59,7 +59,7 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 
 | 核心点 | 章节入口（Docs） | 推荐 Lab/Test |
 | --- | --- | --- |
-| 1. BeanDefinition 体系 | [01. Bean 心智模型](../part-01-ioc-container/020-01-bean-mental-model.md)、[22. BeanName 与 alias](../part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)、[24. BeanDefinition 覆盖](../part-04-wiring-and-boundaries/24-bean-definition-overriding.md)、[35. MergedBeanDefinition](../part-04-wiring-and-boundaries/35-merged-bean-definition.md) | `SpringCoreBeansContainerLabTest`、`SpringCoreBeansBeanNameAliasLabTest`、`SpringCoreBeansBeanDefinitionOverridingLabTest`、`SpringCoreBeansMergedBeanDefinitionLabTest` |
+| 1. BeanDefinition 体系 | [01. Bean 运行机制](../part-01-ioc-container/020-01-bean-mental-model.md)、[22. BeanName 与 alias](../part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)、[24. BeanDefinition 覆盖](../part-04-wiring-and-boundaries/24-bean-definition-overriding.md)、[35. MergedBeanDefinition](../part-04-wiring-and-boundaries/35-merged-bean-definition.md) | `SpringCoreBeansContainerLabTest`、`SpringCoreBeansBeanNameAliasLabTest`、`SpringCoreBeansBeanDefinitionOverridingLabTest`、`SpringCoreBeansMergedBeanDefinitionLabTest` |
 | 2. Bean 创建全链路 | [18. refresh→doCreateBean 主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)、[30. 注入阶段](../part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)、[05. 生命周期](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)、[17. 回调顺序](../part-03-container-internals/17-lifecycle-callback-order.md) | `SpringCoreBeansBeanCreationTraceLabTest`、`SpringCoreBeansInjectionPhaseLabTest`、`SpringCoreBeansLifecycleCallbackOrderLabTest` |
 | 3. 依赖解析与注入细节 | [03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择与优先级](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)、[37. 泛型匹配注入误区](../part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansInjectionAmbiguityLabTest`、`SpringCoreBeansAutowireCandidateSelectionLabTest`、`SpringCoreBeansOptionalInjectionLabTest` |
 | 4. 容器扩展点 | [06. PostProcessor 总览](../part-01-ioc-container/017-06-post-processors.md)、[13. BDRPP](../part-03-container-internals/13-bdrpp-definition-registration.md)、[14. 顺序（Ordering）](../part-03-container-internals/14-post-processor-ordering.md)、[15. 实例化前短路](../part-03-container-internals/15-pre-instantiation-short-circuit.md) | `SpringCoreBeansRegistryPostProcessorLabTest`、`SpringCoreBeansPostProcessorOrderingLabTest`、`SpringCoreBeansPreInstantiationLabTest`、`SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
@@ -69,18 +69,18 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 
 ## 1. 现象 → 章节 → 断点入口（建议收藏）
 
-| 现象（Symptoms） | 章节入口（Docs） | 最短断点入口（Entry） | 推荐 Lab |
-| --- | --- | --- | --- |
-| 注入失败：找不到 bean / 多候选 | [03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择与优先级](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) | `doResolveDependency/findAutowireCandidates/determineAutowireCandidate` | `SpringCoreBeansAutowireCandidateSelectionLabTest` |
-| 循环依赖：constructor 死 / setter 可能活 | [09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md) | `DefaultSingletonBeanRegistry#getSingleton` / `addSingletonFactory` | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
-| early reference / raw vs wrapped | [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md) | `getEarlyBeanReference` / `doCreateBean` 尾部检查 | `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
-| 代理不生效 / 顺序不对 | [31. 代理发生的阶段](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)、[25. 手工注册 BPP](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md) | `registerBeanPostProcessors` / `applyBeanPostProcessorsAfterInitialization` | `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
-| `@Resource` 注入怪异（字段名相关） | [32. @Resource name-first](../part-04-wiring-and-boundaries/32-resource-injection-name-first.md) | `CommonAnnotationBeanPostProcessor#postProcessProperties` | `SpringCoreBeansResourceInjectionLabTest` |
-| `@Value("${...}")` 缺失不失败 / 原样字符串 | [34. 占位符 strict vs non-strict](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) | `AbstractBeanFactory#resolveEmbeddedValue` | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
-| “值注入”到底是占位符/SpEL/转换哪一步错？ | [44. SpEL 与 @Value](../part-05-aot-and-real-world/44-spel-and-value-expression.md)、[36. 类型转换](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md) | `resolveEmbeddedValue` / `convertIfNecessary` | `SpringCoreBeansTypeConversionLabTest` |
-| 若希望把 refresh → doCreateBean 主线打穿 | [18. refresh→创建主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)、[10. 主线时间线](../part-00-guide/010-03-mainline-timeline.md) | `AbstractApplicationContext#refresh` / `doCreateBean` | `SpringCoreBeansMainlineCallChainLabTest` |
-| 需要“从异常到断点入口”的方法论 | [11. Debugging and Observability](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)、[98. Debugger Pack](98-debugger-pack.md) | 见 Debugger Pack | `SpringCoreBeansBreakpointPackLabTest` |
-| 想“观察到缓存/内部结构变化” | [97. Explore/Debug](97-explore-debug-tests.md) | `getSingleton` / `CachedIntrospectionResults#forClass` | `SpringCoreBeans*ExploreTest` |
+| 现象（Symptoms） | 章节入口（Docs） | 最短断点入口（Entry） | 断点组（断点地图） | 推荐 Lab |
+| --- | --- | --- | --- | --- |
+| 注入失败/注入歧义：NoSuch/NoUnique/注入到了不是预期实现 | [03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择与优先级](../part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) | `doResolveDependency/findAutowireCandidates/determineAutowireCandidate` | [C6](../part-00-guide/013-02-breakpoint-map.md#c6) | `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` |
+| 循环依赖：constructor 死 / setter 可能活 | [09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md) | `DefaultSingletonBeanRegistry#getSingleton` / `addSingletonFactory` | [C5](../part-00-guide/013-02-breakpoint-map.md#c5) | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
+| early reference / raw vs wrapped | [16. early reference 与循环依赖](../part-03-container-internals/16-early-reference-and-circular.md) | `getEarlyBeanReference` / `doCreateBean` 尾部检查 | [C5](../part-00-guide/013-02-breakpoint-map.md#c5) / [C7](../part-00-guide/013-02-breakpoint-map.md#c7) | `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
+| 代理不生效 / 顺序不对 | [31. 代理发生的阶段](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)、[25. 手工注册 BPP](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md) | `registerBeanPostProcessors` / `applyBeanPostProcessorsAfterInitialization` | [C4](../part-00-guide/013-02-breakpoint-map.md#c4) / [C7](../part-00-guide/013-02-breakpoint-map.md#c7) | `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
+| `@Resource` 注入怪异（字段名相关） | [32. @Resource name-first](../part-04-wiring-and-boundaries/32-resource-injection-name-first.md) | `CommonAnnotationBeanPostProcessor#postProcessProperties` | [C6](../part-00-guide/013-02-breakpoint-map.md#c6) | `SpringCoreBeansResourceInjectionLabTest` |
+| `@Value("${...}")` 缺失不失败 / 原样字符串 | [34. 占位符 strict vs non-strict](../part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) | `AbstractBeanFactory#resolveEmbeddedValue` | [C3](../part-00-guide/013-02-breakpoint-map.md#c3) / [C6](../part-00-guide/013-02-breakpoint-map.md#c6) | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
+| “值注入”到底是占位符/SpEL/转换哪一步错？ | [44. SpEL 与 @Value](../part-05-aot-and-real-world/44-spel-and-value-expression.md)、[36. 类型转换](../part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md) | `resolveEmbeddedValue` / `convertIfNecessary` | [C6](../part-00-guide/013-02-breakpoint-map.md#c6) | `SpringCoreBeansTypeConversionLabTest` |
+| 若希望把 refresh → doCreateBean 主线打穿 | [18. refresh→创建主线](../part-03-container-internals/18-refresh-to-bean-creation-mainline.md)、[10. 主线时间线](../part-00-guide/010-03-mainline-timeline.md) | `AbstractApplicationContext#refresh` / `doCreateBean` | [C1](../part-00-guide/013-02-breakpoint-map.md#c1) / [C5](../part-00-guide/013-02-breakpoint-map.md#c5) | `SpringCoreBeansMainlineCallChainLabTest` |
+| 需要“从异常到断点入口”的方法论 | [11. Debugging and Observability](../part-02-boot-autoconfig/019-11-debugging-and-observability.md)、[98. Debugger Pack](98-debugger-pack.md) | 见 Debugger Pack | 见 [断点地图](../part-00-guide/013-02-breakpoint-map.md#c1) | `SpringCoreBeansBreakpointPackLabTest` |
+| 想“观察到缓存/内部结构变化” | [97. Explore/Debug](97-explore-debug-tests.md) | `getSingleton` / `CachedIntrospectionResults#forClass` | [C5](../part-00-guide/013-02-breakpoint-map.md#c5) | `SpringCoreBeans*ExploreTest` |
 
 ---
 
@@ -117,13 +117,12 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 2) 看到“注入/代理/循环依赖”的任一现象，能在 30 秒内找到对应章节与断点入口。
 3) 能用对应 Lab 把现象复现出来，而不是在业务项目里盲调。
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：把每条主线补“证据链入口方法”，与章节内部一致。
-    - B（边界反例）：为每条症状补“最常见反例/误诊点”，提高定位精度。
-    - C（排障 SOP）：强化“症状→章节→Lab→断点”的完整闭环，作为排障导航主入口之一。
-    - D（断点观察）：与 Debugger Pack/断点地图互链，形成可复用断点套件。
-    - E（面试复述）：把知识地图与面试题库映射：某题对应哪条地图路径与证明方式。
+    - 建议入口：先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：知识地图优先服务“快速定位”：把每个节点压缩为“常见现象 → 对应章节 → 最小可跑入口（测试方法名）”，避免过多枚举。
+    - 下一跳：需要可复用断点组时，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md)；需要把现象分型成最短 SOP 时，回到 [生产排障清单](94-production-troubleshooting-checklist.md)。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

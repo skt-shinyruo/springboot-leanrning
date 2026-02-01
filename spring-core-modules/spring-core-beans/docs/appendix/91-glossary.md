@@ -31,13 +31,12 @@
     - Lab：`SpringCoreBeansContainerLabTest`
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：为关键术语补“对应证据链入口方法”，避免术语解释与源码脱节。
-    - B（边界反例）：易混词反例：BeanDefinition vs bean instance vs exposed object；BFPP vs BPP vs BDRPP 等。
-    - C（排障 SOP）：“术语误诊”排障提示：遇到某词汇时如何避免错误联想。
-    - D（断点观察）：为核心术语补“观察到它”的断点/观察点。
-    - E（面试复述）：将术语映射到面试题：术语解释必须能给出证据链与反例。
+    - 建议入口：先跑 `SpringCoreBeansContainerLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：术语表减少抽象解释，补“落到代码里是什么”：每个术语给出关键类/方法/数据结构，并回链到首次出现的章节。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 

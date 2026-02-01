@@ -42,7 +42,7 @@
 
 > 若读者在阅读 `09. 循环依赖` 后仍然困惑“为什么需要三级缓存 / 为什么不是二级缓存”，建议先参阅：  
 > - [`00. Why Index（基础问题索引）`](../part-00-guide/009-00-why-index.md)（答案先行）  
-> - AOP 前置心智模型：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+> - AOP 前置理解：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)（为什么要跳：本章要证明 early reference 的形态可能是 raw/proxy；先把“代理是什么 + 调用从哪进”跑通，才能在断点里正确识别 early vs final；验证什么：在 AOP 章跑一个最小 proxy 用例，并在 proxy 创建点与调用入口各停一次）
 
 本章的目标并非重复描述“三级缓存的结构”，而是引导读者在断点中观察到两件事：
 
@@ -315,13 +315,12 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 2) 为什么需要它？（避免 raw 注入绕过代理，避免 early 与 final 形态不一致）
 3) `allowRawInjectionDespiteWrapping` 是什么态度？（做不到一致时的风险开关：默认 fail-fast，打开就是读者接受“绕过代理”的隐患）
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：三级缓存的“写入/读出时间点”与对象类型（raw/early/final）的证据链对照。
-    - B（边界反例）：反例：early 与 final 不一致的真实后果（事务/AOP/懒代理叠加），以及 allowRawInjectionDespiteWrapping 的边界。
-    - C（排障 SOP）：排障：如何从异常/行为差异定位到“early window 参与者是谁”。
-    - D（断点观察）：断点：addSingletonFactory/getEarlyBeanReference/after-init proxy 的对照断点组。
-    - E（面试复述）：面试追问：为什么说“能解不等于安全”？用哪条证据链回答。
+    - 建议入口：先跑 `SpringCoreBeansEarlyReferenceLabTest`，再用 `SpringCoreBeansRawInjectionDespiteWrappingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“一页式最短证据链（10 分钟）：观察到 factory 层价值 + early 形态决策”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

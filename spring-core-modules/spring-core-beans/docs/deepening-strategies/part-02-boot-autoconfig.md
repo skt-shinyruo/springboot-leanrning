@@ -10,29 +10,23 @@
 ### 第 19 章：11. 调试与自检：如何“观察到”容器正在做什么
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
-- 内容级加深策略：
-  - A：补“定义层可观测证据链”：如何证明一个 BeanDefinition 是谁注册的、何时注册的、是否被后处理器改写。
-  - B：补反例：debug 日志误读、条件评估报告与真实注册行为不一致时的定位方法。
-  - C：补排障 SOP：从“容器里没有/有但不是预期的实现/被 proxy 了/值不对”四类症状分别如何收敛。
-  - D：补观察点：ConditionEvaluationReport、beanDefinition 来源、auto-config import 列表（以及它们的查看方式）。
-  - E：补面试追问：Boot 为什么会影响 Bean 图？如何用证据链解释 back-off。
+- 继续加深建议：
+    - `SpringCoreBeansAutoConfigurationLabTest`（再对照 `SpringCoreBeansAutoConfigurationOrderingLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 针对“机制主线”时，建议把关键入口串成更清晰的主线（例如：ApplicationContext#refresh → org.springframework.context.support.AbstractApplicationContext#refresh），并在关键分支处点明触发条件与结果形态。
 
 ### 09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
-- 内容级加深策略：
-  - A：补“顺序影响条件命中”的证据链：导入顺序/条件评估时机/定义是否已存在三者如何交互。
-  - B：补反例：@AutoConfigureBefore/After/Order 的边界；同一条件在不同阶段评估导致的“看似偶发”。
-  - C：补排障：如何把“偶发失效”归因到顺序、条件、或者定义覆盖/替换。
-  - D：补断点：auto-config 导入、条件评估、BeanDefinition 注册关键入口。
-  - E：补面试追问：为什么建议把条件写成“可确定性强”的形式？如何解释 matchIfMissing 等三态。
+- 继续加深建议：
+    - `SpringCoreBeansAutoConfigurationOrderingLabTest`（再对照 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `AutoConfigurationImportSelector#selectImports` 进，到 `ConditionEvaluator#shouldSkip` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 针对“4. 常见误区（工程里最容易误诊的点）”时，建议把“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
 
 ### 第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
 - 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md`
-- 内容级加深策略：
-  - A：补“导入链路证据链”：候选收集→导入→注册 BeanDefinition 的关键链路与最短调用链。
-  - B：补反例：用户 bean 顶掉 auto-config / conditionalOnMissingBean 被误判 / FactoryBean+type matching 导致条件误命中。
-  - C：补排障：从“bean 没注册/注册了但不是预期的实现”到“第一断点入口”的 SOP。
-  - D：补 watch list：导入列表、条件上下文、BeanDefinition 注册表的关键对象快照。
-  - E：补面试追问：auto-config 的 back-off 与覆盖策略如何解释且可证明。
+- 继续加深建议：
+    - `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`（再对照 `SpringCoreBeansAutoConfigurationImportOrderingLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 针对“常见误区与边界”时，建议把“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。

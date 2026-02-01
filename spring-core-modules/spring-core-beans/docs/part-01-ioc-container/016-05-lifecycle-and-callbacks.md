@@ -55,13 +55,12 @@
     - 调试策略：用断点 + watch list 把“回调没触发/顺序不对/被代理替换/销毁不执行”变成可定位问题（见第 6 节与排障表）。
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“完整顺序 + 关键窗口”的证据链（Aware/BPP/init/destroy）并明确发生在 raw 还是 exposed。
-    - B（边界反例）：反例：init 抛异常导致 destroy 不执行、prototype 不自动销毁、代理与回调顺序误判。
-    - C（排障 SOP）：排障：初始化卡死/销毁不执行/回调顺序不符的第一断点入口。
-    - D（断点观察）： watch list：回调触发前后关键变量（如 wrappedBean、exposed object 变化）。
-    - E（面试复述）：面试追问：哪些回调能替代哪些？为什么推荐构造器注入+PostConstruct。
+    - 建议入口：先跑 `SpringCoreBeansLifecycleCallbackOrderLabTest`，再用 `SpringCoreBeansPrototypeDestroySemanticsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“排障决策表（生命周期/回调：从“没执行”到“证据链”）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 

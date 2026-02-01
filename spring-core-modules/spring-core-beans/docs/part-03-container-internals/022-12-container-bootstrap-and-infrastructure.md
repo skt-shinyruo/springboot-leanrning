@@ -31,13 +31,12 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“注解能力→处理器→生效窗口”的证据链对照表，并落到具体入口方法。
-    - B（边界反例）：反例：缺失基础设施时哪些注解不生效；过早 getBean 导致处理器未注册。
-    - C（排障 SOP）：排障：@Autowired/@Value/@PostConstruct 不生效时的第一断点入口。
-    - D（断点观察）：断点：处理器注册与执行顺序的关键锚点 + watch list。
-    - E（面试复述）：面试追问：为什么说“注解能工作不是魔法，是处理器装进了 refresh 主线”。
+    - 建议入口：先跑 `SpringCoreBeansBootstrapInternalsLabTest`，再用 `SpringCoreBeansResourceInjectionLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`AnnotationConfigUtils#registerAnnotationConfigProcessors`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“补充：如何识别“基础设施 Bean”（`ROLE_INFRASTRUCTURE`）以及它对排障的意义”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 

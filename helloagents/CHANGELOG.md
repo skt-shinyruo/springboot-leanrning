@@ -16,8 +16,11 @@
 - 删除仓库根 `scripts/` 目录（包含测试/运行快捷脚本与文档批处理脚本），并清理文档/知识库中的引用
 
 ### Changed
+- `spring-core-beans`：docs Round 2 全量继续深化（81 篇）：补齐知识地图表的“断点组（C1–C7）”可跳转链接；断点地图新增 `#c1..#c7` 稳定锚点并提供“现象 → 断点组”快速入口；生产排障清单新增 3 类高频事故的 3–5 步最短诊断路径；全章 `AE-DEEPENING` 提示块统一补齐“第一断点入口 + 最短下一跳”，并通过断链/引用自检与 `mvn -pl spring-core-modules/spring-core-beans test` 回归
+- `spring-core-beans`：Round 2 入口/工具页再打磨（补丁）：README 的 Round 2 三条入口补齐“推荐入口 Lab/Test + 断点组提示”；知识地图的注入行补齐“注入歧义”与更贴近现象的 Lab；断点地图补齐 `@Value` 症状分流；生产排障清单分流表补齐到知识地图跳转，并通过断链/引用自检与模块测试回归
+- `spring-core-beans`：术语降噪：`spring-core-modules/spring-core-beans/docs/**` 全量移除口号化抽象标签，统一改用“运行机制/一句话结论/抓手/前置理解”等更直白表达，并同步更新导航与互链；通过 docs 相对链接自检与模块测试回归
 - 深度完善 `spring-core-beans` 文档：补齐注入点元数据（`MethodParameter`）、scoped proxy（`ScopedProxyMode`）等关键边界，并补全 AOT/基础设施/懒加载等章节的证据链闭环
-- `spring-core-beans`：深挖 Part 01 IoC Container（注册/注入解析/scope/生命周期/BPP/@Configuration/FactoryBean/循环依赖/心智模型），新增“可断点可复现”的证据链闭环与最小观测 testsupport（`BeanDefinitionOriginDumper` / `DependencyDescriptorDumper`）
+- `spring-core-beans`：深挖 Part 01 IoC Container（注册/注入解析/scope/生命周期/BPP/@Configuration/FactoryBean/循环依赖/最终暴露对象），新增“可断点可复现”的证据链闭环与最小观测 testsupport（`BeanDefinitionOriginDumper` / `DependencyDescriptorDumper`）
 - spring-core-beans：对 `spring-core-modules/spring-core-beans/docs` 与 `spring-core-modules/spring-core-beans/README.md` 全量书面化改写（去第二人称/俚语/口语化措辞），保持机制深度不变，提升文档可复述性与严谨性观感。
 - spring-core-beans：进一步逐句修订 `spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`，以更具说明性的书面叙述替换口号式表述，强化论证连续性与可验证性表达。
 - spring-core-beans：深化 Part-05（AOT/RuntimeHints/XML/SpEL/Qualifier/FactoryBean/值解析）与 Appendix（90/99/91–95），补齐“机制讲透 + 方法级调用链 + 排障/面试复述模板”的教程闭环。
@@ -25,8 +28,8 @@
 - spring-core-beans：深化 `02-bean-registration.md`（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”
 - spring-core-beans：继续深化 `02-bean-registration.md`（方法级源码调用链/排障决策表/面试标准答案），补齐“可追踪/可定位/可背诵”交付
 - spring-core-beans：docs 目录页新增“症状驱动导航（快速定位）”，并补齐 19/20/41 三章 BOOKIFY 标记以统一书本化导航一致性
-- spring-core-beans：新增“内容级再加深策略（A–E）”目录（`spring-core-modules/spring-core-beans/docs/deepening-strategies/`），并在模块 README 与 docs 目录页补齐入口，便于按章做二次深化
-- spring-core-beans：将 A–E 维度策略以 `AE-DEEPENING` 提示块写入全章正文（默认置于 `## 机制主线` 前），让“怎么深挖/怎么证明”在章内可直接使用
+- spring-core-beans：新增“内容级再加深策略”目录（`spring-core-modules/spring-core-beans/docs/deepening-strategies/`），并在模块 README 与 docs 目录页补齐入口，便于按章继续深化
+- spring-core-beans：将章节内 `AE-DEEPENING` 提示块与策略文档降模板化为“可执行路线”（推荐入口 Lab/Test → 断点主线 → 结论自证/最短排错），并为 Beans → AOP 的跳转补齐“为什么要跳/验证什么”说明
 - 文档结构调整：以各模块 `*/docs/` 为唯一事实来源（SSOT），仓库根 `docs/` 收敛为仅保留 `docs/SUMMARY.md`（全站目录/导航 SSOT），并删除 `docs/book/` 与旧 `docs/<topic>/...` 内容副本。
 - spring-core-beans：docs 目录入口补充 Debugger Pack 链接，同步知识库入口索引
 - spring-core-beans：重写 09/16/97 三章（循环依赖 / early reference / Explore/Debug），补齐“可跑实验 + 断点/观察点 + 常见坑/工程策略”的教程闭环
@@ -122,7 +125,7 @@
 ### Changed
 - 根 `README.md`：前置“主线之书（Book）”入口（Book TOC + 两条阅读路径），并按推荐学习顺序串起模块与主线节点，降低新读者找路成本。
 - `docs/book/`：为主线节点章节补齐“本章可跑入口（最小闭环）”（Lab 命令 + Exercise 路径），让章节具备“读 → 跑 → 改”的独立闭环。
-- `docs/book/094/116/138`：改写正文为更“像书”的叙事结构（开场问题 → 心智模型 → 主线时间线 → 读者检查点 → 证据链观察点），减少“像说明书”的条目感。
+- `docs/book/094/116/138`：改写正文为更“像书”的叙事结构（开场问题 → 核心抓手 → 主线时间线 → 读者检查点 → 证据链观察点），减少“像说明书”的条目感。
 - `docs-site`：站点导航新增“写作指南”入口（`docs-site/mkdocs.yml`），并在模块侧边栏目录中自动聚合新增的“主线时间线”章节。
 - `docs-site`：站点导航切换为 Book-only（侧边栏仅展示“主线之书”章节树）；`scripts/docs-site-sync.py` 改为注入书目录，模块 docs 作为素材库/搜索命中入口保留。
 - `docs-site`：Book-only 的“附录”导航补齐知识库入口（overview/learning-path/history）与模块快速入口（模块 README 列表），提升在“书目录”下的跳转效率。

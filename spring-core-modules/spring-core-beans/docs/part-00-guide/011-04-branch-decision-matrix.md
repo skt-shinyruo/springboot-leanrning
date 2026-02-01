@@ -117,13 +117,12 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 2) 看到 `@Value("${missing}")` 原样字符串，能立刻判断 strict/non-strict 并给出修复路径。
 3) 看到“代理不生效”，能把问题分成“顺序问题 vs 时机问题”两类并给出证据链入口。
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：把每个分支明确到“真实 if/return 发生点”（入口方法 + 分支条件）。
-    - B（边界反例）：为每个分支补 1 个反例：何时这条规则不适用/会被更强信号覆盖（如 @Primary 覆盖 @Priority）。
-    - C（排障 SOP）：“分支误诊排障”：读者常把哪两个分支混淆？第一断点如何区分？
-    - D（断点观察）：为分支矩阵提供“断点套件建议”：每类分支对应最小断点组。
-    - E（面试复述）：“追问题”：让读者能解释“为什么是这个顺序，而不是另一个顺序”。
+    - 建议入口：先跑 `SpringCoreBeansIocBranchMatrixLabTest`，再用 `SpringCoreBeansInternalsBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“机制主线：把“排障经验”压缩成决策表”时，建议将关键入口串成更清晰的主线（例如：ApplicationContext#refresh → DefaultListableBeanFactory#doResolveDependency），并在关键分支处点明触发条件与结果形态。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

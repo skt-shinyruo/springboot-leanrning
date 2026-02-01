@@ -544,13 +544,12 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 2) 单依赖注入里 `@Order` 为什么不生效？真正决定单依赖选择的是哪些信号？
 3) 如何在 `doResolveDependency` 里用 3 个变量解释“为什么注入的是它/为什么失败”？
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“候选收集→收敛→最终选择”的算法骨架（最短调用链 + 关键 if/return）。
-    - B（边界反例）：反例：@Order 不能选单候选、by-name fallback 的边界、泛型信息丢失导致匹配失败。
-    - C（排障 SOP）：“注入失败分型”与 SOP：NoSuch/NoUnique/UnsatisfiedDependency/类型不匹配，各自第一断点入口与观察点。
-    - D（断点观察）：“依赖解析断点组”：`doResolveDependency`、候选收集、candidate 决策点、value 注入分支。
-    - E（面试复述）：“面试追问”：@Primary/@Qualifier/@Priority 谁更强？为什么？如何证明。
+    - 建议入口：先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再用 `SpringCoreBeansBeanGraphDebugLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“机制主线：候选收集 → 候选收敛 → 最终注入”时，建议将关键入口串成更清晰的主线（例如：ApplicationContext#refresh → org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency），并在关键分支处点明触发条件与结果形态。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

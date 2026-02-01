@@ -32,13 +32,12 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticBeanPostProcessorLabTest.java`
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“排序算法骨架”与关键列表快照（收集→排序→执行），让读者能在断点里观察到顺序如何被决定。
-    - B（边界反例）：反例：programmatic 注册绕过默认排序；@Order 与 @Priority 的边界误判。
-    - C（排障 SOP）：排障：增强偶发不生效/顺序错乱时的第一入口与观察点。
-    - D（断点观察）：断点：排序发生点、processor 列表构建点、注册点。
-    - E（面试复述）：面试追问：为什么 PriorityOrdered 必须先于 Ordered？否则会出现什么可证明的问题。
+    - 建议入口：先跑 `SpringCoreBeansPostProcessorOrderingLabTest`，再用 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 
@@ -357,8 +356,8 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 >
 > AOP/事务/缓存/安全这类能力内部还有另一套“链条顺序”（advisor/interceptor 顺序），不要混在一起：
 >
-> - advisor 顺序与 `proceed()` 嵌套：见 [spring-core-aop：debugging](../../../spring-core-aop/docs/part-01-proxy-fundamentals/035-06-debugging.md)
-> - 多切面/多代理叠加与顺序（两套顺序分流）：见 [spring-core-aop：multi-proxy stacking](../../../spring-core-aop/docs/part-03-proxy-stacking/038-09-multi-proxy-stacking.md)
+> - advisor 顺序与 `proceed()` 嵌套：见 [spring-core-aop：debugging](../../../spring-core-aop/docs/part-01-proxy-fundamentals/035-06-debugging.md)（为什么要跳：本章关注的是“BPP 包裹顺序”，AOP 侧补齐的是“拦截器链/`proceed()` 的嵌套顺序”；验证什么：用 AOP 章的断点观察 `MethodInterceptor#invoke` 的嵌套与返回路径）
+> - 多切面/多代理叠加与顺序（两套顺序分流）：见 [spring-core-aop：multi-proxy stacking](../../../spring-core-aop/docs/part-03-proxy-stacking/038-09-multi-proxy-stacking.md)（为什么要跳：当你看到“多层 proxy（套娃）”时，要把“外层/内层是谁包的（BPP）”与“链条谁先执行（advisor）”拆开；验证什么：跑对应的 multi-proxy 用例，观察 proxy 叠加与 advisor 顺序是两条不同维度）
 >
 > 对应可运行闭环：
 >

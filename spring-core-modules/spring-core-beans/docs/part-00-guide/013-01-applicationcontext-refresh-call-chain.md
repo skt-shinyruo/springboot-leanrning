@@ -192,13 +192,12 @@
 <!-- BOOKIFY:END -->
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：对关键节点补“为什么必须在这里做”：例如为何先 BFPP/再 BPP、为何 preInstantiateSingletons 在后半段。
-    - B（边界反例）：“过早 getBean 反例”：如何导致 BPP 未注册/注解不生效/占位符没解析等偏差。
-    - C（排障 SOP）：“按异常分型定位到 refresh 窗口”：解析失败 vs 创建失败 vs 运行期行为异常。
-    - D（断点观察）：“主线断点组”：给读者一组可复用的稳定锚点断点。
-    - E（面试复述）：“refresh 主线复述题”：让读者能复述 6 个关键节点及其作用。
+    - 建议入口：先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansBootstrapInternalsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“排障分流（refresh 入口版）”时，建议将“跑完用例”与“证明结论”绑定：明确跑完哪个测试方法后，应去哪个入口方法断点验证哪一个结论，避免“跑了但不知道证明了什么”。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 

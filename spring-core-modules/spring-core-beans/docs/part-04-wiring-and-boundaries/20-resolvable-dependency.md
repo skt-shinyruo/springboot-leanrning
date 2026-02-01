@@ -35,7 +35,7 @@
 
 ## 机制主线：它是“可解析依赖”，不是“可获取 Bean”
 
-一句话心智模型：
+一句话结论：
 
 > `registerResolvableDependency` 是在告诉容器：**遇到注入点需要这个 type，就给它这个 value**。
 > 但这个 value **不进入 BeanDefinition 注册表**，也**不进单例池/生命周期/后置处理器链**。
@@ -251,13 +251,12 @@ ResolvableDependency = **注入时可解析的 type→value 映射**；命中在
 - 本章完成后：需要把三件事分清楚：**能注入**、**能 getBean**、**会不会走生命周期/代理**。
 - 下一章将进入父子容器：同一个 type 在不同 `ApplicationContext` 下为何“可见性不同、覆盖规则不同”。
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“命中在 doResolveDependency 之前”的证据链，并对比 bean candidates 分支。
-    - B（边界反例）：反例：滥用导致候选收敛被绕过、与 @Qualifier 选择语义冲突。
-    - C（排障 SOP）：排障：为什么能注入但 getBeansOfType 查不到？如何证明不是 BeanDefinition。
-    - D（断点观察）：断点：resolvableDependencies 命中、AutowireUtils 解包、Aware 回调对照。
-    - E（面试复述）：面试追问：它与 *Aware 的边界与适用场景。
+    - 建议入口：先跑 `SpringCoreBeansResolvableDependencyLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    - 第一断点：`DefaultListableBeanFactory#doResolveDependency`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“6. 排障决策表（能注入/不能 getBean/命中不了 → 证据链）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

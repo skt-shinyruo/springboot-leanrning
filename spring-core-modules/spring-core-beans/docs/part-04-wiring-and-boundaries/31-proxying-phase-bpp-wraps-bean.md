@@ -56,8 +56,8 @@
 
 跨模块前置（建议只读 1 次，之后就能在两边自由切换）：
 
-- AOP 心智模型（call path/self-invocation）：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
-- AOP 容器主线（为什么 AutoProxyCreator 是 BPP）：[07. AOP 的容器主线：AutoProxyCreator 作为 BPP](../../../spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)
+- AOP 前置理解（call path/self-invocation）：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)（为什么要跳：本章解释“容器允许换对象”，AOP 侧补齐“代理到底是什么 + 调用从哪进”；验证什么：在 AOP 章跑一个最小 proxy 用例，确认只有“经过代理的调用”才会触发增强）
+- AOP 容器主线（为什么 AutoProxyCreator 是 BPP）：[07. AOP 的容器主线：AutoProxyCreator 作为 BPP](../../../spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)（为什么要跳：本章看到的是“BPP 把 bean 换成 proxy”，AOP 侧补齐“是谁在 after-init 阶段 wrapIfNecessary”；验证什么：在 `AbstractAutoProxyCreator#postProcessAfterInitialization` 附近观察 proxy 的产生条件与目标对象）
 
 ## 机制主线：容器允许“换对象”
 
@@ -202,13 +202,12 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 2) 为什么 self-invocation 一定绕过代理？
 3) 如何用断点证明“是谁把对象换成了 proxy”？
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“proxy 替换发生点”的证据链，并对比 pre/early/after-init 三类替换。
-    - B（边界反例）：反例：self-invocation 绕过代理、多个代理叠加导致行为偏移。
-    - C（排障 SOP）：排障：为什么看起来“代理没生效”？如何用调用栈证明绕过代理。
-    - D（断点观察）：断点：postProcessAfterInitialization、getEarlyBeanReference、AOP auto-proxy 入口。
-    - E（面试复述）：面试追问：如何解释 self-invocation 的根因与常见修复策略。
+    - 建议入口：先跑 `SpringCoreBeansBeanCreationTraceLabTest`，再用 `SpringCoreBeansProxyingPhaseLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“2. proxy 的两种形态与类型边界（必须会排障）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

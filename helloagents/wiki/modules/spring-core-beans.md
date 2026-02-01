@@ -6,16 +6,17 @@
 
 ## Module Overview
 
-- **Responsibility:** 提供 Bean 机制的系统文档与可运行 Labs/Exercises，用于建立源码级心智模型与排障能力。
+- **Responsibility:** 提供 Bean 机制的系统文档与可运行 Labs/Exercises，用于建立源码级抓手与排障能力。
 - **Docs Reading:** 推荐从 `spring-core-modules/spring-core-beans/docs/README.md` 开始（书本目录 + Part 划分）；主线可按 Part 顺读，每章顶部提供“上一章｜目录｜下一章”导航，降低章节切换成本。
 - **Docs Tone:** `spring-core-beans` 文档全章采用教材化书面语，避免第二人称、俚语与口语化表达；保留术语、代码标识与引用路径的准确性。
 - **Why Index（基础问题索引 / SSOT）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`（覆盖：三级缓存/three level cache、early reference、raw vs wrapped、proxy 替换；并提供跨模块回链到 AOP）
-- **内容级再加深（A–E 维度策略清单）:** `spring-core-modules/spring-core-beans/docs/deepening-strategies/README.md`（按 Part/章节给出“证据链/反例/排障/断点/面试复述”补强方向）
-- **内容级再加深（已写入正文）:** 各章节已内嵌 `AE-DEEPENING` 提示块（位于 `## 机制主线` 前），用于把 A–E 维度的“下一步怎么深挖”直接落到正文阅读路径里
+- **内容级再加深（逐章可执行策略）:** `spring-core-modules/spring-core-beans/docs/deepening-strategies/README.md`（按 Part/章节给出“入口实验（Lab/Test）+ 第一断点入口 + 如何收敛 + 最短下一跳”的加深建议，避免统一模板作文）
+- **内容级再加深（已写入正文）:** 各章节已内嵌 `AE-DEEPENING` 提示块（位于章末/BOOKIFY 前），用于提示读者“第一断点在哪里、如何把结论自证、下一跳去哪里”，避免停留在口号式或维度清单式建议
 - **症状快速定位（目录页入口）:** `spring-core-modules/spring-core-beans/docs/README.md`（新增“症状驱动导航（快速定位）”，用于从现象直达章节与证据链入口）
 - **Start Here（30 分钟快启）:** 先运行 3 个最小实验建立容器主线直觉，再进入深潜：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`。
 - **Auto-Config 顺序（Boot/容器交汇点）:** `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
 - **断点地图（可复用清单）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
+- **知识地图 ↔ 断点地图互链:** 知识地图表新增“断点组（C1–C7）”链接；断点地图补齐 `#c1..#c7` 稳定锚点并提供“现象 → 断点组”快速入口，便于从现象直接跳到可复用断点组
 - **循环依赖（现象→窗口期→规避）:** `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
 - **Early Reference 深挖（getEarlyBeanReference）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
 - **Explore/Debug（可选启用）:** `spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
@@ -28,6 +29,7 @@
 - **关键分支矩阵（If/Then 决策表）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
 - **排障 playbook:** `spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
 - **自检清单:** `spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
+- **生产排障清单（最短 SOP）:** `spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`（新增 3 类高频事故的 3–5 步最短诊断路径，并回链到断点组/章节/Lab）
 - **主线叙事（源码级）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`（`refresh()` → `doCreateBean()`，关键方法 + 关键分支）
 - **排障速查（分支决策表）:** 同章内新增“现象 → 阶段 → 关键方法 → 必看变量 → LabTest”对照表，把主线叙事压缩成可复用排障套路（注入失败/循环依赖/代理形态/FactoryBean/预实例化等）
 - **注解为何生效（bootstrap）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`（新增“处理器速查表 + 时机时间线 + 过早 getBean 反例”）
@@ -76,6 +78,27 @@
 - 必须保留 `com.learning.springboot.springcorebeans.SpringCoreBeansApplication` 的包名不变（便于 Spring Boot 测试向上包查找 `@SpringBootConfiguration`）。
 
 ## Specifications
+
+### Requirement: spring-core-beans docs Round 2（全量逐章差异化继续深化）
+
+- 本轮方案包（全量逐章深化）：`helloagents/history/2026-02/202602011541_beans_docs_deepen_round2_allchapters/`
+- 状态：已完成实现与回归测试并归档（2026-02-01）
+- 入口/工具页追加强化包：`helloagents/history/2026-02/202602011503_beans_docs_deepen_round2/`（已归档 2026-02-01）
+**Module:** spring-core-beans
+在不改变目录结构与章节编号的前提下，对 `spring-core-modules/spring-core-beans/docs/**` 做第二轮全量继续深化：强化“工具页互链 + 逐章可验证入口 + 最短下一跳”，并通过断链/引用自检与模块测试回归守住质量门禁。
+
+#### Scenario: 工具页中枢化（知识地图 ↔ 断点地图 ↔ 排障清单）
+- `appendix/92-knowledge-map.md` 表格新增“断点组（C1–C7）”链接，能从现象直达可复用断点组
+- `part-00-guide/013-02-breakpoint-map.md` 补齐 `#c1..#c7` 稳定锚点，并新增“现象 → 断点组”快速入口
+- `appendix/94-production-troubleshooting-checklist.md` 增补 3 类高频事故的 3–5 步最短诊断路径，并回链章节与 Lab
+
+#### Scenario: 逐章继续加深提示块（AE-DEEPENING）
+- 统一把“断点主线”表述收敛为“第一断点入口”，避免空泛的 watch list 口号；并补齐“最短下一跳”指引
+
+#### Scenario: 质量门禁（必须可回归）
+- beans docs 相对链接目标存在性检查：missing targets = 0
+- beans docs 引用的测试类/文件路径存在性检查通过
+- `mvn -pl spring-core-modules/spring-core-beans test` 回归通过
 
 ### Requirement: 深化 spring-core-beans 文档与 Labs（源码级）
 
@@ -133,11 +156,12 @@
 
 #### Scenario: 能把 Bean 三层模型映射到关键类与扩展点
 - 文档明确：BeanDefinition/实例/生命周期 三层与关键参与者的关系
+- 术语上避免口号化抽象标签，统一用可验证的运行机制表述（抓手/结论/入口理解）
 - 提供 Lab 使用户能在断点里看到这些对象在何时出现与被修改
- - 对应可复现闭环入口：
-   - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
-   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanCreationTraceLabTest.java`
-   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanDefinitionOriginDumperLabTest.java`
+- 对应可复现闭环入口：
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanCreationTraceLabTest.java`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanDefinitionOriginDumperLabTest.java`
 
 #### Scenario: 能把 AOP/事务等“代理能力”放回容器时间线解释（BPP 视角）
 - 能解释 AutoProxyCreator 作为典型 BPP 如何在 pre/early/after-init 介入，导致最终暴露对象可能是 proxy
@@ -185,6 +209,9 @@
 
 ## Change History
 
+- [202602011343_beans_docs_deepen_all](../../history/2026-02/202602011343_beans_docs_deepen_all/) - ✅ 已执行：beans docs 全量“继续深化”：将章内 `AE-DEEPENING` 与 deepening-strategies 从维度清单降模板化为“入口用例 + 断点主线 + 自证/排错收敛点”的可执行路线，并补齐 Beans → AOP 跳转的“为什么跳/验证什么”说明
+- [202602011249_beans_docs_term_refine](../../history/2026-02/202602011249_beans_docs_term_refine/) - ✅ 已执行：beans docs 术语降噪（去口号化抽象标签，统一“运行机制/结论/抓手/前置理解”），并完成链接/引用/回归自检
+- [202601312157_ioc_container_docs_deepen_v2](../../history/2026-01/202601312157_ioc_container_docs_deepen_v2/) - ✅ 已执行：对 Part-01 IoC Container 文档做内容级微调（术语降噪与表述更直白），并完成链接/引用/回归自检
 - [202601281326_spring_core_beans_docs_formalize](../../history/2026-01/202601281326_spring_core_beans_docs_formalize/) - ✅ 已执行：对 `spring-core-beans/docs` 与 `spring-core-beans/README.md` 全量做书面化处理（去口语化与第二人称），保持机制深度不变，提升可复述性与严谨观感
 - [202601281041_spring_core_beans_deepen_per_chapter](../../history/2026-01/202601281041_spring_core_beans_deepen_per_chapter/) - ✅ 已执行：逐章深化 Part-05 与 Appendix（90/99/91–95），补齐机制讲透/方法级调用链/排障决策表/面试复述模板，形成可复现闭环
 - [202601222155_solutions_all_remaining_modules](../../history/2026-01/202601222155_solutions_all_remaining_modules/) - ✅ 已执行：补齐 Solutions/Labs 文档入口，并新增并发/性能可复现实验（同一 BeanFactory 并发 getBean）+ 补齐 Exercises 对应 Solution 缺口（part04）

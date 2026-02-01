@@ -1,8 +1,8 @@
-# 第 20 章：01. Bean 心智模型：从 BeanDefinition 到最终暴露对象
+# 第 20 章：01. Bean 运行机制：从 BeanDefinition 到最终暴露对象
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：Bean 心智模型：从 BeanDefinition 到最终暴露对象
+    - 知识点：Bean 运行机制：从 BeanDefinition 到最终暴露对象
     - 使用方式：可先运行本章推荐 Lab，将“定义不等于实例、最终暴露对象不一定等于原始实例”固化为断言；随后回到正文，结合主线与断点完成证据链验证。
     - 原理：`ApplicationContext#refresh` 主线：注册定义（BeanDefinition）→ 定义层处理（BFPP/BDRPP）→ 注册 BPP 链 → 创建/注入/初始化（doCreateBean）→ 最终暴露对象（可能是 proxy）。
     - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`
@@ -15,9 +15,9 @@
 
 ## 导读
 
-- 本章主题：**Bean 心智模型：从 BeanDefinition 到最终暴露对象**
+- 本章主题：**Bean 运行机制：从 BeanDefinition 到最终暴露对象**
 - 这章解决的不是“记名词”，而是解决一个高频误判：把 **Bean = 某个对象实例**。
-  正确心智模型应该是：**Bean = 容器托管的一套机制**（定义、创建、注入、回调、代理、销毁）。
+  更准确的理解应该是：**Bean = 容器托管的一套机制**（定义、创建、注入、回调、代理、销毁）。
 
 !!! summary "本章要点"
 
@@ -227,16 +227,15 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 ## 小结与下一章
 
-- 本章把 Bean 的最小心智模型固定成“四个对象”：BeanDefinition / merged RootBeanDefinition / raw instance / exposed object。
+- 本章把 Bean 的最小分层模型固定成“四个对象”：BeanDefinition / merged RootBeanDefinition / raw instance / exposed object。
 - 下一章开始进入 Boot 的自动装配：可以观察到“定义层”的复杂度显著上升，但排障方法论不变（先分层，再证据链）。
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：把 pre/early/after-init 三个替换窗口做成“证据链对照表”，并给每类窗口的关键入口方法。
-    - B（边界反例）：反例：early reference 与最终代理不一致导致的行为差异；FactoryBean/Scoped proxy 造成的“看起来类型不对/beanName 对不上”。
-    - C（排障 SOP）：排障：看到异常先分层到定义/实例/最终对象，并给第一断点入口。
-    - D（断点观察）：“如何快速识别 proxy/wrapper”：调试器判别方法与代理链定位。
-    - E（面试复述）：面试追问：BeanFactory vs ApplicationContext 的差异如何落到 refresh 证据链。
+    - 建议入口：先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansBeanCreationTraceLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“4. 排障决策表（将主观判断转化为可验证结论）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

@@ -137,7 +137,7 @@
 
 ### 2.1 Component Scan（扫描注册）
 
-入口心智模型：
+入口理解：
 
 - 交给 Spring 一个“包路径”
 - Spring 扫描 classpath，把符合条件的类转换成 BeanDefinition 注册进 registry
@@ -151,7 +151,7 @@ Lab：`SpringCoreBeansComponentScanLabTest`
 
 ### 2.2 `@Configuration` + `@Bean`（配置类注册）
 
-入口心智模型：
+入口理解：
 
 - 配置类会被解析（ConfigurationClass）
 - `@Bean` 方法会被转换成 BeanDefinition（工厂方法方式）
@@ -163,7 +163,7 @@ Lab：`SpringCoreBeansComponentScanLabTest`
 
 ### 2.3 `@Import`（导入注册：selector / registrar）
 
-入口心智模型：
+入口理解：
 
 - `@Import` 不是“引入一个类那么简单”，它可以导入：
   - 普通配置类
@@ -775,13 +775,12 @@ AbstractBeanFactory#doGetBean(beanName)
 2) `registerBeanDefinition` vs `registerSingleton` 的根本差异是什么？
 3) 为什么“注册时机”会决定 AOP/注解/回调是否生效？
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“最终注册 BeanDefinition 的统一落点”与最短调用链，明确不同入口最终汇聚到哪里。
-    - B（边界反例）： Import 体系反例：ImportSelector/DeferredImportSelector/Registrar 的典型误用与排障点。
-    - C（排障 SOP）：“注册失败分型”：没注册/被条件排除/名字冲突/覆盖策略冲突，第一断点入口分别是什么。
-    - D（断点观察）：“注册阶段断点组”：registry 写入点、配置类解析点、条件评估点。
-    - E（面试复述）：“面试追问”：为什么说“注册的第一性对象是 BeanDefinition”，如何证明。
+    - 建议入口：先跑 `SpringCoreBeansComponentScanLabTest`，再用 `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#registerSingleton`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“5. 排障决策表（注册相关：现象 → 分层 → 证据 → 修复）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

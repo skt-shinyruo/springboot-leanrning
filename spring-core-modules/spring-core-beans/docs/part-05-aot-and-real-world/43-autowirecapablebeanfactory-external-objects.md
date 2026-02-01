@@ -32,13 +32,12 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAutowireCapableBeanFactoryLabTest.java`
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“外部对象注入的能力边界”证据链：能做什么、不能做什么（生命周期/代理/销毁）。
-    - B（边界反例）：反例：误以为外部对象等同容器托管导致的资源泄漏与代理不生效。
-    - C（排障 SOP）：排障：外部对象注入后行为不符合预期时如何定位到“没走哪条容器主线”。
-    - D（断点观察）：断点：autowireBean/initializeBean/applyBeanPostProcessors 的调用路径对照。
-    - E（面试复述）：面试追问：什么时候应该用它，什么时候应该重构为容器托管？
+    - 建议入口：先跑 `SpringCoreBeansAutowireCapableBeanFactoryLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    - 第一断点：`AutowireCapableBeanFactory#initializeBean`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 

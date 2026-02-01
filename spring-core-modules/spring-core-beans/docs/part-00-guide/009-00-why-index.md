@@ -19,7 +19,7 @@
 
 很多“基础问题”（例如：**为什么 Spring 要用三级缓存**）之所以让读者读完仍然困惑，通常不是因为正文里没有提到名词，而是因为：
 
-- 读者缺少稳定的前置心智模型：**容器对外返回的是最终暴露对象（exposed object），它可能被 proxy/wrapper 替换**；
+- 读者缺少稳定的前置结论：**容器对外返回的是最终暴露对象（exposed object），它可能被 proxy/wrapper 替换**；
 - 论证链分散在多个章节（循环依赖 / early reference / 代理替换 / AOP call path），需要读者自行整合；
 - 缺少“最短证据链”（对应 Lab、断点入口与关键变量）导致无法将概念转化为可验证事实。
 
@@ -93,7 +93,7 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 - Beans：[`09. 循环依赖（constructor vs setter）`](../part-01-ioc-container/09-circular-dependencies.md)
 - Beans：[`16. early reference 与循环依赖：getEarlyBeanReference`](../part-03-container-internals/16-early-reference-and-circular.md)
 - Beans：[`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
-- AOP（前置心智模型）：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+- AOP（前置理解）：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)（为什么要跳：本章的“early 形态 = raw/proxy”离不开对“代理是什么、调用从哪进”的直觉；验证什么：在 AOP 章先跑通一个最小 proxy 用例，确认“调用路径经过代理”才会触发增强）
 
 ---
 
@@ -168,7 +168,7 @@ Spring 容器返回的是 **exposed object**，而不是“原始实例”；在
 ### 下一步去哪读（Next reading）
 
 - Beans：[`31. 代理产生阶段：BPP 如何把 Bean 换成 Proxy`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
-- AOP：[07. AOP 的容器主线：AutoProxyCreator 作为 BPP](../../../spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)（AutoProxyCreator 作为 BPP 的主线）
+- AOP：[07. AOP 的容器主线：AutoProxyCreator 作为 BPP](../../../spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)（为什么要跳：Beans 侧能解释“BPP 允许换对象”，但“是谁、在什么时候 wrapIfNecessary”要靠 AOP 容器主线补齐；验证什么：按本节给出的 AOP 测试 + 断点锚点跑一遍，观察代理生成条件与目标对象）
 
 ---
 
@@ -203,7 +203,7 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopExposeProxyLabTest#exposeProxyAllow
 
 ### 下一步去哪读（Next reading）
 
-- AOP：[03. self-invocation：为什么 `this.inner()` 不会被拦截](../../../spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md)
+- AOP：[03. self-invocation：为什么 `this.inner()` 不会被拦截](../../../spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md)（为什么要跳：本章说的是“call path 绕过 proxy”，AOP 章把“绕过发生在哪个调用点”讲得更细；验证什么：用本节的 self-invocation / exposeProxy 对照用例，观察“同类内部调用”是否经过代理）
 - Beans（补齐容器视角）：[`31. 代理替换发生在哪个阶段`](../part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
 
 ## 面试常问（Why Index）
@@ -229,13 +229,12 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopExposeProxyLabTest#exposeProxyAllow
 
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：将 Why-01/03 的断点闭环完善为可复用模板：固定 3 个断点 + 固定 5 个变量 + 固定 3 条可断言结论。
-    - B（边界反例）：补三组易混对照：depends-on 环 vs 三级缓存循环依赖、constructor 环 vs setter 环、early proxy vs after-init proxy。
-    - C（排障 SOP）：将常见症状分型为：未注册/未创建/已创建但被短路/创建后发生代理或包装替换/值解析失败，并给出首个断点入口。
-    - D（断点观察）：将本页的断点与 `013-02-breakpoint-map.md`、`098-debugger-pack.md` 建立互链，形成“主线断点 + 专题断点”的组合入口。
-    - E（面试复述）：为 Why-01/03/05 分别补充 1 个追问：结论→证据链→反例→修复策略（可证明）。
+    - 建议入口：先跑 `SpringCoreBeansCircularDependencyBoundaryLabTest`，再用 `SpringCoreBeansEarlyReferenceLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：对跨模块链接补“跳转目的”：在链接附近用 1–2 句说明为什么此处需要 AOP/TX 视角，以及跳过去应验证的关键点（例如代理创建点/自调用行为/拦截器链顺序）。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 

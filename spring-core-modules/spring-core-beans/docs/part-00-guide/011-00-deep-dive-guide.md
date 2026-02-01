@@ -33,13 +33,12 @@
     - 入口文件（便于定位）：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：将“分层”进一步落实到“第一断点入口选择器”（定义层/候选层/实例层/最终对象），并给出最短调用链。
-    - B（边界反例）：补齐“调试反例”（断点不命中、代理层级过深、过早 `getBean` 导致现象偏移等）。
-    - C（排障流程）：将症状导航升级为可执行的 3 步流程：症状 → 分层 → 第一断点（并给出监视列表（watch list））。
-    - D（断点观察）：为关键断点补充“稳定性注记”（跨版本稳定的断点与可能漂移的断点）。
-    - E（面试复述）：将“自检要点”转换为可复用的回答框架（结论/时机/证据链）。
+    - 建议入口：先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 ## 学习目标与自检标准（10/30/3）
@@ -57,7 +56,7 @@
 
 ## 0. 机制主线：由概念到可验证结论
 
-当读者开始进行源码级分析时，较常见的困难并非“概念错误”，而是缺少可复用的映射关系：概念难以映射到 refresh 时间线、关键数据结构与扩展点的介入位置。为此，本节先给出最小心智模型与分析入口。
+当读者开始进行源码级分析时，较常见的困难并非“概念错误”，而是缺少可复用的映射关系：概念难以映射到 refresh 时间线、关键数据结构与扩展点的介入位置。为此，本节先给出最小抓手与分析入口。
 
 适用范围：本仓库基于 Spring Boot 3.x（对应 Spring Framework 6.x）。小版本可能调整内部实现细节，但主线阶段划分与核心接口语义通常保持稳定。
 
@@ -72,7 +71,7 @@
 - **缺少分层（对象形态不清晰）**：将“定义层/候选层/实例层”混合观察，容易在长调用栈中失去主线
   - 建议做法：先明确当前关注对象属于哪一层：**BeanDefinition**（是否已注册/已合并）、**候选集合**（候选范围与收敛过程）、**最终暴露对象**（为何呈现为 proxy 等形态）
 
-### 0.1 最小心智模型：5 类对象与关键链路（将概念转化为可观察对象）
+### 0.1 最小抓手：5 类对象与关键链路（将概念转化为可观察对象）
 
 在最小化观察对象的前提下，可优先关注以下 5 类对象及其关键链路（每一条均可在断点中验证）：
 
@@ -184,7 +183,7 @@
 
 ## 2. 最小源码导航图（定义层 / 实例层 / 缓存层）
 
-将 [01. Bean 心智模型](../part-01-ioc-container/020-01-bean-mental-model.md) 的三层模型对应到源码，最小可以按以下结构建立映射。
+将 [01. Bean 运行机制：从 BeanDefinition 到最终暴露对象](../part-01-ioc-container/020-01-bean-mental-model.md) 的三层结构对应到源码，最小可以按以下结构建立映射。
 
 ### 2.1 定义层：BeanDefinition 进入、存储、调整
 

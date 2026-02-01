@@ -32,13 +32,12 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“注入发生在哪一步”的证据链：构造器注入 vs 属性填充 vs @PostConstruct。
-    - B（边界反例）：反例：field injection 在构造器不可用导致 NPE；循环依赖更难排；测试隔离更差。
-    - C（排障 SOP）：排障：注入时机误判导致的 bug 如何定位（第一断点与变量）。
-    - D（断点观察）：断点：ConstructorResolver、populateBean、postProcessProperties。
-    - E（面试复述）：面试追问：为什么更推荐构造器注入？给出证据链与工程理由。
+    - 建议入口：先跑 `SpringCoreBeansInjectionPhaseLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 
@@ -129,7 +128,7 @@
 
 ## 6. 延伸阅读（把点连成线）
 
-- AOP（代理心智模型）：[spring-core-aop：AOP Proxy 心智模型](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)
+- AOP（代理与调用路径）：[spring-core-aop：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)（为什么要跳：本章讲“注入发生在哪个阶段”，一旦引入代理，很多现象会变成“对象形态 + 调用路径”的问题；验证什么：在 AOP 章跑一个最小 proxy 用例，确认“字段注入/构造器注入”与“代理是否生效”是两条不同维度）
 - 事务也是代理：[spring-core-tx：`@Transactional` 代理](../../../spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md)
 
 入口：

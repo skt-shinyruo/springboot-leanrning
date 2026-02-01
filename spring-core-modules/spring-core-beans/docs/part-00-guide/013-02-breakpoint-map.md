@@ -33,6 +33,18 @@
 
 ## 机制主线（按 refresh 时间线组织）
 
+> 快速入口：若不确定该从哪组断点开始，可先用“现象 → 断点组”选一个起点，再回到 [知识地图](../appendix/92-knowledge-map.md) 补齐“章节 + 推荐 Lab”。
+
+| 现象（Symptoms） | 首选断点组 | 说明 |
+| --- | --- | --- |
+| BeanDefinition 没注册 / 扫描不生效 / `NoSuchBeanDefinitionException` | [C2](#c2) | 先确认 registry 是否写入了定义（定义层优先） |
+| BFPP/BDRPP 顺序/时机导致“定义被改写不符合预期” | [C3](#c3) | 定义层的“最后改写机会”，先把阶段与排序看清 |
+| 注入失败（NoSuch/NoUnique）/ 多候选歧义 / 注入到了不是预期实现 | [C6](#c6) | 候选集合收集与收敛规则都在这里发生 |
+| 代理不生效 / self-invocation / “像绕过 AOP” | [C4](#c4) / [C7](#c7) | 先证 BPP 链是否完整（C4），再证 proxy 替换是否发生（C7） |
+| 循环依赖 / early reference / raw vs wrapped | [C5](#c5) | 三层缓存与 early exposure 的窗口期在这里最容易被观察到 |
+| `@Value` 占位符/SpEL/类型转换：值不对/缺失不失败/原样字符串 | [C3](#c3) / [C6](#c6) | 先证 `resolveEmbeddedValue` 的输出，再看注入点的转换与绑定 |
+
+<a id="c1"></a>
 ### C1. refresh 总入口（把阶段看清）
 
 - 入口断点：
@@ -41,6 +53,7 @@
   - 当前阶段（看调用栈即可）
   - `beanFactory`（通常是 `DefaultListableBeanFactory`）
 
+<a id="c2"></a>
 ### C2. 定义注册：BeanDefinitionRegistry / 扫描 / @Configuration 解析
 
 - 入口断点：
@@ -52,6 +65,7 @@
 - 决定性分支：
   - Full vs Lite（`@Configuration` 是否被增强）
 
+<a id="c3"></a>
 ### C3. BFPP/BDRPP：定义层的“最后改写机会”
 
 - 入口断点：
@@ -61,6 +75,7 @@
   - `processedBeans`（已处理列表）
   - 执行顺序分段（PriorityOrdered → Ordered → 无序）
 
+<a id="c4"></a>
 ### C4. registerBeanPostProcessors：为什么注解能工作
 
 - 入口断点：
@@ -69,6 +84,7 @@
   - `beanFactory.getBeanPostProcessorCount()`
   - 已注册的关键 BPP（AABPP/CABPP/Autowired 等）
 
+<a id="c5"></a>
 ### C5. 单例预实例化：实例层主线（createBean/doCreateBean）
 
 - 入口断点：
@@ -82,6 +98,7 @@
   - 是否触发“实例化前短路”（`postProcessBeforeInstantiation` 返回非 null）
   - 是否触发 early reference（循环依赖/代理介入）
 
+<a id="c6"></a>
 ### C6. populateBean：依赖注入与候选收敛
 
 - 入口断点：
@@ -95,6 +112,7 @@
 - 决定性分支：
   - `@Primary/@Priority/@Qualifier` 的优先级链
 
+<a id="c7"></a>
 ### C7. initializeBean：生命周期回调与“代理替换发生点”
 
 - 入口断点：
@@ -177,13 +195,12 @@
 
 - 本页作为断点索引页，建议与各章的“源码锚点/入口测试/排障分流”配合使用。
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：为每个断点补“它在证明什么分支”，避免断点清单变成“背方法名”。
-    - B（边界反例）：“断点误用反例”：哪些断点会因为版本/环境差异不稳定，如何替代。
-    - C（排障 SOP）：“从症状选择断点组”的决策表：注入/代理/循环依赖/占位符/FactoryBean 各选哪组。
-	    - D（断点观察）：把 watch list 升级为“判定标准”：变量值如何判定当前执行位于哪条分支。
-    - E（面试复述）：“面试追问的断点证明”：给 3 个高频题对应的断点证明路径。
+    - 建议入口：先跑 `SpringCoreBeansLabTest`，再用 `SpringCoreBeansBootstrapInternalsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：遇到具体现象时，回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；需要固化排障流程时，回到 [生产排障清单](../appendix/94-production-troubleshooting-checklist.md)。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

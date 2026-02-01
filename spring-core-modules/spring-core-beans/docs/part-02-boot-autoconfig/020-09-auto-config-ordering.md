@@ -176,13 +176,12 @@
 2) `@AutoConfiguration(after=...)` 解决的是什么问题？（提示：把隐式依赖变成显式排序规则）
 3) 可以用哪 2 个断点把“排序→条件评估→定义是否注册”走成证据链？
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“顺序影响条件命中”的证据链：导入顺序/条件评估时机/定义是否已存在三者如何交互。
-    - B（边界反例）：反例：@AutoConfigureBefore/After/Order 的边界；同一条件在不同阶段评估导致的“看似偶发”。
-    - C（排障 SOP）：排障：如何把“偶发失效”归因到顺序、条件、或者定义覆盖/替换。
-    - D（断点观察）：断点：auto-config 导入、条件评估、BeanDefinition 注册关键入口。
-    - E（面试复述）：面试追问：为什么建议把条件写成“可确定性强”的形式？如何解释 matchIfMissing 等三态。
+    - 建议入口：先跑 `SpringCoreBeansAutoConfigurationOrderingLabTest`，再用 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“4. 常见误区（工程里最容易误诊的点）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

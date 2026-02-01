@@ -63,7 +63,7 @@
 - 再去对应章节/实验里验证
 - 最后再启用 Exercises 把理解落实成可运行的结论
 
-## 心智模型（对应 01/06）
+## 基础抓手（对应 01/06）
 
 验证入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
 
@@ -232,13 +232,12 @@
 - 应能够否把“现象”稳定复现为一个可回归的 LabTest，并写出读者自己的 1–2 句结论（而不是抄结论）？
 - 应能够否从任意一条自测题出发，给出：对应章节 + 对应 Lab + 关键观察点 + 修复方向？
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：每题绑定“证据链入口方法 + 推荐 Lab”，让自测变成可证明训练。
-    - B（边界反例）：加入“反例题/边界题”，避免只背概念。
-    - C（排障 SOP）：把自测题按“定义层/实例层/代理/值解析/Boot/AOT”分型，形成排障能力训练。
-    - D（断点观察）：为高频题给断点闭环建议（断点+watch list+判定标准）。
-    - E（面试复述）：与 interview playbook 互链：自测题可直接转为面试复述练习。
+    - 建议入口：先跑 `SpringCoreBeansLabTest`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：将自检题的“答案”改为“验证路线”：每题后给出最短回链（去哪个章节/跑哪个用例/在哪个入口断点验证）。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

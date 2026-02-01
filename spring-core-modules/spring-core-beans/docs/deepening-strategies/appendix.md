@@ -10,74 +10,60 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 ### 90. 常见误区清单
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
-- 内容级加深策略：
-  - A：为每类误区补“最短证据链入口方法”链接（避免只给结论）。
-  - B：为高频误区补“反例对照”：如何一眼区分相似但本质不同的问题（如 depends-on 环 vs 循环依赖）。
-  - C：把误区映射到排障 SOP：遇到该误区的典型症状与第一断点入口。
-  - D：补断点建议：每类误区给最小断点组与 watch list。
-  - E：把误区转成面试追问（追问“为什么/如何证明/反例是什么”）。
+- 继续加深建议：
+    - `SpringCoreBeansAutowireCandidateSelectionLabTest`（再对照 `SpringCoreBeansContainerLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 将坑点从“现象清单”收敛为“最短诊断路线”：每类现象给出第一入口断点与第一条排除项，并回链到对应章节/用例。
 
 ### 99. 自测题
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
-- 内容级加深策略：
-  - A：每题绑定“证据链入口方法 + 推荐 Lab”，让自测变成可证明训练。
-  - B：加入“反例题/边界题”，避免只背概念。
-  - C：把自测题按“定义层/实例层/代理/值解析/Boot/AOT”分型，形成排障能力训练。
-  - D：为高频题给断点闭环建议（断点+watch list+判定标准）。
-  - E：与 interview playbook 互链：自测题可直接转为面试复述练习。
+- 继续加深建议：
+    - `SpringCoreBeansLabTest`（再对照 `SpringCoreBeansContainerLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 将自检题的“答案”改为“验证路线”：每题后给出最短回链（去哪个章节/跑哪个用例/在哪个入口断点验证）。
 
 ### 91. 术语表
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/91-glossary.md`
-- 内容级加深策略：
-  - A：为关键术语补“对应证据链入口方法”，避免术语解释与源码脱节。
-  - B：补易混词反例：BeanDefinition vs bean instance vs exposed object；BFPP vs BPP vs BDRPP 等。
-  - C：补“术语误诊”排障提示：遇到某词汇时如何避免错误联想。
-  - D：为核心术语补“观察到它”的断点/观察点。
-  - E：将术语映射到面试题：术语解释必须能给出证据链与反例。
+- 继续加深建议：
+    - `SpringCoreBeansContainerLabTest`，把本章要解释的现象跑出来（能稳定复现）。
+    - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 术语表减少抽象解释，补“落到代码里是什么”：每个术语给出关键类/方法/数据结构，并回链到首次出现的章节。
 
 ### 92. 知识地图
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`
-- 内容级加深策略：
-  - A：把每条主线补“证据链入口方法”，与章节内部一致。
-  - B：为每条症状补“最常见反例/误诊点”，提高定位精度。
-  - C：强化“症状→章节→Lab→断点”的完整闭环，作为排障导航主入口之一。
-  - D：与 Debugger Pack/断点地图互链，形成可复用断点套件。
-  - E：把知识地图与面试题库映射：某题对应哪条地图路径与证明方式。
+- 继续加深建议：
+    - `SpringCoreBeansBreakpointPackLabTest`（再对照 `SpringCoreBeansIocBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `DefaultSingletonBeanRegistry#getSingleton` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 知识地图优先服务“快速定位”：把每个节点压缩为“常见现象 → 对应章节 → 最小可跑入口（测试方法名）”，避免过多枚举。
 
 ### 93. 面试复述模板
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/93-interview-playbook.md`
-- 内容级加深策略：
-  - A：为每道题补“方法级证据链”（最短调用链 + 决策点）。
-  - B：为高频题补“反例/边界追问”，避免背诵式答案。
-  - C：为题目增加“真实排障对应场景”，让面试题能反哺工程能力。
-  - D：为题目给“断点证明路径”，帮助读者用 IDE 复现实证。
-  - E：统一答案结构：结论→证据链→反例→追问（保持一致可训练性）。
+- 继续加深建议：
+    - `SpringCoreBeansIocBranchMatrixLabTest`（再对照 `SpringCoreBeansInternalsBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 面试复述页为每个高频题补“可验证证据”：明确可以用哪个测试 + 哪个断点证明，而不是只给口头答案。
 
 ### 94. 生产排障清单
 
 - 文件：`spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`
-- 内容级加深策略：
-  - A：为每类症状补“第一断点入口 + 关键变量”，把清单变成可执行 SOP。
-  - B：补“误判对照”：相似症状可能属于不同机制域，如何快速分流。
-  - C：把排障清单与 docs/README 症状导航打通（双向链接）。
-  - D：与 Debugger Pack 互链：每类症状给推荐断点组。
-  - E：把排障题转成面试追问（如何定位/如何证明/如何修复）。
+- 继续加深建议：
+    - `SpringCoreBeansBreakpointPackLabTest`（再对照 `SpringCoreBeansIocBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 生产排障清单按症状给分流：注入失败/代理不生效/循环依赖/配置不生效等，每类给出第一入口断点与对应章节/用例。
 
 ### 95/96. public API 索引与 gap
 
 - 文件：
   - `spring-core-modules/spring-core-beans/docs/appendix/95-spring-beans-public-api-index.md`
   - `spring-core-modules/spring-core-beans/docs/appendix/96-spring-beans-public-api-gap.md`
-- 内容级加深策略：
-  - A：为每个 API 域补“对应章节与证据链入口”，帮助从 API 反向定位机制。
-  - B：为 gap 项补“反例/边界触发条件”，明确为何它是 gap。
-  - C：为 API 域补“常见排障场景入口”，让索引服务于排障而不是目录堆叠。
-  - D：补建议断点：哪个 API 域对应哪个关键断点入口。
-  - E：补面试题映射：某 API 域典型面试题与证明路径。
+- 继续加深建议：
+    - `SpringCoreBeansBreakpointPackLabTest`（再对照 `SpringCoreBeansIocBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 生产排障清单按症状给分流：注入失败/代理不生效/循环依赖/配置不生效等，每类给出第一入口断点与对应章节/用例。
 
 ### 97/98/99. Explore/Debug / Debugger Pack / Team Training
 
@@ -85,9 +71,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
   - `spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
   - `spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`
   - `spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`
-- 内容级加深策略：
-  - A：为每个用例/断点包补“它在证明什么机制分支”，让工具页更可复用。
-  - B：补“反例与误区点”：如何避免用例/断点被版本差异误导。
-  - C：把工具页与排障清单/知识地图/目录页打通，形成统一导航。
-  - D：补 watch list 与判定标准：断点停下后看什么值才算“证据成立”。
-  - E：将工具页变成训练脚本：面试复述/团队内训可直接引用其证据链与复现入口。
+- 继续加深建议：
+    - `SpringCoreBeansBreakpointPackLabTest`（再对照 `SpringCoreBeansIocBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
+    - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
+    - 生产排障清单按症状给分流：注入失败/代理不生效/循环依赖/配置不生效等，每类给出第一入口断点与对应章节/用例。

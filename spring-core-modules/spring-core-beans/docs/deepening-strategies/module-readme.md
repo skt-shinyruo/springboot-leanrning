@@ -10,9 +10,7 @@
 ### spring-core-beans（模块 README）
 
 - 关联文件：`spring-core-modules/spring-core-beans/README.md`
-- 本轮内容级加深策略（A–E）：
-  - A：在 README 中明确“证据链最短路径”——读者遇到问题时先跳到哪个章节、对应的关键入口方法是什么。
-  - B：补充 3–5 个最常见误用反例（例如把 dependsOn 当注入、把 @Order 当单候选选择、把 FactoryBean 当普通 bean）。
-  - C：补充“症状入口”索引（与 docs/README 的表保持一致或互为补充），确保从 README 能直接走到排障主线。
-  - D：补充 Debugger Pack/断点地图的入口解释：什么时候看断点地图、什么时候看 Debugger Pack、如何组合使用。
-  - E：补充“面试复述路径”入口：从 interview playbook 反向回到章节与 Lab 的证明方式。
+- 继续加深建议：
+    - 从该章节正文里挑 1 个最短 Lab/Test 入口（或回链到本 Part 的 Quickstart），把现象跑出来。
+    - 优先复用该章正文已给出的断点组（不要只列方法名，要写清“看什么/怎么判定”）。
+    - 把这一章最容易误判的 1 个点，写成“现象 → 第一入口 → 关键分支 → 结论”的最短诊断路径（读者可复用）。

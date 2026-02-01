@@ -32,13 +32,12 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRegistryPostProcessorLabTest.java`
 
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“动态加定义”进入主线的证据链：何时被调用、对 registry 造成什么影响。
-    - B（边界反例）：反例：滥用导致 bean graph 难以推断；与 ImportBeanDefinitionRegistrar 混用导致时机误判。
-    - C（排障 SOP）：排障：为什么某个 bean “凭空出现/出现顺序异常/条件判断异常”。
-    - D（断点观察）：断点：invokeBeanFactoryPostProcessors 内部对 BDRPP 的分组与执行顺序。
-    - E（面试复述）：面试追问：BDRPP 与 BFPP 的边界与适用场景如何解释并证明。
+    - 建议入口：先跑 `SpringCoreBeansRegistryPostProcessorLabTest`，再用 `SpringCoreBeansRegistryPostProcessorLabTest.beanDefinitionRegistryPostProcessor_canRegisterNewBeanDefinitions()` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 
@@ -46,7 +45,7 @@
 
 - `BeanDefinitionRegistryPostProcessor`（简称 BDRPP）
 
-## 1. 心智模型：先有“定义”，后有“实例”
+## 1. 一句话结论：先有“定义”，后有“实例”
 
 容器启动阶段的关键流程可以粗略理解为：
 

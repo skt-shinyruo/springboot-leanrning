@@ -209,13 +209,12 @@
 1) `@Value` 是否 strict 取决于 embedded value resolver（不是注解本身）
 2) strict fail-fast 的典型来源是 `PropertySourcesPlaceholderConfigurer`（BFPP，早期介入）
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“resolveEmbeddedValue → placeholder resolver”的最短证据链，并区分 ${} 与 #{}。
-    - B（边界反例）：反例：把占位符解析/SpEL 求值/类型转换混为一谈导致误诊。
-    - C（排障 SOP）：排障 SOP：三连分层（占位符→SpEL→转换），每层第一断点入口与判断标准。
-    - D（断点观察）： watch list：embeddedValueResolver、propertySources、missing key 处理策略。
-    - E（面试复述）：面试追问：strict 策略是谁决定的？为什么不建议默认 non-strict？
+    - 建议入口：先跑 `SpringCoreBeansValuePlaceholderResolutionLabTest`，再用 `SpringCoreBeansValuePlaceholderResolutionLabTest#defaultEmbeddedValueResolver_resolvesExistingProperty_butLeavesMissingPlaceholderUnresolved` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“6. 排障分流：先确定问题停留读到“解析/求值/转换”的哪一步”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

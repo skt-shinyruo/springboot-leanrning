@@ -10,9 +10,7 @@
 ### spring-core-beans 文档导航（Docs TOC）
 
 - 关联文件：`spring-core-modules/spring-core-beans/docs/README.md`
-- 本轮内容级加深策略（A–E）：
-  - A：为症状导航表补“证据链入口方法提示”（例如依赖解析从 `doResolveDependency` 进，代理替换从 `applyBeanPostProcessorsAfterInitialization` 进）。
-  - B：为每个症状补 1 个“最常见误诊反例”（例如把 `Circular depends-on relationship` 当三级缓存循环依赖）。
-  - C：把常见异常按“定义层失败/实例层失败/运行期行为异常”分型，并提供第一断点入口。
-  - D：与 Debugger Pack/断点地图互链：目录页告诉读者何时用“断点地图（主线）”，何时用“Debugger Pack（专题）”。
-  - E：把面试题库与章节绑定：提供“面试题 → 章节 → Lab”的跳转入口，帮助读者用证据链回答。
+- 继续加深建议：
+    - 从该章节正文里挑 1 个最短 Lab/Test 入口（或回链到本 Part 的 Quickstart），把现象跑出来。
+    - 优先复用该章正文已给出的断点组（不要只列方法名，要写清“看什么/怎么判定”）。
+    - 将目录页的价值从“列链接”提升为“给路径”：为关键节点补一句“为什么现在读它”，并在 proxy/事务/自调用等处给出 Beans→AOP 的最短跳转与目的说明。

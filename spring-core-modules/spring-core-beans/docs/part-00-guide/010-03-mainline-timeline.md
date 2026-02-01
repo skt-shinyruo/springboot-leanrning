@@ -179,13 +179,12 @@
 2) BPP 链是在什么时候注册的？为什么它决定了“注解/AOP/回调”是否生效？
 3) 单例创建主线从哪开始（哪一步触发预实例化）？循环依赖窗口在 `doCreateBean` 的哪里？
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“主线关键窗口最短调用链”：每个阶段至少给出 1 个入口方法与 1 个必看对象快照（definitions / processors / singleton caches）。
-    - B（边界反例）：“时间线误判反例”：例如把“创建顺序”与“注入选择”混为一谈；把 lazy-init 与 @Lazy 注入点混为一谈。
-    - C（排障 SOP）：“从症状回放到时间线窗口”：给 5 个症状（注入失败/代理/循环依赖/占位符/FactoryBean）对应时间线分叉点。
-    - D（断点观察）：“断点组 + watch list”：把时间线每一段映射到断点地图（在哪看处理器列表、在哪看缓存变化）。
-    - E（面试复述）：“面试复述模板”：要求用“主线→分支→证据链”三句复述，并给出示范答案结构。
+    - 建议入口：先跑 `SpringCoreBeansMainlineCallChainLabTest`，再用 `SpringCoreBeansBreakpointPackLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“2. 这条时间线使用方式来排障（3 个经典分流）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

@@ -36,14 +36,30 @@
 - 基础问题索引（Why Index）：三级缓存 / three level cache / early reference / proxy 替换 → [00. Why Index（基础问题索引）](part-00-guide/009-00-why-index.md)
 - 30 分钟快启：`part-00-guide/012-01-quickstart-30min.md`
 - 深入导读（症状驱动导航）：`part-00-guide/011-00-deep-dive-guide.md`
-- 全章“内容级再加深”策略（A–E 维度，按章节给出补强方向）：`deepening-strategies/README.md`
+- 全章“内容级再加深”策略（逐章可执行路线，按章节给出“入口/断点/自证/排错”建议）：`deepening-strategies/README.md`
 - 核心七件套（检查表 + 对应章节/Lab）：`appendix/92-knowledge-map.md`（第 0 节）
 - Debugger Pack（断点包总入口）：`appendix/98-debugger-pack.md`
 - 团队内训讲义（可直接用于授课的课时脚本）：`appendix/99-team-training-kit.md`
 
+## 继续深化从哪里开始（Round 2）
+
+若已经“跑得动 Lab / 打得进断点”，但希望更快进入下一轮（更短证据链、更短排错路径），建议从下面三条入口之一开始：
+
+- **现象驱动（从异常/现象进入）**：先到 [知识地图](appendix/92-knowledge-map.md) 用「现象 → 章节 → 断点组 → 推荐 Lab」把入口压到最短：
+  - 推荐先跑：`SpringCoreBeansBreakpointPackLabTest`（断点包总入口，用一组实验把现象固定下来）
+  - 再按表格给出的断点组（例如 C2/C6/C5/C7）命中关键分支，最后回到对应章节把机制主线与边界对照补齐
+- **断点驱动（先证明 refresh 处于哪一段）**：先到 [断点地图](part-00-guide/013-02-breakpoint-map.md) 选 C1–C7 中一组断点把阶段定位清楚：
+  - 推荐先跑：`SpringCoreBeansBootstrapInternalsLabTest`（refresh 主线对照）或 `SpringCoreBeansLabTest`
+  - 定位阶段后，再回到章节正文把“观察到的变量变化”收敛为结论/反例/排错路径
+- **排障驱动（把经验固化为 SOP）**：先到 [生产排障清单](appendix/94-production-troubleshooting-checklist.md) 走 3–5 步最短诊断路径，把问题分型为“定义层/注入解析/代理替换/值解析”：
+  - 推荐先从表格里的“第一断点 + 推荐 Lab”动手（例如注入解析走 C6，循环依赖走 C5）
+  - 收敛后再回到章节/Lab，形成可回归的证据链
+
+> 说明：目录页只负责“把读者送到下一步可验证动作”，不在这里重复机制细节（细节留在正文）。
+
 ## 症状驱动导航（快速定位）
 
-> 更系统的“症状 → 章节 → 断点 → Lab”导航见：`part-00-guide/011-00-deep-dive-guide.md`。
+> 更系统的“症状 → 章节 → 断点 → Lab”导航见：`part-00-guide/011-00-deep-dive-guide.md`。定位到章节后，下一步建议直接用 [知识地图](appendix/92-knowledge-map.md) 选“断点组 + 推荐 Lab”，或用 [断点地图](part-00-guide/013-02-breakpoint-map.md) 直接命中 C 组（避免把 README 扩写成另一份知识地图）。
 
 | 现象/异常（读者视角） | 直达章节（最短路径） | 备注（先分层再追栈） |
 | --- | --- | --- |
@@ -78,7 +94,7 @@
 - [第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](part-01-ioc-container/017-06-post-processors.md)
 - [第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](part-01-ioc-container/018-07-configuration-enhancement.md)
 - [02. Bean 注册入口：扫描、`@Bean`、`@Import`、Registrar](part-01-ioc-container/02-bean-registration.md)
-- [第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例](part-01-ioc-container/020-01-bean-mental-model.md)
+- [第 20 章：01. Bean 运行机制：从 BeanDefinition 到最终暴露对象](part-01-ioc-container/020-01-bean-mental-model.md)
 - [08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](part-01-ioc-container/08-factorybean.md)
 - [09. 循环依赖：现象、原因与规避（constructor vs setter）](part-01-ioc-container/09-circular-dependencies.md)
 
@@ -150,20 +166,19 @@
 - [97. Explore/Debug 用例（可选启用，不影响默认回归）](appendix/97-explore-debug-tests.md)
 - [Debugger Pack（断点包总入口）](appendix/98-debugger-pack.md)
 - [99. 团队内训讲义（Training Kit）：可直接用于授课的课时脚本](appendix/99-team-training-kit.md)
-- [内容级再加深策略（按章节 A–E）](deepening-strategies/README.md)
+- [内容级再加深策略（逐章可执行路线）](deepening-strategies/README.md)
 
 ## 自检要点
 - 是否能够按“主线 → 分支 → 证据链”的方式学习：先运行 Lab，再结合断点阅读章节？
 - 是否能够能把一个现象先分层：定义阶段（BeanDefinition/processor） vs 创建阶段（getBean/doCreateBean/BPP）？
 - 是否能够在 1 分钟内从目录定位到：对应章节 + 对应 LabTest + 断点入口？
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：为症状导航表补“证据链入口方法提示”（例如依赖解析从 `doResolveDependency` 进，代理替换从 `applyBeanPostProcessorsAfterInitialization` 进）。
-    - B（边界反例）：为每个症状补 1 个“最常见误诊反例”（例如把 `Circular depends-on relationship` 当三级缓存循环依赖）。
-    - C（排障 SOP）：把常见异常按“定义层失败/实例层失败/运行期行为异常”分型，并提供第一断点入口。
-    - D（断点观察）：与 Debugger Pack/断点地图互链：目录页告诉读者何时用“断点地图（主线）”，何时用“Debugger Pack（专题）”。
-    - E（面试复述）：把面试题库与章节绑定：提供“面试题 → 章节 → Lab”的跳转入口，帮助读者用证据链回答。
+    - 建议入口：先回到本章/本 Part 已给出的 Lab/Test，把现象跑出来；再按正文的调用链/断点去验证结论。
+    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：将目录页的价值从“列链接”提升为“给路径”：为关键节点补一句“为什么现在读它”，并在 proxy/事务/自调用等处给出 Beans→AOP 的最短跳转与目的说明。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->

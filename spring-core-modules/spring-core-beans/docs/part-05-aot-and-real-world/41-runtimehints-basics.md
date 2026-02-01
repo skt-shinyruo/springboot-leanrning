@@ -141,13 +141,12 @@ RuntimeHints = **构建期契约对象**；通过 `RuntimeHintsRegistrar#registe
 - 本章完成后：应能够把 RuntimeHints 当成“可测试的契约”来写，而不是当成“黑箱配置”来补。
 - 下一章起，将把“定义层输入”的真实世界补齐：XML → BeanDefinitionReader → BeanDefinition（以及失败时的异常分型）。
 <!-- AE-DEEPENING:START -->
-!!! tip "内容级再加深（A–E 维度）"
+!!! tip "继续加深：把本章跑成可验证路线"
 
-    - A（证据链）：“Registrar 注册→测试断言”的证据链范式（把契约钉死）。
-    - B（边界反例）：反例：把 hints 当 JSON 配置到处贴导致漂移；过度开放反射导致安全面扩大。
-    - C（排障 SOP）：排障：反射/代理/资源缺失三类异常如何映射到 hints 类型。
-    - D（断点观察）：断点：registerHints 与 hints 写入点（reflection/resources/proxies）的观察方法。
-    - E（面试复述）：面试追问：为什么推荐 registrar + 单测，而不是靠 native 打包失败再补？
+    - 建议入口：先跑 `SpringCoreBeansAotRuntimeHintsLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    - 第一断点：`RuntimeHintsRegistrar#registerHints`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
+    - 本章加深重点：读到“5. 排障决策表（Native 异常 → 该补哪类 hints）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
+    - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
