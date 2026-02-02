@@ -22,6 +22,9 @@
   - **误判 1**：把 `dependsOn` 当成“注入依赖”（实际上它只管**初始化/销毁顺序**）
   - **误判 2**：把“循环 depends-on”当成“三级缓存循环依赖”（本质是**定义层拓扑环**）
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - `dependsOn` 是 **BeanDefinition 元数据**，不会改变候选选择，不会让某个类型“变得可注入”。
@@ -37,6 +40,8 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
 
 ## 机制主线：它解决的是“顺序”，不是“注入”
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 可以把 `dependsOn` 当成一句话：
 

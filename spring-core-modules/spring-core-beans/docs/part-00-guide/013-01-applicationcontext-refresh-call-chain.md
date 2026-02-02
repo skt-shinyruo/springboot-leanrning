@@ -19,6 +19,9 @@
 - 目标：将“知道 refresh 很重要”提升为“能够解释 refresh 的阶段，并能将断点设置在正确的阶段入口”。
 - 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。本章提到的方法名以该版本为准。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 深入分析 Beans 的第一要务不是背类名，而是建立**阶段感**：需要明确“当前观察的是定义层（BeanDefinition）还是实例层（bean instance/proxy）”。
@@ -200,6 +203,8 @@
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 这章的核心不是“列出调用链”，而是让读者把所有机制放回同一条时间线：
 

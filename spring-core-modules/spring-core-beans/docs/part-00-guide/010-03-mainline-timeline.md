@@ -20,6 +20,9 @@
 - 本章主题：**主线时间线：IoC 容器从 refresh 到创建 Bean**
 - 阅读方式建议：这章不是“讲知识点”，而是给读者一张时间线地图。读者先运行一个主线 Lab，把 refresh 走一遍；然后拿这张时间线去定位每个现象属于哪个阶段。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 读者只要记住一件事：**99% 的排障都能被归到 refresh 的某一段**（定义层/实例层/初始化/完成后回调）。
@@ -34,6 +37,8 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansBreakpointPackLabTest.java`
 
 ## 机制主线：把所有章节放回同一条时间线
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 当读者学习 Spring IoC 时，最容易迷失的不是“方法太多”，而是：
 

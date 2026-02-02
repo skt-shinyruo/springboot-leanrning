@@ -1,5 +1,14 @@
 # spring-core-beans：内容级再加深策略（按章节）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（容器扩展点）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
+
 本目录提供 `spring-core-beans` **全章**的“内容级再加深”策略清单：不是固定补模板，也不是统一填空，而是基于每个章节主题给出更适合的 **补充/完善/深入**方向。
 
 ## 使用方式（推荐）

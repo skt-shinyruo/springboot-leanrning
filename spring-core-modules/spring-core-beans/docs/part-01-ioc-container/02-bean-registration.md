@@ -20,6 +20,10 @@
 - 本章主题：**Bean 注册入口：扫描、@Bean、@Import、registrar**
 - 阅读方式建议：先运行“注册入口对照”的最小 Lab（ComponentScan / Import / Programmatic），再回到正文把“注册发生在 refresh 的哪一段、到底注册了什么”彻底讲清楚。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（Java Config / @Bean，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
+
+
 !!! summary "本章要点"
 
     - Bean 注册不是“new 一个对象放进容器”，而是：先把 **BeanDefinition** 注册进 `BeanDefinitionRegistry`，再在创建阶段按定义生成实例。
@@ -77,6 +81,8 @@
   - 补充：纯 Spring 容器里该开关通常默认 **允许**（方便覆盖/重定义），但 Spring Boot 工程里多数场景默认 **禁止**（同名直接异常），需要显式开启 `spring.main.allow-bean-definition-overriding=true`（或自定义 `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(true)`）
 
 ## 机制主线：注册 = 先注册定义，再按定义造实例
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 在工程里“把一个东西交给 Spring 管”，本质上有两种完全不同的语义：
 

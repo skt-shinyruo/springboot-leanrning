@@ -1,5 +1,14 @@
 # 逐章内容级再加深建议（part-03-container-internals）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（容器扩展点）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
+
 本 Part 的再加深重点：从“能讲流程”升级到“能讲算法/能讲关键分支/能用断点证明”，并强化与真实排障的连接。
 
 ## 执行化提示（Internals 章的最低交付）

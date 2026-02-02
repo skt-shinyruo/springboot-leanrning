@@ -18,6 +18,9 @@
 - 本章目标：把 `spring-core-beans` 的“高频断点与观察点”收敛成一页纸，避免散落在多章。
 - 使用方式：先运行一个方法级 Lab，然后按本页断点清单逐段观察“定义层 → 实例层 → 代理层”的变化。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 容器排障的第一原则：**先证明“发生在 refresh 的哪一段”**（定义注册 / PP 执行 / 单例创建 / 初始化 / 代理替换）。
@@ -32,6 +35,8 @@
     - Lab：`SpringCoreBeansLabTest`
 
 ## 机制主线（按 refresh 时间线组织）
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 > 快速入口：若不确定该从哪组断点开始，可先用“现象 → 断点组”选一个起点，再回到 [知识地图](../appendix/92-knowledge-map.md) 补齐“章节 + 推荐 Lab”。
 

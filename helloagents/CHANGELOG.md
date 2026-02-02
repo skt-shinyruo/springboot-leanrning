@@ -16,6 +16,8 @@
 - 删除仓库根 `scripts/` 目录（包含测试/运行快捷脚本与文档批处理脚本），并清理文档/知识库中的引用
 
 ### Changed
+- `spring-core-beans`：docs 全章补齐 Spring 官方 Reference 对照链接与版本语境（Spring Framework `6.2.x`（基线 `6.2.15`）/ Spring Boot `3.5.9`），用于对齐权威定义与边界；并通过 `mvn -q -pl :spring-core-beans test` 回归
+- `spring-core-beans`：docs 将官方参考入口“就地下压”到正文关键结论附近（优先落在“机制主线”段落内），并按章主题选择 Beans/注入/JavaConfig/Scopes/Post-Processors/SpEL/Resources/AOT/Boot Auto-Config 等对应 Reference 页面，减少读者上下文切换成本；通过 `mvn -q -pl :spring-core-beans test` 回归
 - `spring-core-beans`：docs Round 2 全量继续深化（81 篇）：补齐知识地图表的“断点组（C1–C7）”可跳转链接；断点地图新增 `#c1..#c7` 稳定锚点并提供“现象 → 断点组”快速入口；生产排障清单新增 3 类高频事故的 3–5 步最短诊断路径；全章 `AE-DEEPENING` 提示块统一补齐“第一断点入口 + 最短下一跳”，并通过断链/引用自检与 `mvn -pl spring-core-modules/spring-core-beans test` 回归
 - `spring-core-beans`：Round 2 入口/工具页再打磨（补丁）：README 的 Round 2 三条入口补齐“推荐入口 Lab/Test + 断点组提示”；知识地图的注入行补齐“注入歧义”与更贴近现象的 Lab；断点地图补齐 `@Value` 症状分流；生产排障清单分流表补齐到知识地图跳转，并通过断链/引用自检与模块测试回归
 - `spring-core-beans`：术语降噪：`spring-core-modules/spring-core-beans/docs/**` 全量移除口号化抽象标签，统一改用“运行机制/一句话结论/抓手/前置理解”等更直白表达，并同步更新导航与互链；通过 docs 相对链接自检与模块测试回归

@@ -20,6 +20,10 @@
 - 本章主题：**代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）**
 - 本章目标：把 “AOP/事务/异步不生效” 这类问题，从“背概念”变成“方法级证据链 + 可复现最小实验”。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（容器扩展点，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
+
 !!! summary "本章要点"
 
     - 容器对外返回的是 **最终暴露对象（exposed object）**，它可能在创建流程中被 BPP 替换成 proxy/wrapper。
@@ -60,6 +64,8 @@
 - AOP 容器主线（为什么 AutoProxyCreator 是 BPP）：[07. AOP 的容器主线：AutoProxyCreator 作为 BPP](../../../spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md)（为什么要跳：本章看到的是“BPP 把 bean 换成 proxy”，AOP 侧补齐“是谁在 after-init 阶段 wrapIfNecessary”；验证什么：在 `AbstractAutoProxyCreator#postProcessAfterInitialization` 附近观察 proxy 的产生条件与目标对象）
 
 ## 机制主线：容器允许“换对象”
+
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
 Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展点返回“另一个对象”作为最终结果。
 

@@ -1,5 +1,15 @@
 # 逐章内容级再加深建议（part-04-wiring-and-boundaries）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（注解驱动与注入）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+- Spring Framework Reference（SpEL）：https://docs.spring.io/spring-framework/reference/core/expressions.html
+
+
 本 Part 的再加深重点：工程边界与真实误区（Lazy/dependsOn/resolvable dependency/层级/命名/FactoryBean/代理/占位符/转换/泛型匹配等），要求每章都能提供可复现反例与排障 SOP。
 
 ## 执行化提示（边界章的“可复现反例”优先）

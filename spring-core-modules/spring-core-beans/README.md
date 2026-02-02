@@ -6,6 +6,21 @@
 
 说明：`docs/` 的每一章开头均提供“章节学习卡片（五问闭环）”，并附上一章/下一章导航；建议按“先运行 Lab 以固化现象 → 再阅读机制主线 → 最后通过断点验证”的顺序学习。
 
+## 版本语境（建议先对齐）
+
+> 本仓库依赖版本由父工程的 Spring Boot 管理（见仓库根 `pom.xml`）。
+> 文档中提到的类名/方法名/关键分支均以该版本语境为准；当你在其他项目上对照时，若出现行为差异，优先检查版本差异。
+
+- Spring Boot：`3.5.9`
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+
+官方文档对照（Spring 官方 Reference，建议用作“权威定义”与边界核对）：
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（BeanFactory Extension Points / Post-Processors）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+- Spring Framework Reference（Scopes）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
+- Spring Boot Reference（Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
+
 ## 基础问题索引（Why Index）：优先阐明“为什么”
 
 若读者已顺序阅读 `docs/09`（循环依赖）与 `docs/16`（early reference），但仍难以回答如下问题：

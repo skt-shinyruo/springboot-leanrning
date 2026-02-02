@@ -1,5 +1,14 @@
 # 逐章内容级再加深建议（Docs TOC / 目录页）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（容器扩展点）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
+
 目标：把 `docs/README.md` 强化为“症状驱动导航中枢”，同时保证它不替代章节正文，而是把读者精准送到“章节 + 证据链 + Lab”。
 
 ## 执行化提示（把目录页与章节闭环对齐）

@@ -20,6 +20,9 @@
 - 本章主题：**面试复述模板：用“证据链”回答 Spring IoC**
 - 阅读方式建议：把本章当作“可复习题库”。每道题都给出：一句话结论 → 关键证据链（方法/数据结构）→ 对应 Lab。读者不依赖背诵，而以“可运行 + 可断点验证”作为得分依据。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 绝大多数 IoC 面试题不是考 API，而是考：应能够不能把“概念”落到 **refresh 主线 + 关键分支 + 数据结构**。
@@ -31,6 +34,8 @@
     - Lab（建议作为复习入口总集合）：`SpringCoreBeansIocBranchMatrixLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansBreakpointPackLabTest`
 
 ## 机制主线：面试答题的“标准结构”
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 推荐读者用一个固定结构回答（不管题目问什么，都能套）：
 

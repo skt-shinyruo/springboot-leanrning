@@ -24,6 +24,9 @@
   - 建议断点与 watch list（用证据链收敛结论）
   - 课堂互动问题与课后练习（用于面试复盘/内化）
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 内训目标不是“讲完知识点”，而是把团队共同的排障语言统一起来：**阶段（refresh 哪一段）→ 入口（关键方法）→ 观察点（最小 watch list）→ 结论（可复述）**。
@@ -63,6 +66,8 @@
 ## 1. 60 分钟速成（适合团队统一“排障语言”）
 
 > 目标：让所有人用同一套“阶段感 + 断点入口 + watch list”描述问题，不再停留在“感觉像是 Spring 的锅”。
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
 ### 1.1 课时安排（60 分钟）
 

@@ -7,6 +7,9 @@
 - 推荐学习方式：**先运行对应 Lab 固化现象，再回到章节阅读机制主线，最后通过断点完成证据链验证**。
 - 本模块每章开头均提供“章节学习卡片（五问闭环）”：以最少信息回答“本章主题/使用方式/断点入口/对应 Lab”，并与上一章/下一章导航保持一致，便于连续阅读与复盘。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 ## 四条阅读路线（按读者分层：源码进阶 + 面试）
 
 - A（能用为主）：按目录顺读每章的“本章要点 + 最小实验”，遇到问题回看“常见误区”。
@@ -60,6 +63,8 @@
 ## 症状驱动导航（快速定位）
 
 > 更系统的“症状 → 章节 → 断点 → Lab”导航见：`part-00-guide/011-00-deep-dive-guide.md`。定位到章节后，下一步建议直接用 [知识地图](appendix/92-knowledge-map.md) 选“断点组 + 推荐 Lab”，或用 [断点地图](part-00-guide/013-02-breakpoint-map.md) 直接命中 C 组（避免把 README 扩写成另一份知识地图）。
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+> 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 
 | 现象/异常（读者视角） | 直达章节（最短路径） | 备注（先分层再追栈） |
 | --- | --- | --- |

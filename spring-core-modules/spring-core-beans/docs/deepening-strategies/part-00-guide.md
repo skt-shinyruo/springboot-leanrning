@@ -1,5 +1,14 @@
 # 逐章内容级再加深建议（part-00-guide 指南）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（容器扩展点）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
+
 本 Part 的再加深重点：把“怎么学”进一步落到“怎么证明/怎么排障/怎么复述”的可执行路径，避免读者只停留在导航层。
 
 ## 执行化提示（Guide 的落地位置）

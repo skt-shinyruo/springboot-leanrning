@@ -20,6 +20,10 @@
 - 本章主题：**手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱**
 - 阅读方式建议：先运行本章两个核心测试，把“为什么 Ordered 不生效 / 为什么手工注册会更早执行”固定成断言；再用断点把它放回 `refresh()` 的注册时机里看清楚。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（容器扩展点，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
+
 !!! summary "本章要点"
 
     - `addBeanPostProcessor(...)` 的语义不是“注册一个可排序的处理器”，而是：**直接修改 `beanFactory.getBeanPostProcessors()` 这个 list**。因此它天然是“按注册顺序”，而不是“按 Ordered 排序”。
@@ -36,6 +40,8 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansRegistryPostProcessorLabTest.java`
 
 ## 机制主线：两条注册路径 + 一个“不可逆”事实
+
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
 在大多数教程里，BPP 都是这样出现的：
 

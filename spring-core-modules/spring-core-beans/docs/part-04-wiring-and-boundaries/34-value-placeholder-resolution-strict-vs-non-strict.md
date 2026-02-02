@@ -20,6 +20,10 @@
 - 本章主题：**`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast**
 - 阅读方式建议：先运行本章 Lab，把两种行为（缺失占位符“原样通过” vs fail-fast）固定成断言；再对照 `resolveEmbeddedValue` 与 `PropertySourcesPlaceholderConfigurer` 的断点，看清“到底是谁决定了 strict/non-strict”。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（SpEL，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/expressions.html
+
+
 !!! summary "本章要点"
 
     - `@Value` 本身不“读配置”，它把字符串交给 BeanFactory 的 **embedded value resolver** 解析（`${...}`/`#{...}`），再进入后续注入/转换。
@@ -34,6 +38,8 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
 
 ## 机制主线：`@Value` 严不严格，取决于 resolver
+
+> 官方参考（Spring Framework 6.2.x，SpEL 与 @Value 表达式）：https://docs.spring.io/spring-framework/reference/core/expressions.html
 
 这一章回答一个在真实项目里非常折磨人的问题：
 

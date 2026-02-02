@@ -15,6 +15,8 @@
 
 ## 导读
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 ### 排障模板（统一结构）
 
 当遇到“行为不符合预期 / 入口无法运行 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
@@ -52,6 +54,8 @@
     - 下一跳：若是从现象进入，优先回到 [知识地图](92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 本章把“常见误区”统一归因到 4 类主线：
 

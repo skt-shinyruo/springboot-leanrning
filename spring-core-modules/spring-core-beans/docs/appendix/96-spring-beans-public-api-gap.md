@@ -20,6 +20,9 @@
 - 本章主题：**Public API Gap 清单（按包/机制域分批深化）**
 - 阅读方式建议：这章不是“讲课”，而是一个可维护的“覆盖率看板”：哪些 spring-beans 的 Public API 已经有 Lab+Docs 闭环，哪些仍需要补齐。可以用它驱动后续的学习/补齐工作。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - Gap 清单的用途：把“尚未掌握的内容”显式化，避免学习停留在舒适区。
@@ -31,6 +34,8 @@
     - Lab（作为“覆盖闭环”入口的总集合）：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansIocBranchMatrixLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest`
 
 ## 机制主线：为什么要维护 Gap？
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 在真实工程里，问题往往出在“读者没覆盖到的边界”：
 

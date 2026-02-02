@@ -21,6 +21,9 @@
 - 阅读方式建议：把本章当成“导航页”：在真实项目里遇到问题时，不需要从头顺读文档，而是先在这里按现象定位到章节与断点入口，再回到对应章节补齐机制主线。
 - 团队内训场景：若要给团队“按课时讲一遍”，优先看：[`99-team-training-kit.md`](99-team-training-kit.md)（60/90/120 分钟脚本 + Labs/断点/互动题）。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 本模块的学习目标是“可验证”：每个关键机制都应该有 **对应 Lab（可运行）** 与 **断点入口（可观察到）**。
@@ -40,6 +43,8 @@
 - 经验法则：面试题的高分答案不是“名词堆砌”，而是“结论 + 方法级证据链 + 一个可运行复现入口”。
 
 ## 机制主线：用“症状驱动”组织知识点
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”发生。
 

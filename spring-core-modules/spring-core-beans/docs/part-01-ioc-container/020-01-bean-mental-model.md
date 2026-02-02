@@ -17,6 +17,9 @@
 
 - 本章主题：**Bean 运行机制：从 BeanDefinition 到最终暴露对象**
 - 这章解决的不是“记名词”，而是解决一个高频误判：把 **Bean = 某个对象实例**。
+
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
   更准确的理解应该是：**Bean = 容器托管的一套机制**（定义、创建、注入、回调、代理、销毁）。
 
 !!! summary "本章要点"
@@ -37,6 +40,8 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
 
 ## 机制主线：三层模型 + 一个“最终对象”概念
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 可将容器理解为三层结构（这是后续排障的重要基础）：
 

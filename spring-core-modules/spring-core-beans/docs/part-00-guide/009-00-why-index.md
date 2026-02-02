@@ -1,4 +1,14 @@
 # 第 09 章：00. 基础问题索引（Why Index）：把高频“为什么”做成可验证闭环
+
+
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（容器扩展点）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
@@ -41,6 +51,8 @@
 ## Why-01：为什么 Spring 使用三级缓存（three level cache）？
 
 ### 一句话结论（Answer）
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，而是为了在 **singleton 创建窗口期** 支持 **按需提前暴露引用（early reference）**，并把“早期引用的形态（raw 还是 proxy）”的决定权交给 `getEarlyBeanReference`（BPP/AOP 可介入），从而尽量保证 **early == final（最终暴露形态一致）**。
 
@@ -101,6 +113,8 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 ### 一句话结论（Answer）
 
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 **二级缓存只能缓存“对象”，而三级缓存额外缓存了“按需创建 early reference 的能力（ObjectFactory）”。**  
 这让容器能同时满足两个目标：
 
@@ -127,6 +141,8 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 ### 一句话结论（Answer）
 
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
 三级缓存解决的是“**什么时候可以交付引用**”，而 `getEarlyBeanReference` 解决的是“**交付出去的引用应该是什么形态**”。  
 当 AOP/代理介入时，若 dependent bean 获取到的是 raw，而容器最终对外暴露的是 proxy（wrapped），则可能出现：
 
@@ -152,6 +168,8 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 ### 一句话结论（Answer）
 
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
 Spring 容器返回的是 **exposed object**，而不是“原始实例”；在 bean 创建过程中，`BeanPostProcessor` 允许返回替代对象（proxy/wrapper），因此最终 `getBean()` 获取到的对象可能并非原始实例，而是经过替换后的 proxy/wrapper。
 
 ### 10 分钟证据链（Proof in 10 minutes）
@@ -175,6 +193,8 @@ Spring 容器返回的是 **exposed object**，而不是“原始实例”；在
 ## Why-05：为什么 self-invocation 会让 AOP/事务“不生效”？（call path）
 
 ### 一句话结论（Answer）
+
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
 Spring AOP 默认基于代理实现：只有“通过代理对象发起的调用”才会被 advice 包起来。  
 同类内部 `this.xxx()` 调用不会经过代理（call path 绕过 proxy），因此不会触发拦截器链。

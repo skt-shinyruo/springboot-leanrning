@@ -1,5 +1,15 @@
 # 逐章内容级再加深建议（part-02-boot-autoconfig）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Boot Reference（自动装配）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
+- Spring Boot Reference（总览）：https://docs.spring.io/spring-boot/reference/
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 本 Part 的再加深重点：把 Boot 的复杂度映射回“定义层/条件/导入/顺序”的可证明链路，并提供可复现反例与排障 SOP。
 
 ## 执行化提示（把“看不见的条件”变成“可证明事实”）

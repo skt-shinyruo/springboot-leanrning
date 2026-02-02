@@ -19,6 +19,10 @@
 
 - 本章主题：**候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界**
 - 这章解决一个高频误判：把“集合排序”当成“单依赖选择”。
+
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
   许多 NoUnique/注入错对象问题，本质是候选收敛规则没理清。
 
 !!! summary "本章要点"
@@ -33,6 +37,8 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
 
 ## 机制主线：先问“注入的是一个，还是一组？”
+
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
 读者排障时第一问永远是：
 

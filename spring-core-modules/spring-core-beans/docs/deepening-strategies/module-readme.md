@@ -1,5 +1,14 @@
 # 逐章内容级再加深建议（模块 README）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（容器扩展点）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
+
 目标：把模块入口从“导航”提升为“问题驱动入口 + 证据链入口”，并确保与 docs/README 的症状导航形成一致闭环。
 
 ## 执行化提示（本轮落地的默认结构）

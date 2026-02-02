@@ -20,6 +20,9 @@
 - 本章主题：**循环依赖：现象、原因与规避（constructor vs setter）**
 - 阅读方式建议：先运行“constructor fail-fast vs setter 可能成功”的最小实验，再带着断点把“为什么能救/为什么救不了”的证据链走通。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 循环依赖不是“Spring 的黑箱机制题”，它首先是一个**依赖图/职责边界**问题：能启动不代表设计健康。
@@ -37,6 +40,8 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
 
 ## 机制主线：为什么 constructor 死、setter 有时能活？
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 把循环依赖先分成两类（这是排障时最省脑的第一步）：
 

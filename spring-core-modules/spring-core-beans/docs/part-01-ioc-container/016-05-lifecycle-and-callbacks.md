@@ -18,6 +18,9 @@
 - 本章主题：**05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）**
 - 阅读方式建议：先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest` 把“顺序”变成断言，再回到正文把顺序映射到关键方法。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 生命周期不是“一个 init-method”，而是一条稳定骨架：**instantiate → populate → initialize → (use) → destroy**。
@@ -63,6 +66,8 @@
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 这一章解决两个问题：
 

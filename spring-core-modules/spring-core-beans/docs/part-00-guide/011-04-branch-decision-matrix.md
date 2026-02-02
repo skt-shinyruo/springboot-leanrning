@@ -20,6 +20,9 @@
 - 本章主题：**关键分支矩阵（Branch Decision Matrix）**
 - 阅读建议：建议先运行 Branch Matrix 的聚合入口测试（用于将关键分支固化为断言），再结合本章表格将“现象 → 阶段 → 关键方法 → 必看变量”组织为一条可复用的排障调用链。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 这章是“排障索引页”：遇到一个现象时，不宜首先全局检索代码，而应先将其定位到某个分支点（if/then）。
@@ -37,6 +40,8 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansInternalsBranchMatrixLabTest.java`
 
 ## 机制主线：把“排障经验”压缩成决策表
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 排障最怕两件事：
 

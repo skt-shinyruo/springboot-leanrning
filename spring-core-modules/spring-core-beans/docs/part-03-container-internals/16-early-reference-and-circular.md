@@ -20,6 +20,9 @@
 - 本章主题：**early reference 与循环依赖：getEarlyBeanReference 到底解决什么？**
 - 阅读方式建议：先运行一遍“early proxy”与“raw injection despite wrapping”两个实验，把“对象形态不一致”的误区变成可复现断言，再回到主线对照源码把证据链走通。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - `getEarlyBeanReference` 解决的不是“能不能获取到引用”，而是：**循环依赖窗口期获取到的 early reference 是否等于最终暴露形态（proxy/wrapper）**。
@@ -81,6 +84,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 3) 如果做不到一致，Spring 默认 fail-fast；打开 `allowRawInjectionDespiteWrapping` 就是读者接受“绕过代理”的隐患。
 
 ## 机制主线：early reference 的“时机”与“形态”
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 上一章（[09. 循环依赖](../part-01-ioc-container/09-circular-dependencies.md)）读者已经建立了一个关键事实：
 

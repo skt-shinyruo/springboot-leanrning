@@ -18,6 +18,9 @@
 - 本章目标：给出一条**30 分钟可完成验证、可设置断点、可形成正反馈**的快启路线。
 - 原则：每个实验都满足“命令可运行 + 应当看到什么 + 断点入口 + 最小 watch list + 下一步去哪读”。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     应能够用“现象 → 断点 → 证据”回答三个问题：
@@ -212,6 +215,8 @@
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 30 分钟快启只做三件事：
 

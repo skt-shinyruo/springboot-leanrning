@@ -20,6 +20,9 @@
 - 本章主题：**把 `ApplicationContext#refresh` 的“定义阶段”与“创建阶段”连成一条可设置断点的主线**
 - 阅读方式建议：先运行本章推荐 Lab（把现象固化为断言），再对照本文的“十步走/五段式/分支决策表”去源码设置断点。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 读者只需要记住两条流水线：**图（BeanDefinition）如何扩张**、**图如何变成对象（bean instance）**。
@@ -41,6 +44,8 @@
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 > 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。
 

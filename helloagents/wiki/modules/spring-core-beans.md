@@ -79,6 +79,20 @@
 
 ## Specifications
 
+### Requirement: spring-core-beans docs 官方参考下压到正文（就地对照）
+
+- 本轮方案包（正文就地下压官方参考入口）：`helloagents/history/2026-02/202602021135_spring_core_beans_docs_deepen_body_refs/`
+- 状态：已完成实现与回归测试并归档（2026-02-02）
+**Module:** spring-core-beans
+在不引入统一模板/固定栏目、不破坏既有章节叙事的前提下，将 Spring/Spring Boot 官方 Reference 的对照入口从“导读/顶部”进一步下压到正文关键结论附近（优先落在“机制主线”段落内），并按章节主题选择最相关的 Reference 页面，降低读者在机制/源码/排障阅读时的上下文切换成本。
+
+#### Scenario: 每章“机制主线”就地对照入口
+- 大多数章节在 `## 机制主线` 段落开头补充 `> 官方参考（适用版本语境）`，把本章主语义锚定到官方定义
+- AOT/Boot/SpEL/Resources 等跨主题章节按内容选择对应 Reference 页面（避免全章机械重复同一链接）
+
+#### Scenario: 质量门禁（必须可回归）
+- `mvn -q -pl :spring-core-beans test` 回归通过
+
 ### Requirement: spring-core-beans docs Round 2（全量逐章差异化继续深化）
 
 - 本轮方案包（全量逐章深化）：`helloagents/history/2026-02/202602011541_beans_docs_deepen_round2_allchapters/`
@@ -209,6 +223,7 @@
 
 ## Change History
 
+- [202602020952_spring_core_beans_docs_deepen](../../history/2026-02/202602020952_spring_core_beans_docs_deepen/) - ✅ 已执行：为 `spring-core-beans` 文档全章补齐 Spring 官方 Reference 对照链接与版本语境（Spring Framework `6.2.x` / Spring Boot `3.5.9`），用于对齐权威定义与边界；并通过模块测试回归
 - [202602011343_beans_docs_deepen_all](../../history/2026-02/202602011343_beans_docs_deepen_all/) - ✅ 已执行：beans docs 全量“继续深化”：将章内 `AE-DEEPENING` 与 deepening-strategies 从维度清单降模板化为“入口用例 + 断点主线 + 自证/排错收敛点”的可执行路线，并补齐 Beans → AOP 跳转的“为什么跳/验证什么”说明
 - [202602011249_beans_docs_term_refine](../../history/2026-02/202602011249_beans_docs_term_refine/) - ✅ 已执行：beans docs 术语降噪（去口号化抽象标签，统一“运行机制/结论/抓手/前置理解”），并完成链接/引用/回归自检
 - [202601312157_ioc_container_docs_deepen_v2](../../history/2026-01/202601312157_ioc_container_docs_deepen_v2/) - ✅ 已执行：对 Part-01 IoC Container 文档做内容级微调（术语降噪与表述更直白），并完成链接/引用/回归自检

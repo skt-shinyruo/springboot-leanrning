@@ -20,6 +20,10 @@
 - 本章主题：**`@Resource` 注入：为什么它更像“按名称找 Bean”？**
 - 阅读方式建议：先运行本章 Lab 得到两个对照结论（没装处理器 → 注解无效；装了处理器 → name-first 稳定注入），再回到源码把“是谁在什么时候把字段赋值”的证据链走通。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（Resources，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/resources.html
+
+
 !!! summary "本章要点"
 
     - `@Resource` 不是 “另一个 @Autowired”。它更像：**先按 name 找（字段名/显式 name），必要时才按 type 回退**。
@@ -32,6 +36,8 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
 ## 机制主线：`@Resource` 的三个关键事实
+
+> 官方参考（Spring Framework 6.2.x，资源抽象：Resource/ResourceLoader）：https://docs.spring.io/spring-framework/reference/core/resources.html
 
 当在项目里看到 `@Resource`，先把它压缩成三句话（排障时非常省命）：
 

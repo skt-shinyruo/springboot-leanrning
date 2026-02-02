@@ -20,6 +20,11 @@
 - 本章主题：**44. SpEL 与 `@Value("#{...}")`：表达式解析链路**
 - 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（SpEL，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/expressions.html
+- 官方文档对照（Spring Boot Reference，适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
+
+
 !!! summary "本章要点"
 
     - `${...}` 与 `#{...}` 并不是两套“注入系统”，它们都要先经过 `BeanFactory#resolveEmbeddedValue`（解析字符串），再进入**类型转换**，最后才注入到字段/参数。
@@ -47,6 +52,8 @@
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
+
+> 官方参考（Spring Framework 6.2.x，SpEL 与 @Value 表达式）：https://docs.spring.io/spring-framework/reference/core/expressions.html
 
 这一章解决两类“很常见但很难讲清”的问题：
 

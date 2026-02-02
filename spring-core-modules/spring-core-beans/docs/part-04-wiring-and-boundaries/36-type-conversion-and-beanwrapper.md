@@ -20,6 +20,9 @@
 - 本章主题：**类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界**
 - 阅读方式建议：先运行一遍本章 Lab，把“字符串 → 目标类型”的现象固定成断言；再带着断点把它放回 `populateBean(...)` / `@Value` 的真实调用链里看清楚。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - Spring 里的“类型转换”不是一个点，而是两条常见链路：**定义层 property values**（`populateBean/applyPropertyValues`）与 **注入点 `@Value`**（`resolveEmbeddedValue` → `convertIfNecessary`）。
@@ -35,6 +38,8 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
 
 ## 机制主线：两条链路 + 一个决策点
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 这一章解决的不是“怎么写 Converter”这种 API 问题，而是排障时更致命的问题：
 

@@ -18,6 +18,10 @@
 - 本章主题：**03. 依赖注入解析：类型/名称/@Qualifier/@Primary**
 - 阅读方式建议：先运行一次“候选歧义”的最小 Lab，再回到正文按“候选收集 → 候选收敛 → 最终注入”把主线走通。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
+
 !!! summary "本章要点"
 
     - 读者写下 `private final X x;` 时，Spring 做的不是“按类型找一个即可”，而是：**先收集候选（by type），再用一套规则缩小候选（by qualifier/primary/priority/name…）**。
@@ -30,6 +34,8 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansOptionalInjectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansJsr330InjectionLabTest.java`
 
 ## 机制主线：候选收集 → 候选收敛 → 最终注入
+
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
 这一章回答一个非常具体的问题：**当读者写下 `private final X x;`，Spring 到底是怎么找到并注入那个 `X` 的？**
 

@@ -19,6 +19,11 @@
 
 - 本章主题：**RuntimeHints 入门：把构建期契约完成验证**
 - 目标只有一个：把 RuntimeHints 从“听说过”变成“能断言证明”。
+
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
+- 官方文档对照（Spring Boot Reference，适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
+
   无需先会构建 native image，也能理解 RuntimeHints：因为它本质上是**可测试的契约数据结构**。
 
 !!! summary "本章要点"
@@ -33,6 +38,8 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java`
 
 ## 机制主线：把“运行期能力需求”前置成“构建期契约”
+
+> 官方参考（Spring Framework 6.2.x，AOT 与 RuntimeHints）：https://docs.spring.io/spring-framework/reference/core/aot.html
 
 在 JVM 上写代码时，很多能力是“默认可用”的：
 

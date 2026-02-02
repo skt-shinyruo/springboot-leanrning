@@ -27,6 +27,9 @@
 - 本章主题：**spring-beans Public API Index（索引）**
 - 阅读方式建议：这是一份“查阅型文档”。当遇到某个 API/类名但不确定它属于哪类机制时，先在本章定位，再回到对应章节/测试完成闭环。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 这份索引解决的是“定位问题”：它告诉读者 *有哪些 Public API*，以及它们大致归属哪个机制域。
@@ -41,6 +44,8 @@
       - `SpringCoreBeansInternalsBranchMatrixLabTest`
 
 ## 机制主线：索引如何服务学习与排障
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 可以把本章当成“反向导航”：
 

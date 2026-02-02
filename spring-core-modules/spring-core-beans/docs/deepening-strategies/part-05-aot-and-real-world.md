@@ -1,5 +1,16 @@
 # 逐章内容级再加深建议（part-05-aot-and-real-world）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（AOT）：https://docs.spring.io/spring-framework/reference/core/aot.html
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（SpEL）：https://docs.spring.io/spring-framework/reference/core/expressions.html
+- Spring Framework Reference（Resources）：https://docs.spring.io/spring-framework/reference/core/resources.html
+
+
 本 Part 的再加深重点：把“输入层解析 + AOT 契约”做成可运行、可断言、可排障的工程知识，避免只停留在 API 介绍。
 
 ## 执行化提示（Real World 的“可运行契约”）

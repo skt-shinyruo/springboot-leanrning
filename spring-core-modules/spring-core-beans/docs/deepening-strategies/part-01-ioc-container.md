@@ -1,5 +1,16 @@
 # 逐章内容级再加深建议（part-01-ioc-container）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（注解驱动与注入）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+- Spring Framework Reference（Java Config / @Bean）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
+- Spring Framework Reference（Scopes）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
+
+
 本 Part 的再加深重点：把注册/注入/生命周期/扩展点进一步下压到“算法级决策点”，并补齐真实工程边界（FactoryBean/泛型/循环依赖/代理叠加）。
 
 ## 执行化提示（IoC 核心章的“深度落点”）

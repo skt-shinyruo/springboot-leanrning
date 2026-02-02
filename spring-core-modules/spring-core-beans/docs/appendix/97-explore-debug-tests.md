@@ -20,6 +20,9 @@
 - 本章主题：**Explore/Debug 用例：如何开启、看什么、怎么把观察结果“用回主线”**
 - 阅读方式建议：先按本章命令运行一次 Explore 用例（确保用例可执行），再带着“入口 → 观察点 → 断点/Watch List”去看源码与数据结构变化。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - Explore 用例的定位：**学习期的“显微镜”**——把 Spring 内部数据结构（缓存/表/映射）变化变成应能够在调试器里观察到的东西。
@@ -88,6 +91,8 @@ mvn -pl :spring-core-beans -Dspringcorebeans.explore=true test
 ## 2. Explore 用例清单：入口 & 观察点
 
 ### 2.1 单例缓存：`DefaultSingletonBeanRegistry` 三层缓存
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 入口测试：
 

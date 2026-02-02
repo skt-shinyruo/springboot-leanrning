@@ -20,6 +20,10 @@
 - 本章主题：**Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？**
 - 阅读方式建议：先运行本章 Lab，看清楚“同一份条件、不同顺序，结果不同”的反直觉现象；再用断点把它放回 Boot 的 auto-config 导入与排序链路里理解。
 
+- 官方文档对照（适用版本：Spring Boot 3.5.9）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 在写 `@ConditionalOnBean` 时，隐含假设是“依赖的 bean 会在其之前注册/创建”。跨 auto-config 时，这个假设可能不成立：**顺序未定义就会不稳定**。
@@ -34,6 +38,8 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansAutoConfigurationBackoffTimingLabTest.java`
 
 ## 机制主线：顺序不定义，就会“看起来像偶发”
+
+> 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 
 在 Spring Boot 里，auto-configuration 的本质是：
 

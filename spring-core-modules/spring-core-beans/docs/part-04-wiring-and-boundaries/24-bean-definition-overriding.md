@@ -20,6 +20,9 @@
 - 本章主题：**24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？**
 - 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - BeanDefinition overriding 解决的是 **name-based 的定义冲突**：同一个 beanName 被注册多次时，是 last-wins 还是 fail-fast。
@@ -42,6 +45,8 @@
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/92-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/013-02-breakpoint-map.md) 选 C 组。
 <!-- AE-DEEPENING:END -->
 ## 机制主线
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 当读者注册两个同名 bean 时，会发生什么？
 

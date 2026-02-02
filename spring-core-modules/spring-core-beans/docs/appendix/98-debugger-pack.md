@@ -20,6 +20,9 @@
 - 本章主题：**Debugger Pack（断点包总入口）**
 - 阅读方式建议：把本章当成“进入本模块的调试入口索引页”——先运行一条最小回归，再按本章的断点清单去看关键数据结构变化，最后回到对应章节补齐理论与边界。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - Debugger Pack 的目标不是“讲知识”，而是给读者一套**可复用的断点入口**：遇到注入失败/循环依赖/代理不生效/占位符不对时，应该第一时间去哪设置断点、看什么变量。
@@ -41,6 +44,8 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansInternalsBranchMatrixLabTest.java`
 
 ## 机制主线：将“主观判断”转化为“可观察事实”
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 Spring IoC 的难点从来不是 API，而是：
 

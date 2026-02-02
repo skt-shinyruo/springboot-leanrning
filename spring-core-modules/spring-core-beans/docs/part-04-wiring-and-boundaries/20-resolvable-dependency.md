@@ -19,6 +19,10 @@
 
 - 本章主题：**registerResolvableDependency：能注入，但它不是 Bean**
 - 这章专治一种“看起来像隐式行为”的现象：
+
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
   应能够 `@Autowired` 进来一个东西，但它**不是 BeanDefinition**、`getBean(类型)` 也找不到它。
 
 !!! summary "本章要点"
@@ -34,6 +38,8 @@
     - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
 
 ## 机制主线：它是“可解析依赖”，不是“可获取 Bean”
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 一句话结论：
 

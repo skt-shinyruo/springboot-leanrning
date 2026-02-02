@@ -1,5 +1,14 @@
 # 逐章内容级再加深建议（appendix 工具章节）
 
+## 官方文档对照（版本语境）
+
+- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
+- Spring Boot：`3.5.9`
+
+- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+- Spring Framework Reference（容器扩展点）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
+
 Appendix 的再加深重点：把“工具页”做成可复用的训练与排障中枢——读者能从症状快速定位、能把答案用证据链证明、能用题库训练复述。
 
 ## 执行化提示（工具页的“复用价值”）

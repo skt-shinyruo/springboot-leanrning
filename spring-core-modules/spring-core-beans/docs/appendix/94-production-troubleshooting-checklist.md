@@ -20,6 +20,9 @@
 - 本章主题：**生产排障清单：从症状到证据链**
 - 阅读方式建议：把本章当成“排障 SOP”。遇到问题时不要凭感觉改配置/改注入，而是按本章固定流程：先定位阶段 → 再找最短断点入口 → 再用最小复现验证。
 
+- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
+
 !!! summary "本章要点"
 
     - 排障优先级：**先确定发生阶段**（definition vs bean creation vs after-init）→ 再确定分支点（if/then）→ 最后才谈修复方案。
@@ -34,6 +37,8 @@
       - `SpringCoreBeansInternalsBranchMatrixLabTest`
 
 ## 机制主线：先把问题放回 refresh 的哪一段
+
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 几乎所有 IoC 相关事故，都能归到 refresh 的某一段（见 [10. 主线时间线](../part-00-guide/010-03-mainline-timeline.md)）：
 
