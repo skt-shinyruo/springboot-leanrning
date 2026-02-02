@@ -113,6 +113,8 @@ RuntimeHints 不是“配置文件”，它更像是一棵“契约对象树”�
 - 否则读者容易在 AOT 的大量框架代码中丢失主线（且不同版本差异较大）
 
 ## 5. 排障决策表（Native 异常 → 该补哪类 hints）
+> 官方参考（Spring Framework 6.2.x，AOT 与 RuntimeHints）：https://docs.spring.io/spring-framework/reference/core/aot.html
+
 
 | 现象（native 运行期） | 最可能缺失 | 需要补的 hints 类型 | 排查/修复路径 |
 | --- | --- | --- | --- |

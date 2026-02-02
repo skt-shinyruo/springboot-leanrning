@@ -225,6 +225,8 @@ Groovy reader 的典型断点：
    - 恰恰相反：这些机制说明 beans 体系的抽象能力（输入可扩展，输出统一）。
 
 ## 排障决策表（BeanDefinitionReader：资源/解析/注册分型）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 | 现象 | 更像失败在哪一段 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |

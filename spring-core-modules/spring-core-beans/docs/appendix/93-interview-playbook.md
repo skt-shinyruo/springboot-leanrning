@@ -269,6 +269,8 @@
 ---
 
 ## 11. BeanFactory API：容器外对象 / 手动 bootstrap 的边界
+> 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
+
 
 ### Q14：`BeanFactory` 和 `ApplicationContext` 的关键差异是什么？为什么 plain BeanFactory 下“注解不生效”？
 

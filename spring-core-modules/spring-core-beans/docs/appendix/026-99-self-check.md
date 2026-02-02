@@ -149,6 +149,8 @@
 17) `BeanDefinition#getPropertyValues()` 里的 `"8080"` 最终写入 `int port` 的关键入口方法是什么？
 
 ## I. 泛型匹配与注入误区（对应 37/29）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 验证入口：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 

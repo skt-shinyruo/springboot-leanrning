@@ -206,6 +206,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 4) `MethodReplacer#reimplement`：替换逻辑真正执行点（最终证据）
 
 ## 常见误区与边界
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
 
 ### 常见边界与误区
 

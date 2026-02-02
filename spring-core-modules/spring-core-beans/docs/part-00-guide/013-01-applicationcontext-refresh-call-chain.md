@@ -146,6 +146,8 @@
 
 ## 排障分流（refresh 入口版）
 
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
 当遇到“注入失败/代理不生效/循环依赖”等现象时，避免从异常栈顶开始无目的追溯；建议以 refresh 主线为框架对问题进行归位：
 
 1) **定义层（BFPP/BDRPP）**：`invokeBeanFactoryPostProcessors`

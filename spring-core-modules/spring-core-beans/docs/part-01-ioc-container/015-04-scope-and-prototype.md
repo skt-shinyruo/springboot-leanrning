@@ -214,6 +214,8 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 - 证据入口：`SpringCoreBeansCustomScopeLabTest#customScope_canTriggerDestructionCallbacks_whenScopeEnds`（演示：Scope end 时执行 callbacks）
 
 ### 7.2 排障提示：什么时候应该怀疑是 prototype 销毁语义问题？
+> 官方参考（Spring Framework 6.2.x，Scopes 与 scope 语义）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
+
 
 - 症状：连接/文件句柄/线程池等资源泄漏，但读者确认 `@PreDestroy` 逻辑存在
 - 排查：这个 bean 是否是 prototype？它的创建者（调用方）是否负责 close/destroy？

@@ -123,6 +123,8 @@ Spring 提供了一个非常明确的回调：
 - 推荐运行方式：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSmartInitializingSingletonLabTest#afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans test`
 
 ## 排障分流：这是定义层问题还是实例层问题？
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 - “回调没触发” → **实例层（生命周期时机）**：该 bean 是否是 singleton？context 是否真的 refresh？
 - “回调里拿不到 lazy bean 实例” → **实例层语义**：这是预期；lazy-init 在 refresh 阶段不会创建（对照 [18](023-18-lazy-semantics.md)）

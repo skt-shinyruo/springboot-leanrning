@@ -148,6 +148,8 @@ addBeanPostProcessor(bpp):
 ---
 
 ## 4. 排障分流：顺序问题 vs 时机问题（先分清楚再下手）
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
 
 当遇到“代理没生效 / 增强没生效 / 某些回调没触发”时，先做一次强制分流：
 

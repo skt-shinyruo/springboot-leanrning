@@ -162,6 +162,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCapableBeanFactoryLabTe
 4) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`：BPP 可能在这里返回 proxy（解释“final object != raw object”）
 
 ## 常见误区与边界
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
 
 - [25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](../part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)
 - [05. 初始化、销毁与回调](../part-01-ioc-container/016-05-lifecycle-and-callbacks.md)

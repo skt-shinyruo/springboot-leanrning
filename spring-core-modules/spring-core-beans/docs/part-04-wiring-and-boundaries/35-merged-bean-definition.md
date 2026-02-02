@@ -261,6 +261,8 @@ getMergedLocalBeanDefinition(beanName):
   可以错过很多“为什么它这样创建/为什么元数据已准备好”的关键原因。
 
 ## 排障决策表（MergedBeanDefinition：在看的到底是不是“生效配方”）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复/处理思路 |
 | --- | --- | --- | --- |

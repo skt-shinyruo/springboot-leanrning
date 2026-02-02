@@ -243,6 +243,8 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
    - 断言：未实现 `Ordered` 的 BPP 仍可能按注册顺序执行
 
 ## 排障分流：这是定义层问题还是实例层问题？
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
 
 可以先用“这到底影响什么”来判断要追哪条链路：
 

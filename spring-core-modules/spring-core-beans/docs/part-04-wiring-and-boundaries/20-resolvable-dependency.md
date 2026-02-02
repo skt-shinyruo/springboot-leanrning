@@ -208,6 +208,8 @@
    - 断言：注入时才解包 value
 
 ## 6. 排障决策表（能注入/不能 getBean/命中不了 → 证据链）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 | 现象/异常 | 最可能原因 | 证据链（方法级） | 推荐修复 |
 | --- | --- | --- | --- |

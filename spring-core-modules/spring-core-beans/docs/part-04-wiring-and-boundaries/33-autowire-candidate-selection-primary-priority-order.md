@@ -110,6 +110,8 @@
 - 但这不会让单依赖注入“自动挑一个”
 
 ## 4. 排障决策表（候选选择/排序：从异常到证据链）
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |

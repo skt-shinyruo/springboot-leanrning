@@ -160,6 +160,8 @@
 ---
 
 ## 6. 排障分流：先确定问题停留在“解析/求值/转换”的哪一步
+> 官方参考（Spring Framework 6.2.x，类型转换（ConversionService））：https://docs.spring.io/spring-framework/reference/core/validation/convert.html
+
 
 | 现象 | 最可能根因 | 下一步 |
 | --- | --- | --- |

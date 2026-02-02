@@ -78,6 +78,8 @@
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ## 常见误区与边界
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 > 这一节的目的不是“列口号”，而是把高频误判做成可复现的定位清单：每一条都能在本仓库的某个 Lab 中复现出来，并能设置断点观察到关键分支。
 

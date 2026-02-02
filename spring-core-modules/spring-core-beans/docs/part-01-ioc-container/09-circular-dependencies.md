@@ -231,6 +231,8 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 ---
 
 ## 排障配方：如何定位“环路边”并选择打断手段
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 1) **优先定位异常根因（root cause）**：`BeanCurrentlyInCreationException` 往往是内因
 2) **锁定环路边**：

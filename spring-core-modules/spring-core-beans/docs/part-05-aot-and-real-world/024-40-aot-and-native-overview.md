@@ -243,6 +243,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
    - hints 只解决“反射/代理/资源”等契约问题；业务逻辑、条件装配、初始化时机仍然需要正确性。
 
 ## 排障决策表（AOT/Native：从“现象”到“hints 证据链”）
+> 官方参考（Spring Framework 6.2.x，AOT 与 RuntimeHints）：https://docs.spring.io/spring-framework/reference/core/aot.html
+
 
 | 现象 | 最可能根因 | 证据（断点/断言） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |

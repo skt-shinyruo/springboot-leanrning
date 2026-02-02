@@ -191,6 +191,8 @@
 > 目标：把“能看到”升级成“只看到需要看的”。这也是为什么本模块大量章节都强调 watch list：观察点比断点位置更决定效率。
 
 ## 常见误区与边界
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 - 只盯某个注解：建议先把“发生在 refresh 的哪一段”确定下来（C1-C7）。
 - 把 proxy 当成原始对象：建议在 `applyBeanPostProcessorsAfterInitialization` 处观察 `wrappedBean` 替换点。

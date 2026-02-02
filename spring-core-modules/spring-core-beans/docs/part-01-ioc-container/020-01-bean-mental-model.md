@@ -185,6 +185,8 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 - `43-autowirecapablebeanfactory-external-objects.md`（外部对象如何接入容器能力）
 
 ## 4. 排障决策表（将主观判断转化为可验证结论）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 | 现象 | 先分层到哪里 | 证据（断点/观察点） | 最可能根因 | 修复思路 |
 | --- | --- | --- | --- | --- |

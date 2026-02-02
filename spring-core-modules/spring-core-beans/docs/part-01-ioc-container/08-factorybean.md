@@ -223,6 +223,8 @@
   - 答题要点：会影响 type-based 查找与条件装配（例如 `@ConditionalOnMissingBean`）；如果 `getObjectType()` “说谎”，甚至会造成候选集合被污染（找不到本该找到的 product）。需要时对照 [23](../part-04-wiring-and-boundaries/23-factorybean-deep-dive.md) 与 [29](../part-04-wiring-and-boundaries/29-factorybean-edge-cases.md) 深入分析。
 
 ## 排障决策表（FactoryBean：name/type/缓存三连）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |

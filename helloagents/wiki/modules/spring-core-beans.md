@@ -79,6 +79,24 @@
 
 ## Specifications
 
+### Requirement: spring-core-beans docs 官方参考下压到关键分支（Round 3）
+
+- 本轮方案包（关键分支/关键结论段落就地对照）：`helloagents/history/2026-02/202602021237_spring_core_beans_docs_deepen_inline_refs_round3/`
+- 状态：已完成实现与回归测试并归档（2026-02-02）
+**Module:** spring-core-beans
+在上一轮已将“官方参考”下压到各章“机制主线”开头的基础上，本轮进一步把对照入口下压到正文里的高价值位置：关键分支触发条件、排障决策表、常见误区与边界、以及关键结论段落旁边。目标是让读者在读到结论的同一屏就能对齐官方语义，减少“读完再去翻文档”的上下文切换。
+
+#### Scenario: 每章至少两处可就地对照
+- 机制主线：保留主语义锚点（已有）
+- 关键分支/排障/误区：新增 1 处更贴近“结论/分支”的对照入口（按章主题选取链接）
+
+#### Scenario: Reference 页面更贴合主题
+- 对 Environment/PropertySource、类型转换（ConversionService）等主题，补齐并使用更准确的官方 Reference 页面（避免一律落在 `beans.html`）
+- 对 `@Resource`（name-first 注入）等易误判主题，修正对照入口为注解驱动/注入语义页面
+
+#### Scenario: 质量门禁（必须可回归）
+- `mvn -q -pl :spring-core-beans test` 回归通过
+
 ### Requirement: spring-core-beans docs 官方参考下压到正文（就地对照）
 
 - 本轮方案包（正文就地下压官方参考入口）：`helloagents/history/2026-02/202602021135_spring_core_beans_docs_deepen_body_refs/`

@@ -184,6 +184,8 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 - `SpringCoreBeansRegistryPostProcessorLabTest`
 
 ## 补充：如何识别“基础设施 Bean”（`ROLE_INFRASTRUCTURE`）以及它对排障的意义
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 本章的主角（各类 processors）在很多场景里会表现得“像是容器自带魔法”，其中一个原因是：它们往往被标记为基础设施角色。
 

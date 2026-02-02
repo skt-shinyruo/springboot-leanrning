@@ -205,6 +205,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
    - `<tx:...>` 更多是“定义层注册基础设施 bean”，运行时能力通常由 BPP/代理实现。
 
 ## 常见误区与边界
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 - namespace URI：是否与在 `spring.handlers` 的 key 一致（注意 `http\://` 的转义）
 - element 的 localName：是否命中 handler 里注册的 parser key

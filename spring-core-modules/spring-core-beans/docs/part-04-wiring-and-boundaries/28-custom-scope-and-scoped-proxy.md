@@ -157,6 +157,8 @@ prototype 是最典型的例子。
 实务建议：对 thread/request 这类 scope，明确“回收点”是排障核心。
 
 ## 排障分流：这是定义层问题还是实例层问题？
+> 官方参考（Spring Framework 6.2.x，Scopes 与 scope 语义）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
+
 
 1) **“同一个 thread 里每次 getBean 都是新对象”** → 多半是 **定义层/注册问题**：确认 `registerScope("thread", ...)` 是否执行（看 `AbstractBeanFactory#registerScope`）。
 2) **“不同 thread 里获取到的是同一个对象”** → 多半是 **scope 实现问题**：看 `SimpleThreadScope#get` 是否真的按 thread 隔离缓存。

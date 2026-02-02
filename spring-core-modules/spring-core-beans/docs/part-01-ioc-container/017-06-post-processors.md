@@ -395,6 +395,8 @@ BFPP 本该在“定义层”工作，若在里面直接拿 bean（实例层）�
    - 断言：过早 `getBean` 会让目标 bean 错过后续 BPP
 
 ## 常见误区与边界（补一段“能落到源码的答案”）
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
 
 无需逐行背源码，但必须能回答：“为什么它这么设计？这个设计会造成哪些现象/误区？”
 

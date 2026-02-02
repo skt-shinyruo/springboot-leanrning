@@ -155,6 +155,8 @@
 ---
 
 ## 2. 这条时间线使用方式来排障（3 个经典分流）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 1) **注入失败（NoSuchBeanDefinition / NoUniqueBeanDefinition）**
    - 优先看段 D：`doResolveDependency/findAutowireCandidates/determineAutowireCandidate`

@@ -478,6 +478,8 @@ void init() {
   - 或单独运行：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleCallbackOrderLabTest test`
 
 ## 排障决策表（生命周期/回调：从“没执行”到“证据链”）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |

@@ -278,6 +278,8 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 ---
 
 ## 排障配方：定位环路边并选择打断手段
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 1) **先锁定 root cause**：`BeanCurrentlyInCreationException`  
 2) **找环路边**：  

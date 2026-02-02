@@ -124,6 +124,8 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
    - 断言：实例创建发生在定义加工之后
 
 ## 排障分流：这是定义层问题还是实例层问题？
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 可以用一句话把本章的适用范围钉死：
 

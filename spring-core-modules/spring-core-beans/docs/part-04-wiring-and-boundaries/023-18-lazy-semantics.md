@@ -150,6 +150,8 @@
    - 断言：首次调用才触发真实 bean 创建
 
 ## 4. 代理类型边界：接口注入点 vs 类注入点（必须会排障）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 这一段是很多人学 `@Lazy` 学不明白的关键原因：观察到的是 proxy，但 proxy 的“类型形态”并不总一样。
 

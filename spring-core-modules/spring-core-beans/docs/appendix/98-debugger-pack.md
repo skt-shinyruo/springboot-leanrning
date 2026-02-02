@@ -174,6 +174,8 @@ Debugger Pack 的目的不是“列断点”，而是帮读者形成一种稳定
 ---
 
 ## 常见误区（Debugger Pack 的使用误区）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 1) **只看异常，不看阶段**：同一个异常在不同阶段含义不同，必须先定位到 refresh 的哪一步。
 2) **下了断点但没有过滤**：不加 beanName 条件断点，大项目里可以被噪声淹没。

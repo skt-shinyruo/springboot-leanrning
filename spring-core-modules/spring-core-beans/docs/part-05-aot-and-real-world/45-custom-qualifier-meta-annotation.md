@@ -184,6 +184,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
    - Qualifier 是过滤条件，beanName 只是可能参与收敛的一种信号。
 
 ## 排障决策表（Qualifier：为什么注入的不是所期望的那个）
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |

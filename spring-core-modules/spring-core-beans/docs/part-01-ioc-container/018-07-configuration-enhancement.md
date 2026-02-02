@@ -232,6 +232,8 @@ ConfigB configB(ConfigA a) {
   - 修复：避免在 `@Bean` 方法体内互调；用方法参数注入或拆分配置类
 
 ## 排障决策表（`@Configuration` 增强 / `proxyBeanMethods`）
+> 官方参考（Spring Framework 6.2.x，Java Config / @Configuration/@Bean 语义）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
+
 
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |

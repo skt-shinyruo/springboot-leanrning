@@ -139,6 +139,8 @@
 入口：
 
 ## 排障分流：这是定义层问题还是实例层问题？
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
 
 - “构造器里访问 field injection 字段为 null” → **这是实例层阶段差异（预期）**：field injection 在实例化之后才发生（本章第 1 节）
 - “constructor injection 没走到带参构造器/选错构造器” → **实例层（构造器解析）**：看 `determineCandidateConstructors` 与 `autowireConstructor`（本章源码锚点）

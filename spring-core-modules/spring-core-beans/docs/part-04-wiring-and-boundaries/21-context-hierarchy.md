@@ -122,6 +122,8 @@
    - 断言：容易出现 NoUnique
 
 ## 排障分流：这是定义层问题还是实例层问题？
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 这类问题很适合先按“查找链路”分层：
 

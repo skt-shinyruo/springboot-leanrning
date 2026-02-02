@@ -178,6 +178,8 @@ Explore 用例本身不是面试题，但它能显著提升读者答题的“可
 更标准的答题模板：`appendix/93-interview-playbook.md`
 
 ## 常见误区
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 1) **用例未运行 / IDE 中看不到执行**
    - 大概率是读者没加 `-Dspringcorebeans.explore=true`；这些用例默认是被 gate 掉的。

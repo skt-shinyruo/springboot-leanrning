@@ -113,6 +113,8 @@
    - 复现入口：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 
 ## 1. 排障 SOP（建议固定为团队模板）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 ### 1.1 Symptoms（现象）
 

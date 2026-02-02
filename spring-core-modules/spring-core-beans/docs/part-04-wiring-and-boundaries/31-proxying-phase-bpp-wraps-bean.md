@@ -97,6 +97,8 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 - `result != bean` ⇒ 发生了替换（最终暴露对象已不是原对象）
 
 ## 2. proxy 的两种形态与类型边界（必须会排障）
+> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+
 
 ### 2.1 JDK dynamic proxy（接口代理）
 

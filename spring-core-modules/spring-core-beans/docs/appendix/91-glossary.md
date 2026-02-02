@@ -48,6 +48,8 @@
 这份术语表的目标不是“背概念”，而是解决两个学习痛点：
 
 ### 使用方式（把术语落成可排障结论）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 遇到术语时，按下面 4 步快速落地：
 

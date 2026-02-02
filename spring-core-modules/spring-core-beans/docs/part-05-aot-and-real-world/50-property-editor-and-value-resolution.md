@@ -47,7 +47,7 @@
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，SpEL 与 @Value 表达式）：https://docs.spring.io/spring-framework/reference/core/expressions.html
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+> 官方参考（Spring Framework 6.2.x，类型转换（ConversionService））：https://docs.spring.io/spring-framework/reference/core/validation/convert.html
 
 初学者在学习 Spring Beans 时，最容易遇到一个“看起来像黑盒”的问题：
 

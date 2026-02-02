@@ -150,6 +150,8 @@
 - 读取 BeanDefinition / 注册额外定义 / 修改属性 / 注册 value resolver 等
 
 ### 4.2 作为业务开发者（更少见，但排障常见）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 - `DefaultListableBeanFactory#doResolveDependency`（注入失败/候选收敛）
 - `AbstractBeanFactory#doGetBean`（循环依赖、FactoryBean、提前暴露）

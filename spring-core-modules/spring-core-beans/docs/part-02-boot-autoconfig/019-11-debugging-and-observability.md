@@ -505,6 +505,8 @@ mvn -pl :spring-core-beans spring-boot:run
   - 答题要点：查看 ConditionEvaluationReport（或 `--debug`）；先回答“为什么 match/why skip”，再核对是否被用户 bean 覆盖或被排除。
 
 ## 常见误区与边界
+> 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
+
 
 - [03. 依赖注入解析](../part-01-ioc-container/014-03-dependency-injection-resolution.md)
 - [04. Scope 与 prototype 注入陷阱](../part-01-ioc-container/015-04-scope-and-prototype.md)

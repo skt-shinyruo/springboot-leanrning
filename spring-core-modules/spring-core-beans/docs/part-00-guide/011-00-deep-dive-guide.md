@@ -126,6 +126,8 @@
 - [第 13 章：02. 断点地图：容器主线可复用断点/观察点清单](013-02-breakpoint-map.md)
 
 ### 0.3 第一轮阅读：以较低成本把握阶段边界
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 第一轮阅读的目标在于把握阶段边界，而非追求完整细节。建议按以下顺序进行：
 

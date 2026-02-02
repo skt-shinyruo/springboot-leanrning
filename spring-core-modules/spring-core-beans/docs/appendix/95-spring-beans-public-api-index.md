@@ -504,6 +504,8 @@
 - 想做源码深入分析：从 Lab 的断点入口顺着调用链往下走（比从 IDE 全局搜索更快）。
 
 ## 误区与排障（把索引变成“可用工具”）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 - **索引不是学习路线**：Index/GAP 的价值是“定位”，不是“背诵清单”。推荐先按模块目录页（[`README.md`](../README.md)）的 Start Here 运行最小 Lab，再回索引做反查定位。
 - **BeanFactory vs ApplicationContext 差异**：很多“注解不生效/生命周期不触发”的现象，根因是没有安装 `AnnotationConfigProcessors`（仅 `BeanFactory` 不会自动做这件事）。

@@ -68,6 +68,8 @@
 **断点建议**：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
 
 ## 0. 先建立一个“排障口径”：候选类型信息的三大来源
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 当 Spring 需要做“按类型（含泛型）匹配”时，候选 bean 的类型信息主要来自三条路径（按可靠性排序）：
 

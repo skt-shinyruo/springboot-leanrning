@@ -158,6 +158,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
    - 在真实项目里，遗留配置/三方组件/某些 starter 仍可能引入 XML 资源；排障时必须认识链路。
 
 ## 常见误区与边界
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 ### 常见误区
 

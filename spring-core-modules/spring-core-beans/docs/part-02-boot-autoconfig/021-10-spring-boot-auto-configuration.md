@@ -137,6 +137,8 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 > 关键结论：自动装配解决的是“把定义导入并注册进容器”；依赖注入解决的是“在注入点从候选里选一个”。两者是不同阶段的问题。
 
 ### 3.3 Boot 2 vs Boot 3：自动配置类清单来源的关键差异（排障必备）
+> 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
+
 
 自动配置“从哪里来”是很多偶发问题的根：同样一个 starter、同样一段条件，为什么在不同版本/不同构建方式下行为不一致？
 

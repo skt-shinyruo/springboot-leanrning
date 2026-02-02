@@ -39,7 +39,7 @@
 
 ## 机制主线：两条链路 + 一个决策点
 
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+> 官方参考（Spring Framework 6.2.x，类型转换（ConversionService））：https://docs.spring.io/spring-framework/reference/core/validation/convert.html
 
 这一章解决的不是“怎么写 Converter”这种 API 问题，而是排障时更致命的问题：
 
@@ -190,6 +190,8 @@
 ---
 
 ## 5. 排障分流：读者到底该看哪一章/哪条链？
+> 官方参考（Spring Framework 6.2.x，类型转换（ConversionService））：https://docs.spring.io/spring-framework/reference/core/validation/convert.html
+
 
 把常见问题按“现象 → 诊断 → 入口断点”压缩成一张分流表（建议收藏，排障时直接用）：
 

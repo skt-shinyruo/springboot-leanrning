@@ -193,6 +193,8 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
    - 断言：依赖边记录在 `dependentBeanMap`
 
 ## 7. 排障决策表（初始化/关闭/异常消息 → 证据链）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 | 现象/异常 | 最可能原因 | 证据链（方法级） | 推荐修复 |
 | --- | --- | --- | --- |

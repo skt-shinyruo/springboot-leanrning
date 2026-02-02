@@ -113,6 +113,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 ---
 
 ## 3. 三连排障（强烈推荐把这张表背下来）
+> 官方参考（Spring Framework 6.2.x，SpEL 与 @Value 表达式）：https://docs.spring.io/spring-framework/reference/core/expressions.html
+
 
 | 现象 | 最可能根因 | 需要去哪看（断点/变量） |
 | --- | --- | --- |

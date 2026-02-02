@@ -8,6 +8,7 @@
 
 | 时间戳 | 变更名称 | 类型 | 状态 | 方案包路径 |
 | --- | --- | --- | --- | --- |
+| 202602021237 | spring_core_beans_docs_deepen_inline_refs_round3 | Enhancement | ✅Completed | [202602021237_spring_core_beans_docs_deepen_inline_refs_round3](2026-02/202602021237_spring_core_beans_docs_deepen_inline_refs_round3/) |
 | 202602021135 | spring_core_beans_docs_deepen_body_refs | Enhancement | ✅Completed | [202602021135_spring_core_beans_docs_deepen_body_refs](2026-02/202602021135_spring_core_beans_docs_deepen_body_refs/) |
 | 202602020952 | spring_core_beans_docs_deepen | Enhancement | ✅Completed | [202602020952_spring_core_beans_docs_deepen](2026-02/202602020952_spring_core_beans_docs_deepen/) |
 | 202602011541 | beans_docs_deepen_round2_allchapters | Enhancement | ✅Completed | [202602011541_beans_docs_deepen_round2_allchapters](2026-02/202602011541_beans_docs_deepen_round2_allchapters/) |
@@ -102,6 +103,7 @@
 
 ### 2026-02
 
+- [202602021237_spring_core_beans_docs_deepen_inline_refs_round3](2026-02/202602021237_spring_core_beans_docs_deepen_inline_refs_round3/) - spring-core-beans：官方参考入口下压到关键分支/关键结论段落（Round 3）
 - [202602021135_spring_core_beans_docs_deepen_body_refs](2026-02/202602021135_spring_core_beans_docs_deepen_body_refs/) - spring-core-beans：官方参考入口下压到正文机制主线（就地对照）
 - [202602020952_spring_core_beans_docs_deepen](2026-02/202602020952_spring_core_beans_docs_deepen/) - spring-core-beans：全章补齐 Spring 官方 Reference 对照链接与版本语境
 - [202602011541_beans_docs_deepen_round2_allchapters](2026-02/202602011541_beans_docs_deepen_round2_allchapters/) - spring-core-beans：docs Round 2 全章继续深化（81 篇）

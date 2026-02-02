@@ -44,7 +44,7 @@
 <!-- AE-DEEPENING:END -->
 ## 机制主线
 
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+> 官方参考（Spring Framework 6.2.x，Environment / PropertySource）：https://docs.spring.io/spring-framework/reference/core/beans/environment.html
 
 这一章补齐一个“读者每天都在用，但很少系统化理解”的核心机制：
 
@@ -153,6 +153,8 @@ Spring 把“多个来源”组织成一个有序链表：
 ---
 
 ## 5. 使用方式：最小可用手段（按“排障优先级”排序）
+> 官方参考（Spring Framework 6.2.x，Environment / PropertySource）：https://docs.spring.io/spring-framework/reference/core/beans/environment.html
+
 
 ### 5.2 `@PropertySource`（适合“给一个默认文件来源”）
 

@@ -601,6 +601,8 @@ AbstractBeanFactory#doGetBean(beanName)
 ---
 
 ## 5. 排障决策表（注册相关：现象 → 分层 → 证据 → 修复）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 先给出一条“强制分层”的总规则（很重要）：
 

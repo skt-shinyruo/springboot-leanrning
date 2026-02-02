@@ -90,6 +90,8 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 ---
 
 ## 1.1 误归因对照（避免把问题看错层）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 - **现象**：`@Value("${...}")` 注入失败  
   **常见误归因**：以为配置没加载  

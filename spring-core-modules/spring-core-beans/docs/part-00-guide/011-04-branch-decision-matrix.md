@@ -106,6 +106,8 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 ---
 
 ## 面试使用方式这张表（将排障流程复用为答题流程）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 面试中的很多题目本质上是“给读者一个现象，让读者解释机制”。可将答题过程复用为：
 

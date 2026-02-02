@@ -37,7 +37,7 @@
 
 ## 机制主线：`@Resource` 的三个关键事实
 
-> 官方参考（Spring Framework 6.2.x，资源抽象：Resource/ResourceLoader）：https://docs.spring.io/spring-framework/reference/core/resources.html
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
 当在项目里看到 `@Resource`，先把它压缩成三句话（排障时非常省命）：
 
@@ -145,6 +145,8 @@
 ---
 
 ## 5. 排障分流：三类问题，三条路
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
 
 | 现象 | 最可能根因 | 处理策略 |
 | --- | --- | --- |

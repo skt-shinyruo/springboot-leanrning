@@ -89,6 +89,8 @@ Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审�
 无需把链路写成长篇大论；但必须能做到“方法级可指认”。
 
 ## 排障分流（Gap 视角：读者到底缺的是哪一段）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 | 现象 | 更像缺口在哪 | 建议优先补充的材料 |
 | --- | --- | --- |

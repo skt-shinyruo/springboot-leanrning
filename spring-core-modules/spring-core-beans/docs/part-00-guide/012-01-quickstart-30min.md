@@ -227,6 +227,8 @@
 当读者完成这三件事，再去读后面的章节，可以发现它们都只是“在同一条主线上加分支/加边界”。
 
 ## 排障分流（快启版：先别猜，先分类）
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 若只有 10 分钟排一个 IoC 相关问题，建议读者按这个顺序收敛：
 

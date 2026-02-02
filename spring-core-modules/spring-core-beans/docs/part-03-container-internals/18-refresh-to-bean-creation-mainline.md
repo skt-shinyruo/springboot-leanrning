@@ -642,6 +642,8 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 - `exposedObject`（最终返回对象是否已被包装/代理）
 
 ## 排障分流：现象 → 阶段 → 关键方法 → 必看变量 → 对应 LabTest
+> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
+
 
 下面这张表的目的不是“背诵”，而是把本章的主线叙事进一步压缩为一个**可复用的排障流程**：
 

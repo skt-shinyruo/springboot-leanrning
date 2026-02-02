@@ -228,6 +228,8 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 需要建立的直觉是：**收敛不是一个 if，而是一套有先后顺序的规则**。
 
 ### 3.1 一个足够贴近断点观察的“决策树”（不追求逐行一致，但足够排障）
+> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+
 
 ```text
 determineAutowireCandidate(candidates, descriptor):

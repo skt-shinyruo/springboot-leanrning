@@ -136,6 +136,8 @@
 ---
 
 ## 4. 常见误区（工程里最容易误诊的点）
+> 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
+
 
 1) **误区：靠调整 import 顺序修复**
    - import 顺序只是“当前偶然可用”，不是稳定契约；升级/依赖变化后容易再次出错。
