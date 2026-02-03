@@ -16,6 +16,8 @@
 - 删除仓库根 `scripts/` 目录（包含测试/运行快捷脚本与文档批处理脚本），并清理文档/知识库中的引用
 
 ### Changed
+
+- spring-core-beans：docs 入口与目录拆分，新增 `docs/SUMMARY.md`，README 目录段落书籍化
 - `spring-core-beans`：docs 全章补齐 Spring 官方 Reference 对照链接与版本语境（Spring Framework `6.2.x`（基线 `6.2.15`）/ Spring Boot `3.5.9`），用于对齐权威定义与边界；并通过 `mvn -q -pl :spring-core-beans test` 回归
 - `spring-core-beans`：docs 将官方参考入口“就地下压”到正文关键结论附近（优先落在“机制主线”段落内），并按章主题选择 Beans/注入/JavaConfig/Scopes/Post-Processors/SpEL/Resources/AOT/Boot Auto-Config 等对应 Reference 页面，减少读者上下文切换成本；通过 `mvn -q -pl :spring-core-beans test` 回归
 - `spring-core-beans`：docs 第 3 轮继续下压官方参考入口：从“机制主线开头”进一步下压到各章“关键分支/排障决策/误区边界/关键结论段落”附近（每章至少两处可就地对照），并补齐 Environment/Conversion 等更贴合的 Reference 页面；通过 `mvn -q -pl :spring-core-beans test` 回归

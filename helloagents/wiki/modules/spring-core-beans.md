@@ -58,6 +58,9 @@
 
 ## Source Layout（与 docs Part 对齐）
 
+- docs 入口：`spring-core-modules/spring-core-beans/docs/README.md`（导读 / 阅读路线 / 运行方式）
+- docs 目录 SSOT：`spring-core-modules/spring-core-beans/docs/SUMMARY.md`（书籍结构目录，按阅读顺序编排）
+
 为保证“像书本一样”的可发现性与可复现性，`spring-core-beans` 的源码与测试代码按 docs 的 Part 结构分组：
 
 - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/**` ⇔ `src/main/java/.../part01_ioc_container/**` + `src/test/java/.../part01_ioc_container/**`
@@ -240,6 +243,7 @@
 - 无跨模块硬依赖（该模块是 Spring Core 学习底座）
 
 ## Change History
+- [202602031211_beans_docs_book_structure](../../history/2026-02/202602031211_beans_docs_book_structure/) - spring-core-beans：docs 书籍结构目录重整（README ↔ SUMMARY）
 
 - [202602020952_spring_core_beans_docs_deepen](../../history/2026-02/202602020952_spring_core_beans_docs_deepen/) - ✅ 已执行：为 `spring-core-beans` 文档全章补齐 Spring 官方 Reference 对照链接与版本语境（Spring Framework `6.2.x` / Spring Boot `3.5.9`），用于对齐权威定义与边界；并通过模块测试回归
 - [202602011343_beans_docs_deepen_all](../../history/2026-02/202602011343_beans_docs_deepen_all/) - ✅ 已执行：beans docs 全量“继续深化”：将章内 `AE-DEEPENING` 与 deepening-strategies 从维度清单降模板化为“入口用例 + 断点主线 + 自证/排错收敛点”的可执行路线，并补齐 Beans → AOP 跳转的“为什么跳/验证什么”说明

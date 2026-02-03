@@ -1,0 +1,99 @@
+# 目录（spring-core-beans）
+
+> 本目录按「书籍阅读顺序」编排。入口与阅读路线请先看 `README.md`。
+
+## Part 00：Guide（怎么学 / 从哪里设置断点）
+- [第 09 章：00. 基础问题索引（Why Index）：把高频“为什么”做成可验证闭环](part-00-guide/009-00-why-index.md)
+- [第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）](part-00-guide/012-01-quickstart-30min.md)
+- [第 11 章：00. 深入分析指南：将“Bean 三层模型”落实到源码与断点](part-00-guide/011-00-deep-dive-guide.md)
+- [第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean](part-00-guide/010-03-mainline-timeline.md)
+- [第 11 章：关键分支矩阵（Branch Decision Matrix）](part-00-guide/011-04-branch-decision-matrix.md)
+- [第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）](part-00-guide/013-01-applicationcontext-refresh-call-chain.md)
+- [第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）](part-00-guide/013-02-breakpoint-map.md)
+
+## Part 01：IoC Container（注册 / 注入 / 生命周期 / 扩展点）
+- [第 20 章：01. Bean 运行机制：从 BeanDefinition 到最终暴露对象](part-01-ioc-container/020-01-bean-mental-model.md)
+- [02. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）](part-01-ioc-container/02-bean-registration.md)
+- [第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary](part-01-ioc-container/014-03-dependency-injection-resolution.md)
+- [第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](part-01-ioc-container/015-04-scope-and-prototype.md)
+- [第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](part-01-ioc-container/016-05-lifecycle-and-callbacks.md)
+- [第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](part-01-ioc-container/017-06-post-processors.md)
+- [第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](part-01-ioc-container/018-07-configuration-enhancement.md)
+- [08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](part-01-ioc-container/08-factorybean.md)
+- [09. 循环依赖：现象、原因与规避（constructor vs setter）](part-01-ioc-container/09-circular-dependencies.md)
+
+## Part 02：Boot Auto-Config（Boot 叠加后容器如何变复杂）
+- [09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？](part-02-boot-autoconfig/020-09-auto-config-ordering.md)
+- [第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
+- [第 19 章：11. 调试与自检：如何“观察到”容器正在做什么](part-02-boot-autoconfig/019-11-debugging-and-observability.md)
+
+## Part 03：Internals（refresh 主线 / 处理器算法 / 缓存边界）
+- [第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？](part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
+- [18. 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）](part-03-container-internals/18-refresh-to-bean-creation-mainline.md)
+- [13. BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义](part-03-container-internals/13-bdrpp-definition-registration.md)
+- [14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序](part-03-container-internals/14-post-processor-ordering.md)
+- [15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行](part-03-container-internals/15-pre-instantiation-short-circuit.md)
+- [16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](part-03-container-internals/16-early-reference-and-circular.md)
+- [17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）](part-03-container-internals/17-lifecycle-callback-order.md)
+
+## Part 04：Wiring & Boundaries（候选选择 / 代理 / 占位符 / 转换等）
+- [第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
+- [19. dependsOn：强制初始化顺序（即使没有显式依赖）](part-04-wiring-and-boundaries/19-depends-on.md)
+- [20. registerResolvableDependency：能注入，但它不是 Bean](part-04-wiring-and-boundaries/20-resolvable-dependency.md)
+- [21. 父子 ApplicationContext：可见性与覆盖边界](part-04-wiring-and-boundaries/21-context-hierarchy.md)
+- [22. Bean 名称与 alias：同一个实例，多一个名字](part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)
+- [23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义](part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)
+- [24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？](part-04-wiring-and-boundaries/24-bean-definition-overriding.md)
+- [25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)
+- [26. SmartInitializingSingleton：所有单例都创建完之后再做事](part-04-wiring-and-boundaries/26-smart-initializing-singleton.md)
+- [27. SmartLifecycle：start/stop 时机与 phase 顺序](part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md)
+- [28. 自定义 Scope + scoped proxy：thread scope 的真实语义](part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md)
+- [29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](part-04-wiring-and-boundaries/29-factorybean-edge-cases.md)
+- [30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)
+- [31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）](part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
+- [32. `@Resource` 注入：为什么它更像“按名称找 Bean”？](part-04-wiring-and-boundaries/32-resource-injection-name-first.md)
+- [33. 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界](part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
+- [34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)
+- [35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？](part-04-wiring-and-boundaries/35-merged-bean-definition.md)
+- [36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)
+- [37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md)
+- [38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](part-04-wiring-and-boundaries/38-environment-and-propertysource.md)
+- [39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界](part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md)
+
+## Part 05：AOT & Real World（XML/Reader/AOT/外部对象/SpEL/自定义 qualifier）
+- [第 24 章：40. AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”](part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
+- [41. RuntimeHints 入门：把构建期契约完成验证](part-05-aot-and-real-world/41-runtimehints-basics.md)
+- [42. XML → BeanDefinitionReader：定义层解析与错误分型](part-05-aot-and-real-world/42-xml-bean-definition-reader.md)
+- [43. 容器外对象注入：AutowireCapableBeanFactory](part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md)
+- [44. SpEL 与 `@Value("#{...}")`：表达式解析链路](part-05-aot-and-real-world/44-spel-and-value-expression.md)
+- [45. 自定义 Qualifier：meta-annotation 与候选收敛](part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md)
+- [46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers](part-05-aot-and-real-world/46-xml-namespace-extension.md)
+- [47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy](part-05-aot-and-real-world/47-beandefinitionreader-other-inputs-properties-groovy.md)
+- [48. 方法注入（Method Injection）：replaced-method / MethodReplacer](part-05-aot-and-real-world/48-method-injection-replaced-method.md)
+- [49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀](part-05-aot-and-real-world/49-built-in-factorybeans-gallery.md)
+- [50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象](part-05-aot-and-real-world/50-property-editor-and-value-resolution.md)
+
+## Appendix（术语表 / 速查 / 排障清单 / 索引）
+- [第 25 章：90. 常见误区清单（建议反复对照）](appendix/025-90-common-pitfalls.md)
+- [91. 术语表（Glossary）](appendix/91-glossary.md)
+- [92. 知识地图（Knowledge Map）：从现象直达章节/断点/Lab](appendix/92-knowledge-map.md)
+- [93. 面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC](appendix/93-interview-playbook.md)
+- [94. 生产排障清单（Troubleshooting Checklist）：从症状到证据链](appendix/94-production-troubleshooting-checklist.md)
+- [95. spring-beans Public API 索引（Spring Framework 6.2.15）](appendix/95-spring-beans-public-api-index.md)
+- [96. spring-beans Public API Gap 清单（按包/机制域分批深化）](appendix/96-spring-beans-public-api-gap.md)
+- [97. Explore/Debug 用例（可选启用，不影响默认回归）](appendix/97-explore-debug-tests.md)
+- [98. Debugger Pack（断点包总入口）](appendix/98-debugger-pack.md)
+- [99. 团队内训讲义（Training Kit）：可直接用于授课的课时脚本](appendix/99-team-training-kit.md)
+- [第 26 章：99. 自测题：是否能够真的理解了？](appendix/026-99-self-check.md)
+
+## 深化策略（可选）
+- [spring-core-beans：内容级再加深策略（按章节）](deepening-strategies/README.md)
+- [逐章内容级再加深建议（Docs TOC / 目录页）](deepening-strategies/docs-root.md)
+- [逐章内容级再加深建议（模块 README）](deepening-strategies/module-readme.md)
+- [逐章内容级再加深建议（part-00-guide 指南）](deepening-strategies/part-00-guide.md)
+- [逐章内容级再加深建议（part-01-ioc-container）](deepening-strategies/part-01-ioc-container.md)
+- [逐章内容级再加深建议（part-02-boot-autoconfig）](deepening-strategies/part-02-boot-autoconfig.md)
+- [逐章内容级再加深建议（part-03-container-internals）](deepening-strategies/part-03-container-internals.md)
+- [逐章内容级再加深建议（part-04-wiring-and-boundaries）](deepening-strategies/part-04-wiring-and-boundaries.md)
+- [逐章内容级再加深建议（part-05-aot-and-real-world）](deepening-strategies/part-05-aot-and-real-world.md)
+- [逐章内容级再加深建议（appendix 工具章节）](deepening-strategies/appendix.md)
