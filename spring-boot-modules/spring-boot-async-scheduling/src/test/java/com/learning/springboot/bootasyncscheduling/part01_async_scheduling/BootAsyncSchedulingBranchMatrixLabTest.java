@@ -9,7 +9,18 @@ import org.junit.platform.suite.api.Suite;
 @Suite
 @SelectClasses({
         BootAsyncSchedulingLabTest.class,
-        BootAsyncSchedulingSchedulingLabTest.class
+        BootAsyncSchedulingExecutorSelectionLabTest.class,
+        BootAsyncSchedulingProxyTypeLabTest.class,
+        BootAsyncSchedulingUncaughtExceptionHandlerLabTest.class,
+        BootAsyncSchedulingContextPropagationLabTest.class,
+        BootAsyncSchedulingTransactionBoundaryLabTest.class,
+        BootAsyncSchedulingSecurityContextPropagationLabTest.class,
+        BootAsyncSchedulingRequestContextPropagationLabTest.class,
+        BootAsyncSchedulingSpringTaskAutoConfigurationLabTest.class,
+        BootAsyncSchedulingSchedulingLabTest.class,
+        BootAsyncSchedulingSchedulingRegistrationLabTest.class,
+        BootAsyncSchedulingSchedulingExceptionSemanticsLabTest.class,
+        BootAsyncSchedulingScheduledAsyncCombinationLabTest.class,
+        com.learning.springboot.bootasyncscheduling.part02_perf_concurrency.BootAsyncSchedulingExecutorSaturationLabTest.class
 })
 class BootAsyncSchedulingBranchMatrixLabTest {}
-

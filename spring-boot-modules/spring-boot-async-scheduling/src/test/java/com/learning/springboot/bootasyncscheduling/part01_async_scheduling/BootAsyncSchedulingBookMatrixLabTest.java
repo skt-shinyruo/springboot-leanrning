@@ -6,6 +6,7 @@ import org.junit.platform.suite.api.Suite;
 @Suite
 @SelectClasses({
         BootAsyncSchedulingLabTest.class,
+        BootAsyncSchedulingExecutorSelectionLabTest.class,
         BootAsyncSchedulingSchedulingLabTest.class
 })
 class BootAsyncSchedulingBookMatrixLabTest {}
