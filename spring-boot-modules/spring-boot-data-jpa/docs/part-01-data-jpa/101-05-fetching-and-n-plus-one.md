@@ -30,6 +30,18 @@
 
 ## 机制主线
 
+fetching 不是“性能优化技巧”，而是**关联加载策略**：你查一张表时，关联对象/集合是一次性抓回来，还是等你访问时再补一刀。
+
+N+1 的本质也很朴素：
+
+- 第一条查询拿到 N 个“父对象”（例如 Author 列表）
+- 你在循环里访问 lazy 关联（例如 `author.getBooks()`）
+- 于是每个父对象都再补一次 select（N 次）→ 形成 N+1
+
+这类问题最怕“只看代码不看 SQL”。在这个模块里，建议至少形成两条证据链：
+
+- 用 `BootDataJpaDebugSqlLabTest` 把 SQL 打开（让“我以为只有一条查询”变成可见事实）
+- 用 `BootDataJpaLabTest` 把“访问方式 → SQL 数量/耗时”写成断言（避免只靠经验判断）
 
 ## 什么是 N+1（直觉版）
 
@@ -54,6 +66,14 @@
 
 ## 在本模块的练习入口
 
+如果你只想快速把 N+1 跑出来（强烈推荐先这么做）：
+
+- N+1 发生：`BootDataJpaLabTest#nPlusOneHappensWhenAccessingLazyCollections`
+- 一个常见修复方向（示例）：`BootDataJpaLabTest#entityGraphCanAvoidNPlusOne_whenFetchingCollections`
+
+如果你想把它变成“自己能写出来的结论”（更推荐）：
+
+- 动手题入口：`BootDataJpaExerciseTest#exercise_relationshipsAndFetching`（新增关系 + 复现 N+1 + 写断言）
 
 ## 你应该得到的结论（比背解决方案更重要）
 
@@ -66,7 +86,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest`
 - 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
