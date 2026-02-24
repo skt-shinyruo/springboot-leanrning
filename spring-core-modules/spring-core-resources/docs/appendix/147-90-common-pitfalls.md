@@ -43,7 +43,7 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+这页不展开完整机制主线；它更像排障备忘录：把常见分支与可复现入口列出来，方便你回到 tests 验证。
 
 ## 源码与断点
 
@@ -62,16 +62,19 @@
 
 ## 坑 1：把 classpath 资源当成 File
 
-- 现象：本地 OK，打包后失败
-- 建议：优先 `getInputStream()`，不要依赖 `getFile()`
+- 现象：本地（IDE）OK，打包后失败（典型是 `getFile()` 抛异常或路径根本不存在）。
+- Verification：`SpringCoreResourcesMechanicsLabTest#classpathResourceCanBeReadAsBytes`（对比：读 bytes 是稳定的；拿 file 路径不是）
+- Fix：优先 `getInputStream()`，不要依赖 `getFile()`；需要背景可回看 [06. jar vs filesystem](../part-01-resource-abstraction/146-06-jar-vs-filesystem.md)。
 
 ## 坑 2：以为 `getResource(...)` 会在不存在时返回 null
 
-- 事实：它返回 handle，需要 `exists()` 判断（见 [04. exists-and-handles](../part-01-resource-abstraction/144-04-exists-and-handles.md)）
+- 事实：它返回的是“句柄（handle）”，需要 `exists()` 判断（见 [04. exists-and-handles](../part-01-resource-abstraction/144-04-exists-and-handles.md)）。
+- Verification：`SpringCoreResourcesMechanicsLabTest#getResourceReturnsAHandle_evenIfTheResourceDoesNotExist`
 
 ## 坑 3：pattern 扫描结果顺序不稳定导致 tests 抖动
 
-- 建议：排序后再断言（本模块 service 已经这么做）
+- Verification：`SpringCoreResourcesMechanicsLabTest#classpathStarPatternLoadsResourcesFromClasspath`
+- Fix：把结果映射成稳定的描述（`getDescription()`/文件名）并排序后再断言（本模块 service 已经这么做）。
 
 ## 坑 4：忽略编码导致内容乱码
 

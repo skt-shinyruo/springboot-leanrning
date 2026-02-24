@@ -43,7 +43,7 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+这页不展开完整机制主线；它更像排障备忘录：把常见分支与可复现入口列出来，方便你回到 tests 验证。
 
 ## 源码与断点
 
@@ -58,11 +58,30 @@
 
 ## 常见坑与边界
 
+这一模块的排障最怕把现象混在一起：**端点存在 / 端点暴露 / 端点可访问** 是三件不同的事（见 Deep Dive Guide 的“三段式分流”）。
 
-## 常见坑
-1. 端点存在但未暴露：只配置了 endpoint，忘了 exposure（或被覆盖）
-2. 环境差异：不同 profile/不同配置来源导致“我本地可以，线上不行”
-3. 安全边界：暴露端点 ≠ 允许匿名访问
+## 坑 1：把 404 当成“端点不存在”，忽略了 exposure 分流
+
+- 你会看到：访问 `/actuator/env` 得到 404，于是以为 env endpoint 没注册/没生效。
+- Root Cause：端点存在 ≠ 端点暴露到 HTTP；默认 exposure 并不会把所有端点都映射出来。
+- Verification：
+  - 默认不暴露：`BootActuatorLabTest#envEndpointIsNotExposedByDefault`
+  - 显式 include 后可访问：`BootActuatorExposureOverrideLabTest#envEndpointCanBeExposedViaProperties`
+  - 根路径 links 只列出暴露端点：`BootActuatorLabTest#actuatorRootListsExposedEndpoints`
+  - 暴露后 links 才会出现：`BootActuatorExposureOverrideLabTest#actuatorRootIncludesEnvLinkWhenExposed`
+- Fix：先看 `/actuator` 的 `_links`（它只列“暴露端点”），再核对 include/exclude/base-path，而不是上来就怀疑“端点没注册”。
+
+## 坑 2：环境差异把你带偏（profile/配置来源）
+
+- 你会看到：本地可以、线上不行；或者 IDE 里 OK、命令行不行。
+- Root Cause：Actuator 的行为高度依赖配置来源与覆盖顺序（profile/环境变量/外部配置）。
+- Fix：先确认“当前生效的配置值是什么、来自哪个 PropertySource”，再讨论“配置写没写对”。
+
+## 坑 3：暴露端点不等于允许匿名访问（401/403）
+
+- 你会看到：端点已暴露，但访问返回 401/403。
+- Root Cause：exposure 决定“有没有路由”，安全策略决定“能不能访问”。401/403/404 三种状态码要先分流清楚。
+- Fix：先把 401/403/404 分清：404 多半是没暴露/路径不对，401/403 才是安全边界（鉴权/CSRF/网络隔离等）。
 
 ## 对应 Lab（可运行）
 

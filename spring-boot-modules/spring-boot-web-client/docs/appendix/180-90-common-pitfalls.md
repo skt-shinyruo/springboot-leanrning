@@ -43,7 +43,7 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+这页不展开完整机制主线；它更像排障备忘录：把常见分支与可复现入口列出来，方便你回到 tests 验证。
 
 ## 源码与断点
 
@@ -58,6 +58,7 @@
 
 ## 常见坑与边界
 
+> 这些坑很少在“能跑通”时暴露，往往在状态码分支、超时、重试与副作用上翻车。建议用 MockWebServer 把异常分支跑成断言。
 
 ## 只测 happy path
 
@@ -73,6 +74,13 @@
 
 ## 幂等性没想清楚
 
+“重试”在客户端视角是一句很轻的配置；但在服务端视角，它等价于**重复发送同一个请求**。
+
+- 你会看到：线上偶发重复下单/重复扣款/重复写入；而你在本地只做了 happy-path 的 200 断言，完全看不出来。
+- Root Cause：只有当操作语义幂等（或你有幂等键/去重机制）时，retry 才安全；否则重试会把偶发网络问题放大成“重复副作用”。
+- Fix（先选语义，再谈参数）：
+  - GET 通常更安全重试（但也要看服务端实现是否真的无副作用）
+  - POST/PUT/DELETE 往往有副作用：重试前先设计幂等键/去重策略（本模块 Exercise 有引导）
 
 ## Filter 顺序误判：request 顺序 ≠ response 顺序
 
@@ -81,9 +89,6 @@
 - Verification：`BootWebClientWebClientFilterOrderLabTest#webClientFilters_requestOrderAndResponseOrder_areDifferent`
 - Breakpoints：`DefaultWebClient$DefaultRequestBodyUriSpec#exchange`、`ExchangeFilterFunction` 链路的装配与调用
 - Fix：写 filter 时区分 request/response 侧的执行顺序；把“期望顺序”直接写进 Lab/Test，避免靠脑补。
-
-- GET 通常更安全重试
-- POST/PUT/DELETE 可能有副作用：重试前要想清楚（Exercise 有引导）
 
 ## 对应 Lab（可运行）
 

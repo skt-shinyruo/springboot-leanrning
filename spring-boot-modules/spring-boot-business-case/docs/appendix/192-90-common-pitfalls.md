@@ -43,7 +43,7 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+这页不展开完整机制主线；它更像排障备忘录：把常见分支与可复现入口列出来，方便你回到 tests 验证。
 
 ## 源码与断点
 
@@ -58,11 +58,43 @@
 
 ## 常见坑与边界
 
+> 验证入口（可跑）：`BootBusinessCaseLabTest`（建议从失败用例开始跑，因为坑往往都在那里）
 
-## 常见坑
-1. 误把业务案例当成“只跑得起来的 demo”：缺乏断言与边界说明，容易失真
-2. 异常传播路径不清晰：controller/service/listener/aspect 的责任边界混乱
-3. 日志可观察性不足：看不到“谁触发了谁”，难以排障
+## 坑 1：把“请求校验失败”当成业务失败，却没看清它发生在哪个边界
+
+- 你会看到：400 + `validation_failed`；但你仍然在 service/事务/事件里找原因。
+- Verification：
+  - `BootBusinessCaseLabTest#returnsValidationErrorWhenRequestIsInvalid`
+  - `BootBusinessCaseLabTest#validationRejectsNegativeQuantity`
+  - `BootBusinessCaseLabTest#validationRejectsMissingFields`
+- Fix：先把“校验失败”当成 MVC/Validation 边界问题：字段错误应该在 controller 入参阶段就被拦截；并且不应写库、不应发事件（本模块的 `auditLog` 会帮你验证）。
+
+## 坑 2：以为“抛异常就会回滚”，但你没有确认事务边界是否真的生效
+
+- 你会看到：失败接口 `/api/orders/fail` 返回 500，但你不确定数据到底有没有落库。
+- Verification：`BootBusinessCaseLabTest#rollbackPreventsPersistenceOnFailure`
+- Fix：用 `repository.count()` + 断言确认回滚，再回到 Tx 模块定位为什么事务没有生效（代理/入口/self-invocation）。
+
+## 坑 3：把事件当成 after-commit，结果回滚时仍有副作用
+
+- 你会看到：回滚用例里仍然出现 `sync:` 审计，但 `afterCommit:` 没有。
+- Verification：
+  - `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot`
+  - `BootBusinessCaseLabTest#afterCommitListenerRunsOnSuccess`
+- Fix：副作用如果要跟着事务命运走，就用 `@TransactionalEventListener(AFTER_COMMIT)`；否则默认 `@EventListener` 会立刻执行。
+
+## 坑 4：觉得“有 AOP/Tracing”但其实没走代理，或者没打到你以为的入口
+
+- Verification：
+  - `BootBusinessCaseLabTest#serviceBeanIsAnAopProxy`
+  - `BootBusinessCaseLabTest#aspectRecordsInvocationForTracedOperation`
+- Fix：先确认 bean 是 proxy，再确认 aspect 的 pointcut 命中你关心的方法（看 InvocationLog 的“最后一次命中方法”）。
+
+## 坑 5：误以为业务接口天然幂等（重试/重复请求导致重复下单）
+
+- 你会看到：同样请求发两次，库里会有两条订单。
+- Verification：`BootBusinessCaseLabTest#createOrderIsIdempotentAtDatabaseLevel_perRequestOnly`
+- Fix：幂等要显式设计（幂等键/唯一约束/去重）；不要把“测试里跑两次都 200”当成幂等证明。
 
 ## 对应 Lab（可运行）
 

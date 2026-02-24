@@ -43,7 +43,7 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+这页不展开完整机制主线；它更像排障备忘录：把常见分支与可复现入口列出来，方便你回到 tests 验证。
 
 ## 源码与断点
 
@@ -62,26 +62,30 @@
 
 ## 坑 1：以为 `@Valid` 自动让 service 方法校验
 
-- 事实：方法参数校验需要 Spring 代理拦截（见 [03. method-validation-proxy](../part-01-validation-core/160-03-method-validation-proxy.md)）
+- 你会看到：Controller 入参校验正常，但 service 方法参数校验“不触发”，于是误以为注解没生效。
+- Root Cause：方法参数校验需要 Spring 代理拦截（见 [03. method-validation-proxy](../part-01-validation-core/160-03-method-validation-proxy.md)），本质上是“method interceptor 在运行时做校验”，不是编译期魔法。
+- Fix：把 method validation 当成 AOP 一类问题排：先确认 bean/入口/代理，再看约束本身。
 
 ## 坑 2：忘了加 `@Validated`
 
-- 现象：`@Valid` 写在方法参数上，但不抛 `ConstraintViolationException`
-- 建议：对照 `MethodValidatedUserService` 的类级别 `@Validated`
+- 你会看到：`@Valid` 写在方法参数上，但不抛 `ConstraintViolationException`，像是“完全没校验”。
+- Fix：对照 `MethodValidatedUserService` 的类级别 `@Validated`；并顺手确认调用入口不是同类自调用（下一条）。
 
 ## 坑 3：自调用导致 method validation 不触发
 
-- 规律：同 AOP/Tx，自调用绕过代理
-- 建议：学习阶段先用 tests 复现，再讨论设计规避方式
+- 规律：同 AOP/Tx，自调用绕过代理。
+- Fix：学习阶段先用 tests 把它复现成断言，再讨论设计规避方式（拆分 bean、从外部入口调用、或改用更明确的边界）。
 
 ## 坑 4：Group 没指定导致你以为规则“失效”
 
-- 现象：你写了 `@NotBlank(groups=Create.class)`，但 validate(Default.class) 没有 violations
-- 解释：group 决定“启用哪组规则”
+- 你会看到：你写了 `@NotBlank(groups=Create.class)`，但 validate(Default.class) 没有 violations，于是以为规则没生效。
+- Root Cause：group 决定“启用哪组规则”——没选中就等价于“没声明”。
+- Fix：把“我现在在跑哪个 group”写清楚（尤其是方法校验与 Web 入参校验混在一起时）。
 
 ## 坑 5：把 violations 当成字符串拼接错误
 
-- 建议：学会看 `propertyPath` 与 `message`，它们是结构化信息，不是“日志文本”
+- 你会看到：只看见“校验失败”，却不知道失败在哪个字段、因为什么规则，排障成本急剧上升。
+- Fix：先学会读 `propertyPath` 与 `message`：它们是结构化证据，不是“日志文本”；把它们映射成统一错误模型再返回给调用方。
 
 ## 小结与下一章
 

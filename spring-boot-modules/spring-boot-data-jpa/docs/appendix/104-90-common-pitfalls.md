@@ -43,7 +43,7 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+这页不展开完整机制主线；它更像排障备忘录：把常见分支与可复现入口列出来，方便你回到 tests 验证。
 
 ## 源码与断点
 
@@ -58,6 +58,7 @@
 
 ## 常见坑与边界
 
+> 这一模块的坑大多来自“你以为自己在看数据库，其实你在看 persistence context”。需要时用 `flush()+clear()` 把视角切回数据库。
 
 ## 坑 1：把 persistence context 当成数据库
 
@@ -82,6 +83,12 @@
 
 ## 坑 5：测试里忘记 `@DataJpaTest` 的默认回滚
 
+- 你会看到：你在测试里插入/更新了数据，断言也通过了；但换一个测试再查时，发现“数据没了”，于是误以为 JPA/flush/事务有问题。
+- Root Cause：`@DataJpaTest` 默认在每个测试方法后回滚事务（这通常是好事：隔离、可重复）。
+- Fix：
+  - 需要跨测试共享数据：不要靠“上一个测试留下的数据”，改用 `@Sql`/测试数据工厂/在当前测试里准备数据。
+  - 需要观测真实落库：在同一测试内显式 `flush()` + `clear()` 再查（避免一级缓存假象）。
+- 对照：见 [docs/06](../part-01-data-jpa/102-06-datajpatest-slice.md)
 
 ## 坑 6：以为 `merge()` 会“把原对象重新托管”，结果改了半天没生效
 
@@ -90,10 +97,6 @@
 - Verification：`BootDataJpaMergeAndDetachLabTest#detached_changesWithoutMerge_shouldNotBePersisted`、`BootDataJpaMergeAndDetachLabTest#merge_shouldPersistDetachedChangesIntoManagedCopy`
 - Breakpoints：`org.hibernate.internal.SessionImpl#merge`、`org.hibernate.event.internal.DefaultMergeEventListener#onMerge`
 - Fix：后续操作一律使用 `merge()` 的返回值，或重新 `find()` 获取 managed；把“对象状态（managed/detached）→ 预期 SQL”用 Lab/Test 固化。
-
-- 现象：你想“写入后在下一个测试里看到”，但看不到
-- 原因：测试默认回滚
-- 对照：见 [docs/06](../part-01-data-jpa/102-06-datajpatest-slice.md)
 
 ## 对应 Lab（可运行）
 

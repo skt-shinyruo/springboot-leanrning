@@ -44,7 +44,7 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+这页不展开完整机制主线；它更像排障备忘录：把常见分支与可复现入口列出来，方便你回到 tests 验证。
 
 ## 源码与断点
 
@@ -53,18 +53,22 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`SpringCoreTxLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
 - 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
+> 事务排障的第一步永远是同一句话：**你以为有事务，但你真的有吗？**（见上一章 Debug/观察，优先用断言而不是靠日志猜）
 
 ## 坑 1：同类自调用导致 `@Transactional` 不生效
 
 - 现象：你给 `inner()` 加了 `@Transactional`，但从 `outer()` 调 `inner()` 时事务没生效
 - 原因：和 AOP 一样，自调用绕过代理
-- 对照：`SpringCoreTxExerciseTest#exercise_selfInvocation`
+- Verification：
+  - 自调用绕过代理：`SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod`
+  - 拆分 bean 后拦截器恢复：`SpringCoreTxSelfInvocationPitfallLabTest#splittingBeanRestoresTransactional_interceptorIsApplied`
+  - （练习）`SpringCoreTxExerciseTest#exercise_selfInvocation`
 
 ## 坑 2：异常被 catch 住，结果没有回滚
 
