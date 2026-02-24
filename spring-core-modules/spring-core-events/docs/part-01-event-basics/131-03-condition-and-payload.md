@@ -100,15 +100,9 @@ Spring 事件有两个很实用的能力：
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+- 一句话总结：condition/payload 都是在回答同一个问题：**哪些监听器会被触发**——前者是“先过滤再执行”，后者是“参数类型匹配就能接”，用最小输入把分支跑成断言比背规则更可靠。
 - 回到主线：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 - 下一章：见页尾导航（顺读不迷路）。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
-
-## 一句话总结
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->

@@ -34,6 +34,15 @@
 
 如果你只用 `File`：
 
+- 你很容易把“资源路径”写死成磁盘路径（例如 `src/main/resources/...`），在 IDE 下看起来能跑，但它并不是 classpath 语义。
+- 一旦打成 jar，classpath 资源会在 jar 包里；这时它不再是一个可用的文件路径，`getFile()` 往往直接失败。
+- 更糟的是：同一段读取逻辑会在“开发环境 OK、部署后崩溃”，于是你开始写各种分环境 if/else——而这正是 `Resource` 抽象要替你避免的事情。
+
+Spring 的选择是：先给你一个统一的 `Resource` 句柄，再让你用一致的方式读取它。
+
+- **读取内容**：优先使用 `Resource#getInputStream()`
+- **拿到文件路径**：谨慎使用 `getFile()`（对 jar/classpath 资源不友好）
+
 ## 本模块的最小闭环
 
 `ResourceReadingService` 做了两件事：
@@ -72,15 +81,9 @@ Spring 的 `Resource` 抽象解决的是一个常见问题：
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：`Resource` 抽象：为什么 Spring 不让你直接用 `File`？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
+- 一句话总结：`Resource` 抽象要解决的不是“怎么读文件”，而是“别让存储形态泄漏到业务代码里”——先拿统一句柄，再用 `getInputStream()` 把差异关在框架层。
 - 回到主线：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
 - 下一章：见页尾导航（顺读不迷路）。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
-
-## 一句话总结
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-`Resource` 抽象：为什么 Spring 不让你直接用 `File`？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->

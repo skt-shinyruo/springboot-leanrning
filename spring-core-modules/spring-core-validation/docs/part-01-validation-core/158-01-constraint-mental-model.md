@@ -61,8 +61,7 @@ Bean Validation（Jakarta Validation）解决的是一个核心问题：
 - 错误消息（message）
 - 具体的无效值、约束描述等（学习阶段先看前两个就够）
 
-- 传入非法 `CreateUserCommand`
-- 得到 violations，并断言包含 `username/email/age`
+把它落到可验证的最小入口：传入一个非法的 `CreateUserCommand`，拿到 violations，再断言其中包含 `username/email/age` 这些字段路径（property path）。
 
 Bean Validation 的价值在于：
 
@@ -98,15 +97,9 @@ Bean Validation 的价值在于：
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：约束（Constraint）心智模型：你在校验什么？校验结果是什么？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
+- 一句话总结：校验的价值不在“失败/成功”，而在“你拿到了可定位的 violations”——优先学会读 propertyPath/message，再谈 groups、触发方式与错误映射。
 - 回到主线：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
 - 下一章：见页尾导航（顺读不迷路）。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
-
-## 一句话总结
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-约束（Constraint）心智模型：你在校验什么？校验结果是什么？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->

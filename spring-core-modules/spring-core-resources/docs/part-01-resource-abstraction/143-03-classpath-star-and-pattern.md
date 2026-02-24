@@ -88,15 +88,9 @@ pattern 扫描返回的资源数组顺序不一定稳定（与 classpath 顺序�
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：`classpath*:` 与 pattern：为什么它能“扫到多个资源”？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
+- 一句话总结：`classpath*:` 的关键是“扫全 classpath 再按 pattern 匹配”——别指望 `classpath:` 帮你扫多个资源，且一定要把结果排序后再断言，避免顺序不稳定带来的误判。
 - 回到主线：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
 - 下一章：见页尾导航（顺读不迷路）。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
-
-## 一句话总结
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-`classpath*:` 与 pattern：为什么它能“扫到多个资源”？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->

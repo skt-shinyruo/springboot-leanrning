@@ -64,7 +64,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
@@ -87,15 +87,9 @@
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：异步广播：让事件“默认异步”而不是靠 `@Async` —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+- 一句话总结：把“异步点”从 listener 挪到 multicaster：不靠每个监听器贴 `@Async`，而是让事件分发过程默认走 `TaskExecutor`，再用测试把线程模型锁成证据。
 - 回到主线：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 - 下一章：见页尾导航（顺读不迷路）。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
-
-## 一句话总结
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-异步广播：让事件“默认异步”而不是靠 `@Async` —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->

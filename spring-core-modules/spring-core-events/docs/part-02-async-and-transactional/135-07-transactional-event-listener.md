@@ -35,11 +35,18 @@
 
 > “我事务都回滚了，为什么监听器还执行了？”
 
-这是因为：
+你看到的不是“事务没回滚”，而是**副作用发生在事务之外**。
+
+原因很朴素：`@EventListener` 默认就是同步回调——事件发布的那一刻，监听器就已经在同一条调用链里执行过了。事务随后回滚，只会撤销数据库提交，不会“自动撤销”你在监听器里做过的事情（发消息、写审计、调用外部 API）。
+
+所以这类问题的关键从来不是“要不要用事件”，而是：
+
+- 这段副作用应该发生在**提交之前**还是**提交之后**？
+- 如果事务回滚，这段副作用应该**补偿**、**忽略**，还是**禁止发生**？
 
 为了解决这个问题，Spring 提供了 `@TransactionalEventListener`：
 
-> 把监听器的触发时机绑定到事务生命周期（例如 AFTER_COMMIT）。
+> 把监听器的触发时机绑定到事务生命周期（例如 AFTER_COMMIT / AFTER_ROLLBACK / AFTER_COMPLETION）。
 
 ## 你需要记住的 2 种监听器
 
@@ -53,16 +60,24 @@
 - 事件先“挂起”，等事务提交后再触发
 - 如果事务回滚，AFTER_COMMIT 监听器不会执行
 
-## 在本仓库如何“看见”差异（推荐用 capstone 模块）
+## 在本仓库如何“看见”差异（两条入口）
 
-这个机制在 `springboot-business-case` 里已经集成好了（更接近真实业务）：
+这类问题最怕“凭感觉”：你以为 after-commit 会触发，但它只在事务真正 commit 时触发；你以为回滚会撤销 listener，但同步 listener 早就执行完了。
 
-建议直接跑：
+本仓库提供两条可以直接跑的入口（建议先跑其一，再带着断言回看源码/断点）：
 
-重点看测试：
+- **纯机制入口（推荐先跑）**：`SpringCoreEventsTransactionalEventLabTest`
+  - 对比：`@EventListener`（立刻执行） vs `@TransactionalEventListener(AFTER_COMMIT)`（提交后执行）
+- **更接近真实业务入口**：`spring-boot-business-case` 的 `BootBusinessCaseLabTest`
+  - 对比：事务回滚时 `sync` listener 仍执行，但 `afterCommit` 不会执行
 
-- `@EventListener`：事件发生就执行（不关心事务最终命运）
-- `@TransactionalEventListener(AFTER_COMMIT)`：只在事务提交后执行（避免回滚场景的副作用）
+推荐命令（任选其一）：
+
+```bash
+mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsTransactionalEventLabTest test
+# 或
+mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseLabTest test
+```
 
 ## 源码与断点
 
@@ -113,15 +128,9 @@ mvn -pl :spring-boot-business-case test
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：`@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+- 一句话总结：事务事件监听的关键不是“事件发布了没有”，而是“监听器在哪个事务阶段触发”——默认 `@EventListener` 会立刻执行，而 `@TransactionalEventListener` 可以把副作用推迟到 AFTER_COMMIT/AFTER_ROLLBACK 等阶段。
 - 回到主线：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 - 下一章：见页尾导航（顺读不迷路）。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
-
-## 一句话总结
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-`@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？ —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->

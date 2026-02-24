@@ -34,15 +34,31 @@
 
 > Spring 在调用目标方法前开启事务，在方法正常返回时提交，在异常传播时回滚。
 
+在本模块的最小实验里，你会看到类似的自证方式：
+
 - `AopUtils.isAopProxy(accountService)` 为 true
 
 这说明：你注入的 `accountService` 并不是纯粹的 `AccountService` 实例，而是一个代理对象。
 
 ## `@Transactional` 生效的 3 个前提（最常见）
 
-当你觉得事务“不生效”时，先问自己：
+当你觉得事务“不生效”时，别急着改传播/回滚规则，先问一个更底层的问题：
 
 > 这次调用有没有走到 `TransactionInterceptor` 这条 AOP 链？
+
+把它拆成三个可验证的小前提（按这个顺序排查，通常最快）：
+
+1) **容器里拿到的是代理对象（Bean 被增强）**
+   - 直观验证：`AopUtils.isAopProxy(accountService)` 为 true
+   - 本模块断言：`SpringCoreTxLabTest#transactionalBeansAreProxied`
+
+2) **调用入口走代理（不是同类内部 self-invocation）**
+   - 反例：在同一个类里 `this.xxx()` / 直接方法调用
+   - 结论：入口没走代理，拦截器自然不会触发（Tx/AOP 的同一类坑）
+
+3) **事务属性与事务管理器能被正确解析**
+   - 实践建议：优先把 `@Transactional` 标在 `public` 方法上（代理模式下最常见、最少坑；非 public 方法请谨慎验证）
+   - 容器里要有可用的 `PlatformTransactionManager`，并且选的是你期望的数据源/事务体系（多数据源时最容易“看起来有事务，其实管错了库”）
 
 ## 源码与断点
 
@@ -71,15 +87,9 @@
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：`@Transactional` 如何生效：它也是 AOP（也是代理） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
+- 一句话总结：`@Transactional` 的“生效”不是注解本身，而是你有没有真的走到 `TransactionInterceptor`——先确认代理与入口，再谈传播/回滚。
 - 回到主线：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
 - 下一章：见页尾导航（顺读不迷路）。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
-
-## 一句话总结
-
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-`@Transactional` 如何生效：它也是 AOP（也是代理） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->
