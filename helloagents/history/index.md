@@ -8,6 +8,10 @@
 
 | 时间戳 | 变更名称 | 类型 | 状态 | 方案包路径 |
 | --- | --- | --- | --- | --- |
+| 202602230930 | async-scheduling-humanize-writing | Enhancement | ✅Completed | [202602230930_async-scheduling-humanize-writing](2026-02/202602230930_async-scheduling-humanize-writing/) |
+| 202602230008 | async-scheduling-task-boundaries-tx-security-autoconfig | Enhancement | ✅Completed | [202602230008_async-scheduling-task-boundaries-tx-security-autoconfig](2026-02/202602230008_async-scheduling-task-boundaries-tx-security-autoconfig/) |
+| 202602222318 | async-scheduling-context-propagation | Enhancement | ✅Completed | [202602222318_async-scheduling-context-propagation](2026-02/202602222318_async-scheduling-context-propagation/) |
+| 202602221600 | async-scheduling-handbook-deepen | Enhancement | ✅Completed | [202602221600_async-scheduling-handbook-deepen](2026-02/202602221600_async-scheduling-handbook-deepen/) |
 | 202602021237 | spring_core_beans_docs_deepen_inline_refs_round3 | Enhancement | ✅Completed | [202602021237_spring_core_beans_docs_deepen_inline_refs_round3](2026-02/202602021237_spring_core_beans_docs_deepen_inline_refs_round3/) |
 | 202602021135 | spring_core_beans_docs_deepen_body_refs | Enhancement | ✅Completed | [202602021135_spring_core_beans_docs_deepen_body_refs](2026-02/202602021135_spring_core_beans_docs_deepen_body_refs/) |
 | 202602020952 | spring_core_beans_docs_deepen | Enhancement | ✅Completed | [202602020952_spring_core_beans_docs_deepen](2026-02/202602020952_spring_core_beans_docs_deepen/) |
@@ -103,6 +107,10 @@
 
 ### 2026-02
 
+- [202602230930_async-scheduling-humanize-writing](2026-02/202602230930_async-scheduling-humanize-writing/) - springboot-async-scheduling：docs 全量“人写化”改写（入口/主线/工具页/附录）+ README 双入口叙事 + DemoRunner 分节讲解
+- [202602230008_async-scheduling-task-boundaries-tx-security-autoconfig](2026-02/202602230008_async-scheduling-task-boundaries-tx-security-autoconfig/) - springboot-async-scheduling：补齐任务边界证据链（@Async×@Transactional / SecurityContext / RequestContext）与 Boot `spring.task.*` 自动装配（含 Labs + 章节 126–128 + DemoRunner）
+- [202602222318_async-scheduling-context-propagation](2026-02/202602222318_async-scheduling-context-propagation/) - springboot-async-scheduling：上下文传播证据链（ThreadLocal/MDC 默认不传播 / TaskDecorator 修复 / 错误实现泄漏反例）
+- [202602221600_async-scheduling-handbook-deepen](2026-02/202602221600_async-scheduling-handbook-deepen/) - springboot-async-scheduling：手册级加深（Async + Scheduling 证据链）
 - [202602031211_beans_docs_book_structure](2026-02/202602031211_beans_docs_book_structure/) - spring-core-beans：docs 书籍结构目录重整（README ↔ SUMMARY）
 - [202602021237_spring_core_beans_docs_deepen_inline_refs_round3](2026-02/202602021237_spring_core_beans_docs_deepen_inline_refs_round3/) - spring-core-beans：官方参考入口下压到关键分支/关键结论段落（Round 3）
 - [202602021135_spring_core_beans_docs_deepen_body_refs](2026-02/202602021135_spring_core_beans_docs_deepen_body_refs/) - spring-core-beans：官方参考入口下压到正文机制主线（就地对照）

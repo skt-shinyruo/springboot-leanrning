@@ -7,6 +7,10 @@
 - `spring-core-beans` 补齐缺失章节：`020-09-auto-config-ordering.md`
 - `spring-core-beans`：新增基础问题索引（Why Index），为“三级缓存 / early reference / raw vs wrapped / proxy 替换”等高频问题提供答案先行入口与 10 分钟证据链（Lab/断点/watch list）。
 - `spring-core-aop`：docs 增加 Beans 前置导航与跨模块互链（Beans ↔ AOP），降低“需要拼图才能理解”的成本。
+- `springboot-async-scheduling`：手册级加深（Async + Scheduling）：新增 executor 选择矩阵 / proxy 类型边界 / void 异常可观测 / scheduling 注册与异常语义 / `@Scheduled + @Async` 组合等 Labs，并更新 Branch Matrix/Pitfalls/Self-check（`mvn -q -pl :spring-boot-async-scheduling test` 连续 3 次回归）。
+- `springboot-async-scheduling`：补齐 ThreadLocal/MDC 上下文传播的机制边界与“可复现泄漏反例”：新增 `TaskDecorator` 传播/恢复/清理证据链 Lab，并同步更新 Pitfalls/Self-check/Branch Decision Matrix/Breakpoint Map 与模块 README（`mvn -q -pl :spring-boot-async-scheduling test` 连续 3 次回归）。
+- `springboot-async-scheduling`：补齐“真实工程任务边界”证据链：新增 `@Async × @Transactional` 事务边界、SecurityContext/RequestContext 传播与泄漏、以及 Boot `spring.task.*` 自动装配 Labs；新增可运行 DemoRunner；新增主线章节 126–128，并通过 `mvn -q -pl :spring-boot-async-scheduling test` 连续 3 次回归。
+- `springboot-async-scheduling`：docs 全量“人写化”改写（入口/主线/工具页/附录），模块 README 改为“双入口”叙事，并将 DemoRunner 输出改为分节讲解（同时修复 `AsyncTaskExecutor` 注入歧义）；通过 `mvn -q -pl :spring-boot-async-scheduling test`（连续 3 次）与 `mvn -q -pl :spring-boot-async-scheduling spring-boot:run` 验证。
 
 ### Added
 - spring-core-beans：新增 Debugger Pack 文档与主线/断点/排障/性能入口测试套件
