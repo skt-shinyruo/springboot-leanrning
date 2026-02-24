@@ -39,6 +39,13 @@
 
 ## 机制主线
 
+Security 这一模块的主线可以用一句话概括：**同一个请求进来，先走 FilterChain，再谈认证/授权；方法级安全是另一条“代理拦截器链”**。
+
+自检时建议先把下面三个分流说清楚（并能指出一个可跑的验证入口）：
+
+1. 401/403/404 分别意味着什么？哪些是“路由/暴露问题”，哪些是“安全边界问题”？
+2. 多条 `SecurityFilterChain` 时，为什么“更宽的 matcher + 更靠前的顺序”会吃掉后续规则？
+3. method security 为什么像 AOP/Tx 一样绕不过代理与入口？（尤其是 self-invocation）
 
 ## 自测题
 1. Filter Chain 的顺序为什么很重要？“同一个请求”会经过哪些 filter？
@@ -52,7 +59,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`BootSecurityDevProfileLabTest` / `BootSecurityLabTest` / `BootSecurityMultiFilterChainOrderLabTest`
 - 建议命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
 

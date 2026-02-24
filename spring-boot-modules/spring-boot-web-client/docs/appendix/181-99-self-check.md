@@ -39,6 +39,13 @@
 
 ## 机制主线
 
+Web Client 这类模块的学习目标不是“会发一个请求”，而是把三类容易线上翻车的分支写成可重复的证据：
+
+1. **状态码分支**：4xx/5xx 应该映射成什么异常/返回值？
+2. **时机与资源**：超时发生在哪一层（connect/read/整体调用）？取消会怎么传播？
+3. **重试与副作用**：retry 的前提是语义安全（幂等/去重），否则重试会放大副作用
+
+如果你能用 MockWebServer 把这些分支稳定复现出来，并能解释 filter 链路的顺序与异常传播，这模块就算学到位了。
 
 ## 自测题
 1. 超时设置应该放在客户端哪一层？（连接/读写/整体调用）
@@ -52,7 +59,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
 - 建议命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
 

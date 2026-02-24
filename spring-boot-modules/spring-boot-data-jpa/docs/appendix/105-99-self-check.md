@@ -39,6 +39,13 @@
 
 ## 机制主线
 
+这一模块最容易“学着学着就玄学化”，因为你眼前看到的现象，可能来自三件不同的东西叠在一起：
+
+1. **persistence context（一级缓存）**：你以为你在读数据库，其实你在读内存里的 managed entity
+2. **flush vs commit**：你以为“提交了才看得见”，但 flush 可能在查询前就发生
+3. **fetching 策略**：你以为“查一次就是一次 SQL”，但 lazy 访问会把 N+1 藏在循环里
+
+建议把这三条线都用 tests 固化成证据：每次回答自测题时，顺手指出一个对应的 Lab/Test 入口。
 
 ## 自测题
 1. `EntityManager` 的一级缓存如何影响“你以为查到了最新数据”？
@@ -52,7 +59,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest` / `BootDataJpaMergeAndDetachLabTest`
 - 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 

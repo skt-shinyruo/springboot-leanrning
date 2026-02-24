@@ -39,7 +39,7 @@
 
 ## 机制主线
 
-- （本章主线内容暂以契约骨架兜底；建议结合源码与测试用例补齐主线解释。）
+这页不展开完整机制主线；它更像复盘题：用问题把主线重新串一遍，并把每个结论指回可复现入口。
 
 ## 源码与断点
 
@@ -48,7 +48,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
 - 建议命令：`mvn -pl :spring-boot-business-case test`（或在 IDE 直接运行上面的测试类）
 
@@ -60,10 +60,17 @@
 
 ## 常见坑与边界
 
+如果你在回答下面自测题时总觉得“都是概念”，先回去跑一遍 `BootBusinessCaseLabTest`，再对照上一章的 Common Pitfalls：这个模块的价值在于把边界跑成证据，而不是把边界写成口号。
 
 ## 自测题
-1. 业务流里有哪些天然的边界（输入校验/领域状态变更/事件发布/横切）？
-2. 如果事件监听器抛异常，应该在什么位置处理最合理？为什么？
+（建议要求自己：每题都能指出一个“可跑的验证入口”）
+
+1. 输入校验失败时，哪些东西应该发生、哪些不该发生？（验证：`BootBusinessCaseLabTest#returnsValidationErrorWhenRequestIsInvalid`）
+2. 事务回滚时，“数据库状态”和“事件副作用”分别会怎样？（验证：`BootBusinessCaseLabTest#rollbackPreventsPersistenceOnFailure` / `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot`）
+3. 你如何证明 `OrderService` 真的走了 AOP 代理？（验证：`BootBusinessCaseLabTest#serviceBeanIsAnAopProxy`）
+4. tracing aspect 在哪里记录调用？你如何在一次请求里看到它命中你关心的方法？（验证：`BootBusinessCaseLabTest#aspectRecordsInvocationForTracedOperation`）
+5. 这个模块的“幂等”是什么语义？为什么同样请求两次会有两条订单？（验证：`BootBusinessCaseLabTest#createOrderIsIdempotentAtDatabaseLevel_perRequestOnly`）
+6. 如果事件监听器抛异常，你会把异常处理放在哪个边界（listener 内部 / 发布方 / 全局异常处理）？说出你选择的理由，并给出你会用什么测试去锁住这个选择。
 
 ## 小结与下一章
 

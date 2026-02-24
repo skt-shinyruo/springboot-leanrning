@@ -46,8 +46,12 @@
 3. 端点是否可访问（Accessible：401/403/404 的分流）
 
 ## 自测题
-1. exposure 的 include/exclude 与端点实际可访问性之间是什么关系？
-2. 如何快速判断一个配置值来自哪里（哪个 PropertySource）？
+（建议要求自己：每题都能指出一个“可跑的验证入口”，而不是只背结论）
+
+1. 你如何用“Registered / Exposed / Accessible”三段式，把 404/401/403 分流成可验证的子问题？
+2. `management.endpoints.web.exposure.include/exclude` 会如何影响 `/actuator` 根路径的 `_links`？你如何用测试证明？
+3. 当你发现某个配置“不像你写的那样生效”，你如何定位它来自哪个 PropertySource（以及为什么 profile/环境变量最容易把你带偏）？
+4. 如果线上需要开放少量端点（例如 health/info），你会如何给 Actuator 做最小安全边界（至少回答：哪些端点不该暴露、哪些必须鉴权）？
 
 ## 源码与断点
 
@@ -56,7 +60,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
 - 建议命令：`mvn -pl :spring-boot-actuator test`（或在 IDE 直接运行上面的测试类）
 
