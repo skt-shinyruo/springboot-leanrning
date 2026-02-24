@@ -1,22 +1,18 @@
-# 第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）
+# 第 3 章：主线时间线：Spring Boot Basics（已迁移）
 
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "说明（旧入口兼容页）"
 
-    - 知识点：主线时间线：Spring Boot Basics（已迁移到“主线之书”）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `application.yml`/环境变量/命令行等配置进入 `Environment`，用 `@ConfigurationProperties` 做类型安全绑定，并将最终值用于条件装配或业务逻辑。
-    - 原理：配置源（PropertySource）→ `Environment` 聚合与覆盖 → Binder 绑定 → Profile/优先级分流 → 影响条件装配与运行期行为。
-    - 源码入口：`org.springframework.core.env.ConfigurableEnvironment` / `org.springframework.core.env.PropertySource` / `org.springframework.boot.context.properties.bind.Binder` / `org.springframework.boot.context.properties.ConfigurationPropertiesBinder`
-    - 推荐 Lab：`BootBasicsOverrideLabTest`
+    本页仅用于兼容旧链接：主线时间线已合并到模块目录页。
+
+    - 新位置：[`Docs TOC`](../README.md)
+    - 可跑入口（用于回归/教学）：`BootBasicsOverrideLabTest`
 <!-- CHAPTER-CARD:END -->
 
 ## 已迁移
-本页为旧入口兼容页，正文已迁移到：[新位置](../README.md)。
 
-## 可跑入口（保留用于教学回归）
+请从模块目录页开始阅读：[Docs TOC](../README.md)。
+
+## 可跑入口
 
 - Lab：`BootBasicsOverrideLabTest`
-
-## 返回
-- [模块目录](../README.md)
-- [全书目录](../README.md)
