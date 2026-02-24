@@ -1,76 +1,65 @@
 # 第 111 章：03：key / condition / unless：缓存边界
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（边界分支）"
 
-    - 知识点：03：key / condition / unless：缓存边界
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Cacheable/@CachePut/@CacheEvict` 声明缓存意图；根据 key/condition/unless 设计缓存命中与一致性策略。
-    - 原理：方法调用 → AOP 代理 → CacheInterceptor → key 计算（KeyGenerator/SpEL）→ 命中短路/不命中回源 → 回写/失效。
-    - 源码入口：`org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport` / `org.springframework.cache.interceptor.KeyGenerator` / `org.springframework.cache.CacheManager`
-    - 推荐 Lab：`BootCacheLabTest`
+    很多缓存 bug 不是“缓存不工作”，而是“缓存维度与边界不对”：key 把不同请求挤进同一个 entry；condition/unless 把你以为会缓存的情况排除掉。这个章节把这些分支写成断言，避免靠直觉推断。
+
+    - 证据入口：`BootCacheLabTest#conditionPreventsCachingWhenFalse` / `BootCacheLabTest#unlessPreventsCachingBasedOnResult`
+    - SpEL key 入口：`BootCacheSpelKeyLabTest#spelKeyCreatesIndependentCacheEntries`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 110 章：02：`@CachePut/@CacheEvict`：更新与失效](110-02-cacheput-and-evict.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先给一个直觉：key 决定“维度”，condition/unless 决定“边界”
 
-- 本章主题：**03：key / condition / unless：缓存边界**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- key：决定你在 cache 里“按什么维度存”
+- condition：决定“要不要进入缓存逻辑”（在方法执行前）
+- unless：决定“要不要把结果写回缓存”（在方法执行后）
 
-!!! summary "本章要点"
-
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Lab：`BootCacheLabTest`
+如果你把这三件事混在一起，缓存行为会非常像“玄学”。
 
 ## 机制主线
 
+### 1) key：把调用映射成 cache entry
 
-## 你应该观察到什么
+默认 key 规则很多人记不住也没关系；真正重要的是：**你能不能用测试证明“哪些调用会共用 entry”**。
 
-- condition：在方法执行前判断，false 时不走缓存（每次都会计算）
-- unless：在方法执行后判断，满足条件时不缓存返回值
+本模块提供了一个最直观的 SpEL key 证据链：把两参拼成一个 key，让 `alice/en` 与 `alice/zh` 进入不同 entry：
 
-## 源码与断点
+- `BootCacheSpelKeyLabTest#spelKeyCreatesIndependentCacheEntries`
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
+### 2) condition：在方法执行前分流
 
-## 最小可运行实验（Lab）
+如果 condition 为 false，这次调用根本不会走“读缓存/写缓存”的分支（所以每次都会计算）。
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootCacheLabTest`
-- 建议命令：`mvn -pl :spring-boot-cache test`（或在 IDE 直接运行上面的测试类）
+证据入口：
 
-### 复现/验证补充说明（来自原文迁移）
+- `BootCacheLabTest#conditionPreventsCachingWhenFalse`
 
-## 实验入口
+### 3) unless：在方法执行后分流
 
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-实验入口已在章首提示框给出（先跑再读）。建议跑完后回到本章“证据链”逐条验证关键结论。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
+unless 的常见用法是“结果不合格就不缓存”（例如空值/默认值/错误码）。
+
+证据入口：
+
+- `BootCacheLabTest#unlessPreventsCachingBasedOnResult`
 
 ## 常见坑与边界
 
-### 坑点 1：把 condition 与 unless 当成一回事，导致“不该缓存的结果被缓存/反之”
+### 坑点 1：把 condition 与 unless 当成一回事
 
-- Symptom：你以为设置了 condition/unless 就能避免缓存某些情况，但实际命中行为与预期相反
-- Root Cause：
-  - `condition` 在方法执行前评估（决定“要不要走缓存逻辑”）
-  - `unless` 在方法执行后评估（决定“要不要缓存返回值”）
-- Verification：
-  - condition=false 每次都计算：`BootCacheLabTest#conditionPreventsCachingWhenFalse`
-  - unless=true 不缓存返回值：`BootCacheLabTest#unlessPreventsCachingBasedOnResult`
-- Fix：把“前置过滤”和“结果过滤”分开设计；用测试把分支锁住，别靠直觉
+如果你把它们当成同一种过滤器，就会得到两类反直觉：
+
+- “我以为不会走缓存，结果命中了”
+- “我以为会缓存，结果每次都在算”
+
+修法也很朴素：把“前置过滤”和“结果过滤”分开设计，并用测试把分支锁住。
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 下一章进入并发：`sync=true` 解决的是“并发同 key 重复计算”，但它的代价同样是真实存在的。
 
 <!-- BOOKIFY:START -->
 

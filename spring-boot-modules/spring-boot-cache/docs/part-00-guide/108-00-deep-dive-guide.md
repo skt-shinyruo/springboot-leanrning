@@ -1,120 +1,56 @@
 # 第 108 章：00 - Deep Dive Guide（springboot-cache）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（怎么读缓存）"
 
-    - 知识点：Deep Dive Guide（springboot-cache）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Cacheable/@CachePut/@CacheEvict` 声明缓存意图；根据 key/condition/unless 设计缓存命中与一致性策略。
-    - 原理：方法调用 → AOP 代理 → CacheInterceptor → key 计算（KeyGenerator/SpEL）→ 命中短路/不命中回源 → 回写/失效。
-    - 源码入口：`org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport` / `org.springframework.cache.interceptor.KeyGenerator` / `org.springframework.cache.CacheManager`
-    - 推荐 Lab：`BootCacheLabTest`
+    这模块想把缓存从“注解背诵题”变成可回归的机制结论：命中短路、写入/失效、key 维度、condition/unless 分支、并发收敛、以及过期的可测试性。你跑完一组 Lab，就能把线上常见的争论变成断言（到底走没走方法、到底缓存了没、到底谁在等谁）。
+
+    - 主线入口：`BootCacheBookMatrixLabTest`
+    - 关键证据：`BootCacheLabTest` / `BootCacheSpelKeyLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 107 章：主线时间线：Spring Boot Cache](107-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 109 章：01：`@Cacheable` 最小闭环](../part-01-cache/109-01-cacheable-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 你不需要背 API，但要抓住“缓存其实是一套分支系统”
 
-- 本章主题：**00 - Deep Dive Guide（springboot-cache）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+缓存的难点往往不是“我不会写 `@Cacheable`”，而是你不知道自己现在处于哪条分支：
 
-!!! summary "本章要点"
+- 命中（方法不执行）还是未命中（方法执行 + 回写）？
+- 这次到底用的 key 是什么？是不是把不同请求挤进了同一个 entry？
+- `condition` 把请求挡在缓存逻辑之外了吗？`unless` 把结果挡在回写之外了吗？
+- 并发时到底是“重复计算”还是“等待同一个结果”？等待成本能不能接受？
+- 过期到底什么时候发生？你如何在测试里确定性地证明它发生了？
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+这模块的写法就是：把每条分支都写成可断言的最小复现。
 
+## 两条阅读路线
 
-!!! example "本章配套实验（先跑再读）"
+### 路线 A：顺读主线（5 章）
 
-    - Lab：`BootCacheLabTest` / `BootCacheSpelKeyLabTest`
+按 109 → 113 顺读即可：先读缓存命中，再读写路径，再读边界分支，最后进入并发与过期。
 
-## 机制主线
+### 路线 B：你正在排障（快速收敛）
 
-本模块的目标是把“缓存注解”从背诵题变成可断言机制：
+1. 先跑 `BootCacheLabTest`（看 invocationCount，把“方法到底有没有执行”先钉住）
+2. 再看 [断点地图](108-02-breakpoint-map.md)（把“命中/未命中/不缓存/不回写”分清楚）
+3. 再对照 [关键分支矩阵](108-04-branch-decision-matrix.md)（把分支写成 If/Then）
 
-- `@Cacheable`：**读缓存**（命中则短路，不命中才计算）
-- `@CachePut`：**写缓存**（强制执行方法，再把返回值写入缓存）
-- `@CacheEvict`：**删缓存**（删除某个 key 或整个 cache）
+## 机制主线（只记 5 句话）
 
-并且把三类最常见的“工程边界”锁进默认 Lab：
+1. **缓存发生在方法边界（AOP）**：代理拦截 → 算 key → 查 cache → 命中短路/未命中回源 →（可选）回写/失效。
+2. **`@Cacheable` 是读路径**：命中后方法体不会执行。
+3. **`@CachePut/@CacheEvict` 是写路径**：更新/失效是“你显式表达的意图”，不是系统自动推导。
+4. **key/condition/unless 决定缓存边界**：key 决定“缓存维度”；condition/unless 决定“哪些请求/哪些结果不缓存”。
+5. **并发与过期要可测试**：并发用 latch 固定分支；过期用 `Ticker` 把时间推进变成可控输入（别用 sleep 试运气）。
 
-1. **key 规则**（同一个调用到底算不算同一个 entry）
-2. **condition/unless 分支**（哪些请求/结果根本不应该缓存）
-3. **stampede 防击穿**（`sync=true` 的语义与代价）
+## 推荐先跑的入口（少而全）
 
-### 1) 时间线：一次 `@Cacheable` 调用发生了什么
-
-1. 方法调用进入缓存拦截器（AOP 代理）
-2. 计算 key（默认 key 或 SpEL key）
-3. 查 cache：
-   - 命中：直接返回缓存值（方法体不会执行）
-   - 未命中：执行方法体 → 得到结果 → 写入 cache → 返回结果
-4. `condition/unless` 分流：
-   - `condition=false`：不缓存（即使命中也不会读取/写入）
-   - `unless=true`：不缓存返回值（常见于“结果不合格/空值”等）
-
-### 2) 关键参与者
-
-- `@EnableCaching` / `CacheManager`：缓存基础设施与 cache 容器
-- `Cache`：读写入口（命中/未命中）
-- `@Cacheable/@CachePut/@CacheEvict`：声明式缓存语义
-- `Ticker`（Caffeine）：让“过期”可测试（避免靠 sleep）
-
-### 3) 本模块的关键分支（2–5 条，默认可回归）
-
-1. **命中短路：同 key 只计算一次**
-   - 验证：`BootCacheLabTest#cacheableCachesResultForSameKey`
-2. **condition/unless：不缓存分支可断言（不是“感觉”）**
-   - 验证：`BootCacheLabTest#conditionPreventsCachingWhenFalse` / `BootCacheLabTest#unlessPreventsCachingBasedOnResult`
-3. **sync 防击穿：并发同 key 只允许一次计算**
-   - 验证：`BootCacheLabTest#syncTrueAvoidsDuplicateComputationsForSameKey`
-4. **过期可测试：用 manual ticker 做确定性过期验证**
-   - 验证：`BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`
-5. **SpEL key：复合 key 让缓存维度更精确**
-   - 验证：`BootCacheSpelKeyLabTest#spelKeyCreatesIndependentCacheEntries`
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-  
-建议断点（把“命中/未命中/不缓存”三种现象分清楚）：
-
-- `BootCacheLabTest` 里每个断言前的调用点（先用 invocationCount 锁住“方法到底有没有执行”）
-- 当你怀疑 key 不对：
-  - 对照 `BootCacheSpelKeyLabTest`，先固定 key 计算规则，再讨论 cache 命中
-- 当你怀疑“过期没生效”：
-  - 不要用 sleep 试运气，优先用 ticker 类似 `ManualTicker` 固定时间推进
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootCacheLabTest` / `BootCacheSpelKeyLabTest`
-- 建议命令：`mvn -pl :spring-boot-cache test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 推荐学习目标
-1. 能解释“缓存命中/未命中/更新/失效”的语义差异
-2. 能把 key/condition/unless 的规则写成可断言的复现
-3. 能解释 `sync` 解决的是什么问题，以及它的代价与边界
-
-## 如何跑实验
-- 运行本模块测试：`mvn -pl :spring-boot-cache test`
-
-## 对应 Lab（可运行）
-
-- `BootCacheLabTest`
-- `BootCacheSpelKeyLabTest`
-- `BootCacheExerciseTest`
-
-## 常见坑与边界
-
-- （本章坑点待补齐：建议先跑一次 E，再回看断言失败场景与边界条件。）
+- `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 下一章从 `@Cacheable` 开始：先把“命中短路”讲清楚，否则后面所有坑都会像谜语。
 
 <!-- BOOKIFY:START -->
 

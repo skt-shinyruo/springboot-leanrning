@@ -1,75 +1,52 @@
 # 第 113 章：05：过期与可测性：用 Ticker 控制时间
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（别用 sleep 试运气）"
 
-    - 知识点：05：过期与可测性：用 Ticker 控制时间
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Cacheable/@CachePut/@CacheEvict` 声明缓存意图；根据 key/condition/unless 设计缓存命中与一致性策略。
-    - 原理：方法调用 → AOP 代理 → CacheInterceptor → key 计算（KeyGenerator/SpEL）→ 命中短路/不命中回源 → 回写/失效。
-    - 源码入口：`org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport` / `org.springframework.cache.interceptor.KeyGenerator` / `org.springframework.cache.CacheManager`
-    - 推荐 Lab：`BootCacheLabTest`
+    TTL/过期是缓存里最容易写出 flaky 测试的地方：用真实时间 + `Thread.sleep`，在 CI 上迟早会崩。这个章节的核心是把“时间推进”变成可控输入：用 Caffeine `Ticker`（如 `ManualTicker`）写出确定性断言。
+
+    - 证据入口：`BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 112 章：04：`sync=true`：防缓存击穿（stampede）](112-04-sync-stampede.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 114 章：90：常见坑清单（Cache）](../appendix/114-90-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 你想验证的其实不是“等 5 秒”，而是“过期发生了”
 
-- 本章主题：**05：过期与可测性：用 Ticker 控制时间**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+在这模块里，缓存配置（Caffeine）有过期策略（`expireAfterWrite`）。真实项目里你当然可以靠时间等它过期，但在测试里，靠 sleep 等是最不稳定的方式。
 
-!!! summary "本章要点"
+Ticker 的核心价值是：把“现在是什么时间”变成一个可注入的依赖。
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+## 机制主线（把时间变成输入）
 
+如果你能控制“时间推进”，你就能写出确定性断言：
 
-!!! example "本章配套实验（先跑再读）"
+1. 第一次调用：未命中 → 执行方法 → 写入 cache
+2. 推进时间（例如 +10s）
+3. 第二次调用：因为 TTL 已过期 → 再次执行方法 → 回写
 
-    - Lab：`BootCacheLabTest`
+## 怎么验证（最短证据链）
 
-## 机制主线
+- `BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`
 
+观察点：
 
-## 你应该观察到什么
-
-- 通过 `ManualTicker` 快进时间，不需要 `Thread.sleep` 也能断言 TTL 过期行为
-
-## 机制解释（Why）
-
-Ticker 的核心价值是：让“时间推进”变成可控输入，从而写出稳定断言。
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootCacheLabTest`
-- 建议命令：`mvn -pl :spring-boot-cache test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 实验入口
-
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-实验入口已在章首提示框给出（先跑再读）。建议跑完后回到本章“证据链”逐条验证关键结论。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
+- 两次返回值不同
+- invocationCount 从 1 变成 2（第二次确实回源了）
 
 ## 常见坑与边界
 
-### 坑点 1：用真实时间 + sleep 测 TTL，导致 flaky 与慢测试
+### 坑点 1：用真实时间 + sleep 测 TTL
 
-- Symptom：缓存过期测试偶发失败（机器负载/调度抖动），或为避免失败把 sleep 写很长导致测试很慢
-- Root Cause：真实时间不可控，sleep 不是确定性输入
-- Verification：`BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`
-- Fix：用 `Ticker`（如 `ManualTicker`）把时间推进变成可控输入，把“过期”变成可断言事实
+这类测试要么慢，要么 flaky，最糟糕的是又慢又 flaky。
+
+修法：
+
+- 用 `Ticker`（例如 `ManualTicker`）让时间推进变成可控输入
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 主线到这里结束，附录会把最常见的“缓存误解”整理成排障短文与自测题。
 
 <!-- BOOKIFY:START -->
 

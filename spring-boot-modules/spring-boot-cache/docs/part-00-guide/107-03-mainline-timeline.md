@@ -1,73 +1,57 @@
 # 第 107 章：主线时间线：Spring Boot Cache
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（缓存主线怎么排）"
 
-    - 知识点：主线时间线：Spring Boot Cache
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Cacheable/@CachePut/@CacheEvict` 声明缓存意图；根据 key/condition/unless 设计缓存命中与一致性策略。
-    - 原理：方法调用 → AOP 代理 → CacheInterceptor → key 计算（KeyGenerator/SpEL）→ 命中短路/不命中回源 → 回写/失效。
-    - 源码入口：`org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport` / `org.springframework.cache.interceptor.KeyGenerator` / `org.springframework.cache.CacheManager`
-    - 推荐 Lab：`BootCacheLabTest`
+    缓存这件事在项目里从来不是“加个注解就完事”：它本质是一套分支系统（命中/未命中、写入/失效、是否缓存、并发收敛、何时过期）。这条时间线的目的，是把分支按“你最常踩坑的顺序”排好，顺读一遍就能覆盖 80% 的实际问题。
+
+    - 推荐先跑：`BootCacheBookMatrixLabTest`
+    - 核心证据链：`BootCacheLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 106 章：Cache 主线](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 108 章：00 - Deep Dive Guide（springboot-cache）](108-00-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-!!! summary
-    - 这一模块关注：缓存注解如何通过代理织入方法调用，以及 key/condition/unless/并发击穿等关键边界。
-    - 读完你应该能复述：**方法调用 → 缓存拦截器 → key 计算 → 命中/回源 → 回写/失效** 这一条主线。
-    - 推荐顺序：先读《深挖导读》→ 本章 → Part 01 顺读 → 附录排坑。
+## 这条主线解决什么问题
 
-!!! example "建议先跑的 Lab（把时间线变成证据）"
+你在项目里做缓存，大概率会遇到这些问题：
 
-    - Lab：`BootCacheLabTest`
+- “我以为方法会执行，怎么只执行了一次？”
+- “我更新了数据，为什么缓存还在？”
+- “为什么这个请求不走缓存？”
+- “并发一上来就打爆下游，`sync=true` 到底救不救得了？”
+- “缓存什么时候过期？怎么写出不靠 `sleep` 的稳定测试？”
+
+这模块的章节顺序就是按上面的排障顺序来的。
+
+## 主线顺读（5 章）
+
+1. `@Cacheable`：先把“命中短路”讲清楚  
+   - [第 109 章：01：`@Cacheable` 最小闭环](../part-01-cache/109-01-cacheable-basics.md)
+2. `@CachePut/@CacheEvict`：再把写路径（更新/失效）讲清楚  
+   - [第 110 章：02：`@CachePut/@CacheEvict`：更新与失效](../part-01-cache/110-02-cacheput-and-evict.md)
+3. key / condition / unless：缓存边界在哪里  
+   - [第 111 章：03：key / condition / unless：缓存边界](../part-01-cache/111-03-key-condition-unless.md)
+4. `sync=true`：并发击穿（stampede）怎么收敛  
+   - [第 112 章：04：`sync=true`：防缓存击穿（stampede）](../part-01-cache/112-04-sync-stampede.md)
+5. 过期与可测性：用 Ticker 把“时间推进”变成可控输入  
+   - [第 113 章：05：过期与可测性：用 Ticker 控制时间](../part-01-cache/113-05-expiry-with-ticker.md)
+
+## 推荐先跑的入口（把主线变成事实）
+
+- `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`
 
 ## 小结与下一章
 
-<!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：主线时间线：Spring Boot Cache —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Cacheable/@CachePut/@CacheEvict` 声明缓存意图；根据 key/condition/unless 设计缓存命中与一致性策略。
-- 回到主线：方法调用 → AOP 代理 → CacheInterceptor → key 计算（KeyGenerator/SpEL）→ 命中短路/不命中回源 → 回写/失效。
-- 下一章：建议按模块目录/全书目录继续顺读。
-<!-- BOOKLIKE-V2:SUMMARY:END -->
+- 下一章是 Deep Dive Guide：告诉你这模块“怎么读”更省时间、哪些证据入口最值得先跑。
 
-## 导读
+<!-- BOOKIFY:START -->
 
-<!-- BOOKLIKE-V2:INTRO:START -->
-这一章围绕「主线时间线：Spring Boot Cache」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
+### 对应 Lab/Test
 
-阅读建议：
-- 先看章首的“章节学习卡片/本章要点”，建立预期；
-- 推荐先跑一遍本章 Lab，再带着问题回到正文。
-<!-- BOOKLIKE-V2:INTRO:END -->
+- Matrix：`BootCacheBookMatrixLabTest`
+- Lab：`BootCacheLabTest`
 
-## 在 Spring 主线中的位置
+上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/00-deep-dive-guide.md](108-00-deep-dive-guide.md)
 
-- Cache 依赖 AOP：很多行为差异来自代理边界、key 计算、条件表达式与并发语义。
-- 缓存最终是“读写一致性”问题：你需要明确缓存层与数据层的边界。
-
-## 主线时间线（建议顺读）
-
-1. 先把 @Cacheable 的基本语义跑通（命中/回源/回写）
-   - 阅读：[01. @Cacheable 基础](../part-01-cache/109-01-cacheable-basics.md)
-2. 写路径：@CachePut / @CacheEvict 如何影响一致性
-   - 阅读：[02. @CachePut/@CacheEvict](../part-01-cache/110-02-cacheput-and-evict.md)
-3. key/condition/unless：表达式与行为差异的来源
-   - 阅读：[03. key/condition/unless](../part-01-cache/111-03-key-condition-unless.md)
-4. 并发击穿：sync 与 stampede 的真实语义
-   - 阅读：[04. sync 与击穿](../part-01-cache/112-04-sync-stampede.md)
-5. 过期与时间：如何验证“到底什么时候失效”
-   - 阅读：[05. 过期语义](../part-01-cache/113-05-expiry-with-ticker.md)
-
-## 排坑与自检
-
-- 常见坑：[90-common-pitfalls.md](../appendix/114-90-common-pitfalls.md)
-- 自检：[99-self-check.md](../appendix/115-99-self-check.md)
-
-## 证据链（如何验证你真的理解了）
-
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Cache」的生效时机/顺序/边界；断点/入口：`org.springframework.cache.interceptor.CacheInterceptor`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Cache」的生效时机/顺序/边界；断点/入口：`org.springframework.cache.interceptor.CacheAspectSupport`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Cache」的生效时机/顺序/边界；断点/入口：`org.springframework.cache.interceptor.KeyGenerator`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootCacheLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
+<!-- BOOKIFY:END -->

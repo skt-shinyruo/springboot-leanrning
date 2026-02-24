@@ -1,72 +1,61 @@
 # 第 110 章：02：`@CachePut/@CacheEvict`：更新与失效
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（写路径）"
 
-    - 知识点：02：`@CachePut/@CacheEvict`：更新与失效
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Cacheable/@CachePut/@CacheEvict` 声明缓存意图；根据 key/condition/unless 设计缓存命中与一致性策略。
-    - 原理：方法调用 → AOP 代理 → CacheInterceptor → key 计算（KeyGenerator/SpEL）→ 命中短路/不命中回源 → 回写/失效。
-    - 源码入口：`org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport` / `org.springframework.cache.interceptor.KeyGenerator` / `org.springframework.cache.CacheManager`
-    - 推荐 Lab：`BootCacheLabTest`
+    如果 `@Cacheable` 是“读缓存”，那 `@CachePut/@CacheEvict` 就是“写缓存”：前者强制执行方法并更新缓存，后者删除缓存 entry（让下一次读取回源）。这章把它们的语义差异写成断言，避免线上靠直觉吵架。
+
+    - 最小证据入口：`BootCacheLabTest#cachePutUpdatesCacheValue` / `BootCacheLabTest#cacheEvictRemovesEntry`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 109 章：01：`@Cacheable` 最小闭环](109-01-cacheable-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 111 章：03：key / condition / unless：缓存边界](111-03-key-condition-unless.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 两句人话先说清楚
 
-- 本章主题：**02：`@CachePut/@CacheEvict`：更新与失效**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- `@CachePut`：**每次都会执行方法**，并把返回值写回 cache
+- `@CacheEvict`：把 cache 里的某个 key（或整个 cache）清掉
 
-!!! summary "本章要点"
+它们解决的是一致性问题：当真实数据变了，你要怎么让缓存跟着变？
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+## 机制主线（写路径）
 
+这章不展开拦截器内部细节，你只需要记住与 `@Cacheable` 的关键差异：
 
-!!! example "本章配套实验（先跑再读）"
+- `@Cacheable` 命中后短路（方法体不执行）
+- `@CachePut` 不短路（方法体必执行）
+- `@CacheEvict` 不关心返回值，它关心“删谁”
 
-    - Lab：`BootCacheLabTest`
+## 怎么验证（tests 就是事实）
 
-## 机制主线
+- `@CachePut` 更新值：`BootCacheLabTest#cachePutUpdatesCacheValue`
+- `@CacheEvict` 删除 entry：`BootCacheLabTest#cacheEvictRemovesEntry`
 
+观察点仍然是最稳定的那个：
 
-## 你应该观察到什么
-
-- `@CachePut` 会强制执行方法，并把返回值写入 cache
-- `@CacheEvict` 会移除指定 key 的 entry（下一次访问会重新计算）
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootCacheLabTest`
-- 建议命令：`mvn -pl :spring-boot-cache test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 实验入口
-
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-实验入口已在章首提示框给出（先跑再读）。建议跑完后回到本章“证据链”逐条验证关键结论。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
+- `invocationCount()`（方法到底执行了几次）
 
 ## 常见坑与边界
 
-### 坑点 1：误以为 `@CachePut` 会“像 Cacheable 一样命中短路”，导致写入逻辑被误解
+### 坑点 1：把 `@CachePut` 当成 “Cacheable 也会短路”
 
-- Symptom：你以为 CachePut 在命中时不会执行方法，结果发现方法每次都执行（甚至带来额外 DB 调用）
-- Root Cause：`@CachePut` 的语义就是“强制执行方法并更新缓存”，它不是读缓存短路
-- Verification：`BootCacheLabTest#cachePutUpdatesCacheValue`（invocationCount 与缓存值更新为证据）
-- Fix：需要短路就用 `@Cacheable`；需要更新缓存且愿意执行方法就用 `@CachePut`；失效用 `@CacheEvict`
+现象：
+
+- 你以为“缓存命中就不会执行”，结果发现 `@CachePut` 每次都在跑（甚至多打了 DB）
+
+证据入口：
+
+- `BootCacheLabTest#cachePutUpdatesCacheValue`
+
+修法（工程语义）：
+
+- 需要短路：用 `@Cacheable`
+- 需要更新：用 `@CachePut`
+- 需要失效：用 `@CacheEvict`
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 下一章进入“缓存边界”：key/condition/unless 决定哪些请求共用一个 entry，以及哪些请求/结果根本不缓存。
 
 <!-- BOOKIFY:START -->
 
