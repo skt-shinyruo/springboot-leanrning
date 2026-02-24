@@ -30,13 +30,60 @@
 
 ## 机制主线
 
-因此这些做法容易出问题：
+这一章解决的其实是一个**误会**：你把 `Resource` 当成了 `File`。
 
-- `resource.getFile()`（classpath 资源在 jar 内时通常会失败）
-- `new File("classpath:...")`（根本不是文件路径）
+在 IDE 里，这个误会经常“侥幸成立”——因为 `src/main/resources` 会被复制到 `target/classes`，看起来就像普通文件夹；
+但一旦你把应用打成 jar（尤其是 Spring Boot 的可执行 jar），资源就被塞进 jar 里，**不再是文件系统路径**，于是问题就暴露出来。
+
+你可以用一句话记住它：
+
+> `Resource` 的底层可能是 file，也可能是 jar 里的 entry；**能稳定依赖的只有 `getInputStream()`**。
+
+### 1) 典型误用：把 classpath 资源“强行落到 File”
+
+下面这种写法在 IDE 下可能 OK，但打包后很容易炸：
+
+```java
+Resource resource = resolver.getResource("classpath:data/hello.txt");
+File file = resource.getFile(); // IDE 可能 OK；jar 里通常不可靠
+```
+
+为什么？关键在于你拿到的“资源 URL”是什么协议：
+
+- IDE / `mvn test`：经常是 `file:/.../target/classes/data/hello.txt`（确实是磁盘文件）
+- jar 运行：常见是 `jar:file:/.../app.jar!/BOOT-INF/classes!/data/hello.txt`（jar 里的 entry，不是文件）
+
+当它不是 `file:` 协议时，`getFile()` 本质上是在要求框架“把一个不是文件的东西变成文件路径”，这当然做不到。
+
+### 2) 正确心智模型：Resource 是 handle，读取走 stream
+
+在本模块的实现里（见 `ResourceReadingService`），读取统一走：
+
+- `ResourcePatternResolver#getResource(...)` 得到 `Resource`（注意：这只是一个 handle）
+- `Resource#getInputStream()` 读取内容（这是跨 jar/filesystem 最稳定的方式）
+- 需要调试时看 `resource.getDescription()`（它会把“我到底拿到了什么”说得更清楚）
+
+### 3) pattern 扫描时：`classpath:` 与 `classpath*:` 的差异
+
+如果你在做“扫描多个资源文件”，强烈建议形成肌肉记忆：
+
+- `classpath:` 更像“取一个”
+- `classpath*:` 才是“从整个 classpath 里扫一遍”（见本模块的 mechanics/lab）
 
 ## 在本模块的练习入口
 
+先用可运行的断言把“我以为”变成“我证明了”（建议按这个顺序跑）：
+
+- Resource 只是 handle（不代表存在）：`SpringCoreResourcesMechanicsLabTest#getResourceReturnsAHandle_evenIfTheResourceDoesNotExist`
+- 读取 classpath 的正确姿势（stream）：`SpringCoreResourcesMechanicsLabTest#classpathResourceCanBeReadAsBytes` / `SpringCoreResourcesLabTest#readsClasspathResourceContent`
+- 扫描多个资源（pattern）：`SpringCoreResourcesMechanicsLabTest#classpathStarPatternLoadsResourcesFromClasspath` / `SpringCoreResourcesLabTest#loadsMultipleResourcesWithPattern`
+- 路径细节（leading slash）：`SpringCoreResourcesLabTest#supportsLeadingSlashInClasspathLocation`
+- “file 资源”也能走同一套抽象：`SpringCoreResourcesLabTest#fileResourcesCanAlsoBeRead_viaResourceAbstraction`
+
+如果你想把 jar vs filesystem 变成“亲手复现过的结论”：
+
+- 练习题入口（默认禁用，避免影响 CI）：`SpringCoreResourcesExerciseTest#exercise_jarVsFilesystem`
+- 建议把观察记录成两条结论：`getInputStream()` 稳定；`getFile()` 取决于资源是否真的是文件
 
 ## 学习建议
 
@@ -54,23 +101,45 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章未显式引用 LabTest，先注入模块默认 LabTest 作为“合规兜底入口”（后续可逐章细化）。
+- 建议先跑一遍 Lab，再回到本章对照机制；如果你正在排障，可直接从“常见坑与边界”进入。
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
 ### 复现/验证补充说明（来自原文迁移）
 
-- IDE 运行：资源在 `target/classes`，看起来像文件夹
-- 打包运行：资源在 jar 内部，不再是“文件系统路径”
+你不需要背结论，做一次对比就够了：
 
-看 `SpringCoreResourcesExerciseTest#exercise_jarVsFilesystem`：
+- IDE 运行：资源在 `target/classes`，通常是 `file:` URL → 很多“把资源当 File 用”的写法会蒙混过关
+- 打包运行：资源在 jar 内部，通常是 `jar:` URL → `getFile()` 不再可靠
 
-- 目标：写一个实验对比 jar 与 filesystem 的差异
-- 并把观察结果记录到 README/docs（学习用）
+建议用“可观察性”做实验记录：
+
+- 在断点/日志里看 `Resource#getDescription()`（它往往比你自己猜路径靠谱）
+- 观察 `Resource#getURL()` 的协议（`file:` vs `jar:`），再决定你能不能用 `getFile()`
+
+动手题见：`SpringCoreResourcesExerciseTest#exercise_jarVsFilesystem`（练习：对比两种运行方式，并把观察写成笔记）。
 
 ## 常见坑与边界
 
 这是资源读取最经典的学习坑：
+
+### 坑 1：在 IDE 里能跑 ≠ 打包后也能跑
+
+- Symptom：IDE 里 `resource.getFile()` 正常，jar 一运行就抛异常（或读不到文件）
+- Root Cause：资源 URL 协议变了（`file:` → `jar:`），资源不再是文件系统路径
+- Fix：读取优先走 `getInputStream()`；如果你确实需要 `File`，把流落到临时文件再处理（并明确这是“复制后的文件”）
+
+### 坑 2：以为 `getResource(...)` 拿到对象就代表资源存在
+
+- Symptom：`resolver.getResource("classpath:xxx")` 不为 null，但读取时失败
+- Root Cause：`getResource` 返回的是 handle；存在性要靠 `exists()`/读取来验证
+- Verification：`SpringCoreResourcesMechanicsLabTest#getResourceReturnsAHandle_evenIfTheResourceDoesNotExist`
+
+### 坑 3：pattern 扫描写成 `classpath:`，结果只拿到“一个”
+
+- Symptom：你以为会扫到多个 `*.txt`，实际只返回一个/甚至为空
+- Root Cause：`classpath:` 与 `classpath*:` 语义不同
+- Verification：`SpringCoreResourcesMechanicsLabTest#classpathStarPatternLoadsResourcesFromClasspath`
 
 ## 小结与下一章
 
