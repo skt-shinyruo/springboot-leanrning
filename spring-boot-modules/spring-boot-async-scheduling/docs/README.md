@@ -1,31 +1,44 @@
-# Spring Boot Async & Scheduling：目录
+# Spring Boot Async & Scheduling：读者导言
 
-> 建议先把 @Async 的代理主线跑通，再处理线程池与异常，最后进入 @Scheduled 的触发链路与边界。
+如果你在项目里用过 `@Async` / `@Scheduled`，大概率也遇到过这些“说不清”的问题：
 
-## 从这里开始（建议顺序）
+- 明明写了 `@Async`，怎么还是同步执行？
+- 线程池到底是哪一个？我改了配置，为什么线程名没变？
+- 异步里抛异常，调用方为什么像什么都没发生？
+- 定时任务抛了异常，会不会就此停掉？为什么有时像“消失”了一样？
 
-1. [主线时间线](part-00-guide/117-03-mainline-timeline.md)
-2. [深挖导读](part-00-guide/118-00-deep-dive-guide.md)
+这组文档和配套代码想做的事很朴素：把上面这些问题拆到足够小、足够可验证，然后用测试把结论钉住。你可以把它当成一份偏工程视角的“异步与调度随手册”——不追求百科全书式罗列，而是把最常踩的边界讲透。
 
-## 顺读主线
+## 两条阅读路线
 
-- [@Async 心智模型](part-01-async-scheduling/119-01-async-proxy-mental-model.md)
-- [Executor 与线程模型](part-01-async-scheduling/120-02-executor-and-threading.md)
-- [异常处理](part-01-async-scheduling/121-03-exceptions.md)
-- [self-invocation](part-01-async-scheduling/122-04-self-invocation.md)
-- [@Scheduled 基础](part-01-async-scheduling/123-05-scheduling-basics.md)
+第一条路线适合“我想顺着读一篇文章，把主线打通”：
 
-## 进阶入口（排障/关键分支）
+1. [主线时间线：为什么章节这么排](part-00-guide/117-03-mainline-timeline.md)
+2. [深挖导读：这模块到底在深挖什么](part-00-guide/118-00-deep-dive-guide.md)
+3. 主线顺读（按章节向下走）
 
-- 断点地图（排障优先）：[118-02-breakpoint-map.md](part-00-guide/118-02-breakpoint-map.md)
-- 关键分支矩阵（If/Then 收敛）：[118-04-branch-decision-matrix.md](part-00-guide/118-04-branch-decision-matrix.md)
-- 排障 playbook：[124-90-common-pitfalls.md](appendix/124-90-common-pitfalls.md)
-- 自检清单：[125-99-self-check.md](appendix/125-99-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
-- 可跑入口（线程池饱和/拒绝策略）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`
+第二条路线适合“我现在就是在排障/复现某个分支”：
 
-## 排坑与自检
+- [断点地图：从哪里下断点更省时间](part-00-guide/118-02-breakpoint-map.md)
+- [关键分支矩阵：把常见分支写成 If/Then](part-00-guide/118-04-branch-decision-matrix.md)
+- [常见坑：按症状写的排障短文](appendix/124-90-common-pitfalls.md)
+- [自检：像习题册一样把主线复盘一遍](appendix/125-99-self-check.md)
 
-- [常见坑](appendix/124-90-common-pitfalls.md)
-- [自检](appendix/125-99-self-check.md)
+## 主线章节（建议顺读）
+
+- [01：`@Async` 心智模型：代理与线程切换](part-01-async-scheduling/119-01-async-proxy-mental-model.md)
+- [02：Executor 与线程命名/并发边界](part-01-async-scheduling/120-02-executor-and-threading.md)
+- [03：异常传播：Future vs void](part-01-async-scheduling/121-03-exceptions.md)
+- [04：self-invocation：为什么异步有时不生效](part-01-async-scheduling/122-04-self-invocation.md)
+- [05：`@Scheduled` 基础与可测试性](part-01-async-scheduling/123-05-scheduling-basics.md)
+- [06：`@Async` × `@Transactional`：事务边界与执行线程](part-01-async-scheduling/126-06-async-and-transactions.md)
+- [07：SecurityContext / RequestContext：默认丢失、传播与泄漏](part-01-async-scheduling/127-07-security-and-request-context.md)
+- [08：Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](part-01-async-scheduling/128-08-boot-spring-task-autoconfig.md)
+
+## 可验证入口（如果你想把“理解”变成事实）
+
+这模块的大多数结论，都能在对应的 `*LabTest#method` 里找到最小复现入口。常用的三个入口是：
+
+- Book Matrix（主线最小集合）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
+- Branch Matrix（关键分支最小集合）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
+- 线程池饱和/拒绝策略（确定性复现）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingExecutorSaturationLabTest test`

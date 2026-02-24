@@ -1,83 +1,100 @@
 # 第 123 章：05：`@Scheduled` 基础与可测试性
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（调度别靠“等它触发”）"
 
-    - 知识点：05：`@Scheduled` 基础与可测试性
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
-    - 推荐 Lab：`BootAsyncSchedulingLabTest`
+    `@Scheduled` 最容易把人带沟里的一点是：你以为它是“方法调用时拦截”，但它其实是**启动期注册任务，运行期按时间触发**。
+
+    - 排障三步：开关（EnableScheduling）→ 注册（任务是否进了注册表）→ 触发（线程与异常语义）
+    - 测试写法：优先断言“注册结果”，只在必要时做最小触发验证
+    - 进一步验证：`BootAsyncSchedulingSchedulingRegistrationLabTest#scheduledTasksAreRegisteredAsDifferentTaskTypes`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 124 章：90：常见坑清单（Async & Scheduling）](../appendix/124-90-common-pitfalls.md)
+上一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 126 章：06：`@Async` × `@Transactional`：事务边界与执行线程](126-06-async-and-transactions.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 把 `@Scheduled` 当成“系统级开关”，排障会简单很多
 
-- 本章主题：**05：`@Scheduled` 基础与可测试性**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+`@Scheduled` 最烦人的地方往往不是 cron 表达式，而是它的生效过程和 `@Async` 完全不同：它不是“调用期拦截”，而是**启动期注册 + 运行期触发**。
 
-!!! summary "本章要点"
+所以我更喜欢把它拆成三个问题来问（排障也沿这三步走）：
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+1. scheduling 开关是否打开（`@EnableScheduling`）
+2. 任务有没有被注册（注册断言）
+3. 任务有没有按预期触发、在哪个线程执行、异常语义是什么（触发验证）
 
+这三步对应三类不同的失败模式：没触发（开关/注册问题）、触发了但跑得不对（线程模型问题）、偶发不稳定（测试写法或异常语义没搞清）。
 
-!!! example "本章配套实验（先跑再读）"
+## 1) 开关：没有 `@EnableScheduling` 就谈不上调度
 
-    - Lab：`BootAsyncSchedulingLabTest`
+最小事实：
 
-## 机制主线
+- 没开 scheduling：任务不会触发  
+  - 证据入口：`BootAsyncSchedulingSchedulingLabTest#schedulingRequiresEnableScheduling`
 
-本章关注两点：
+## 2) 注册：比“等它触发”更确定
 
-## 你应该观察到什么
+很多时候你关心的不是“它过了 3 秒有没有跑”，而是“它到底有没有被注册成一个任务”。这个问题最稳的回答方式，是直接断言注册结果：
 
-- 没有 `@EnableScheduling`：调度不会启动
-- 有 `@EnableScheduling`：任务会被注册并按 fixedDelay 执行（本模块用 latch 抓住第一次触发）
+- `ScheduledTaskHolder` 里持有已注册任务
+- fixedRate / fixedDelay / cron 会被注册为不同 task 类型
 
-## 建议的测试写法
+证据入口：
 
-- 用 `CountDownLatch` 固定“至少触发一次”的结论
-- 避免长 `Thread.sleep`：用短 delay + 有上限的 await 更稳定
+- `BootAsyncSchedulingSchedulingRegistrationLabTest#scheduledTasksAreRegisteredAsDifferentTaskTypes`
 
-## 源码与断点
+## 3) 触发：怎么写不 flaky 的断言
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
+当你必须证明“确实触发执行了”，本模块的取向是：
 
-## 最小可运行实验（Lab）
+- 用 `CountDownLatch` 抓住第一次触发（它把结论锁在同步点上）
+- 永远设置超时上限（避免测试挂死）
+- 尽量避免长时间 `Thread.sleep`
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootAsyncSchedulingLabTest`
-- 建议命令：`mvn -pl :spring-boot-async-scheduling test`（或在 IDE 直接运行上面的测试类）
+证据入口：
 
-### 复现/验证补充说明（来自原文迁移）
+- `BootAsyncSchedulingSchedulingLabTest#schedulingTriggersTaskWhenEnableSchedulingPresent`
 
-1) `@Scheduled` 需要什么才能生效？
-2) 如何在 tests 里做出不 flaky 的调度断言？
+## 定时任务抛异常会怎样
 
-## 实验入口
+线上一个很常见的误会是：“定时任务抛异常会不会就此停掉？”
 
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-实验入口已在章首提示框给出（先跑再读）。建议跑完后回到本章“证据链”逐条验证关键结论。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
+底层如果直接用 `ScheduledExecutorService` 的原生行为，确实可能因为异常导致后续执行被取消；但 Spring 通常会用异常包装与 `ErrorHandler` 兜住，避免异常把任务直接“炸没”。
 
-## 常见坑与边界
+证据入口（异常进入 ErrorHandler，同时任务仍继续触发）：
 
-### 坑点 1：用 `Thread.sleep` 写调度测试，导致 flaky（偶现失败/偶现通过）
+- `BootAsyncSchedulingSchedulingExceptionSemanticsLabTest#scheduledExceptionsAreHandledByErrorHandler_andTaskContinues`
 
-- Symptom：本地能跑，CI 偶发失败；或者为了“等它触发”把 sleep 写得很长导致测试很慢
-- Root Cause：调度本身是时间相关行为，如果没有上限与同步点，很难稳定断言
-- Verification：
-  - 没有开关不会触发：`BootAsyncSchedulingLabTest#schedulingRequiresEnableScheduling`
-  - 开启后至少触发一次：`BootAsyncSchedulingLabTest#schedulingTriggersTaskWhenEnableSchedulingPresent`
-- Fix：用 `CountDownLatch` + 有上限的 await 固定“至少触发一次”的事实，不要靠长 sleep 试运气
+## 组合注解：`@Scheduled + @Async`
 
-## 小结与下一章
+调度线程池通常应该保持轻量：负责触发，不负责耗时执行。耗时逻辑如果直接跑在 scheduler 线程上，任务多了之后你会看到延迟、堆积、甚至互相拖死。
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+当同一个方法同时标注 `@Scheduled` 与 `@Async` 时：
+
+- 触发发生在 scheduler 线程（常见前缀：`sched-`）
+- 方法体执行切换到 async executor 线程（常见前缀：`async-`）
+
+证据入口：
+
+- `BootAsyncSchedulingScheduledAsyncCombinationLabTest#scheduledRunsOnSchedulerThread_butScheduledPlusAsyncRunsOnExecutorThread`
+
+## 断点入口（可选）
+
+- 注册入口：`org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor#processScheduled`
+- 执行入口：`org.springframework.scheduling.support.ScheduledMethodRunnable#run`
+
+## 进一步验证（可选）
+
+这一章相关的最小集合是：
+
+- `BootAsyncSchedulingSchedulingLabTest`（开关与最小触发）
+- `BootAsyncSchedulingSchedulingRegistrationLabTest`（注册断言）
+- `BootAsyncSchedulingSchedulingExceptionSemanticsLabTest`（异常语义）
+- `BootAsyncSchedulingScheduledAsyncCombinationLabTest`（组合注解的线程边界）
+
+## 小结
+
+对调度来说，“注册断言”是你最省心的朋友：它能把时间相关的不确定性压到最低。只有当你必须证明“确实触发执行”时，才让时间真正参与断言。
 
 <!-- BOOKIFY:START -->
 
@@ -85,6 +102,6 @@
 
 - Lab：`BootAsyncSchedulingLabTest`
 
-上一章：[part-01-async-scheduling/04-self-invocation.md](122-04-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/124-90-common-pitfalls.md)
+上一章：[part-01-async-scheduling/04-self-invocation.md](122-04-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-async-scheduling/06-async-and-transactions.md](126-06-async-and-transactions.md)
 
 <!-- BOOKIFY:END -->

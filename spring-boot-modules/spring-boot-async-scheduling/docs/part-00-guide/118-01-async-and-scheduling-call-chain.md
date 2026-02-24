@@ -1,12 +1,10 @@
 # 第 118 章：01：Async/Scheduling 调用链（@Async / @Scheduled 的生效时机）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（最短调用链）"
 
-    - 知识点：01：Async/Scheduling 调用链（@Async / @Scheduled 的生效时机）
-    - 怎么使用：先跑 `BootAsyncSchedulingLabTest`，把线程切换/调度触发固化为断言，再按本文从注解 → PostProcessor → 代理/注册表串起调用链。
-    - 原理：`@Async` 是代理拦截（调用时切线程）；`@Scheduled` 是启动期注册任务（定时触发）。
-    - 源码入口：`AsyncAnnotationBeanPostProcessor` / `AsyncExecutionInterceptor` / `ScheduledAnnotationBeanPostProcessor`
-    - 推荐 Lab：`BootAsyncSchedulingLabTest`
+    这页只做一件事：把 `@Async` / `@Scheduled` 的“最短调用链”写出来，方便你在看 tests 或打断点时不迷路。
+
+    你可以把它当成一张速记卡：不需要背，排障时翻一眼就够。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->

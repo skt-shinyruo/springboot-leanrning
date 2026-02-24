@@ -1,73 +1,86 @@
 # 第 120 章：02：Executor 与线程命名/并发边界
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（把 executor 这件事说透）"
 
-    - 知识点：02：Executor 与线程命名/并发边界
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
-    - 推荐 Lab：`BootAsyncSchedulingLabTest`
+    如果说上一章回答的是“`@Async` 为什么能切线程”，这一章回答的就是更现实的问题：**切到哪一个线程池？**
+
+    - 你会反复用到的尺子：线程名（前缀能直接写成断言）
+    - 你最可能踩到的坑：项目里有多个 executor，但 `@Async` 选的不是你以为的那个
+    - 进一步验证：`BootAsyncSchedulingExecutorSelectionLabTest#whenMultipleExecutorsExist_namedTaskExecutorWinsAsDefault`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 119 章：01：`@Async` 心智模型：代理与线程切换](119-01-async-proxy-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 121 章：03：异常传播：Future vs void](121-03-exceptions.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 这一章要解决的不是“怎么配线程池”，而是“怎么不再猜”
 
-- 本章主题：**02：Executor 与线程命名/并发边界**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+如果你已经接受上一章的结论：`@Async` 会把执行提交到 executor，那么下一步自然是追问：
 
-!!! summary "本章要点"
+> 提交到哪个 executor？
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+在一个稍微复杂点的项目里，线程池往往不止一个：有 IO 池、CPU 池、批处理池，还有框架默认的那个。此时最容易出现的不是“配置写错”，而是“大家各写各的，最后没人能回答：到底是谁在跑”。
 
+这一章我想把它收敛成三件事：
 
-!!! example "本章配套实验（先跑再读）"
+1. 默认 executor 的选择规则（以及你怎么让它变得可控）
+2. 显式选择：`@Async("beanName")`
+3. 切线程之后的副作用：ThreadLocal/MDC 等上下文的丢失与泄漏
 
-    - Lab：`BootAsyncSchedulingLabTest`
+## 默认 executor：你以为的“默认”往往不默认
 
-## 机制主线
+不写 `@Async("...")` 的时候，Spring 会帮你找一个“默认 executor”。问题是：当系统里 executor 多起来之后，人会开始凭印象说话——“我不是已经定义了线程池吗？”——但 Spring 选的不一定是你那个。
 
-本章建议你把“线程名”当成最稳定的观察点之一：当你不知道代码到底跑在哪个线程时，线程名比日志更直接。
+把选择规则记成三条就够用（它们都能在本模块里找到对应断言）：
 
-## 你应该观察到什么
+- **只有一个 `TaskExecutor` bean**：它通常会被当作默认 executor  
+  - 证据入口：`BootAsyncSchedulingExecutorSelectionLabTest#whenSingleTaskExecutorBeanExists_itIsUsedAsDefaultAsyncExecutor`
+- **有多个 executor**：名为 `taskExecutor` 的那个更容易胜出  
+  - 证据入口：`BootAsyncSchedulingExecutorSelectionLabTest#whenMultipleExecutorsExist_namedTaskExecutorWinsAsDefault`
+- **实现 `AsyncConfigurer#getAsyncExecutor()`**：你可以把“默认是谁”写死在配置里  
+  - 证据入口：`BootAsyncSchedulingExecutorSelectionLabTest#asyncConfigurerOverridesDefaultExecutorSelection_butQualifiedExecutorStillWorks`
 
-- 通过 `ThreadPoolTaskExecutor#setThreadNamePrefix("async-")`，你可以用断言稳定证明：
-  - 调用确实发生在你提供的 executor 上
+## 显式选择：`@Async("beanName")`
 
-## 源码与断点
+`@Async("specialExecutor")` 的价值不在于“能跑”，而在于**减少含糊**：当你真的在规划多个线程池（IO/CPU/低优先级）时，把边界写在代码上，比依赖默认行为更可靠。
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
+证据入口：
 
-## 最小可运行实验（Lab）
+- `BootAsyncSchedulingExecutorSelectionLabTest#asyncValueSelectsQualifiedExecutorByName`
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootAsyncSchedulingLabTest`
-- 建议命令：`mvn -pl :spring-boot-async-scheduling test`（或在 IDE 直接运行上面的测试类）
+## 线程名：别把它当“日志装饰”，它是尺子
 
-### 复现/验证补充说明（来自原文迁移）
+线程名是排障时最划算的观测点之一。你不需要先懂 Spring 里那几层拦截器，只要线程名前缀是稳定的，你就能把“它跑在哪”写成断言、写进报警、也写进团队约定里。
 
-## 实验入口
+证据入口（把 threadNamePrefix 固化为断言）：
 
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-实验入口已在章首提示框给出（先跑再读）。建议跑完后回到本章“证据链”逐条验证关键结论。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
+- `BootAsyncSchedulingLabTest#executorThreadNamePrefixIsAStableObservationPoint`
 
-## 常见坑与边界
+## 切线程之后：ThreadLocal / MDC 为什么会断
 
-### 坑点 1：不固定线程池与线程名，导致“到底有没有切线程”无法断言
+当执行真的切到线程池之后，你很快会遇到一个现实问题：调用方线程里有上下文（traceId、tenantId、userId……），异步线程里却什么都没有。
 
-- Symptom：你只能靠日志“感觉像是异步”，但无法在测试里稳定证明
-- Root Cause：默认 executor/线程名不稳定；当并发问题出现时，你缺少可回归观测点
-- Verification：`BootAsyncSchedulingLabTest#executorThreadNamePrefixIsAStableObservationPoint`
-- Fix：为 executor 设置可识别的 threadNamePrefix，并在测试里把线程名写成断言（把“线程切换”变成事实）
+这不是 Spring “没帮你带过去”，而是 ThreadLocal 的语义本来就只属于线程：线程一换，上下文自然断开。更麻烦的是线程池会复用线程——如果你把上下文 set 进去却不清理，下一次任务就可能读到残留值（串号）。
 
-## 小结与下一章
+证据入口（默认不传播 / 正确传播 / 错误写法导致泄漏）：
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 默认不传播：`BootAsyncSchedulingContextPropagationLabTest#threadLocalContextIsNotPropagatedByDefaultAcrossAsyncThreadBoundary`
+- 正确传播 + finally 恢复：`BootAsyncSchedulingContextPropagationLabTest#taskDecoratorCanPropagateThreadLocalContext_andRestoreToAvoidLeaks`
+- 错误写法泄漏：`BootAsyncSchedulingContextPropagationLabTest#buggyTaskDecoratorThatSkipsNullCanLeakPreviousThreadLocalValueAcrossTasks`
+
+修复路线也就一条：对 `ThreadPoolTaskExecutor` 配 `TaskDecorator`，做“提交线程捕获 → 工作线程设置 → finally 清理/恢复”。注意一个细节：**捕获到 null 也要清理**，不然线程复用时更容易串号。
+
+## 进一步验证（可选）
+
+这一章相关的最小集合是：
+
+- executor 选择矩阵：`BootAsyncSchedulingExecutorSelectionLabTest`
+- 线程名前缀观测点：`BootAsyncSchedulingLabTest#executorThreadNamePrefixIsAStableObservationPoint`
+- 上下文传播与泄漏：`BootAsyncSchedulingContextPropagationLabTest`
+
+## 小结
+
+executor 这件事，一旦在团队里变成“凭印象说话”，就会不断返工。最简单的解法不是多背几条规则，而是把“线程名/选择结果”写成可回归的事实：测试能断言、日志能定位、排障能收敛。
 
 <!-- BOOKIFY:START -->
 

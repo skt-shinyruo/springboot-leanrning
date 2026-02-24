@@ -1,118 +1,76 @@
 # 第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（深挖导读）"
 
-    - 知识点：Deep Dive Guide（springboot-async-scheduling）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
-    - 推荐 Lab：`BootAsyncSchedulingLabTest`
+    这章讲的不是“某个注解怎么写”，而是：这份模块为什么这么写、你可以怎么用它、以及遇到分支时该去哪里验证。
+
+    - 想顺着读一篇文章：从第 119 章开始，按主线向下走
+    - 想快速确认某个结论：从 `BootAsyncSchedulingBookMatrixLabTest` 入手就够了
+    - 想排障（没生效/线程不对/异常不见了）：用 `BootAsyncSchedulingBranchMatrixLabTest` + 断点地图
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 117 章：主线时间线：Spring Boot Async & Scheduling](117-03-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 119 章：01：`@Async` 心智模型：代理与线程切换](../part-01-async-scheduling/119-01-async-proxy-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 这份模块的写法：把“边界”写成可回归的事实
 
-- 本章主题：**00 - Deep Dive Guide（springboot-async-scheduling）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+在真实项目里，异步与调度的问题通常不是“我不会写注解”，而是三件更具体的事：
 
-!!! summary "本章要点"
+1. **有没有走到代理**：没走到代理，`@Async/@Transactional` 这类 AOP 能力就像不存在。
+2. **到底用了哪个执行器**：executor/scheduler 选错了，线程名、并发度、拒绝策略、异常处理都会跟着错。
+3. **异常的可见性**：你是希望调用方必须知道失败，还是允许它异步失败但必须被观测到？
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+所以这模块的取向是：尽量少用“靠感觉的解释”，尽量多给可验证的入口（对应的 `*LabTest#method`）。不是为了让你写更多测试，而是为了让你在排障时不至于只能靠日志猜。
 
+## 两条主线，不要混在一起
 
-!!! example "本章配套实验（先跑再读）"
+### `@Async`：调用期拦截，真正执行发生在另一个线程
 
-    - Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
+`@Async` 这件事说复杂也复杂，说简单也简单：**方法调用先落到代理上，代理把“真正执行”提交到 executor。**  
+如果代理不存在、调用绕开代理、或者 executor 选的不是你以为的那个，你看到的现象就会开始变形。
 
-## 机制主线
+你可以把它粗略拆成四步理解：
 
-本模块把两个“看起来很简单、但坑很多”的能力拆开讲清楚并用测试锁住：
+1. 基础设施是否建立（`@EnableAsync`）
+2. 调用是否经过代理（self-invocation 是典型坑）
+3. 提交到哪个 executor（默认选择 / `@Async("beanName")` / `AsyncConfigurer`）
+4. 异常如何回到调用方（Future/CompletableFuture）或落到 handler（void）
 
-- `@Async`：本质是 **AOP 代理 + 线程切换**（没有代理就没有 async）
-- `@Scheduled`：本质是 **调度器驱动的触发**（没有 EnableScheduling 就不会触发）
+### `@Scheduled`：启动期注册，按时间触发
 
-### 1) 时间线：`@Async` 从调用到真正在线程池执行
+`@Scheduled` 更像“系统级开关”：它不是在调用期拦截你的方法，而是启动时把方法注册成任务，然后由调度器线程在合适的时间点触发执行。
 
-1. Spring 在启动时创建 `@Async` 相关基础设施（需要 `@EnableAsync`）
-2. Bean 被包装为代理（可通过 `AopUtils.isAopProxy` 验证）
-3. 你调用方法时，调用先进入代理，再被投递到 Executor
-4. 异常分流：
-   - 返回 `Future/CompletableFuture`：异常回到 future 上（调用方可 get/handle）
-   - 返回 `void`：异常走 `AsyncUncaughtExceptionHandler`（容易“悄悄吞掉”）
+因此它的排障路径也不一样：
 
-### 2) 时间线：`@Scheduled` 从启动到触发
+1. scheduling 开关是否打开（`@EnableScheduling`）
+2. 任务是否注册成功（注册断言通常比“等它触发”更确定）
+3. 触发与执行在哪个线程上（scheduler 线程 vs `@Scheduled + @Async` 的执行线程）
+4. 异常语义是什么（抛异常后是否继续调度、异常由谁处理）
 
-1. Spring 在启动时注册 scheduling 基础设施（需要 `@EnableScheduling`）
-2. 扫描 `@Scheduled` 方法并注册为任务
-3. 调度线程按 fixedDelay/fixedRate/cron 触发任务执行
+## 从哪里开始（给不同心情的读者）
 
-### 3) 关键参与者
+- 你想顺着读一篇文章：从 [第 119 章](../part-01-async-scheduling/119-01-async-proxy-mental-model.md) 开始，按主线向下走。
+- 你现在就想快速确认“这些结论是不是真的”：跑 `BootAsyncSchedulingBookMatrixLabTest`。
+- 你正在排障（不生效/线程不对/异常不见了）：跑 `BootAsyncSchedulingBranchMatrixLabTest`，然后去看 [断点地图](118-02-breakpoint-map.md) 与 [关键分支矩阵](118-04-branch-decision-matrix.md)。
 
-- `@EnableAsync` / `@Async`：决定“是否代理 + 是否异步”
-- `TaskExecutor` / `Executor`：决定线程池行为（线程名是最稳定的观测点之一）
-- `AsyncUncaughtExceptionHandler`：决定 void async 方法异常如何被观察到
-- `@EnableScheduling` / `@Scheduled`：决定“是否注册调度任务 + 触发语义”
+## 源码与断点：先记住三个入口就够了
 
-### 4) 本模块的关键分支（2–5 条，默认可回归）
+如果你愿意跟一遍源码，别急着把整个包都翻完。异步与调度这条链路，最常用的入口其实就这三个：
 
-1. **没有 `@EnableAsync`：`@Async` 注解不生效（同步执行）**
-   - 验证：`BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync`
-2. **有 `@EnableAsync`：线程切换到 executor（线程名可作为证据）**
-   - 验证：`BootAsyncSchedulingLabTest#asyncRunsOnExecutorThreadWhenEnableAsyncPresent`
-3. **异常传播分流：Future 可带回异常；void 走 UncaughtExceptionHandler**
-   - 验证：`BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture` / `BootAsyncSchedulingLabTest#asyncExceptionsFromVoidAreHandledByAsyncUncaughtExceptionHandler`
-4. **自调用绕过代理（坑点）：self-invocation 让 `@Async` 失效**
-   - 验证：`BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall`
-5. **调度开关：没有 `@EnableScheduling` 不触发；有则触发**
-   - 验证：`BootAsyncSchedulingLabTest#schedulingRequiresEnableScheduling` / `BootAsyncSchedulingLabTest#schedulingTriggersTaskWhenEnableSchedulingPresent`
+- `org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor`：什么时候、如何把 bean 包成代理
+- `org.springframework.aop.interceptor.AsyncExecutionInterceptor#invoke`：什么时候决定提交到 executor、异常如何分流
+- `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor#processScheduled`：什么时候注册定时任务
 
-## 源码与断点
+更细的断点清单在 [断点地图](118-02-breakpoint-map.md)，它更像“排障用的备忘录”。
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-  
-建议断点（优先用“证据”定位分支）：
+## 进一步验证（可选）
 
-- `@Async` 是否真的走代理：
-  - `BootAsyncSchedulingLabTest#asyncRunsOnExecutorThreadWhenEnableAsyncPresent` 的断言处（先锁住线程名与代理存在性）
-- 排查 self-invocation：
-  - `BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall` 的调用点（观察 outer 调用是否绕过代理）
-- `@Scheduled` 是否真的注册任务：
-  - 优先通过 `await`/latch 的测试断言判断，再下探到 scheduling 基础设施（避免靠日志猜）
+如果你想把“读懂”变成可回归的事实，下面这些入口足够覆盖主线：
 
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
-- 建议命令：`mvn -pl :spring-boot-async-scheduling test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 如何跑实验
-- 运行本模块测试：`mvn -pl :spring-boot-async-scheduling test`
-
-## 对应 Lab（可运行）
-
-- `BootAsyncSchedulingLabTest`
-- `BootAsyncSchedulingSchedulingLabTest`
-- `BootAsyncSchedulingExerciseTest`
-
-## 常见坑与边界
-
-
-## 推荐学习目标
-1. 能解释 `@Async` 为什么依赖代理（以及它和 AOP 的共性）
-2. 能把“线程在哪里切换”的证据写进测试或日志
-3. 能解释自调用为何会绕过 `@Async`
-4. 能理解 `@Scheduled` 的基本触发语义与边界
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- `BootAsyncSchedulingBookMatrixLabTest`：主线最小集合（`@Async` + executor + `@Scheduled` on/off）
+- `BootAsyncSchedulingLabTest`：`@Async` 代理、线程切换、异常、self-invocation
+- `BootAsyncSchedulingSchedulingLabTest`：`@Scheduled` 开关与最小触发验证（不 flaky）
 
 <!-- BOOKIFY:START -->
 

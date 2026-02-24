@@ -1,73 +1,73 @@
 # 第 121 章：03：异常传播：Future vs void
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（失败到底谁能看见）"
 
-    - 知识点：03：异常传播：Future vs void
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
-    - 推荐 Lab：`BootAsyncSchedulingLabTest`
+    异步异常最容易把人坑到的点是：**它常常不是“丢了”，而是“你看错了地方”。**
+
+    - 返回 `Future/CompletableFuture`：失败会回到调用方的 future 上（`get/join` 时才暴露）
+    - 返回 `void`：失败不会回到调用方，最终落在 `AsyncUncaughtExceptionHandler`
+    - 进一步验证：`BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 120 章：02：Executor 与线程命名/并发边界](120-02-executor-and-threading.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 122 章：04：self-invocation：为什么异步有时不生效](122-04-self-invocation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先从一个线上味道很重的场景开始
 
-- 本章主题：**03：异常传播：Future vs void**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+你把某个操作改成 `@Async`，希望它不阻塞调用方。上线后，偶尔有人反馈“没生效”，但调用链上没异常、监控也没报警。你翻日志，发现后台线程里其实早就炸了。
 
-!!! summary "本章要点"
+异步异常之所以容易被忽略，不是因为它“消失”了，而是因为它有两种完全不同的语义：
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+- 返回 `Future/CompletableFuture`：失败会回到调用方的 future 上（`get/join` 时才暴露）
+- 返回 `void`：失败不会回到调用方，最终落在 `AsyncUncaughtExceptionHandler`
 
+这不是细枝末节，而是你在设计“失败可见性”时必须做的选择。
 
-!!! example "本章配套实验（先跑再读）"
+## Future：把失败留在调用链里
 
-    - Lab：`BootAsyncSchedulingLabTest`
+当 `@Async` 方法返回 `Future/CompletableFuture`，异常不会在调用点抛出，而是被塞进 future，等调用方 `get()` / `join()` 时再以包装异常的形式抛出来。
 
-## 机制主线
+你会在调用方看到的通常是：
 
-本章回答：异步方法抛异常，调用方到底能不能看到？
+- `Future#get()` → `ExecutionException`
+- `CompletableFuture#join()` → `CompletionException`
 
-## 你应该观察到什么
+真正的业务异常在 root cause 上。这一点如果没拎清，排障时很容易盯着“外面的异常类型”转圈。
 
-- 返回 Future：异常会进入 Future（调用方 get/join 时才能拿到）
-- void：异常不会传回调用方，而是交给 `AsyncUncaughtExceptionHandler`
+证据入口：
 
-## 源码与断点
+- `BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
+## void：把失败交给 handler（但别指望“默认就够用”）
 
-## 最小可运行实验（Lab）
+当返回值是 `void` 时，调用方没有容器接住异常，Spring 会把异常交给 `AsyncUncaughtExceptionHandler`。
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootAsyncSchedulingLabTest`
-- 建议命令：`mvn -pl :spring-boot-async-scheduling test`（或在 IDE 直接运行上面的测试类）
+这类写法常见于 fire-and-forget：比如发通知、刷缓存、异步打点。但它的隐患也很现实：如果 handler 没处理好，你就只剩“某个线程里有一行 stacktrace”（甚至还不一定看得到）。
 
-### 复现/验证补充说明（来自原文迁移）
+证据入口（语义 + 细节）：
 
-## 实验入口
+- 基础语义：`BootAsyncSchedulingLabTest#asyncExceptionsFromVoidAreHandledByAsyncUncaughtExceptionHandler`
+- handler 能拿到 method + args：`BootAsyncSchedulingUncaughtExceptionHandlerLabTest#voidAsyncExceptions_areDeliveredToUncaughtExceptionHandlerWithMethodAndArgs`
 
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-实验入口已在章首提示框给出（先跑再读）。建议跑完后回到本章“证据链”逐条验证关键结论。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
+## 断点入口（可选）
 
-## 常见坑与边界
+如果你想看“异常是怎么被分流”的：
 
-### 坑点 1：void 异步异常被“悄悄吞掉”，线上只有日志没有告警
+- `org.springframework.aop.interceptor.AsyncExecutionInterceptor#invoke`：包装与转交发生的位置
+- `org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler#handleUncaughtException`：void 异步异常最终落点
 
-- Symptom：异步方法内部抛异常，调用方没有任何感知；线上只在日志里偶然看到 stacktrace
-- Root Cause：void async 的异常不会传回调用方，而是交给 `AsyncUncaughtExceptionHandler`
-- Verification：`BootAsyncSchedulingLabTest#asyncExceptionsFromVoidAreHandledByAsyncUncaughtExceptionHandler`
-- Fix：对需要反馈失败的异步操作优先用 `CompletableFuture`；对 void async 必须配置并验证 UncaughtExceptionHandler
+## 进一步验证（可选）
 
-## 小结与下一章
+本章相关的最小集合是：
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- `BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`
+- `BootAsyncSchedulingLabTest#asyncExceptionsFromVoidAreHandledByAsyncUncaughtExceptionHandler`
+- `BootAsyncSchedulingUncaughtExceptionHandlerLabTest#voidAsyncExceptions_areDeliveredToUncaughtExceptionHandlerWithMethodAndArgs`
+
+## 小结
+
+在异步这件事上，“异常能不能被看到”不是框架帮你做的默认保证，而是你在 API 设计时做的选择：要不要把失败留在调用链里，要不要让调用方背上等待与处理的责任。
 
 <!-- BOOKIFY:START -->
 

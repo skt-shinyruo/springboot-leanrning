@@ -1,84 +1,63 @@
 # 第 119 章：01：`@Async` 心智模型：代理与线程切换
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（先把误会拆开）"
 
-    - 知识点：01：`@Async` 心智模型：代理与线程切换
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Async` 把执行切到线程池（TaskExecutor），用 `@Scheduled` 让任务按 cron/fixedDelay/fixedRate 触发；明确线程池配置与异常可见性。
-    - 原理：方法调用 → 代理拦截（Async/Scheduling）→ 提交到 Executor/Scheduler → 线程池执行 → 返回值/异常传播语义决定可观察性与稳定性。
-    - 源码入口：`org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor` / `org.springframework.aop.interceptor.AsyncExecutionInterceptor` / `org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor` / `org.springframework.core.task.TaskExecutor`
-    - 推荐 Lab：`BootAsyncSchedulingLabTest`
+    `@Async` 最容易让人误会的一点是：它不是“这个方法天生异步”，而是“这次调用被代理拦下来，转手丢进线程池”。
+
+    - 最稳的观察点：线程名（有没有切出去，一眼就知道）
+    - 最常见的坑：忘了 `@EnableAsync`、或调用路径绕开代理（self-invocation 下一章会专门讲）
+    - 进一步验证：`BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）](../part-00-guide/118-00-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 120 章：02：Executor 与线程命名/并发边界](120-02-executor-and-threading.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先说清楚：`@Async` 到底“异步”在哪
 
-- 本章主题：**01：`@Async` 心智模型：代理与线程切换**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+很多人第一次写 `@Async`，是为了把某段耗时逻辑卸载出去：不要卡住请求线程、不要让定时任务线程被拖慢、也别让调用方背着一个“明明可以并行”的等待。
 
-!!! summary "本章要点"
+然后你会遇到第一个挫败：同样的注解，有时能切线程，有时像没写。看起来像玄学，但机制边界其实很硬：
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+- **没有基础设施**（没开 `@EnableAsync`）→ 注解基本等价于注释
+- **没有经过代理** → 拦截器不会触发，也就不会提交到线程池
+- **提交到了线程池** → 方法体才真的在另一个线程里执行
 
+把这条链路记成一句话就够了：
 
-!!! example "本章配套实验（先跑再读）"
+> 调用线程 → 代理 → 提交到 executor → 工作线程执行方法体
 
-    - Lab：`BootAsyncSchedulingLabTest`
-    - Test file：`spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java`
+## 最朴素的判断：线程名变了吗
 
-## 机制主线
+当你怀疑“它到底有没有异步”时，先别急着看日志级别、也别先怪线程池配置。
 
-本章只回答一个问题：**`@Async` 为什么能“切线程”？**
+先问一个更具体的问题：
 
-## 你应该观察到什么
+> 这次执行方法体时，线程名变了吗？
 
-- 没有 `@EnableAsync`：`@Async` 就像不存在，方法在当前线程执行
-- 有 `@EnableAsync`：bean 会被代理，方法调用经代理转发到 executor 线程
+线程名是最稳定的观测点之一：它不需要你理解 Spring 内部有多少层，只要你能看到 `main` 变成了 `async-...`，你就知道“切线程”确实发生了。
 
-## 机制解释（Why）
+对应的最小证据入口：
 
-`@Async` 本质还是 **代理 + 拦截器**：
+- 没启用 async：`BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync`
+- 启用 async：`BootAsyncSchedulingLabTest#asyncRunsOnExecutorThreadWhenEnableAsyncPresent`
+- 把线程名当成断言：`BootAsyncSchedulingLabTest#executorThreadNamePrefixIsAStableObservationPoint`
 
-- 代理拦截方法调用
-- 把“真正执行”提交给 `TaskExecutor`
-- 对于返回 `Future/CompletableFuture` 的方法，把结果/异常封装起来返回
+## 为什么必须有 `@EnableAsync`
 
-## 源码与断点
+`@Async` 不是一个“运行期扫描注解、临时决定异步”的魔法。它依赖的是启动期建立的那套基础设施：
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
+- `AsyncAnnotationBeanPostProcessor` 在启动时识别 `@Async`
+- 它把目标 bean 包成代理，并在代理里挂上异步拦截器
+- 你调用方法时，拦截器才有机会把调用提交给 executor
 
-## 最小可运行实验（Lab）
+没有 `@EnableAsync`，这套基础设施不启动，代理也就不会出现。
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`BootAsyncSchedulingLabTest`
-- 建议命令：`mvn -pl :spring-boot-async-scheduling test`（或在 IDE 直接运行上面的测试类）
+## 小结
 
-### 复现/验证补充说明（来自原文迁移）
+这一章到这里其实就结束了：`@Async` 的核心不在注解本身，而在“代理 + 提交 + 线程池”。
 
-## 实验入口
-
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-实验入口已在章首提示框给出（先跑再读）。建议跑完后回到本章“证据链”逐条验证关键结论。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
-
-## 常见坑与边界
-
-### 坑点 1：以为写了 `@Async` 就一定异步，忽略了 `@EnableAsync` 是前提
-
-- Symptom：你以为方法已经“切线程”，但实际还是在调用线程里同步执行
-- Root Cause：`@Async` 依赖 Spring 创建代理与拦截器；没有 `@EnableAsync` 就不会建立这套基础设施
-- Verification：
-  - 没有 EnableAsync：`BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync`
-  - 有 EnableAsync：`BootAsyncSchedulingLabTest#asyncRunsOnExecutorThreadWhenEnableAsyncPresent`
-- Fix：先锁住“代理是否存在 + 线程名是否变化”的证据链，再讨论业务层面的并发语义
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+下一章会把视线从“有没有切线程”往前挪一步：**到底提交到了哪个 executor，以及为什么线程名是你的第一把尺子**。
 
 <!-- BOOKIFY:START -->
 
