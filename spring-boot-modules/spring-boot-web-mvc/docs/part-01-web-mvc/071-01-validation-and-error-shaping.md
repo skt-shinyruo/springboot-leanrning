@@ -31,25 +31,58 @@
 
 ## 机制主线
 
+把本章问题收敛成一句话：
+
+- **校验发生在“参数解析之后、进入业务逻辑之前”；错误形状发生在“异常被 resolver 链收敛之后”。**
+
+因此排障时不要只盯着“400”这一个信号，而是先问：**异常是什么、发生在哪个阶段、最终是谁把它翻译成了 `ApiError`**。
+
+在本模块里可以按 3 段主线理解（也是调试顺序）：
+
+1) **输入 → 对象**（message conversion / data binding）
+2) **对象 → 约束检查**（validation：`@Valid` / `@Validated` 决定是否触发）
+3) **异常 → 错误体**（ExceptionResolvers 命中 `GlobalExceptionHandler`，返回统一 `ApiError`）
+
+关键分支（你看到的异常类型与 `message` 不同）：
+
+- `@RequestBody + @Valid`：失败抛 `MethodArgumentNotValidException` → `ApiError.message = "validation_failed"`
+- `@ModelAttribute(+@Valid)`（表单/QueryString 走 binder）：失败抛 `BindException` → `ApiError.message = "validation_failed"`
+- `@Validated + 参数约束（@RequestParam/@PathVariable/...）`：失败抛 `HandlerMethodValidationException`（或 `ConstraintViolationException`）→ `ApiError.message = "method_validation_failed"`
 
 ## 你应该观察到什么（What to observe）
 
-- 当请求体字段不满足约束（`@NotBlank`、`@Email` 等）时：
-  - HTTP 状态码为 `400 Bad Request`
-  - 响应体是统一形状（`ApiError`），包含：
-    - `message = "validation_failed"`
-    - `fieldErrors` 中包含对应字段（`name`、`email`）
+把现象先钉在可断言入口上（推荐直接跑这些方法级用例）：
+
+- `BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid`（`POST /api/users`）：
+  - 400
+  - `message = "validation_failed"`
+  - `fieldErrors.name` / `fieldErrors.email` 存在
+- `BootWebMvcLabTest#createUserSucceedsWhenControllerOmitsValidAnnotation`（`POST /api/users/no-valid`）：
+  - 同样的无效字段也会 200（证明：没有 `@Valid` 时约束不会自动触发）
+- `BootWebMvcBindingDeepDiveLabTest#returnsValidationFailedWhenModelAttributeIsInvalid`（`POST /api/advanced/binding/form`）：
+  - 400
+  - `resolvedException` 是 `BindException`（binder 路径）
+  - `message = "validation_failed"`
+- `BootWebMvcBindingDeepDiveLabTest#returnsMethodValidationFailedWhenRequestParamViolatesConstraint`（`GET /api/advanced/binding/age-validated?age=-1`）：
+  - 400
+  - `message = "method_validation_failed"`
+  - `fieldErrors.age` 存在
 
 ## 机制解释（Why）
 
-可以把 Web MVC 的请求处理分成三段：
+在 Web MVC 里，“写了约束注解”并不等于“校验一定发生”，原因是校验是一个**可选分支**：
 
-在本模块里，错误形状由：
-- `spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part01_web_mvc/GlobalExceptionHandler.java`
-控制。
+- 只有当参数解析器在解析参数时识别到 `@Valid` / `@Validated`，才会调用 `Validator`。
+- 校验失败后，抛出的异常类型取决于你走的是 body 路径还是 binder 路径（见上面的分支表）。
 
-- 看到 400：先看响应体的 `fieldErrors`，定位是哪一个字段失败，再回到 DTO 的注解。
-- 校验没触发：确认 controller 入参是否带 `@Valid`；如果只写了约束注解但没写 `@Valid`，通常不会触发。
+而“错误响应形状”则发生在另一个阶段：异常被 `DispatcherServlet#processHandlerException` 交给 resolver 链处理，最终由某个 resolver 产出响应。
+
+在本模块中，这个“翻译器”是 `GlobalExceptionHandler`（`@RestControllerAdvice`）：
+
+- DTO/表单校验失败 → `validation_failed`
+- 方法参数校验失败 → `method_validation_failed`
+
+所以学习目标应该是：遇到 400 时，先用测试/断点把异常类型固定下来，再谈“响应体怎么设计”，避免把不同根因揉成同一个错误体。
 
 ## 方法级校验（Method Validation）在 Controller 边界
 
@@ -84,10 +117,10 @@
 9. 校验失败抛出 `MethodArgumentNotValidException`
 10. `DispatcherServlet#processHandlerException` → `ExceptionHandlerExceptionResolver` 命中 `GlobalExceptionHandler`
 
-对应的机制内核解释见：
-- `docs/web-mvc/spring-boot-web-mvc/part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md`
-- `docs/web-mvc/spring-boot-web-mvc/part-03-web-mvc-internals/02-argument-resolver-and-binder.md`
-- `docs/web-mvc/spring-boot-web-mvc/part-03-web-mvc-internals/04-exception-resolvers-and-error-flow.md`
+对应的机制内核解释见（建议按顺序）：
+- [DispatcherServlet 主链路（把选路/参数解析/异常串起来）](../part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md)
+- [ArgumentResolver 与 Binder（解析参数/绑定/校验触发点）](../part-03-web-mvc-internals/02-argument-resolver-and-binder.md)
+- [ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](../part-03-web-mvc-internals/069-04-exception-resolvers-and-error-flow.md)
 
 ## 最小可运行实验（Lab）
 
@@ -134,8 +167,8 @@
 
 进一步阅读（只做必要连接，不扩散篇幅）：
 
-- Validation 模块（Bean Validation 机制本身）：`helloagents/wiki/modules/spring-core-validation.md`
-- Beans 模块（类型转换/值解析等底层支撑）：`helloagents/wiki/modules/spring-core-beans.md`
+- Validation 模块（Bean Validation 机制本身）：[`helloagents/wiki/modules/spring-core-validation.md`](../../../../helloagents/wiki/modules/spring-core-validation.md)
+- Beans 模块（类型转换/值解析等底层支撑）：[`helloagents/wiki/modules/spring-core-beans.md`](../../../../helloagents/wiki/modules/spring-core-beans.md)
 
 ## 常见坑与边界
 
@@ -145,9 +178,21 @@
 2) **边界校验（validation）**：`@Valid` 触发 Bean Validation，对 DTO 执行约束检查
 3) **错误映射（error mapping）**：异常被 `@RestControllerAdvice` 捕获，转换成你的 `ApiError` 形状
 
+最常见的三类误判：
+
+- DTO 上有约束注解，但 controller 参数缺 `@Valid`：不会触发校验（见对照用例 `BootWebMvcLabTest#createUserSucceedsWhenControllerOmitsValidAnnotation`）。
+- 只处理 `MethodArgumentNotValidException`：会漏掉 binder 路径的 `BindException`（表单 / `@ModelAttribute`）。
+- 把方法级校验当成 DTO 校验：建议区分 `validation_failed` 与 `method_validation_failed`，否则客户端只能靠猜根因。
+
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+本章把“校验”与“错误响应形状”两件事钉在可验证入口上：
+
+- **校验触发点**：`@Valid` / `@Validated` 决定是否进入校验分支；缺一不可。
+- **异常类型**：`@RequestBody` 校验失败是 `MethodArgumentNotValidException`；binder（表单/`@ModelAttribute`）校验失败是 `BindException`；方法级参数约束是 `HandlerMethodValidationException`（或 `ConstraintViolationException`）。
+- **错误形状来源**：响应体之所以是 `ApiError`，是因为 resolver 链命中了 `GlobalExceptionHandler`（而不是回落到默认错误页或其它 envelope）。
+
+下一章会把“坏输入”系统分型：同样是 400，如何用 resolver 链把根因显式化（malformed JSON / type mismatch / validation ...），并把这些分支固化成可回归契约。
 
 <!-- BOOKIFY:START -->
 
