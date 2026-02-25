@@ -57,9 +57,9 @@ mvn -pl :spring-core-profiles test
 
 > 本模块已补齐 `docs/`，建议按“先理解激活与选择 → 再用 runner 证明”的顺序：
 
-1. [深挖指南](docs/part-00-guide/151-00-deep-dive-guide.md)
-2. [Profile 激活与 Bean 选择](docs/part-01-profiles/152-01-profile-activation-and-bean-selection.md)
-3. [常见坑清单](docs/appendix/153-90-common-pitfalls.md) + [自测题](docs/appendix/154-99-self-check.md)
+1. [深挖指南](docs/part-00-guide/02-deep-dive-guide.md)
+2. [Profile 激活与 Bean 选择](docs/part-01-profiles/01-profile-activation-and-bean-selection.md)
+3. [常见坑清单](docs/appendix/01-common-pitfalls.md) + [自测题](docs/appendix/02-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

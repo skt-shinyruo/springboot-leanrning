@@ -20,9 +20,9 @@
 1. **把入口从“列资源”升级为“给路径”**
    - 新增一个非常短的“继续深化从哪里开始（Round 2）”段落（位置建议：紧贴“可从此处开始”之后）。
    - 用 2–3 条“选择题式分流”描述读者的当前状态，并给出最短下一步动作：
-     - **现象驱动**：先去 `appendix/92-knowledge-map.md` 定位“现象→章节→断点入口→Lab”，再回到对应章节阅读主线。
-     - **断点驱动**：先看 `part-00-guide/013-02-breakpoint-map.md` 挑 1 组断点（C1–C7），再用本模块已有 Lab 把变量变化观察到。
-     - **生产排障驱动**：先走 `appendix/94-production-troubleshooting-checklist.md` 的最短 SOP，把问题分型为定义层/实例层/代理替换/值解析，再回链到章节与用例。
+     - **现象驱动**：先去 `appendix/03-knowledge-map.md` 定位“现象→章节→断点入口→Lab”，再回到对应章节阅读主线。
+     - **断点驱动**：先看 `part-00-guide/07-breakpoint-map.md` 挑 1 组断点（C1–C7），再用本模块已有 Lab 把变量变化观察到。
+     - **生产排障驱动**：先走 `appendix/05-production-troubleshooting-checklist.md` 的最短 SOP，把问题分型为定义层/实例层/代理替换/值解析，再回链到章节与用例。
 2. **在“症状驱动导航”表旁补“下一步验证”的统一指向**
    - 不需要把表格做得更大；建议在表格上方或下方补一句固定提示：
      - “定位到章节后，下一步建议跳到知识地图/断点地图挑入口（链接）”
@@ -44,10 +44,10 @@
 
 ### Round 2 的补强重点（建议落地）
 1. **补齐两种入口的使用方式（不是新模板，是两条路径）**
-   - **从现象进入**：建议把入口锚定到 `appendix/92-knowledge-map.md`：
+   - **从现象进入**：建议把入口锚定到 `appendix/03-knowledge-map.md`：
      - 先在知识地图定位章节与推荐 Lab/Test
      - 再回到章节正文末尾的 `AE-DEEPENING`（或章节配套 Lab）继续加深
-   - **从断点进入**：建议把入口锚定到 `part-00-guide/013-02-breakpoint-map.md`：
+   - **从断点进入**：建议把入口锚定到 `part-00-guide/07-breakpoint-map.md`：
      - 先选断点组（C1–C7）确定处于 refresh 的哪一段
      - 再回到对应章节，用策略文档帮助“把观察收敛为结论/反例/排错路径”
 2. **把“策略文件索引”前置成“从哪里开始（短版）”**
@@ -55,7 +55,7 @@
 
 ---
 
-## 3) `spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`（知识地图）
+## 3) `spring-core-modules/spring-core-beans/docs/appendix/03-knowledge-map.md`（知识地图）
 
 ### 当前已有资产（基于现状观察）
 - 已提供：
@@ -76,7 +76,7 @@
 
 ---
 
-## 4) `spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`（断点地图）
+## 4) `spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`（断点地图）
 
 ### 当前已有资产（基于现状观察）
 - C1–C7 已按 refresh 时间线组织，且每段都有“入口断点/观察点/决定性分支”。
@@ -88,14 +88,14 @@
    - 只覆盖高频 5 类即可（定义注册/注入歧义/循环依赖/代理替换/@Value）。
    - 每类给出：
      - 对应断点组（C2/C6/C5/C7/…）
-     - 对应知识地图入口（回链到 `appendix/92-knowledge-map.md` 的相关行或章节）
+     - 对应知识地图入口（回链到 `appendix/03-knowledge-map.md` 的相关行或章节）
 2. **为 C1–C7 增加稳定锚点（可选，但建议）**
    - 目的不是“美化”，而是让知识地图与排障清单能稳定链接到断点组。
    - 原则：只加锚点，不改变章节结构与编号，避免造成阅读习惯变化。
 
 ---
 
-## 5) `spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`（生产排障清单）
+## 5) `spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`（生产排障清单）
 
 ### 当前已有资产（基于现状观察）
 - 已有：

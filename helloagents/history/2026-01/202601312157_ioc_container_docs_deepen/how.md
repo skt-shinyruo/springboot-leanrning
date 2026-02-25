@@ -25,7 +25,7 @@
 
 > 说明：下列策略的“新增内容位置/标题命名/是否加图”以每章既有结构为准，不强制统一模板；原则是“补强关键缺口但不推倒重写”。
 
-### 1) 020-01-bean-mental-model.md
+### 1) 09-bean-mental-model.md
 
 **补强目标：** 把 BeanDefinition/BeanFactory/ApplicationContext/扩展点/缓存与主线统一到一个可稳定复用的心智模型里，读者读完能解释“为什么下一章要讲这个”。
 
@@ -58,7 +58,7 @@
 
 ---
 
-### 2) 02-bean-registration.md
+### 2) 01-bean-registration.md
 
 **补强目标：** 让读者把所有注册入口统一映射到 BeanDefinitionRegistry，并能解释“注册时点”为什么会影响后续行为（尤其是后置处理器与配置类增强）。
 
@@ -90,7 +90,7 @@
 
 ---
 
-### 3) 014-03-dependency-injection-resolution.md
+### 3) 02-dependency-injection-resolution.md
 
 **补强目标：** 把依赖解析从“规则列表”提升为“可调试的决策树”，读者能从注入点出发推导候选集合与过滤路径。
 
@@ -119,7 +119,7 @@
 
 ---
 
-### 4) 015-04-scope-and-prototype.md
+### 4) 03-scope-and-prototype.md
 
 **补强目标：** 把 scope 讲成“语义边界”，而不是“注解用法”；重点让读者理解 prototype 的“创建/注入/销毁边界”。
 
@@ -128,9 +128,9 @@
 - 补强 scoped proxy 的本质：代理对象稳定、目标对象按 scope 变化；说明 `scopedTarget.*` 的命名与容器内部表现。
 - 强化“销毁回调边界”：prototype 的 destroy 为什么不由容器统一回收，何时需要自管资源（并给出推荐写法）。
 - 增加与后续章节的链接点：该章结尾建议显式指向
-  - `016-05-lifecycle-and-callbacks.md`（解释 destroy 边界与生命周期插槽）
-  - `09-circular-dependencies.md`（scope 与循环依赖/缓存交互的边界）
-  - `part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`（如果需要进一步深入）
+  - `04-lifecycle-and-callbacks.md`（解释 destroy 边界与生命周期插槽）
+  - `08-circular-dependencies.md`（scope 与循环依赖/缓存交互的边界）
+  - `part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md`（如果需要进一步深入）
 
 > 可选增强（仅当本章缺少可运行复现时执行）：补充一个 scope/prototype 的 LabTest，让读者能在断点中看到 scopedTarget 与 provider 取值路径。
 
@@ -146,7 +146,7 @@
 
 ---
 
-### 5) 016-05-lifecycle-and-callbacks.md
+### 5) 04-lifecycle-and-callbacks.md
 
 **补强目标：** 让读者把生命周期回调“装入顺序模型”，并能解释代理/后置处理器介入后为什么会出现顺序差异。
 
@@ -170,7 +170,7 @@
 
 ---
 
-### 6) 017-06-post-processors.md
+### 6) 05-post-processors.md
 
 **补强目标：** 把后置处理器讲成“容器可编程能力的核心”，并补齐未完点，让读者能解释 BFPP/BDRPP/BPP 的时序、排序、以及错过的原因。
 
@@ -195,7 +195,7 @@
 
 ---
 
-### 7) 018-07-configuration-enhancement.md
+### 7) 06-configuration-enhancement.md
 
 **补强目标：** 让读者理解 @Configuration 增强不是“魔法”，而是为保证 @Bean 方法语义而做的代理；同时讲清 `proxyBeanMethods` 的权衡。
 
@@ -216,7 +216,7 @@
 
 ---
 
-### 8) 08-factorybean.md
+### 8) 07-factorybean.md
 
 **补强目标：** 把 FactoryBean 从“用法”提升到“容器语义”：产物缓存、类型推断、提前初始化、与循环依赖/AOP 的交互边界。
 
@@ -239,7 +239,7 @@
 
 ---
 
-### 9) 09-circular-dependencies.md
+### 9) 08-circular-dependencies.md
 
 **补强目标：** 让读者清晰掌握“可解/不可解”的边界，并能在真实项目中给出可落地的解环方案与权衡。
 
@@ -290,7 +290,7 @@
 > 2) 不追求统一模板；每章只补该章最需要的段落，避免无边界扩写。
 > 3) 每个“段落”都以“读者能用断点/日志验证”为落点，优先复用现有 `*LabTest.java`。
 
-### A) 020-01-bean-mental-model.md（段落级建议）
+### A) 09-bean-mental-model.md（段落级建议）
 
 1. 段落：容器世界观三件套（描述/运行时/编排）
    - 解释 BeanDefinition 是“描述”，BeanFactory 是“运行时容器”，ApplicationContext 是“编排 + 基础设施整合”。
@@ -311,7 +311,7 @@
 5. 段落：动手验证（推荐 Lab + 断点入口）
    - 将本章的断点入口与 Lab 显式绑定，给读者“跑起来 → 打断点 → 看对象/缓存/调用栈”的最短路径。
 
-### B) 02-bean-registration.md（段落级建议）
+### B) 01-bean-registration.md（段落级建议）
 
 1. 段落：注册入口全景图（分类而不是罗列）
    - 将入口按“扫描/解析/显式注册”归类：@ComponentScan、@Import、@Bean、XML、编程式注册。
@@ -332,7 +332,7 @@
 5. 段落：动手验证（最小复现路径）
    - 给出一条“对照实验”路径：同一 Bean 用两种入口注册，比较 BeanDefinition 差异并解释来源字段。
 
-### C) 014-03-dependency-injection-resolution.md（段落级建议）
+### C) 02-dependency-injection-resolution.md（段落级建议）
 
 1. 段落：先画注入点画像，再谈候选集合
    - 注入点由“类型 + 泛型 + 注解 + 名称（字段名/参数名）”共同定义，DependencyDescriptor 承载这些信息。
@@ -356,7 +356,7 @@
 6. 段落：动手验证（以断点驱动理解）
    - 给出 `resolveDependency/findAutowireCandidates/determineAutowireCandidate` 三个断点的观察目标（候选列表如何变化、为何选中某个 Bean）。
 
-### D) 015-04-scope-and-prototype.md（段落级建议）
+### D) 03-scope-and-prototype.md（段落级建议）
 
 1. 段落：scope 不是注解，而是语义边界
    - 强调 scope 影响：缓存策略、注入语义、生命周期/销毁边界。
@@ -376,7 +376,7 @@
 5. 段落：销毁回调边界与资源管理建议
    - prototype 资源释放要自管；给出推荐写法与注意点（避免在 destroy 回调上产生错误期待）。
 
-### E) 016-05-lifecycle-and-callbacks.md（段落级建议）
+### E) 04-lifecycle-and-callbacks.md（段落级建议）
 
 1. 段落：生命周期顺序的最小主线（先把顺序讲清）
    - 实例化 → 属性填充 → aware → BPP before-init → init 回调 → BPP after-init → ready。
@@ -396,7 +396,7 @@
 5. 段落：动手验证（用 Lab 验证顺序与对象身份）
    - 建议读者通过 Lab 观察：同一 Bean 在不同阶段的对象身份变化与回调触发点。
 
-### F) 017-06-post-processors.md（段落级建议）
+### F) 05-post-processors.md（段落级建议）
 
 1. 段落：三类 PostProcessor 的职责边界（能改什么）
    - BDRPP：注册/补充 BeanDefinition；BFPP：修改 BeanFactory/BeanDefinition；BPP：参与 Bean 创建并可能包装代理。
@@ -419,7 +419,7 @@
 6. 段落：动手验证（最小复现 + 断点观察）
    - 建议把“错过 BPP”的现象与断点绑定：BPP 注册之前/之后创建的对象差异。
 
-### G) 018-07-configuration-enhancement.md（段落级建议）
+### G) 06-configuration-enhancement.md（段落级建议）
 
 1. 段落：full vs lite 不是形式差异，而是语义保证差异
    - full 模式保证 @Bean 方法语义（避免跨方法调用产生多个实例）；lite 更接近“普通 @Bean 方法工厂”。
@@ -437,7 +437,7 @@
 5. 段落：动手验证（用断点观察增强与方法拦截）
    - 建议读者用断点观察：增强发生点、增强后类名、以及 @Bean 方法调用路径。
 
-### H) 08-factorybean.md（段落级建议）
+### H) 07-factorybean.md（段落级建议）
 
 1. 段落：两套身份与两套命名空间（工厂 vs 产物）
    - 解释为什么 `&name` 取的是 FactoryBean 本身，`name` 取的是产物；避免“拿错对象”的排错难题。
@@ -454,7 +454,7 @@
 5. 段落：动手验证（用 Lab 观察“工厂/产物/缓存”）
    - 建议读者通过 Lab 验证：什么时候拿到工厂、什么时候拿到产物、缓存命中与创建次数。
 
-### I) 09-circular-dependencies.md（段落级建议）
+### I) 08-circular-dependencies.md（段落级建议）
 
 1. 段落：先画边界矩阵，再谈三级缓存
    - 以“注入方式（构造器/Setter）× scope（singleton/prototype）× 代理介入”快速判断可解性。

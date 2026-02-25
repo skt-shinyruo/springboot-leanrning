@@ -5,7 +5,7 @@
 ### Core Technologies
 - **Markdown 文档**：`spring-core-modules/spring-core-beans/docs/**/*.md`
 - **可验证用例（Labs/Explore）**：`spring-core-modules/spring-core-beans/src/test/**`
-- **断点与观测资产**：`docs/part-00-guide/013-02-breakpoint-map.md` + `docs/appendix/98-debugger-pack.md`
+- **断点与观测资产**：`docs/part-00-guide/07-breakpoint-map.md` + `docs/appendix/09-debugger-pack.md`
 
 ### Implementation Key Points
 
@@ -41,7 +41,7 @@
   - 增加“症状入口索引”，与 `docs/README.md` 的症状导航表互链且术语一致。
   - 增加 Debugger Pack/断点地图的使用分流：什么时候看断点地图（主线），什么时候看 Debugger Pack（专题）。
 - 深入：
-  - 增加“面试复述入口”：从 `appendix/93-interview-playbook.md` 反向回到章节与 Lab 的证明路径。
+  - 增加“面试复述入口”：从 `appendix/04-interview-playbook.md` 反向回到章节与 Lab 的证明路径。
 
 #### Docs TOC（导航中枢）
 - 文件：`spring-core-modules/spring-core-beans/docs/README.md`
@@ -59,18 +59,18 @@
 ### Part 00｜Guide（学习路径与证据链方法论）
 
 #### 第 09 章：00. 基础问题索引（Why Index）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/01-why-index.md`
 - 补充：
   - 为每个“为什么”问题补“最短证据链入口”（关键方法 + 观察点），避免只给结论。
   - 补“易混问题对照”：同一句问题在不同机制域的不同答案（例如“为什么没代理”可能是 BPP 缺失/短路/自调用）。
 - 完善：
-  - 让 Why Index 与 `92-knowledge-map.md`、`94-production-troubleshooting-checklist.md`、`98-debugger-pack.md` 形成互链：从问题到章节/断点/Lab 的跳转路径固定化。
+  - 让 Why Index 与 `03-knowledge-map.md`、`05-production-troubleshooting-checklist.md`、`09-debugger-pack.md` 形成互链：从问题到章节/断点/Lab 的跳转路径固定化。
   - 为高频问题增加“反例触发条件”（什么时候这条解释不成立、需要转向另一章）。
 - 深入：
   - 增加“面试追问版本”：把 Why Index 的问题转成可复述答案结构（结论→证据链→反例→追问）。
 
 #### 第 10 章：主线时间线（refresh → create bean）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/010-03-mainline-timeline.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/02-mainline-timeline.md`
 - 补充：
   - 为每个阶段补“主线关键窗口最短调用链”：入口方法 + 必看对象快照（definitions / processors / singleton caches）。
   - 补“时间线误判反例”：把“创建顺序”与“注入选择”混为一谈；把 `lazy-init` 与注入点 `@Lazy` 混为一谈。
@@ -81,7 +81,7 @@
   - 补“主线复述模板”：用“主线→分支→证据链”三句复述，作为面试与排障统一表达。
 
 #### 第 11 章：深挖指南（Bean 三层模型）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`
 - 补充：
   - 将“三层模型”进一步下沉为“第一断点入口选择器”（定义层/实例层/最终对象），并给最短调用链。
   - 补“新手调试反例”：断点不命中/代理层过深/过早 `getBean` 导致现象偏移。
@@ -92,7 +92,7 @@
   - 把每章“自检要点”改写为“面试追问回答框架”，并绑定可证明路径（断点/Lab）。
 
 #### 第 11 章：关键分支矩阵（Branch Decision Matrix）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/04-branch-decision-matrix.md`
 - 补充：
   - 将每个分支明确到“真实 if/return 发生点”（入口方法 + 分支条件 + 关键变量）。
   - 为每个分支补 1 个反例：何时会被更强信号覆盖（例如 `@Primary` 覆盖 `@Priority`）。
@@ -103,7 +103,7 @@
   - 补“追问题”：让读者能解释“为什么是这个顺序”，并给证据链。
 
 #### 第 12 章：30 分钟快速闭环（最小实验）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/05-quickstart-30min.md`
 - 补充：
   - 为每个实验补“机制证据链入口”：跑完后下一步去哪下断点证明结论。
   - 补“常见偏差反例”：为什么你可能看不到预期现象（版本差异/代理/初始化顺序）。
@@ -114,7 +114,7 @@
   - 增加“3 分钟复述训练”：每个实验给 1 个面试式回答模板（可证明）。
 
 #### 第 13 章：`refresh()` 调用链（主线）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/06-applicationcontext-refresh-call-chain.md`
 - 补充：
   - 对关键节点补“为什么必须在这里做”（例如为何先 BFPP/再 BPP、为何 `preInstantiateSingletons` 在后半段）。
   - 补“过早 getBean 反例”：如何导致 BPP 未注册/注解不生效/占位符没解析等偏差。
@@ -125,7 +125,7 @@
   - 增加“refresh 主线复述题”：复述 6 个关键节点及其作用（附证据链入口）。
 
 #### 第 13 章：断点地图（主线断点套件）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`
 - 补充：
   - 为每个断点补“它在证明什么分支”，避免只背方法名。
   - 补“断点误用反例”：哪些断点可能因版本/环境不稳定，给替代入口。
@@ -140,7 +140,7 @@
 ### Part 01｜IoC Container（注册/注入/生命周期/扩展点）
 
 #### 02. Bean 注册入口：扫描、@Bean、@Import、registrar
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
 - 补充：
   - 明确“最终注册 BeanDefinition 的统一落点”与最短调用链：不同入口最终汇聚到哪里。
   - 补 Import 体系反例：ImportSelector/DeferredImportSelector/Registrar 的典型误用与排障点。
@@ -151,7 +151,7 @@
   - 增加“面试追问”：为什么说“注册的第一性对象是 BeanDefinition”，如何证明。
 
 #### 第 14 章：依赖注入解析（类型/名称/@Qualifier/@Primary）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
 - 补充：
   - 补“候选收集→收敛→最终选择”的算法骨架（最短调用链 + 关键决策点）。
   - 补反例：`@Order` 不能选单候选、by-name fallback 边界、泛型信息丢失导致匹配失败。
@@ -162,7 +162,7 @@
   - 补“面试追问”：`@Primary/@Qualifier/@Priority` 谁更强？为什么？如何证明。
 
 #### 第 15 章：Scope 与 prototype 注入陷阱
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
 - 补充：
   - 补“prototype 注入 singleton 为什么像单例”的证据链（注入时机 vs 创建时机）。
   - 补反例：prototype 循环依赖、prototype 销毁不自动、scoped proxy 的 equals/hashCode/序列化坑。
@@ -173,7 +173,7 @@
   - 增加选择策略：`@Lookup`/ObjectProvider/scoped proxy 何时用谁（给可证明理由）。
 
 #### 第 16 章：生命周期（初始化/销毁/回调）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/04-lifecycle-and-callbacks.md`
 - 补充：
   - 补“完整顺序 + 关键窗口”的证据链（Aware/BPP/init/destroy），并明确发生在 raw 还是 exposed。
   - 补反例：init 抛异常导致 destroy 不执行、prototype 不自动销毁、代理与回调顺序误判。
@@ -184,7 +184,7 @@
   - 增加面试追问：哪些回调能替代哪些？为什么推荐构造器注入 + PostConstruct。
 
 #### 第 17 章：容器扩展点（BFPP vs BPP）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/05-post-processors.md`
 - 补充：
   - 用方法级证明“能/不能做什么”：为什么 BPP 不可靠改定义，为什么 BFPP 拿不到实例态。
   - 补反例：错误时机 `getBean` 导致 BPP 链不完整、手工注册破坏顺序的坑。
@@ -195,7 +195,7 @@
   - 增加面试追问：BDRPP 为什么更强？与 ImportBeanDefinitionRegistrar 的边界如何说明。
 
 #### 第 18 章：`@Configuration` 增强与 `@Bean` 语义
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/018-07-configuration-enhancement.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/06-configuration-enhancement.md`
 - 补充：
   - 补 full vs lite 判定链路与证据点（为什么会/不会增强）。
   - 补反例：`proxyBeanMethods=false` 导致“多次调用多次 new”，以及与 AOP 代理混淆点。
@@ -206,7 +206,7 @@
   - 增加面试追问：配置类增强与 AOP 代理有何不同？如何证明。
 
 #### 第 20 章：Bean 心智模型（三层：Definition/Instance/Exposed）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-bean-mental-model.md`
 - 补充：
   - 将 pre/early/after-init 三个替换窗口做成“证据链对照表”，并给每类窗口的关键入口方法。
   - 补反例：early reference 与最终代理不一致导致行为差异；FactoryBean 造成的“类型错觉”。
@@ -217,7 +217,7 @@
   - 增加面试追问：BeanFactory vs ApplicationContext 差异如何落到 refresh 证据链。
 
 #### 08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-factorybean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/07-factorybean.md`
 - 补充：
   - 补 `getBean` vs `&getBean` 的证据链与缓存语义（FactoryBean 自身 vs product）。
   - 补反例：`getObjectType` 返回 null 导致 type matching 失效、`isSingleton` 声明不一致导致缓存错觉。
@@ -228,7 +228,7 @@
   - 增加面试追问：FactoryBean 在 Boot auto-config 中为何高频？价值与风险如何解释。
 
 #### 09. 循环依赖：现象、原因与规避（constructor vs setter）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md`
 - 补充：
   - 补“构造器失败 vs setter 可能成功”的证据链（三级缓存写入/读出窗口）。
   - 补反例：prototype 循环依赖、AOP 介入导致 early/final 不一致、`allowCircularReferences=false` 的行为差异。
@@ -243,7 +243,7 @@
 ### Part 02｜Boot Auto-Config（条件/导入/顺序/可观测）
 
 #### 第 19 章：调试与自检（如何“看见”容器在做什么）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/01-debugging-and-observability.md`
 - 补充：
   - 补“定义层可观测证据链”：如何证明一个 BeanDefinition 是谁注册的/何时注册的/是否被改写。
   - 补反例：debug 日志误读、条件评估报告与真实注册行为不一致时的定位方法。
@@ -254,7 +254,7 @@
   - 增加面试追问：Boot 为什么会影响 Bean 图？如何用证据链解释 back-off。
 
 #### 09. Auto-Configuration 顺序（偶发失效的根因）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/02-auto-config-ordering.md`
 - 补充：
   - 补“顺序影响条件命中”的证据链：导入顺序/条件评估时机/定义是否已存在的交互。
   - 补反例：`@AutoConfigureBefore/After/Order` 的边界；同一条件在不同阶段评估导致“看似偶发”。
@@ -265,7 +265,7 @@
   - 增加面试追问：为什么建议把条件写成“可确定性强”的形式？如何解释 matchIfMissing 三态。
 
 #### 第 21 章：Boot 自动装配如何影响 Bean（导入与 back-off）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md`
 - 补充：
   - 补“导入链路证据链”：候选收集→导入→注册 BeanDefinition 的最短调用链。
   - 补反例：用户 bean 顶掉 auto-config / `@ConditionalOnMissingBean` 误判 / FactoryBean+type matching 导致条件误命中。
@@ -280,7 +280,7 @@
 ### Part 03｜Container Internals（处理器/排序/短路/early/final）
 
 #### 第 22 章：容器启动与基础设施处理器（为什么注解能工作）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/01-container-bootstrap-and-infrastructure.md`
 - 补充：
   - 补“注解能力→处理器→生效窗口”的证据链对照表，并落到入口方法。
   - 补反例：缺失基础设施时哪些注解不生效；过早 `getBean` 导致处理器未注册。
@@ -291,7 +291,7 @@
   - 增加面试追问：注解不是魔法，是处理器装进 refresh 主线（证据链）。
 
 #### 13. BDRPP：注册阶段动态加定义
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/13-bdrpp-definition-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/02-bdrpp-definition-registration.md`
 - 补充：
   - 补“动态加定义”进入主线的证据链：何时被调用、对 registry 造成何种影响。
   - 补反例：滥用导致 bean graph 难推断；与 ImportBeanDefinitionRegistrar 混用导致时机误判。
@@ -302,7 +302,7 @@
   - 增加面试追问：BDRPP 与 BFPP 边界与适用场景（可证明）。
 
 #### 14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/03-post-processor-ordering.md`
 - 补充：
   - 补“排序算法骨架”与关键列表快照（收集→排序→执行）。
   - 补反例：programmatic 注册绕过默认排序；`@Order` 与 `@Priority` 的边界误判。
@@ -313,7 +313,7 @@
   - 增加面试追问：为什么 PriorityOrdered 必须先于 Ordered？给可证明后果。
 
 #### 15. 实例化前短路：postProcessBeforeInstantiation
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/04-pre-instantiation-short-circuit.md`
 - 补充：
   - 补“短路跳过了什么/仍会做什么”的证据链（构造器/populate/initialize/销毁）。
   - 补反例：短路导致字段注入没发生、生命周期回调不符合预期、代理链难追踪。
@@ -324,7 +324,7 @@
   - 增加面试追问：短路与 after-init proxy 有何区别？如何证明。
 
 #### 16. early reference 与循环依赖：getEarlyBeanReference
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
 - 补充：
   - 补三级缓存“写入/读出时间点”与对象类型（raw/early/final）证据链对照。
   - 补反例：early 与 final 不一致的后果（事务/AOP/懒代理叠加），以及 `allowRawInjectionDespiteWrapping` 边界。
@@ -335,7 +335,7 @@
   - 增加面试追问：为什么“能解不等于安全”？给证据链。
 
 #### 17. 生命周期回调顺序：Aware / BPP / init / destroy
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/17-lifecycle-callback-order.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/06-lifecycle-callback-order.md`
 - 补充：
   - 补“顺序与触发点”证据链：入口方法串起每类回调，并明确 raw vs exposed。
   - 补反例：prototype 不销毁误判、destroy 顺序与 dependent 图的交互。
@@ -346,7 +346,7 @@
   - 增加面试追问：SmartInitializingSingleton/SmartLifecycle 与普通回调的边界。
 
 #### 18. refresh → doCreateBean 主线（源码级）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/07-refresh-to-bean-creation-mainline.md`
 - 补充：
   - 增加“主线分层索引 + 最短调用链”：快速定位 instantiate/populate/initialize/代理替换/缓存窗口。
   - 为关键分支补 1 个失败/偏差案例（FactoryBean/@Lazy/dependsOn/parent/prototype guard）。
@@ -361,7 +361,7 @@
 ### Part 04｜Wiring & Boundaries（工程边界与真实坑位）
 
 #### 第 23 章：18. Lazy（lazy-init vs `@Lazy` 注入点）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/01-lazy-semantics.md`
 - 补充：
   - 补“两类 Lazy 的证据链对照”：lazy-init 创建时机 vs 注入点 `@Lazy` 的代理时机。
   - 补反例：懒代理叠加 AOP/循环依赖时的偏差；final 类/方法限制。
@@ -372,7 +372,7 @@
   - 增加选择策略：`@Lazy` vs ObjectProvider 的边界与可证明理由。
 
 #### 19. dependsOn：强制初始化顺序
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-depends-on.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/02-depends-on.md`
 - 补充：
   - 补 `doGetBean` 内 dependsOn 分支证据链（含依赖图写入点）。
   - 补反例：Circular depends-on 与三级缓存循环依赖的误判对照。
@@ -383,7 +383,7 @@
   - 增加面试追问：dependsOn 为什么不等于注入依赖？如何证明。
 
 #### 20. registerResolvableDependency：能注入但不是 Bean
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/03-resolvable-dependency.md`
 - 补充：
   - 补“命中在 doResolveDependency 之前”的证据链，并对比 bean candidates 分支。
   - 补反例：滥用导致候选收敛被绕过、与 `@Qualifier` 语义冲突。
@@ -394,7 +394,7 @@
   - 增加面试追问：它与 *Aware 的边界与适用场景。
 
 #### 21. 父子 ApplicationContext：可见性与覆盖边界
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-context-hierarchy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/04-context-hierarchy.md`
 - 补充：
   - 补“可见性规则与搜索顺序”的方法级证据链（child→parent）。
   - 补反例：同名 bean 覆盖、同 type 不可见、event/环境继承误判。
@@ -405,7 +405,7 @@
   - 增加面试追问：ApplicationContext 的“加法能力”与 hierarchy 如何关联。
 
 #### 22. Bean 名称与 alias
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/05-bean-names-and-aliases.md`
 - 补充：
   - 补 alias 注册结构与 lookup 路径证据链，并对比按类型发现。
   - 补反例：`@Resource` 注入错对象、FactoryBean `&` 前缀误判、覆盖策略冲突。
@@ -416,7 +416,7 @@
   - 增加面试追问：为什么说 `@Resource` 更像按名称找？alias 如何影响它。
 
 #### 23. FactoryBean 深潜：类型匹配与缓存语义
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md`
 - 补充：
   - 补 type matching 算法与 `getObjectType/isSingleton` 证据链，并给关键分支快照。
   - 补反例：`getObjectType=null` 导致条件误判/按类型发现失败；SmartFactoryBean 与 eager init 边界。
@@ -427,7 +427,7 @@
   - 增加面试追问：FactoryBean 的价值与高频坑点（两个缓存）如何证明。
 
 #### 24. BeanDefinition 覆盖（overriding）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md`
 - 补充：
   - 补覆盖发生在注册阶段的证据链与配置入口（Framework/Boot 差异明确）。
   - 补反例：覆盖导致注入命中改变但不易察觉；与 auto-config back-off 的交互误判。
@@ -438,7 +438,7 @@
   - 增加面试追问：为什么团队通常不建议默认允许覆盖？给工程化理由与证据。
 
 #### 25. 手工添加 BeanPostProcessor：顺序与陷阱
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
 - 补充：
   - 补“绕过默认注册流程导致顺序变化”的证据链与关键列表快照。
   - 补反例：增强偶发不生效、代理链丢失、`@Autowired/@Value` 行为偏移。
@@ -449,7 +449,7 @@
   - 增加面试追问：为什么不建议业务侧手工注册 BPP？可证明副作用有哪些。
 
 #### 26. SmartInitializingSingleton：所有单例创建完再做事
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/09-smart-initializing-singleton.md`
 - 补充：
   - 补它在主线中的触发窗口证据链（与 `preInstantiateSingletons`/refresh 事件对照）。
   - 补反例：lazy 单例不在其中；过早初始化导致副作用。
@@ -460,7 +460,7 @@
   - 增加面试追问：它与 ContextRefreshedEvent 的差异与选择策略。
 
 #### 27. SmartLifecycle：start/stop 时机与 phase 顺序
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/10-smart-lifecycle-phase.md`
 - 补充：
   - 补 phase 排序算法证据链与关键列表快照。
   - 补反例：autoStartup 与 isRunning 误判、stop 未执行导致资源泄漏。
@@ -471,7 +471,7 @@
   - 增加面试追问：SmartLifecycle 与普通 init/destroy 的边界与适用场景。
 
 #### 28. 自定义 Scope + scoped proxy
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md`
 - 补充：
   - 补 scope 契约（get/remove/registerDestructionCallback）的证据链与典型实现骨架。
   - 补反例：thread-local 泄漏、销毁回调不执行、代理导致类型信息丢失。
@@ -482,7 +482,7 @@
   - 增加面试追问：何时不该自定义 scope？替代方案怎么选。
 
 #### 29. FactoryBean 边界：getObjectType 返回 null
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/12-factorybean-edge-cases.md`
 - 补充：
   - 补“type matching 失效”的算法证据链（条件判断/候选收集如何受影响）。
   - 补反例：按类型注入失效但 `getBean(name)` 仍可用、条件装配误判。
@@ -493,7 +493,7 @@
   - 增加面试追问：为什么 getObjectType 这么关键？如何用证据链解释。
 
 #### 30. 注入阶段：field vs constructor（`postProcessProperties`）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md`
 - 补充：
   - 补“注入发生在哪一步”的证据链：构造器注入 vs 属性填充 vs `@PostConstruct`。
   - 补反例：field injection 构造器不可用导致 NPE；循环依赖更难排；测试隔离更差。
@@ -504,7 +504,7 @@
   - 增加面试追问：为什么更推荐构造器注入？给证据链与工程理由。
 
 #### 31. 代理产生阶段：BPP 如何换成 Proxy（self-invocation）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`
 - 补充：
   - 补“proxy 替换发生点”的证据链，并对比 pre/early/after-init 三类替换。
   - 补反例：self-invocation 绕过代理、多个代理叠加导致行为偏移。
@@ -515,7 +515,7 @@
   - 增加面试追问：self-invocation 根因与修复策略如何解释并可证明。
 
 #### 32. `@Resource` 注入：name-first
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md`
 - 补充：
   - 补 name-first 完整决策链（name 指定/默认字段名/fallback type）证据链。
   - 补反例：alias/同名覆盖导致注入错对象；与 `@Primary/@Qualifier` 的误对比。
@@ -526,7 +526,7 @@
   - 增加面试追问：`@Resource` vs `@Autowired` 的选择策略（证据链）。
 
 #### 33. 候选选择 vs 顺序：`@Primary/@Priority/@Order/@Qualifier`
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md`
 - 补充：
   - 补“选择 vs 排序”证据链：单注入 vs 集合注入两条路径的决策点。
   - 补反例：`@Order` 不能解决单注入歧义；by-name fallback 边界。
@@ -537,7 +537,7 @@
   - 增加面试追问：`@Primary` 与 `@Priority` 谁更强？给可证明解释。
 
 #### 34. `@Value(\"${...}\")`：strict vs non-strict（占位符）
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`
 - 补充：
   - 补“resolveEmbeddedValue → placeholder resolver”的最短证据链，并区分 `${}` 与 `#{}`。
   - 补反例：把占位符解析/SpEL 求值/类型转换混为一谈导致误诊。
@@ -548,7 +548,7 @@
   - 增加面试追问：strict 策略是谁决定的？为什么不建议默认 non-strict？
 
 #### 35. MergedBeanDefinition：RootBeanDefinition 从哪里来
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md`
 - 补充：
   - 补“合并触发点与缓存语义”证据链（merged 何时生成/复用）。
   - 补反例：看到的 BeanDefinition 与最终行为不一致（根因在 merged）。
@@ -559,7 +559,7 @@
   - 增加面试追问：为什么 MBPP（MergedBeanDefinitionPostProcessor）重要？窗口期如何证明。
 
 #### 36. 类型转换：BeanWrapper / ConversionService / PropertyEditor
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`
 - 补充：
   - 补“属性访问 vs 类型转换”证据链：populateBean → BeanWrapper → TypeConverterDelegate。
   - 补反例：占位符没解析导致转换失败、集合/枚举/日期转换链路误判。
@@ -570,7 +570,7 @@
   - 增加面试追问：PropertyEditor 为什么还存在？与 ConversionService 的边界与迁移建议。
 
 #### 37. 泛型匹配坑：ResolvableType 与代理导致类型信息丢失
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md`
 - 补充：
   - 补 `checkGenericTypeMatch` 决策链与关键变量（ResolvableType 推断结果）。
   - 补反例：代理/桥接方法/父类擦除导致泛型信息丢失与匹配失败。
@@ -581,7 +581,7 @@
   - 增加面试追问：Spring 的泛型匹配如何实现？为什么代理会影响它？
 
 #### 38. Environment/PropertySource：优先级与排障主线
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-environment-and-propertysource.md`
 - 补充：
   - 补“最终取值→来源”的证据链：PropertySources 顺序如何影响 getProperty。
   - 补反例：值被覆盖但不自知、profile/条件导致 property source 不同。
@@ -592,7 +592,7 @@
   - 增加面试追问：Environment abstraction 与 Boot config data 的关系如何解释。
 
 #### 39. BeanFactory API 深挖：接口族谱与手动 bootstrap 边界
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-beanfactory-api-deep-dive.md`
 - 补充：
   - 补“接口能力→可观察行为”证据链：Listable/Configurable 等接口意味着哪些行为窗口。
   - 补反例：手工 new BeanFactory 时注解不工作/占位符不解析/代理不出现的误判。
@@ -607,7 +607,7 @@
 ### Part 05｜AOT & Real World（输入层解析 + 构建期契约）
 
 #### 40. AOT / Native 总览：JVM 能跑 ≠ Native 能跑
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/01-aot-and-native-overview.md`
 - 补充：
   - 补“失败分型→缺口类型”的证据链：反射/代理/资源/序列化分别对应什么提示。
   - 补反例：盲目全量放开反射的风险（安全/体积/可维护性）。
@@ -618,7 +618,7 @@
   - 增加面试追问：为什么 RuntimeHints 是“可测试契约”？如何证明。
 
 #### 41. RuntimeHints 入门：把构建期契约跑通
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/02-runtimehints-basics.md`
 - 补充：
   - 补“Registrar 注册→测试断言”的证据链范式（把契约钉死）。
   - 补反例：把 hints 当 JSON 到处贴导致漂移；过度开放反射扩大安全面。
@@ -629,7 +629,7 @@
   - 增加面试追问：为什么推荐 registrar + 单测，而不是靠 native 失败再补？
 
 #### 42. XML → BeanDefinitionReader：定义层解析与错误分型
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/03-xml-bean-definition-reader.md`
 - 补充：
   - 补“Resource→Reader→registerBeanDefinition”的最短证据链与入口。
   - 补反例：schema 不匹配/namespace 扩展缺失/属性转换失败的误判对照。
@@ -640,7 +640,7 @@
   - 增加面试追问：XML 与注解解析最终为何都落到 BeanDefinition？如何证明。
 
 #### 43. 容器外对象注入：AutowireCapableBeanFactory
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/04-autowirecapablebeanfactory-external-objects.md`
 - 补充：
   - 补“外部对象注入能力边界”证据链：能做什么/不能做什么（生命周期/代理/销毁）。
   - 补反例：误以为外部对象等同托管导致资源泄漏与代理不生效。
@@ -651,7 +651,7 @@
   - 增加面试追问：什么时候用它，什么时候应重构为容器托管？
 
 #### 44. SpEL 与 `@Value(\"#{...}\")`：表达式解析链路
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/05-spel-and-value-expression.md`
 - 补充：
   - 补“解析→求值→注入”证据链与入口方法，并与 `${}` 占位符对照。
   - 补反例：表达式注入风险、SpEL 与占位符混用导致误诊。
@@ -662,7 +662,7 @@
   - 增加面试追问：为什么 SpEL 某些场景危险？如何给出安全建议。
 
 #### 45. 自定义 Qualifier：meta-annotation 与候选收敛
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/06-custom-qualifier-meta-annotation.md`
 - 补充：
   - 补“Qualifier 决策发生点”证据链：最终由哪个 resolver 判定命中。
   - 补反例：多个 Qualifier 叠加、meta 嵌套过深导致可读性差与误命中。
@@ -673,7 +673,7 @@
   - 增加面试追问：为什么推荐 meta-annotation 而不是字符串 qualifier？优势与风险。
 
 #### 46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/46-xml-namespace-extension.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/07-xml-namespace-extension.md`
 - 补充：
   - 补“namespace resolution→handler→parser→BeanDefinition”证据链。
   - 补反例：spring.handlers 缺失、schemaLocation 错误、parser 抛错分型。
@@ -684,7 +684,7 @@
   - 增加面试追问：XML 扩展机制与注解扩展机制（processor）异同。
 
 #### 47. BeanDefinitionReader：Properties / Groovy 等其他输入
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/47-beandefinitionreader-other-inputs-properties-groovy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/08-beandefinitionreader-other-inputs-properties-groovy.md`
 - 补充：
   - 补“输入层对比”并强调共同落点：最终都落到 BeanDefinition 与 registry。
   - 补反例：格式错误/类型转换失败/引用不存在的分型。
@@ -695,7 +695,7 @@
   - 增加面试追问：为什么 Spring 能支持多输入？核心抽象是什么？
 
 #### 48. 方法注入：replaced-method / MethodReplacer
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/48-method-injection-replaced-method.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/09-method-injection-replaced-method.md`
 - 补充：
   - 补“如何实现”证据链：CGLIB 子类与方法拦截发生点。
   - 补反例：final 限制、代理叠加、AOT 下限制与 hints 需求。
@@ -706,7 +706,7 @@
   - 增加面试追问：`@Lookup` 与 replaced-method 差异与选择策略。
 
 #### 49. 内置 FactoryBean 图鉴
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/49-built-in-factorybeans-gallery.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/10-built-in-factorybeans-gallery.md`
 - 补充：
   - 按“行为模型”补证据链：反射调用型/服务定位型/代理生成型在哪个窗口替换最终对象。
   - 补反例：把它们当普通 bean 导致的类型误判与调试困难。
@@ -717,7 +717,7 @@
   - 增加面试追问：为什么内置 FactoryBean 很常见？它们解决了什么抽象问题？
 
 #### 50. PropertyEditor 与值解析：值从定义层落到对象
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/11-property-editor-and-value-resolution.md`
 - 补充：
   - 补“BeanDefinitionValueResolver→convertIfNecessary”完整证据链，并与占位符/SpEL/转换三连对齐。
   - 补反例：值看似解析但其实占位符没解析；editor 与 converter 混用导致行为不一致。
@@ -732,7 +732,7 @@
 ### Appendix｜工具型章节（地图/排障/断点/题库/训练）
 
 #### 90. 常见误区清单
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md`
 - 补充：
   - 为每类误区补“最短证据链入口方法”链接。
   - 为高频误区补“反例对照”（如 depends-on 环 vs 循环依赖）。
@@ -743,7 +743,7 @@
   - 把误区转成面试追问（为什么/如何证明/反例是什么）。
 
 #### 99. 自测题
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/11-self-check.md`
 - 补充：
   - 每题绑定“证据链入口方法 + 推荐 Lab”，让自测可证明。
   - 加入“反例题/边界题”，避免只背概念。
@@ -754,7 +754,7 @@
   - 与 interview playbook 互链：自测题可直接转面试复述练习。
 
 #### 91. 术语表（Glossary）
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/91-glossary.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/02-glossary.md`
 - 补充：
   - 为关键术语补“对应证据链入口方法”。
   - 补易混词反例：BeanDefinition vs instance vs exposed；BFPP vs BPP vs BDRPP。
@@ -765,7 +765,7 @@
   - 将术语映射到面试题：术语解释必须给证据链与反例。
 
 #### 92. 知识地图（症状→章节→断点→Lab）
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/03-knowledge-map.md`
 - 补充：
   - 把每条主线补“证据链入口方法”，与章节内部一致。
   - 为每条症状补“最常见误诊点”，提高分流精度。
@@ -776,7 +776,7 @@
   - 将地图与面试题库映射：某题对应哪条地图路径与证明方式。
 
 #### 93. 面试复述模板（Interview Playbook）
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/93-interview-playbook.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/04-interview-playbook.md`
 - 补充：
   - 为每道题补“方法级证据链”（最短调用链 + 决策点）。
   - 为高频题补“反例/边界追问”，避免背诵式答案。
@@ -787,7 +787,7 @@
   - 统一答案结构：结论→证据链→反例→追问（保持一致可训练）。
 
 #### 94. 生产排障清单（Troubleshooting Checklist）
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`
 - 补充：
   - 为每类症状补“第一断点入口 + 关键变量”，把清单变成可执行 SOP。
   - 补“误判对照”：相似症状可能属于不同机制域，如何分流。
@@ -798,7 +798,7 @@
   - 把排障题转成面试追问（如何定位/如何证明/如何修复）。
 
 #### 95. spring-beans Public API 索引
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/95-spring-beans-public-api-index.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/06-spring-beans-public-api-index.md`
 - 补充：
   - 为每个 API 域补“对应章节与证据链入口”，让索引能反向定位机制。
   - 增加“常见排障场景入口”，让索引服务于排障而不是目录堆叠。
@@ -809,7 +809,7 @@
   - 与 Gap 清单联动：以 Gap 驱动后续章节/实验深化。
 
 #### 96. spring-beans Public API Gap 清单
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/96-spring-beans-public-api-gap.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/07-spring-beans-public-api-gap.md`
 - 补充：
   - 增加“可执行 Gap 项”实例：按包/机制域列出真实 gap（而不仅是方法论说明）。
   - 每个 gap 项补“反例/边界触发条件”，说明为何它是 gap。
@@ -820,7 +820,7 @@
   - 把 gap 变成可追踪的 backlog（与 solution package/task list 对齐）。
 
 #### 97. Explore/Debug 用例（可选启用）
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/08-explore-debug-tests.md`
 - 补充：
   - 为每个用例补“它在证明什么机制分支”，并指向正文对应章节。
   - 补“反例与版本差异注记”，避免用例被误读。
@@ -831,7 +831,7 @@
   - 把用例组织成训练脚本：面试复述/团队内训可直接引用其证据链与复现入口。
 
 #### 98. Debugger Pack（断点包总入口）
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/09-debugger-pack.md`
 - 补充：
   - 为每个断点包补“它在证明什么机制分支”，避免成为纯目录。
   - 补“断点包选择建议”：不同症状优先用哪套断点包。
@@ -842,7 +842,7 @@
   - 把断点包升级为“可复述证明路径”：给出示例题与断点证明链。
 
 #### 99. 团队内训讲义（Training Kit）
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/10-team-training-kit.md`
 - 补充：
   - 为每节课补“可运行证明入口”（对应 Lab/断点包），避免只讲概念。
   - 补“反例题与追问题”，提升训练强度。

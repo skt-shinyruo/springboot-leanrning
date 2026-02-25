@@ -14,8 +14,8 @@
 
 - 路线图：`helloagents/wiki/learning-path.md`
 - Docs Start Here：`spring-boot-modules/spring-boot-logging/docs/README.md`
-- 调用链（LoggingSystem 初始化与级别决策）：`spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-01-logging-call-chain.md`
-- 断点地图：`spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-02-breakpoint-map.md`
+- 调用链（LoggingSystem 初始化与级别决策）：`spring-boot-modules/spring-boot-logging/docs/part-00-guide/03-logging-call-chain.md`
+- 断点地图：`spring-boot-modules/spring-boot-logging/docs/part-00-guide/04-breakpoint-map.md`
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-boot-logging -Dtest=BootLoggingLabTest test`
   - 对应测试类：`spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingLabTest.java`
@@ -32,12 +32,12 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `spring-boot-modules/spring-boot-logging/docs/README.md`
-- **Deep Dive Guide:** `spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-00-deep-dive-guide.md`
-- **Call Chain:** `spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-01-logging-call-chain.md`
-- **Breakpoint Map:** `spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-logging/docs/part-00-guide/200-04-branch-decision-matrix.md`
-- **Playbook:** `spring-boot-modules/spring-boot-logging/docs/appendix/202-90-common-pitfalls.md`
-- **Self-check:** `spring-boot-modules/spring-boot-logging/docs/appendix/203-99-self-check.md`
+- **Deep Dive Guide:** `spring-boot-modules/spring-boot-logging/docs/part-00-guide/02-deep-dive-guide.md`
+- **Call Chain:** `spring-boot-modules/spring-boot-logging/docs/part-00-guide/03-logging-call-chain.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-logging/docs/part-00-guide/04-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-logging/docs/part-00-guide/05-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-logging/docs/appendix/01-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-logging/docs/appendix/02-self-check.md`
 - **Lab（并发/性能：MDC ThreadLocal 隔离可断言复现）：** `spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part02_perf_concurrency/BootLoggingConcurrencyLabTest.java`
 - **Solution（Exercises 对应答案回归）：** `spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingExerciseSolutionTest.java`
 

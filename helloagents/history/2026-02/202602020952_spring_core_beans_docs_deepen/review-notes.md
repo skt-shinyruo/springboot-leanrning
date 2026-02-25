@@ -31,7 +31,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md`
 
 - 章节标题：第 25 章：90. 常见误区清单（建议反复对照）
 - 卡片“知识点”：常见误区清单（建议反复对照）
@@ -46,7 +46,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/11-self-check.md`
 
 - 章节标题：第 26 章：99. 自测题：是否能够真的理解了？
 - 卡片“知识点”：自测题：是否能够真的理解了？
@@ -59,7 +59,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/91-glossary.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/02-glossary.md`
 
 - 章节标题：91. 术语表（Glossary）
 - 卡片“知识点”：91. 术语表（Glossary）
@@ -74,7 +74,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/03-knowledge-map.md`
 
 - 章节标题：92. 知识地图（Knowledge Map）：从现象直达章节/断点/Lab
 - 卡片“知识点”：知识地图（从现象直达章节/断点/Lab）
@@ -89,7 +89,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/93-interview-playbook.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/04-interview-playbook.md`
 
 - 章节标题：93. 面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC
 - 卡片“知识点”：面试复述模板：用“证据链”回答 Spring IoC
@@ -104,7 +104,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`
 
 - 章节标题：94. 生产排障清单（Troubleshooting Checklist）：从症状到证据链
 - 卡片“知识点”：生产排障清单：从症状到证据链
@@ -119,7 +119,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/95-spring-beans-public-api-index.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/06-spring-beans-public-api-index.md`
 
 - 章节标题：95. spring-beans Public API 索引（Spring Framework 6.2.15）
 - 卡片“知识点”：spring-beans Public API Index（索引）
@@ -134,7 +134,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/96-spring-beans-public-api-gap.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/07-spring-beans-public-api-gap.md`
 
 - 章节标题：96. spring-beans Public API Gap 清单（按包/机制域分批深化）
 - 卡片“知识点”：Public API Gap 清单（按包/机制域分批深化）
@@ -149,7 +149,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/08-explore-debug-tests.md`
 
 - 章节标题：97. Explore/Debug 用例（可选启用，不影响默认回归）
 - 卡片“知识点”：Explore/Debug 用例：如何开启、看什么、怎么把观察结果“用回主线”
@@ -162,7 +162,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/09-debugger-pack.md`
 
 - 章节标题：98. Debugger Pack（断点包总入口）
 - 卡片“知识点”：Debugger Pack（断点包总入口）
@@ -175,7 +175,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`
+## `spring-core-modules/spring-core-beans/docs/appendix/10-team-training-kit.md`
 
 - 章节标题：99. 团队内训讲义（Training Kit）：可直接用于授课的课时脚本
 - 卡片“知识点”：团队内训讲义（可直接用于授课的课时脚本）
@@ -287,7 +287,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`
+## `spring-core-modules/spring-core-beans/docs/part-00-guide/01-why-index.md`
 
 - 章节标题：第 09 章：00. 基础问题索引（Why Index）：把高频“为什么”做成可验证闭环
 - 卡片“知识点”：009-00-why-index
@@ -301,7 +301,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-00-guide/010-03-mainline-timeline.md`
+## `spring-core-modules/spring-core-beans/docs/part-00-guide/02-mainline-timeline.md`
 
 - 章节标题：第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean
 - 卡片“知识点”：主线时间线：IoC 容器从 refresh 到创建 Bean
@@ -314,7 +314,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`
+## `spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`
 
 - 章节标题：第 11 章：00. 深入分析指南：将“Bean 三层模型”落实到源码与断点
 - 卡片“知识点”：深入分析指南：将“Bean 三层模型”落实到源码与断点
@@ -327,7 +327,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
+## `spring-core-modules/spring-core-beans/docs/part-00-guide/04-branch-decision-matrix.md`
 
 - 章节标题：第 11 章：关键分支矩阵（Branch Decision Matrix）
 - 卡片“知识点”：关键分支矩阵（Branch Decision Matrix）
@@ -340,7 +340,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`
+## `spring-core-modules/spring-core-beans/docs/part-00-guide/05-quickstart-30min.md`
 
 - 章节标题：第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
 - 卡片“知识点”：30 分钟快速闭环：先快后深（3 个最小实验入口）
@@ -353,7 +353,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
+## `spring-core-modules/spring-core-beans/docs/part-00-guide/06-applicationcontext-refresh-call-chain.md`
 
 - 章节标题：第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
 - 卡片“知识点”：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
@@ -366,7 +366,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
+## `spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`
 
 - 章节标题：第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
 - 卡片“知识点”：断点地图（容器主线：可复用断点/观察点清单）
@@ -379,7 +379,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
 
 - 章节标题：第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary
 - 卡片“知识点”：依赖注入解析：类型/名称/@Qualifier/@Primary
@@ -397,7 +397,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
 
 - 章节标题：第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
 - 卡片“知识点”：Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
@@ -413,7 +413,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/04-lifecycle-and-callbacks.md`
 
 - 章节标题：第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）
 - 卡片“知识点”：Bean 生命周期骨架（instantiate→populate→initialize→destroy）；初始化回调链（Aware / BPP / `@PostConstruct` / `afterPropertiesSet` / `initMethod` / after-init proxy）；销毁链路（DestructionAwareBPP / `@PreDestroy` / `DisposableBean` / `destroyMethod`）；Scope 语义（prototype 默认不自动销毁）；容器级生命周期钩子（`SmartInitializingSingleton` / `SmartLifecycle` / refresh 事件）。
@@ -428,7 +428,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/05-post-processors.md`
 
 - 章节标题：第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
 - 卡片“知识点”：容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
@@ -446,7 +446,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/018-07-configuration-enhancement.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/06-configuration-enhancement.md`
 
 - 章节标题：第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）
 - 卡片“知识点”：`@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）
@@ -464,7 +464,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
 
 - 章节标题：02. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）
 - 卡片“知识点”：Bean 注册入口：扫描、@Bean、@Import、registrar
@@ -482,7 +482,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-bean-mental-model.md`
 
 - 章节标题：第 20 章：01. Bean 运行机制：从 BeanDefinition 到最终暴露对象
 - 卡片“知识点”：Bean 运行机制：从 BeanDefinition 到最终暴露对象
@@ -495,7 +495,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-factorybean.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/07-factorybean.md`
 
 - 章节标题：08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
 - 卡片“知识点”：08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
@@ -510,7 +510,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
+## `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md`
 
 - 章节标题：09. 循环依赖：现象、原因与规避（constructor vs setter）
 - 卡片“知识点”：循环依赖：现象、原因与规避（constructor vs setter）
@@ -525,7 +525,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
+## `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/01-debugging-and-observability.md`
 
 - 章节标题：第 19 章：11. 调试与自检：如何“观察到”容器正在做什么
 - 卡片“知识点”：调试与自检：如何“观察到”容器正在做什么
@@ -538,7 +538,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
+## `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/02-auto-config-ordering.md`
 
 - 章节标题：09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 - 卡片“知识点”：Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
@@ -555,7 +555,7 @@
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md`
+## `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md`
 
 - 章节标题：第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 - 卡片“知识点”：Spring Boot 自动装配如何影响 Bean（Auto-configuration）
@@ -572,7 +572,7 @@
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`
+## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/01-container-bootstrap-and-infrastructure.md`
 
 - 章节标题：第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？
 - 卡片“知识点”：容器启动与基础设施处理器：为什么注解能工作？
@@ -585,7 +585,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/13-bdrpp-definition-registration.md`
+## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/02-bdrpp-definition-registration.md`
 
 - 章节标题：13. BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义
 - 卡片“知识点”：13. BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义
@@ -603,7 +603,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
+## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/03-post-processor-ordering.md`
 
 - 章节标题：14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
 - 卡片“知识点”：14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
@@ -616,7 +616,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md`
+## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/04-pre-instantiation-short-circuit.md`
 
 - 章节标题：15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
 - 卡片“知识点”：15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
@@ -629,7 +629,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
 
 - 章节标题：16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？
 - 卡片“知识点”：early reference 与循环依赖：getEarlyBeanReference 到底解决什么？
@@ -644,7 +644,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/17-lifecycle-callback-order.md`
+## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/06-lifecycle-callback-order.md`
 
 - 章节标题：17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）
 - 卡片“知识点”：17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）
@@ -664,7 +664,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`
+## `spring-core-modules/spring-core-beans/docs/part-03-container-internals/07-refresh-to-bean-creation-mainline.md`
 
 - 章节标题：18. 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
 - 卡片“知识点”：把 `ApplicationContext#refresh` 的“定义阶段”与“创建阶段”连成一条可设置断点的主线
@@ -677,7 +677,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/01-lazy-semantics.md`
 
 - 章节标题：第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 - 卡片“知识点”：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
@@ -690,7 +690,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-depends-on.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/02-depends-on.md`
 
 - 章节标题：19. dependsOn：强制初始化顺序（即使没有显式依赖）
 - 卡片“知识点”：dependsOn：强制初始化顺序（即使没有显式依赖）
@@ -703,7 +703,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/03-resolvable-dependency.md`
 
 - 章节标题：20. registerResolvableDependency：能注入，但它不是 Bean
 - 卡片“知识点”：registerResolvableDependency：能注入，但它不是 Bean
@@ -721,7 +721,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-context-hierarchy.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/04-context-hierarchy.md`
 
 - 章节标题：21. 父子 ApplicationContext：可见性与覆盖边界
 - 卡片“知识点”：21. 父子 ApplicationContext：可见性与覆盖边界
@@ -734,7 +734,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/05-bean-names-and-aliases.md`
 
 - 章节标题：22. Bean 名称与 alias：同一个实例，多一个名字
 - 卡片“知识点”：22. Bean 名称与 alias：同一个实例，多一个名字
@@ -747,7 +747,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md`
 
 - 章节标题：23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
 - 卡片“知识点”：23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
@@ -762,7 +762,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md`
 
 - 章节标题：24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
 - 卡片“知识点”：24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
@@ -775,7 +775,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
 
 - 章节标题：25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱
 - 卡片“知识点”：手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱
@@ -793,7 +793,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/09-smart-initializing-singleton.md`
 
 - 章节标题：26. SmartInitializingSingleton：所有单例都创建完之后再做事
 - 卡片“知识点”：26. SmartInitializingSingleton：所有单例都创建完之后再做事
@@ -806,7 +806,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/10-smart-lifecycle-phase.md`
 
 - 章节标题：27. SmartLifecycle：start/stop 时机与 phase 顺序
 - 卡片“知识点”：27. SmartLifecycle：start/stop 时机与 phase 顺序
@@ -821,7 +821,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md`
 
 - 章节标题：28. 自定义 Scope + scoped proxy：thread scope 的真实语义
 - 卡片“知识点”：28. 自定义 Scope + scoped proxy：thread scope 的真实语义
@@ -837,7 +837,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/12-factorybean-edge-cases.md`
 
 - 章节标题：29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
 - 卡片“知识点”：29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
@@ -852,7 +852,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md`
 
 - 章节标题：30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）
 - 卡片“知识点”：30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）
@@ -865,7 +865,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`
 
 - 章节标题：31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
 - 卡片“知识点”：代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
@@ -883,7 +883,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md`
 
 - 章节标题：32. `@Resource` 注入：为什么它更像“按名称找 Bean”？
 - 卡片“知识点”：`@Resource` 注入：为什么它更像“按名称找 Bean”？
@@ -896,7 +896,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md`
 
 - 章节标题：33. 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界
 - 卡片“知识点”：候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界
@@ -914,7 +914,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`
 
 - 章节标题：34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
 - 卡片“知识点”：`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
@@ -930,7 +930,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/expressions.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md`
 
 - 章节标题：35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
 - 卡片“知识点”：35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
@@ -943,7 +943,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`
 
 - 章节标题：36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
 - 卡片“知识点”：类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
@@ -958,7 +958,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md`
 
 - 章节标题：37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
 - 卡片“知识点”：37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
@@ -973,7 +973,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-environment-and-propertysource.md`
 
 - 章节标题：38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线
 - 卡片“知识点”：38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线
@@ -987,7 +987,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
+## `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-beanfactory-api-deep-dive.md`
 
 - 章节标题：39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界
 - 卡片“知识点”：39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界
@@ -1000,7 +1000,7 @@
 （官方对照/延伸阅读建议）
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/01-aot-and-native-overview.md`
 
 - 章节标题：第 24 章：40. AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
 - 卡片“知识点”：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
@@ -1017,7 +1017,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/02-runtimehints-basics.md`
 
 - 章节标题：41. RuntimeHints 入门：把构建期契约完成验证
 - 卡片“知识点”：RuntimeHints 入门：把构建期契约完成验证
@@ -1034,7 +1034,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/03-xml-bean-definition-reader.md`
 
 - 章节标题：42. XML → BeanDefinitionReader：定义层解析与错误分型
 - 卡片“知识点”：42. XML → BeanDefinitionReader：定义层解析与错误分型
@@ -1051,7 +1051,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/04-autowirecapablebeanfactory-external-objects.md`
 
 - 章节标题：43. 容器外对象注入：AutowireCapableBeanFactory
 - 卡片“知识点”：43. 容器外对象注入：AutowireCapableBeanFactory
@@ -1068,7 +1068,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/05-spel-and-value-expression.md`
 
 - 章节标题：44. SpEL 与 `@Value("#{...}")`：表达式解析链路
 - 卡片“知识点”：44. SpEL 与 `@Value("#{...}")`：表达式解析链路
@@ -1086,7 +1086,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/06-custom-qualifier-meta-annotation.md`
 
 - 章节标题：45. 自定义 Qualifier：meta-annotation 与候选收敛
 - 卡片“知识点”：45. 自定义 Qualifier：meta-annotation 与候选收敛
@@ -1104,7 +1104,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/46-xml-namespace-extension.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/07-xml-namespace-extension.md`
 
 - 章节标题：46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
 - 卡片“知识点”：46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
@@ -1121,7 +1121,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/47-beandefinitionreader-other-inputs-properties-groovy.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/08-beandefinitionreader-other-inputs-properties-groovy.md`
 
 - 章节标题：47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy
 - 卡片“知识点”：47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy
@@ -1138,7 +1138,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/48-method-injection-replaced-method.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/09-method-injection-replaced-method.md`
 
 - 章节标题：48. 方法注入（Method Injection）：replaced-method / MethodReplacer
 - 卡片“知识点”：48. 方法注入（Method Injection）：replaced-method / MethodReplacer
@@ -1155,7 +1155,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/49-built-in-factorybeans-gallery.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/10-built-in-factorybeans-gallery.md`
 
 - 章节标题：49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
 - 卡片“知识点”：49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
@@ -1172,7 +1172,7 @@
 - Spring Framework Reference（适用版本：6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/aot.html
 - Spring Boot Reference（适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
-## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md`
+## `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/11-property-editor-and-value-resolution.md`
 
 - 章节标题：50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象
 - 卡片“知识点”：50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象

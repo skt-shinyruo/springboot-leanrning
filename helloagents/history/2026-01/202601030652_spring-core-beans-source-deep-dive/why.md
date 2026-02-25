@@ -20,7 +20,7 @@
 
 ## Impact Scope
 - **Modules:** `spring-core-beans`
-- **Files:** `docs/beans/spring-core-beans/01-bean-mental-model.md`、`docs/beans/spring-core-beans/02-bean-registration.md`、`docs/beans/spring-core-beans/03-dependency-injection-resolution.md`、`docs/beans/spring-core-beans/05-lifecycle-and-callbacks.md`、`docs/beans/spring-core-beans/09-circular-dependencies.md`；以及知识库记录 `helloagents/wiki/modules/spring-core-beans.md`、`helloagents/CHANGELOG.md`、`helloagents/history/index.md`
+- **Files:** `docs/beans/spring-core-beans/01-bean-mental-model.md`、`docs/beans/spring-core-beans/01-bean-registration.md`、`docs/beans/spring-core-beans/03-dependency-injection-resolution.md`、`docs/beans/spring-core-beans/05-lifecycle-and-callbacks.md`、`docs/beans/spring-core-beans/08-circular-dependencies.md`；以及知识库记录 `helloagents/wiki/modules/spring-core-beans.md`、`helloagents/CHANGELOG.md`、`helloagents/history/index.md`
 - **APIs:** None
 - **Data:** None
 
@@ -45,7 +45,7 @@
 
 <a id="scenario-definition-registration-pipeline"></a>
 #### Scenario: 定位 BeanDefinition 的来源（scan/@Bean/@Import）
-- **Given**：阅读 `docs/02-bean-registration.md` + 运行 `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansImportLabTest`
+- **Given**：阅读 `docs/01-bean-registration.md` + 运行 `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansImportLabTest`
 - **Then**：
   - 能区分 `ScannedGenericBeanDefinition`、`AnnotatedGenericBeanDefinition`、`RootBeanDefinition` 等常见形态
   - 能根据 `BeanDefinition` 里的 source/resource 信息推断注册路径

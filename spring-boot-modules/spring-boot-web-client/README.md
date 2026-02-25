@@ -14,12 +14,12 @@ mvn -pl :spring-boot-web-client test
 
 （docs 目录页：[`docs/README.md`](docs/README.md)）
 
-1. [RestClient 最小闭环](docs/part-01-web-client/175-01-restclient-basics.md)
-2. [WebClient 最小闭环](docs/part-01-web-client/176-02-webclient-basics.md)
-3. [错误处理：4xx/5xx → 异常](docs/part-01-web-client/177-03-error-handling.md)
-4. [超时与重试](docs/part-01-web-client/178-04-timeout-and-retry.md)
-5. [测试策略：MockWebServer](docs/part-01-web-client/179-05-testing-with-mockwebserver.md)
-6. [常见坑清单](docs/appendix/180-90-common-pitfalls.md)
+1. [RestClient 最小闭环](docs/part-01-web-client/01-restclient-basics.md)
+2. [WebClient 最小闭环](docs/part-01-web-client/02-webclient-basics.md)
+3. [错误处理：4xx/5xx → 异常](docs/part-01-web-client/03-error-handling.md)
+4. [超时与重试](docs/part-01-web-client/04-timeout-and-retry.md)
+5. [测试策略：MockWebServer](docs/part-01-web-client/05-testing-with-mockwebserver.md)
+6. [常见坑清单](docs/appendix/01-common-pitfalls.md)
 
 ## Labs / Exercises 索引
 

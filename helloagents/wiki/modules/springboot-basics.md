@@ -36,11 +36,11 @@ Spring Boot 基础：工程结构、配置、启动流程与最常用开发习�
 ## Docs & 复现入口
 
 - **Docs Index:** `spring-boot-modules/spring-boot-basics/docs/README.md`
-- **Docs Guide:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-00-deep-dive-guide.md`
-- **Breakpoint Map:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/004-04-branch-decision-matrix.md`
-- **Playbook:** `spring-boot-modules/spring-boot-basics/docs/appendix/007-90-common-pitfalls.md`
-- **Self-check:** `spring-boot-modules/spring-boot-basics/docs/appendix/008-99-self-check.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/02-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/04-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-basics/docs/part-00-guide/05-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-basics/docs/appendix/01-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-basics/docs/appendix/02-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`

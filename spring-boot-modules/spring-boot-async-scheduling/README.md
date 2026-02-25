@@ -27,15 +27,15 @@ mvn -pl :spring-boot-async-scheduling spring-boot:run
 
 docs 目录页：[`docs/README.md`](docs/README.md)
 
-1. [`@Async` 心智模型：代理与线程切换](docs/part-01-async-scheduling/119-01-async-proxy-mental-model.md)
-2. [Executor 与线程命名/并发边界](docs/part-01-async-scheduling/120-02-executor-and-threading.md)
-3. [异常传播：Future vs void](docs/part-01-async-scheduling/121-03-exceptions.md)
-4. [self-invocation：为什么异步有时不生效](docs/part-01-async-scheduling/122-04-self-invocation.md)
-5. [`@Scheduled` 基础与可测试性](docs/part-01-async-scheduling/123-05-scheduling-basics.md)
-6. [`@Async` × `@Transactional`：事务边界与执行线程](docs/part-01-async-scheduling/126-06-async-and-transactions.md)
-7. [SecurityContext / RequestContext：默认丢失、传播与泄漏](docs/part-01-async-scheduling/127-07-security-and-request-context.md)
-8. [Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](docs/part-01-async-scheduling/128-08-boot-spring-task-autoconfig.md)
-9. [常见坑清单](docs/appendix/124-90-common-pitfalls.md)
+1. [`@Async` 心智模型：代理与线程切换](docs/part-01-async-scheduling/01-async-proxy-mental-model.md)
+2. [Executor 与线程命名/并发边界](docs/part-01-async-scheduling/02-executor-and-threading.md)
+3. [异常传播：Future vs void](docs/part-01-async-scheduling/03-exceptions.md)
+4. [self-invocation：为什么异步有时不生效](docs/part-01-async-scheduling/04-self-invocation.md)
+5. [`@Scheduled` 基础与可测试性](docs/part-01-async-scheduling/05-scheduling-basics.md)
+6. [`@Async` × `@Transactional`：事务边界与执行线程](docs/part-01-async-scheduling/06-async-and-transactions.md)
+7. [SecurityContext / RequestContext：默认丢失、传播与泄漏](docs/part-01-async-scheduling/07-security-and-request-context.md)
+8. [Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](docs/part-01-async-scheduling/08-boot-spring-task-autoconfig.md)
+9. [常见坑清单](docs/appendix/01-common-pitfalls.md)
 
 ## Labs / Exercises（按用途）
 

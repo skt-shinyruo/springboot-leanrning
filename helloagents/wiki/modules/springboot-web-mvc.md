@@ -17,8 +17,8 @@
 
 - 路线图：`helloagents/wiki/learning-path.md`
 - Docs Start Here：`spring-boot-modules/spring-boot-web-mvc/docs/README.md`
-- 断点地图（Part 01 Debugger Pack）：`spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/066-02-breakpoint-map.md`
-- 机制内核主线（建议先读这一章再扩展分支）：`spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md`（FilterChain → DispatcherServlet → ExceptionResolvers → Boot `/error`；async 两次 dispatch 时间线 + 证据链；ERROR vs ASYNC 对照 + 分支决策表）
+- 断点地图（Part 01 Debugger Pack）：`spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/06-breakpoint-map.md`
+- 机制内核主线（建议先读这一章再扩展分支）：`spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md`（FilterChain → DispatcherServlet → ExceptionResolvers → Boot `/error`；async 两次 dispatch 时间线 + 证据链；ERROR vs ASYNC 对照 + 分支决策表）
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test`
   - 对应测试类：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
@@ -50,11 +50,11 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `spring-boot-modules/spring-boot-web-mvc/docs/README.md`
-- **Docs Guide:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/064-00-deep-dive-guide.md`
-- **Breakpoint Map:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/066-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/064-04-branch-decision-matrix.md`
-- **Playbook:** `spring-boot-modules/spring-boot-web-mvc/docs/appendix/082-90-common-pitfalls.md`
-- **Self-check:** `spring-boot-modules/spring-boot-web-mvc/docs/appendix/083-99-self-check.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/02-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/06-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/04-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-web-mvc/docs/appendix/01-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-web-mvc/docs/appendix/02-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`

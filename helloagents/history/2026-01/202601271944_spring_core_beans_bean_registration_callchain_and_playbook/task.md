@@ -6,9 +6,9 @@ Directory: `helloagents/plan/202601271944_spring_core_beans_bean_registration_ca
 
 ## 1. Documentation
 
-- [√] 1.1 增补“源码调用链到方法级”章节（scan/@Bean/@Import/programmatic），in `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`, verify `why.md#requirement-r1-bean-registration-callchain-method-level`
-- [√] 1.2 增补“排障决策表（注册相关）”，in `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`, verify `why.md#requirement-r2-bean-registration-troubleshooting-decision-table`
-- [√] 1.3 增补“面试标准答案（可复述）”，in `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`, verify `why.md#requirement-r3-bean-registration-interview-standard-answers`
+- [√] 1.1 增补“源码调用链到方法级”章节（scan/@Bean/@Import/programmatic），in `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`, verify `why.md#requirement-r1-bean-registration-callchain-method-level`
+- [√] 1.2 增补“排障决策表（注册相关）”，in `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`, verify `why.md#requirement-r2-bean-registration-troubleshooting-decision-table`
+- [√] 1.3 增补“面试标准答案（可复述）”，in `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`, verify `why.md#requirement-r3-bean-registration-interview-standard-answers`
 
 ## 2. Knowledge Base Sync（SSOT）
 

@@ -8,21 +8,21 @@ Directory: `helloagents/plan/202601291517_beans-aop-explainability-upgrade/`
 
 ## 1. spring-core-beans（基础问题可解释性）
 
-- [√] 1.1 新增 Beans 模块 Why Index（基础问题索引页）到 `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`，verify why.md#core-scenarios
+- [√] 1.1 新增 Beans 模块 Why Index（基础问题索引页）到 `spring-core-modules/spring-core-beans/docs/part-00-guide/01-why-index.md`，verify why.md#core-scenarios
 - [√] 1.2 在 `spring-core-modules/spring-core-beans/docs/README.md` 增加 “Why Index” 入口，并把“三级缓存/early reference/proxy 替换”纳入可检索导航，verify why.md#core-scenarios, depends on task 1.1
 - [√] 1.3 在 `spring-core-modules/spring-core-beans/README.md` 增加 “基础问题入口（Why Index）+ 10 分钟最短证据链”指引，verify why.md#core-scenarios
 
 ## 2. spring-core-beans（关键章节：补齐答案先行与跨模块回链）
 
-- [√] 2.1 在 `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md` 增强“为什么读者看完仍不懂”的桥接段：补“二级 vs 三级”的对比论证入口，并链接 Why Index 与 AOP proxy 心智模型，verify why.md#core-scenarios
-- [√] 2.2 在 `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md` 增强“factory 层价值”的最短闭环：补一页式证据链清单（命令/断点/watch list），verify why.md#core-scenarios
-- [√] 2.3 在 `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md` 增加“最终暴露对象为何会变化”的统一解释与回链（Why Index + AOP），verify why.md#core-scenarios
+- [√] 2.1 在 `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md` 增强“为什么读者看完仍不懂”的桥接段：补“二级 vs 三级”的对比论证入口，并链接 Why Index 与 AOP proxy 心智模型，verify why.md#core-scenarios
+- [√] 2.2 在 `spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md` 增强“factory 层价值”的最短闭环：补一页式证据链清单（命令/断点/watch list），verify why.md#core-scenarios
+- [√] 2.3 在 `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md` 增加“最终暴露对象为何会变化”的统一解释与回链（Why Index + AOP），verify why.md#core-scenarios
 
 ## 3. spring-core-aop（Proxy 心智模型与 Beans 主线互链）
 
 - [√] 3.1 在 `spring-core-modules/spring-core-aop/docs/README.md` 增加 “Beans 前置：代理替换发生在哪个阶段” 的跳转入口（指向 beans 31/16），verify why.md#core-scenarios
-- [√] 3.2 在 `spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md` 增加“前置：Bean 最终暴露对象可能被 BPP 替换”的链接与一句话说明，verify why.md#core-scenarios
-- [√] 3.3 在 `spring-core-modules/spring-core-aop/docs/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md` 增强“AutoProxyCreator 为什么是 BPP”的回链（指向 beans 31 与 refresh 主线），verify why.md#core-scenarios
+- [√] 3.2 在 `spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md` 增加“前置：Bean 最终暴露对象可能被 BPP 替换”的链接与一句话说明，verify why.md#core-scenarios
+- [√] 3.3 在 `spring-core-modules/spring-core-aop/docs/part-02-autoproxy-and-pointcuts/01-autoproxy-creator-mainline.md` 增强“AutoProxyCreator 为什么是 BPP”的回链（指向 beans 31 与 refresh 主线），verify why.md#core-scenarios
 
 ## 4. 可验证入口（最短证据链落地）
 

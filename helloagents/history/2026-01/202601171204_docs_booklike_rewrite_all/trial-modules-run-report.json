@@ -2,7 +2,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md",
+    "path": "docs/beans/spring-core-beans/part-00-guide/02-mainline-timeline.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -11,7 +11,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-00-guide/011-00-deep-dive-guide.md",
+    "path": "docs/beans/spring-core-beans/part-00-guide/03-deep-dive-guide.md",
     "page_type": "normal",
     "status": "skipped",
     "warnings": [],
@@ -20,7 +20,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-00-guide/012-01-quickstart-30min.md",
+    "path": "docs/beans/spring-core-beans/part-00-guide/05-quickstart-30min.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -29,7 +29,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md",
+    "path": "docs/beans/spring-core-beans/part-00-guide/07-breakpoint-map.md",
     "page_type": "tool",
     "status": "skipped",
     "warnings": [],
@@ -38,7 +38,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-01-ioc-container/014-03-dependency-injection-resolution.md",
+    "path": "docs/beans/spring-core-beans/part-01-ioc-container/02-dependency-injection-resolution.md",
     "page_type": "normal",
     "status": "skipped",
     "warnings": [],
@@ -47,7 +47,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-01-ioc-container/015-04-scope-and-prototype.md",
+    "path": "docs/beans/spring-core-beans/part-01-ioc-container/03-scope-and-prototype.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -56,7 +56,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-01-ioc-container/016-05-lifecycle-and-callbacks.md",
+    "path": "docs/beans/spring-core-beans/part-01-ioc-container/04-lifecycle-and-callbacks.md",
     "page_type": "normal",
     "status": "skipped",
     "warnings": [],
@@ -65,7 +65,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-01-ioc-container/017-06-post-processors.md",
+    "path": "docs/beans/spring-core-beans/part-01-ioc-container/05-post-processors.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -74,7 +74,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-01-ioc-container/018-07-configuration-enhancement.md",
+    "path": "docs/beans/spring-core-beans/part-01-ioc-container/06-configuration-enhancement.md",
     "page_type": "normal",
     "status": "skipped",
     "warnings": [],
@@ -83,7 +83,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-02-boot-autoconfig/019-11-debugging-and-observability.md",
+    "path": "docs/beans/spring-core-beans/part-02-boot-autoconfig/01-debugging-and-observability.md",
     "page_type": "normal",
     "status": "skipped",
     "warnings": [],
@@ -92,7 +92,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-01-ioc-container/020-01-bean-mental-model.md",
+    "path": "docs/beans/spring-core-beans/part-01-ioc-container/09-bean-mental-model.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -101,7 +101,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md",
+    "path": "docs/beans/spring-core-beans/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -110,7 +110,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md",
+    "path": "docs/beans/spring-core-beans/part-03-container-internals/01-container-bootstrap-and-infrastructure.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -119,7 +119,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-04-wiring-and-boundaries/023-18-lazy-semantics.md",
+    "path": "docs/beans/spring-core-beans/part-04-wiring-and-boundaries/01-lazy-semantics.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -128,7 +128,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/part-05-aot-and-real-world/024-40-aot-and-native-overview.md",
+    "path": "docs/beans/spring-core-beans/part-05-aot-and-real-world/01-aot-and-native-overview.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -137,7 +137,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/appendix/025-90-common-pitfalls.md",
+    "path": "docs/beans/spring-core-beans/appendix/01-common-pitfalls.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -146,7 +146,7 @@
   {
     "kind": "module",
     "module": "spring-core-beans",
-    "path": "docs/beans/spring-core-beans/appendix/026-99-self-check.md",
+    "path": "docs/beans/spring-core-beans/appendix/11-self-check.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -155,7 +155,7 @@
   {
     "kind": "module",
     "module": "springboot-basics",
-    "path": "docs/basics/springboot-basics/part-00-guide/003-03-mainline-timeline.md",
+    "path": "docs/basics/springboot-basics/part-00-guide/01-mainline-timeline.md",
     "page_type": "redirect",
     "status": "changed",
     "warnings": [],
@@ -164,7 +164,7 @@
   {
     "kind": "module",
     "module": "springboot-basics",
-    "path": "docs/basics/springboot-basics/part-00-guide/004-00-deep-dive-guide.md",
+    "path": "docs/basics/springboot-basics/part-00-guide/02-deep-dive-guide.md",
     "page_type": "normal",
     "status": "skipped",
     "warnings": [],
@@ -173,7 +173,7 @@
   {
     "kind": "module",
     "module": "springboot-basics",
-    "path": "docs/basics/springboot-basics/part-01-boot-basics/005-01-property-sources-and-profiles.md",
+    "path": "docs/basics/springboot-basics/part-01-boot-basics/01-property-sources-and-profiles.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -182,7 +182,7 @@
   {
     "kind": "module",
     "module": "springboot-basics",
-    "path": "docs/basics/springboot-basics/part-01-boot-basics/006-02-configuration-properties-binding.md",
+    "path": "docs/basics/springboot-basics/part-01-boot-basics/02-configuration-properties-binding.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -191,7 +191,7 @@
   {
     "kind": "module",
     "module": "springboot-basics",
-    "path": "docs/basics/springboot-basics/appendix/007-90-common-pitfalls.md",
+    "path": "docs/basics/springboot-basics/appendix/01-common-pitfalls.md",
     "page_type": "normal",
     "status": "changed",
     "warnings": [],
@@ -200,7 +200,7 @@
   {
     "kind": "module",
     "module": "springboot-basics",
-    "path": "docs/basics/springboot-basics/appendix/008-99-self-check.md",
+    "path": "docs/basics/springboot-basics/appendix/02-self-check.md",
     "page_type": "normal",
     "status": "skipped",
     "warnings": [],

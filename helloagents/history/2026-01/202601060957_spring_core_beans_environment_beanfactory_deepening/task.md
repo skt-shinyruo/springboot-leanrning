@@ -6,9 +6,9 @@ Directory: `helloagents/history/2026-01/202601060957_spring_core_beans_environme
 
 ## 1. Docs（章节补齐）
 
-- [√] 1.1 新增 Environment 章节：`docs/beans/spring-core-beans/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
+- [√] 1.1 新增 Environment 章节：`docs/beans/spring-core-beans/part-04-wiring-and-boundaries/21-environment-and-propertysource.md`
   - 覆盖：PropertySource 抽象、@PropertySource 进入链路、PropertySources 顺序/优先级、与 placeholder 解析的连接点
-- [√] 1.2 新增 BeanFactory API 章节：`docs/beans/spring-core-beans/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
+- [√] 1.2 新增 BeanFactory API 章节：`docs/beans/spring-core-beans/part-04-wiring-and-boundaries/22-beanfactory-api-deep-dive.md`
   - 覆盖：BeanFactory 接口族谱、plain BeanFactory 的边界、手动 bootstrap post-processors 的可复现路径
 - [√] 1.3 更新章节导航链路：37 → 38 → 39 → 40，并保持“上一章｜目录｜下一章”可顺读
 
@@ -22,7 +22,7 @@ Directory: `helloagents/history/2026-01/202601060957_spring_core_beans_environme
 ## 3. Docs Index / Knowledge Map
 
 - [√] 3.1 更新 `docs/beans/spring-core-beans/README.md`：在 Part04 TOC 加入 38/39，并在“快速定位/对照表”补齐入口
-- [√] 3.2 更新 `docs/beans/spring-core-beans/appendix/92-knowledge-map.md`：补齐 Environment/BeanFactory 的 Concept → Chapter → Lab 映射
+- [√] 3.2 更新 `docs/beans/spring-core-beans/appendix/03-knowledge-map.md`：补齐 Environment/BeanFactory 的 Concept → Chapter → Lab 映射
 
 ## 4. Knowledge Base Update
 

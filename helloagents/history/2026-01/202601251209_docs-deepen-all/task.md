@@ -26,92 +26,92 @@ Directory: `helloagents/plan/202601251209_docs-deepen-all/`
 
 - [√] 3.1.1 `spring-core-beans` docs
   - 目录页：`docs/beans/spring-core-beans/README.md`
-  - 主线时间线：`docs/beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md`
-  - 断点地图：`docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md`
+  - 主线时间线：`docs/beans/spring-core-beans/part-00-guide/02-mainline-timeline.md`
+  - 断点地图：`docs/beans/spring-core-beans/part-00-guide/07-breakpoint-map.md`
 - [√] 3.1.2 `spring-core-aop` docs
   - 目录页：`docs/aop/spring-core-aop/README.md`
-  - 主线时间线：`docs/aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md`
-  - 断点地图：`docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md`
+  - 主线时间线：`docs/aop/spring-core-aop/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/aop/spring-core-aop/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.3 `spring-core-aop-weaving` docs
   - 目录页：`docs/aop/spring-core-aop-weaving/README.md`
-  - 主线时间线：`docs/aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md`
-  - 断点地图：`docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md`
+  - 主线时间线：`docs/aop/spring-core-aop-weaving/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/aop/spring-core-aop-weaving/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.4 `spring-core-tx` docs
   - 目录页：`docs/tx/spring-core-tx/README.md`
-  - 主线时间线：`docs/tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md`
-  - 断点地图：`docs/tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md`
+  - 主线时间线：`docs/tx/spring-core-tx/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/tx/spring-core-tx/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.5 `spring-core-events` docs
   - 目录页：`docs/events/spring-core-events/README.md`
-  - 主线时间线：`docs/events/spring-core-events/part-00-guide/127-03-mainline-timeline.md`
-  - 断点地图：`docs/events/spring-core-events/part-00-guide/128-02-breakpoint-map.md`
+  - 主线时间线：`docs/events/spring-core-events/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/events/spring-core-events/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.6 `spring-core-resources` docs
   - 目录页：`docs/resources/spring-core-resources/README.md`
-  - 主线时间线：`docs/resources/spring-core-resources/part-00-guide/139-03-mainline-timeline.md`
-  - 断点地图：`docs/resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md`
+  - 主线时间线：`docs/resources/spring-core-resources/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/resources/spring-core-resources/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.7 `spring-core-profiles` docs
   - 目录页：`docs/profiles/spring-core-profiles/README.md`
-  - 主线时间线：`docs/profiles/spring-core-profiles/part-00-guide/150-03-mainline-timeline.md`
-  - 断点地图：`docs/profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md`
+  - 主线时间线：`docs/profiles/spring-core-profiles/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/profiles/spring-core-profiles/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.8 `spring-core-validation` docs
   - 目录页：`docs/validation/spring-core-validation/README.md`
-  - 主线时间线：`docs/validation/spring-core-validation/part-00-guide/156-03-mainline-timeline.md`
-  - 断点地图：`docs/validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md`
+  - 主线时间线：`docs/validation/spring-core-validation/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/validation/spring-core-validation/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.9 `spring-boot-web-mvc` docs
   - 目录页：`docs/web-mvc/spring-boot-web-mvc/README.md`
-  - 主线时间线：`docs/web-mvc/spring-boot-web-mvc/part-00-guide/063-03-mainline-timeline.md`
-  - 断点地图：`docs/web-mvc/spring-boot-web-mvc/part-00-guide/066-02-breakpoint-map.md`
+  - 主线时间线：`docs/web-mvc/spring-boot-web-mvc/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/web-mvc/spring-boot-web-mvc/part-00-guide/06-breakpoint-map.md`
 - [√] 3.1.10 `spring-boot-security` docs
   - 目录页：`docs/security/spring-boot-security/README.md`
-  - 主线时间线：`docs/security/spring-boot-security/part-00-guide/085-03-mainline-timeline.md`
-  - 断点地图：`docs/security/spring-boot-security/part-00-guide/086-02-breakpoint-map.md`
+  - 主线时间线：`docs/security/spring-boot-security/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/security/spring-boot-security/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.11 `spring-boot-data-jpa` docs
   - 目录页：`docs/data-jpa/spring-boot-data-jpa/README.md`
-  - 主线时间线：`docs/data-jpa/spring-boot-data-jpa/part-00-guide/095-03-mainline-timeline.md`
-  - 断点地图：`docs/data-jpa/spring-boot-data-jpa/part-00-guide/096-02-breakpoint-map.md`
+  - 主线时间线：`docs/data-jpa/spring-boot-data-jpa/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/data-jpa/spring-boot-data-jpa/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.12 `spring-boot-cache` docs
   - 目录页：`docs/cache/spring-boot-cache/README.md`
-  - 主线时间线：`docs/cache/spring-boot-cache/part-00-guide/107-03-mainline-timeline.md`
-  - 断点地图：`docs/cache/spring-boot-cache/part-00-guide/108-02-breakpoint-map.md`
+  - 主线时间线：`docs/cache/spring-boot-cache/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/cache/spring-boot-cache/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.13 `spring-boot-async-scheduling` docs
   - 目录页：`docs/async-scheduling/spring-boot-async-scheduling/README.md`
-  - 主线时间线：`docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/117-03-mainline-timeline.md`
-  - 断点地图：`docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/118-02-breakpoint-map.md`
+  - 主线时间线：`docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.14 `spring-boot-actuator` docs
   - 目录页：`docs/actuator/spring-boot-actuator/README.md`
-  - 主线时间线：`docs/actuator/spring-boot-actuator/part-00-guide/167-03-mainline-timeline.md`
-  - 断点地图：`docs/actuator/spring-boot-actuator/part-00-guide/168-02-breakpoint-map.md`
+  - 主线时间线：`docs/actuator/spring-boot-actuator/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/actuator/spring-boot-actuator/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.15 `spring-boot-testing` docs
   - 目录页：`docs/testing/spring-boot-testing/README.md`
-  - 主线时间线：`docs/testing/spring-boot-testing/part-00-guide/183-03-mainline-timeline.md`
-  - 断点地图：`docs/testing/spring-boot-testing/part-00-guide/184-02-breakpoint-map.md`
+  - 主线时间线：`docs/testing/spring-boot-testing/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/testing/spring-boot-testing/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.16 `spring-boot-business-case` docs
   - 目录页：`docs/business-case/spring-boot-business-case/README.md`
-  - 主线时间线：`docs/business-case/spring-boot-business-case/part-00-guide/189-03-mainline-timeline.md`
-  - 断点地图：`docs/business-case/spring-boot-business-case/part-00-guide/190-02-breakpoint-map.md`
+  - 主线时间线：`docs/business-case/spring-boot-business-case/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/business-case/spring-boot-business-case/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.17 `spring-boot-autoconfiguration` docs
   - 目录页：`docs/autoconfig/spring-boot-autoconfiguration/README.md`
-  - 主线时间线：`docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/194-03-mainline-timeline.md`
-  - 断点地图：`docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/195-02-breakpoint-map.md`
+  - 主线时间线：`docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.18 `spring-boot-logging` docs
   - 目录页：`docs/logging/spring-boot-logging/README.md`
-  - 主线时间线：`docs/logging/spring-boot-logging/part-00-guide/199-03-mainline-timeline.md`
-  - 断点地图：`docs/logging/spring-boot-logging/part-00-guide/200-02-breakpoint-map.md`
+  - 主线时间线：`docs/logging/spring-boot-logging/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/logging/spring-boot-logging/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.19 `spring-boot-observability` docs
   - 目录页：`docs/observability/spring-boot-observability/README.md`
-  - 主线时间线：`docs/observability/spring-boot-observability/part-00-guide/204-03-mainline-timeline.md`
-  - 断点地图：`docs/observability/spring-boot-observability/part-00-guide/205-02-breakpoint-map.md`
+  - 主线时间线：`docs/observability/spring-boot-observability/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/observability/spring-boot-observability/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.20 `spring-boot-web-client` docs
   - 目录页：`docs/web-client/spring-boot-web-client/README.md`
-  - 主线时间线：`docs/web-client/spring-boot-web-client/part-00-guide/173-03-mainline-timeline.md`
-  - 断点地图：`docs/web-client/spring-boot-web-client/part-00-guide/174-02-breakpoint-map.md`
+  - 主线时间线：`docs/web-client/spring-boot-web-client/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/web-client/spring-boot-web-client/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.21 `spring-core-spel` docs
   - 目录页：`docs/spel/spring-core-spel/README.md`
-  - 主线时间线：`docs/spel/spring-core-spel/part-00-guide/209-03-mainline-timeline.md`
-  - 断点地图：`docs/spel/spring-core-spel/part-00-guide/210-02-breakpoint-map.md`
+  - 主线时间线：`docs/spel/spring-core-spel/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/spel/spring-core-spel/part-00-guide/04-breakpoint-map.md`
 - [√] 3.1.22 `spring-boot-basics` docs
   - 目录页：`docs/basics/spring-boot-basics/README.md`
-  - 主线时间线：`docs/basics/spring-boot-basics/part-00-guide/003-03-mainline-timeline.md`
-  - 断点地图：`docs/basics/spring-boot-basics/part-00-guide/004-02-breakpoint-map.md`
+  - 主线时间线：`docs/basics/spring-boot-basics/part-00-guide/01-mainline-timeline.md`
+  - 断点地图：`docs/basics/spring-boot-basics/part-00-guide/04-breakpoint-map.md`
 
 ### 3.2 Test Entrypoints
 

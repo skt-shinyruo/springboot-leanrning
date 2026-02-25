@@ -78,7 +78,7 @@ class SpringCoreBeansAutowireCandidateSelectionExerciseTest {
                         1) 先跑 Lab 固定行为：
                            - `SpringCoreBeansAutowireCandidateSelectionLabTest#objectProvider_getIfUnique_returnsNull_whenMultipleCandidatesExist`
                         2) 阅读 doc：
-                           - `spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`（ObjectProvider 条目）
+                           - `spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md`（ObjectProvider 条目）
 
                         额外加分（可选）：
                         - 设计一个场景：0 候选 / 1 候选 / 多候选，分别写出你希望的行为（返回 null/返回对象/显式失败）。

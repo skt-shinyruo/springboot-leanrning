@@ -4,7 +4,7 @@
 
 ## [Unreleased]
 ### Added
-- `spring-core-beans` 补齐缺失章节：`020-09-auto-config-ordering.md`
+- `spring-core-beans` 补齐缺失章节：`02-auto-config-ordering.md`
 - `spring-core-beans`：新增基础问题索引（Why Index），为“三级缓存 / early reference / raw vs wrapped / proxy 替换”等高频问题提供答案先行入口与 10 分钟证据链（Lab/断点/watch list）。
 - `spring-core-aop`：docs 增加 Beans 前置导航与跨模块互链（Beans ↔ AOP），降低“需要拼图才能理解”的成本。
 - `springboot-async-scheduling`：手册级加深（Async + Scheduling）：新增 executor 选择矩阵 / proxy 类型边界 / void 异常可观测 / scheduling 注册与异常语义 / `@Scheduled + @Async` 组合等 Labs，并更新 Branch Matrix/Pitfalls/Self-check（`mvn -q -pl :spring-boot-async-scheduling test` 连续 3 次回归）。
@@ -31,11 +31,11 @@
 - 深度完善 `spring-core-beans` 文档：补齐注入点元数据（`MethodParameter`）、scoped proxy（`ScopedProxyMode`）等关键边界，并补全 AOT/基础设施/懒加载等章节的证据链闭环
 - `spring-core-beans`：深挖 Part 01 IoC Container（注册/注入解析/scope/生命周期/BPP/@Configuration/FactoryBean/循环依赖/最终暴露对象），新增“可断点可复现”的证据链闭环与最小观测 testsupport（`BeanDefinitionOriginDumper` / `DependencyDescriptorDumper`）
 - spring-core-beans：对 `spring-core-modules/spring-core-beans/docs` 与 `spring-core-modules/spring-core-beans/README.md` 全量书面化改写（去第二人称/俚语/口语化措辞），保持机制深度不变，提升文档可复述性与严谨性观感。
-- spring-core-beans：进一步逐句修订 `spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`，以更具说明性的书面叙述替换口号式表述，强化论证连续性与可验证性表达。
+- spring-core-beans：进一步逐句修订 `spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`，以更具说明性的书面叙述替换口号式表述，强化论证连续性与可验证性表达。
 - spring-core-beans：深化 Part-05（AOT/RuntimeHints/XML/SpEL/Qualifier/FactoryBean/值解析）与 Appendix（90/99/91–95），补齐“机制讲透 + 方法级调用链 + 排障/面试复述模板”的教程闭环。
 - spring-core-beans：在模块 README 与知识地图中新增“核心七件套”导航（概念 → 章节 → Lab），用于查漏与快速跳转
-- spring-core-beans：深化 `02-bean-registration.md`（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”
-- spring-core-beans：继续深化 `02-bean-registration.md`（方法级源码调用链/排障决策表/面试标准答案），补齐“可追踪/可定位/可背诵”交付
+- spring-core-beans：深化 `01-bean-registration.md`（入口对照表/最短调用链/证据链/面试与内训复述模板），提升“可断点/可复现/可教学”
+- spring-core-beans：继续深化 `01-bean-registration.md`（方法级源码调用链/排障决策表/面试标准答案），补齐“可追踪/可定位/可背诵”交付
 - spring-core-beans：docs 目录页新增“症状驱动导航（快速定位）”，并补齐 19/20/41 三章 BOOKIFY 标记以统一书本化导航一致性
 - spring-core-beans：新增“内容级再加深策略”目录（`spring-core-modules/spring-core-beans/docs/deepening-strategies/`），并在模块 README 与 docs 目录页补齐入口，便于按章继续深化
 - spring-core-beans：将章节内 `AE-DEEPENING` 提示块与策略文档降模板化为“可执行路线”（推荐入口 Lab/Test → 断点主线 → 结论自证/最短排错），并为 Beans → AOP 的跳转补齐“为什么要跳/验证什么”说明
@@ -97,7 +97,7 @@
 - GitHub Pages：不再提供自动构建与发布 workflow（如需发布请自行配置）。
 - `helloagents`：新增学习路线图 `helloagents/wiki/learning-path.md`，并在 `helloagents/wiki/overview.md` 与四模块页（Beans/AOP/Tx/Web MVC）增加 Start Here/路线图入口，收敛新读者的“先跑什么/再读什么”路径。
 - `spring-core-beans`：新增 30 分钟快启章节（Start Here），并系统补齐/强化 docs（容器主线、BPP 顺序、FactoryBean、循环依赖、AOT/真实世界等）与可运行证据链；同时更新 `scripts/generate-spring-beans-public-api-index.py` 并重新生成 Appendix 95/96（补齐“坑点与排障”）。
-- `spring-core-beans`：新增“主线叙事”章节：从 `AbstractApplicationContext#refresh` 走到 `AbstractAutowireCapableBeanFactory#doCreateBean`，聚焦关键方法与关键分支，并在导读/目录页增加入口：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`。
+- `spring-core-beans`：新增“主线叙事”章节：从 `AbstractApplicationContext#refresh` 走到 `AbstractAutowireCapableBeanFactory#doCreateBean`，聚焦关键方法与关键分支，并在导读/目录页增加入口：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/07-refresh-to-bean-creation-mainline.md`。
 - `spring-core-beans`：在主线叙事章补充“分支决策表”（现象 → 阶段 → 关键方法 → 必看变量 → LabTest），把主线叙事进一步压缩成可复用排障套路。
 - `spring-core-beans`：继续深化主线叙事与导读：补齐 `preInstantiateSingletons` 的关键分支伪代码（FactoryBean/SmartFactoryBean/SmartInitializingSingleton/background init），补齐 `doGetBean` 的关键分支（dependsOn/parent fallback/prototype guard）；同时在 bootstrap 章新增“处理器速查表 + 时机时间线 + 过早 getBean 反例”，在深挖指南新增“症状驱动导航（现象→章节→断点→Lab）”速查表。
 - `springboot-web-mvc`：深化“DispatcherServlet 主链路”章节：补齐 `doDispatch` → `processDispatchResult` 的关键方法/关键分支（multipart/async/exception/afterCompletion），并补齐“FilterChain → ExceptionResolvers → Spring Boot `/error`”完整叙事（含 async 两次 dispatch 时间线 + 证据链）；进一步补齐 ERROR vs ASYNC dispatch 对照（DispatcherType=ERROR/ASYNC）与分支决策表，降低排障误判成本。
@@ -133,6 +133,7 @@
 ### Removed
 ### Changed
 - 根 `README.md`：前置“主线之书（Book）”入口（Book TOC + 两条阅读路径），并按推荐学习顺序串起模块与主线节点，降低新读者找路成本。
+- 根 `README.md` 与 `docs/SUMMARY.md`：书面化改写根文档（补齐阅读路径/快速上手说明，折叠超长索引，并为目录页补充导语与维护说明），降低第一屏的条目堆叠感。
 - `docs/book/`：为主线节点章节补齐“本章可跑入口（最小闭环）”（Lab 命令 + Exercise 路径），让章节具备“读 → 跑 → 改”的独立闭环。
 - `docs/book/094/116/138`：改写正文为更“像书”的叙事结构（开场问题 → 核心抓手 → 主线时间线 → 读者检查点 → 证据链观察点），减少“像说明书”的条目感。
 - `docs-site`：站点导航新增“写作指南”入口（`docs-site/mkdocs.yml`），并在模块侧边栏目录中自动聚合新增的“主线时间线”章节。
@@ -144,7 +145,7 @@
 - 全模块 docs：停止使用 A–G（A.本章定位…G.小结）“契约式”章节骨架；统一去除字母前缀，并将“核心结论”转换为 summary 提示框，同时将 BOOKIFY 的实验入口提炼为章首提示框（更接近书籍阅读体验）；新增批处理脚本 `scripts/rewrite-docs-book-style.py`。
 - `docs/book-style.md`：补齐“正文二次书籍化（第二层）”规范：统一叙事节奏（导读→主线推进→关键分支/坑点→证据链→小结与下一章承接），并给出最小模板片段与常见反例修复方式。
 - 全模块 docs：重排 `<module>/docs/README.md` 为书籍化目录页（第一屏给出主线时间线/导读入口；README 的 Markdown 链接清单作为 teaching coverage 的章节 SSOT）。
-- `spring-core-beans`：试点合并 Part 01 的前两章（原 02 章合并进 01 章），保留 `02-bean-registration.md` 作为 redirect 入口。
+- `spring-core-beans`：试点合并 Part 01 的前两章（原 02 章合并进 01 章），保留 `01-bean-registration.md` 作为 redirect 入口。
 - `springboot-web-mvc`：试点合并 Internals 章节（原 02 章合并进 01 章），保留 `02-argument-resolver-and-binder.md` 作为 redirect 入口。
 - `springboot-*` 与 `spring-core-*`（除 `spring-core-beans`/`springboot-web-mvc`）：深挖对齐（对标 `spring-core-beans`），补齐各模块 Guide 机制主线（导航图）、章节可断言坑点/边界与断点入口，并同步更新 `helloagents/wiki/modules/*.md`。
 - 根 `README.md`：跨模块学习路线入口统一指向 `<module>/docs/README.md`（Docs TOC）。
@@ -184,3 +185,4 @@
 - `spring-core-aop`/`spring-core-events`/`spring-core-profiles`/`spring-core-resources`/`spring-core-tx`/`spring-core-validation`：对齐 docs Part 目录结构与 src/main+src/test 分包结构（语义化 Part 命名），并同步修复 README/文档中的源码路径与跨模块引用；保持各模块 `*Application` 入口包名不变。
 - `springboot-*`：将 Part 结构（docs + src/test + src/main 最小分组）推广到全部 `springboot-*` 模块：新增 `docs/README.md` 与 `part-00-guide/`、迁移 docs 章节到 `part-01-*/` 与 `appendix/`；tests 按 `part00_guide`（Exercises）/ `part01_*`（Labs）分包；在不修改各模块 `*Application` 入口包名的前提下，将示例代码迁移到 `part01_*`（`springboot-business-case` 例外：为保留领域分层，仅对 tests 与 docs 对齐）；同时修复各模块 README 与 docs 内的源码路径引用。
 - `springboot-*`：补齐教学化“可跑入口闭环”：将 `docs/README.md` 的章节清单统一为 Markdown 链接（SSOT），并补齐 `part-00-guide/00-deep-dive-guide.md` 与 `appendix/90/99` 的“对应 Lab/Exercise（可运行）”入口块；对缺口模块补齐 `min-labs=2`（新增 5 个 `*LabTest.java`）。
+- docs：将 `*/docs/**` 下的章节文档统一为“目录内单序号”命名（`01-...`），同步更新 H1/`GLOBAL-BOOK-NAV`/`docs/**/SUMMARY.md`/`docs/**/README.md` 的展示与链接，并通过 Markdown 相对链接自检（0 断链）。

@@ -1,5 +1,10 @@
 # 逐章内容级再加深建议（part-05-aot-and-real-world）
 
+## 导读
+
+本文属于“加深策略”说明：用于解释本仓库文档与测试在结构上的组织方式，以及如何用最小入口把阅读、调试与验证连成闭环。
+
+
 ## 官方文档对照（版本语境）
 
 - Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
@@ -20,7 +25,7 @@
 
 ### 40. AOT / Native 总览：为什么 JVM 运行成功 ≠ Native 运行成功
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/01-aot-and-native-overview.md`
 - 继续加深建议：
     - `SpringCoreBeansAotFactoriesLabTest`（再对照 `SpringCoreBeansAotRuntimeHintsLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -28,7 +33,7 @@
 
 ### 41. RuntimeHints 入门：把构建期契约完成验证
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/02-runtimehints-basics.md`
 - 继续加深建议：
     - `SpringCoreBeansAotRuntimeHintsLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `Class#getDeclaredMethods` 进，到 `Constructor#newInstance` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -36,7 +41,7 @@
 
 ### 42. XML → BeanDefinitionReader：定义层解析与错误分型
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/03-xml-bean-definition-reader.md`
 - 继续加深建议：
     - `SpringCoreBeansXmlBeanDefinitionReaderLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `DefaultListableBeanFactory#registerBeanDefinition` 进，到 `AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -44,7 +49,7 @@
 
 ### 43. 容器外对象注入：AutowireCapableBeanFactory
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/04-autowirecapablebeanfactory-external-objects.md`
 - 继续加深建议：
     - `SpringCoreBeansAutowireCapableBeanFactoryLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `AbstractAutowireCapableBeanFactory#populateBean` 进，到 `AbstractAutowireCapableBeanFactory#initializeBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -52,7 +57,7 @@
 
 ### 44. SpEL 与 `@Value("#{...}")`：表达式解析链路
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/05-spel-and-value-expression.md`
 - 继续加深建议：
     - `SpringCoreBeansSpelValueLabTest`（再对照 `SpringCoreBeansValuePlaceholderResolutionLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `AbstractBeanFactory#resolveEmbeddedValue` 进，到 `BeanFactory#resolveEmbeddedValue` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -60,7 +65,7 @@
 
 ### 45. 自定义 Qualifier：meta-annotation 与候选收敛
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/06-custom-qualifier-meta-annotation.md`
 - 继续加深建议：
     - `SpringCoreBeansCustomQualifierLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `DefaultListableBeanFactory#findAutowireCandidates` 进，到 `DefaultListableBeanFactory#determineAutowireCandidate` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -68,7 +73,7 @@
 
 ### 46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/46-xml-namespace-extension.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/07-xml-namespace-extension.md`
 - 继续加深建议：
     - `SpringCoreBeansXmlNamespaceExtensionLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `DefaultListableBeanFactory#registerBeanDefinition` 进，到 `BeanDefinitionParserDelegate#parseCustomElement` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -76,7 +81,7 @@
 
 ### 47. BeanDefinitionReader：Properties / Groovy 等其他输入
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/47-beandefinitionreader-other-inputs-properties-groovy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/08-beandefinitionreader-other-inputs-properties-groovy.md`
 - 继续加深建议：
     - `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest#propertiesBeanDefinitionReader_registersBeanDefinitions_fromPropertiesFile`（再对照 `SpringCoreBeansGroovyBeanDefinitionReaderLabTest#groovyBeanDefinitionReader_registersBeanDefinitions_fromGroovyScript`），把“现象差异”固定成可重复的断言/输出。
     - 从 `DefaultListableBeanFactory#registerBeanDefinition` 进，到 `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest#propertiesBeanDefinitionReader_registersBeanDefinitions_fromPropertiesFile` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -84,7 +89,7 @@
 
 ### 48. 方法注入：replaced-method / MethodReplacer
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/48-method-injection-replaced-method.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/09-method-injection-replaced-method.md`
 - 继续加深建议：
     - `SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides`（再对照 `SpringCoreBeansReplacedMethodLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection` 进，到 `SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -92,7 +97,7 @@
 
 ### 49. 内置 FactoryBean 图鉴
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/49-built-in-factorybeans-gallery.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/10-built-in-factorybeans-gallery.md`
 - 继续加深建议：
     - `SpringCoreBeansBuiltInFactoryBeansLabTest`（再对照 `SpringCoreBeansServiceLoaderFactoryBeansLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `AbstractBeanFactory#getObjectForBeanInstance` 进，到 `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -100,7 +105,7 @@
 
 ### 50. PropertyEditor 与值解析：值从定义层落到对象
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/11-property-editor-and-value-resolution.md`
 - 继续加深建议：
     - `SpringCoreBeansBeanDefinitionValueResolutionLabTest`（再对照 `SpringCoreBeansPropertyEditorLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `BeanDefinitionValueResolver#resolveValueIfNecessary` 进，到 `CustomEditorConfigurer#postProcessBeanFactory` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

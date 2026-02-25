@@ -9,7 +9,7 @@
 
 ### Implementation Key Points
 
-- 在 `02-bean-registration.md` 中新增三类“教学友好”结构块：
+- 在 `01-bean-registration.md` 中新增三类“教学友好”结构块：
   1) 入口对照表（入口→对象→调用链→断点→坑→Lab）
   2) 证据链脚本（命令→断点→watch list→结论）
   3) 面试/内训复述模板（高频问法+答题结构）

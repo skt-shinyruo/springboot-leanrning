@@ -38,160 +38,160 @@ Directory: `helloagents/history/2026-01/202601231156_tutorials_format_alignment/
 > 每个模块至少要能从 docs 入口做到：先读 deep-dive → 跑一个可验证入口（Book/Branch Matrix）→ 用断点定位关键分支 → 遇到问题能按 playbook 排障 → 用 self-check 自测。
 
 - [ ] 3.1.1 `springboot-basics` docs 闭环验收与对齐
-  - deep-dive：`docs/basics/springboot-basics/part-00-guide/004-00-deep-dive-guide.md`
-  - call-chain：`docs/basics/springboot-basics/part-00-guide/004-01-springapplication-run-call-chain.md`
-  - breakpoint-map：`docs/basics/springboot-basics/part-00-guide/004-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/basics/springboot-basics/part-00-guide/004-04-branch-decision-matrix.md`
-  - pitfalls：`docs/basics/springboot-basics/appendix/007-90-common-pitfalls.md`
-  - self-check：`docs/basics/springboot-basics/appendix/008-99-self-check.md`
+  - deep-dive：`docs/basics/springboot-basics/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/basics/springboot-basics/part-00-guide/03-springapplication-run-call-chain.md`
+  - breakpoint-map：`docs/basics/springboot-basics/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/basics/springboot-basics/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/basics/springboot-basics/appendix/01-common-pitfalls.md`
+  - self-check：`docs/basics/springboot-basics/appendix/02-self-check.md`
 - [ ] 3.1.2 `springboot-autoconfiguration` docs 闭环验收与对齐
-  - deep-dive：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-00-deep-dive-guide.md`
-  - call-chain：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-01-autoconfiguration-import-call-chain.md`
-  - breakpoint-map：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-04-branch-decision-matrix.md`
-  - pitfalls：`docs/autoconfig/springboot-autoconfiguration/appendix/197-90-common-pitfalls.md`
-  - self-check：`docs/autoconfig/springboot-autoconfiguration/appendix/198-99-self-check.md`
+  - deep-dive：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/03-autoconfiguration-import-call-chain.md`
+  - breakpoint-map：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/autoconfig/springboot-autoconfiguration/appendix/01-common-pitfalls.md`
+  - self-check：`docs/autoconfig/springboot-autoconfiguration/appendix/02-self-check.md`
 - [ ] 3.1.3 `springboot-web-mvc` docs 闭环验收与对齐
-  - deep-dive：`docs/web-mvc/springboot-web-mvc/part-00-guide/064-00-deep-dive-guide.md`
-  - call-chain：`docs/web-mvc/springboot-web-mvc/part-00-guide/064-01-webmvc-request-call-chain.md`
-  - breakpoint-map：`docs/web-mvc/springboot-web-mvc/part-00-guide/066-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/web-mvc/springboot-web-mvc/part-00-guide/064-04-branch-decision-matrix.md`
-  - pitfalls：`docs/web-mvc/springboot-web-mvc/appendix/082-90-common-pitfalls.md`
-  - self-check：`docs/web-mvc/springboot-web-mvc/appendix/083-99-self-check.md`
+  - deep-dive：`docs/web-mvc/springboot-web-mvc/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/web-mvc/springboot-web-mvc/part-00-guide/03-webmvc-request-call-chain.md`
+  - breakpoint-map：`docs/web-mvc/springboot-web-mvc/part-00-guide/06-breakpoint-map.md`
+  - branch-matrix-doc：`docs/web-mvc/springboot-web-mvc/part-00-guide/04-branch-decision-matrix.md`
+  - pitfalls：`docs/web-mvc/springboot-web-mvc/appendix/01-common-pitfalls.md`
+  - self-check：`docs/web-mvc/springboot-web-mvc/appendix/02-self-check.md`
 - [ ] 3.1.4 `springboot-data-jpa` docs 闭环验收与对齐
-  - deep-dive：`docs/data-jpa/springboot-data-jpa/part-00-guide/096-00-deep-dive-guide.md`
-  - call-chain：`docs/data-jpa/springboot-data-jpa/part-00-guide/096-01-repository-call-chain.md`
-  - breakpoint-map：`docs/data-jpa/springboot-data-jpa/part-00-guide/096-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/data-jpa/springboot-data-jpa/part-00-guide/096-04-branch-decision-matrix.md`
-  - pitfalls：`docs/data-jpa/springboot-data-jpa/appendix/104-90-common-pitfalls.md`
-  - self-check：`docs/data-jpa/springboot-data-jpa/appendix/105-99-self-check.md`
+  - deep-dive：`docs/data-jpa/springboot-data-jpa/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/data-jpa/springboot-data-jpa/part-00-guide/03-repository-call-chain.md`
+  - breakpoint-map：`docs/data-jpa/springboot-data-jpa/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/data-jpa/springboot-data-jpa/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/data-jpa/springboot-data-jpa/appendix/01-common-pitfalls.md`
+  - self-check：`docs/data-jpa/springboot-data-jpa/appendix/02-self-check.md`
 - [ ] 3.1.5 `springboot-actuator` docs 闭环验收与对齐
-  - deep-dive：`docs/actuator/springboot-actuator/part-00-guide/168-00-deep-dive-guide.md`
-  - call-chain：`docs/actuator/springboot-actuator/part-00-guide/168-01-actuator-endpoint-call-chain.md`
-  - breakpoint-map：`docs/actuator/springboot-actuator/part-00-guide/168-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/actuator/springboot-actuator/part-00-guide/168-04-branch-decision-matrix.md`
-  - pitfalls：`docs/actuator/springboot-actuator/appendix/170-90-common-pitfalls.md`
-  - self-check：`docs/actuator/springboot-actuator/appendix/171-99-self-check.md`
+  - deep-dive：`docs/actuator/springboot-actuator/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/actuator/springboot-actuator/part-00-guide/03-actuator-endpoint-call-chain.md`
+  - breakpoint-map：`docs/actuator/springboot-actuator/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/actuator/springboot-actuator/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/actuator/springboot-actuator/appendix/01-common-pitfalls.md`
+  - self-check：`docs/actuator/springboot-actuator/appendix/02-self-check.md`
 - [ ] 3.1.6 `springboot-testing` docs 闭环验收与对齐
-  - deep-dive：`docs/testing/springboot-testing/part-00-guide/184-00-deep-dive-guide.md`
-  - call-chain：`docs/testing/springboot-testing/part-00-guide/184-01-test-bootstrap-and-slicing-call-chain.md`
-  - breakpoint-map：`docs/testing/springboot-testing/part-00-guide/184-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/testing/springboot-testing/part-00-guide/184-04-branch-decision-matrix.md`
-  - pitfalls：`docs/testing/springboot-testing/appendix/186-90-common-pitfalls.md`
-  - self-check：`docs/testing/springboot-testing/appendix/187-99-self-check.md`
+  - deep-dive：`docs/testing/springboot-testing/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/testing/springboot-testing/part-00-guide/03-test-bootstrap-and-slicing-call-chain.md`
+  - breakpoint-map：`docs/testing/springboot-testing/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/testing/springboot-testing/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/testing/springboot-testing/appendix/01-common-pitfalls.md`
+  - self-check：`docs/testing/springboot-testing/appendix/02-self-check.md`
 - [ ] 3.1.7 `springboot-business-case` docs 闭环验收与对齐
-  - deep-dive：`docs/business-case/springboot-business-case/part-00-guide/190-00-deep-dive-guide.md`
-  - call-chain：`docs/business-case/springboot-business-case/part-00-guide/190-01-business-request-call-chain.md`
-  - breakpoint-map：`docs/business-case/springboot-business-case/part-00-guide/190-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/business-case/springboot-business-case/part-00-guide/190-04-branch-decision-matrix.md`
-  - pitfalls：`docs/business-case/springboot-business-case/appendix/192-90-common-pitfalls.md`
-  - self-check：`docs/business-case/springboot-business-case/appendix/193-99-self-check.md`
+  - deep-dive：`docs/business-case/springboot-business-case/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/business-case/springboot-business-case/part-00-guide/03-business-request-call-chain.md`
+  - breakpoint-map：`docs/business-case/springboot-business-case/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/business-case/springboot-business-case/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/business-case/springboot-business-case/appendix/01-common-pitfalls.md`
+  - self-check：`docs/business-case/springboot-business-case/appendix/02-self-check.md`
 - [ ] 3.1.8 `springboot-security` docs 闭环验收与对齐
-  - deep-dive：`docs/security/springboot-security/part-00-guide/086-00-deep-dive-guide.md`
-  - call-chain：`docs/security/springboot-security/part-00-guide/086-01-security-filterchain-call-chain.md`
-  - breakpoint-map：`docs/security/springboot-security/part-00-guide/086-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md`
-  - pitfalls：`docs/security/springboot-security/appendix/092-90-common-pitfalls.md`
-  - self-check：`docs/security/springboot-security/appendix/093-99-self-check.md`
+  - deep-dive：`docs/security/springboot-security/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/security/springboot-security/part-00-guide/03-security-filterchain-call-chain.md`
+  - breakpoint-map：`docs/security/springboot-security/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/security/springboot-security/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/security/springboot-security/appendix/01-common-pitfalls.md`
+  - self-check：`docs/security/springboot-security/appendix/02-self-check.md`
 - [ ] 3.1.9 `springboot-observability` docs 闭环验收与对齐
-  - deep-dive：`docs/observability/springboot-observability/part-00-guide/205-00-deep-dive-guide.md`
-  - call-chain：`docs/observability/springboot-observability/part-00-guide/205-01-http-observation-call-chain.md`
-  - breakpoint-map：`docs/observability/springboot-observability/part-00-guide/205-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/observability/springboot-observability/part-00-guide/205-04-branch-decision-matrix.md`
-  - pitfalls：`docs/observability/springboot-observability/appendix/207-90-common-pitfalls.md`
-  - self-check：`docs/observability/springboot-observability/appendix/208-99-self-check.md`
+  - deep-dive：`docs/observability/springboot-observability/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/observability/springboot-observability/part-00-guide/03-http-observation-call-chain.md`
+  - breakpoint-map：`docs/observability/springboot-observability/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/observability/springboot-observability/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/observability/springboot-observability/appendix/01-common-pitfalls.md`
+  - self-check：`docs/observability/springboot-observability/appendix/02-self-check.md`
 - [ ] 3.1.10 `springboot-logging` docs 闭环验收与对齐
-  - deep-dive：`docs/logging/springboot-logging/part-00-guide/200-00-deep-dive-guide.md`
-  - call-chain：`docs/logging/springboot-logging/part-00-guide/200-01-logging-call-chain.md`
-  - breakpoint-map：`docs/logging/springboot-logging/part-00-guide/200-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/logging/springboot-logging/part-00-guide/200-04-branch-decision-matrix.md`
-  - pitfalls：`docs/logging/springboot-logging/appendix/202-90-common-pitfalls.md`
-  - self-check：`docs/logging/springboot-logging/appendix/203-99-self-check.md`
+  - deep-dive：`docs/logging/springboot-logging/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/logging/springboot-logging/part-00-guide/03-logging-call-chain.md`
+  - breakpoint-map：`docs/logging/springboot-logging/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/logging/springboot-logging/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/logging/springboot-logging/appendix/01-common-pitfalls.md`
+  - self-check：`docs/logging/springboot-logging/appendix/02-self-check.md`
 - [ ] 3.1.11 `springboot-web-client` docs 闭环验收与对齐
-  - deep-dive：`docs/web-client/springboot-web-client/part-00-guide/174-00-deep-dive-guide.md`
-  - call-chain：`docs/web-client/springboot-web-client/part-00-guide/174-01-webclient-call-chain.md`
-  - breakpoint-map：`docs/web-client/springboot-web-client/part-00-guide/174-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/web-client/springboot-web-client/part-00-guide/174-04-branch-decision-matrix.md`
-  - pitfalls：`docs/web-client/springboot-web-client/appendix/180-90-common-pitfalls.md`
-  - self-check：`docs/web-client/springboot-web-client/appendix/181-99-self-check.md`
+  - deep-dive：`docs/web-client/springboot-web-client/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/web-client/springboot-web-client/part-00-guide/03-webclient-call-chain.md`
+  - breakpoint-map：`docs/web-client/springboot-web-client/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/web-client/springboot-web-client/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/web-client/springboot-web-client/appendix/01-common-pitfalls.md`
+  - self-check：`docs/web-client/springboot-web-client/appendix/02-self-check.md`
 - [ ] 3.1.12 `springboot-async-scheduling` docs 闭环验收与对齐
-  - deep-dive：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-00-deep-dive-guide.md`
-  - call-chain：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-01-async-and-scheduling-call-chain.md`
-  - breakpoint-map：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md`
-  - pitfalls：`docs/async-scheduling/springboot-async-scheduling/appendix/124-90-common-pitfalls.md`
-  - self-check：`docs/async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md`
+  - deep-dive：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/03-async-and-scheduling-call-chain.md`
+  - breakpoint-map：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/async-scheduling/springboot-async-scheduling/appendix/01-common-pitfalls.md`
+  - self-check：`docs/async-scheduling/springboot-async-scheduling/appendix/02-self-check.md`
 - [ ] 3.1.13 `springboot-cache` docs 闭环验收与对齐
-  - deep-dive：`docs/cache/springboot-cache/part-00-guide/108-00-deep-dive-guide.md`
-  - call-chain：`docs/cache/springboot-cache/part-00-guide/108-01-cache-interceptor-call-chain.md`
-  - breakpoint-map：`docs/cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md`
-  - pitfalls：`docs/cache/springboot-cache/appendix/114-90-common-pitfalls.md`
-  - self-check：`docs/cache/springboot-cache/appendix/115-99-self-check.md`
+  - deep-dive：`docs/cache/springboot-cache/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/cache/springboot-cache/part-00-guide/03-cache-interceptor-call-chain.md`
+  - breakpoint-map：`docs/cache/springboot-cache/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/cache/springboot-cache/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/cache/springboot-cache/appendix/01-common-pitfalls.md`
+  - self-check：`docs/cache/springboot-cache/appendix/02-self-check.md`
 
 - [ ] 3.1.14 `spring-core-beans` docs 闭环验收与对齐
-  - deep-dive：`docs/beans/spring-core-beans/part-00-guide/011-00-deep-dive-guide.md`
-  - call-chain：`docs/beans/spring-core-beans/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
-  - breakpoint-map：`docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/beans/spring-core-beans/part-00-guide/011-04-branch-decision-matrix.md`
-  - pitfalls：`docs/beans/spring-core-beans/appendix/025-90-common-pitfalls.md`
-  - self-check：`docs/beans/spring-core-beans/appendix/026-99-self-check.md`
+  - deep-dive：`docs/beans/spring-core-beans/part-00-guide/03-deep-dive-guide.md`
+  - call-chain：`docs/beans/spring-core-beans/part-00-guide/06-applicationcontext-refresh-call-chain.md`
+  - breakpoint-map：`docs/beans/spring-core-beans/part-00-guide/07-breakpoint-map.md`
+  - branch-matrix-doc：`docs/beans/spring-core-beans/part-00-guide/04-branch-decision-matrix.md`
+  - pitfalls：`docs/beans/spring-core-beans/appendix/01-common-pitfalls.md`
+  - self-check：`docs/beans/spring-core-beans/appendix/11-self-check.md`
 - [ ] 3.1.15 `spring-core-spel` docs 闭环验收与对齐
-  - deep-dive：`docs/spel/spring-core-spel/part-00-guide/210-00-deep-dive-guide.md`
-  - call-chain：`docs/spel/spring-core-spel/part-00-guide/210-01-spel-call-chain.md`
-  - breakpoint-map：`docs/spel/spring-core-spel/part-00-guide/210-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/spel/spring-core-spel/part-00-guide/210-04-branch-decision-matrix.md`
-  - pitfalls：`docs/spel/spring-core-spel/appendix/212-90-common-pitfalls.md`
-  - self-check：`docs/spel/spring-core-spel/appendix/213-99-self-check.md`
+  - deep-dive：`docs/spel/spring-core-spel/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/spel/spring-core-spel/part-00-guide/03-spel-call-chain.md`
+  - breakpoint-map：`docs/spel/spring-core-spel/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/spel/spring-core-spel/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/spel/spring-core-spel/appendix/01-common-pitfalls.md`
+  - self-check：`docs/spel/spring-core-spel/appendix/02-self-check.md`
 - [ ] 3.1.16 `spring-core-aop` docs 闭环验收与对齐
-  - deep-dive：`docs/aop/spring-core-aop/part-00-guide/029-00-deep-dive-guide.md`
-  - call-chain：`docs/aop/spring-core-aop/part-00-guide/029-01-aop-invocation-call-chain.md`
-  - breakpoint-map：`docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md`
-  - pitfalls：`docs/aop/spring-core-aop/appendix/040-90-common-pitfalls.md`
-  - self-check：`docs/aop/spring-core-aop/appendix/041-99-self-check.md`
+  - deep-dive：`docs/aop/spring-core-aop/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/aop/spring-core-aop/part-00-guide/03-aop-invocation-call-chain.md`
+  - breakpoint-map：`docs/aop/spring-core-aop/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/aop/spring-core-aop/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/aop/spring-core-aop/appendix/01-common-pitfalls.md`
+  - self-check：`docs/aop/spring-core-aop/appendix/02-self-check.md`
 - [ ] 3.1.17 `spring-core-aop-weaving` docs 闭环验收与对齐
-  - deep-dive：`docs/aop/spring-core-aop-weaving/part-00-guide/044-00-deep-dive-guide.md`
-  - call-chain：`docs/aop/spring-core-aop-weaving/part-00-guide/044-01-aspectj-weaving-call-chain.md`
-  - breakpoint-map：`docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md`
-  - pitfalls：`docs/aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md`
-  - self-check：`docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md`
+  - deep-dive：`docs/aop/spring-core-aop-weaving/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/aop/spring-core-aop-weaving/part-00-guide/03-aspectj-weaving-call-chain.md`
+  - breakpoint-map：`docs/aop/spring-core-aop-weaving/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/aop/spring-core-aop-weaving/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/aop/spring-core-aop-weaving/appendix/01-common-pitfalls.md`
+  - self-check：`docs/aop/spring-core-aop-weaving/appendix/02-self-check.md`
 - [ ] 3.1.18 `spring-core-events` docs 闭环验收与对齐
-  - deep-dive：`docs/events/spring-core-events/part-00-guide/128-00-deep-dive-guide.md`
-  - call-chain：`docs/events/spring-core-events/part-00-guide/128-01-events-call-chain.md`
-  - breakpoint-map：`docs/events/spring-core-events/part-00-guide/128-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/events/spring-core-events/part-00-guide/128-04-branch-decision-matrix.md`
-  - pitfalls：`docs/events/spring-core-events/appendix/136-90-common-pitfalls.md`
-  - self-check：`docs/events/spring-core-events/appendix/137-99-self-check.md`
+  - deep-dive：`docs/events/spring-core-events/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/events/spring-core-events/part-00-guide/03-events-call-chain.md`
+  - breakpoint-map：`docs/events/spring-core-events/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/events/spring-core-events/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/events/spring-core-events/appendix/01-common-pitfalls.md`
+  - self-check：`docs/events/spring-core-events/appendix/02-self-check.md`
 - [ ] 3.1.19 `spring-core-validation` docs 闭环验收与对齐
-  - deep-dive：`docs/validation/spring-core-validation/part-00-guide/157-00-deep-dive-guide.md`
-  - call-chain：`docs/validation/spring-core-validation/part-00-guide/157-01-validation-call-chain.md`
-  - breakpoint-map：`docs/validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/validation/spring-core-validation/part-00-guide/157-04-branch-decision-matrix.md`
-  - pitfalls：`docs/validation/spring-core-validation/appendix/164-90-common-pitfalls.md`
-  - self-check：`docs/validation/spring-core-validation/appendix/165-99-self-check.md`
+  - deep-dive：`docs/validation/spring-core-validation/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/validation/spring-core-validation/part-00-guide/03-validation-call-chain.md`
+  - breakpoint-map：`docs/validation/spring-core-validation/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/validation/spring-core-validation/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/validation/spring-core-validation/appendix/01-common-pitfalls.md`
+  - self-check：`docs/validation/spring-core-validation/appendix/02-self-check.md`
 - [ ] 3.1.20 `spring-core-resources` docs 闭环验收与对齐
-  - deep-dive：`docs/resources/spring-core-resources/part-00-guide/140-00-deep-dive-guide.md`
-  - call-chain：`docs/resources/spring-core-resources/part-00-guide/140-01-resource-loading-call-chain.md`
-  - breakpoint-map：`docs/resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/resources/spring-core-resources/part-00-guide/140-04-branch-decision-matrix.md`
-  - pitfalls：`docs/resources/spring-core-resources/appendix/147-90-common-pitfalls.md`
-  - self-check：`docs/resources/spring-core-resources/appendix/148-99-self-check.md`
+  - deep-dive：`docs/resources/spring-core-resources/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/resources/spring-core-resources/part-00-guide/03-resource-loading-call-chain.md`
+  - breakpoint-map：`docs/resources/spring-core-resources/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/resources/spring-core-resources/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/resources/spring-core-resources/appendix/01-common-pitfalls.md`
+  - self-check：`docs/resources/spring-core-resources/appendix/02-self-check.md`
 - [ ] 3.1.21 `spring-core-tx` docs 闭环验收与对齐
-  - deep-dive：`docs/tx/spring-core-tx/part-00-guide/053-00-deep-dive-guide.md`
-  - call-chain：`docs/tx/spring-core-tx/part-00-guide/053-01-transaction-interceptor-call-chain.md`
-  - breakpoint-map：`docs/tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/tx/spring-core-tx/part-00-guide/053-04-branch-decision-matrix.md`
-  - pitfalls：`docs/tx/spring-core-tx/appendix/060-90-common-pitfalls.md`
-  - self-check：`docs/tx/spring-core-tx/appendix/061-99-self-check.md`
+  - deep-dive：`docs/tx/spring-core-tx/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/tx/spring-core-tx/part-00-guide/03-transaction-interceptor-call-chain.md`
+  - breakpoint-map：`docs/tx/spring-core-tx/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/tx/spring-core-tx/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/tx/spring-core-tx/appendix/01-common-pitfalls.md`
+  - self-check：`docs/tx/spring-core-tx/appendix/02-self-check.md`
 - [ ] 3.1.22 `spring-core-profiles` docs 闭环验收与对齐
-  - deep-dive：`docs/profiles/spring-core-profiles/part-00-guide/151-00-deep-dive-guide.md`
-  - call-chain：`docs/profiles/spring-core-profiles/part-00-guide/151-01-profile-activation-call-chain.md`
-  - breakpoint-map：`docs/profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md`
-  - branch-matrix-doc：`docs/profiles/spring-core-profiles/part-00-guide/151-04-branch-decision-matrix.md`
-  - pitfalls：`docs/profiles/spring-core-profiles/appendix/153-90-common-pitfalls.md`
-  - self-check：`docs/profiles/spring-core-profiles/appendix/154-99-self-check.md`
+  - deep-dive：`docs/profiles/spring-core-profiles/part-00-guide/02-deep-dive-guide.md`
+  - call-chain：`docs/profiles/spring-core-profiles/part-00-guide/03-profile-activation-call-chain.md`
+  - breakpoint-map：`docs/profiles/spring-core-profiles/part-00-guide/04-breakpoint-map.md`
+  - branch-matrix-doc：`docs/profiles/spring-core-profiles/part-00-guide/05-branch-decision-matrix.md`
+  - pitfalls：`docs/profiles/spring-core-profiles/appendix/01-common-pitfalls.md`
+  - self-check：`docs/profiles/spring-core-profiles/appendix/02-self-check.md`
 
 ### 3.2 Tests 深挖闭环（22 个模块逐一验收）
 

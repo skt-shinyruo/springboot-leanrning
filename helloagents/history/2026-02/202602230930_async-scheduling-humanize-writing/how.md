@@ -29,7 +29,7 @@
 
 按“从入口到正文，再到附录”的顺序推进，保证读者体验逐步变好：
 
-1. `docs/README.md` / `117-03-mainline-timeline.md` / `118-00-deep-dive-guide.md`：先把阅读路线写成作者导言
+1. `docs/README.md` / `01-mainline-timeline.md` / `02-deep-dive-guide.md`：先把阅读路线写成作者导言
 2. 主线章节（119/120/121/122/123/126/127/128）：逐章改写正文叙事，把验证入口下移
 3. Appendix（124/125）：把 Pitfalls 写成排障短文，把 Self-check 写成习题册式自检
 4. 最后回扫矩阵/断点地图（118-02/118-04）：保留功能，但改写为“读者真的会用”的文本

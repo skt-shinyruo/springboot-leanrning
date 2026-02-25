@@ -4,10 +4,10 @@
 
 ## Tasks
 
-- [√] 重写 `docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`（两条转换链路 + 决策点 + 断点闭环 + 排障分流）
-- [√] 重写 `docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`（programmatic BPP 的顺序/时机/定义层 vs 实例层注册）
-- [√] 重写 `docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md`（`@Resource` name-first + 处理器依赖 + 断点闭环）
-- [√] 重写 `docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`（strict/non-strict 的决定因素 + 分流到 SpEL/转换）
+- [√] 重写 `docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`（两条转换链路 + 决策点 + 断点闭环 + 排障分流）
+- [√] 重写 `docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`（programmatic BPP 的顺序/时机/定义层 vs 实例层注册）
+- [√] 重写 `docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md`（`@Resource` name-first + 处理器依赖 + 断点闭环）
+- [√] 重写 `docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`（strict/non-strict 的决定因素 + 分流到 SpEL/转换）
 - [√] 修复 `docs/SUMMARY.md` 链接：从 `docs/` 出发统一使用 `../` 前缀（GitHub/MkDocs 均可正确跳转）
 - [√] 验证：`mvn -pl :spring-core-beans test` 通过
 - [√] 验证：`python3 -m mkdocs build -f docs-site/mkdocs.yml` 通过（修复 SUMMARY 链接相关 warning）

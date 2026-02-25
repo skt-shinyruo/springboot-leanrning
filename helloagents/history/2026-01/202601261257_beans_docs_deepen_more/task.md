@@ -141,7 +141,7 @@ Directory: `helloagents/plan/202601261257_beans_docs_deepen_more/`
 
 > 说明：文档深度目标为“粒度 3”：每章必须补齐 **最短调用链 + 关键分支条件 + watch list + 最小伪代码/源码片段对照 + 对应 Lab 入口 + 排障分流**。
 
-- [√] 2.1 循环依赖证据链加深：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+- [√] 2.1 循环依赖证据链加深：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
   - [√] 2.1.1 改写“问题引入”：为什么构造器环必死、setter/field 可能活（先给结论再给证据）
   - [√] 2.1.2 最短调用链：`getBean` → 创建 → 暴露 early factory → 注入依赖 → 回填（用 10~20 行伪代码把流程跑通）
   - [√] 2.1.3 关键分支条件表：`allowCircularReferences`、`isSingletonCurrentlyInCreation`、early exposure 的触发窗口
@@ -150,7 +150,7 @@ Directory: `helloagents/plan/202601261257_beans_docs_deepen_more/`
   - [√] 2.1.6 边界 Case：构造器环、setter 环、@Lazy 打断环、带代理的环（至少 4 个）
   - [√] 2.1.7 排障分流：遇到 circular reference 报错时，先判定注入类型/是否 AOP/是否允许环，再定位到具体 bean
   - [√] 2.1.8 绑定 Labs：`SpringCoreBeansCircularDependencyBoundaryLabTest` + `SpringCoreBeansEarlyReferenceLabTest`
-- [√] 2.2 FactoryBean 证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md`
+- [√] 2.2 FactoryBean 证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md`
   - [√] 2.2.1 改写“问题引入”：为什么很多人把 FactoryBean 当成普通 bean 用，然后注入/按类型查找就崩
   - [√] 2.2.2 最短调用链：`getBean("x")` → `getObjectForBeanInstance` → `FactoryBean#getObject`
   - [√] 2.2.3 `&` 前缀规则：什么时候需要 `&`，什么时候不需要（给 3 个最容易混的例子）
@@ -158,61 +158,61 @@ Directory: `helloagents/plan/202601261257_beans_docs_deepen_more/`
   - [√] 2.2.5 缓存语义：FactoryBean 自身 singleton 与产品 singleton 是两套语义（用 identity 断言证明）
   - [√] 2.2.6 边界 Case：按类型注入 FactoryBean 本身、按类型注入产品、泛型产品、SmartFactoryBean（如适用）
   - [√] 2.2.7 绑定 Labs：`SpringCoreBeansFactoryBeanDeepDiveLabTest` + `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
-- [√] 2.3 泛型/类型匹配证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`
+- [√] 2.3 泛型/类型匹配证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md`
   - [√] 2.3.1 建立“误解清单”：为什么很多人以为 Spring 能 100% 精准识别所有泛型
   - [√] 2.3.2 用 2~3 个反例把误解打碎（集合泛型/多候选/FactoryBean 产品类型不准）
   - [√] 2.3.3 证据链：`ResolvableType` 在候选筛选中的参与点（给出关键类/方法名单 + 分支条件）
   - [√] 2.3.4 边界 Case：`ObjectProvider<T>` 延迟获取对候选选择的影响（什么时候“注入失败但 provider 能拿到”）
   - [√] 2.3.5 绑定 Labs：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
-- [√] 2.4 `@Lazy` 语义证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md`
+- [√] 2.4 `@Lazy` 语义证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/01-lazy-semantics.md`
   - [√] 2.4.1 定义两种 Lazy：definition-lazy（lazy-init）vs injection-point-lazy（注入点代理），先给“结论表”
   - [√] 2.4.2 证据链：为什么“lazy-init 不等于注入不创建”（解释依赖解析触发点）
   - [√] 2.4.3 代理边界：JDK/CGLIB 选择条件、按 concrete class 查找失败的原因与修复方式
   - [√] 2.4.4 边界 Case：@Lazy + 循环依赖、@Lazy + FactoryBean、@Lazy + scoped proxy（至少 3 个）
   - [√] 2.4.5 绑定 Labs：`SpringCoreBeansLazyLabTest`（必要时补充 `SpringCoreBeansProxyingPhaseLabTest`）
-- [√] 2.5 MergedBeanDefinition 证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md`
+- [√] 2.5 MergedBeanDefinition 证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md`
   - [√] 2.5.1 改写“问题引入”：为什么你打印的 BD 跟你定义的不一样（根因：merged view）
   - [√] 2.5.2 最短调用链：获取 merged BD 的入口（不触发实例化）+ 合并发生点
   - [√] 2.5.3 watch list：合并前后关键字段对照（scope/lazy/autowire/dependsOn 等）+ 如何验证来源
   - [√] 2.5.4 边界 Case：parent/child、@Bean 方法元信息、BeanDefinitionCustomizer（如存在）叠加效果
   - [√] 2.5.5 绑定 Labs：`SpringCoreBeansMergedBeanDefinitionLabTest`
-- [√] 2.6 占位符严格/非严格证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
+- [√] 2.6 占位符严格/非严格证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`
   - [√] 2.6.1 结论表：严格/非严格、默认值语法、缺失属性时的行为（含错误形态）
   - [√] 2.6.2 解析时机证据链：BeanDefinition 属性值 vs `@Value` 注入点（分别由谁处理、在什么阶段）
   - [√] 2.6.3 边界 Case：属性源覆盖顺序、@PropertySource、Environment vs PropertyPlaceholderConfigurer
   - [√] 2.6.4 排障分流：遇到 placeholder 未解析/解析为默认值/解析顺序不符合预期时怎么定位
   - [√] 2.6.5 绑定 Labs：`SpringCoreBeansValuePlaceholderResolutionLabTest`
-- [√] 2.7 SpEL/`@Value` 证据链加深：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
+- [√] 2.7 SpEL/`@Value` 证据链加深：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/05-spel-and-value-expression.md`
   - [√] 2.7.1 证据链：表达式解析/求值入口、类型转换入口（在哪个组件里完成）
   - [√] 2.7.2 失败形态固定化：表达式语法错误、引用 bean 不存在、类型转换失败（分别怎么报错）
   - [√] 2.7.3 “占位符 vs SpEL”顺序对照：什么时候先解析 `${}`，什么时候先求值 `#{}`
   - [√] 2.7.4 排障分流：读者只看现象（报错/值不对）也能定位到入口与组件
   - [√] 2.7.5 绑定 Labs：`SpringCoreBeansSpelValueLabTest`
-- [√] 2.8 作用域/ScopedProxy 证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+- [√] 2.8 作用域/ScopedProxy 证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md`
   - [√] 2.8.1 改写“问题引入”：prototype 注入到 singleton 为何不生效（先给反直觉现象）
   - [√] 2.8.2 证据链：无代理时为什么会变成“只创建一次”（容器解析依赖只发生一次）
   - [√] 2.8.3 scoped proxy 证据链：代理如何把调用路由到当前 scope target（关键类/方法 + 分支条件）
   - [√] 2.8.4 自定义 scope：存取位置、销毁回调、线程绑定/请求绑定（按你实现的 scope 类型写）
   - [√] 2.8.5 绑定 Labs：`SpringCoreBeansCustomScopeLabTest`
-- [√] 2.9 SmartLifecycle phase 证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
+- [√] 2.9 SmartLifecycle phase 证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/10-smart-lifecycle-phase.md`
   - [√] 2.9.1 最短调用链：refresh/close 时 lifecycle 的调度入口与 phase 分组算法
   - [√] 2.9.2 边界 Case：同 phase 顺序、依赖导致的顺序变化、stop callback 未触发的典型原因
   - [√] 2.9.3 watch list：phase 分组、正在 stop 的组件、回调触发点（能定位“卡在哪个 bean”）
   - [√] 2.9.4 排障分流：shutdown 卡死/超时/顺序不对（怎么快速缩小到某个 lifecycle bean）
   - [√] 2.9.5 绑定 Labs：`SpringCoreBeansSmartLifecycleLabTest`
-- [√] 2.10 父子容器证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-context-hierarchy.md`
+- [√] 2.10 父子容器证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/04-context-hierarchy.md`
   - [√] 2.10.1 结论表：可见性规则、屏蔽规则、containsBean vs containsLocalBean
   - [√] 2.10.2 证据链：按名查找与按类型查找在层级中的搜索路径（分别如何走 parent）
   - [√] 2.10.3 边界 Case：同名屏蔽、同类型多候选、child 覆盖/屏蔽导致的注入变化
   - [√] 2.10.4 排障分流：当你以为拿到的是 parent 的 bean 但实际是 child 的（如何确认与修复）
   - [√] 2.10.5 绑定 Labs：`SpringCoreBeansContextHierarchyLabTest`
-- [√] 2.11 BeanDefinition 覆盖证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md`
+- [√] 2.11 BeanDefinition 覆盖证据链加深：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md`
   - [√] 2.11.1 结论表：允许/禁止覆盖时的行为、异常类型、报错信息结构
   - [√] 2.11.2 证据链：覆盖发生在哪个阶段（注册/解析/刷新）与关键条件
   - [√] 2.11.3 覆盖来源定位手册：如何通过 BD 来源 dump 追到是哪个配置/扫描/导入造成的
   - [√] 2.11.4 边界 Case：覆盖 vs 父子容器屏蔽（明确区分），以及对按类型注入候选的影响
   - [√] 2.11.5 绑定 Labs：`SpringCoreBeansBeanDefinitionOverridingLabTest`
-- [√] 2.12 入口/目录同步（让“读文档的人”找得到“可跑入口”）：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`、`spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`、`spring-core-modules/spring-core-beans/docs/README.md`
+- [√] 2.12 入口/目录同步（让“读文档的人”找得到“可跑入口”）：`spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`、`spring-core-modules/spring-core-beans/docs/appendix/08-explore-debug-tests.md`、`spring-core-modules/spring-core-beans/docs/README.md`
   - [√] 2.12.1 Breakpoint Map：为每个主题补齐“入口断点 + watch list + 对应 Lab”
   - [√] 2.12.2 Explore Debug Tests：把新增/加深的 explore 用例分组，并明确“为什么需要 explore”
   - [√] 2.12.3 README：把“学完路径”（建议阅读顺序）与“点跑命令”写清楚

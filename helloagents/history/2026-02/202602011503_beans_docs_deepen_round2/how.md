@@ -21,9 +21,9 @@ Round 2 的目标是“让读者更快进入下一轮”，因此施工顺序建
 
 1. `spring-core-modules/spring-core-beans/docs/README.md`（Docs TOC / 症状驱动导航）
 2. `spring-core-modules/spring-core-beans/docs/deepening-strategies/README.md`（策略入口：告诉读者如何使用策略）
-3. `spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`（从现象直达章节/断点/Lab）
-4. `spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`（断点地图：可复用观察点）
-5. `spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`（生产排障清单：最短诊断路径）
+3. `spring-core-modules/spring-core-beans/docs/appendix/03-knowledge-map.md`（从现象直达章节/断点/Lab）
+4. `spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`（断点地图：可复用观察点）
+5. `spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`（生产排障清单：最短诊断路径）
 
 > 如执行过程中发现“某条路径需要正文承接（否则读者跳过去看不懂）”，再按需选择 0–3 个承接章节做最小补强；避免扩大范围导致再次全章模板化。
 
@@ -65,17 +65,17 @@ Round 2 的目标是“让读者更快进入下一轮”，因此施工顺序建
      - 从现象进入：先跳到知识地图定位章节与入口用例，再回到章节正文的 `AE-DEEPENING` 做加深。
      - 从断点进入：先在断点地图选断点组确定阶段，再回到章节把观察收敛为结论/反例/排错路径。
 
-3) `appendix/92-knowledge-map.md`（知识地图）
+3) `appendix/03-knowledge-map.md`（知识地图）
    - 目标：从现象直达“章节 + 断点组 + 推荐 Lab/Test”，减少读者自己拼图的次数。
    - 写法：高频行优先升级：
      - 给断点入口增加回链（能跳到断点地图的对应组），必要时配合断点地图补稳定锚点。
      - 推荐 Lab/Test 只升级最常用现象（3–5 行），避免表格过度膨胀。
 
-4) `part-00-guide/013-02-breakpoint-map.md`（断点地图）
+4) `part-00-guide/07-breakpoint-map.md`（断点地图）
    - 目标：让断点地图更像“可复用观察点套件”，能从症状快速选断点组。
    - 写法：新增一个极短的“从症状选择断点组”的分流（覆盖 5 类高频即可），并回链到知识地图。
 
-5) `appendix/94-production-troubleshooting-checklist.md`（生产排障清单）
+5) `appendix/05-production-troubleshooting-checklist.md`（生产排障清单）
    - 目标：把条目进一步压缩成可复用的最短诊断路径（3–5 步），并为每一步提供章节/Lab/断点组的回链。
    - 写法：优先挑 3 类高频事故写“最短路径”，不要追求覆盖所有条目都升级。
 

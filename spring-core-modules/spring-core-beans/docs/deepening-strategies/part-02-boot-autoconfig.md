@@ -1,5 +1,10 @@
 # 逐章内容级再加深建议（part-02-boot-autoconfig）
 
+## 导读
+
+本文属于“加深策略”说明：用于解释本仓库文档与测试在结构上的组织方式，以及如何用最小入口把阅读、调试与验证连成闭环。
+
+
 ## 官方文档对照（版本语境）
 
 - Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
@@ -19,7 +24,7 @@
 
 ### 第 19 章：11. 调试与自检：如何“观察到”容器正在做什么
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/01-debugging-and-observability.md`
 - 继续加深建议：
     - `SpringCoreBeansAutoConfigurationLabTest`（再对照 `SpringCoreBeansAutoConfigurationOrderingLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -27,7 +32,7 @@
 
 ### 09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/02-auto-config-ordering.md`
 - 继续加深建议：
     - `SpringCoreBeansAutoConfigurationOrderingLabTest`（再对照 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `AutoConfigurationImportSelector#selectImports` 进，到 `ConditionEvaluator#shouldSkip` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -35,7 +40,7 @@
 
 ### 第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md`
 - 继续加深建议：
     - `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`（再对照 `SpringCoreBeansAutoConfigurationImportOrderingLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

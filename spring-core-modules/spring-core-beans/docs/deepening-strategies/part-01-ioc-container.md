@@ -1,5 +1,10 @@
 # 逐章内容级再加深建议（part-01-ioc-container）
 
+## 导读
+
+本文属于“加深策略”说明：用于解释本仓库文档与测试在结构上的组织方式，以及如何用最小入口把阅读、调试与验证连成闭环。
+
+
 ## 官方文档对照（版本语境）
 
 - Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
@@ -20,7 +25,7 @@
 
 ### 02. Bean 注册入口：扫描、@Bean、@Import、registrar
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
 - 继续加深建议：
     - `SpringCoreBeansComponentScanLabTest`（再对照 `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -28,7 +33,7 @@
 
 ### 03. 依赖注入解析：类型/名称/@Qualifier/@Primary
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
 - 继续加深建议：
     - `SpringCoreBeansAutowireCandidateSelectionLabTest`（再对照 `SpringCoreBeansBeanGraphDebugLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -36,7 +41,7 @@
 
 ### 04. Scope 与 prototype 注入陷阱
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -44,7 +49,7 @@
 
 ### 05. 生命周期：初始化、销毁与回调
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/04-lifecycle-and-callbacks.md`
 - 继续加深建议：
     - `SpringCoreBeansLifecycleCallbackOrderLabTest`（再对照 `SpringCoreBeansPrototypeDestroySemanticsLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#doCreateBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -52,7 +57,7 @@
 
 ### 06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/05-post-processors.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansPostProcessorOrderingLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -60,7 +65,7 @@
 
 ### 07. `@Configuration` 增强与 `@Bean` 语义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/018-07-configuration-enhancement.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/06-configuration-enhancement.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalse_stillPreservesSingleton_whenUsingMethodParameterInjection`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -68,7 +73,7 @@
 
 ### 01. Bean 运行机制：从 BeanDefinition 到最终暴露对象
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-bean-mental-model.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansBeanCreationTraceLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -76,7 +81,7 @@
 
 ### 08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-factorybean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/07-factorybean.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansFactoryBeanDeepDiveLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#getObjectForBeanInstance` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -84,7 +89,7 @@
 
 ### 09. 循环依赖：现象、原因与规避
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`（再对照 `SpringCoreBeansContainerLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `ConstructorResolver#autowireConstructor` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

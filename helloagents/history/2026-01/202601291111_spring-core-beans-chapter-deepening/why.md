@@ -41,7 +41,7 @@
 #### Scenario: 排障入口与观察点收敛（从症状到第一断点）
 读者遇到真实问题需要最短路径定位：
 - 为每章补充“第一断点入口 + watch list”
-- 与 `appendix/94-production-troubleshooting-checklist.md`、`appendix/92-knowledge-map.md` 建立更强映射
+- 与 `appendix/05-production-troubleshooting-checklist.md`、`appendix/03-knowledge-map.md` 建立更强映射
 
 ## Risk Assessment
 

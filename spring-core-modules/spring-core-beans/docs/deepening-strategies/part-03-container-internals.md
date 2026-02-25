@@ -1,5 +1,10 @@
 # 逐章内容级再加深建议（part-03-container-internals）
 
+## 导读
+
+本文属于“加深策略”说明：用于解释本仓库文档与测试在结构上的组织方式，以及如何用最小入口把阅读、调试与验证连成闭环。
+
+
 ## 官方文档对照（版本语境）
 
 - Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
@@ -18,7 +23,7 @@
 
 ### 第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/01-container-bootstrap-and-infrastructure.md`
 - 继续加深建议：
     - `SpringCoreBeansBootstrapInternalsLabTest`（再对照 `SpringCoreBeansResourceInjectionLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -26,7 +31,7 @@
 
 ### 13. BDRPP：注册阶段动态加定义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/13-bdrpp-definition-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/02-bdrpp-definition-registration.md`
 - 继续加深建议：
     - `SpringCoreBeansRegistryPostProcessorLabTest`（再对照 `SpringCoreBeansRegistryPostProcessorLabTest.beanDefinitionRegistryPostProcessor_canRegisterNewBeanDefinitions()`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -34,7 +39,7 @@
 
 ### 14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/03-post-processor-ordering.md`
 - 继续加深建议：
     - `SpringCoreBeansPostProcessorOrderingLabTest`（再对照 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `PostProcessorRegistrationDelegate#sortPostProcessors` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -42,7 +47,7 @@
 
 ### 15. 实例化前短路：postProcessBeforeInstantiation
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/04-pre-instantiation-short-circuit.md`
 - 继续加深建议：
     - `SpringCoreBeansPreInstantiationLabTest`（再对照 `SpringCoreBeansPreInstantiationLabTest.withoutBeforeInstantiationShortCircuit_refreshFailsAndConstructorWasCalled()`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -50,7 +55,7 @@
 
 ### 16. early reference 与循环依赖：getEarlyBeanReference
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
 - 继续加深建议：
     - `SpringCoreBeansEarlyReferenceLabTest`（再对照 `SpringCoreBeansRawInjectionDespiteWrappingLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultSingletonBeanRegistry#getSingleton` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -58,7 +63,7 @@
 
 ### 17. 生命周期回调顺序：Aware / BPP / init / destroy
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/17-lifecycle-callback-order.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/06-lifecycle-callback-order.md`
 - 继续加深建议：
     - `SpringCoreBeansLifecycleCallbackOrderLabTest`（再对照 `SpringCoreBeansLifecycleCallbackOrderLabTest.singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization()`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#doCreateBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -66,7 +71,7 @@
 
 ### 18. refresh → doCreateBean 主线（源码级）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/07-refresh-to-bean-creation-mainline.md`
 - 继续加深建议：
     - `SpringCoreBeansBootstrapInternalsLabTest`（再对照 `SpringCoreBeansRegistryPostProcessorLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

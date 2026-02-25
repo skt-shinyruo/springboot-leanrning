@@ -1,5 +1,10 @@
 # 逐章内容级再加深建议（part-00-guide 指南）
 
+## 导读
+
+本文属于“加深策略”说明：用于解释本仓库文档与测试在结构上的组织方式，以及如何用最小入口把阅读、调试与验证连成闭环。
+
+
 ## 官方文档对照（版本语境）
 
 - Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
@@ -18,7 +23,7 @@
 
 ### 第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/010-03-mainline-timeline.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/02-mainline-timeline.md`
 - 继续加深建议：
     - `SpringCoreBeansMainlineCallChainLabTest`（再对照 `SpringCoreBeansBreakpointPackLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -26,7 +31,7 @@
 
 ### 第 11 章：00. 深入分析指南：把“Bean 三层模型”落到源码与断点
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`
 - 继续加深建议：
     - `SpringCoreBeansAutowireCandidateSelectionLabTest`（再对照 `SpringCoreBeansContainerLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -34,7 +39,7 @@
 
 ### 第 11 章：关键分支矩阵（Branch Decision Matrix）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/04-branch-decision-matrix.md`
 - 继续加深建议：
     - `SpringCoreBeansIocBranchMatrixLabTest`（再对照 `SpringCoreBeansInternalsBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#doResolveDependency` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -42,7 +47,7 @@
 
 ### 第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/05-quickstart-30min.md`
 - 继续加深建议：
     - `SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans`（再对照 `SpringCoreBeansLabTest#demonstratesPrototypeScopeBehavior`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -50,7 +55,7 @@
 
 ### 第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/06-applicationcontext-refresh-call-chain.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansBootstrapInternalsLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `AbstractApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -58,7 +63,7 @@
 
 ### 第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`
 - 继续加深建议：
     - `SpringCoreBeansLabTest`（再对照 `SpringCoreBeansBootstrapInternalsLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

@@ -61,9 +61,9 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 - [ ] 1.0.3 更新知识库 Beans 模块页：强调 BPP 顺序/循环依赖/候选选择三条主线与入口（`helloagents/wiki/modules/spring-core-beans.md`），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
 
 ### 1.1 BPP/BFPP 顺序主线：文档补齐（refresh 时间线 + 断点）
-- [ ] 1.1.1 为 `docs/beans/spring-core-beans/part-03-container-internals/14-post-processor-ordering.md` 增加“refresh 时间线”章节：哪些阶段注册/排序/调用 BFPP/BPP，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
-- [ ] 1.1.2 为 `docs/beans/spring-core-beans/part-03-container-internals/14-post-processor-ordering.md` 增加“关键类/关键方法清单（推荐断点）”章节，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
-- [ ] 1.1.3 为 `docs/beans/spring-core-beans/part-03-container-internals/14-post-processor-ordering.md` 增加“常见误区与排障路线（为什么顺序不如预期）”章节，并指向对应 Lab，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
+- [ ] 1.1.1 为 `docs/beans/spring-core-beans/part-03-container-internals/03-post-processor-ordering.md` 增加“refresh 时间线”章节：哪些阶段注册/排序/调用 BFPP/BPP，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
+- [ ] 1.1.2 为 `docs/beans/spring-core-beans/part-03-container-internals/03-post-processor-ordering.md` 增加“关键类/关键方法清单（推荐断点）”章节，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
+- [ ] 1.1.3 为 `docs/beans/spring-core-beans/part-03-container-internals/03-post-processor-ordering.md` 增加“常见误区与排障路线（为什么顺序不如预期）”章节，并指向对应 Lab，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
 - [ ] 1.1.4 在 `docs/beans/spring-core-beans/appendix/90-common-pitfalls.md` 增补“BPP 顺序相关坑”条目（现象→根因→验证→断点），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
 
 ### 1.2 BPP/BFPP 顺序主线：Lab 强化（把结论固化为断言）
@@ -71,11 +71,11 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 - [ ] 1.2.2 拆分并强化 `SpringCoreBeansPostProcessorOrderingLabTest`：增加 `PriorityOrdered` vs `Ordered` vs 无序 的 ordering 对照用例（同文件），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
 - [ ] 1.2.3 拆分并强化 `SpringCoreBeansPostProcessorOrderingLabTest`：增加“@Order/Ordered 接口在不同类型 PostProcessor 上的差异”对照用例（同文件），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
 - [ ] 1.2.4 为上述 Lab 增加“定位型断言”：断言顺序与“证据链”（例如记录调用轨迹/beanName 列表），避免仅靠日志肉眼观察（同文件），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
-- [ ] 1.2.5 在 `docs/beans/spring-core-beans/part-03-container-internals/14-post-processor-ordering.md` 补充“推荐测试入口：SpringCoreBeansPostProcessorOrderingLabTest 的用例清单”并标注对应小节，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
+- [ ] 1.2.5 在 `docs/beans/spring-core-beans/part-03-container-internals/03-post-processor-ordering.md` 补充“推荐测试入口：SpringCoreBeansPostProcessorOrderingLabTest 的用例清单”并标注对应小节，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s1-bpp-ordering`
 
 ### 1.3 循环依赖边界：文档补齐（能救/不能救矩阵）
-- [ ] 1.3.1 为 `docs/beans/spring-core-beans/part-03-container-internals/16-early-reference-and-circular.md` 增加“循环依赖可解矩阵”：构造器/字段/Setter、singleton/prototype、@Lazy、Provider 等，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
-- [ ] 1.3.2 为 `docs/beans/spring-core-beans/part-03-container-internals/16-early-reference-and-circular.md` 增加“early reference 与代理介入”的边界解释：raw injection despite wrapping 等典型现象，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
+- [ ] 1.3.1 为 `docs/beans/spring-core-beans/part-03-container-internals/05-early-reference-and-circular.md` 增加“循环依赖可解矩阵”：构造器/字段/Setter、singleton/prototype、@Lazy、Provider 等，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
+- [ ] 1.3.2 为 `docs/beans/spring-core-beans/part-03-container-internals/05-early-reference-and-circular.md` 增加“early reference 与代理介入”的边界解释：raw injection despite wrapping 等典型现象，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
 - [ ] 1.3.3 在循环依赖章节中补齐“推荐断点清单”与“如何从异常反推到 refresh 时间线位置”，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
 - [ ] 1.3.4 在 `docs/beans/spring-core-beans/appendix/90-common-pitfalls.md` 增补“循环依赖相关坑”的排障条目（至少覆盖 2 个可救 + 2 个不可救），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
 
@@ -84,12 +84,12 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 - [ ] 1.4.2 新增 `SpringCoreBeansCircularDependencyBoundaryLabTest`：覆盖“Setter/字段注入可解（early singleton exposure）”的最小复现与断言（同文件），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
 - [ ] 1.4.3 新增 `SpringCoreBeansCircularDependencyBoundaryLabTest`：覆盖“@Lazy 或 Provider 打破循环”的对照用例（同文件），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
 - [ ] 1.4.4 新增 `SpringCoreBeansCircularDependencyBoundaryLabTest`：覆盖“代理介入导致的边界现象（raw injection / early reference）”的最小复现与断言（同文件或必要时新增支撑类），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
-- [ ] 1.4.5 为新 Lab 补齐文档入口：在 `docs/beans/spring-core-beans/part-03-container-internals/16-early-reference-and-circular.md` 添加“推荐测试入口/推荐断点”链接，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
+- [ ] 1.4.5 为新 Lab 补齐文档入口：在 `docs/beans/spring-core-beans/part-03-container-internals/05-early-reference-and-circular.md` 添加“推荐测试入口/推荐断点”链接，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s2-circular-dependency-boundary`
 
 ### 1.5 注入候选选择：文档补齐（从报错反推规则）
-- [ ] 1.5.1 深化候选选择主线：为 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md` 增加“决策树：候选收集 → 排序 → 决胜规则 → 报错分支”，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s3-injection-candidate-selection`
+- [ ] 1.5.1 深化候选选择主线：为 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md` 增加“决策树：候选收集 → 排序 → 决胜规则 → 报错分支”，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s3-injection-candidate-selection`
 - [ ] 1.5.2 深化候选选择主线：在同文档补齐“异常 → 反推到哪个规则分支”的排障小节（NoSuchBean / NoUniqueBean 等），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s3-injection-candidate-selection`
-- [ ] 1.5.3 深化泛型匹配坑：为 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md` 增加“典型误判案例 + 推荐验证测试入口”，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s3-injection-candidate-selection`
+- [ ] 1.5.3 深化泛型匹配坑：为 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md` 增加“典型误判案例 + 推荐验证测试入口”，验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s3-injection-candidate-selection`
 - [ ] 1.5.4 在 `docs/beans/spring-core-beans/appendix/90-common-pitfalls.md` 增补“注入/候选选择排障 checklist”：从现象（报错/注入错 Bean）到定位（规则分支/断点/验证测试），验证 `why.md#requirement-r1-beans-container-mainline` `why.md#scenario-s3-injection-candidate-selection`
 
 ### 1.6 注入候选选择：强化现有 Labs + 新增定位型 Lab

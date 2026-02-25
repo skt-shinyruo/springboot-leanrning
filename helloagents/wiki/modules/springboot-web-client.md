@@ -36,11 +36,11 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `spring-boot-modules/spring-boot-web-client/docs/README.md`
-- **Docs Guide:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-00-deep-dive-guide.md`
-- **Breakpoint Map:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/174-04-branch-decision-matrix.md`
-- **Playbook:** `spring-boot-modules/spring-boot-web-client/docs/appendix/180-90-common-pitfalls.md`
-- **Self-check:** `spring-boot-modules/spring-boot-web-client/docs/appendix/181-99-self-check.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/02-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/04-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-web-client/docs/part-00-guide/05-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-web-client/docs/appendix/01-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-web-client/docs/appendix/02-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBookMatrixLabTest test`

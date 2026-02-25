@@ -21,7 +21,7 @@ Directory: `helloagents/plan/202601052057_spring_core_beans_teaching_upgrade/`
 ## 2. Part 01 IoC Container（01–09 全章源码级补齐）
 - [-] 2.1 `docs/beans/spring-core-beans/part-01-ioc-container/01-bean-mental-model.md`：补齐调用链主线 + 关键分支/边界条件 + 断点/观察点 + 练习指引
   > Note: 文档已具备主线/断点/入口（并能映射到可运行 Lab），本轮暂不改动。
-- [√] 2.2 `docs/beans/spring-core-beans/part-01-ioc-container/02-bean-registration.md`：补齐 ImportSelector/Registrar 等机制的源码主线与关键分支，并对齐 Exercise/Solution 指引
+- [√] 2.2 `docs/beans/spring-core-beans/part-01-ioc-container/01-bean-registration.md`：补齐 ImportSelector/Registrar 等机制的源码主线与关键分支，并对齐 Exercise/Solution 指引
 - [-] 2.3 `docs/beans/spring-core-beans/part-01-ioc-container/03-dependency-injection-resolution.md`：补齐候选收集/缩小的算法主线与关键分支，并对齐 Lab/练习指引
   > Note: 章节已覆盖候选算法主线与断点入口，本轮暂不改动。
 - [√] 2.4 `docs/beans/spring-core-beans/part-01-ioc-container/04-scope-and-prototype.md`：补齐 scope/prototype 边界的源码路径与关键分支，对齐 Lab/练习指引
@@ -31,9 +31,9 @@ Directory: `helloagents/plan/202601052057_spring_core_beans_teaching_upgrade/`
   > Note: 章节已具备源码级主线与排序/时机断点，本轮暂不改动。
 - [-] 2.7 `docs/beans/spring-core-beans/part-01-ioc-container/07-configuration-enhancement.md`：补齐配置类增强/代理的源码主线与关键分支，对齐 Lab/练习指引
   > Note: 章节已具备主线与可运行入口，本轮暂不改动。
-- [-] 2.8 `docs/beans/spring-core-beans/part-01-ioc-container/08-factorybean.md`：补齐 FactoryBean 的 getObjectType/getObject 相关分支与主线，对齐 Lab/练习指引
+- [-] 2.8 `docs/beans/spring-core-beans/part-01-ioc-container/07-factorybean.md`：补齐 FactoryBean 的 getObjectType/getObject 相关分支与主线，对齐 Lab/练习指引
   > Note: 章节已具备可运行入口与边界分支提示，本轮暂不改动。
-- [-] 2.9 `docs/beans/spring-core-beans/part-01-ioc-container/09-circular-dependencies.md`：补齐循环依赖“三层缓存/early reference”源码主线与边界条件，对齐 Lab/练习指引
+- [-] 2.9 `docs/beans/spring-core-beans/part-01-ioc-container/08-circular-dependencies.md`：补齐循环依赖“三层缓存/early reference”源码主线与边界条件，对齐 Lab/练习指引
   > Note: 章节已具备三级缓存/early reference 主线与断点入口，本轮暂不改动。
 - [-] 2.10 验证：模块测试 + docs 链接检查
   > Note: 已在 0.4 / 7.5 执行全量验证。
@@ -49,15 +49,15 @@ Directory: `helloagents/plan/202601052057_spring_core_beans_teaching_upgrade/`
 ## 4. Part 03 Container Internals（12–17 全章源码级补齐）
 - [-] 4.1 `docs/beans/spring-core-beans/part-03-container-internals/12-container-bootstrap-and-infrastructure.md`：补齐 bootstrap 主线与关键分支，对齐 Lab/练习指引
   > Note: 章节已具备 bootstrap 主线与可运行入口，本轮暂不改动。
-- [-] 4.2 `docs/beans/spring-core-beans/part-03-container-internals/13-bdrpp-definition-registration.md`：补齐 BDRPP 注册主线与关键分支，对齐 Lab/练习指引
+- [-] 4.2 `docs/beans/spring-core-beans/part-03-container-internals/02-bdrpp-definition-registration.md`：补齐 BDRPP 注册主线与关键分支，对齐 Lab/练习指引
   > Note: 章节已具备可运行入口与断点建议，本轮暂不改动。
-- [-] 4.3 `docs/beans/spring-core-beans/part-03-container-internals/14-post-processor-ordering.md`：补齐排序算法主线与关键分支，对齐 Lab/Exercise/Solution 指引
+- [-] 4.3 `docs/beans/spring-core-beans/part-03-container-internals/03-post-processor-ordering.md`：补齐排序算法主线与关键分支，对齐 Lab/Exercise/Solution 指引
   > Note: 章节已具备算法级主线与入口，本轮暂不改动。
-- [-] 4.4 `docs/beans/spring-core-beans/part-03-container-internals/15-pre-instantiation-short-circuit.md`：补齐 pre-instantiation 分支与主线，对齐 Lab/练习指引
+- [-] 4.4 `docs/beans/spring-core-beans/part-03-container-internals/04-pre-instantiation-short-circuit.md`：补齐 pre-instantiation 分支与主线，对齐 Lab/练习指引
   > Note: 章节已具备可运行入口与断点建议，本轮暂不改动。
-- [-] 4.5 `docs/beans/spring-core-beans/part-03-container-internals/16-early-reference-and-circular.md`：补齐 early reference 分支与主线，对齐 Lab/练习指引
+- [-] 4.5 `docs/beans/spring-core-beans/part-03-container-internals/05-early-reference-and-circular.md`：补齐 early reference 分支与主线，对齐 Lab/练习指引
   > Note: 章节已具备可运行入口与断点建议，本轮暂不改动。
-- [-] 4.6 `docs/beans/spring-core-beans/part-03-container-internals/17-lifecycle-callback-order.md`：补齐生命周期排序主线与关键分支，对齐 Lab/练习指引
+- [-] 4.6 `docs/beans/spring-core-beans/part-03-container-internals/06-lifecycle-callback-order.md`：补齐生命周期排序主线与关键分支，对齐 Lab/练习指引
   > Note: 章节已具备可运行入口与断点建议，本轮暂不改动。
 - [-] 4.7 验证：模块测试 + docs 链接检查
   > Note: 已在 0.4 / 7.5 执行全量验证。
@@ -77,7 +77,7 @@ Directory: `helloagents/plan/202601052057_spring_core_beans_teaching_upgrade/`
   > Note: 已在 0.4 / 7.5 执行全量验证。
 
 ## 7. Appendix 与全局收敛（目录、地图、知识库）
-- [-] 7.1 更新 `docs/beans/spring-core-beans/appendix/92-knowledge-map.md`：补齐“从概念到章节/入口”的检索路径，并标注核心主线
+- [-] 7.1 更新 `docs/beans/spring-core-beans/appendix/03-knowledge-map.md`：补齐“从概念到章节/入口”的检索路径，并标注核心主线
   > Note: 本轮优先收敛 docs/README 的“章节↔Lab↔Exercise↔Solution”可检索入口；知识点地图保持不变。
 - [√] 7.2 更新 `docs/beans/spring-core-beans/README.md`：收敛成稳定入口（章节 ↔ Lab ↔ Exercise ↔ Solution 的映射完整可用）
 - [√] 7.3 同步知识库：更新 `helloagents/wiki/modules/spring-core-beans.md`（入口、覆盖率、现状说明）

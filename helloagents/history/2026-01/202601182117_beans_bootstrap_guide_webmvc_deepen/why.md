@@ -23,10 +23,10 @@
   - `springboot-web-mvc`
   - `helloagents`（知识库与变更记录）
 - **Files (expected):**
-  - `docs/beans/spring-core-modules/spring-core-beans/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`
-  - `docs/beans/spring-core-modules/spring-core-beans/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`
-  - `docs/beans/spring-core-modules/spring-core-beans/part-00-guide/011-00-deep-dive-guide.md`
-  - `docs/web-mvc/spring-boot-modules/springboot-web-mvc/part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md`
+  - `docs/beans/spring-core-modules/spring-core-beans/part-03-container-internals/07-refresh-to-bean-creation-mainline.md`
+  - `docs/beans/spring-core-modules/spring-core-beans/part-03-container-internals/01-container-bootstrap-and-infrastructure.md`
+  - `docs/beans/spring-core-modules/spring-core-beans/part-00-guide/03-deep-dive-guide.md`
+  - `docs/web-mvc/spring-boot-modules/springboot-web-mvc/part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md`
   - `helloagents/wiki/modules/spring-core-beans.md`
   - `helloagents/wiki/modules/springboot-web-mvc.md`
   - `helloagents/CHANGELOG.md`

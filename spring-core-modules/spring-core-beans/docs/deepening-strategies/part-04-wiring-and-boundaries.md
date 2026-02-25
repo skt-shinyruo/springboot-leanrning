@@ -1,5 +1,10 @@
 # 逐章内容级再加深建议（part-04-wiring-and-boundaries）
 
+## 导读
+
+本文属于“加深策略”说明：用于解释本仓库文档与测试在结构上的组织方式，以及如何用最小入口把阅读、调试与验证连成闭环。
+
+
 ## 官方文档对照（版本语境）
 
 - Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
@@ -19,7 +24,7 @@
 
 ### 18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/01-lazy-semantics.md`
 - 继续加深建议：
     - `SpringCoreBeansLazyLabTest`（再对照 `SpringCoreBeansLazyLabTest#lazyInjectionPoint_canDeferCreationOfLazyBeanUntilFirstUse`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -27,7 +32,7 @@
 
 ### 19. dependsOn：强制初始化顺序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-depends-on.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/02-depends-on.md`
 - 继续加深建议：
     - `SpringCoreBeansDependsOnLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#doGetBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -35,7 +40,7 @@
 
 ### 20. registerResolvableDependency：能注入但不是 Bean
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/03-resolvable-dependency.md`
 - 继续加深建议：
     - `SpringCoreBeansResolvableDependencyLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#resolvableDependencies` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -43,7 +48,7 @@
 
 ### 21. 父子 ApplicationContext：可见性与覆盖边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-context-hierarchy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/04-context-hierarchy.md`
 - 继续加深建议：
     - `SpringCoreBeansContextHierarchyLabTest`（再对照 `SpringCoreBeansContextHierarchyLabTest.childContext_canSeeParentBeans_butParentCannotSeeChildBeans()`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#doGetBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -51,7 +56,7 @@
 
 ### 22. Bean 名称与 alias
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/05-bean-names-and-aliases.md`
 - 继续加深建议：
     - `SpringCoreBeansBeanNameAliasLabTest`（再对照 `SpringCoreBeansBeanNameAliasLabTest.aliasResolvesToSameSingletonInstanceAsCanonicalName()`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#transformedBeanName` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -59,7 +64,7 @@
 
 ### 23. FactoryBean 深潜：product vs factory、类型匹配、缓存语义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansFactoryBeanDeepDiveLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#getObjectForBeanInstance` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -67,7 +72,7 @@
 
 ### 24. BeanDefinition 覆盖（overriding）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md`
 - 继续加深建议：
     - `SpringCoreBeansBeanDefinitionOverridingLabTest`（再对照 `SpringCoreBeansBeanDefinitionOriginLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(...)` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -75,7 +80,7 @@
 
 ### 25. 手工添加 BeanPostProcessor：顺序与陷阱
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
 - 继续加深建议：
     - `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticallyAddedBpp_runsBeforeBeanDefinedBpp_evenIfBeanDefinedIsPriorityOrdered`（再对照 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#addBeanPostProcessor` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -83,7 +88,7 @@
 
 ### 26. SmartInitializingSingleton：单例创建完之后再做事
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/09-smart-initializing-singleton.md`
 - 继续加深建议：
     - `SpringCoreBeansSmartInitializingSingletonLabTest`（再对照 `SpringCoreBeansSmartInitializingSingletonLabTest#afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractApplicationContext#finishBeanFactoryInitialization` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -91,7 +96,7 @@
 
 ### 27. SmartLifecycle：start/stop 时机与 phase 顺序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/10-smart-lifecycle-phase.md`
 - 继续加深建议：
     - `SpringCoreBeansSmartLifecycleLabTest`（再对照 `SpringCoreBeansSmartLifecycleLabTest#smartLifecycleDoesNotAutoStart_whenIsAutoStartupIsFalse`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractApplicationContext#finishRefresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -99,7 +104,7 @@
 
 ### 28. 自定义 Scope + scoped proxy
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md`
 - 继续加深建议：
     - `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly`（再对照 `SpringCoreBeansCustomScopeLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#doGetBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -107,7 +112,7 @@
 
 ### 29. FactoryBean 边界：getObjectType 返回 null
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/12-factorybean-edge-cases.md`
 - 继续加深建议：
     - `SpringCoreBeansFactoryBeanEdgeCasesLabTest`（再对照 `SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#getBeanNamesForType` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -115,7 +120,7 @@
 
 ### 30. 注入阶段：field vs constructor（postProcessProperties）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md`
 - 继续加深建议：
     - `SpringCoreBeansInjectionPhaseLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#autowireConstructor` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -123,7 +128,7 @@
 
 ### 31. 代理产生阶段：BPP 如何换成 Proxy（self-invocation）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`
 - 继续加深建议：
     - `SpringCoreBeansBeanCreationTraceLabTest`（再对照 `SpringCoreBeansProxyingPhaseLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -131,7 +136,7 @@
 
 ### 32. `@Resource` 注入：name-first
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md`
 - 继续加深建议：
     - `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored`（再对照 `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#populateBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -139,7 +144,7 @@
 
 ### 33. 候选选择 vs 顺序：@Primary/@Priority/@Order/@Qualifier
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md`
 - 继续加深建议：
     - `SpringCoreBeansAutowireCandidateSelectionLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#doResolveDependency` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -147,7 +152,7 @@
 
 ### 34. `@Value("${...}")` 占位符解析：strict vs non-strict
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`
 - 继续加深建议：
     - `SpringCoreBeansValuePlaceholderResolutionLabTest`（再对照 `SpringCoreBeansValuePlaceholderResolutionLabTest#defaultEmbeddedValueResolver_resolvesExistingProperty_butLeavesMissingPlaceholderUnresolved`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#resolveEmbeddedValue` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -155,7 +160,7 @@
 
 ### 35. MergedBeanDefinition：RootBeanDefinition 从哪里来？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md`
 - 继续加深建议：
     - `SpringCoreBeansMergedBeanDefinitionLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#getMergedLocalBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -163,7 +168,7 @@
 
 ### 36. 类型转换：BeanWrapper / ConversionService / PropertyEditor
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`
 - 继续加深建议：
     - `SpringCoreBeansTypeConversionLabTest`（再对照 `SpringCoreBeansBeansSupportUtilitiesLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#populateBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -171,7 +176,7 @@
 
 ### 37. 泛型匹配陷阱：ResolvableType 与代理导致类型信息丢失
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md`
 - 继续加深建议：
     - `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`（再对照 `SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenTypeInfoIsLost`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `BeanDefinition#getResolvableType` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -179,7 +184,7 @@
 
 ### 38. Environment/PropertySource：优先级与排障主线
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-environment-and-propertysource.md`
 - 继续加深建议：
     - `SpringCoreBeansEnvironmentPropertySourceLabTest`（再对照 `SpringCoreBeansProfileRegistrationLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `PropertySourcesPropertyResolver#getProperty` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -187,7 +192,7 @@
 
 ### 39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-beanfactory-api-deep-dive.md`
 - 继续加深建议：
     - `SpringCoreBeansBeanFactoryApiLabTest`（再对照 `SpringCoreBeansBeanFactoryVsApplicationContextLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

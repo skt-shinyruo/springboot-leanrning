@@ -1,9 +1,9 @@
-# 04：ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）
+# 04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）
 
 ## 导读
 
-- 本章主题：**04：ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）**
-- 目标：让你能在真实工程里做选择：什么时候坚持自定义错误契约（ApiError），什么时候拥抱框架语义（ProblemDetail）。
+本章围绕「04：ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+建议优先运行 `BootWebMvcContractJacksonLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
@@ -64,7 +64,7 @@
 - Lab：`BootWebMvcContractJacksonLabTest`
 - Lab：`BootWebMvcProblemDetailLabTest`
 
-上一章：[part-04-rest-contract/03-error-contract-hardening.md](03-error-contract-hardening.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-05-real-world-http/01-cors-preflight.md](../part-05-real-world-http/078-01-cors-preflight.md)
+上一章：[part-04-rest-contract/03-error-contract-hardening.md](03-error-contract-hardening.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-05-real-world-http/01-cors-preflight.md](../part-05-real-world-http/01-cors-preflight.md)
 
 <!-- BOOKIFY:END -->
 

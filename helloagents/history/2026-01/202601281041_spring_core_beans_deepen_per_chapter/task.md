@@ -21,7 +21,7 @@
 
 ### 02. [√] 第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/010-03-mainline-timeline.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/02-mainline-timeline.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#finishRefresh` / `AbstractApplicationContext#prepareBeanFactory`；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansMainlineCallChainLabTest`
 - 深化策略：
   - 补充“阶段内关键对象变化”：每个阶段明确哪些数据结构会变化（definition registry / singleton caches / processor 列表），并指出如何在断点里验证。
@@ -30,7 +30,7 @@
 
 ### 03. [√] 第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanFactoryApiLabTest`
 - 深化策略：
   - 补充“最小心智模型解释”：用 3–5 个关键对象/方法把 IoC 的因果链串起来，避免只记名词。
@@ -39,7 +39,7 @@
 
 ### 04. [√] 第 11 章：关键分支矩阵（Branch Decision Matrix）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/04-branch-decision-matrix.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#resolveEmbeddedValue` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `DefaultListableBeanFactory#doResolveDependency`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest`
 - 深化策略：
   - 补充“阶段内关键对象变化”：每个阶段明确哪些数据结构会变化（definition registry / singleton caches / processor 列表），并指出如何在断点里验证。
@@ -48,7 +48,7 @@
 
 ### 05. [√] 第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/05-quickstart-30min.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#initializeBean` / `AbstractBeanFactory#doGetBean`；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansMainlineCallChainLabTest`
 - 深化策略：
   - 补充“最小心智模型解释”：用 3–5 个关键对象/方法把 IoC 的因果链串起来，避免只记名词。
@@ -57,7 +57,7 @@
 
 ### 06. [√] 第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/06-applicationcontext-refresh-call-chain.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansContainerLabTest`
 - 深化策略：
   - 补充“阶段内关键对象变化”：每个阶段明确哪些数据结构会变化（definition registry / singleton caches / processor 列表），并指出如何在断点里验证。
@@ -66,7 +66,7 @@
 
 ### 07. [√] 第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 - 深化策略：
   - 补充“阶段内关键对象变化”：每个阶段明确哪些数据结构会变化（definition registry / singleton caches / processor 列表），并指出如何在断点里验证。
@@ -75,7 +75,7 @@
 
 ### 08. [√] 第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
 - 现状速记：关键锚点：`ApplicationContext#refresh` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties` / `ConstructorResolver#autowireConstructor`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
 - 深化策略：
   - 补充“DependencyDescriptor 深挖”：required/annotations/resolvableType/field vs parameter 等字段如何影响解析结果，并给出 2 个对照注入点。
@@ -86,7 +86,7 @@
 
 ### 09. [√] 第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `ApplicationContext#refresh` / `ConfigurableBeanFactory#destroyBean`；配套 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansCustomScopeLabTest` / `SpringCoreBeansLabTest`
 - 深化策略：
   - 补充 prototype 的关键边界：prototype 的创建 guard、循环依赖为何不可救、以及 scope 与 singleton 缓存的根本差异。
@@ -97,7 +97,7 @@
 
 ### 10. [√] 第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/04-lifecycle-and-callbacks.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#close` / `AbstractApplicationContext#doClose` / `AbstractApplicationContext#refresh`；配套 Lab：`SpringCoreBeansAwareInfrastructureLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
 - 深化策略：
   - 补充“回调来源分型”：JSR-250、接口回调、init/destroy-method、SmartInitializingSingleton、Lifecycle/SmartLifecycle 的触发时机与优先级。
@@ -107,7 +107,7 @@
 
 ### 11. [√] 第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/05-post-processors.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`；配套 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
 - 深化策略：
   - 补充“processor 时机+排序算法”：PriorityOrdered/Ordered/无序的分组与排序入口，为什么要分阶段 invoke/register。
@@ -117,7 +117,7 @@
 
 ### 12. [√] 第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/018-07-configuration-enhancement.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/06-configuration-enhancement.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `ApplicationContext#refresh` / `BeanMethodInterceptor#intercept`；配套 Lab：`SpringCoreBeansContainerLabTest`
 - 深化策略：
   - 补充配置类解析主线：ConfigurationClassPostProcessor 如何解析/注册 @Bean/@Import，哪些发生在定义层、哪些发生在实例层。
@@ -128,7 +128,7 @@
 
 ### 13. [√] 02. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyPropertyValues` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansComponentScanLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansImportLabTest`
 - 深化策略：
   - 针对“章节验收口径（10/30/3：教程化闭环）”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
@@ -137,7 +137,7 @@
 
 ### 14. [√] 第 20 章：01. Bean 心智模型：从 BeanDefinition 到最终暴露对象
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-bean-mental-model.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `ApplicationContext#refresh` / `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
 - 深化策略：
   - 针对“机制主线：三层模型 + 一个“最终对象”概念”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
@@ -146,7 +146,7 @@
 
 ### 15. [√] 08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-factorybean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/07-factorybean.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#isTypeMatch`；配套 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 - 深化策略：
   - 补充类型推断与缓存链路：getObjectType/getTypeForFactoryBean/getObjectFromFactoryBean 如何影响按类型查找、条件判断与注入。
@@ -157,7 +157,7 @@
 
 ### 16. [√] 09. 循环依赖：现象、原因与规避（constructor vs setter）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#populateBean`；配套 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 - 深化策略：
   - 把“可救/不可救”分类讲透：setter 环、constructor 环、prototype 环、dependsOn 环，各自 fail-fast 点与原因。
@@ -168,7 +168,7 @@
 
 ### 17. [√] 第 19 章：11. 调试与自检：如何“看见”容器正在做什么
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/01-debugging-and-observability.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutoProxyCreator#postProcessAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`；配套 Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest`
 - 深化策略：
   - 补充 Boot 自动装配的角色分工：导入清单/排序/条件评估/注册定义的关键类与落点方法。
@@ -179,7 +179,7 @@
 
 ### 18. [√] 09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/02-auto-config-ordering.md`
 - 现状速记：关键锚点：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions`；配套 Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest`
 - 深化策略：
   - 补充 Boot 自动装配的角色分工：导入清单/排序/条件评估/注册定义的关键类与落点方法。
@@ -190,7 +190,7 @@
 
 ### 19. [√] 第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `ApplicationContext#refresh` / `ApplicationContextRunner#run`；配套 Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationImportOrderingLabTest` / `SpringCoreBeansAutoConfigurationLabTest`
 - 深化策略：
   - 补充 Boot 自动装配的角色分工：导入清单/排序/条件评估/注册定义的关键类与落点方法。
@@ -201,7 +201,7 @@
 
 ### 20. [√] 第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/01-container-bootstrap-and-infrastructure.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansResourceInjectionLabTest`
 - 深化策略：
   - 补充“processor 时机+排序算法”：PriorityOrdered/Ordered/无序的分组与排序入口，为什么要分阶段 invoke/register。
@@ -211,7 +211,7 @@
 
 ### 21. [√] 13. BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/13-bdrpp-definition-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/02-bdrpp-definition-registration.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansRegistryPostProcessorLabTest`
 - 深化策略：
   - 针对“1. 心智模型：先有“定义”，后有“实例””补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
@@ -220,7 +220,7 @@
 
 ### 22. [√] 14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/03-post-processor-ordering.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`；配套 Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
 - 深化策略：
   - 补充“processor 时机+排序算法”：PriorityOrdered/Ordered/无序的分组与排序入口，为什么要分阶段 invoke/register。
@@ -230,7 +230,7 @@
 
 ### 23. [√] 15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/04-pre-instantiation-short-circuit.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation` / `AbstractAutowireCapableBeanFactory#createBean` / `AbstractAutowireCapableBeanFactory#doCreateBean`；配套 Lab：`SpringCoreBeansPreInstantiationLabTest`
 - 深化策略：
   - 补充“processor 时机+排序算法”：PriorityOrdered/Ordered/无序的分组与排序入口，为什么要分阶段 invoke/register。
@@ -240,7 +240,7 @@
 
 ### 24. [√] 16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `DefaultSingletonBeanRegistry#addSingletonFactory`；配套 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 - 深化策略：
   - 把“可救/不可救”分类讲透：setter 环、constructor 环、prototype 环、dependsOn 环，各自 fail-fast 点与原因。
@@ -251,7 +251,7 @@
 
 ### 25. [√] 17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/17-lifecycle-callback-order.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/06-lifecycle-callback-order.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#doClose` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#initializeBean`；配套 Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
 - 深化策略：
   - 补充“回调来源分型”：JSR-250、接口回调、init/destroy-method、SmartInitializingSingleton、Lifecycle/SmartLifecycle 的触发时机与优先级。
@@ -261,7 +261,7 @@
 
 ### 26. [√] 18. 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/07-refresh-to-bean-creation-mainline.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest`
 - 深化策略：
   - 针对“0. 先把“主线地图”记住：容器做两件事”补一个“机制讲透”小节：把本段核心结论写成“条件→分支→结果”的推导，并用 1 个断点证明。
@@ -270,7 +270,7 @@
 
 ### 27. [ ] 第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/01-lazy-semantics.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#createBean` / `AbstractBeanFactory#doGetBean` / `ApplicationContext#refresh`；配套 Lab：`SpringCoreBeansLazyLabTest`
 - 深化策略：
   - 补充“回调来源分型”：JSR-250、接口回调、init/destroy-method、SmartInitializingSingleton、Lifecycle/SmartLifecycle 的触发时机与优先级。
@@ -280,7 +280,7 @@
 
 ### 28. [√] 19. dependsOn：强制初始化顺序（即使没有显式依赖）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-depends-on.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/02-depends-on.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractBeanFactory#doGetBean` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties`；配套 Lab：`SpringCoreBeansDependsOnLabTest`
 - 深化策略：
   - 补充 dependsOn 与 lifecycle/phase 的选型边界：什么时候该用 SmartLifecycle phase，什么时候只能用 dependsOn。
@@ -291,7 +291,7 @@
 
 ### 29. [√] 20. registerResolvableDependency：能注入，但它不是 Bean
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/03-resolvable-dependency.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#prepareBeanFactory` / `AbstractAutowireCapableBeanFactory#invokeAwareMethods` / `AutowireUtils#resolveAutowiringValue`；配套 Lab：`SpringCoreBeansResolvableDependencyLabTest`
 - 深化策略：
   - 补充“DependencyDescriptor 深挖”：required/annotations/resolvableType/field vs parameter 等字段如何影响解析结果，并给出 2 个对照注入点。
@@ -302,7 +302,7 @@
 
 ### 30. [√] 21. 父子 ApplicationContext：可见性与覆盖边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-context-hierarchy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/04-context-hierarchy.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#getParent` / `AbstractApplicationContext#setParent` / `AbstractBeanFactory#containsBean`；配套 Lab：`SpringCoreBeansContextHierarchyLabTest`
 - 深化策略：
   - 补充层级查找算法：按名/按类型在父子容器中的优先级与回退规则（并指出关键入口方法）。
@@ -313,7 +313,7 @@
 
 ### 31. [√] 22. Bean 名称与 alias：同一个实例，多一个名字
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/05-bean-names-and-aliases.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#transformedBeanName` / `BeanDefinitionReaderUtils#generateBeanName`；配套 Lab：`SpringCoreBeansBeanNameAliasLabTest`
 - 深化策略：
   - 补充 alias 的底层语义：SimpleAliasRegistry 的 alias→canonicalName 映射与覆盖规则。
@@ -324,7 +324,7 @@
 
 ### 32. [√] 23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#getType`；配套 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 - 深化策略：
   - 补充类型推断与缓存链路：getObjectType/getTypeForFactoryBean/getObjectFromFactoryBean 如何影响按类型查找、条件判断与注入。
@@ -335,7 +335,7 @@
 
 ### 33. [√] 24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md`
 - 现状速记：关键锚点：`BeanDefinitionOverrideException#getBeanName` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultListableBeanFactory#getBeanDefinition`；配套 Lab：`SpringCoreBeansBeanDefinitionOriginLabTest` / `SpringCoreBeansBeanDefinitionOverridingLabTest`
 - 深化策略：
   - 补充覆盖语义来源：allowOverriding/Boot 配置如何影响 DefaultListableBeanFactory 行为。
@@ -346,7 +346,7 @@
 
 ### 34. [√] 25. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`；配套 Lab：`SpringCoreBeansProgrammaticBeanPostProcessorLabTest` / `SpringCoreBeansProgrammaticRegistrationLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest`
 - 深化策略：
   - 补充“processor 时机+排序算法”：PriorityOrdered/Ordered/无序的分组与排序入口，为什么要分阶段 invoke/register。
@@ -356,7 +356,7 @@
 
 ### 35. [√] 26. SmartInitializingSingleton：所有单例都创建完之后再做事
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/09-smart-initializing-singleton.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractBeanFactory#doGetBean`；配套 Lab：`SpringCoreBeansSmartInitializingSingletonLabTest`
 - 深化策略：
   - 补充“回调来源分型”：JSR-250、接口回调、init/destroy-method、SmartInitializingSingleton、Lifecycle/SmartLifecycle 的触发时机与优先级。
@@ -366,7 +366,7 @@
 
 ### 36. [√] 27. SmartLifecycle：start/stop 时机与 phase 顺序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/10-smart-lifecycle-phase.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishRefresh` / `DefaultLifecycleProcessor#onRefresh` / `DefaultLifecycleProcessor#startBeans`；配套 Lab：`SpringCoreBeansSmartLifecycleLabTest`
 - 深化策略：
   - 补充“回调来源分型”：JSR-250、接口回调、init/destroy-method、SmartInitializingSingleton、Lifecycle/SmartLifecycle 的触发时机与优先级。
@@ -376,7 +376,7 @@
 
 ### 37. [√] 28. 自定义 Scope + scoped proxy：thread scope 的真实语义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#registerScope` / `DefaultListableBeanFactory#registerScope`；配套 Lab：`SpringCoreBeansCustomScopeLabTest`
 - 深化策略：
   - 补充 prototype 的关键边界：prototype 的创建 guard、循环依赖为何不可救、以及 scope 与 singleton 缓存的根本差异。
@@ -387,7 +387,7 @@
 
 ### 38. [√] 29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/12-factorybean-edge-cases.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#getObjectForBeanInstance` / `AbstractBeanFactory#getType` / `AbstractBeanFactory#isTypeMatch`；配套 Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 - 深化策略：
   - 补充类型推断与缓存链路：getObjectType/getTypeForFactoryBean/getObjectFromFactoryBean 如何影响按类型查找、条件判断与注入。
@@ -398,7 +398,7 @@
 
 ### 39. [√] 30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#autowireConstructor` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#populateBean`；配套 Lab：`SpringCoreBeansInjectionPhaseLabTest`
 - 深化策略：
   - 补充“DependencyDescriptor 深挖”：required/annotations/resolvableType/field vs parameter 等字段如何影响解析结果，并给出 2 个对照注入点。
@@ -409,7 +409,7 @@
 
 ### 40. [√] 31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`；配套 Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
 - 深化策略：
   - 补充代理产生的三大替换点：before-instantiation short-circuit / early reference / after-initialization，并明确各自的适用处理器类型。
@@ -420,7 +420,7 @@
 
 ### 41. [√] 32. `@Resource` 注入：为什么它更像“按名称找 Bean”？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#populateBean` / `AnnotationConfigUtils#registerAnnotationConfigProcessors`；配套 Lab：`SpringCoreBeansResourceInjectionLabTest`
 - 深化策略：
   - 补充“DependencyDescriptor 深挖”：required/annotations/resolvableType/field vs parameter 等字段如何影响解析结果，并给出 2 个对照注入点。
@@ -431,7 +431,7 @@
 
 ### 42. [√] 33. 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md`
 - 现状速记：关键锚点：`AnnotationAwareOrderComparator#sort` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties` / `DefaultListableBeanFactory#determineAutowireCandidate`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 - 深化策略：
   - 补充“DependencyDescriptor 深挖”：required/annotations/resolvableType/field vs parameter 等字段如何影响解析结果，并给出 2 个对照注入点。
@@ -442,7 +442,7 @@
 
 ### 43. [√] 34. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#prepareBeanFactory` / `AbstractBeanFactory#resolveEmbeddedValue` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties`；配套 Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
 - 深化策略：
   - 补充 “${} vs #{}” 的职责边界：placeholder resolver 与 expression resolver 各自发生的阶段与落点方法。
@@ -453,7 +453,7 @@
 
 ### 44. [√] 35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors` / `AbstractBeanFactory#getMergedLocalBeanDefinition` / `DefaultListableBeanFactory#getMergedBeanDefinition`；配套 Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
 - 深化策略：
   - 补充合并算法细节：child/parent BeanDefinition 的合并规则与缓存位置，为什么你在 registry 里看到的不是最终形态。
@@ -464,7 +464,7 @@
 
 ### 45. [√] 36. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyPropertyValues` / `AbstractAutowireCapableBeanFactory#populateBean` / `AbstractBeanFactory#resolveEmbeddedValue`；配套 Lab：`SpringCoreBeansBeansSupportUtilitiesLabTest` / `SpringCoreBeansTypeConversionLabTest`
 - 深化策略：
   - 补充 conversion pipeline：BeanWrapper/TypeConverterDelegate/ConversionService/PropertyEditor 的选择顺序与排障入口。
@@ -475,7 +475,7 @@
 
 ### 46. [√] 37. 泛型匹配与注入坑：ResolvableType 与代理导致的类型信息丢失
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md`
 - 现状速记：关键锚点：`BeanDefinition#getResolvableType` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultListableBeanFactory#findAutowireCandidates`；配套 Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
 - 深化策略：
   - 补充泛型匹配三层视角：实例类型/目标类型/ResolvableType 元数据分别何时被使用。
@@ -486,7 +486,7 @@
 
 ### 47. [√] 38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-environment-and-propertysource.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#populateBean` / `AbstractBeanFactory#resolveEmbeddedValue` / `ConfigurableEnvironment#getProperty`；配套 Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest` / `SpringCoreBeansProfileRegistrationLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
 - 深化策略：
   - 补充 PropertySources 演化时序：哪些在 refresh 前确定，哪些在运行期才加入（特别是 Boot 环境扩展）。
@@ -497,7 +497,7 @@
 
 ### 48. [√] 39. BeanFactory API 深挖：接口族谱与手动 bootstrap 的边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-beanfactory-api-deep-dive.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#populateBean` / `AbstractBeanFactory#doGetBean`；配套 Lab：`SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
 - 深化策略：
   - 补充最小容器边界：哪些能力来自 DefaultListableBeanFactory，哪些必须由 ApplicationContext 承接。
@@ -508,7 +508,7 @@
 
 ### 49. [√] 第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/01-aot-and-native-overview.md`
 - 现状速记：关键锚点：`AotServices#factories` / `AotServices.Loader#load` / `ApplicationContext#refresh`；配套 Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
 - 深化策略：
   - 补充 AOT 流程的角色分工：哪些问题靠 RuntimeHints 解决，哪些需要别的 AOT 贡献（避免把它当万能药）。
@@ -519,7 +519,7 @@
 
 ### 50. [√] 41. RuntimeHints 入门：把构建期契约跑通
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/02-runtimehints-basics.md`
 - 现状速记：关键锚点：`Class#getDeclaredMethods` / `ClassLoader#getResource` / `Constructor#newInstance`；配套 Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
 - 深化策略：
   - 补充 AOT 流程的角色分工：哪些问题靠 RuntimeHints 解决，哪些需要别的 AOT 贡献（避免把它当万能药）。
@@ -530,7 +530,7 @@
 
 ### 51. [√] 42. XML → BeanDefinitionReader：定义层解析与错误分型
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/03-xml-bean-definition-reader.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `BeanDefinitionParserDelegate#parseBeanDefinitionElement`；配套 Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
 - 深化策略：
   - 补充“定义层输入归一化主线”：XML/namespace/properties/groovy 如何变成 BeanDefinition 并注册到 registry。
@@ -540,7 +540,7 @@
 
 ### 52. [√] 43. 容器外对象注入：AutowireCapableBeanFactory
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/04-autowirecapablebeanfactory-external-objects.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#initializeBean` / `AbstractAutowireCapableBeanFactory#populateBean`；配套 Lab：`SpringCoreBeansAutowireCapableBeanFactoryLabTest`
 - 深化策略：
   - 补充最小容器边界：哪些能力来自 DefaultListableBeanFactory，哪些必须由 ApplicationContext 承接。
@@ -551,7 +551,7 @@
 
 ### 53. [√] 44. SpEL 与 `@Value("#{...}")`：表达式解析链路
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/05-spel-and-value-expression.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#resolveEmbeddedValue` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties` / `BeanFactory#resolveEmbeddedValue`；配套 Lab：`SpringCoreBeansSpelValueLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
 - 深化策略：
   - 补充 “${} vs #{}” 的职责边界：placeholder resolver 与 expression resolver 各自发生的阶段与落点方法。
@@ -562,7 +562,7 @@
 
 ### 54. [√] 45. 自定义 Qualifier：meta-annotation 与候选收敛
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/06-custom-qualifier-meta-annotation.md`
 - 现状速记：关键锚点：`AutowireCandidateResolver#isAutowireCandidate` / `DefaultListableBeanFactory#determineAutowireCandidate` / `DefaultListableBeanFactory#findAutowireCandidates`；配套 Lab：`SpringCoreBeansCustomQualifierLabTest`
 - 深化策略：
   - 补充“DependencyDescriptor 深挖”：required/annotations/resolvableType/field vs parameter 等字段如何影响解析结果，并给出 2 个对照注入点。
@@ -573,7 +573,7 @@
 
 ### 55. [√] 46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/46-xml-namespace-extension.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/07-xml-namespace-extension.md`
 - 现状速记：关键锚点：`BeanDefinitionParser#parse` / `BeanDefinitionParserDelegate#parseCustomElement` / `DefaultBeanDefinitionDocumentReader#parseBeanDefinitions`；配套 Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
 - 深化策略：
   - 补充“定义层输入归一化主线”：XML/namespace/properties/groovy 如何变成 BeanDefinition 并注册到 registry。
@@ -583,7 +583,7 @@
 
 ### 56. [√] 47. BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/47-beandefinitionreader-other-inputs-properties-groovy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/08-beandefinitionreader-other-inputs-properties-groovy.md`
 - 现状速记：关键锚点：`AbstractBeanDefinitionReader#loadBeanDefinitions` / `DefaultListableBeanFactory#registerBeanDefinition` / `GroovyBeanDefinitionReader#loadBeanDefinitions`；配套 Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
 - 深化策略：
   - 补充“定义层输入归一化主线”：XML/namespace/properties/groovy 如何变成 BeanDefinition 并注册到 registry。
@@ -593,7 +593,7 @@
 
 ### 57. [√] 48. 方法注入（Method Injection）：replaced-method / MethodReplacer
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/48-method-injection-replaced-method.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/09-method-injection-replaced-method.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#createBeanInstance` / `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection` / `AbstractBeanDefinition#getMethodOverrides`；配套 Lab：`SpringCoreBeansReplacedMethodLabTest`
 - 深化策略：
   - 补充实现机制拆解：MethodOverride/ReplaceOverride/MethodReplacer 如何在 createBeanInstance → instantiateWithMethodInjection 被识别并织入。
@@ -604,7 +604,7 @@
 
 ### 58. [√] 49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/49-built-in-factorybeans-gallery.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/10-built-in-factorybeans-gallery.md`
 - 现状速记：关键锚点：`AbstractBeanFactory#doGetBean` / `AbstractBeanFactory#getObjectForBeanInstance` / `BeanFactoryUtils#isFactoryDereference`；配套 Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
 - 深化策略：
   - 补充类型推断与缓存链路：getObjectType/getTypeForFactoryBean/getObjectFromFactoryBean 如何影响按类型查找、条件判断与注入。
@@ -615,7 +615,7 @@
 
 ### 59. [√] 50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/11-property-editor-and-value-resolution.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyPropertyValues` / `AbstractBeanFactory#resolveEmbeddedValue` / `AbstractNestablePropertyAccessor#setPropertyValue`；配套 Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
 - 深化策略：
   - 补充 “${} vs #{}” 的职责边界：placeholder resolver 与 expression resolver 各自发生的阶段与落点方法。
@@ -626,7 +626,7 @@
 
 ### 60. [√] 第 25 章：90. 常见坑清单（建议反复对照）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#populateBean`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansContainerLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -635,7 +635,7 @@
 
 ### 61. [√] 第 26 章：99. 自测题：你是否真的理解了？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/11-self-check.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `AbstractAutowireCapableBeanFactory#initializeBean`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -644,7 +644,7 @@
 
 ### 62. [√] 91. 术语表（Glossary）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/91-glossary.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/02-glossary.md`
 - 现状速记：关键锚点：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#getSingleton`；配套 Lab：`SpringCoreBeansContainerLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -653,7 +653,7 @@
 
 ### 63. [√] 92. 知识地图（Knowledge Map）：从现象直达章节/断点/Lab
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/03-knowledge-map.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractBeanFactory#resolveEmbeddedValue` / `CachedIntrospectionResults#forClass`；配套 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanDefinitionOverridingLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -662,7 +662,7 @@
 
 ### 64. [√] 93. 面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/93-interview-playbook.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/04-interview-playbook.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#initializeBean`；配套 Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -671,7 +671,7 @@
 
 ### 65. [√] 94. 生产排障清单（Troubleshooting Checklist）：从症状到证据链
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractBeanFactory#doGetBean`；配套 Lab：`SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -680,7 +680,7 @@
 
 ### 66. [√] 95. spring-beans Public API 索引（Spring Framework 6.2.15）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/95-spring-beans-public-api-index.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/06-spring-beans-public-api-index.md`
 - 现状速记：关键锚点：（本章未显式列出）；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansIocBranchMatrixLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -689,7 +689,7 @@
 
 ### 67. [√] 96. spring-beans Public API Gap 清单（按包/机制域分批深化）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/96-spring-beans-public-api-gap.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/07-spring-beans-public-api-gap.md`
 - 现状速记：关键锚点：（本章未显式列出）；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansIocBranchMatrixLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -698,7 +698,7 @@
 
 ### 68. [√] 97. Explore/Debug 用例（可选启用，不影响默认回归）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/08-explore-debug-tests.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#doCreateBean` / `CachedIntrospectionResults#acceptClassLoader` / `CachedIntrospectionResults#forClass`；配套 Lab：（本章未显式列出）
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -707,7 +707,7 @@
 
 ### 69. [√] 98. Debugger Pack（断点包总入口）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/09-debugger-pack.md`
 - 现状速记：关键锚点：`AbstractApplicationContext#finishBeanFactoryInitialization` / `AbstractApplicationContext#refresh` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest` / `SpringCoreBeansIocBranchMatrixLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。
@@ -716,7 +716,7 @@
 
 ### 70. [√] 99. 团队内训讲义（Training Kit）：可直接开讲的课时脚本
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/10-team-training-kit.md`
 - 现状速记：关键锚点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#populateBean` / `DefaultListableBeanFactory#determineAutowireCandidate`；配套 Lab：`SpringCoreBeansBreakpointPackLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansMainlineCallChainLabTest`
 - 深化策略：
   - 把条目从“知识点列表”升级为“现象→证据链→修复→验证”的可复盘资产（每条给出 1 个最短入口方法 + 关键变量）。

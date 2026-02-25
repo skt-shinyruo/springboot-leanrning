@@ -1,9 +1,9 @@
-# 04：静态资源与缓存（Static Resources / Cache-Control）
+# 04. 静态资源与缓存（Static Resources / Cache-Control）
 
 ## 导读
 
-- 本章主题：**04：静态资源与缓存（Static Resources / Cache-Control）**
-- 目标：把“静态资源 404/样式不生效”的问题变成可复现：从 URL 到 classpath，再到响应头。
+本章围绕「04：静态资源与缓存（Static Resources / Cache-Control）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 

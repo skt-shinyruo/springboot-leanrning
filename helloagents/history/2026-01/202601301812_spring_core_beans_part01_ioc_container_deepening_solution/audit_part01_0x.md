@@ -7,21 +7,21 @@
 
 | 章节文件 | 标题数 | 重复标题 | 链接数 | broken link | 引用 Java 路径 | missing Java | 超长行(>240) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `014-03-dependency-injection-resolution.md` | 31 | 0 | 9 | 0 | 6 | 0 | 2 |
-| `015-04-scope-and-prototype.md` | 31 | 0 | 8 | 0 | 10 | 0 | 3 |
-| `016-05-lifecycle-and-callbacks.md` | 36 | 0 | 14 | 0 | 6 | 0 | 10 |
-| `017-06-post-processors.md` | 29 | 0 | 6 | 0 | 8 | 0 | 5 |
-| `018-07-configuration-enhancement.md` | 25 | 0 | 6 | 0 | 5 | 0 | 3 |
-| `02-bean-registration.md` | 55 | 0 | 12 | 0 | 3 | 0 | 10 |
-| `020-01-bean-mental-model.md` | 18 | 0 | 15 | 0 | 4 | 0 | 4 |
-| `08-factorybean.md` | 27 | 0 | 8 | 0 | 8 | 0 | 5 |
-| `09-circular-dependencies.md` | 27 | 0 | 12 | 0 | 6 | 0 | 0 |
+| `02-dependency-injection-resolution.md` | 31 | 0 | 9 | 0 | 6 | 0 | 2 |
+| `03-scope-and-prototype.md` | 31 | 0 | 8 | 0 | 10 | 0 | 3 |
+| `04-lifecycle-and-callbacks.md` | 36 | 0 | 14 | 0 | 6 | 0 | 10 |
+| `05-post-processors.md` | 29 | 0 | 6 | 0 | 8 | 0 | 5 |
+| `06-configuration-enhancement.md` | 25 | 0 | 6 | 0 | 5 | 0 | 3 |
+| `01-bean-registration.md` | 55 | 0 | 12 | 0 | 3 | 0 | 10 |
+| `09-bean-mental-model.md` | 18 | 0 | 15 | 0 | 4 | 0 | 4 |
+| `07-factorybean.md` | 27 | 0 | 8 | 0 | 8 | 0 | 5 |
+| `08-circular-dependencies.md` | 27 | 0 | 12 | 0 | 6 | 0 | 0 |
 
 > 说明：此处只做“文件存在性”校验；对 `#anchor` 的锚点是否能跳转（Markdown slug 规则）暂不自动判定，后续在 2.2/2.3 里人工补齐。
 
 ## B. 逐章审计明细（自动化结果）
 
-### 014-03-dependency-injection-resolution.md
+### 02-dependency-injection-resolution.md
 
 - 重复标题：无
 - broken link：无
@@ -29,7 +29,7 @@
 - 超长行（>240 chars）：
   - 行号：29, 30
 
-### 015-04-scope-and-prototype.md
+### 03-scope-and-prototype.md
 
 - 重复标题：无
 - broken link：无
@@ -37,7 +37,7 @@
 - 超长行（>240 chars）：
   - 行号：8, 30, 312
 
-### 016-05-lifecycle-and-callbacks.md
+### 04-lifecycle-and-callbacks.md
 
 - 重复标题：无
 - broken link：无
@@ -45,7 +45,7 @@
 - 超长行（>240 chars）：
   - 行号：5, 8, 9, 476, 477, 478, 479, 480 ...
 
-### 017-06-post-processors.md
+### 05-post-processors.md
 
 - 重复标题：无
 - broken link：无
@@ -53,7 +53,7 @@
 - 超长行（>240 chars）：
   - 行号：8, 29, 30, 411, 412
 
-### 018-07-configuration-enhancement.md
+### 06-configuration-enhancement.md
 
 - 重复标题：无
 - broken link：无
@@ -61,7 +61,7 @@
 - 超长行（>240 chars）：
   - 行号：8, 259, 260
 
-### 02-bean-registration.md
+### 01-bean-registration.md
 
 - 重复标题：无
 - broken link：无
@@ -69,7 +69,7 @@
 - 超长行（>240 chars）：
   - 行号：169, 170, 173, 175, 534, 535, 536, 537 ...
 
-### 020-01-bean-mental-model.md
+### 09-bean-mental-model.md
 
 - 重复标题：无
 - broken link：无
@@ -77,7 +77,7 @@
 - 超长行（>240 chars）：
   - 行号：8, 13, 144, 203
 
-### 08-factorybean.md
+### 07-factorybean.md
 
 - 重复标题：无
 - broken link：无
@@ -85,7 +85,7 @@
 - 超长行（>240 chars）：
   - 行号：32, 261, 262, 263, 274
 
-### 09-circular-dependencies.md
+### 08-circular-dependencies.md
 
 - 重复标题：无
 - broken link：无
@@ -121,7 +121,7 @@
 
 ### C.1 逐章审计结论（按 Part 01 九章）
 
-#### 02-bean-registration.md
+#### 01-bean-registration.md
 
 - 发现 1：**“BeanDefinition 字段→后续行为”映射仍偏概念化**
   - 影响：读者在 `registerBeanDefinition` 断点能看到字段，但不知道这些字段后续在哪被读取/导致什么行为变化。
@@ -135,7 +135,7 @@
   - 影响：读者容易误以为“registerSingleton 后调用 getBean 就会自动补注入/BPP”，造成错误期待。
   - 落点：`task.md` → `1.1.4.1`（补充 autowire/initialize 的补救路径 + 风险说明）。
 
-#### 014-03-dependency-injection-resolution.md
+#### 02-dependency-injection-resolution.md
 
 - 发现 1：**候选收敛优先级在同一章内存在不一致表述**
   - 证据：文末“可复现闭环”写了 `Qualifier > Primary > Priority > by-name`，但本章决策树/伪代码明确 by-name 在 @Priority 之前。
@@ -151,12 +151,12 @@
   - 落点：`task.md` → `2.4`（补齐 `appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java` 的 test file 引用）。
 
 - 建议桥接链接（审计输出，执行阶段落地到正文）
-  - “候选太多/歧义”：链接到 `33-autowire-candidate-selection-primary-priority-order.md`
-  - “@Resource name-first”：链接到 `32-resource-injection-name-first.md`
-  - “FactoryBean 影响 type matching”：链接到本 Part01 `08-factorybean.md`
-  - “scoped proxy / provider”：链接到本 Part01 `015-04-scope-and-prototype.md`
+  - “候选太多/歧义”：链接到 `16-autowire-candidate-selection-primary-priority-order.md`
+  - “@Resource name-first”：链接到 `15-resource-injection-name-first.md`
+  - “FactoryBean 影响 type matching”：链接到本 Part01 `07-factorybean.md`
+  - “scoped proxy / provider”：链接到本 Part01 `03-scope-and-prototype.md`
 
-#### 015-04-scope-and-prototype.md
+#### 03-scope-and-prototype.md
 
 - 发现 1：**scoped proxy 语义在 Part01 的“证据链抓手”仍可更强**
   - 现状：章节已给出 scoped proxy 作为方案，但对 `scopedTarget.*` 这类真实 BeanDefinition 双名结构缺少“可断言/可观察”的抓手。
@@ -167,7 +167,7 @@
   - 影响：读者会把“destroy 没触发”误判为 Spring bug，而不是 scope 实现缺失回收触发点。
   - 落点：`task.md` → `1.3.4`、`1.3.7`（补齐注册/存储/回收/回调触发的最小实现要点）。
 
-#### 016-05-lifecycle-and-callbacks.md
+#### 04-lifecycle-and-callbacks.md
 
 - 发现 1：**raw vs exposed（proxy）虽然解释了，但缺少“最短可断言反例”入口**
   - 影响：读者只能理解概念，无法用一个小实验证明“@PostConstruct 在 raw 上发生、after-init 才可能换壳”。
@@ -177,7 +177,7 @@
   - 现状：本章已有手动 destroyBean 的说明；仓库里已有 `SpringCoreBeansPrototypeDestroySemanticsLabTest`（Part03）。
   - 落点：`task.md` → `1.4.9`（优先复用现有 Lab，并在正文引用）。
 
-#### 017-06-post-processors.md
+#### 05-post-processors.md
 
 - 发现 1：**“介入点地图”目前偏概念，缺少四类 BPP 接口的明确锚点**
   - 影响：读者知道 BFPP/BPP/BDRPP，但不知道“为什么 early reference/merged definition/销毁前”也属于 BPP 体系，导致排障断点入口不稳定。
@@ -187,7 +187,7 @@
   - 影响：读者只能背“过早 getBean 会错过”，但无法证明“错过不会 retroactive 补上”。
   - 落点：`task.md` → `1.5.7.*`（新增 EarlyGetBeanMissesBppLabTest）+ `1.5.3.1`（解释 BeanPostProcessorChecker 信号）。
 
-#### 018-07-configuration-enhancement.md
+#### 06-configuration-enhancement.md
 
 - 发现 1：**存在明显“迁移残留式结构重复”**
   - 证据：同一章同时出现 “最小可运行实验（Lab）”→“复现入口”→“本模块的实验” 三套入口描述，信息重复但分散。
@@ -198,7 +198,7 @@
   - 影响：读者可能把“参数注入能工作”误归因于增强，而不是依赖解析本身。
   - 落点：`task.md` → `1.6.8`（扩展既有 ContainerLabTest 新增用例）+ `1.6.10`（文档引用互链 14 章）。
 
-#### 08-factorybean.md
+#### 07-factorybean.md
 
 - 发现 1：**本章 example 中列出 EdgeCases Lab，但 Test file 列表未包含对应源文件路径**
   - 影响：读者找不到入口文件；降低“先跑再读”体验。
@@ -208,7 +208,7 @@
   - 影响：读者知道 getObjectType 重要，但不知道“错在哪会导致什么注入/发现异常”。
   - 落点：`task.md` → `1.7.7.*`（在真实用例文件 Part04 中新增反例 + 文档引用）。
 
-#### 09-circular-dependencies.md
+#### 08-circular-dependencies.md
 
 - 发现 1：**已提到 Boot 开关，但缺少“纯 Spring 侧的显式设置入口”**
   - 证据：出现 `spring.main.allow-circular-references`，但未明确 `DefaultListableBeanFactory#setAllowCircularReferences` 的断点/配置位置。
@@ -219,7 +219,7 @@
   - 影响：读者会把“能启动”当作“对象形态一致”，忽略 early vs final 不一致的工程风险。
   - 落点：`task.md` → `1.8.1`、`1.8.10`（补文档 + 在 Part03 boundary Lab 增加对照用例）。
 
-#### 020-01-bean-mental-model.md
+#### 09-bean-mental-model.md
 
 - 发现 1：**ResolvableDependency/外部对象的边界已解释，但缺少“就近可跑入口”**
   - 现状：本章引用了相关深挖章节，但没有明确给出 `SpringCoreBeansResolvableDependencyLabTest` 的入口路径。
@@ -279,24 +279,24 @@
 
 | 文档章节 | 推荐入口（类名） | 实际文件路径（SSOT） | 主要用于证明 |
 | --- | --- | --- | --- |
-| `02-bean-registration.md` | `SpringCoreBeansComponentScanLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansComponentScanLabTest.java` | 扫描入口→注册落点 |
-| `02-bean-registration.md` | `SpringCoreBeansImportLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansImportLabTest.java` | @Import/selector/registrar |
-| `02-bean-registration.md` | `SpringCoreBeansProgrammaticRegistrationLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticRegistrationLabTest.java` | 定义层 vs 实例层注册对照 |
-| `014-03-dependency-injection-resolution.md` | `SpringCoreBeansAutowireCandidateSelectionLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` | 候选收集/收敛（Primary/Qualifier/by-name/@Order/@Priority） |
-| `014-03-dependency-injection-resolution.md` | `SpringCoreBeansBeanGraphDebugLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` | 候选集合与依赖边可观测性 |
-| `015-04-scope-and-prototype.md` | `SpringCoreBeansContainerLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` | `@Lookup` 获取 prototype（最小入口） |
-| `015-04-scope-and-prototype.md` | `SpringCoreBeansCustomScopeLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java` | custom scope + scoped proxy + provider 对照 |
-| `016-05-lifecycle-and-callbacks.md` | `SpringCoreBeansLifecycleCallbackOrderLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java` | 初始化/销毁回调顺序（方法级） |
-| `016-05-lifecycle-and-callbacks.md` | `SpringCoreBeansPrototypeDestroySemanticsLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` | prototype destroy 默认不托管 + 手动 destroyBean |
-| `017-06-post-processors.md` | `SpringCoreBeansPostProcessorOrderingLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` | processor 顺序与分组 |
-| `017-06-post-processors.md` | `SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansStaticBeanFactoryPostProcessorLabTest.java` | non-static BFPP 时机陷阱 |
-| `018-07-configuration-enhancement.md` | `SpringCoreBeansContainerLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` | proxyBeanMethods=true/false + lite/full 对照 |
-| `08-factorybean.md` | `SpringCoreBeansFactoryBeanEdgeCasesLabTest`（Part01 wrapper） | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java` | 统一入口（实际用例在 Part04） |
-| `08-factorybean.md` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java` | product/type matching/缓存语义 |
-| `09-circular-dependencies.md` | `SpringCoreBeansCircularDependencyBoundaryLabTest`（Part01 wrapper） | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansCircularDependencyBoundaryLabTest.java` | 统一入口（实际用例在 Part03） |
-| `020-01-bean-mental-model.md` | `SpringCoreBeansBeanCreationTraceLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java` | doCreateBean 主线可观测性 |
-| `020-01-bean-mental-model.md` | `SpringCoreBeansProxyingPhaseLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java` | after-init 换壳（proxy）与 self-invocation |
-| `020-01-bean-mental-model.md` | `SpringCoreBeansResolvableDependencyLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java` | 能注入但不是 Bean（无 BeanDefinition） |
+| `01-bean-registration.md` | `SpringCoreBeansComponentScanLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansComponentScanLabTest.java` | 扫描入口→注册落点 |
+| `01-bean-registration.md` | `SpringCoreBeansImportLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansImportLabTest.java` | @Import/selector/registrar |
+| `01-bean-registration.md` | `SpringCoreBeansProgrammaticRegistrationLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticRegistrationLabTest.java` | 定义层 vs 实例层注册对照 |
+| `02-dependency-injection-resolution.md` | `SpringCoreBeansAutowireCandidateSelectionLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` | 候选收集/收敛（Primary/Qualifier/by-name/@Order/@Priority） |
+| `02-dependency-injection-resolution.md` | `SpringCoreBeansBeanGraphDebugLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` | 候选集合与依赖边可观测性 |
+| `03-scope-and-prototype.md` | `SpringCoreBeansContainerLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` | `@Lookup` 获取 prototype（最小入口） |
+| `03-scope-and-prototype.md` | `SpringCoreBeansCustomScopeLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java` | custom scope + scoped proxy + provider 对照 |
+| `04-lifecycle-and-callbacks.md` | `SpringCoreBeansLifecycleCallbackOrderLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java` | 初始化/销毁回调顺序（方法级） |
+| `04-lifecycle-and-callbacks.md` | `SpringCoreBeansPrototypeDestroySemanticsLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` | prototype destroy 默认不托管 + 手动 destroyBean |
+| `05-post-processors.md` | `SpringCoreBeansPostProcessorOrderingLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` | processor 顺序与分组 |
+| `05-post-processors.md` | `SpringCoreBeansStaticBeanFactoryPostProcessorLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansStaticBeanFactoryPostProcessorLabTest.java` | non-static BFPP 时机陷阱 |
+| `06-configuration-enhancement.md` | `SpringCoreBeansContainerLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` | proxyBeanMethods=true/false + lite/full 对照 |
+| `07-factorybean.md` | `SpringCoreBeansFactoryBeanEdgeCasesLabTest`（Part01 wrapper） | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java` | 统一入口（实际用例在 Part04） |
+| `07-factorybean.md` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java` | product/type matching/缓存语义 |
+| `08-circular-dependencies.md` | `SpringCoreBeansCircularDependencyBoundaryLabTest`（Part01 wrapper） | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansCircularDependencyBoundaryLabTest.java` | 统一入口（实际用例在 Part03） |
+| `09-bean-mental-model.md` | `SpringCoreBeansBeanCreationTraceLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java` | doCreateBean 主线可观测性 |
+| `09-bean-mental-model.md` | `SpringCoreBeansProxyingPhaseLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java` | after-init 换壳（proxy）与 self-invocation |
+| `09-bean-mental-model.md` | `SpringCoreBeansResolvableDependencyLabTest` | `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java` | 能注入但不是 Bean（无 BeanDefinition） |
 
 ### D.2 审计备注（入口覆盖缺口）
 

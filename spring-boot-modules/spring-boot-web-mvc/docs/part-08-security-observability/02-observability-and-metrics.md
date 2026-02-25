@@ -1,9 +1,9 @@
-# 02：Observability（Interceptor 计时 vs Actuator 指标）
+# 02. Observability（Interceptor 计时 vs Actuator 指标）
 
 ## 导读
 
-- 本章主题：**02：Observability（Interceptor 计时 vs Actuator 指标）**
-- 目标：把“我觉得接口慢/我觉得请求多”变成可观察事实：能看见、能验证、能解释。
+本章围绕「02：Observability（Interceptor 计时 vs Actuator 指标）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+建议优先运行 `BootWebMvcObservabilityLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
@@ -58,7 +58,7 @@
 
 - Lab：`BootWebMvcObservabilityLabTest`
 
-上一章：[part-08-security-observability/01-security-filterchain-and-mvc.md](081-01-security-filterchain-and-mvc.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/082-90-common-pitfalls.md)
+上一章：[part-08-security-observability/01-security-filterchain-and-mvc.md](01-security-filterchain-and-mvc.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->
 

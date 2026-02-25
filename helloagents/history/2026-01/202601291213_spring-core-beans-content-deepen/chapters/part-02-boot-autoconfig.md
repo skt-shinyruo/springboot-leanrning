@@ -4,7 +4,7 @@
 
 ### 第 19 章：11. 调试与自检：如何“看见”容器正在做什么
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/01-debugging-and-observability.md`
 - 内容级加深策略：
   - A：补“定义层可观测证据链”：如何证明一个 BeanDefinition 是谁注册的、何时注册的、是否被后处理器改写。
   - B：补反例：debug 日志误读、条件评估报告与真实注册行为不一致时的定位方法。
@@ -14,7 +14,7 @@
 
 ### 09. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/02-auto-config-ordering.md`
 - 内容级加深策略：
   - A：补“顺序影响条件命中”的证据链：导入顺序/条件评估时机/定义是否已存在三者如何交互。
   - B：补反例：@AutoConfigureBefore/After/Order 的边界；同一条件在不同阶段评估导致的“看似偶发”。
@@ -24,7 +24,7 @@
 
 ### 第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md`
 - 内容级加深策略：
   - A：补“导入链路证据链”：候选收集→导入→注册 BeanDefinition 的关键链路与最短调用链。
   - B：补反例：用户 bean 顶掉 auto-config / conditionalOnMissingBean 被误判 / FactoryBean+type matching 导致条件误命中。

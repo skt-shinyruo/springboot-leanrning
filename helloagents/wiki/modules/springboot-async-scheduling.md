@@ -59,12 +59,12 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `spring-boot-modules/spring-boot-async-scheduling/docs/README.md`
-- **Docs Guide:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-00-deep-dive-guide.md`
-- **Call Chain:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-01-async-and-scheduling-call-chain.md`
-- **Breakpoint Map:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/118-04-branch-decision-matrix.md`
-- **Playbook:** `spring-boot-modules/spring-boot-async-scheduling/docs/appendix/124-90-common-pitfalls.md`
-- **Self-check:** `spring-boot-modules/spring-boot-async-scheduling/docs/appendix/125-99-self-check.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/02-deep-dive-guide.md`
+- **Call Chain:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/03-async-and-scheduling-call-chain.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/04-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-async-scheduling/docs/part-00-guide/05-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-async-scheduling/docs/appendix/01-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-async-scheduling/docs/appendix/02-self-check.md`
 - **Run Demo:** `mvn -pl :spring-boot-async-scheduling spring-boot:run`
 
 - **Book Matrix（进阶入口）：**

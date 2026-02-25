@@ -29,7 +29,7 @@ Directory: `helloagents/plan/202602020952_spring_core_beans_docs_deepen/`
 > 为控制风险，按 Part 分批推进，每批完成后做一次 mkdocs build 校验。
 
 ### Part 00（Guide）
-- [√] 4.1 为 Why Index 增加官方文档对照（版本语境），edit `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`，verify why.md#requirement-逐章深度完善机制--源码--排障
+- [√] 4.1 为 Why Index 增加官方文档对照（版本语境），edit `spring-core-modules/spring-core-beans/docs/part-00-guide/01-why-index.md`，verify why.md#requirement-逐章深度完善机制--源码--排障
 - [√] 4.2 为 Part-00 全章补齐官方文档对照（版本语境），edit `spring-core-modules/spring-core-beans/docs/part-00-guide/*.md`, verify why.md#requirement-逐章深度完善机制--源码--排障
 
 ### Part 01（IoC Container）

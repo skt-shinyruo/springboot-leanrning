@@ -9,31 +9,31 @@
 - **Responsibility:** 提供 Bean 机制的系统文档与可运行 Labs/Exercises，用于建立源码级抓手与排障能力。
 - **Docs Reading:** 推荐从 `spring-core-modules/spring-core-beans/docs/README.md` 开始（书本目录 + Part 划分）；主线可按 Part 顺读，每章顶部提供“上一章｜目录｜下一章”导航，降低章节切换成本。
 - **Docs Tone:** `spring-core-beans` 文档全章采用教材化书面语，避免第二人称、俚语与口语化表达；保留术语、代码标识与引用路径的准确性。
-- **Why Index（基础问题索引 / SSOT）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`（覆盖：三级缓存/three level cache、early reference、raw vs wrapped、proxy 替换；并提供跨模块回链到 AOP）
+- **Why Index（基础问题索引 / SSOT）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/01-why-index.md`（覆盖：三级缓存/three level cache、early reference、raw vs wrapped、proxy 替换；并提供跨模块回链到 AOP）
 - **内容级再加深（逐章可执行策略）:** `spring-core-modules/spring-core-beans/docs/deepening-strategies/README.md`（按 Part/章节给出“入口实验（Lab/Test）+ 第一断点入口 + 如何收敛 + 最短下一跳”的加深建议，避免统一模板作文）
 - **内容级再加深（已写入正文）:** 各章节已内嵌 `AE-DEEPENING` 提示块（位于章末/BOOKIFY 前），用于提示读者“第一断点在哪里、如何把结论自证、下一跳去哪里”，避免停留在口号式或维度清单式建议
 - **症状快速定位（目录页入口）:** `spring-core-modules/spring-core-beans/docs/README.md`（新增“症状驱动导航（快速定位）”，用于从现象直达章节与证据链入口）
-- **Start Here（30 分钟快启）:** 先运行 3 个最小实验建立容器主线直觉，再进入深潜：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`。
-- **Auto-Config 顺序（Boot/容器交汇点）:** `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/020-09-auto-config-ordering.md`
-- **断点地图（可复用清单）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
+- **Start Here（30 分钟快启）:** 先运行 3 个最小实验建立容器主线直觉，再进入深潜：`spring-core-modules/spring-core-beans/docs/part-00-guide/05-quickstart-30min.md`。
+- **Auto-Config 顺序（Boot/容器交汇点）:** `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/02-auto-config-ordering.md`
+- **断点地图（可复用清单）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`
 - **知识地图 ↔ 断点地图互链:** 知识地图表新增“断点组（C1–C7）”链接；断点地图补齐 `#c1..#c7` 稳定锚点并提供“现象 → 断点组”快速入口，便于从现象直接跳到可复用断点组
-- **循环依赖（现象→窗口期→规避）:** `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
-- **Early Reference 深挖（getEarlyBeanReference）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
-- **Explore/Debug（可选启用）:** `spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
-- **手工注册 BPP（顺序/时机陷阱）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
-- **`@Resource` 注入（name-first）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md`
-- **`@Value("${...}")` 占位符（strict vs non-strict）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
-- **类型转换（BeanWrapper/ConversionService）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
-- **Debugger Pack（断点包总入口）:** `spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`（聚合主线/分支/排障/性能并发入口）
-- **团队内训讲义（可直接用于授课）:** `spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`（60/90/120 分钟课时脚本 + Labs/断点/互动题）
-- **关键分支矩阵（If/Then 决策表）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
-- **排障 playbook:** `spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
-- **自检清单:** `spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
-- **生产排障清单（最短 SOP）:** `spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`（新增 3 类高频事故的 3–5 步最短诊断路径，并回链到断点组/章节/Lab）
-- **主线叙事（源码级）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`（`refresh()` → `doCreateBean()`，关键方法 + 关键分支）
+- **循环依赖（现象→窗口期→规避）:** `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md`
+- **Early Reference 深挖（getEarlyBeanReference）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
+- **Explore/Debug（可选启用）:** `spring-core-modules/spring-core-beans/docs/appendix/08-explore-debug-tests.md`
+- **手工注册 BPP（顺序/时机陷阱）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
+- **`@Resource` 注入（name-first）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md`
+- **`@Value("${...}")` 占位符（strict vs non-strict）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`
+- **类型转换（BeanWrapper/ConversionService）:** `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`
+- **Debugger Pack（断点包总入口）:** `spring-core-modules/spring-core-beans/docs/appendix/09-debugger-pack.md`（聚合主线/分支/排障/性能并发入口）
+- **团队内训讲义（可直接用于授课）:** `spring-core-modules/spring-core-beans/docs/appendix/10-team-training-kit.md`（60/90/120 分钟课时脚本 + Labs/断点/互动题）
+- **关键分支矩阵（If/Then 决策表）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/04-branch-decision-matrix.md`
+- **排障 playbook:** `spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md`
+- **自检清单:** `spring-core-modules/spring-core-beans/docs/appendix/11-self-check.md`
+- **生产排障清单（最短 SOP）:** `spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`（新增 3 类高频事故的 3–5 步最短诊断路径，并回链到断点组/章节/Lab）
+- **主线叙事（源码级）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/07-refresh-to-bean-creation-mainline.md`（`refresh()` → `doCreateBean()`，关键方法 + 关键分支）
 - **排障速查（分支决策表）:** 同章内新增“现象 → 阶段 → 关键方法 → 必看变量 → LabTest”对照表，把主线叙事压缩成可复用排障套路（注入失败/循环依赖/代理形态/FactoryBean/预实例化等）
-- **注解为何生效（bootstrap）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`（新增“处理器速查表 + 时机时间线 + 过早 getBean 反例”）
-- **深挖指南（症状驱动导航）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`（新增“按现象选章节/断点/Lab”的速查表）
+- **注解为何生效（bootstrap）:** `spring-core-modules/spring-core-beans/docs/part-03-container-internals/01-container-bootstrap-and-infrastructure.md`（新增“处理器速查表 + 时机时间线 + 过早 getBean 反例”）
+- **深挖指南（症状驱动导航）:** `spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`（新增“按现象选章节/断点/Lab”的速查表）
 - **Learning Path（路线图）:** `helloagents/wiki/learning-path.md`（主线：Beans → AOP → Tx → Web MVC）
 - **第一个可运行入口（3 分钟启动）:**
   - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans test`
@@ -123,9 +123,9 @@
 在不改变目录结构与章节编号的前提下，对 `spring-core-modules/spring-core-beans/docs/**` 做第二轮全量继续深化：强化“工具页互链 + 逐章可验证入口 + 最短下一跳”，并通过断链/引用自检与模块测试回归守住质量门禁。
 
 #### Scenario: 工具页中枢化（知识地图 ↔ 断点地图 ↔ 排障清单）
-- `appendix/92-knowledge-map.md` 表格新增“断点组（C1–C7）”链接，能从现象直达可复用断点组
-- `part-00-guide/013-02-breakpoint-map.md` 补齐 `#c1..#c7` 稳定锚点，并新增“现象 → 断点组”快速入口
-- `appendix/94-production-troubleshooting-checklist.md` 增补 3 类高频事故的 3–5 步最短诊断路径，并回链章节与 Lab
+- `appendix/03-knowledge-map.md` 表格新增“断点组（C1–C7）”链接，能从现象直达可复用断点组
+- `part-00-guide/07-breakpoint-map.md` 补齐 `#c1..#c7` 稳定锚点，并新增“现象 → 断点组”快速入口
+- `appendix/05-production-troubleshooting-checklist.md` 增补 3 类高频事故的 3–5 步最短诊断路径，并回链章节与 Lab
 
 #### Scenario: 逐章继续加深提示块（AE-DEEPENING）
 - 统一把“断点主线”表述收敛为“第一断点入口”，避免空泛的 watch list 口号；并补齐“最短下一跳”指引
@@ -150,7 +150,7 @@
 - 文档给出“异常文本 → 依赖解析主线 → 收敛点”的可复述路径（`NoSuchBeanDefinition` / `NoUniqueBeanDefinition` / `UnsatisfiedDependency`）
 - 能明确：候选收集（`findAutowireCandidates`）与候选收敛（`determineAutowireCandidate`）的边界
 - 对应可复现闭环入口：
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/DependencyDescriptorDumperLabTest.java`
 
@@ -162,14 +162,14 @@
 - 能解释 PropertySources 的优先级与“占位符解析”如何接入 BeanFactory 的值解析链路
 - 能解释：refresh 前/后修改 Environment 对 Bean 的影响边界（不会 retroactive 影响已创建 bean）
 - 对应可复现闭环入口：
-  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
+  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-environment-and-propertysource.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansEnvironmentPropertySourceLabTest.java`
 
 #### Scenario: 能把 BeanFactory API 当作“最小容器”理解（并解释与 ApplicationContext 的边界）
 - 能解释：plain BeanFactory 不会自动启用注解注入/生命周期（需要显式安装 BPP），以及 BPP 安装顺序/时机的影响
 - 能给出最小可运行路径：`DefaultListableBeanFactory` + 手动注册 annotation processors + `addBeanPostProcessor` 的可断言对照
 - 对应可复现闭环入口：
-  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
+  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-beanfactory-api-deep-dive.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanFactoryApiLabTest.java`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanFactoryVsApplicationContextLabTest.java`
 
@@ -177,16 +177,16 @@
 - 能解释：scoped proxy 会产生“双定义”（`<beanName>` 代理 + `scopedTarget.<beanName>` 目标），以及它为何是“用一致性换可用性”
 - 能解释：`ScopedProxyMode.INTERFACES` vs `TARGET_CLASS` 的取舍（类型可注入性 / 代理形态 / 调试成本）
 - 对应可复现闭环入口：
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
-  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
+  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
 
 #### Scenario: 能讲清循环依赖“能救/不能救”的边界（含代理介入）
 - 文档解释三层缓存与 early reference 的真实语义
 - 提供 Lab 覆盖：构造器循环失败、setter 循环可能成功、以及 `allowRawInjectionDespiteWrapping` 对 early==final 一致性的影响
 - 对应可复现闭环入口：
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
-  - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md`
+  - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansCircularDependencyBoundaryLabTest.java`
 
 #### Scenario: 能把 Bean 三层模型映射到关键类与扩展点
@@ -194,7 +194,7 @@
 - 术语上避免口号化抽象标签，统一用可验证的运行机制表述（抓手/结论/入口理解）
 - 提供 Lab 使用户能在断点里看到这些对象在何时出现与被修改
 - 对应可复现闭环入口：
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-bean-mental-model.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanCreationTraceLabTest.java`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanDefinitionOriginDumperLabTest.java`
 
@@ -206,15 +206,15 @@
  - 能用 `PostProcessorRegistrationDelegate` 的两段算法解释：为什么 BFPP/BDRPP 更早、为什么 BPP 注册发生在 refresh 中前段、以及顺序如何由“三段分组 + comparator”决定
  - 能解释 `BeanPostProcessorChecker` 的信号含义：哪些 bean “错过了后续 BPP”，以及如何从日志回到过早 `getBean()` 的证据链
  - 对应可复现闭环入口：
-   - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
+   - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/05-post-processors.md`
    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansEarlyGetBeanMissesBppLabTest.java`
 
 #### Scenario: 能识别基础设施 Bean（ROLE_INFRASTRUCTURE）并用于注解能力/处理器排障
 - 能用 `PostProcessorRegistrationDelegate` 的两段算法解释：为什么 BFPP/BDRPP 更早、为什么 BPP 注册发生在 refresh 中前段、以及顺序如何由“三段分组 + comparator”决定
 - 能解释 `addBeanPostProcessor` 的 list 语义：为什么它绕过容器排序、为什么执行顺序 = 注册顺序、以及“BPP 不会 retroactive”的时机陷阱
 - 对应可复现闭环入口：
-  - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
-  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
+  - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/03-post-processor-ordering.md`
+  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticBeanPostProcessorLabTest.java`
 
@@ -223,7 +223,7 @@
 - 能用 JVM 单测验证 hints 的存在性（不必构建 native image）
 - 对应可复现闭环入口：
   - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/40-aot-and-native-overview.md`
-  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
+  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/02-runtimehints-basics.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java`
 
 #### Scenario: 能补齐“真实世界高频但易忽略”的机制（XML/容器外对象/SpEL/自定义 Qualifier）
@@ -232,10 +232,10 @@
 - 能解释 `@Value("#{...}")` 的 SpEL 链路（与 `${...}` 占位符的职责边界）
 - 能用自定义 Qualifier（meta-annotation）把候选收敛规则提升为业务语义
 - 对应可复现闭环入口：
-  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md`
-  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md`
-  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
-  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md`
+  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/03-xml-bean-definition-reader.md`
+  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/04-autowirecapablebeanfactory-external-objects.md`
+  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/05-spel-and-value-expression.md`
+  - `spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/06-custom-qualifier-meta-annotation.md`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/*LabTest.java`
 
 ## Dependencies
@@ -280,7 +280,7 @@
 - [202601060957_spring_core_beans_environment_beanfactory_deepening](../../history/2026-01/202601060957_spring_core_beans_environment_beanfactory_deepening/) - ✅ 已执行：补齐 Spring Framework `BeanFactory API` 与 `Environment Abstraction` 深挖闭环（docs 38–39 + Labs）
 - [202601061038_spring_core_beans_spring_beans_api_full_coverage](../../history/2026-01/202601061038_spring_core_beans_spring_beans_api_full_coverage/) - ✅ 已执行：新增 spring-beans Public API 索引（95/96）+ AOT/ServiceLoader* 补齐 + Explore/Debug 用例（97）
 - [202601061359_spring_core_beans_beans_support_utils](../../history/2026-01/202601061359_spring_core_beans_beans_support_utils/) - ✅ 已执行：补齐 `org.springframework.beans.support` support 工具类闭环（ArgumentConvertingMethodInvoker/ResourceEditorRegistrar/PropertyComparator/PagedListHolder/SortDefinition）并新增可运行 Lab，Appendix 96 Gap 归零
-- [20260106_docs-crossref-fix](../../../spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md) - ✅ 已执行：将 `docs/01`、`docs/06/12/14/31/16/15` 这类缩写引用替换为真实章节链接，避免误解为路径
+- [20260106_docs-crossref-fix](../../../spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md) - ✅ 已执行：将 `docs/01`、`docs/06/12/14/31/16/15` 这类缩写引用替换为真实章节链接，避免误解为路径
 - [202601131039_teaching-experience-webmvc-beans](../../history/2026-01/202601131039_teaching-experience-webmvc-beans/) - ✅ 已执行：spring-core-beans：新增 30 分钟快启 + docs 知识点补齐（Start Here/断点观察点/自检/索引坑点）
 - [202601181724_spring_core_beans_refresh_mainline_deepen](../../history/2026-01/202601181724_spring_core_beans_refresh_mainline_deepen/) - ✅ 已执行：新增 `refresh()` → `doCreateBean()` 源码主线叙事章节，并补齐 docs/README 与深挖导读入口（docs + wiki + changelog）
 - [202601182033_beans_branch_decision_table_webmvc_error_async_deepen](../../history/2026-01/202601182033_beans_branch_decision_table_webmvc_error_async_deepen/) - ✅ 已执行：在主线叙事章新增“分支决策表”（现象→阶段→关键方法→必看变量→LabTest），把叙事压缩为可复用排障套路

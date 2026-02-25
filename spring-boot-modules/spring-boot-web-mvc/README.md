@@ -76,14 +76,14 @@ mvn -pl :spring-boot-web-mvc test
 
 （docs 目录页：[`docs/README.md`](docs/README.md)）
 
-1. [校验与错误响应形状](docs/part-01-web-mvc/071-01-validation-and-error-shaping.md)
-2. [统一异常处理与坏输入](docs/part-01-web-mvc/072-02-exception-handling.md)
-3. [请求绑定与 Converter/Formatter](docs/part-01-web-mvc/073-03-binding-and-converters.md)
-4. [Interceptor vs Filter：入口与顺序](docs/part-01-web-mvc/074-04-interceptor-and-filter-ordering.md)
-5. [传统 MVC 页面渲染入门（Thymeleaf/ViewResolver）](docs/part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md)
+1. [校验与错误响应形状](docs/part-01-web-mvc/01-validation-and-error-shaping.md)
+2. [统一异常处理与坏输入](docs/part-01-web-mvc/02-exception-handling.md)
+3. [请求绑定与 Converter/Formatter](docs/part-01-web-mvc/03-binding-and-converters.md)
+4. [Interceptor vs Filter：入口与顺序](docs/part-01-web-mvc/04-interceptor-and-filter-ordering.md)
+5. [传统 MVC 页面渲染入门（Thymeleaf/ViewResolver）](docs/part-02-view-mvc/01-thymeleaf-and-view-resolver.md)
 6. [表单提交闭环（绑定/校验/回显/PRG）](docs/part-02-view-mvc/02-form-binding-validation-prg.md)
 7. [错误页与内容协商（Accept：HTML vs JSON）](docs/part-02-view-mvc/03-error-pages-and-content-negotiation.md)
-8. [常见坑清单](docs/appendix/082-90-common-pitfalls.md)
+8. [常见坑清单](docs/appendix/01-common-pitfalls.md)
 
 对应的可运行实验（先跑后读）：
 - `src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`（`@WebMvcTest` 切片）
@@ -96,16 +96,16 @@ mvn -pl :spring-boot-web-mvc test
 
 | 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
 | --- | --- | --- | --- |
-| 校验在边界触发 | [docs/part-01/01](docs/part-01-web-mvc/071-01-validation-and-error-shaping.md) | `BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid` + `CreateUserRequest` | 为什么需要 `@Valid`，失败时异常从哪来 |
-| 统一错误响应形状 | [docs/part-01/01](docs/part-01-web-mvc/071-01-validation-and-error-shaping.md) | `GlobalExceptionHandler` + `ApiError` | 为什么要自定义错误结构，结构由谁决定 |
-| malformed JSON vs 校验失败 | [docs/part-01/02](docs/part-01-web-mvc/072-02-exception-handling.md) | `BootWebMvcLabTest#returnsBadRequestWhenJsonIsMalformed` + `BootWebMvcExerciseTest#exercise_handleMalformedJson` | 两类 400 的根因差异 |
-| Converter/Formatter 扩展绑定 | [docs/part-01/03](docs/part-01-web-mvc/073-03-binding-and-converters.md) | `BootWebMvcExerciseTest#exercise_converterFormatter` | String 如何变成自定义类型 |
-| Interceptor 生效范围与顺序 | [docs/part-01/04](docs/part-01-web-mvc/074-04-interceptor-and-filter-ordering.md) | `BootWebMvcExerciseTest#exercise_interceptor` | 为什么它只对 `/api/**` 生效 |
-| `@Controller` 返回 viewName | [docs/part-02/01](docs/part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md) | `MvcPingController` + `ping.html` | 为什么返回 String 却渲染了 HTML |
+| 校验在边界触发 | [docs/part-01/01](docs/part-01-web-mvc/01-validation-and-error-shaping.md) | `BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid` + `CreateUserRequest` | 为什么需要 `@Valid`，失败时异常从哪来 |
+| 统一错误响应形状 | [docs/part-01/01](docs/part-01-web-mvc/01-validation-and-error-shaping.md) | `GlobalExceptionHandler` + `ApiError` | 为什么要自定义错误结构，结构由谁决定 |
+| malformed JSON vs 校验失败 | [docs/part-01/02](docs/part-01-web-mvc/02-exception-handling.md) | `BootWebMvcLabTest#returnsBadRequestWhenJsonIsMalformed` + `BootWebMvcExerciseTest#exercise_handleMalformedJson` | 两类 400 的根因差异 |
+| Converter/Formatter 扩展绑定 | [docs/part-01/03](docs/part-01-web-mvc/03-binding-and-converters.md) | `BootWebMvcExerciseTest#exercise_converterFormatter` | String 如何变成自定义类型 |
+| Interceptor 生效范围与顺序 | [docs/part-01/04](docs/part-01-web-mvc/04-interceptor-and-filter-ordering.md) | `BootWebMvcExerciseTest#exercise_interceptor` | 为什么它只对 `/api/**` 生效 |
+| `@Controller` 返回 viewName | [docs/part-02/01](docs/part-02-view-mvc/01-thymeleaf-and-view-resolver.md) | `MvcPingController` + `ping.html` | 为什么返回 String 却渲染了 HTML |
 | 表单校验回显（BindingResult） | [docs/part-02/02](docs/part-02-view-mvc/02-form-binding-validation-prg.md) | `MvcUserController` + `user-form.html` | 为什么校验失败不会抛异常，而是回到表单页 |
 | 错误页与 Accept | [docs/part-02/03](docs/part-02-view-mvc/03-error-pages-and-content-negotiation.md) | `templates/error/*` + `MvcExceptionHandler` | 为什么同一个错误在浏览器和脚本里长得不一样 |
 
-> 想从机制层理解“校验为什么有时不生效”，可进一步阅读 `spring-core-modules/spring-core-validation/docs/part-01-validation-core/160-03-method-validation-proxy.md`（方法参数校验与代理）。
+> 想从机制层理解“校验为什么有时不生效”，可进一步阅读 `spring-core-modules/spring-core-validation/docs/part-01-validation-core/03-method-validation-proxy.md`（方法参数校验与代理）。
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

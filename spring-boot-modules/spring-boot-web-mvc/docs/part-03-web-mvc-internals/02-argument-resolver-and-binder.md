@@ -1,4 +1,10 @@
-# 02：ArgumentResolver 与 Binder（已合并）
+# 02. ArgumentResolver 与 Binder（已合并）
+
+## 导读
+
+本页用于兼容旧链接或记录章节合并结果：正文内容已迁移至新的章节位置。
+若需要回归验证，可直接运行 `BootWebMvcInternalsLabTest`，再按本页指向的目标章节继续阅读。
+
 
 本章内容已合并进上一章《01：DispatcherServlet 主链路》中的一节：
 
@@ -15,6 +21,6 @@
 
 - Lab：`BootWebMvcInternalsLabTest` / `BootWebMvcLabTest` / `BootWebMvcBindingDeepDiveLabTest`
 
-上一章：[part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md](067-01-dispatcherservlet-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-03-web-mvc-internals/03-message-converters-and-return-values.md](068-03-message-converters-and-return-values.md)
+上一章：[part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md](01-dispatcherservlet-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-03-web-mvc-internals/03-message-converters-and-return-values.md](03-message-converters-and-return-values.md)
 
 <!-- BOOKIFY:END -->

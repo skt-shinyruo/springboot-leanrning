@@ -26,12 +26,12 @@ Directory: `helloagents/plan/202601061556_spring_core_modules_teaching_rollout/`
   - [√] 2.2.3 `docs/beans/spring-core-beans/part-01-ioc-container/05-lifecycle-and-callbacks.md`（涉及：`docs/03`、`docs/06`、`docs/12`、`docs/17`、`docs/31`、`docs/34`）
   - [√] 2.2.4 `docs/beans/spring-core-beans/part-01-ioc-container/06-post-processors.md`（涉及：`docs/06`）
   - [√] 2.2.5 `docs/beans/spring-core-beans/part-03-container-internals/12-container-bootstrap-and-infrastructure.md`（涉及：`docs/06`）
-  - [√] 2.2.6 `docs/beans/spring-core-beans/part-03-container-internals/16-early-reference-and-circular.md`（涉及：`docs/09`、`docs/31`）
-  - [√] 2.2.7 `docs/beans/spring-core-beans/part-03-container-internals/17-lifecycle-callback-order.md`（涉及：`docs/14`、`docs/25`、`docs/31`）
-  - [√] 2.2.8 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md`（涉及：`docs/29`）
-  - [√] 2.2.9 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`（涉及：`docs/05`）
-  - [√] 2.2.10 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`（涉及：`docs/15`、`docs/16`）
-  - [√] 2.2.11 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`（涉及：`docs/23`、`docs/29`）
+  - [√] 2.2.6 `docs/beans/spring-core-beans/part-03-container-internals/05-early-reference-and-circular.md`（涉及：`docs/09`、`docs/31`）
+  - [√] 2.2.7 `docs/beans/spring-core-beans/part-03-container-internals/06-lifecycle-callback-order.md`（涉及：`docs/14`、`docs/25`、`docs/31`）
+  - [√] 2.2.8 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md`（涉及：`docs/29`）
+  - [√] 2.2.9 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`（涉及：`docs/05`）
+  - [√] 2.2.10 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`（涉及：`docs/15`、`docs/16`）
+  - [√] 2.2.11 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md`（涉及：`docs/23`、`docs/29`）
   - [√] 2.2.12 `docs/beans/spring-core-beans/appendix/90-common-pitfalls.md`（涉及：`docs/12`、`docs/16`）
 - [√] 2.3 模块验证：`python3 scripts/check-md-relative-links.py docs/beans/spring-core-beans` 通过，verify why.md#requirement-docs-link-integrity
 - [√] 2.4 模块验证：`python3 scripts/check-teaching-coverage.py --min-labs 2 --module spring-core-beans` 通过，verify why.md#requirement-chapter-lab-closure

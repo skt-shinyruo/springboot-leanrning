@@ -1,9 +1,9 @@
-# 02：SSE（SseEmitter：text/event-stream 最小闭环）
+# 02. SSE（SseEmitter：text/event-stream 最小闭环）
 
 ## 导读
 
-- 本章主题：**02：SSE（SseEmitter：text/event-stream 最小闭环）**
-- 目标：用“有限事件 + 快速完成”的方式，演示 SSE 的协议形状与最小实现。
+本章围绕「02：SSE（SseEmitter：text/event-stream 最小闭环）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+建议优先运行 `BootWebMvcAsyncSseLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
@@ -43,6 +43,6 @@
 
 - Lab：`BootWebMvcAsyncSseLabTest`
 
-上一章：[part-06-async-sse/01-servlet-async-and-testing.md](079-01-servlet-async-and-testing.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-06-async-sse/03-deferredresult-and-timeout.md](03-deferredresult-and-timeout.md)
+上一章：[part-06-async-sse/01-servlet-async-and-testing.md](01-servlet-async-and-testing.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-06-async-sse/03-deferredresult-and-timeout.md](03-deferredresult-and-timeout.md)
 
 <!-- BOOKIFY:END -->

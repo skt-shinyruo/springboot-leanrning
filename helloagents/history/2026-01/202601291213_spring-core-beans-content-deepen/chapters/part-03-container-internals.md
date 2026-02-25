@@ -4,7 +4,7 @@
 
 ### 第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/01-container-bootstrap-and-infrastructure.md`
 - 内容级加深策略：
   - A：补“注解能力→处理器→生效窗口”的证据链对照表，并落到具体入口方法。
   - B：补反例：缺失基础设施时哪些注解不生效；过早 getBean 导致处理器未注册。
@@ -14,7 +14,7 @@
 
 ### 13. BDRPP：注册阶段动态加定义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/13-bdrpp-definition-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/02-bdrpp-definition-registration.md`
 - 内容级加深策略：
   - A：补“动态加定义”进入主线的证据链：何时被调用、对 registry 造成什么影响。
   - B：补反例：滥用导致 bean graph 难以推断；与 ImportBeanDefinitionRegistrar 混用导致时机误判。
@@ -24,7 +24,7 @@
 
 ### 14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/14-post-processor-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/03-post-processor-ordering.md`
 - 内容级加深策略：
   - A：补“排序算法骨架”与关键列表快照（收集→排序→执行），让读者能在断点里看见顺序如何被决定。
   - B：补反例：programmatic 注册绕过默认排序；@Order 与 @Priority 的边界误判。
@@ -34,7 +34,7 @@
 
 ### 15. 实例化前短路：postProcessBeforeInstantiation
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/15-pre-instantiation-short-circuit.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/04-pre-instantiation-short-circuit.md`
 - 内容级加深策略：
   - A：补“短路跳过了什么/仍会做什么”的证据链（构造器/populate/initialize/销毁等）。
   - B：补反例：短路导致字段注入没发生、生命周期回调不符合预期、代理链难以追踪。
@@ -44,7 +44,7 @@
 
 ### 16. early reference 与循环依赖：getEarlyBeanReference
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
 - 内容级加深策略：
   - A：补三级缓存的“写入/读出时间点”与对象类型（raw/early/final）的证据链对照。
   - B：补反例：early 与 final 不一致的真实后果（事务/AOP/懒代理叠加），以及 allowRawInjectionDespiteWrapping 的边界。
@@ -54,7 +54,7 @@
 
 ### 17. 生命周期回调顺序：Aware / BPP / init / destroy
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/17-lifecycle-callback-order.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/06-lifecycle-callback-order.md`
 - 内容级加深策略：
   - A：补“顺序与触发点”证据链：关键入口方法串起每类回调，并明确 raw vs exposed。
   - B：补反例：prototype 不销毁的误判、destroy 顺序与 dependent 图的交互。
@@ -64,7 +64,7 @@
 
 ### 18. refresh → doCreateBean 主线（源码级）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-03-container-internals/07-refresh-to-bean-creation-mainline.md`
 - 内容级加深策略：
   - A：补“主线分层索引 + 最短调用链”：让读者能快速定位到 instantiate/populate/initialize/代理替换/缓存窗口。
   - B：补反例：每个关键分支给 1 个失败/偏差案例（FactoryBean、@Lazy 注入点、dependsOn、parent、prototype guard）。

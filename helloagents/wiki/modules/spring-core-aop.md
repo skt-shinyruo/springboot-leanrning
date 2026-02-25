@@ -19,9 +19,9 @@
 - 路线图：`helloagents/wiki/learning-path.md`
 - Docs Index：`spring-core-modules/spring-core-aop/docs/README.md`
 - Beans 前置（强烈建议只读一次，后续 AOP 排障会更稳定）：
-  - `spring-core-modules/spring-core-beans/docs/part-00-guide/009-00-why-index.md`（Why Index：三级缓存/early reference/proxy 替换）
-  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`（代理替换发生在哪个阶段）
-  - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/16-early-reference-and-circular.md`（early reference 与形态一致性）
+  - `spring-core-modules/spring-core-beans/docs/part-00-guide/01-why-index.md`（Why Index：三级缓存/early reference/proxy 替换）
+  - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`（代理替换发生在哪个阶段）
+  - `spring-core-modules/spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`（early reference 与形态一致性）
 - 第一个可运行入口（3 分钟开跑）：
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopLabTest#adviceIsAppliedToTracedMethod test`
   - 对应测试类：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopLabTest.java`
@@ -46,11 +46,11 @@
 
 ### Docs Index
 - 入口：`spring-core-modules/spring-core-aop/docs/README.md`
-- 断点地图：`spring-core-modules/spring-core-aop/docs/part-00-guide/029-02-breakpoint-map.md`
-- 关键分支矩阵：`spring-core-modules/spring-core-aop/docs/part-00-guide/029-04-branch-decision-matrix.md`
-- 并发/性能边界：`spring-core-modules/spring-core-aop/docs/part-02-perf-concurrency/042-11-proxy-concurrency-perf.md`
-- 排障 playbook：`spring-core-modules/spring-core-aop/docs/appendix/040-90-common-pitfalls.md`
-- 自检清单：`spring-core-modules/spring-core-aop/docs/appendix/041-99-self-check.md`
+- 断点地图：`spring-core-modules/spring-core-aop/docs/part-00-guide/04-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-aop/docs/part-00-guide/05-branch-decision-matrix.md`
+- 并发/性能边界：`spring-core-modules/spring-core-aop/docs/part-02-perf-concurrency/01-proxy-concurrency-perf.md`
+- 排障 playbook：`spring-core-modules/spring-core-aop/docs/appendix/01-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-aop/docs/appendix/02-self-check.md`
 - Branch Matrix（关键分支入口）：
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`

@@ -50,8 +50,8 @@
 - 3 分钟：给出可复述模板（结论 → 证据链 → 反例/边界）
 
 该清单应在：
-- Beans：`docs/README.md` 与 `part-00-guide/012-01-quickstart-30min.md` 强化入口
-- AOP：`docs/README.md` 与 `part-00-guide/029-00-deep-dive-guide.md` 强化入口
+- Beans：`docs/README.md` 与 `part-00-guide/05-quickstart-30min.md` 强化入口
+- AOP：`docs/README.md` 与 `part-00-guide/02-deep-dive-guide.md` 强化入口
 
 #### 4) 命名与可检索性：让“读者的搜索词”命中
 

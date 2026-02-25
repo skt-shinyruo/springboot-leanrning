@@ -37,11 +37,11 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `spring-boot-modules/spring-boot-data-jpa/docs/README.md`
-- **Docs Guide:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-00-deep-dive-guide.md`
-- **Breakpoint Map:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/096-04-branch-decision-matrix.md`
-- **Playbook:** `spring-boot-modules/spring-boot-data-jpa/docs/appendix/104-90-common-pitfalls.md`
-- **Self-check:** `spring-boot-modules/spring-boot-data-jpa/docs/appendix/105-99-self-check.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/02-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/04-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-data-jpa/docs/part-00-guide/05-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-data-jpa/docs/appendix/01-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-data-jpa/docs/appendix/02-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`

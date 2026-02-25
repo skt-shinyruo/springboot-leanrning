@@ -4,7 +4,7 @@
 
 ### 18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/01-lazy-semantics.md`
 - 内容级加深策略：
   - A：补“两类 Lazy 的证据链对照”：lazy-init 的创建时机 vs 注入点 @Lazy 的代理时机。
   - B：补反例：懒代理叠加 AOP/循环依赖时的偏差；final 类/方法限制。
@@ -14,7 +14,7 @@
 
 ### 19. dependsOn：强制初始化顺序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-depends-on.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/02-depends-on.md`
 - 内容级加深策略：
   - A：补“doGetBean 内 dependsOn 处理”的关键分支证据链（包含依赖图写入点）。
   - B：补反例：Circular depends-on 与三级缓存循环依赖的误判对照。
@@ -24,7 +24,7 @@
 
 ### 20. registerResolvableDependency：能注入但不是 Bean
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/03-resolvable-dependency.md`
 - 内容级加深策略：
   - A：补“命中在 doResolveDependency 之前”的证据链，并对比 bean candidates 分支。
   - B：补反例：滥用导致候选收敛被绕过、与 @Qualifier 选择语义冲突。
@@ -34,7 +34,7 @@
 
 ### 21. 父子 ApplicationContext：可见性与覆盖边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-context-hierarchy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/04-context-hierarchy.md`
 - 内容级加深策略：
   - A：补“可见性规则与搜索顺序”的方法级证据链（child→parent）。
   - B：补反例：同名 bean 覆盖、同 type 不可见、event/环境继承误判。
@@ -44,7 +44,7 @@
 
 ### 22. Bean 名称与 alias
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/05-bean-names-and-aliases.md`
 - 内容级加深策略：
   - A：补“alias 注册结构与 lookup 路径”的证据链，并对比按类型发现。
   - B：补反例：@Resource 注入错对象、FactoryBean `&` 前缀误判、覆盖策略冲突。
@@ -54,7 +54,7 @@
 
 ### 23. FactoryBean 深潜：product vs factory、类型匹配、缓存语义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md`
 - 内容级加深策略：
   - A：补“type matching 算法与 getObjectType/isSingleton”的证据链，并给关键分支快照。
   - B：补反例：getObjectType=null 导致条件误判/按类型发现失败；SmartFactoryBean 与 eager init 的边界。
@@ -64,7 +64,7 @@
 
 ### 24. BeanDefinition 覆盖（overriding）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md`
 - 内容级加深策略：
   - A：补“覆盖发生在注册阶段”的证据链与配置入口（Framework/Boot 差异需明确）。
   - B：补反例：覆盖导致注入命中改变但不易察觉；与 auto-config back-off 的交互误判。
@@ -74,7 +74,7 @@
 
 ### 25. 手工添加 BeanPostProcessor：顺序与陷阱
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
 - 内容级加深策略：
   - A：补“绕过默认注册流程导致顺序变化”的证据链与关键列表快照。
   - B：补反例：增强偶发不生效、代理链丢失、@Autowired/@Value 行为偏移。
@@ -84,7 +84,7 @@
 
 ### 26. SmartInitializingSingleton：单例创建完之后再做事
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/09-smart-initializing-singleton.md`
 - 内容级加深策略：
   - A：补“触发窗口”证据链（preInstantiateSingletons 完成后的回调触发点）。
   - B：补反例：lazy 单例不在其中；过早初始化导致副作用。
@@ -94,7 +94,7 @@
 
 ### 27. SmartLifecycle：start/stop 时机与 phase 顺序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/10-smart-lifecycle-phase.md`
 - 内容级加深策略：
   - A：补 phase 排序算法的证据链与关键列表快照。
   - B：补反例：autoStartup 与 isRunning 误判、stop 未执行导致资源泄漏。
@@ -104,7 +104,7 @@
 
 ### 28. 自定义 Scope + scoped proxy
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md`
 - 内容级加深策略：
   - A：补 scope 契约（get/remove/registerDestructionCallback）的证据链与典型实现骨架。
   - B：补反例：thread-local 泄漏、销毁回调不执行、代理导致类型信息丢失。
@@ -114,7 +114,7 @@
 
 ### 29. FactoryBean 边界：getObjectType 返回 null
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/12-factorybean-edge-cases.md`
 - 内容级加深策略：
   - A：补“type matching 失效”的算法证据链（条件判断/候选收集如何受影响）。
   - B：补反例：按类型注入失效但 getBean(name) 仍可用、条件装配误判。
@@ -124,7 +124,7 @@
 
 ### 30. 注入阶段：field vs constructor（postProcessProperties）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md`
 - 内容级加深策略：
   - A：补“注入发生在哪一步”的证据链：构造器注入 vs 属性填充 vs @PostConstruct。
   - B：补反例：field injection 在构造器不可用导致 NPE；循环依赖更难排；测试隔离更差。
@@ -134,7 +134,7 @@
 
 ### 31. 代理产生阶段：BPP 如何换成 Proxy（self-invocation）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`
 - 内容级加深策略：
   - A：补“proxy 替换发生点”的证据链，并对比 pre/early/after-init 三类替换。
   - B：补反例：self-invocation 绕过代理、多个代理叠加导致行为偏移。
@@ -144,7 +144,7 @@
 
 ### 32. `@Resource` 注入：name-first
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md`
 - 内容级加深策略：
   - A：补 name-first 的完整决策链（name 指定/默认字段名/fallback type）的证据链。
   - B：补反例：alias/同名覆盖导致注入错对象；与 @Primary/@Qualifier 的误对比。
@@ -154,7 +154,7 @@
 
 ### 33. 候选选择 vs 顺序：@Primary/@Priority/@Order/@Qualifier
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md`
 - 内容级加深策略：
   - A：补“选择 vs 排序”的证据链：单注入 vs 集合注入两条路径的决策点。
   - B：补反例：@Order 不能解决单注入歧义；by-name fallback 的边界。
@@ -164,7 +164,7 @@
 
 ### 34. `@Value(\"${...}\")` 占位符解析：strict vs non-strict
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`
 - 内容级加深策略：
   - A：补“resolveEmbeddedValue → placeholder resolver”的最短证据链，并区分 ${} 与 #{}。
   - B：补反例：把占位符解析/SpEL 求值/类型转换混为一谈导致误诊。
@@ -174,7 +174,7 @@
 
 ### 35. MergedBeanDefinition：RootBeanDefinition 从哪里来？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md`
 - 内容级加深策略：
   - A：补“合并触发点与缓存语义”的证据链（merged 什么时候生成/什么时候复用）。
   - B：补反例：你看到的 BeanDefinition 与最终行为不一致（原因往往在 merged）。
@@ -184,7 +184,7 @@
 
 ### 36. 类型转换：BeanWrapper / ConversionService / PropertyEditor
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`
 - 内容级加深策略：
   - A：补“属性访问 vs 类型转换”的证据链：populateBean → BeanWrapper → TypeConverterDelegate。
   - B：补反例：占位符没解析导致转换失败、集合/枚举/日期转换链路误判。
@@ -194,7 +194,7 @@
 
 ### 37. 泛型匹配坑：ResolvableType 与代理导致类型信息丢失
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md`
 - 内容级加深策略：
   - A：补“checkGenericTypeMatch 的决策链”与关键变量（ResolvableType 推断结果）。
   - B：补反例：代理/桥接方法/父类擦除导致的泛型信息丢失与匹配失败。
@@ -204,7 +204,7 @@
 
 ### 38. Environment/PropertySource：优先级与排障主线
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/21-environment-and-propertysource.md`
 - 内容级加深策略：
   - A：补“最终取值→来源”的证据链：PropertySources 顺序如何影响 getProperty。
   - B：补反例：值被覆盖但不自知、profile/条件导致 property source 不同。
@@ -214,7 +214,7 @@
 
 ### 39. BeanFactory API 深挖：接口族谱与手动 bootstrap 边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/22-beanfactory-api-deep-dive.md`
 - 内容级加深策略：
   - A：补“接口能力→可观察行为”的证据链：Listable/Configurable 等接口意味着哪些行为窗口。
   - B：补反例：手工 new BeanFactory 时注解不工作/占位符不解析/代理不出现的误判。

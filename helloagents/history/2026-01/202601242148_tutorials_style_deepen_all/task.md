@@ -14,11 +14,11 @@ Directory: `helloagents/plan/202601242148_tutorials_style_deepen_all/`
 - [ ] 2.2 维护 `docs/SUMMARY.md` 的模块入口层级与排序，验证 why.md#requirement-文档导航对齐与索引统一-scenario-站点导航稳定
 
 ## 3. 内容深度化（优先模块）
-- [ ] 3.1 深化 `docs/basics/spring-boot-basics/README.md` 与 `docs/basics/spring-boot-basics/part-00-guide/004-01-springapplication-run-call-chain.md`，验证 why.md#requirement-内容深度化规范与首批模块落地-scenario-证据链完整
+- [ ] 3.1 深化 `docs/basics/spring-boot-basics/README.md` 与 `docs/basics/spring-boot-basics/part-00-guide/03-springapplication-run-call-chain.md`，验证 why.md#requirement-内容深度化规范与首批模块落地-scenario-证据链完整
 - [ ] 3.2 深化 `docs/web-mvc/spring-boot-web-mvc/README.md` 与 `docs/web-mvc/spring-boot-web-mvc/part-00-guide/024-01-request-mapping-call-chain.md`，验证 why.md#requirement-内容深度化规范与首批模块落地-scenario-证据链完整
 - [ ] 3.3 深化 `docs/beans/spring-core-beans/README.md` 与 `docs/beans/spring-core-beans/part-00-guide/008-01-bean-creation-call-chain.md`，验证 why.md#requirement-内容深度化规范与首批模块落地-scenario-证据链完整
 - [ ] 3.4 深化 `docs/aop/spring-core-aop/README.md` 与 `docs/aop/spring-core-aop/part-00-guide/026-01-proxy-creation-call-chain.md`，验证 why.md#requirement-内容深度化规范与首批模块落地-scenario-证据链完整
-- [ ] 3.5 深化 `docs/tx/spring-core-tx/README.md` 与 `docs/tx/spring-core-tx/part-00-guide/053-01-transaction-interceptor-call-chain.md`，验证 why.md#requirement-内容深度化规范与首批模块落地-scenario-证据链完整
+- [ ] 3.5 深化 `docs/tx/spring-core-tx/README.md` 与 `docs/tx/spring-core-tx/part-00-guide/03-transaction-interceptor-call-chain.md`，验证 why.md#requirement-内容深度化规范与首批模块落地-scenario-证据链完整
 
 ## 4. 迁移兼容与验证
 - [ ] 4.1 添加迁移说明 `docs/migration/README.md` 与 `docs/migration/redirect-rules.md`，验证 why.md#requirement-迁移兼容与验证-scenario-链接不失效

@@ -10,7 +10,7 @@
 
 ## Change Content
 
-1. 扩写 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`：
+1. 扩写 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`：
    - 增加 `org.springframework.beans.support` 小节，解释 support 工具类与 BeanWrapper/TypeConverter 的关系
    - 给出可运行 Lab 入口与推荐命令
 2. 新增专门 Lab：覆盖 `org.springframework.beans.support` 关键类型的“可断言现象”
@@ -20,7 +20,7 @@
 ## Impact Scope
 
 - **Modules:** `spring-core-beans`、`scripts`、`helloagents`
-- **Docs:** `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`
+- **Docs:** `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`
 - **Tests:** 新增 `spring-core-beans/src/test/java/.../*LabTest.java`（默认参与回归）
 - **Generated Docs:** `docs/beans/spring-core-beans/appendix/95`、`96` 将由脚本重新生成（不手工编辑）
 

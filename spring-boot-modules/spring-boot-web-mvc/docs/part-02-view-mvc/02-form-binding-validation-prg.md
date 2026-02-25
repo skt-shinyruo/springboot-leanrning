@@ -1,8 +1,8 @@
-# 02：表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）
+# 02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）
 
 ## 导读
 
-- 本章主题：**02：表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）**
+- 本章主题：**02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
 
 !!! summary "本章要点"
@@ -25,7 +25,7 @@
 - 校验失败：回到原页面并回显错误与用户输入
 - 校验成功：redirect（PRG）到详情页，并使用 flash attribute 提示一次性消息
 
-## 你应该观察到什么（What to observe）
+## 应当观察到的现象（What to observe）
 
 1) GET `/pages/users/new` 返回表单页
 - HTML 中存在表单
@@ -141,6 +141,6 @@
 - Lab：`BootWebMvcViewLabTest`
 - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
 
-上一章：[part-02-view-mvc/01-thymeleaf-and-view-resolver.md](076-01-thymeleaf-and-view-resolver.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-02-view-mvc/03-error-pages-and-content-negotiation.md](03-error-pages-and-content-negotiation.md)
+上一章：[part-02-view-mvc/01-thymeleaf-and-view-resolver.md](01-thymeleaf-and-view-resolver.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-02-view-mvc/03-error-pages-and-content-negotiation.md](03-error-pages-and-content-negotiation.md)
 
 <!-- BOOKIFY:END -->

@@ -1,9 +1,9 @@
-# 03：下载与 Header（Content-Disposition / Content-Type / bytes）
+# 03. 下载与 Header（Content-Disposition / Content-Type / bytes）
 
 ## 导读
 
-- 本章主题：**03：下载与 Header（Content-Disposition / Content-Type / bytes）**
-- 目标：把“文件下载为什么在浏览器里表现不一致”的问题，收敛为几个可测试的 header。
+本章围绕「03：下载与 Header（Content-Disposition / Content-Type / bytes）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 

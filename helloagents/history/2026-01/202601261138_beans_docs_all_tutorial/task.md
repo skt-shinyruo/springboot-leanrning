@@ -6,7 +6,7 @@ Directory: `helloagents/history/2026-01/202601261138_beans_docs_all_tutorial/`
 
 ## 1. spring-core-beans 文档修复与补强
 
-- [√] 1.1 重构 `part-03-container-internals/18-refresh-to-bean-creation-mainline.md` 为“教程契约”章节：补齐导读/要点/实验入口/机制主线/排障分流/自检/BOOKIFY，并保持原有主线与分支决策表可读
+- [√] 1.1 重构 `part-03-container-internals/07-refresh-to-bean-creation-mainline.md` 为“教程契约”章节：补齐导读/要点/实验入口/机制主线/排障分流/自检/BOOKIFY，并保持原有主线与分支决策表可读
 - [√] 1.2 清理并补齐 beans docs 中空段落/重复标题（排障分流/常见坑与边界/面试常问），统一 Markdown 层级（`##` 区块 + `###` 子项）
 - [√] 1.3 为关键章节补齐“面试常问”问答（至少 3 组/章）与“排障分流”定位套路（定义层 vs 实例层）
 

@@ -6,7 +6,7 @@ Directory: `helloagents/plan/202601271739_spring_core_beans_bean_registration_de
 
 ## 1. Documentation
 
-- [√] 1.1 深化注册入口章节：补齐入口对照表/最短调用链/证据链/面试复述模板，in `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`, verify why.md#requirement-r1-bean-registration-docs-deepen
+- [√] 1.1 深化注册入口章节：补齐入口对照表/最短调用链/证据链/面试复述模板，in `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`, verify why.md#requirement-r1-bean-registration-docs-deepen
 
 ## 2. Knowledge Base Sync（SSOT）
 

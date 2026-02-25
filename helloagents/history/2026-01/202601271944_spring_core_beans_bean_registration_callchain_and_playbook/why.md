@@ -28,7 +28,7 @@
 
 - **Modules:** `spring-core-modules/spring-core-beans`
 - **Files:**
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
   - `helloagents/wiki/modules/spring-core-beans.md`
   - `helloagents/CHANGELOG.md`
   - `helloagents/history/index.md`

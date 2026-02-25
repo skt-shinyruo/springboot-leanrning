@@ -85,8 +85,8 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         推荐步骤：
                         1) 先跑并读懂 Labs：
                            - `SpringCoreBeansProxyingPhaseLabTest`
-                           - 对照 AOP：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md`
-                           - 对照 Tx：`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md`
+                           - 对照 AOP：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/03-self-invocation.md`
+                           - 对照 Tx：`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/02-transactional-proxy.md`
                         2) 自己实现一个 `BeanPostProcessor#postProcessAfterInitialization(...)`：
                            - 仅对一个接口类型（例如 `WorkService`）进行 proxying
                            - 在 InvocationHandler 里记录被拦截的方法名（不要只靠日志）

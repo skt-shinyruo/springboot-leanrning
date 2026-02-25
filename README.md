@@ -1,19 +1,21 @@
 # Spring Boot 学习项目（多模块）
 
-这个仓库是一个面向初学者的 Spring Boot 学习工作区：**一个模块对应一个主题**，每个模块都可以单独运行与测试。
+本仓库是一个面向学习与验证的 Spring Boot 多模块工作区：以模块为主题边界，以可运行测试为主要入口，以模块文档为阅读主线。
 
-本仓库的文档采用“模块即边界”的方式组织：**每个模块的文档都在该模块目录内的 `docs/` 下**；同时在仓库根 `docs/SUMMARY.md` 提供一个“全站总目录”，用于把所有模块文档串起来（文档站侧边栏导航 SSOT）。
+- **模块边界**：一个模块对应一个主题；各模块可以独立运行与测试。
+- **测试入口**：测试用例分为两类：  
+  - `*LabTest.java`：提供可复现的现象与断言证据链（默认启用，要求全绿）。  
+  - `*ExerciseTest.java`：提供动手改写题（默认 `@Disabled`，需学习者手动开启）。  
+- **文档组织**：模块文档位于各自的 `<module>/docs/`；仓库根的 [`docs/SUMMARY.md`](docs/SUMMARY.md) 汇总为全站目录（SSOT，用于文档站侧边栏导航）。
 
-## 阅读方式
+建议先跑通一个模块的最小闭环，再阅读机制细节，而不是从索引开始逐条记忆。
 
-- **按总目录浏览（推荐）**：从 [`docs/SUMMARY.md`](docs/SUMMARY.md) 进入“全站目录/导航”，按模块 → 章节阅读。
-- **按模块直达（更快）**：进入对应模块目录的 `spring-boot-modules/spring-boot-basics/docs/README.md` → 先跑一个 `*LabTest.java` 把现象变成断言证据 → 再开启 `*ExerciseTest.java` 动手改写。
+## 从哪里开始（两条阅读路径）
+
+- **路径 A（按目录阅读，推荐）**：从 [`docs/SUMMARY.md`](docs/SUMMARY.md) 进入全站目录，按模块 → 章节阅读。
+- **路径 B（以可运行入口驱动）**：直接进入某个模块的 `docs/README.md`（例如 `spring-boot-modules/spring-boot-basics/docs/README.md`）→ 先运行一个 `*LabTest.java` 形成可验证的证据 → 再开启 `*ExerciseTest.java` 完成改写练习。
 
 > 想要可搜索、按“分卷→模块→章节”侧边栏顺读的站点体验：看 [`docs-site/README.md`](docs-site/README.md)（本地预览/构建/Pages 发布）。
-
-## 文档目录（全站导航 SSOT）
-
-- 入口：[`docs/SUMMARY.md`](docs/SUMMARY.md)
 
 ## 环境要求
 
@@ -22,22 +24,17 @@
 
 > 本仓库不提供 Maven Wrapper（`mvnw`），请直接使用系统的 `mvn`。
 
-## 快速开始
+## 快速开始（先跑起来）
 
-- 构建并运行所有模块测试：
+建议先在本地完整运行一次测试，以确认 JDK/Maven 环境与仓库依赖可用。此步骤的目标是验证环境与入口可运行，而非理解全部细节。
+
+- 构建并运行所有模块测试（默认只跑 Labs）：
 
 ```bash
 mvn -q test
 ```
 
-- 启用“Deep Dive”学习模式：
-
-本仓库从现在开始把每个模块的测试分为两类：
-
-- **Labs**：`src/test/java/.../*LabTest.java`（默认启用，`mvn -q test` 必须全绿）
-- **Exercises**：`src/test/java/.../*ExerciseTest.java`（默认 `@Disabled`，学习者手动开启）
-
-开启练习的方法：打开对应的 `*ExerciseTest`，移除/注释 `@Disabled`，根据测试提示完成实现（或改造），再运行模块测试验证。
+> 如首次执行出现失败，建议优先参考下方 `Debug 工具箱` 的定位流程。
 
 - 只构建/测试某个模块（示例：`spring-boot-web-mvc`）：
 
@@ -50,6 +47,25 @@ mvn -q -pl :spring-boot-web-mvc test
 ```bash
 mvn -pl :spring-boot-basics spring-boot:run
 ```
+
+## 学习模式：Labs vs Exercises（从现象到可验证的理解）
+
+可以将每个模块的测试入口理解为两层：
+
+- **Labs**：`src/test/java/.../*LabTest.java`（默认启用，`mvn -q test` 必须全绿）  
+  目的：提供可复现的现象，并给出将现象固化为断言的证据链入口。
+- **Exercises**：`src/test/java/.../*ExerciseTest.java`（默认 `@Disabled`，学习者手动开启）  
+  目的：要求学习者通过改写实现行为变化，并以测试结果验证理解，而非停留在阅读层面。
+
+开启练习的方法：打开对应的 `*ExerciseTest`，移除/注释 `@Disabled`，根据测试提示完成实现（或改造），再运行模块测试验证。
+
+## 快速上手（约 10 分钟）：跑通一个模块（建议从 `spring-boot-basics` 开始）
+
+建议按以下顺序完成一次最小闭环：
+
+- 先跑一遍全仓库 `mvn -q test`，确认环境没问题。
+- 进入模块目录页（例如 [`spring-boot-basics` Docs TOC](spring-boot-modules/spring-boot-basics/docs/README.md)），找一个推荐入口 `*LabTest.java` 跑起来。
+- 当能够通过断点观察到一次“调用链/容器边界/代理边界”，该模块主线即可进入；剩余内容可按目录逐步补齐。
 
 ## Debug 工具箱（遇到红测/异常时）
 
@@ -72,15 +88,15 @@ mvn -pl :spring-boot-basics spring-boot:run
 
 ### 主线（先跑通业务闭环）
 
-| 顺序 | 模块 | 建议耗时 | 你应该做到（能解释/能改写/能调试） |
+| 顺序 | 模块 | 建议耗时 | 完成标准（能解释/能改写/能调试） |
 | --- | --- | --- | --- |
 | 1 | [`spring-boot-basics`](spring-boot-modules/spring-boot-basics/docs/README.md) | 1–2h | Controller/校验/错误处理；扩展请求字段；能定位 400 的字段错误 |
-| 3 | [`spring-boot-testing`](spring-boot-modules/spring-boot-testing/docs/README.md) | 2–3h | persistence context/flush/脏检查；加查询；能解释“一级缓存假象” |
-| 5 | [`spring-boot-actuator`](spring-boot-modules/spring-boot-actuator/docs/README.md) | 2–4h | 串联 Web/JPA/Tx/AOP/Events；改一条链路；能定位代理/事务边界问题 |
+| 2 | [`spring-boot-testing`](spring-boot-modules/spring-boot-testing/docs/README.md) | 2–3h | persistence context/flush/脏检查；加查询；能解释“一级缓存假象” |
+| 3 | [`spring-boot-actuator`](spring-boot-modules/spring-boot-actuator/docs/README.md) | 2–4h | 串联 Web/JPA/Tx/AOP/Events；改一条链路；能定位代理/事务边界问题 |
 
 ### 机制线（把底层原理补齐）
 
-| 顺序 | 模块 | 建议耗时 | 你应该做到（能解释/能改写/能调试） |
+| 顺序 | 模块 | 建议耗时 | 完成标准（能解释/能改写/能调试） |
 | --- | --- | --- | --- |
 | 1 | [`spring-core-beans`](spring-core-modules/spring-core-beans/docs/README.md) | 4–6h | Bean 注册/注入/生命周期/扩展点；能解释 BFPP vs BPP；能用调试手段“看见容器” |
 | 2 | [`spring-core-profiles`](spring-core-modules/spring-core-profiles/docs/README.md) | 1–2h | `@Profile`/`@ConditionalOnProperty`；避免注入歧义；能定位条件为何不生效 |
@@ -94,6 +110,11 @@ mvn -pl :spring-boot-basics spring-boot:run
 ## Labs/Exercises 总索引（按知识点 / 难度）
 
 > 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战/综合。Exercises 默认 `@Disabled`，建议按模块 README 的索引逐个开启。
+>
+> 索引用于按主题检索与查阅。建议在完成一次模块闭环后，再按主题使用索引进行系统补齐。
+
+<details>
+<summary>展开：Labs/Exercises 索引</summary>
 
 ### 配置 / Profiles / 条件装配
 
@@ -129,7 +150,7 @@ mvn -pl :spring-boot-basics spring-boot:run
 - ⭐⭐⭐ `spring-core-modules/spring-core-beans/README.md`：IoC 容器与 Bean 机制总入口（含学习路线、Start Here、完整 Labs/Exercises 与 container internals 深潜）
 - ⭐⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansLabTest.java`：Start Here（最小闭环，建议命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLabTest test`）
 - ⭐⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansContainerLabTest.java`：容器机制闭环（定义层/实例层/BFPP/BPP/循环依赖，建议命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`）
-- ⭐⭐ `spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`：断点地图与深挖练习（从一个入口测试走完整主线）
+- ⭐⭐ `spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`：断点地图与深挖练习（从一个入口测试走完整主线）
 - ⭐⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansAutoConfigurationImportOrderingLabTest.java`：Boot 自动装配导入/排序主线（after/before 顺序 + 条件可见性）
 - ⭐⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansAutoConfigurationOverrideMatrixLabTest.java`：覆盖/back-off 场景矩阵（NoUnique → 两类修复路径）
 - ⭐ `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/SpringCoreBeansBeanDefinitionOriginLabTest.java`：定位 Bean 来源（谁注册的/从哪来/工厂方法 vs 直接类）
@@ -170,7 +191,14 @@ mvn -pl :spring-boot-basics spring-boot:run
 - ⭐⭐ `spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorExposureOverrideLabTest.java`：端点暴露配置与验证
 - （练习）`spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part00_guide/BootActuatorExerciseTest.java`
 
+</details>
+
 ## 模块目录（Catalog）
+
+该表用于按主题快速定位模块与对应的 `Docs TOC` 入口。
+
+<details>
+<summary>展开：模块目录</summary>
 
 | 模块 | 主题 | 入口说明 |
 |---|---|---|
@@ -197,6 +225,8 @@ mvn -pl :spring-boot-basics spring-boot:run
 | `spring-core-validation` | 校验：Bean Validation + Spring 集成 | [Docs TOC](spring-core-modules/spring-core-validation/docs/README.md) |
 | `spring-core-spel` | SpEL：表达式解析/求值、类型转换、并发安全 | [Docs TOC](spring-core-modules/spring-core-spel/docs/README.md) |
 
+</details>
+
 > 端口说明：`spring-boot-web-mvc` 默认 `8081`，`spring-boot-actuator` 默认 `8082`，`spring-boot-testing` 默认 `8083`，`spring-boot-business-case` 默认 `8084`，`spring-boot-security` 默认 `8085`。非 Web 模块不监听端口。
 
 ## 学习建议
@@ -206,22 +236,22 @@ mvn -pl :spring-boot-basics spring-boot:run
 
 ## 跨模块概念地图（把点连成网）
 
-下面这些“连接线”往往比单个知识点更重要：它们能解释为什么你在不同模块里会遇到同一类现象。
+下面这些“连接线”往往比单个知识点更重要：它们用于解释不同模块中反复出现的同类现象及其共同根因。
 
 - **代理（Proxy）是共同底座**：AOP、事务（`@Transactional`）、方法参数校验（method validation）都依赖代理机制  
-  - 从机制角度建议先读：[AOP 心智模型](spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md)、[`@Transactional` 也是代理](spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md)、[方法参数校验也需要代理](spring-core-modules/spring-core-validation/docs/part-01-validation-core/160-03-method-validation-proxy.md)
-- **织入（Weaving）是代理的能力上限之外**：当你需要 `call/constructor/get/set/withincode/cflow` 这类 join point 或希望“非 Spring Bean 也能拦截”时，去看 `spring-core-aop-weaving`  
-  - 对照：[`spring-core-aop-weaving` 深挖指南](spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-00-deep-dive-guide.md)、[Proxy vs Weaving 心智模型](spring-core-modules/spring-core-aop-weaving/docs/part-01-mental-model/045-01-proxy-vs-weaving.md)
+  - 从机制角度建议先读：[AOP 心智模型](spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md)、[`@Transactional` 也是代理](spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/02-transactional-proxy.md)、[方法参数校验也需要代理](spring-core-modules/spring-core-validation/docs/part-01-validation-core/03-method-validation-proxy.md)
+- **织入（Weaving）是代理的能力上限之外**：当需要 `call/constructor/get/set/withincode/cflow` 这类 join point，或需要在 Spring Bean 之外进行拦截时，建议参考 `spring-core-aop-weaving`  
+  - 对照：[`spring-core-aop-weaving` 深挖指南](spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/02-deep-dive-guide.md)、[Proxy vs Weaving 心智模型](spring-core-modules/spring-core-aop-weaving/docs/part-01-mental-model/01-proxy-vs-weaving.md)
 - **自调用（self-invocation）是代理世界第一大坑**：同一个类里用 `this.xxx()` 调用会绕过代理，因此 AOP/Tx 都可能“不生效”  
-  - 对照：[AOP 自调用陷阱](spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md)、[Tx 常见坑清单](spring-core-modules/spring-core-tx/docs/appendix/060-90-common-pitfalls.md)
+  - 对照：[AOP 自调用陷阱](spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/03-self-invocation.md)、[Tx 常见坑清单](spring-core-modules/spring-core-tx/docs/appendix/01-common-pitfalls.md)
 - **事务边界决定持久化行为**：JPA 的 flush / dirty checking 不是“魔法”，它强依赖事务与 persistence context  
-  - 对照：[JPA Persistence Context](spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/098-02-persistence-context.md)、[事务边界](spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/054-01-transaction-boundary.md)
+  - 对照：[JPA Persistence Context](spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/02-persistence-context.md)、[事务边界](spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/01-transaction-boundary.md)
 - **事件（Events）与事务（Tx）的时机关系**：同步事件 vs after-commit 事件（`@TransactionalEventListener`）能解释“回滚了但监听器为什么执行了/没执行”  
-  - 从现象入手：[spring-core-events](spring-core-modules/spring-core-events/docs/README.md)、[`@TransactionalEventListener`（after-commit）](spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/135-07-transactional-event-listener.md)、[spring-boot-business-case](spring-boot-modules/spring-boot-business-case/docs/README.md)
+  - 从现象入手：[spring-core-events](spring-core-modules/spring-core-events/docs/README.md)、[`@TransactionalEventListener`（after-commit）](spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/03-transactional-event-listener.md)、[spring-boot-business-case](spring-boot-modules/spring-boot-business-case/docs/README.md)
 - **资源（Resources）是很多能力的地基**：配置文件、classpath 扫描、jar/本地差异，最终都会回到 `Resource` 抽象  
-  - 对照：[Resource 抽象](spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/141-01-resource-abstraction.md)、[jar vs filesystem](spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/146-06-jar-vs-filesystem.md)
+  - 对照：[Resource 抽象](spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/01-resource-abstraction.md)、[jar vs filesystem](spring-core-modules/spring-core-resources/docs/part-01-resource-abstraction/06-jar-vs-filesystem.md)
 - **测试切片 vs 全量上下文**：`@DataJpaTest` / `@WebMvcTest` 用来快速验证机制，`@SpringBootTest` 更接近集成链路  
-  - 对照：[spring-boot-testing](spring-boot-modules/spring-boot-testing/docs/README.md)、[`@DataJpaTest` 切片](spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/102-06-datajpatest-slice.md)
+  - 对照：[spring-boot-testing](spring-boot-modules/spring-boot-testing/docs/README.md)、[`@DataJpaTest` 切片](spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/06-datajpatest-slice.md)
 
 ## 常见问题
 

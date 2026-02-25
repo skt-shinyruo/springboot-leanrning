@@ -7,11 +7,11 @@ Directory: `helloagents/history/2026-01/202601051339_spring_core_beans_edge_case
 ## 1. Labs：编程式注册差异
 - [√] 1.1 新增 Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`（registerBeanDefinition/registerSingleton/registerBean 对照）
   - 交付物：`spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticRegistrationLabTest.java`
-- [√] 1.2 更新 docs：在 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md` 补齐编程式注册差异与入口命令
+- [√] 1.2 更新 docs：在 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md` 补齐编程式注册差异与入口命令
 
 ## 2. Labs：raw injection despite wrapping
 - [√] 2.1 新增 Lab：`SpringCoreBeansRawInjectionDespiteWrappingLabTest`（allowRawInjectionDespiteWrapping 的最小复现）
-- [√] 2.2 更新 docs：在 `docs/beans/spring-core-beans/part-03-container-internals/16-early-reference-and-circular.md` 补齐 raw injection 风险与开关说明，并落位 Lab 入口
+- [√] 2.2 更新 docs：在 `docs/beans/spring-core-beans/part-03-container-internals/05-early-reference-and-circular.md` 补齐 raw injection 风险与开关说明，并落位 Lab 入口
 
 ## 3. Labs：prototype 销毁语义
 - [√] 3.1 新增 Lab：`SpringCoreBeansPrototypeDestroySemanticsLabTest`（prototype 默认不销毁 + destroyBean 手动销毁）

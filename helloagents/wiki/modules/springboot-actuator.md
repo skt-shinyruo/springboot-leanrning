@@ -37,11 +37,11 @@
 ## Docs & 复现入口
 
 - **Docs Index:** `spring-boot-modules/spring-boot-actuator/docs/README.md`
-- **Docs Guide:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-00-deep-dive-guide.md`
-- **Breakpoint Map:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-02-breakpoint-map.md`
-- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/168-04-branch-decision-matrix.md`
-- **Playbook:** `spring-boot-modules/spring-boot-actuator/docs/appendix/170-90-common-pitfalls.md`
-- **Self-check:** `spring-boot-modules/spring-boot-actuator/docs/appendix/171-99-self-check.md`
+- **Docs Guide:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/02-deep-dive-guide.md`
+- **Breakpoint Map:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/04-breakpoint-map.md`
+- **Branch Decision Matrix:** `spring-boot-modules/spring-boot-actuator/docs/part-00-guide/05-branch-decision-matrix.md`
+- **Playbook:** `spring-boot-modules/spring-boot-actuator/docs/appendix/01-common-pitfalls.md`
+- **Self-check:** `spring-boot-modules/spring-boot-actuator/docs/appendix/02-self-check.md`
 
 - **Book Matrix（进阶入口）：**
   - `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`

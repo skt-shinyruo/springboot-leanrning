@@ -23,15 +23,15 @@
 
 - **Modules:** `spring-core-modules/spring-core-beans`
 - **Files:**
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md`
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/018-07-configuration-enhancement.md`
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-factorybean.md`
-  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-bean-mental-model.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/04-lifecycle-and-callbacks.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/05-post-processors.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/06-configuration-enhancement.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/07-factorybean.md`
+  - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md`
 - **APIs:** None
 - **Data:** None
 

@@ -32,9 +32,9 @@
 
 1) 导航/工具页（让读者能更快进入下一轮）
 - `docs/README.md`
-- `appendix/92-knowledge-map.md`
-- `part-00-guide/013-02-breakpoint-map.md`
-- `appendix/94-production-troubleshooting-checklist.md`
+- `appendix/03-knowledge-map.md`
+- `part-00-guide/07-breakpoint-map.md`
+- `appendix/05-production-troubleshooting-checklist.md`
 
 2) 主线核心章节（读者最常复盘的骨架）
 - refresh 主线与 doCreateBean 相关章节（Guide + Internals）
@@ -77,9 +77,9 @@
 如果 Round 2 执行完成后仍要继续加深（Round 3），优先从“高复用中枢页 + 高误判章节”开始，收益最大：
 
 1) 中枢页（全局跳转与排错入口）：
-- `appendix/92-knowledge-map.md`
-- `part-00-guide/013-02-breakpoint-map.md`
-- `appendix/94-production-troubleshooting-checklist.md`
+- `appendix/03-knowledge-map.md`
+- `part-00-guide/07-breakpoint-map.md`
+- `appendix/05-production-troubleshooting-checklist.md`
 
 2) 高误判章节（容易把问题看错层/看错时机）：
 - 依赖解析/候选选择相关章节（NoSuch/NoUnique/Primary/Priority/Order）

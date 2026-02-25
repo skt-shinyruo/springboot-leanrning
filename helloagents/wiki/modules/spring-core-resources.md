@@ -29,10 +29,10 @@
 
 ### Docs Index
 - 入口：`spring-core-modules/spring-core-resources/docs/README.md`
-- 断点地图：`spring-core-modules/spring-core-resources/docs/part-00-guide/140-02-breakpoint-map.md`
-- 关键分支矩阵：`spring-core-modules/spring-core-resources/docs/part-00-guide/140-04-branch-decision-matrix.md`
-- 排障 playbook：`spring-core-modules/spring-core-resources/docs/appendix/147-90-common-pitfalls.md`
-- 自检清单：`spring-core-modules/spring-core-resources/docs/appendix/148-99-self-check.md`
+- 断点地图：`spring-core-modules/spring-core-resources/docs/part-00-guide/04-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-resources/docs/part-00-guide/05-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-resources/docs/appendix/01-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-resources/docs/appendix/02-self-check.md`
 - Branch Matrix（关键分支入口）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
 - Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part00_guide/SpringCoreResourcesExerciseSolutionTest.java`
 - Lab（并发/性能：PathMatchingResourcePatternResolver 并发解析）：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part02_perf_concurrency/SpringCoreResourcesPatternResolverConcurrencyLabTest.java`

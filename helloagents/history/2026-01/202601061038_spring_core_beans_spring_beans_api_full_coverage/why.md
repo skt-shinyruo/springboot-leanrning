@@ -24,7 +24,7 @@
    - **Core Labs（默认参与回归）**：覆盖主线机制与高频边界。
    - **Explore/Debug 用例（可选）**：用于深水断点观察/性能与缓存类行为验证，默认不影响 CI 稳定性（采用显式开关策略）。
 5. 同步更新知识库与索引：
-   - `docs/beans/spring-core-beans/README.md`、`docs/appendix/92-knowledge-map.md`
+   - `docs/beans/spring-core-beans/README.md`、`docs/appendix/03-knowledge-map.md`
    - `helloagents/wiki/modules/spring-core-beans.md`
    - `helloagents/CHANGELOG.md`
 

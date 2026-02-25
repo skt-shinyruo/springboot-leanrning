@@ -4,7 +4,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 90. 常见误区清单
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md`
 - 内容级加深策略：
   - A：为每类误区补“最短证据链入口方法”链接（避免只给结论）。
   - B：为高频误区补“反例对照”：如何一眼区分相似但本质不同的问题（如 depends-on 环 vs 循环依赖）。
@@ -14,7 +14,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 99. 自测题
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/11-self-check.md`
 - 内容级加深策略：
   - A：每题绑定“证据链入口方法 + 推荐 Lab”，让自测变成可证明训练。
   - B：加入“反例题/边界题”，避免只背概念。
@@ -24,7 +24,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 91. 术语表
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/91-glossary.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/02-glossary.md`
 - 内容级加深策略：
   - A：为关键术语补“对应证据链入口方法”，避免术语解释与源码脱节。
   - B：补易混词反例：BeanDefinition vs bean instance vs exposed object；BFPP vs BPP vs BDRPP 等。
@@ -34,7 +34,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 92. 知识地图
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/03-knowledge-map.md`
 - 内容级加深策略：
   - A：把每条主线补“证据链入口方法”，与章节内部一致。
   - B：为每条症状补“最常见反例/误诊点”，提高定位精度。
@@ -44,7 +44,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 93. 面试复述模板
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/93-interview-playbook.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/04-interview-playbook.md`
 - 内容级加深策略：
   - A：为每道题补“方法级证据链”（最短调用链 + 决策点）。
   - B：为高频题补“反例/边界追问”，避免背诵式答案。
@@ -54,7 +54,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 94. 生产排障清单
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`
 - 内容级加深策略：
   - A：为每类症状补“第一断点入口 + 关键变量”，把清单变成可执行 SOP。
   - B：补“误判对照”：相似症状可能属于不同机制域，如何快速分流。
@@ -65,8 +65,8 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 ### 95/96. public API 索引与 gap
 
 - 文件：
-  - `spring-core-modules/spring-core-beans/docs/appendix/95-spring-beans-public-api-index.md`
-  - `spring-core-modules/spring-core-beans/docs/appendix/96-spring-beans-public-api-gap.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/06-spring-beans-public-api-index.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/07-spring-beans-public-api-gap.md`
 - 内容级加深策略：
   - A：为每个 API 域补“对应章节与证据链入口”，帮助从 API 反向定位机制。
   - B：为 gap 项补“反例/边界触发条件”，明确为何它是 gap。
@@ -77,9 +77,9 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 ### 97/98/99. Explore/Debug / Debugger Pack / Team Training
 
 - 文件：
-  - `spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
-  - `spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`
-  - `spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/08-explore-debug-tests.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/09-debugger-pack.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/10-team-training-kit.md`
 - 内容级加深策略：
   - A：为每个用例/断点包补“它在证明什么机制分支”，让工具页更可复用。
   - B：补“反例与踩坑点”：如何避免用例/断点被版本差异误导。

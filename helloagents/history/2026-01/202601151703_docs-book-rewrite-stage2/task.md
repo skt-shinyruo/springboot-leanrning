@@ -48,7 +48,7 @@ Directory: `helloagents/plan/202601151703_docs-book-rewrite-stage2/`
 
 ## 3. 合并/拆章与叙事重写（先做试点，再推广）
 - [√] 3.1 试点：重写并合并主线章节（Beans Part01 选 2 章合并为 1 章）：`docs/beans/spring-core-beans/part-01-ioc-container/01-bean-mental-model.md`
-- [√] 3.2 试点：保留旧入口 redirect：`docs/beans/spring-core-beans/part-01-ioc-container/02-bean-registration.md`
+- [√] 3.2 试点：保留旧入口 redirect：`docs/beans/spring-core-beans/part-01-ioc-container/01-bean-registration.md`
 - [√] 3.3 试点：重写并合并主线章节（Web MVC Internals 选 2 章合并为 1 章）：`docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md`
 - [√] 3.4 试点：保留旧入口 redirect：`docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/02-argument-resolver-and-binder.md`
 

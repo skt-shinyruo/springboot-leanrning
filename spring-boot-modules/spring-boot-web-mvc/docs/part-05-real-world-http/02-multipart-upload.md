@@ -1,9 +1,9 @@
-# 02：Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）
+# 02. Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）
 
 ## 导读
 
-- 本章主题：**02：Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）**
-- 目标：用 MockMvc 的 multipart 测试稳定复现上传解析，并讲清 `@RequestParam MultipartFile` 的边界。
+本章围绕「02：Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
@@ -43,6 +43,6 @@
 
 - Lab：`BootWebMvcRealWorldHttpLabTest`
 
-上一章：[part-05-real-world-http/01-cors-preflight.md](078-01-cors-preflight.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-05-real-world-http/03-download-and-streaming.md](03-download-and-streaming.md)
+上一章：[part-05-real-world-http/01-cors-preflight.md](01-cors-preflight.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-05-real-world-http/03-download-and-streaming.md](03-download-and-streaming.md)
 
 <!-- BOOKIFY:END -->

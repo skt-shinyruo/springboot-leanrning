@@ -16,7 +16,7 @@ Directory: `helloagents/history/2026-01/202601061038_spring_core_beans_spring_be
 - [√] 1.1 新增索引生成脚本（从 `spring-beans-6.2.15-sources.jar` 提取 public 顶层类型清单），输出到 `docs/beans/spring-core-beans/appendix/`（新增脚本文件 1 个）
 - [√] 1.2 新增 `spring-beans Public API Index` 文档（按包分组 + 类型列表 + 映射字段：机制域/章节/Lab/（可选）Exercise/Solution）（新增 docs 文件 1 个）
 - [√] 1.3 在 `docs/beans/spring-core-beans/README.md` 的 Appendix 区加入索引入口（修改 1 个文件）
-- [√] 1.4 在 `docs/beans/spring-core-beans/appendix/92-knowledge-map.md` 增加“API 索引 → 机制域 → 章节/Lab”的检索入口（修改 1 个文件）
+- [√] 1.4 在 `docs/beans/spring-core-beans/appendix/03-knowledge-map.md` 增加“API 索引 → 机制域 → 章节/Lab”的检索入口（修改 1 个文件）
 
 ## 2. 覆盖差距（Gap）审计：现有内容 vs Public API
 
@@ -37,7 +37,7 @@ Directory: `helloagents/history/2026-01/202601061038_spring_core_beans_spring_be
 ## 4. 机制域补齐（Core）- Batch 2：BeanFactory/Listable/Hierarchical/Configurable API 域
 
 - [-] 4.1 补齐 docs：BeanFactory 接口族谱（含层级、可列举、可配置能力的边界与常见误区）（修改 docs 1 个）
-  > Note: 已有 `39-beanfactory-api-deep-dive.md` 与对应 Lab，本批次不再扩写新章。
+  > Note: 已有 `22-beanfactory-api-deep-dive.md` 与对应 Lab，本批次不再扩写新章。
 - [-] 4.2 新增 Lab：层级 BeanFactory（parent/child）与 `containsLocalBean`/ancestor 查找语义对照（新增 test 1 个）
   > Note: 可作为后续“B 深水补齐”批次追加（偏低频但有排障价值）。
 - [-] 4.3 映射本批次 public 类型回 API 索引（更新索引 docs 1 个）

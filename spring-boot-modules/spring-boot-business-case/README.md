@@ -46,15 +46,15 @@ mvn -pl :spring-boot-business-case test
 
 建议按“先跑通链路 → 再拆机制”的顺序：
 
-1. 导读：`docs/part-00-guide/190-00-deep-dive-guide.md`
-2. 案例架构与主线：`docs/part-01-business-case/191-01-architecture-and-flow.md`
-3. 常见坑清单：`docs/appendix/192-90-common-pitfalls.md`
-4. 自测题：`docs/appendix/193-99-self-check.md`
+1. 导读：`docs/part-00-guide/02-deep-dive-guide.md`
+2. 案例架构与主线：`docs/part-01-business-case/01-architecture-and-flow.md`
+3. 常见坑清单：`docs/appendix/01-common-pitfalls.md`
+4. 自测题：`docs/appendix/02-self-check.md`
 5. 先跑接口 + 跑 `BootBusinessCaseLabTest`：把“现象”固定下来
 6. 出现疑问时按链路拆解：
-   - 代理/AOP：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md`、`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/032-03-self-invocation.md`
-   - 事务：`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/054-01-transaction-boundary.md`、`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/055-02-transactional-proxy.md`
-   - 事件与事务时机：`spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/135-07-transactional-event-listener.md`
+   - 代理/AOP：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md`、`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/03-self-invocation.md`
+   - 事务：`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/01-transaction-boundary.md`、`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/02-transactional-proxy.md`
+   - 事件与事务时机：`spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/03-transactional-event-listener.md`
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

@@ -5,8 +5,8 @@ Directory: `helloagents/plan/202601030752_spring-core-beans-ordering-programmati
 ---
 
 ## 1. spring-core-beans 文档（算法级）
-- [√] 1.1 补强 `docs/beans/spring-core-beans/14-post-processor-ordering.md`：加入 BFPP/BDRPP 与 BPP 的排序/注册算法级解析与伪代码
-- [√] 1.2 补强 `docs/beans/spring-core-beans/25-programmatic-bpp-registration.md`：加入 `addBeanPostProcessor` 的 list 语义、绕过排序原因与“时机陷阱”解析
+- [√] 1.1 补强 `docs/beans/spring-core-beans/03-post-processor-ordering.md`：加入 BFPP/BDRPP 与 BPP 的排序/注册算法级解析与伪代码
+- [√] 1.2 补强 `docs/beans/spring-core-beans/08-programmatic-bpp-registration.md`：加入 `addBeanPostProcessor` 的 list 语义、绕过排序原因与“时机陷阱”解析
 
 ## 2. spring-core-beans Labs（可复现闭环）
 - [√] 2.1 增强 `SpringCoreBeansPostProcessorOrderingLabTest`：补充 order 数值与 `@Order` 的可复现实验（只断言相对顺序）

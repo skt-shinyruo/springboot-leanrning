@@ -46,7 +46,7 @@ Directory: `helloagents/plan/202601091353_beans_webmvc_mainline_deepen/`
 ### 2.1 文档主线：补齐“候选收敛决策树”（不新增章节编号，优先扩充现有章）
 
 #### 2.1.1 扩充候选收敛顺序（加入 by-name fallback）
-- [√] 2.1.1.1 更新 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`：明确单依赖决胜顺序包含“依赖名匹配 beanName”的分支
+- [√] 2.1.1.1 更新 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md`：明确单依赖决胜顺序包含“依赖名匹配 beanName”的分支
 - [√] 2.1.1.2 在同一章补齐对照表：`@Qualifier` vs `@Primary` vs name fallback vs `@Priority`（每个条目：解决什么/何时生效/典型坑）
 - [√] 2.1.1.3 在同一章补齐源码锚点：`DefaultListableBeanFactory#determineAutowireCandidate`（建议断点）
 

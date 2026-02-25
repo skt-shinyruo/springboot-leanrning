@@ -2,177 +2,177 @@
 
 > 本文件用于追踪“章节学习卡片（五问闭环）”覆盖进度。
 
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md` - 第 28 章：主线时间线：Spring Core AOP
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-00-guide/029-00-deep-dive-guide.md` - 第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md` - 第 30 章：01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/031-02-jdk-vs-cglib.md` - 第 31 章：02. JDK vs CGLIB：代理类型与“可注入类型”差异
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/032-03-self-invocation.md` - 第 32 章：03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md` - 第 33 章：04. `final` 与代理限制：为什么 final method 拦截不到？
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/034-05-expose-proxy.md` - 第 34 章：05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/035-06-debugging.md` - 第 35 章：06. Debug / 观察：如何“看见”代理与切点
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md` - 第 36 章：07. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md` - 第 37 章：08. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-03-proxy-stacking/038-09-multi-proxy-stacking.md` - 第 38 章：09. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-03-proxy-stacking/039-10-real-world-stacking-playbook.md` - 第 39 章：10 real world stacking playbook
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/appendix/040-90-common-pitfalls.md` - 第 40 章：90. 常见坑清单（建议反复对照）
-- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/appendix/041-99-self-check.md` - 第 41 章：99. 自测题：你是否真的理解了 AOP？
-- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md` - 第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）
-- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-00-guide/044-00-deep-dive-guide.md` - 第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通
-- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-01-mental-model/045-01-proxy-vs-weaving.md` - 第 45 章：01. 心智模型：Proxy vs Weaving
-- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-02-ltw/046-02-ltw-basics.md` - 第 46 章：02. LTW：Load-Time Weaving（-javaagent）
-- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-03-ctw/047-03-ctw-basics.md` - 第 47 章：03. CTW：Compile-Time Weaving（编译期织入）
-- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-04-join-points/048-04-join-point-cookbook.md` - 第 48 章：04. Join Point & Pointcut Cookbook（速查）
-- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md` - 第 49 章：90. 常见坑清单（LTW/CTW）
-- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md` - 第 50 章：99. 自测题：你是否真的理解了 weaving？
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md` - 第 10 章：主线时间线：Spring Core Beans（IoC 容器）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-00-guide/011-00-deep-dive-guide.md` - 第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-00-guide/012-01-quickstart-30min.md` - 第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md` - 第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/014-03-dependency-injection-resolution.md` - 第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/015-04-scope-and-prototype.md` - 第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/016-05-lifecycle-and-callbacks.md` - 第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/017-06-post-processors.md` - 第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/018-07-configuration-enhancement.md` - 第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-02-boot-autoconfig/019-11-debugging-and-observability.md` - 第 19 章：11. 调试与自检：如何“看见”容器正在做什么
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/020-01-bean-mental-model.md` - 第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md` - 第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md` - 第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/023-18-lazy-semantics.md` - 第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-05-aot-and-real-world/024-40-aot-and-native-overview.md` - 第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/appendix/025-90-common-pitfalls.md` - 第 25 章：90. 常见坑清单（建议反复对照）
-- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/appendix/026-99-self-check.md` - 第 26 章：99. 自测题：你是否真的理解了？
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-00-guide/127-03-mainline-timeline.md` - 第 127 章：主线时间线：Spring Events
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-00-guide/128-00-deep-dive-guide.md` - 第 128 章：深挖指南（Spring Core Events）
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-01-event-basics/129-01-event-mental-model.md` - 第 129 章：01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-01-event-basics/130-02-multiple-listeners-and-order.md` - 第 130 章：02. 多监听器与顺序：为什么 `@Order` 值得你认真对待？
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-01-event-basics/131-03-condition-and-payload.md` - 第 131 章：03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-01-event-basics/132-04-sync-and-exceptions.md` - 第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-02-async-and-transactional/133-05-async-listener.md` - 第 133 章：05. 异步监听器：`@Async` 生效需要什么？线程会怎么变？
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-02-async-and-transactional/134-06-async-multicaster.md` - 第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-02-async-and-transactional/135-07-transactional-event-listener.md` - 第 135 章：07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/appendix/136-90-common-pitfalls.md` - 第 136 章：90. 常见坑清单（建议反复对照）
-- [ ] (module:spring-core-events) `docs/events/spring-core-events/appendix/137-99-self-check.md` - 第 137 章：自测题（Spring Core Events）
-- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/part-00-guide/150-03-mainline-timeline.md` - 第 150 章：主线时间线：Spring Profiles
-- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/part-00-guide/151-00-deep-dive-guide.md` - 第 151 章：深挖指南（Spring Core Profiles）
-- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/part-01-profiles/152-01-profile-activation-and-bean-selection.md` - 第 152 章：Profile 激活与 Bean 选择
-- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/appendix/153-90-common-pitfalls.md` - 第 153 章：常见坑（Spring Core Profiles）
-- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/appendix/154-99-self-check.md` - 第 154 章：自测题（Spring Core Profiles）
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-00-guide/139-03-mainline-timeline.md` - 第 139 章：主线时间线：Spring Resources
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-00-guide/140-00-deep-dive-guide.md` - 第 140 章：深挖指南（Spring Core Resources）
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/141-01-resource-abstraction.md` - 第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/142-02-classpath-locations.md` - 第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/143-03-classpath-star-and-pattern.md` - 第 143 章：03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/144-04-exists-and-handles.md` - 第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/145-05-reading-and-encoding.md` - 第 145 章：05. 读取资源：InputStream、编码与“可观察性”
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/146-06-jar-vs-filesystem.md` - 第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/appendix/147-90-common-pitfalls.md` - 第 147 章：90. 常见坑清单（建议反复对照）
-- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/appendix/148-99-self-check.md` - 第 148 章：自测题（Spring Core Resources）
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md` - 第 52 章：主线时间线：Spring Core Tx（事务）
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-00-guide/053-00-deep-dive-guide.md` - 第 53 章：深挖指南（Spring Core Tx）
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-01-transaction-basics/054-01-transaction-boundary.md` - 第 54 章：01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-01-transaction-basics/055-02-transactional-proxy.md` - 第 55 章：02. `@Transactional` 如何生效：它也是 AOP（也是代理）
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-01-transaction-basics/056-03-rollback-rules.md` - 第 56 章：03. 回滚规则：为什么 checked exception 默认不回滚？
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-01-transaction-basics/057-04-propagation.md` - 第 57 章：04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-02-template-and-debugging/058-05-transaction-template.md` - 第 58 章：05. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-02-template-and-debugging/059-06-debugging.md` - 第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/appendix/060-90-common-pitfalls.md` - 第 60 章：90. 常见坑清单（建议反复对照）
-- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/appendix/061-99-self-check.md` - 第 61 章：自测题（Spring Core Tx）
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-00-guide/156-03-mainline-timeline.md` - 第 156 章：主线时间线：Spring Validation
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-00-guide/157-00-deep-dive-guide.md` - 第 157 章：深挖指南（Spring Core Validation）
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/158-01-constraint-mental-model.md` - 第 158 章：01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/159-02-programmatic-validator.md` - 第 159 章：02. 程序化校验：为什么直接用 `Validator` 仍然很重要？
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/160-03-method-validation-proxy.md` - 第 160 章：03. 方法参数校验：为什么它必须依赖 Spring 代理？
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/161-04-groups.md` - 第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/162-05-custom-constraint.md` - 第 162 章：05. 自定义约束：如何写一个最小可用的 `@Constraint`？
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/163-06-debugging.md` - 第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/appendix/164-90-common-pitfalls.md` - 第 164 章：90. 常见坑清单（建议反复对照）
-- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/appendix/165-99-self-check.md` - 第 165 章：自测题（Spring Core Validation）
-- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/part-00-guide/167-03-mainline-timeline.md` - 第 167 章：主线时间线：Spring Boot Actuator
-- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/part-00-guide/168-00-deep-dive-guide.md` - 第 168 章：00 - Deep Dive Guide（springboot-actuator）
-- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/part-01-actuator/169-01-actuator-basics.md` - 第 169 章：01 - Actuator 基础与暴露
-- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/appendix/170-90-common-pitfalls.md` - 第 170 章：90 - Common Pitfalls（springboot-actuator）
-- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/appendix/171-99-self-check.md` - 第 171 章：99 - Self Check（springboot-actuator）
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-00-guide/117-03-mainline-timeline.md` - 第 117 章：主线时间线：Spring Boot Async & Scheduling
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-00-deep-dive-guide.md` - 第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/119-01-async-proxy-mental-model.md` - 第 119 章：01：`@Async` 心智模型：代理与线程切换
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/120-02-executor-and-threading.md` - 第 120 章：02：Executor 与线程命名/并发边界
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/121-03-exceptions.md` - 第 121 章：03：异常传播：Future vs void
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/122-04-self-invocation.md` - 第 122 章：04：self-invocation：为什么异步有时不生效
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/123-05-scheduling-basics.md` - 第 123 章：05：`@Scheduled` 基础与可测试性
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/appendix/124-90-common-pitfalls.md` - 第 124 章：90：常见坑清单（Async & Scheduling）
-- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md` - 第 125 章：99 - Self Check（springboot-async-scheduling）
-- [ ] (module:springboot-basics) `docs/basics/springboot-basics/part-00-guide/003-03-mainline-timeline.md` - 第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）
-- [ ] (module:springboot-basics) `docs/basics/springboot-basics/part-00-guide/004-00-deep-dive-guide.md` - 第 4 章：00 - Deep Dive Guide（springboot-basics）
-- [ ] (module:springboot-basics) `docs/basics/springboot-basics/part-01-boot-basics/005-01-property-sources-and-profiles.md` - 第 5 章：01：配置来源（PropertySources）与 Profile 覆盖
-- [ ] (module:springboot-basics) `docs/basics/springboot-basics/part-01-boot-basics/006-02-configuration-properties-binding.md` - 第 6 章：02：`@ConfigurationProperties` 绑定与类型转换
-- [ ] (module:springboot-basics) `docs/basics/springboot-basics/appendix/007-90-common-pitfalls.md` - 第 7 章：90：常见坑清单（建议反复对照）
-- [ ] (module:springboot-basics) `docs/basics/springboot-basics/appendix/008-99-self-check.md` - 第 8 章：99 - Self Check（springboot-basics）
-- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/part-00-guide/189-03-mainline-timeline.md` - 第 189 章：主线时间线：Business Case（综合案例）
-- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/part-00-guide/190-00-deep-dive-guide.md` - 第 190 章：00 - Deep Dive Guide（springboot-business-case）
-- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/part-01-business-case/191-01-architecture-and-flow.md` - 第 191 章：01 - 架构与主流程（Business Case）
-- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/appendix/192-90-common-pitfalls.md` - 第 192 章：90 - Common Pitfalls（springboot-business-case）
-- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/appendix/193-99-self-check.md` - 第 193 章：99 - Self Check（springboot-business-case）
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-00-guide/107-03-mainline-timeline.md` - 第 107 章：主线时间线：Spring Boot Cache
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-00-guide/108-00-deep-dive-guide.md` - 第 108 章：00 - Deep Dive Guide（springboot-cache）
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/109-01-cacheable-basics.md` - 第 109 章：01：`@Cacheable` 最小闭环
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/110-02-cacheput-and-evict.md` - 第 110 章：02：`@CachePut/@CacheEvict`：更新与失效
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/111-03-key-condition-unless.md` - 第 111 章：03：key / condition / unless：缓存边界
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/112-04-sync-stampede.md` - 第 112 章：04：`sync=true`：防缓存击穿（stampede）
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/113-05-expiry-with-ticker.md` - 第 113 章：05：过期与可测性：用 Ticker 控制时间
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/appendix/114-90-common-pitfalls.md` - 第 114 章：90：常见坑清单（Cache）
-- [ ] (module:springboot-cache) `docs/cache/springboot-cache/appendix/115-99-self-check.md` - 第 115 章：99 - Self Check（springboot-cache）
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-00-guide/095-03-mainline-timeline.md` - 第 95 章：主线时间线：Spring Boot Data JPA
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-00-guide/096-00-deep-dive-guide.md` - 第 96 章：00 - Deep Dive Guide（springboot-data-jpa）
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/097-01-entity-states.md` - 第 97 章：01. Entity 状态机：transient / managed / detached / removed
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/098-02-persistence-context.md` - 第 98 章：02. Persistence Context：JPA 的“一级缓存”与事务绑定
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/099-03-flush-and-visibility.md` - 第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/100-04-dirty-checking.md` - 第 100 章：04. Dirty Checking（脏检查）：为什么改字段不用 save 也能落库？
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/101-05-fetching-and-n-plus-one.md` - 第 101 章：05. Fetching 与 N+1：为什么查一次会变成查很多次？
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/102-06-datajpatest-slice.md` - 第 102 章：06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/103-07-debug-sql.md` - 第 103 章：07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/appendix/104-90-common-pitfalls.md` - 第 104 章：90. 常见坑清单（建议反复对照）
-- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/appendix/105-99-self-check.md` - 第 105 章：99 - Self Check（springboot-data-jpa）
-- [ ] (module:springboot-security) `docs/security/springboot-security/part-00-guide/085-03-mainline-timeline.md` - 第 85 章：主线时间线：Spring Boot Security
-- [ ] (module:springboot-security) `docs/security/springboot-security/part-00-guide/086-00-deep-dive-guide.md` - 第 86 章：00 - Deep Dive Guide（springboot-security）
-- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/087-01-basic-auth-and-authorization.md` - 第 87 章：01：401 vs 403：Basic Auth 与授权规则
-- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/088-02-csrf.md` - 第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？
-- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/089-03-method-security-and-proxy.md` - 第 89 章：03：Method Security 与代理：self-invocation 陷阱
-- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/090-04-filter-chain-and-order.md` - 第 90 章：04：FilterChain：多链路 + 顺序 + 自定义 Filter
-- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/091-05-jwt-stateless.md` - 第 91 章：05：JWT/Stateless：Bearer token + scope（最小闭环）
-- [ ] (module:springboot-security) `docs/security/springboot-security/appendix/092-90-common-pitfalls.md` - 第 92 章：90：常见坑清单（Security）
-- [ ] (module:springboot-security) `docs/security/springboot-security/appendix/093-99-self-check.md` - 第 93 章：99 - Self Check（springboot-security）
-- [ ] (module:springboot-testing) `docs/testing/springboot-testing/part-00-guide/183-03-mainline-timeline.md` - 第 183 章：主线时间线：Spring Boot Testing
-- [ ] (module:springboot-testing) `docs/testing/springboot-testing/part-00-guide/184-00-deep-dive-guide.md` - 第 184 章：00 - Deep Dive Guide（springboot-testing）
-- [ ] (module:springboot-testing) `docs/testing/springboot-testing/part-01-testing/185-01-slice-and-mocking.md` - 第 185 章：01 - Slice 与 Mock（Testing）
-- [ ] (module:springboot-testing) `docs/testing/springboot-testing/appendix/186-90-common-pitfalls.md` - 第 186 章：90 - Common Pitfalls（springboot-testing）
-- [ ] (module:springboot-testing) `docs/testing/springboot-testing/appendix/187-99-self-check.md` - 第 187 章：99 - Self Check（springboot-testing）
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-00-guide/173-03-mainline-timeline.md` - 第 173 章：主线时间线：Spring Boot Web Client
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-00-guide/174-00-deep-dive-guide.md` - 第 174 章：00 - Deep Dive Guide（springboot-web-client）
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/175-01-restclient-basics.md` - 第 175 章：01：RestClient（同步）最小闭环
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/176-02-webclient-basics.md` - 第 176 章：02：WebClient（响应式）最小闭环
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/177-03-error-handling.md` - 第 177 章：03：错误处理：4xx/5xx → 领域异常
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/178-04-timeout-and-retry.md` - 第 178 章：04：超时与重试（确定性实验）
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/179-05-testing-with-mockwebserver.md` - 第 179 章：05：测试策略：为什么用 MockWebServer？
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/appendix/180-90-common-pitfalls.md` - 第 180 章：90：常见坑清单（Web Client）
-- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/appendix/181-99-self-check.md` - 第 181 章：99 - Self Check（springboot-web-client）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-00-guide/063-03-mainline-timeline.md` - 第 63 章：主线时间线：Spring Boot Web MVC
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-00-guide/064-00-deep-dive-guide.md` - 第 64 章：00 - Deep Dive Guide（springboot-web-mvc）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-00-guide/065-01-knowledge-map.md` - 第 65 章：01：知识地图（Web MVC Deep Dive Map）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-00-guide/066-02-breakpoint-map.md` - 第 66 章：02：断点地图（Part 01 Debugger Pack）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md` - 第 67 章：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/068-03-message-converters-and-return-values.md` - 第 68 章：03：HttpMessageConverter 与返回值处理（序列化发生在哪里）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/069-04-exception-resolvers-and-error-flow.md` - 第 69 章：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/070-05-controlleradvice-matching-and-ordering.md` - 第 70 章：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/071-01-validation-and-error-shaping.md` - 第 71 章：01：校验（Validation）与错误响应形状（Error Shape）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/072-02-exception-handling.md` - 第 72 章：02：统一异常处理（ControllerAdvice）与“坏输入”
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/073-03-binding-and-converters.md` - 第 73 章：03：请求绑定（Binding）与 Converter/Formatter
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/074-04-interceptor-and-filter-ordering.md` - 第 74 章：04：Interceptor 与 Filter：入口在哪里、顺序怎么理解
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/075-05-interceptor-async-lifecycle.md` - 第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-02-view-mvc/076-01-thymeleaf-and-view-resolver.md` - 第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-04-rest-contract/077-01-content-negotiation-406-415.md` - 第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-05-real-world-http/078-01-cors-preflight.md` - 第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-06-async-sse/079-01-servlet-async-and-testing.md` - 第 79 章：01：Servlet Async（Callable）与测试（asyncDispatch）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-07-testing-debugging/080-01-webmvc-testing-and-troubleshooting.md` - 第 80 章：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-08-security-observability/081-01-security-filterchain-and-mvc.md` - 第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/appendix/082-90-common-pitfalls.md` - 第 82 章：90：常见坑清单（Web MVC）
-- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/appendix/083-99-self-check.md` - 第 83 章：99 - Self Check（springboot-web-mvc）
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-00-guide/01-mainline-timeline.md` - 第 28 章：主线时间线：Spring Core AOP
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-00-guide/02-deep-dive-guide.md` - 第 29 章：00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md` - 第 30 章：01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/02-jdk-vs-cglib.md` - 第 31 章：02. JDK vs CGLIB：代理类型与“可注入类型”差异
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/03-self-invocation.md` - 第 32 章：03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/04-final-and-proxy-limits.md` - 第 33 章：04. `final` 与代理限制：为什么 final method 拦截不到？
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/05-expose-proxy.md` - 第 34 章：05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-01-proxy-fundamentals/06-debugging.md` - 第 35 章：06. Debug / 观察：如何“看见”代理与切点
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/01-autoproxy-creator-mainline.md` - 第 36 章：07. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/02-pointcut-expression-system.md` - 第 37 章：08. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-03-proxy-stacking/01-multi-proxy-stacking.md` - 第 38 章：09. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/part-03-proxy-stacking/02-real-world-stacking-playbook.md` - 第 39 章：10 real world stacking playbook
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/appendix/01-common-pitfalls.md` - 第 40 章：90. 常见坑清单（建议反复对照）
+- [ ] (module:spring-core-aop) `docs/aop/spring-core-aop/appendix/02-self-check.md` - 第 41 章：99. 自测题：你是否真的理解了 AOP？
+- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-00-guide/01-mainline-timeline.md` - 第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）
+- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-00-guide/02-deep-dive-guide.md` - 第 44 章：00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通
+- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-01-mental-model/01-proxy-vs-weaving.md` - 第 45 章：01. 心智模型：Proxy vs Weaving
+- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-02-ltw/01-ltw-basics.md` - 第 46 章：02. LTW：Load-Time Weaving（-javaagent）
+- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-03-ctw/01-ctw-basics.md` - 第 47 章：03. CTW：Compile-Time Weaving（编译期织入）
+- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/part-04-join-points/01-join-point-cookbook.md` - 第 48 章：04. Join Point & Pointcut Cookbook（速查）
+- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/appendix/01-common-pitfalls.md` - 第 49 章：90. 常见坑清单（LTW/CTW）
+- [ ] (module:spring-core-aop-weaving) `docs/aop/spring-core-aop-weaving/appendix/02-self-check.md` - 第 50 章：99. 自测题：你是否真的理解了 weaving？
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-00-guide/02-mainline-timeline.md` - 第 10 章：主线时间线：Spring Core Beans（IoC 容器）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-00-guide/03-deep-dive-guide.md` - 第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-00-guide/05-quickstart-30min.md` - 第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-00-guide/07-breakpoint-map.md` - 第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/02-dependency-injection-resolution.md` - 第 14 章：03. 依赖注入解析：类型/名称/@Qualifier/@Primary
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/03-scope-and-prototype.md` - 第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/04-lifecycle-and-callbacks.md` - 第 16 章：05. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/05-post-processors.md` - 第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/06-configuration-enhancement.md` - 第 18 章：07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-02-boot-autoconfig/01-debugging-and-observability.md` - 第 19 章：11. 调试与自检：如何“看见”容器正在做什么
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-01-ioc-container/09-bean-mental-model.md` - 第 20 章：01. Bean 心智模型与注册入口：从 BeanDefinition 到 Bean 实例
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md` - 第 21 章：10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-03-container-internals/01-container-bootstrap-and-infrastructure.md` - 第 22 章：12. 容器启动与基础设施处理器：为什么注解能工作？
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/01-lazy-semantics.md` - 第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/part-05-aot-and-real-world/01-aot-and-native-overview.md` - 第 24 章：40. AOT / Native 总览：为什么“JVM 能跑”不等于“Native 能跑”
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/appendix/01-common-pitfalls.md` - 第 25 章：90. 常见坑清单（建议反复对照）
+- [ ] (module:spring-core-beans) `docs/beans/spring-core-beans/appendix/11-self-check.md` - 第 26 章：99. 自测题：你是否真的理解了？
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-00-guide/01-mainline-timeline.md` - 第 127 章：主线时间线：Spring Events
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-00-guide/02-deep-dive-guide.md` - 第 128 章：深挖指南（Spring Core Events）
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-01-event-basics/01-event-mental-model.md` - 第 129 章：01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-01-event-basics/02-multiple-listeners-and-order.md` - 第 130 章：02. 多监听器与顺序：为什么 `@Order` 值得你认真对待？
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-01-event-basics/03-condition-and-payload.md` - 第 131 章：03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-01-event-basics/04-sync-and-exceptions.md` - 第 132 章：04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-02-async-and-transactional/01-async-listener.md` - 第 133 章：05. 异步监听器：`@Async` 生效需要什么？线程会怎么变？
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-02-async-and-transactional/02-async-multicaster.md` - 第 134 章：06. 异步广播：让事件“默认异步”而不是靠 `@Async`
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/part-02-async-and-transactional/03-transactional-event-listener.md` - 第 135 章：07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/appendix/01-common-pitfalls.md` - 第 136 章：90. 常见坑清单（建议反复对照）
+- [ ] (module:spring-core-events) `docs/events/spring-core-events/appendix/02-self-check.md` - 第 137 章：自测题（Spring Core Events）
+- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/part-00-guide/01-mainline-timeline.md` - 第 150 章：主线时间线：Spring Profiles
+- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/part-00-guide/02-deep-dive-guide.md` - 第 151 章：深挖指南（Spring Core Profiles）
+- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/part-01-profiles/01-profile-activation-and-bean-selection.md` - 第 152 章：Profile 激活与 Bean 选择
+- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/appendix/01-common-pitfalls.md` - 第 153 章：常见坑（Spring Core Profiles）
+- [ ] (module:spring-core-profiles) `docs/profiles/spring-core-profiles/appendix/02-self-check.md` - 第 154 章：自测题（Spring Core Profiles）
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-00-guide/01-mainline-timeline.md` - 第 139 章：主线时间线：Spring Resources
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-00-guide/02-deep-dive-guide.md` - 第 140 章：深挖指南（Spring Core Resources）
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/01-resource-abstraction.md` - 第 141 章：01. `Resource` 抽象：为什么 Spring 不让你直接用 `File`？
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/02-classpath-locations.md` - 第 142 章：02. classpath 路径：`classpath:data/x` vs `classpath:/data/x` 有什么区别？
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/03-classpath-star-and-pattern.md` - 第 143 章：03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/04-exists-and-handles.md` - 第 144 章：04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/05-reading-and-encoding.md` - 第 145 章：05. 读取资源：InputStream、编码与“可观察性”
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/part-01-resource-abstraction/06-jar-vs-filesystem.md` - 第 146 章：06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/appendix/01-common-pitfalls.md` - 第 147 章：90. 常见坑清单（建议反复对照）
+- [ ] (module:spring-core-resources) `docs/resources/spring-core-resources/appendix/02-self-check.md` - 第 148 章：自测题（Spring Core Resources）
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-00-guide/01-mainline-timeline.md` - 第 52 章：主线时间线：Spring Core Tx（事务）
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-00-guide/02-deep-dive-guide.md` - 第 53 章：深挖指南（Spring Core Tx）
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-01-transaction-basics/01-transaction-boundary.md` - 第 54 章：01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-01-transaction-basics/02-transactional-proxy.md` - 第 55 章：02. `@Transactional` 如何生效：它也是 AOP（也是代理）
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-01-transaction-basics/03-rollback-rules.md` - 第 56 章：03. 回滚规则：为什么 checked exception 默认不回滚？
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-01-transaction-basics/04-propagation.md` - 第 57 章：04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-02-template-and-debugging/01-transaction-template.md` - 第 58 章：05. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/part-02-template-and-debugging/02-debugging.md` - 第 59 章：06. Debug / 观察：如何判断“当前是否真的有事务”？
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/appendix/01-common-pitfalls.md` - 第 60 章：90. 常见坑清单（建议反复对照）
+- [ ] (module:spring-core-tx) `docs/tx/spring-core-tx/appendix/02-self-check.md` - 第 61 章：自测题（Spring Core Tx）
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-00-guide/01-mainline-timeline.md` - 第 156 章：主线时间线：Spring Validation
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-00-guide/02-deep-dive-guide.md` - 第 157 章：深挖指南（Spring Core Validation）
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/01-constraint-mental-model.md` - 第 158 章：01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/02-programmatic-validator.md` - 第 159 章：02. 程序化校验：为什么直接用 `Validator` 仍然很重要？
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/03-method-validation-proxy.md` - 第 160 章：03. 方法参数校验：为什么它必须依赖 Spring 代理？
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/04-groups.md` - 第 161 章：04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/05-custom-constraint.md` - 第 162 章：05. 自定义约束：如何写一个最小可用的 `@Constraint`？
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/part-01-validation-core/06-debugging.md` - 第 163 章：06. Debug / 观察：如何排查“校验为什么没生效？”
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/appendix/01-common-pitfalls.md` - 第 164 章：90. 常见坑清单（建议反复对照）
+- [ ] (module:spring-core-validation) `docs/validation/spring-core-validation/appendix/02-self-check.md` - 第 165 章：自测题（Spring Core Validation）
+- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/part-00-guide/01-mainline-timeline.md` - 第 167 章：主线时间线：Spring Boot Actuator
+- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/part-00-guide/02-deep-dive-guide.md` - 第 168 章：00 - Deep Dive Guide（springboot-actuator）
+- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/part-01-actuator/01-actuator-basics.md` - 第 169 章：01 - Actuator 基础与暴露
+- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/appendix/01-common-pitfalls.md` - 第 170 章：90 - Common Pitfalls（springboot-actuator）
+- [ ] (module:springboot-actuator) `docs/actuator/springboot-actuator/appendix/02-self-check.md` - 第 171 章：99 - Self Check（springboot-actuator）
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-00-guide/01-mainline-timeline.md` - 第 117 章：主线时间线：Spring Boot Async & Scheduling
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-00-guide/02-deep-dive-guide.md` - 第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/01-async-proxy-mental-model.md` - 第 119 章：01：`@Async` 心智模型：代理与线程切换
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/02-executor-and-threading.md` - 第 120 章：02：Executor 与线程命名/并发边界
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/03-exceptions.md` - 第 121 章：03：异常传播：Future vs void
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/04-self-invocation.md` - 第 122 章：04：self-invocation：为什么异步有时不生效
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/part-01-async-scheduling/05-scheduling-basics.md` - 第 123 章：05：`@Scheduled` 基础与可测试性
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/appendix/01-common-pitfalls.md` - 第 124 章：90：常见坑清单（Async & Scheduling）
+- [ ] (module:springboot-async-scheduling) `docs/async-scheduling/springboot-async-scheduling/appendix/02-self-check.md` - 第 125 章：99 - Self Check（springboot-async-scheduling）
+- [ ] (module:springboot-basics) `docs/basics/springboot-basics/part-00-guide/01-mainline-timeline.md` - 第 3 章：主线时间线：Spring Boot Basics（已迁移到“主线之书”）
+- [ ] (module:springboot-basics) `docs/basics/springboot-basics/part-00-guide/02-deep-dive-guide.md` - 第 4 章：00 - Deep Dive Guide（springboot-basics）
+- [ ] (module:springboot-basics) `docs/basics/springboot-basics/part-01-boot-basics/01-property-sources-and-profiles.md` - 第 5 章：01：配置来源（PropertySources）与 Profile 覆盖
+- [ ] (module:springboot-basics) `docs/basics/springboot-basics/part-01-boot-basics/02-configuration-properties-binding.md` - 第 6 章：02：`@ConfigurationProperties` 绑定与类型转换
+- [ ] (module:springboot-basics) `docs/basics/springboot-basics/appendix/01-common-pitfalls.md` - 第 7 章：90：常见坑清单（建议反复对照）
+- [ ] (module:springboot-basics) `docs/basics/springboot-basics/appendix/02-self-check.md` - 第 8 章：99 - Self Check（springboot-basics）
+- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/part-00-guide/01-mainline-timeline.md` - 第 189 章：主线时间线：Business Case（综合案例）
+- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/part-00-guide/02-deep-dive-guide.md` - 第 190 章：00 - Deep Dive Guide（springboot-business-case）
+- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/part-01-business-case/01-architecture-and-flow.md` - 第 191 章：01 - 架构与主流程（Business Case）
+- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/appendix/01-common-pitfalls.md` - 第 192 章：90 - Common Pitfalls（springboot-business-case）
+- [ ] (module:springboot-business-case) `docs/business-case/springboot-business-case/appendix/02-self-check.md` - 第 193 章：99 - Self Check（springboot-business-case）
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-00-guide/01-mainline-timeline.md` - 第 107 章：主线时间线：Spring Boot Cache
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-00-guide/02-deep-dive-guide.md` - 第 108 章：00 - Deep Dive Guide（springboot-cache）
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/01-cacheable-basics.md` - 第 109 章：01：`@Cacheable` 最小闭环
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/02-cacheput-and-evict.md` - 第 110 章：02：`@CachePut/@CacheEvict`：更新与失效
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/03-key-condition-unless.md` - 第 111 章：03：key / condition / unless：缓存边界
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/04-sync-stampede.md` - 第 112 章：04：`sync=true`：防缓存击穿（stampede）
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/part-01-cache/05-expiry-with-ticker.md` - 第 113 章：05：过期与可测性：用 Ticker 控制时间
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/appendix/01-common-pitfalls.md` - 第 114 章：90：常见坑清单（Cache）
+- [ ] (module:springboot-cache) `docs/cache/springboot-cache/appendix/02-self-check.md` - 第 115 章：99 - Self Check（springboot-cache）
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-00-guide/01-mainline-timeline.md` - 第 95 章：主线时间线：Spring Boot Data JPA
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-00-guide/02-deep-dive-guide.md` - 第 96 章：00 - Deep Dive Guide（springboot-data-jpa）
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/01-entity-states.md` - 第 97 章：01. Entity 状态机：transient / managed / detached / removed
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/02-persistence-context.md` - 第 98 章：02. Persistence Context：JPA 的“一级缓存”与事务绑定
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/03-flush-and-visibility.md` - 第 99 章：03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/04-dirty-checking.md` - 第 100 章：04. Dirty Checking（脏检查）：为什么改字段不用 save 也能落库？
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/05-fetching-and-n-plus-one.md` - 第 101 章：05. Fetching 与 N+1：为什么查一次会变成查很多次？
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/06-datajpatest-slice.md` - 第 102 章：06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/part-01-data-jpa/07-debug-sql.md` - 第 103 章：07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/appendix/01-common-pitfalls.md` - 第 104 章：90. 常见坑清单（建议反复对照）
+- [ ] (module:springboot-data-jpa) `docs/data-jpa/springboot-data-jpa/appendix/02-self-check.md` - 第 105 章：99 - Self Check（springboot-data-jpa）
+- [ ] (module:springboot-security) `docs/security/springboot-security/part-00-guide/01-mainline-timeline.md` - 第 85 章：主线时间线：Spring Boot Security
+- [ ] (module:springboot-security) `docs/security/springboot-security/part-00-guide/02-deep-dive-guide.md` - 第 86 章：00 - Deep Dive Guide（springboot-security）
+- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/01-basic-auth-and-authorization.md` - 第 87 章：01：401 vs 403：Basic Auth 与授权规则
+- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/02-csrf.md` - 第 88 章：02：CSRF：为什么 GET 没事但 POST 会 403？
+- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/03-method-security-and-proxy.md` - 第 89 章：03：Method Security 与代理：self-invocation 陷阱
+- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/04-filter-chain-and-order.md` - 第 90 章：04：FilterChain：多链路 + 顺序 + 自定义 Filter
+- [ ] (module:springboot-security) `docs/security/springboot-security/part-01-security/05-jwt-stateless.md` - 第 91 章：05：JWT/Stateless：Bearer token + scope（最小闭环）
+- [ ] (module:springboot-security) `docs/security/springboot-security/appendix/01-common-pitfalls.md` - 第 92 章：90：常见坑清单（Security）
+- [ ] (module:springboot-security) `docs/security/springboot-security/appendix/02-self-check.md` - 第 93 章：99 - Self Check（springboot-security）
+- [ ] (module:springboot-testing) `docs/testing/springboot-testing/part-00-guide/01-mainline-timeline.md` - 第 183 章：主线时间线：Spring Boot Testing
+- [ ] (module:springboot-testing) `docs/testing/springboot-testing/part-00-guide/02-deep-dive-guide.md` - 第 184 章：00 - Deep Dive Guide（springboot-testing）
+- [ ] (module:springboot-testing) `docs/testing/springboot-testing/part-01-testing/01-slice-and-mocking.md` - 第 185 章：01 - Slice 与 Mock（Testing）
+- [ ] (module:springboot-testing) `docs/testing/springboot-testing/appendix/01-common-pitfalls.md` - 第 186 章：90 - Common Pitfalls（springboot-testing）
+- [ ] (module:springboot-testing) `docs/testing/springboot-testing/appendix/02-self-check.md` - 第 187 章：99 - Self Check（springboot-testing）
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-00-guide/01-mainline-timeline.md` - 第 173 章：主线时间线：Spring Boot Web Client
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-00-guide/02-deep-dive-guide.md` - 第 174 章：00 - Deep Dive Guide（springboot-web-client）
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/01-restclient-basics.md` - 第 175 章：01：RestClient（同步）最小闭环
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/02-webclient-basics.md` - 第 176 章：02：WebClient（响应式）最小闭环
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/03-error-handling.md` - 第 177 章：03：错误处理：4xx/5xx → 领域异常
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/04-timeout-and-retry.md` - 第 178 章：04：超时与重试（确定性实验）
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/part-01-web-client/05-testing-with-mockwebserver.md` - 第 179 章：05：测试策略：为什么用 MockWebServer？
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/appendix/01-common-pitfalls.md` - 第 180 章：90：常见坑清单（Web Client）
+- [ ] (module:springboot-web-client) `docs/web-client/springboot-web-client/appendix/02-self-check.md` - 第 181 章：99 - Self Check（springboot-web-client）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-00-guide/01-mainline-timeline.md` - 第 63 章：主线时间线：Spring Boot Web MVC
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-00-guide/02-deep-dive-guide.md` - 第 64 章：00 - Deep Dive Guide（springboot-web-mvc）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-00-guide/05-knowledge-map.md` - 第 65 章：01：知识地图（Web MVC Deep Dive Map）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-00-guide/06-breakpoint-map.md` - 第 66 章：02：断点地图（Part 01 Debugger Pack）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md` - 第 67 章：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/03-message-converters-and-return-values.md` - 第 68 章：03：HttpMessageConverter 与返回值处理（序列化发生在哪里）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/04-exception-resolvers-and-error-flow.md` - 第 69 章：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-03-web-mvc-internals/05-controlleradvice-matching-and-ordering.md` - 第 70 章：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/01-validation-and-error-shaping.md` - 第 71 章：01：校验（Validation）与错误响应形状（Error Shape）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/02-exception-handling.md` - 第 72 章：02：统一异常处理（ControllerAdvice）与“坏输入”
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/03-binding-and-converters.md` - 第 73 章：03：请求绑定（Binding）与 Converter/Formatter
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/04-interceptor-and-filter-ordering.md` - 第 74 章：04：Interceptor 与 Filter：入口在哪里、顺序怎么理解
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-01-web-mvc/05-interceptor-async-lifecycle.md` - 第 75 章：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-02-view-mvc/01-thymeleaf-and-view-resolver.md` - 第 76 章：01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-04-rest-contract/01-content-negotiation-406-415.md` - 第 77 章：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-05-real-world-http/01-cors-preflight.md` - 第 78 章：01：CORS 与预检（OPTIONS：浏览器为什么要先问一句）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-06-async-sse/01-servlet-async-and-testing.md` - 第 79 章：01：Servlet Async（Callable）与测试（asyncDispatch）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-07-testing-debugging/01-webmvc-testing-and-troubleshooting.md` - 第 80 章：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/part-08-security-observability/01-security-filterchain-and-mvc.md` - 第 81 章：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/appendix/01-common-pitfalls.md` - 第 82 章：90：常见坑清单（Web MVC）
+- [ ] (module:springboot-web-mvc) `docs/web-mvc/springboot-web-mvc/appendix/02-self-check.md` - 第 83 章：99 - Self Check（springboot-web-mvc）

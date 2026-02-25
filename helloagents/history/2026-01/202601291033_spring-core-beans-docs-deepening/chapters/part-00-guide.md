@@ -3,7 +3,7 @@
 说明：以下建议是按每个章节的主题与现有素材（入口方法/关键类型/对应实验）来给出，重点是让内容更“可复现、可讲述、可排障、可落地”。
 
 ### 第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean
-- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/010-03-mainline-timeline.md`
+- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/02-mainline-timeline.md`
 - 当前侧重点提示：入口: `AbstractApplicationContext#refresh`, `AbstractApplicationContext#prepareBeanFactory`；实验: `SpringCoreBeansMainlineCallChainLabTest`
 - 补充与深化策略：
   - 补一张“主链路/关键对象关系图”：把本章涉及的核心对象、入口方法、状态变化画成一张图（优先用时序图或状态机图），读者一眼能定位自己在流程的哪一段。
@@ -12,7 +12,7 @@
   - 把本章与 `SpringCoreBeansMainlineCallChainLabTest` 的对应关系写得更“可复现”：明确“跑这个测试会看到什么日志/断点停在哪里/变量应该是什么值”，并补一个反例用来验证边界。
   - 补“现象 → 章节 → 断点”快速定位：列 3~5 个最常见现象（报错或怪异行为），说明如何判断它属于本章范围，以及第一断点建议下在哪里。
 ### 第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点
-- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`
+- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`
 - 当前侧重点提示：入口: `DefaultListableBeanFactory#doResolveDependency`, `AbstractApplicationContext#refresh`；类型: `RootBeanDefinition`, `DependencyDescriptor`；实验: `SpringCoreBeansAutowireCandidateSelectionLabTest`
 - 补充与深化策略：
   - 补一张“主链路/关键对象关系图”：把本章涉及的核心对象、入口方法、状态变化画成一张图（优先用时序图或状态机图），读者一眼能定位自己在流程的哪一段。
@@ -21,7 +21,7 @@
   - 把本章与 `SpringCoreBeansAutowireCandidateSelectionLabTest` 的对应关系写得更“可复现”：明确“跑这个测试会看到什么日志/断点停在哪里/变量应该是什么值”，并补一个反例用来验证边界。
   - 补“现象 → 章节 → 断点”快速定位：列 3~5 个最常见现象（报错或怪异行为），说明如何判断它属于本章范围，以及第一断点建议下在哪里。
 ### 第 11 章：关键分支矩阵（Branch Decision Matrix）
-- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
+- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/04-branch-decision-matrix.md`
 - 当前侧重点提示：入口: `DefaultListableBeanFactory#doResolveDependency`, `CommonAnnotationBeanPostProcessor#postProcessProperties`；类型: `BeanCreationException`, `UnsatisfiedDependencyException`；实验: `SpringCoreBeansContainerLabTest`
 - 补充与深化策略：
   - 补一张“主链路/关键对象关系图”：把本章涉及的核心对象、入口方法、状态变化画成一张图（优先用时序图或状态机图），读者一眼能定位自己在流程的哪一段。
@@ -30,7 +30,7 @@
   - 把本章与 `SpringCoreBeansContainerLabTest` 的对应关系写得更“可复现”：明确“跑这个测试会看到什么日志/断点停在哪里/变量应该是什么值”，并补一个反例用来验证边界。
   - 补“现象 → 章节 → 断点”快速定位：列 3~5 个最常见现象（报错或怪异行为），说明如何判断它属于本章范围，以及第一断点建议下在哪里。
 ### 第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
-- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`
+- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/05-quickstart-30min.md`
 - 当前侧重点提示：入口: `DefaultListableBeanFactory#doResolveDependency`, `org.springframework.context.support.AbstractApplicationContext#refresh`；类型: `PropertyValues`, `TextFormatter`；实验: `SpringCoreBeansBreakpointPackLabTest`
 - 补充与深化策略：
   - 补一张“主链路/关键对象关系图”：把本章涉及的核心对象、入口方法、状态变化画成一张图（优先用时序图或状态机图），读者一眼能定位自己在流程的哪一段。
@@ -39,7 +39,7 @@
   - 把本章与 `SpringCoreBeansBreakpointPackLabTest` 的对应关系写得更“可复现”：明确“跑这个测试会看到什么日志/断点停在哪里/变量应该是什么值”，并补一个反例用来验证边界。
   - 补“现象 → 章节 → 断点”快速定位：列 3~5 个最常见现象（报错或怪异行为），说明如何判断它属于本章范围，以及第一断点建议下在哪里。
 ### 第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
-- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
+- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/06-applicationcontext-refresh-call-chain.md`
 - 当前侧重点提示：入口: `AbstractBeanFactory#doGetBean`, `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`；类型: `BeanDefinition`, `BeanFactory`；实验: `SpringCoreBeansContainerLabTest`
 - 补充与深化策略：
   - 补一张“主链路/关键对象关系图”：把本章涉及的核心对象、入口方法、状态变化画成一张图（优先用时序图或状态机图），读者一眼能定位自己在流程的哪一段。
@@ -48,7 +48,7 @@
   - 把本章与 `SpringCoreBeansContainerLabTest` 的对应关系写得更“可复现”：明确“跑这个测试会看到什么日志/断点停在哪里/变量应该是什么值”，并补一个反例用来验证边界。
   - 补“现象 → 章节 → 断点”快速定位：列 3~5 个最常见现象（报错或怪异行为），说明如何判断它属于本章范围，以及第一断点建议下在哪里。
 ### 第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
-- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
+- 📍 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`
 - 当前侧重点提示：入口: `DefaultListableBeanFactory#doResolveDependency`, `ApplicationContext#refresh`；类型: `BeanDefinition`, `DefaultListableBeanFactory`；实验: `SpringCoreBeansLabTest`
 - 补充与深化策略：
   - 补一张“主链路/关键对象关系图”：把本章涉及的核心对象、入口方法、状态变化画成一张图（优先用时序图或状态机图），读者一眼能定位自己在流程的哪一段。

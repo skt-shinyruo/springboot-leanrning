@@ -9,12 +9,12 @@
 - Code module root：`spring-boot-modules/spring-boot-basics`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/basics/springboot-basics/part-00-guide/004-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/basics/springboot-basics/part-00-guide/004-01-springapplication-run-call-chain.md`
-- ✅ breakpoint-map：`docs/basics/springboot-basics/part-00-guide/004-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/basics/springboot-basics/part-00-guide/004-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/basics/springboot-basics/appendix/007-90-common-pitfalls.md`
-- ✅ self-check：`docs/basics/springboot-basics/appendix/008-99-self-check.md`
+- ✅ deep-dive：`docs/basics/springboot-basics/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/basics/springboot-basics/part-00-guide/03-springapplication-run-call-chain.md`
+- ✅ breakpoint-map：`docs/basics/springboot-basics/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/basics/springboot-basics/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/basics/springboot-basics/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/basics/springboot-basics/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java`
@@ -34,12 +34,12 @@
 - Code module root：`spring-boot-modules/spring-boot-autoconfiguration`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-01-autoconfiguration-import-call-chain.md`
-- ✅ breakpoint-map：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/195-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/autoconfig/springboot-autoconfiguration/appendix/197-90-common-pitfalls.md`
-- ✅ self-check：`docs/autoconfig/springboot-autoconfiguration/appendix/198-99-self-check.md`
+- ✅ deep-dive：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/03-autoconfiguration-import-call-chain.md`
+- ✅ breakpoint-map：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/autoconfig/springboot-autoconfiguration/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/autoconfig/springboot-autoconfiguration/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/autoconfig/springboot-autoconfiguration/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationBookMatrixLabTest.java`
@@ -61,12 +61,12 @@
 - Code module root：`spring-boot-modules/spring-boot-web-mvc`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/web-mvc/springboot-web-mvc/part-00-guide/064-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/web-mvc/springboot-web-mvc/part-00-guide/064-01-webmvc-request-call-chain.md`
-- ✅ breakpoint-map：`docs/web-mvc/springboot-web-mvc/part-00-guide/066-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/web-mvc/springboot-web-mvc/part-00-guide/064-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/web-mvc/springboot-web-mvc/appendix/082-90-common-pitfalls.md`
-- ✅ self-check：`docs/web-mvc/springboot-web-mvc/appendix/083-99-self-check.md`
+- ✅ deep-dive：`docs/web-mvc/springboot-web-mvc/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/web-mvc/springboot-web-mvc/part-00-guide/03-webmvc-request-call-chain.md`
+- ✅ breakpoint-map：`docs/web-mvc/springboot-web-mvc/part-00-guide/06-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/web-mvc/springboot-web-mvc/part-00-guide/04-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/web-mvc/springboot-web-mvc/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/web-mvc/springboot-web-mvc/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBookMatrixLabTest.java`
@@ -86,12 +86,12 @@
 - Code module root：`spring-boot-modules/spring-boot-data-jpa`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/data-jpa/springboot-data-jpa/part-00-guide/096-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/data-jpa/springboot-data-jpa/part-00-guide/096-01-repository-call-chain.md`
-- ✅ breakpoint-map：`docs/data-jpa/springboot-data-jpa/part-00-guide/096-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/data-jpa/springboot-data-jpa/part-00-guide/096-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/data-jpa/springboot-data-jpa/appendix/104-90-common-pitfalls.md`
-- ✅ self-check：`docs/data-jpa/springboot-data-jpa/appendix/105-99-self-check.md`
+- ✅ deep-dive：`docs/data-jpa/springboot-data-jpa/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/data-jpa/springboot-data-jpa/part-00-guide/03-repository-call-chain.md`
+- ✅ breakpoint-map：`docs/data-jpa/springboot-data-jpa/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/data-jpa/springboot-data-jpa/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/data-jpa/springboot-data-jpa/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/data-jpa/springboot-data-jpa/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java`
@@ -111,12 +111,12 @@
 - Code module root：`spring-boot-modules/spring-boot-actuator`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/actuator/springboot-actuator/part-00-guide/168-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/actuator/springboot-actuator/part-00-guide/168-01-actuator-endpoint-call-chain.md`
-- ✅ breakpoint-map：`docs/actuator/springboot-actuator/part-00-guide/168-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/actuator/springboot-actuator/part-00-guide/168-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/actuator/springboot-actuator/appendix/170-90-common-pitfalls.md`
-- ✅ self-check：`docs/actuator/springboot-actuator/appendix/171-99-self-check.md`
+- ✅ deep-dive：`docs/actuator/springboot-actuator/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/actuator/springboot-actuator/part-00-guide/03-actuator-endpoint-call-chain.md`
+- ✅ breakpoint-map：`docs/actuator/springboot-actuator/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/actuator/springboot-actuator/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/actuator/springboot-actuator/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/actuator/springboot-actuator/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBookMatrixLabTest.java`
@@ -136,12 +136,12 @@
 - Code module root：`spring-boot-modules/spring-boot-testing`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/testing/springboot-testing/part-00-guide/184-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/testing/springboot-testing/part-00-guide/184-01-test-bootstrap-and-slicing-call-chain.md`
-- ✅ breakpoint-map：`docs/testing/springboot-testing/part-00-guide/184-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/testing/springboot-testing/part-00-guide/184-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/testing/springboot-testing/appendix/186-90-common-pitfalls.md`
-- ✅ self-check：`docs/testing/springboot-testing/appendix/187-99-self-check.md`
+- ✅ deep-dive：`docs/testing/springboot-testing/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/testing/springboot-testing/part-00-guide/03-test-bootstrap-and-slicing-call-chain.md`
+- ✅ breakpoint-map：`docs/testing/springboot-testing/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/testing/springboot-testing/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/testing/springboot-testing/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/testing/springboot-testing/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java`
@@ -161,12 +161,12 @@
 - Code module root：`spring-boot-modules/spring-boot-business-case`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/business-case/springboot-business-case/part-00-guide/190-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/business-case/springboot-business-case/part-00-guide/190-01-business-request-call-chain.md`
-- ✅ breakpoint-map：`docs/business-case/springboot-business-case/part-00-guide/190-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/business-case/springboot-business-case/part-00-guide/190-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/business-case/springboot-business-case/appendix/192-90-common-pitfalls.md`
-- ✅ self-check：`docs/business-case/springboot-business-case/appendix/193-99-self-check.md`
+- ✅ deep-dive：`docs/business-case/springboot-business-case/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/business-case/springboot-business-case/part-00-guide/03-business-request-call-chain.md`
+- ✅ breakpoint-map：`docs/business-case/springboot-business-case/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/business-case/springboot-business-case/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/business-case/springboot-business-case/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/business-case/springboot-business-case/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBookMatrixLabTest.java`
@@ -186,12 +186,12 @@
 - Code module root：`spring-boot-modules/spring-boot-security`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/security/springboot-security/part-00-guide/086-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/security/springboot-security/part-00-guide/086-01-security-filterchain-call-chain.md`
-- ✅ breakpoint-map：`docs/security/springboot-security/part-00-guide/086-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/security/springboot-security/appendix/092-90-common-pitfalls.md`
-- ✅ self-check：`docs/security/springboot-security/appendix/093-99-self-check.md`
+- ✅ deep-dive：`docs/security/springboot-security/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/security/springboot-security/part-00-guide/03-security-filterchain-call-chain.md`
+- ✅ breakpoint-map：`docs/security/springboot-security/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/security/springboot-security/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/security/springboot-security/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/security/springboot-security/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java`
@@ -211,12 +211,12 @@
 - Code module root：`spring-boot-modules/spring-boot-observability`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/observability/springboot-observability/part-00-guide/205-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/observability/springboot-observability/part-00-guide/205-01-http-observation-call-chain.md`
-- ✅ breakpoint-map：`docs/observability/springboot-observability/part-00-guide/205-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/observability/springboot-observability/part-00-guide/205-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/observability/springboot-observability/appendix/207-90-common-pitfalls.md`
-- ✅ self-check：`docs/observability/springboot-observability/appendix/208-99-self-check.md`
+- ✅ deep-dive：`docs/observability/springboot-observability/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/observability/springboot-observability/part-00-guide/03-http-observation-call-chain.md`
+- ✅ breakpoint-map：`docs/observability/springboot-observability/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/observability/springboot-observability/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/observability/springboot-observability/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/observability/springboot-observability/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityBookMatrixLabTest.java`
@@ -238,12 +238,12 @@
 - Code module root：`spring-boot-modules/spring-boot-logging`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/logging/springboot-logging/part-00-guide/200-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/logging/springboot-logging/part-00-guide/200-01-logging-call-chain.md`
-- ✅ breakpoint-map：`docs/logging/springboot-logging/part-00-guide/200-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/logging/springboot-logging/part-00-guide/200-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/logging/springboot-logging/appendix/202-90-common-pitfalls.md`
-- ✅ self-check：`docs/logging/springboot-logging/appendix/203-99-self-check.md`
+- ✅ deep-dive：`docs/logging/springboot-logging/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/logging/springboot-logging/part-00-guide/03-logging-call-chain.md`
+- ✅ breakpoint-map：`docs/logging/springboot-logging/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/logging/springboot-logging/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/logging/springboot-logging/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/logging/springboot-logging/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingBookMatrixLabTest.java`
@@ -265,12 +265,12 @@
 - Code module root：`spring-boot-modules/spring-boot-web-client`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/web-client/springboot-web-client/part-00-guide/174-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/web-client/springboot-web-client/part-00-guide/174-01-webclient-call-chain.md`
-- ✅ breakpoint-map：`docs/web-client/springboot-web-client/part-00-guide/174-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/web-client/springboot-web-client/part-00-guide/174-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/web-client/springboot-web-client/appendix/180-90-common-pitfalls.md`
-- ✅ self-check：`docs/web-client/springboot-web-client/appendix/181-99-self-check.md`
+- ✅ deep-dive：`docs/web-client/springboot-web-client/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/web-client/springboot-web-client/part-00-guide/03-webclient-call-chain.md`
+- ✅ breakpoint-map：`docs/web-client/springboot-web-client/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/web-client/springboot-web-client/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/web-client/springboot-web-client/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/web-client/springboot-web-client/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBookMatrixLabTest.java`
@@ -290,12 +290,12 @@
 - Code module root：`spring-boot-modules/spring-boot-async-scheduling`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-01-async-and-scheduling-call-chain.md`
-- ✅ breakpoint-map：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/async-scheduling/springboot-async-scheduling/appendix/124-90-common-pitfalls.md`
-- ✅ self-check：`docs/async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md`
+- ✅ deep-dive：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/03-async-and-scheduling-call-chain.md`
+- ✅ breakpoint-map：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/async-scheduling/springboot-async-scheduling/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/async-scheduling/springboot-async-scheduling/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/async-scheduling/springboot-async-scheduling/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java`
@@ -315,12 +315,12 @@
 - Code module root：`spring-boot-modules/spring-boot-cache`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/cache/springboot-cache/part-00-guide/108-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/cache/springboot-cache/part-00-guide/108-01-cache-interceptor-call-chain.md`
-- ✅ breakpoint-map：`docs/cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/cache/springboot-cache/appendix/114-90-common-pitfalls.md`
-- ✅ self-check：`docs/cache/springboot-cache/appendix/115-99-self-check.md`
+- ✅ deep-dive：`docs/cache/springboot-cache/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/cache/springboot-cache/part-00-guide/03-cache-interceptor-call-chain.md`
+- ✅ breakpoint-map：`docs/cache/springboot-cache/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/cache/springboot-cache/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/cache/springboot-cache/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/cache/springboot-cache/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java`
@@ -340,12 +340,12 @@
 - Code module root：`spring-core-modules/spring-core-beans`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/beans/spring-core-beans/part-00-guide/011-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/beans/spring-core-beans/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
-- ✅ breakpoint-map：`docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/beans/spring-core-beans/part-00-guide/011-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/beans/spring-core-beans/appendix/025-90-common-pitfalls.md`
-- ✅ self-check：`docs/beans/spring-core-beans/appendix/026-99-self-check.md`
+- ✅ deep-dive：`docs/beans/spring-core-beans/part-00-guide/03-deep-dive-guide.md`
+- ✅ call-chain：`docs/beans/spring-core-beans/part-00-guide/06-applicationcontext-refresh-call-chain.md`
+- ✅ breakpoint-map：`docs/beans/spring-core-beans/part-00-guide/07-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/beans/spring-core-beans/part-00-guide/04-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/beans/spring-core-beans/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/beans/spring-core-beans/appendix/11-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBookMatrixLabTest.java`
@@ -365,12 +365,12 @@
 - Code module root：`spring-core-modules/spring-core-spel`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/spel/spring-core-spel/part-00-guide/210-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/spel/spring-core-spel/part-00-guide/210-01-spel-call-chain.md`
-- ✅ breakpoint-map：`docs/spel/spring-core-spel/part-00-guide/210-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/spel/spring-core-spel/part-00-guide/210-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/spel/spring-core-spel/appendix/212-90-common-pitfalls.md`
-- ✅ self-check：`docs/spel/spring-core-spel/appendix/213-99-self-check.md`
+- ✅ deep-dive：`docs/spel/spring-core-spel/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/spel/spring-core-spel/part-00-guide/03-spel-call-chain.md`
+- ✅ breakpoint-map：`docs/spel/spring-core-spel/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/spel/spring-core-spel/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/spel/spring-core-spel/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/spel/spring-core-spel/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part00_guide/SpringCoreSpelBookMatrixLabTest.java`
@@ -390,12 +390,12 @@
 - Code module root：`spring-core-modules/spring-core-aop`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/aop/spring-core-aop/part-00-guide/029-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/aop/spring-core-aop/part-00-guide/029-01-aop-invocation-call-chain.md`
-- ✅ breakpoint-map：`docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/aop/spring-core-aop/appendix/040-90-common-pitfalls.md`
-- ✅ self-check：`docs/aop/spring-core-aop/appendix/041-99-self-check.md`
+- ✅ deep-dive：`docs/aop/spring-core-aop/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/aop/spring-core-aop/part-00-guide/03-aop-invocation-call-chain.md`
+- ✅ breakpoint-map：`docs/aop/spring-core-aop/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/aop/spring-core-aop/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/aop/spring-core-aop/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/aop/spring-core-aop/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopBookMatrixLabTest.java`
@@ -415,12 +415,12 @@
 - Code module root：`spring-core-modules/spring-core-aop-weaving`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/aop/spring-core-aop-weaving/part-00-guide/044-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/aop/spring-core-aop-weaving/part-00-guide/044-01-aspectj-weaving-call-chain.md`
-- ✅ breakpoint-map：`docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md`
-- ✅ self-check：`docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md`
+- ✅ deep-dive：`docs/aop/spring-core-aop-weaving/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/aop/spring-core-aop-weaving/part-00-guide/03-aspectj-weaving-call-chain.md`
+- ✅ breakpoint-map：`docs/aop/spring-core-aop-weaving/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/aop/spring-core-aop-weaving/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/aop/spring-core-aop-weaving/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/aop/spring-core-aop-weaving/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjWeavingBookMatrixLabTest.java`
@@ -440,12 +440,12 @@
 - Code module root：`spring-core-modules/spring-core-events`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/events/spring-core-events/part-00-guide/128-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/events/spring-core-events/part-00-guide/128-01-events-call-chain.md`
-- ✅ breakpoint-map：`docs/events/spring-core-events/part-00-guide/128-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/events/spring-core-events/part-00-guide/128-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/events/spring-core-events/appendix/136-90-common-pitfalls.md`
-- ✅ self-check：`docs/events/spring-core-events/appendix/137-99-self-check.md`
+- ✅ deep-dive：`docs/events/spring-core-events/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/events/spring-core-events/part-00-guide/03-events-call-chain.md`
+- ✅ breakpoint-map：`docs/events/spring-core-events/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/events/spring-core-events/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/events/spring-core-events/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/events/spring-core-events/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsBookMatrixLabTest.java`
@@ -467,12 +467,12 @@
 - Code module root：`spring-core-modules/spring-core-validation`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/validation/spring-core-validation/part-00-guide/157-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/validation/spring-core-validation/part-00-guide/157-01-validation-call-chain.md`
-- ✅ breakpoint-map：`docs/validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/validation/spring-core-validation/part-00-guide/157-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/validation/spring-core-validation/appendix/164-90-common-pitfalls.md`
-- ✅ self-check：`docs/validation/spring-core-validation/appendix/165-99-self-check.md`
+- ✅ deep-dive：`docs/validation/spring-core-validation/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/validation/spring-core-validation/part-00-guide/03-validation-call-chain.md`
+- ✅ breakpoint-map：`docs/validation/spring-core-validation/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/validation/spring-core-validation/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/validation/spring-core-validation/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/validation/spring-core-validation/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationBookMatrixLabTest.java`
@@ -492,12 +492,12 @@
 - Code module root：`spring-core-modules/spring-core-resources`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/resources/spring-core-resources/part-00-guide/140-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/resources/spring-core-resources/part-00-guide/140-01-resource-loading-call-chain.md`
-- ✅ breakpoint-map：`docs/resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/resources/spring-core-resources/part-00-guide/140-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/resources/spring-core-resources/appendix/147-90-common-pitfalls.md`
-- ✅ self-check：`docs/resources/spring-core-resources/appendix/148-99-self-check.md`
+- ✅ deep-dive：`docs/resources/spring-core-resources/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/resources/spring-core-resources/part-00-guide/03-resource-loading-call-chain.md`
+- ✅ breakpoint-map：`docs/resources/spring-core-resources/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/resources/spring-core-resources/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/resources/spring-core-resources/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/resources/spring-core-resources/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesBookMatrixLabTest.java`
@@ -517,12 +517,12 @@
 - Code module root：`spring-core-modules/spring-core-tx`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/tx/spring-core-tx/part-00-guide/053-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/tx/spring-core-tx/part-00-guide/053-01-transaction-interceptor-call-chain.md`
-- ✅ breakpoint-map：`docs/tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/tx/spring-core-tx/part-00-guide/053-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/tx/spring-core-tx/appendix/060-90-common-pitfalls.md`
-- ✅ self-check：`docs/tx/spring-core-tx/appendix/061-99-self-check.md`
+- ✅ deep-dive：`docs/tx/spring-core-tx/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/tx/spring-core-tx/part-00-guide/03-transaction-interceptor-call-chain.md`
+- ✅ breakpoint-map：`docs/tx/spring-core-tx/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/tx/spring-core-tx/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/tx/spring-core-tx/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/tx/spring-core-tx/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxBookMatrixLabTest.java`
@@ -542,12 +542,12 @@
 - Code module root：`spring-core-modules/spring-core-profiles`
 
 ### Docs 入口
-- ✅ deep-dive：`docs/profiles/spring-core-profiles/part-00-guide/151-00-deep-dive-guide.md`
-- ✅ call-chain：`docs/profiles/spring-core-profiles/part-00-guide/151-01-profile-activation-call-chain.md`
-- ✅ breakpoint-map：`docs/profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md`
-- ✅ branch-matrix-doc：`docs/profiles/spring-core-profiles/part-00-guide/151-04-branch-decision-matrix.md`
-- ✅ pitfalls：`docs/profiles/spring-core-profiles/appendix/153-90-common-pitfalls.md`
-- ✅ self-check：`docs/profiles/spring-core-profiles/appendix/154-99-self-check.md`
+- ✅ deep-dive：`docs/profiles/spring-core-profiles/part-00-guide/02-deep-dive-guide.md`
+- ✅ call-chain：`docs/profiles/spring-core-profiles/part-00-guide/03-profile-activation-call-chain.md`
+- ✅ breakpoint-map：`docs/profiles/spring-core-profiles/part-00-guide/04-breakpoint-map.md`
+- ✅ branch-matrix-doc：`docs/profiles/spring-core-profiles/part-00-guide/05-branch-decision-matrix.md`
+- ✅ pitfalls：`docs/profiles/spring-core-profiles/appendix/01-common-pitfalls.md`
+- ✅ self-check：`docs/profiles/spring-core-profiles/appendix/02-self-check.md`
 
 ### Tests 入口（可跑命令）
 - ✅ book：`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/SpringCoreProfilesBookMatrixLabTest.java`

@@ -5,7 +5,7 @@ Directory: `helloagents/plan/202601061359_spring_core_beans_beans_support_utils/
 ---
 
 ## 1. Docs：补齐 support 工具类小节
-- [√] 1.1 扩写 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md`：新增 `org.springframework.beans.support` 小节（含运行入口与定位说明）
+- [√] 1.1 扩写 `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`：新增 `org.springframework.beans.support` 小节（含运行入口与定位说明）
 
 ## 2. Lab：新增可断言闭环测试
 - [√] 2.1 新增 `SpringCoreBeansBeansSupportUtilitiesLabTest`：覆盖 `ArgumentConvertingMethodInvoker`（含 custom editor）、`ResourceEditorRegistrar`、`PropertyComparator`、`MutableSortDefinition`、`PagedListHolder`

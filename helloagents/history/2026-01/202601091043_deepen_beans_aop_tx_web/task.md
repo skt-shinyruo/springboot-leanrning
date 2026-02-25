@@ -96,11 +96,11 @@ Directory: `helloagents/plan/202601091043_deepen_beans_aop_tx_web/`
 ### 1.2 场景 S2：循环依赖边界（能救/不能救）
 
 #### 1.2.1 文档（把边界写成对照矩阵）
-- [√] 1.2.1.1 更新 `docs/beans/spring-core-beans/part-01-ioc-container/09-circular-dependencies.md`：
+- [√] 1.2.1.1 更新 `docs/beans/spring-core-beans/part-01-ioc-container/08-circular-dependencies.md`：
   - constructor vs setter 的根因差异
   - singleton vs prototype 的边界
   - `@Lazy` / `ObjectProvider` 的“打断策略”与代价
-- [√] 1.2.1.2 更新 `docs/beans/spring-core-beans/part-03-container-internals/16-early-reference-and-circular.md`：
+- [√] 1.2.1.2 更新 `docs/beans/spring-core-beans/part-03-container-internals/05-early-reference-and-circular.md`：
   - early singleton exposure 的关键节点
   - `getEarlyBeanReference` 与 AOP 代理的关系（只写机制，不绑定具体实现细节）
 - [-] 1.2.1.3 在上述两章末尾补齐：对照用例索引（每个分支对应一个 test 方法）

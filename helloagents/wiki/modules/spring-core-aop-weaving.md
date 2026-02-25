@@ -39,10 +39,10 @@
 ### Docs Index
 
 - 入口：`spring-core-modules/spring-core-aop-weaving/docs/README.md`
-- 断点地图：`spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-02-breakpoint-map.md`
-- 关键分支矩阵：`spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/044-04-branch-decision-matrix.md`
-- 排障 playbook：`spring-core-modules/spring-core-aop-weaving/docs/appendix/049-90-common-pitfalls.md`
-- 自检清单：`spring-core-modules/spring-core-aop-weaving/docs/appendix/050-99-self-check.md`
+- 断点地图：`spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/04-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-aop-weaving/docs/part-00-guide/05-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-aop-weaving/docs/appendix/01-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-aop-weaving/docs/appendix/02-self-check.md`
 - Branch Matrix（关键分支入口，建议直接跑模块以分流 LTW/CTW）：`mvn -q -pl :spring-core-aop-weaving test`
   - LTW：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
   - CTW：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`

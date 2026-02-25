@@ -32,9 +32,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootBasicsDevLabTest` / `BootBasicsOverrideLabTest`（必要时补充 1 个“默认分支”对照）
-- [√] Breakpoint Map：新增 `docs/basics/springboot-basics/part-00-guide/004-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/basics/springboot-basics/part-00-guide/004-04-branch-decision-matrix.md`
-- [√] Playbook：补齐 `docs/basics/springboot-basics/appendix/007-90-common-pitfalls.md` 的排障结构块，并在 `docs/basics/springboot-basics/appendix/008-99-self-check.md` 增加“从 Branch Matrix 进入”的自检入口
+- [√] Breakpoint Map：新增 `docs/basics/springboot-basics/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/basics/springboot-basics/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：补齐 `docs/basics/springboot-basics/appendix/01-common-pitfalls.md` 的排障结构块，并在 `docs/basics/springboot-basics/appendix/02-self-check.md` 增加“从 Branch Matrix 进入”的自检入口
 - [√] 模块 README：更新 `docs/basics/springboot-basics/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/002-boot-basics-mainline.md` + `helloagents/wiki/modules/springboot-basics.md`
 - [√] 验证：`mvn -q -pl :springboot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
@@ -42,9 +42,9 @@
 ### 1.2 springboot-web-mvc（对齐：作为模板模块，补齐“统一模板”对齐项）
 
 - [√] Branch Matrix：保留现有 `spring-boot-modules/springboot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part07_testing/BootWebMvcErrorBranchMatrixLabTest.java` 作为 Error/DispatcherType 关键分支入口
-- [√] Branch Decision Matrix：新增 `docs/web-mvc/springboot-web-mvc/part-00-guide/064-04-branch-decision-matrix.md`（列出至少 3 个可复现关键分支，并引用现有/新增入口）
-- [√] Breakpoint Map：对齐/增强 `docs/web-mvc/springboot-web-mvc/part-00-guide/066-02-breakpoint-map.md` 到统一模板（确保包含 Watchpoints 与“证据收集清单”）
-- [√] Playbook：对齐 `docs/web-mvc/springboot-web-mvc/appendix/082-90-common-pitfalls.md` 与 `docs/web-mvc/springboot-web-mvc/appendix/083-99-self-check.md` 到统一结构
+- [√] Branch Decision Matrix：新增 `docs/web-mvc/springboot-web-mvc/part-00-guide/04-branch-decision-matrix.md`（列出至少 3 个可复现关键分支，并引用现有/新增入口）
+- [√] Breakpoint Map：对齐/增强 `docs/web-mvc/springboot-web-mvc/part-00-guide/06-breakpoint-map.md` 到统一模板（确保包含 Watchpoints 与“证据收集清单”）
+- [√] Playbook：对齐 `docs/web-mvc/springboot-web-mvc/appendix/01-common-pitfalls.md` 与 `docs/web-mvc/springboot-web-mvc/appendix/02-self-check.md` 到统一结构
 - [√] 模块 README：更新 `docs/web-mvc/springboot-web-mvc/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/062-webmvc-mainline.md` + `helloagents/wiki/modules/springboot-web-mvc.md`
 - [√] 验证：`mvn -q -pl :springboot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
@@ -53,9 +53,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootDataJpaMergeAndDetachLabTest` / `BootDataJpaDebugSqlLabTest`
-- [√] Breakpoint Map：新增 `docs/data-jpa/springboot-data-jpa/part-00-guide/096-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/data-jpa/springboot-data-jpa/part-00-guide/096-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/data-jpa/springboot-data-jpa/appendix/104-90-common-pitfalls.md` + `docs/data-jpa/springboot-data-jpa/appendix/105-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/data-jpa/springboot-data-jpa/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/data-jpa/springboot-data-jpa/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/data-jpa/springboot-data-jpa/appendix/01-common-pitfalls.md` + `docs/data-jpa/springboot-data-jpa/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/data-jpa/springboot-data-jpa/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/094-data-jpa-mainline.md` + `helloagents/wiki/modules/springboot-data-jpa.md`
 - [√] 验证：`mvn -q -pl :springboot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
@@ -64,9 +64,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootCacheSpelKeyLabTest`（必要时补充 key/condition/unless 对照）
-- [√] Breakpoint Map：新增 `docs/cache/springboot-cache/part-00-guide/108-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/cache/springboot-cache/part-00-guide/108-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/cache/springboot-cache/appendix/114-90-common-pitfalls.md` + `docs/cache/springboot-cache/appendix/115-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/cache/springboot-cache/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/cache/springboot-cache/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/cache/springboot-cache/appendix/01-common-pitfalls.md` + `docs/cache/springboot-cache/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/cache/springboot-cache/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/106-cache-mainline.md` + `helloagents/wiki/modules/springboot-cache.md`
 - [√] 验证：`mvn -q -pl :springboot-cache -Dtest=BootCacheBranchMatrixLabTest test`
@@ -75,9 +75,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
-- [√] Breakpoint Map：新增 `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/async-scheduling/springboot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/async-scheduling/springboot-async-scheduling/appendix/124-90-common-pitfalls.md` + `docs/async-scheduling/springboot-async-scheduling/appendix/125-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/async-scheduling/springboot-async-scheduling/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/async-scheduling/springboot-async-scheduling/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/async-scheduling/springboot-async-scheduling/appendix/01-common-pitfalls.md` + `docs/async-scheduling/springboot-async-scheduling/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/async-scheduling/springboot-async-scheduling/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/116-async-scheduling-mainline.md` + `helloagents/wiki/modules/springboot-async-scheduling.md`
 - [√] 验证：`mvn -q -pl :springboot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
@@ -86,9 +86,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootWebClientRestClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
-- [√] Breakpoint Map：新增 `docs/web-client/springboot-web-client/part-00-guide/174-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/web-client/springboot-web-client/part-00-guide/174-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/web-client/springboot-web-client/appendix/180-90-common-pitfalls.md` + `docs/web-client/springboot-web-client/appendix/181-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/web-client/springboot-web-client/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/web-client/springboot-web-client/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/web-client/springboot-web-client/appendix/01-common-pitfalls.md` + `docs/web-client/springboot-web-client/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/web-client/springboot-web-client/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/172-web-client-mainline.md` + `helloagents/wiki/modules/springboot-web-client.md`
 - [√] 验证：`mvn -q -pl :springboot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
@@ -97,9 +97,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootActuatorExposureOverrideLabTest`
-- [√] Breakpoint Map：新增 `docs/actuator/springboot-actuator/part-00-guide/168-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/actuator/springboot-actuator/part-00-guide/168-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/actuator/springboot-actuator/appendix/170-90-common-pitfalls.md` + `docs/actuator/springboot-actuator/appendix/171-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/actuator/springboot-actuator/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/actuator/springboot-actuator/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/actuator/springboot-actuator/appendix/01-common-pitfalls.md` + `docs/actuator/springboot-actuator/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/actuator/springboot-actuator/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/166-actuator-observability-mainline.md` + `helloagents/wiki/modules/springboot-actuator.md`
 - [√] 验证：`mvn -q -pl :springboot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
@@ -108,9 +108,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootSecurityMultiFilterChainOrderLabTest` / `BootSecurityDevProfileLabTest`
-- [√] Breakpoint Map：新增 `docs/security/springboot-security/part-00-guide/086-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/security/springboot-security/part-00-guide/086-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/security/springboot-security/appendix/092-90-common-pitfalls.md` + `docs/security/springboot-security/appendix/093-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/security/springboot-security/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/security/springboot-security/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/security/springboot-security/appendix/01-common-pitfalls.md` + `docs/security/springboot-security/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/security/springboot-security/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/084-security-mainline.md` + `helloagents/wiki/modules/springboot-security.md`
 - [√] 验证：`mvn -q -pl :springboot-security -Dtest=BootSecurityBranchMatrixLabTest test`
@@ -119,9 +119,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootTestingMockBeanLabTest` / `GreetingControllerWebMvcLabTest` / `GreetingControllerSpringBootLabTest`
-- [√] Breakpoint Map：新增 `docs/testing/springboot-testing/part-00-guide/184-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/testing/springboot-testing/part-00-guide/184-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/testing/springboot-testing/appendix/186-90-common-pitfalls.md` + `docs/testing/springboot-testing/appendix/187-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/testing/springboot-testing/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/testing/springboot-testing/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/testing/springboot-testing/appendix/01-common-pitfalls.md` + `docs/testing/springboot-testing/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/testing/springboot-testing/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/182-testing-mainline.md` + `helloagents/wiki/modules/springboot-testing.md`
 - [√] 验证：`mvn -q -pl :springboot-testing -Dtest=BootTestingBranchMatrixLabTest test`
@@ -130,9 +130,9 @@
 
 - [√] Branch Matrix：新增 `spring-boot-modules/springboot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBranchMatrixLabTest.java`
   - 选入分支最小集合：`BootBusinessCaseServiceLabTest`（必要时补充成功/失败路径对照）
-- [√] Breakpoint Map：新增 `docs/business-case/springboot-business-case/part-00-guide/190-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/business-case/springboot-business-case/part-00-guide/190-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/business-case/springboot-business-case/appendix/192-90-common-pitfalls.md` + `docs/business-case/springboot-business-case/appendix/193-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/business-case/springboot-business-case/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/business-case/springboot-business-case/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/business-case/springboot-business-case/appendix/01-common-pitfalls.md` + `docs/business-case/springboot-business-case/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/business-case/springboot-business-case/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/188-business-case.md` + `helloagents/wiki/modules/springboot-business-case.md`
 - [√] 验证：`mvn -q -pl :springboot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
@@ -145,9 +145,9 @@
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansIocBranchMatrixLabTest.java`
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansInternalsBranchMatrixLabTest.java`
   - 选入分支最小集合（示例）：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
-- [√] Breakpoint Map：对齐/增强 `docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md` 到统一模板
-- [√] Branch Decision Matrix：新增 `docs/beans/spring-core-beans/part-00-guide/011-04-branch-decision-matrix.md`（引用上面的多个 Branch Matrix 入口）
-- [√] Playbook：对齐 `docs/beans/spring-core-beans/appendix/025-90-common-pitfalls.md` + `docs/beans/spring-core-beans/appendix/026-99-self-check.md`
+- [√] Breakpoint Map：对齐/增强 `docs/beans/spring-core-beans/part-00-guide/07-breakpoint-map.md` 到统一模板
+- [√] Branch Decision Matrix：新增 `docs/beans/spring-core-beans/part-00-guide/04-branch-decision-matrix.md`（引用上面的多个 Branch Matrix 入口）
+- [√] Playbook：对齐 `docs/beans/spring-core-beans/appendix/01-common-pitfalls.md` + `docs/beans/spring-core-beans/appendix/11-self-check.md`
 - [√] 模块 README：更新 `docs/beans/spring-core-beans/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/009-ioc-container-mainline.md` + `helloagents/wiki/modules/spring-core-beans.md`
 - [√] 验证：分别 spot-check 两个入口（`-Dtest=...`），再跑全仓 `mvn -q test`
@@ -159,9 +159,9 @@
   - `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part02_autoproxy_and_pointcuts/SpringCoreAopAutoProxyBranchMatrixLabTest.java`
   - `spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part03_proxy_stacking/SpringCoreAopStackingBranchMatrixLabTest.java`
   - 选入分支最小集合（示例）：`SpringCoreAopExposeProxyLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopRealWorldStackingLabTest`
-- [√] Breakpoint Map：新增 `docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md`（引用多个 Branch Matrix 入口）
-- [√] Playbook：对齐 `docs/aop/spring-core-aop/appendix/040-90-common-pitfalls.md` + `docs/aop/spring-core-aop/appendix/041-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/aop/spring-core-aop/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/aop/spring-core-aop/part-00-guide/05-branch-decision-matrix.md`（引用多个 Branch Matrix 入口）
+- [√] Playbook：对齐 `docs/aop/spring-core-aop/appendix/01-common-pitfalls.md` + `docs/aop/spring-core-aop/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/aop/spring-core-aop/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/027-aop-proxy-mainline.md` + `helloagents/wiki/modules/spring-core-aop.md`
 - [√] 验证：逐入口 spot-check + 全仓 `mvn -q test`
@@ -171,9 +171,9 @@
 - [√] Branch Matrix（按运行环境拆分）：新增 2 个入口，并用 assume/skip 保护“跑到错误 surefire execution 时不误失败”：
   - `spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjLtwBranchMatrixLabTest.java`
   - `spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part03_ctw_fundamentals/AspectjCtwBranchMatrixLabTest.java`
-- [√] Breakpoint Map：新增 `docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md`（必须写清：LTW 需要 `-javaagent`；CTW 要求无 `-javaagent`）
-- [√] Branch Decision Matrix：新增 `docs/aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md` + `docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/aop/spring-core-aop-weaving/part-00-guide/04-breakpoint-map.md`（必须写清：LTW 需要 `-javaagent`；CTW 要求无 `-javaagent`）
+- [√] Branch Decision Matrix：新增 `docs/aop/spring-core-aop-weaving/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/aop/spring-core-aop-weaving/appendix/01-common-pitfalls.md` + `docs/aop/spring-core-aop-weaving/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/aop/spring-core-aop-weaving/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（LTW/CTW + Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/042-aop-weaving-mainline.md` + `helloagents/wiki/modules/spring-core-aop-weaving.md`
 - [√] 验证：分别执行 `-Dtest=AspectjLtwBranchMatrixLabTest` 与 `-Dtest=AspectjCtwBranchMatrixLabTest`，并保证全仓 `mvn -q test` 通过
@@ -184,9 +184,9 @@
   - `spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxBranchMatrixLabTest.java`
   - 选入分支最小集合：`SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxPropagationMatrixLabTest`
   - 若要覆盖 appendix pitfall：新增 `spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/appendix/SpringCoreTxPitfallsBranchMatrixLabTest.java`（同包聚合）
-- [√] Breakpoint Map：新增 `docs/tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/tx/spring-core-tx/part-00-guide/053-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/tx/spring-core-tx/appendix/060-90-common-pitfalls.md` + `docs/tx/spring-core-tx/appendix/061-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/tx/spring-core-tx/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/tx/spring-core-tx/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/tx/spring-core-tx/appendix/01-common-pitfalls.md` + `docs/tx/spring-core-tx/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/tx/spring-core-tx/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/051-tx-mainline.md` + `helloagents/wiki/modules/spring-core-tx.md`
 - [√] 验证：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`（如有 pitfall 入口，追加 spot-check）
@@ -196,9 +196,9 @@
 - [√] Branch Matrix（拆分优先）：新增 2 个入口：
   - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsBasicsBranchMatrixLabTest.java`
   - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsAsyncTransactionalBranchMatrixLabTest.java`
-- [√] Breakpoint Map：新增 `docs/events/spring-core-events/part-00-guide/128-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/events/spring-core-events/part-00-guide/128-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/events/spring-core-events/appendix/136-90-common-pitfalls.md` + `docs/events/spring-core-events/appendix/137-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/events/spring-core-events/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/events/spring-core-events/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/events/spring-core-events/appendix/01-common-pitfalls.md` + `docs/events/spring-core-events/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/events/spring-core-events/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/126-events-mainline.md` + `helloagents/wiki/modules/spring-core-events.md`
 - [√] 验证：逐入口 spot-check + 全仓 `mvn -q test`
@@ -207,9 +207,9 @@
 
 - [√] Branch Matrix：新增 `spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/SpringCoreProfilesBranchMatrixLabTest.java`
   - 选入分支最小集合：`SpringCoreProfilesProfilePrecedenceLabTest`
-- [√] Breakpoint Map：新增 `docs/profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/profiles/spring-core-profiles/part-00-guide/151-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/profiles/spring-core-profiles/appendix/153-90-common-pitfalls.md` + `docs/profiles/spring-core-profiles/appendix/154-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/profiles/spring-core-profiles/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/profiles/spring-core-profiles/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/profiles/spring-core-profiles/appendix/01-common-pitfalls.md` + `docs/profiles/spring-core-profiles/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/profiles/spring-core-profiles/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/149-profiles-mainline.md` + `helloagents/wiki/modules/spring-core-profiles.md`
 - [√] 验证：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBranchMatrixLabTest test`
@@ -218,9 +218,9 @@
 
 - [√] Branch Matrix：新增 `spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesBranchMatrixLabTest.java`
   - 选入分支最小集合：`SpringCoreResourcesMechanicsLabTest`
-- [√] Breakpoint Map：新增 `docs/resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/resources/spring-core-resources/part-00-guide/140-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/resources/spring-core-resources/appendix/147-90-common-pitfalls.md` + `docs/resources/spring-core-resources/appendix/148-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/resources/spring-core-resources/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/resources/spring-core-resources/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/resources/spring-core-resources/appendix/01-common-pitfalls.md` + `docs/resources/spring-core-resources/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/resources/spring-core-resources/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/138-resources-mainline.md` + `helloagents/wiki/modules/spring-core-resources.md`
 - [√] 验证：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
@@ -229,9 +229,9 @@
 
 - [√] Branch Matrix：新增 `spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationBranchMatrixLabTest.java`
   - 选入分支最小集合：`SpringCoreValidationMechanicsLabTest`
-- [√] Breakpoint Map：新增 `docs/validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md`
-- [√] Branch Decision Matrix：新增 `docs/validation/spring-core-validation/part-00-guide/157-04-branch-decision-matrix.md`
-- [√] Playbook：对齐 `docs/validation/spring-core-validation/appendix/164-90-common-pitfalls.md` + `docs/validation/spring-core-validation/appendix/165-99-self-check.md`
+- [√] Breakpoint Map：新增 `docs/validation/spring-core-validation/part-00-guide/04-breakpoint-map.md`
+- [√] Branch Decision Matrix：新增 `docs/validation/spring-core-validation/part-00-guide/05-branch-decision-matrix.md`
+- [√] Playbook：对齐 `docs/validation/spring-core-validation/appendix/01-common-pitfalls.md` + `docs/validation/spring-core-validation/appendix/02-self-check.md`
 - [√] 模块 README：更新 `docs/validation/spring-core-validation/README.md`，补齐“进阶入口：断点地图 / 关键分支矩阵 / 排障 playbook / 自检入口”，并补充对应可跑命令（Book/Branch Matrix）
 - [√] 入口联动：更新 `docs/book/155-validation-mainline.md` + `helloagents/wiki/modules/spring-core-validation.md`
 - [√] 验证：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`

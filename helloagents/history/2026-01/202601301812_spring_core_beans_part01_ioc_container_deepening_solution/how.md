@@ -31,7 +31,7 @@
 
 > 说明：下面每章给出“补充/完善/深入”的具体策略，强调的是“怎么把这一章变成可迁移能力”，而不是套固定检查清单。
 
-### 02-bean-registration.md（注册入口：扫描 / @Bean / @Import / registrar / programmatic）
+### 01-bean-registration.md（注册入口：扫描 / @Bean / @Import / registrar / programmatic）
 
 **补充（缺口补齐）**
 - 补齐 `BeanDefinition` 的关键字段如何被不同入口写入：例如 `beanClassName` / `factoryMethodName` / `role` / `scope` / qualifiers / `autowireCandidate` 等，并说明“哪些字段能直接决定后续注入/代理/生命周期”。
@@ -45,7 +45,7 @@
 - 加深 `@Import` 的分叉：`ImportSelector`（返回类名清单） vs `ImportBeanDefinitionRegistrar`（直接操作 registry）在工程化扩展中的适用边界与风险。
 - 补齐“定义层注册 vs 实例层注册”的工程后果：`registerSingleton` 对 BPP/回调/代理的影响（为何慎用），给出最短证据链策略。
 
-### 014-03-dependency-injection-resolution.md（注入解析：候选收集 → 收敛 → 最终注入）
+### 02-dependency-injection-resolution.md（注入解析：候选收集 → 收敛 → 最终注入）
 
 **补充（缺口补齐）**
 - 把“注入点元数据”拉到台前：字段注入 vs 构造器/方法参数注入点的差异（Field vs `MethodParameter`），并明确它会影响泛型保真度、注解集合、参数名可见性等。
@@ -59,7 +59,7 @@
 - 补齐“泛型匹配为什么不稳定”的迁移策略：如何从 `ResolvableType` 与 class metadata 解释“为什么有时能缩窄、有时不能”，并给出稳定的修复路径（显式限定/拆分类型/避免擦除陷阱）。
 - 补齐“FactoryBean product 参与按类型查找”的交叉提醒：候选集合里出现的类型有时来自 `getObjectType()`，错误实现会直接污染注入解析。
 
-### 015-04-scope-and-prototype.md（Scope / prototype 注入陷阱）
+### 03-scope-and-prototype.md（Scope / prototype 注入陷阱）
 
 **补充（缺口补齐）**
 - 把 scoped proxy 的双 Bean 名语义讲透：`beanName`（proxy）与 `scopedTarget.beanName`（target）并存；补齐 `ScopedProxyMode.INTERFACES/TARGET_CLASS/NO` 的语义差异与排障证据链。
@@ -72,7 +72,7 @@
 **深入（进阶与真实世界）**
 - 补齐“自定义 Scope”在工程中的关键点：注册位置、存储策略、回收策略与线程/请求边界，明确哪些问题属于 scope 设计而不是容器 bug。
 
-### 016-05-lifecycle-and-callbacks.md（生命周期：初始化/销毁/回调）
+### 04-lifecycle-and-callbacks.md（生命周期：初始化/销毁/回调）
 
 **补充（缺口补齐）**
 - 明确 `@PostConstruct/@PreDestroy` 的触发者与窗口：它们是 BPP 触发的，并分别落在初始化链与销毁链；补齐“为什么不是语法魔法”的解释抓手。
@@ -85,7 +85,7 @@
 **深入（进阶与真实世界）**
 - 细化“容器级生命周期”与“Bean 级生命周期”的选型：`SmartInitializingSingleton` / `SmartLifecycle` / 事件（例如 `ContextRefreshedEvent`）各自的适用边界与常见误用。
 
-### 017-06-post-processors.md（扩展点：BFPP / BPP / BDRPP）
+### 05-post-processors.md（扩展点：BFPP / BPP / BDRPP）
 
 **补充（缺口补齐）**
 - 用“介入点地图”补齐 BPP 的真实能力：实例化前短路、early reference、merged definition、销毁前回调四类能力与各自风险。
@@ -98,7 +98,7 @@
 **深入（进阶与真实世界）**
 - 补齐“为什么某个 bean 会错过某些 BPP”的排障策略：创建时机与 BPP 链装载时机不一致时，如何用断点与关键变量证明。
 
-### 018-07-configuration-enhancement.md（`@Configuration` 增强与 `@Bean` 语义）
+### 06-configuration-enhancement.md（`@Configuration` 增强与 `@Bean` 语义）
 
 **补充（缺口补齐）**
 - 补齐“方法参数注入不依赖增强”的证明路径：`@Bean` 工厂方法参数解析会构造注入点元数据（`MethodParameter`），即使 `proxyBeanMethods=false` 也走标准依赖解析。
@@ -111,7 +111,7 @@
 **深入（进阶与真实世界）**
 - 补齐与循环依赖/代理的交叉：配置类增强与 early reference、AOP 代理替换发生点之间如何相互影响（给出“如何证明”的路径）。
 
-### 08-factorybean.md（FactoryBean：product vs factory）
+### 07-factorybean.md（FactoryBean：product vs factory）
 
 **补充（缺口补齐）**
 - 补齐“类型匹配来自哪”的关键点：product 的类型往往来自 `getObjectType()`；错误实现会导致按类型注入/查找异常与候选污染。
@@ -123,7 +123,7 @@
 **深入（进阶与真实世界）**
 - 补齐与代理/循环依赖交叉的排障策略：FactoryBean 既可能制造 proxy，也可能参与循环依赖救援窗口；需要明确它在 `doGetBean` 的分支位置与证据链。
 
-### 09-circular-dependencies.md（循环依赖：三级缓存、early reference、工程规避）
+### 08-circular-dependencies.md（循环依赖：三级缓存、early reference、工程规避）
 
 **补充（缺口补齐）**
 - 补齐“救援窗口”的方法级定位：early exposure 发生在 `doCreateBean` 的哪一步；把“能救/不能救”落到构造器 vs setter、prototype vs singleton 的边界解释。
@@ -136,7 +136,7 @@
 **深入（进阶与真实世界）**
 - 补齐配置项与默认策略对照：`allowCircularReferences` / `allowRawInjectionDespiteWrapping` 的工程后果（强调“默认能跑”不等于“可维护”）。
 
-### 020-01-bean-mental-model.md（Bean 心智模型：Definition/Instance/Exposed）
+### 09-bean-mental-model.md（Bean 心智模型：Definition/Instance/Exposed）
 
 **补充（缺口补齐）**
 - 补齐“能注入但不是 Bean”的边界：ResolvableDependency 与外部对象（`AutowireCapableBeanFactory`）如何进入注入链路，避免误判为“没注册”。

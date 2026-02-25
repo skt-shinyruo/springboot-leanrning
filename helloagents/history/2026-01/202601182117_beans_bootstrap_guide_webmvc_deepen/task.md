@@ -5,18 +5,18 @@ Directory: `helloagents/plan/202601182117_beans_bootstrap_guide_webmvc_deepen/`
 ---
 
 ## 1. spring-core-beans：主线章（18）继续下压到关键分支
-- [√] 1.1 在 `docs/beans/spring-core-modules/spring-core-beans/part-03-container-internals/18-refresh-to-bean-creation-mainline.md` 补齐 `finishBeanFactoryInitialization` 的关键动作与伪代码（含 `preInstantiateSingletons` + `afterSingletonsInstantiated`），明确关键分支与必看变量，对应 Lab：`SpringCoreBeansPreInstantiationLabTest`
+- [√] 1.1 在 `docs/beans/spring-core-modules/spring-core-beans/part-03-container-internals/07-refresh-to-bean-creation-mainline.md` 补齐 `finishBeanFactoryInitialization` 的关键动作与伪代码（含 `preInstantiateSingletons` + `afterSingletonsInstantiated`），明确关键分支与必看变量，对应 Lab：`SpringCoreBeansPreInstantiationLabTest`
 - [√] 1.2 在同章补齐 `doGetBean` 的关键分支：`dependsOn`、parent factory fallback、prototype guard（`beforePrototypeCreation/afterPrototypeCreation`），并绑定对应 Lab：`SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest`
 
 ## 2. spring-core-beans：bootstrap 章（022）补齐“处理器表 + 时间线”
-- [√] 2.1 在 `docs/beans/spring-core-modules/spring-core-beans/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md` 新增“注解能力处理器表”：功能→处理器→类型（BDRPP/BFPP/BPP）→关键方法→refresh 阶段，并绑定 Lab：`SpringCoreBeansBootstrapInternalsLabTest`
+- [√] 2.1 在 `docs/beans/spring-core-modules/spring-core-beans/part-03-container-internals/01-container-bootstrap-and-infrastructure.md` 新增“注解能力处理器表”：功能→处理器→类型（BDRPP/BFPP/BPP）→关键方法→refresh 阶段，并绑定 Lab：`SpringCoreBeansBootstrapInternalsLabTest`
 - [√] 2.2 在同章新增“时机时间线”：定义层注册 → BFPP/BDRPP 执行 → BPP 注册 → bean 创建链路命中；补齐“过早 getBean 的反例”落点与证据链（可引用 registry/BPP ordering 相关 Lab）
 
 ## 3. spring-core-beans：深挖指南（011）升级为“症状驱动导航”
-- [√] 3.1 在 `docs/beans/spring-core-modules/spring-core-beans/part-00-guide/011-00-deep-dive-guide.md` 新增“按现象选章节”速查表（现象→章节→断点→LabTest），并显式引用主线章 18 与 bootstrap 章 022
+- [√] 3.1 在 `docs/beans/spring-core-modules/spring-core-beans/part-00-guide/03-deep-dive-guide.md` 新增“按现象选章节”速查表（现象→章节→断点→LabTest），并显式引用主线章 18 与 bootstrap 章 022
 
 ## 4. springboot-web-mvc：主链路（067）补齐 ERROR vs ASYNC dispatch 对照
-- [√] 4.1 在 `docs/web-mvc/spring-boot-modules/springboot-web-mvc/part-03-web-mvc-internals/067-01-dispatcherservlet-call-chain.md` 增补 ERROR dispatch 时间线（DispatcherType.ERROR）与 `/error` 关键落点，并与 ASYNC 时间线并排对照
+- [√] 4.1 在 `docs/web-mvc/spring-boot-modules/springboot-web-mvc/part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md` 增补 ERROR dispatch 时间线（DispatcherType.ERROR）与 `/error` 关键落点，并与 ASYNC 时间线并排对照
 - [√] 4.2 在同章增加“现象→阶段→关键方法→证据链”速查表（至少覆盖：FilterChain 异常、resolver 未处理回落 /error、async 两次 dispatch），绑定 Lab：`BootWebMvcTraceLabTest` / `BootWebMvcSpringBootLabTest` / `BootWebMvcViewSpringBootLabTest`
 
 ## 5. Security Check

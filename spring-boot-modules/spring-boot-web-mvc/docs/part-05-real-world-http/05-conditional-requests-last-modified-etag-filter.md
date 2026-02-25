@@ -1,9 +1,9 @@
-# 05：条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）
+# 05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）
 
 ## 导读
 
-- 本章主题：**05：条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）**
-- 目标：把“为什么我明明点了刷新却拿到 304”讲清楚：条件请求不是 bug，而是 HTTP 协议的正常分支；并用测试把静态资源与 API 的两条路径固定下来。
+本章围绕「05：条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
@@ -86,7 +86,7 @@ Filter 会在响应写回时：
 
 - Lab：`BootWebMvcRealWorldHttpLabTest`
 
-上一章：[part-05-real-world-http/04-static-resources-and-cache.md](04-static-resources-and-cache.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-06-async-sse/01-servlet-async-and-testing.md](../part-06-async-sse/079-01-servlet-async-and-testing.md)
+上一章：[part-05-real-world-http/04-static-resources-and-cache.md](04-static-resources-and-cache.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-06-async-sse/01-servlet-async-and-testing.md](../part-06-async-sse/01-servlet-async-and-testing.md)
 
 <!-- BOOKIFY:END -->
 

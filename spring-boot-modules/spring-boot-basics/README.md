@@ -49,9 +49,9 @@ mvn -pl :spring-boot-basics test
 
 （docs 目录页：[`docs/README.md`](docs/README.md)）
 
-1. [配置来源与 Profile 覆盖](docs/part-01-boot-basics/005-01-property-sources-and-profiles.md)
-2. [`@ConfigurationProperties` 绑定与类型转换](docs/part-01-boot-basics/006-02-configuration-properties-binding.md)
-3. [常见坑清单](docs/appendix/007-90-common-pitfalls.md)
+1. [配置来源与 Profile 覆盖](docs/part-01-boot-basics/01-property-sources-and-profiles.md)
+2. [`@ConfigurationProperties` 绑定与类型转换](docs/part-01-boot-basics/02-configuration-properties-binding.md)
+3. [常见坑清单](docs/appendix/01-common-pitfalls.md)
 
 对应的可运行实验（先跑后读）：
 - `src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java`
@@ -62,10 +62,10 @@ mvn -pl :spring-boot-basics test
 
 | 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
 | --- | --- | --- | --- |
-| 默认配置加载 | [docs/part-01/01](docs/part-01-boot-basics/005-01-property-sources-and-profiles.md) | `BootBasicsDefaultLabTest` + `application.properties` | 默认 profile 与配置值来自哪里 |
-| Profile 覆盖 | [docs/part-01/01](docs/part-01-boot-basics/005-01-property-sources-and-profiles.md) | `BootBasicsDevLabTest` + `application-dev.properties` | 为什么 dev 能覆盖默认配置 |
-| 测试级覆盖优先级 | [docs/part-01/01](docs/part-01-boot-basics/005-01-property-sources-and-profiles.md) | `BootBasicsOverrideLabTest` | 为什么测试 properties 能覆盖文件配置 |
-| 绑定与类型转换 | [docs/part-01/02](docs/part-01-boot-basics/006-02-configuration-properties-binding.md) | `AppProperties` + `BootBasicsDefaultLabTest` | string 配置如何变成 boolean/其他类型 |
+| 默认配置加载 | [docs/part-01/01](docs/part-01-boot-basics/01-property-sources-and-profiles.md) | `BootBasicsDefaultLabTest` + `application.properties` | 默认 profile 与配置值来自哪里 |
+| Profile 覆盖 | [docs/part-01/01](docs/part-01-boot-basics/01-property-sources-and-profiles.md) | `BootBasicsDevLabTest` + `application-dev.properties` | 为什么 dev 能覆盖默认配置 |
+| 测试级覆盖优先级 | [docs/part-01/01](docs/part-01-boot-basics/01-property-sources-and-profiles.md) | `BootBasicsOverrideLabTest` | 为什么测试 properties 能覆盖文件配置 |
+| 绑定与类型转换 | [docs/part-01/02](docs/part-01-boot-basics/02-configuration-properties-binding.md) | `AppProperties` + `BootBasicsDefaultLabTest` | string 配置如何变成 boolean/其他类型 |
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

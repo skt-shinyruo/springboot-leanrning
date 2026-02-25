@@ -4,7 +4,7 @@
 
 ### 40. AOT / Native 总览：为什么 JVM 能跑 ≠ Native 能跑
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/01-aot-and-native-overview.md`
 - 内容级加深策略：
   - A：补“失败分型→缺口类型”的证据链：反射/代理/资源/序列化分别对应什么提示。
   - B：补反例：盲目全量放开反射的风险（安全/体积/可维护性）。
@@ -14,7 +14,7 @@
 
 ### 41. RuntimeHints 入门：把构建期契约跑通
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/41-runtimehints-basics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/02-runtimehints-basics.md`
 - 内容级加深策略：
   - A：补“Registrar 注册→测试断言”的证据链范式（把契约钉死）。
   - B：补反例：把 hints 当 JSON 配置到处贴导致漂移；过度开放反射导致安全面扩大。
@@ -24,7 +24,7 @@
 
 ### 42. XML → BeanDefinitionReader：定义层解析与错误分型
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/03-xml-bean-definition-reader.md`
 - 内容级加深策略：
   - A：补“Resource→Reader→registerBeanDefinition”的最短证据链与关键入口。
   - B：补反例：schema 不匹配/namespace 扩展缺失/属性类型转换失败的误判对照。
@@ -34,7 +34,7 @@
 
 ### 43. 容器外对象注入：AutowireCapableBeanFactory
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/04-autowirecapablebeanfactory-external-objects.md`
 - 内容级加深策略：
   - A：补“外部对象注入的能力边界”证据链：能做什么、不能做什么（生命周期/代理/销毁）。
   - B：补反例：误以为外部对象等同容器托管导致的资源泄漏与代理不生效。
@@ -44,7 +44,7 @@
 
 ### 44. SpEL 与 `@Value(\"#{...}\")`：表达式解析链路
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/44-spel-and-value-expression.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/05-spel-and-value-expression.md`
 - 内容级加深策略：
   - A：补“解析→求值→注入”的证据链与关键入口方法，并与 ${} 占位符对照。
   - B：补反例：表达式注入风险、把 SpEL 与占位符混用导致误诊。
@@ -54,7 +54,7 @@
 
 ### 45. 自定义 Qualifier：meta-annotation 与候选收敛
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/06-custom-qualifier-meta-annotation.md`
 - 内容级加深策略：
   - A：补“Qualifier 决策发生点”的证据链：最终由哪个 resolver 判定命中。
   - B：补反例：多个 Qualifier 叠加、meta 嵌套过深导致可读性差与误命中。
@@ -64,7 +64,7 @@
 
 ### 46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/46-xml-namespace-extension.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/07-xml-namespace-extension.md`
 - 内容级加深策略：
   - A：补“namespace resolution→handler→parser→BeanDefinition”的证据链。
   - B：补反例：spring.handlers 缺失、schemaLocation 错误、parser 抛错的分型。
@@ -74,7 +74,7 @@
 
 ### 47. BeanDefinitionReader：Properties / Groovy 等其他输入
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/47-beandefinitionreader-other-inputs-properties-groovy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/08-beandefinitionreader-other-inputs-properties-groovy.md`
 - 内容级加深策略：
   - A：补“输入层对比”并强调共同落点：最终都落到 BeanDefinition 与注册表。
   - B：补反例：格式错误/类型转换失败/引用不存在的分型。
@@ -84,7 +84,7 @@
 
 ### 48. 方法注入：replaced-method / MethodReplacer
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/48-method-injection-replaced-method.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/09-method-injection-replaced-method.md`
 - 内容级加深策略：
   - A：补“它如何实现”的证据链：CGLIB 子类与方法拦截发生点。
   - B：补反例：final 限制、代理叠加、AOT 下的限制与 hint 需求。
@@ -94,7 +94,7 @@
 
 ### 49. 内置 FactoryBean 图鉴
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/49-built-in-factorybeans-gallery.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/10-built-in-factorybeans-gallery.md`
 - 内容级加深策略：
   - A：按“行为模型”补证据链：反射调用型/服务定位型/代理生成型分别在哪个窗口替换最终对象。
   - B：补反例：把它们当普通 bean 导致的类型误判与调试困难。
@@ -104,7 +104,7 @@
 
 ### 50. PropertyEditor 与值解析：值从定义层落到对象
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-05-aot-and-real-world/11-property-editor-and-value-resolution.md`
 - 内容级加深策略：
   - A：补“BeanDefinitionValueResolver→convertIfNecessary”的完整证据链，并与占位符/SpEL/转换三连对齐。
   - B：补反例：值看似解析但其实占位符没解析；editor 与 converter 混用导致行为不一致。

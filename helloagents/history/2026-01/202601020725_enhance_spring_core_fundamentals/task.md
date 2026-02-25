@@ -25,10 +25,10 @@ Directory: `helloagents/plan/202601020725_enhance_spring_core_fundamentals/`
 - [√] 1.16 把新增面试点“插入到正文对应小节”（禁止新建独立面试题汇总文档）：定义统一格式（题目/追问/复现入口），并在各章节中按主题落位（验证：why.md「Requirement: 面试导向知识点沉淀到正文…」）
 - [√] 1.17 在 `docs/beans/spring-core-beans/01-bean-mental-model.md` 的 “BeanFactory vs ApplicationContext：责任边界” 小节**正文中**插入面试块：题目 + 追问（refresh 关联、能力边界）+ 复现入口（优先复用 `SpringCoreBeansBootstrapInternalsLabTest`；若不足则新增最小 Lab 并补链接）
 - [√] 1.18 在 `docs/beans/spring-core-beans/03-dependency-injection-resolution.md` 的“候选收集/候选收敛”附近插入面试块：题目 + 追问（`findAutowireCandidates`/`determineAutowireCandidate`/泛型匹配）+ 复现入口（`SpringCoreBeansBeanGraphDebugLabTest`、`SpringCoreBeansAutowireCandidateSelectionLabTest`）
-- [√] 1.19 在 `docs/beans/spring-core-beans/33-autowire-candidate-selection-primary-priority-order.md` 的“单注入 vs 集合注入规则差异”附近插入面试块：题目 + 追问（`@Order` 不能解决单注入歧义、集合排序）+ 复现入口（`SpringCoreBeansAutowireCandidateSelectionLabTest`）
+- [√] 1.19 在 `docs/beans/spring-core-beans/16-autowire-candidate-selection-primary-priority-order.md` 的“单注入 vs 集合注入规则差异”附近插入面试块：题目 + 追问（`@Order` 不能解决单注入歧义、集合排序）+ 复现入口（`SpringCoreBeansAutowireCandidateSelectionLabTest`）
 - [√] 1.20 在 `docs/beans/spring-core-beans/05-lifecycle-and-callbacks.md` 的 Aware 小节**正文中**插入面试块：题目 + 追问（谁调用 Aware、发生在注入/初始化链路哪个阶段）+ 复现入口（`SpringCoreBeansLifecycleCallbackOrderLabTest`）
-- [√] 1.21 在 `docs/beans/spring-core-beans/16-early-reference-and-circular.md` 的 early reference / 三级缓存解释段落中插入面试块：题目 + 追问（构造器 vs setter、三级缓存的“工厂”意义、代理为何让问题更复杂）+ 复现入口（`SpringCoreBeansEarlyReferenceLabTest`、`SpringCoreBeansContainerLabTest`）
-- [√] 1.22 在 `docs/beans/spring-core-beans/31-proxying-phase-bpp-wraps-bean.md` 的“替换为 proxy 的阶段/影响”段落中插入面试块：题目 + 追问（JDK vs CGLIB、按实现类获取失败、定位哪个 BPP 替换对象）+ 复现入口（`SpringCoreBeansBeanCreationTraceLabTest`、`SpringCoreBeansProxyingPhaseLabTest`）
+- [√] 1.21 在 `docs/beans/spring-core-beans/05-early-reference-and-circular.md` 的 early reference / 三级缓存解释段落中插入面试块：题目 + 追问（构造器 vs setter、三级缓存的“工厂”意义、代理为何让问题更复杂）+ 复现入口（`SpringCoreBeansEarlyReferenceLabTest`、`SpringCoreBeansContainerLabTest`）
+- [√] 1.22 在 `docs/beans/spring-core-beans/14-proxying-phase-bpp-wraps-bean.md` 的“替换为 proxy 的阶段/影响”段落中插入面试块：题目 + 追问（JDK vs CGLIB、按实现类获取失败、定位哪个 BPP 替换对象）+ 复现入口（`SpringCoreBeansBeanCreationTraceLabTest`、`SpringCoreBeansProxyingPhaseLabTest`）
 - [√] 1.23 若 1.17/1.21/1.22 出现“缺少可复现入口”的情况，新增最小 Lab（单主题、稳定断言）并在对应章节正文中引用该 Lab；新增 Lab 命名必须体现主题（例如 `...BeanFactoryVsApplicationContextLabTest` / `...ThreeLevelCacheLabTest` / `...ProxyTypePitfallsLabTest`）
 
 ## 2. spring-core-aop

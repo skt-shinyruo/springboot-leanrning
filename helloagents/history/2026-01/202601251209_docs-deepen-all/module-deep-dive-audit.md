@@ -10,8 +10,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/beans/spring-core-beans/README.md`
-- ✅ 主线时间线：`docs/beans/spring-core-beans/part-00-guide/010-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/beans/spring-core-beans/part-00-guide/013-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/beans/spring-core-beans/part-00-guide/02-mainline-timeline.md`
+- ✅ 断点地图：`docs/beans/spring-core-beans/part-00-guide/07-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
@@ -26,8 +26,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/aop/spring-core-aop/README.md`
-- ✅ 主线时间线：`docs/aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/aop/spring-core-aop/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/aop/spring-core-aop/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopBookMatrixLabTest.java`
@@ -42,8 +42,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/aop/spring-core-aop-weaving/README.md`
-- ✅ 主线时间线：`docs/aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/aop/spring-core-aop-weaving/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/aop/spring-core-aop-weaving/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-aop-weaving/src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjLtwBranchMatrixLabTest.java`
@@ -58,8 +58,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/tx/spring-core-tx/README.md`
-- ✅ 主线时间线：`docs/tx/spring-core-tx/part-00-guide/052-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/tx/spring-core-tx/part-00-guide/053-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/tx/spring-core-tx/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/tx/spring-core-tx/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/appendix/SpringCoreTxPitfallsBranchMatrixLabTest.java`
@@ -74,8 +74,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/events/spring-core-events/README.md`
-- ✅ 主线时间线：`docs/events/spring-core-events/part-00-guide/127-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/events/spring-core-events/part-00-guide/128-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/events/spring-core-events/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/events/spring-core-events/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsBasicsBranchMatrixLabTest.java`
@@ -90,8 +90,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/resources/spring-core-resources/README.md`
-- ✅ 主线时间线：`docs/resources/spring-core-resources/part-00-guide/139-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/resources/spring-core-resources/part-00-guide/140-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/resources/spring-core-resources/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/resources/spring-core-resources/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-resources/src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesBookMatrixLabTest.java`
@@ -106,8 +106,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/profiles/spring-core-profiles/README.md`
-- ✅ 主线时间线：`docs/profiles/spring-core-profiles/part-00-guide/150-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/profiles/spring-core-profiles/part-00-guide/151-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/profiles/spring-core-profiles/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/profiles/spring-core-profiles/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-profiles/src/test/java/com/learning/springboot/springcoreprofiles/part01_profiles/SpringCoreProfilesBookMatrixLabTest.java`
@@ -122,8 +122,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/validation/spring-core-validation/README.md`
-- ✅ 主线时间线：`docs/validation/spring-core-validation/part-00-guide/156-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/validation/spring-core-validation/part-00-guide/157-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/validation/spring-core-validation/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/validation/spring-core-validation/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationBookMatrixLabTest.java`
@@ -138,8 +138,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/web-mvc/spring-boot-web-mvc/README.md`
-- ✅ 主线时间线：`docs/web-mvc/spring-boot-web-mvc/part-00-guide/063-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/web-mvc/spring-boot-web-mvc/part-00-guide/066-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/web-mvc/spring-boot-web-mvc/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/web-mvc/spring-boot-web-mvc/part-00-guide/06-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java`
@@ -154,8 +154,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/security/spring-boot-security/README.md`
-- ✅ 主线时间线：`docs/security/spring-boot-security/part-00-guide/085-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/security/spring-boot-security/part-00-guide/086-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/security/spring-boot-security/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/security/spring-boot-security/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java`
@@ -170,8 +170,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/data-jpa/spring-boot-data-jpa/README.md`
-- ✅ 主线时间线：`docs/data-jpa/spring-boot-data-jpa/part-00-guide/095-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/data-jpa/spring-boot-data-jpa/part-00-guide/096-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/data-jpa/spring-boot-data-jpa/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/data-jpa/spring-boot-data-jpa/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java`
@@ -186,8 +186,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/cache/spring-boot-cache/README.md`
-- ✅ 主线时间线：`docs/cache/spring-boot-cache/part-00-guide/107-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/cache/spring-boot-cache/part-00-guide/108-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/cache/spring-boot-cache/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/cache/spring-boot-cache/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java`
@@ -202,8 +202,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/async-scheduling/spring-boot-async-scheduling/README.md`
-- ✅ 主线时间线：`docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/117-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/118-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java`
@@ -218,8 +218,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/actuator/spring-boot-actuator/README.md`
-- ✅ 主线时间线：`docs/actuator/spring-boot-actuator/part-00-guide/167-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/actuator/spring-boot-actuator/part-00-guide/168-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/actuator/spring-boot-actuator/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/actuator/spring-boot-actuator/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBookMatrixLabTest.java`
@@ -234,8 +234,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/testing/spring-boot-testing/README.md`
-- ✅ 主线时间线：`docs/testing/spring-boot-testing/part-00-guide/183-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/testing/spring-boot-testing/part-00-guide/184-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/testing/spring-boot-testing/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/testing/spring-boot-testing/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java`
@@ -250,8 +250,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/business-case/spring-boot-business-case/README.md`
-- ✅ 主线时间线：`docs/business-case/spring-boot-business-case/part-00-guide/189-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/business-case/spring-boot-business-case/part-00-guide/190-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/business-case/spring-boot-business-case/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/business-case/spring-boot-business-case/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-business-case/src/test/java/com/learning/springboot/bootbusinesscase/part01_business_case/BootBusinessCaseBookMatrixLabTest.java`
@@ -266,8 +266,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/autoconfig/spring-boot-autoconfiguration/README.md`
-- ✅ 主线时间线：`docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/194-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/195-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-autoconfiguration/src/test/java/com/learning/springboot/bootautoconfiguration/part00_guide/BootAutoConfigurationBookMatrixLabTest.java`
@@ -282,8 +282,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/logging/spring-boot-logging/README.md`
-- ✅ 主线时间线：`docs/logging/spring-boot-logging/part-00-guide/199-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/logging/spring-boot-logging/part-00-guide/200-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/logging/spring-boot-logging/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/logging/spring-boot-logging/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingBookMatrixLabTest.java`
@@ -298,8 +298,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/observability/spring-boot-observability/README.md`
-- ✅ 主线时间线：`docs/observability/spring-boot-observability/part-00-guide/204-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/observability/spring-boot-observability/part-00-guide/205-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/observability/spring-boot-observability/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/observability/spring-boot-observability/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityBookMatrixLabTest.java`
@@ -314,8 +314,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/web-client/spring-boot-web-client/README.md`
-- ✅ 主线时间线：`docs/web-client/spring-boot-web-client/part-00-guide/173-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/web-client/spring-boot-web-client/part-00-guide/174-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/web-client/spring-boot-web-client/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/web-client/spring-boot-web-client/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBookMatrixLabTest.java`
@@ -330,8 +330,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/spel/spring-core-spel/README.md`
-- ✅ 主线时间线：`docs/spel/spring-core-spel/part-00-guide/209-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/spel/spring-core-spel/part-00-guide/210-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/spel/spring-core-spel/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/spel/spring-core-spel/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-core-modules/spring-core-spel/src/test/java/com/learning/springboot/springcorespel/part00_guide/SpringCoreSpelBookMatrixLabTest.java`
@@ -346,8 +346,8 @@
 
 ### Docs 入口
 - ✅ 目录页：`docs/basics/spring-boot-basics/README.md`
-- ✅ 主线时间线：`docs/basics/spring-boot-basics/part-00-guide/003-03-mainline-timeline.md`
-- ✅ 断点地图：`docs/basics/spring-boot-basics/part-00-guide/004-02-breakpoint-map.md`
+- ✅ 主线时间线：`docs/basics/spring-boot-basics/part-00-guide/01-mainline-timeline.md`
+- ✅ 断点地图：`docs/basics/spring-boot-basics/part-00-guide/04-breakpoint-map.md`
 
 ### Tests 入口（可跑命令）
 - ✅ 最小可跑 Lab：`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java`
@@ -365,86 +365,86 @@
 ### Chapter Contract（章节契约）
 
 ```text
-[ISSUE] docs/actuator/spring-boot-actuator/appendix/170-90-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/actuator/spring-boot-actuator/appendix/171-99-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/167-03-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/167-03-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
-[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/168-00-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/168-01-actuator-endpoint-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/168-02-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/168-04-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/actuator/spring-boot-actuator/part-01-actuator/169-01-actuator-basics.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/appendix/040-90-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/appendix/041-99-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-00-guide/028-03-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
-[ISSUE] docs/aop/spring-core-aop/part-00-guide/029-00-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-00-guide/029-01-aop-invocation-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-00-guide/029-02-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-00-guide/029-04-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/030-01-aop-proxy-mental-model.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/031-02-jdk-vs-cglib.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/032-03-self-invocation.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/033-04-final-and-proxy-limits.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/034-05-expose-proxy.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/035-06-debugging.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/036-07-autoproxy-creator-mainline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/037-08-pointcut-expression-system.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-03-proxy-stacking/038-09-multi-proxy-stacking.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop/part-03-proxy-stacking/039-10-real-world-stacking-playbook.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/appendix/049-90-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/appendix/050-99-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/043-03-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
-[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/044-00-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/044-01-aspectj-weaving-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/044-02-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/044-04-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-01-mental-model/045-01-proxy-vs-weaving.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-02-ltw/046-02-ltw-basics.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-03-ctw/047-03-ctw-basics.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/aop/spring-core-aop-weaving/part-04-join-points/048-04-join-point-cookbook.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/appendix/124-90-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/appendix/125-99-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/117-03-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/117-03-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/118-00-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/118-01-async-and-scheduling-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/118-02-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/118-04-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/119-01-async-proxy-mental-model.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/120-02-executor-and-threading.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/121-03-exceptions.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/122-04-self-invocation.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/123-05-scheduling-basics.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/appendix/197-90-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/appendix/198-99-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/194-03-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/195-00-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/195-01-autoconfiguration-import-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/195-02-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/195-04-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-01-autoconfig-basics/196-01-conditional-and-backoff.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/appendix/007-90-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/appendix/008-99-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/part-00-guide/003-03-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/part-00-guide/003-03-mainline-timeline.md :: missing_global_nav :: 缺少 GLOBAL-BOOK-NAV marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-global-chapters.py（或后续统一导航脚本）
-[ISSUE] docs/basics/spring-boot-basics/part-00-guide/003-03-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
-[ISSUE] docs/basics/spring-boot-basics/part-00-guide/004-00-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/part-00-guide/004-01-springapplication-run-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/part-00-guide/004-02-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/part-00-guide/004-04-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/part-01-boot-basics/005-01-property-sources-and-profiles.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/basics/spring-boot-basics/part-01-boot-basics/006-02-configuration-properties-binding.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/beans/spring-core-beans/appendix/025-90-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/beans/spring-core-beans/appendix/026-99-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
-[ISSUE] docs/beans/spring-core-beans/appendix/91-glossary.md :: missing_chapter_card :: 缺少 CHAPTER-CARD marker（或 marker 不完整） :: 建议运行：python3 scripts/upsert-chapter-cards.py
-[ISSUE] docs/beans/spring-core-beans/appendix/91-glossary.md :: missing_global_nav :: 缺少 GLOBAL-BOOK-NAV marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-global-chapters.py（或后续统一导航脚本）
-[ISSUE] docs/beans/spring-core-beans/appendix/92-knowledge-map.md :: missing_chapter_card :: 缺少 CHAPTER-CARD marker（或 marker 不完整） :: 建议运行：python3 scripts/upsert-chapter-cards.py
-[ISSUE] docs/beans/spring-core-beans/appendix/92-knowledge-map.md :: missing_global_nav :: 缺少 GLOBAL-BOOK-NAV marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-global-chapters.py（或后续统一导航脚本）
-[ISSUE] docs/beans/spring-core-beans/appendix/93-interview-playbook.md :: missing_chapter_card :: 缺少 CHAPTER-CARD marker（或 marker 不完整） :: 建议运行：python3 scripts/upsert-chapter-cards.py
-[ISSUE] docs/beans/spring-core-beans/appendix/93-interview-playbook.md :: missing_global_nav :: 缺少 GLOBAL-BOOK-NAV marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-global-chapters.py（或后续统一导航脚本）
-[ISSUE] docs/beans/spring-core-beans/appendix/94-production-troubleshooting-checklist.md :: missing_chapter_card :: 缺少 CHAPTER-CARD marker（或 marker 不完整） :: 建议运行：python3 scripts/upsert-chapter-cards.py
+[ISSUE] docs/actuator/spring-boot-actuator/appendix/01-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/actuator/spring-boot-actuator/appendix/02-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/01-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/01-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
+[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/02-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/03-actuator-endpoint-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/04-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/actuator/spring-boot-actuator/part-00-guide/05-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/actuator/spring-boot-actuator/part-01-actuator/01-actuator-basics.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/appendix/01-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/appendix/02-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-00-guide/01-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-00-guide/01-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
+[ISSUE] docs/aop/spring-core-aop/part-00-guide/02-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-00-guide/03-aop-invocation-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-00-guide/04-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-00-guide/05-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/02-jdk-vs-cglib.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/03-self-invocation.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/04-final-and-proxy-limits.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/05-expose-proxy.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-01-proxy-fundamentals/06-debugging.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/01-autoproxy-creator-mainline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-02-autoproxy-and-pointcuts/02-pointcut-expression-system.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-03-proxy-stacking/01-multi-proxy-stacking.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop/part-03-proxy-stacking/02-real-world-stacking-playbook.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/appendix/01-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/appendix/02-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/01-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/01-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
+[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/02-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/03-aspectj-weaving-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/04-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-00-guide/05-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-01-mental-model/01-proxy-vs-weaving.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-02-ltw/01-ltw-basics.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-03-ctw/01-ctw-basics.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/aop/spring-core-aop-weaving/part-04-join-points/01-join-point-cookbook.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/appendix/01-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/appendix/02-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/01-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/01-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/02-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/03-async-and-scheduling-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/04-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-00-guide/05-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/01-async-proxy-mental-model.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/02-executor-and-threading.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/03-exceptions.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/04-self-invocation.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/async-scheduling/spring-boot-async-scheduling/part-01-async-scheduling/05-scheduling-basics.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/appendix/01-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/appendix/02-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/01-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/02-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/03-autoconfiguration-import-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/04-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-00-guide/05-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/autoconfig/spring-boot-autoconfiguration/part-01-autoconfig-basics/01-conditional-and-backoff.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/appendix/01-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/appendix/02-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/part-00-guide/01-mainline-timeline.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/part-00-guide/01-mainline-timeline.md :: missing_global_nav :: 缺少 GLOBAL-BOOK-NAV marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-global-chapters.py（或后续统一导航脚本）
+[ISSUE] docs/basics/spring-boot-basics/part-00-guide/01-mainline-timeline.md :: missing_bookify :: 缺少 BOOKIFY marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-docs.py
+[ISSUE] docs/basics/spring-boot-basics/part-00-guide/02-deep-dive-guide.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/part-00-guide/03-springapplication-run-call-chain.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/part-00-guide/04-breakpoint-map.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/part-00-guide/05-branch-decision-matrix.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/part-01-boot-basics/01-property-sources-and-profiles.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/basics/spring-boot-basics/part-01-boot-basics/02-configuration-properties-binding.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/beans/spring-core-beans/appendix/01-common-pitfalls.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/beans/spring-core-beans/appendix/11-self-check.md :: missing_card_fields :: 卡片缺字段：知识点, 怎么使用, 原理, 源码入口, 推荐 Lab :: 建议运行：python3 scripts/upsert-chapter-cards.py（会补齐字段）
+[ISSUE] docs/beans/spring-core-beans/appendix/02-glossary.md :: missing_chapter_card :: 缺少 CHAPTER-CARD marker（或 marker 不完整） :: 建议运行：python3 scripts/upsert-chapter-cards.py
+[ISSUE] docs/beans/spring-core-beans/appendix/02-glossary.md :: missing_global_nav :: 缺少 GLOBAL-BOOK-NAV marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-global-chapters.py（或后续统一导航脚本）
+[ISSUE] docs/beans/spring-core-beans/appendix/03-knowledge-map.md :: missing_chapter_card :: 缺少 CHAPTER-CARD marker（或 marker 不完整） :: 建议运行：python3 scripts/upsert-chapter-cards.py
+[ISSUE] docs/beans/spring-core-beans/appendix/03-knowledge-map.md :: missing_global_nav :: 缺少 GLOBAL-BOOK-NAV marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-global-chapters.py（或后续统一导航脚本）
+[ISSUE] docs/beans/spring-core-beans/appendix/04-interview-playbook.md :: missing_chapter_card :: 缺少 CHAPTER-CARD marker（或 marker 不完整） :: 建议运行：python3 scripts/upsert-chapter-cards.py
+[ISSUE] docs/beans/spring-core-beans/appendix/04-interview-playbook.md :: missing_global_nav :: 缺少 GLOBAL-BOOK-NAV marker（或 marker 不完整） :: 建议运行：python3 scripts/bookify-global-chapters.py（或后续统一导航脚本）
+[ISSUE] docs/beans/spring-core-beans/appendix/05-production-troubleshooting-checklist.md :: missing_chapter_card :: 缺少 CHAPTER-CARD marker（或 marker 不完整） :: 建议运行：python3 scripts/upsert-chapter-cards.py
 [ERROR] 检测到章节契约缺口，请按提示修复后重试。
 [CHECK] roots=[docs] files=391 checked=367 skipped=24 issues=528
 ```

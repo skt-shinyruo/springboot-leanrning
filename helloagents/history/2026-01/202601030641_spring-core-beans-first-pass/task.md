@@ -11,7 +11,7 @@ Directory: `helloagents/history/2026-01/202601030641_spring-core-beans-first-pas
 
 - [-] 1.1 跑 `SpringCoreBeansContainerLabTest#beanDefinitionIsNotTheBeanInstance`，写下你对“BeanDefinition vs instance”的 2 句解释（必须包含：定义层/实例层），验证 why.md#scenario-prove-definition--instance-lab--debugger
 - [-] 1.2 从 `AbstractApplicationContext#refresh` 下断点，逐步进入 BFPP/BPP 注册与执行位置，画出你自己的 6 步 refresh 粗粒度流程图（1 行/步即可），验证 why.md#scenario-observe-definitioninstance-mutation-points
-- [-] 1.3 阅读 `docs/beans/spring-core-beans/02-bean-registration.md`，跑 `SpringCoreBeansBootstrapInternalsLabTest`，列出 3 个“BeanDefinition 来源入口”并各写一句定位方法，验证 why.md#scenario-trace-where-beandefinition-comes-from
+- [-] 1.3 阅读 `docs/beans/spring-core-beans/01-bean-registration.md`，跑 `SpringCoreBeansBootstrapInternalsLabTest`，列出 3 个“BeanDefinition 来源入口”并各写一句定位方法，验证 why.md#scenario-trace-where-beandefinition-comes-from
 - [-] 1.4 跑 `SpringCoreBeansInjectionAmbiguityLabTest`，用 `@Primary` 与 `@Qualifier` 各修复一次歧义并解释差异，验证 why.md#scenario-resolve-ambiguity-deterministically
 - [-] 1.5 跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，回答：`@Order/@Priority/@Primary` 哪些影响“候选选择”，哪些只影响“排序/链路”，验证 why.md#scenario-resolve-ambiguity-deterministically
 - [-] 1.6 跑 `SpringCoreBeansLabTest` 中 prototype 相关用例，解释“prototype 注入 singleton 看起来像单例”的根因，并给出 1 个修复方案，验证 why.md#scenario-explain-prototype-injected-into-singleton

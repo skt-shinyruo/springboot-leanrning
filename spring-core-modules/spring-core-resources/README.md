@@ -38,13 +38,13 @@ mvn -pl :spring-core-resources test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-1. [`Resource` 抽象：为什么 Spring 不让你直接用 `File`？](docs/part-01-resource-abstraction/141-01-resource-abstraction.md)
-2. [classpath 路径：`classpath:data/x` vs `classpath:/data/x`](docs/part-01-resource-abstraction/142-02-classpath-locations.md)
-3. [`classpath*:` 与 pattern：为什么能扫到多个资源？](docs/part-01-resource-abstraction/143-03-classpath-star-and-pattern.md)
-4. [`getResource(...)` 的返回值：为什么它会返回不存在资源句柄？](docs/part-01-resource-abstraction/144-04-exists-and-handles.md)
-5. [读取资源：InputStream、编码与可观察性](docs/part-01-resource-abstraction/145-05-reading-and-encoding.md)
-6. [jar vs filesystem：为什么 IDE OK，打包后不行？](docs/part-01-resource-abstraction/146-06-jar-vs-filesystem.md)
-7. [常见坑清单（建议反复对照）](docs/appendix/147-90-common-pitfalls.md)
+1. [`Resource` 抽象：为什么 Spring 不让你直接用 `File`？](docs/part-01-resource-abstraction/01-resource-abstraction.md)
+2. [classpath 路径：`classpath:data/x` vs `classpath:/data/x`](docs/part-01-resource-abstraction/02-classpath-locations.md)
+3. [`classpath*:` 与 pattern：为什么能扫到多个资源？](docs/part-01-resource-abstraction/03-classpath-star-and-pattern.md)
+4. [`getResource(...)` 的返回值：为什么它会返回不存在资源句柄？](docs/part-01-resource-abstraction/04-exists-and-handles.md)
+5. [读取资源：InputStream、编码与可观察性](docs/part-01-resource-abstraction/05-reading-and-encoding.md)
+6. [jar vs filesystem：为什么 IDE OK，打包后不行？](docs/part-01-resource-abstraction/06-jar-vs-filesystem.md)
+7. [常见坑清单（建议反复对照）](docs/appendix/01-common-pitfalls.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -60,11 +60,11 @@ mvn -pl :spring-core-resources test
 
 | 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
 | --- | --- | --- | --- |
-| classpath 资源读取 | [docs/02](docs/part-01-resource-abstraction/142-02-classpath-locations.md) | `SpringCoreResourcesLabTest#readsClasspathResourceContent` | `Resource` 如何读取 classpath 内容 |
-| `classpath:` 是否需要 `/` | [docs/02](docs/part-01-resource-abstraction/142-02-classpath-locations.md) | `SpringCoreResourcesLabTest#supportsLeadingSlashInClasspathLocation` | 两种写法为什么都能工作 |
-| `classpath*:` pattern 扫描 | [docs/03](docs/part-01-resource-abstraction/143-03-classpath-star-and-pattern.md) | `SpringCoreResourcesMechanicsLabTest#classpathStarPatternLoadsResourcesFromClasspath` | 为什么能返回多个 Resource |
-| handle 与 exists | [docs/04](docs/part-01-resource-abstraction/144-04-exists-and-handles.md) | `SpringCoreResourcesMechanicsLabTest#getResourceReturnsAHandle_evenIfTheResourceDoesNotExist` | 为什么 getResource 不返回 null |
-| `getDescription()` 的 debug 价值 | [docs/05](docs/part-01-resource-abstraction/145-05-reading-and-encoding.md) | `SpringCoreResourcesMechanicsLabTest#resourceDescriptionsHelpWithDebugging` | 为什么 description 比 path 更可靠 |
+| classpath 资源读取 | [docs/02](docs/part-01-resource-abstraction/02-classpath-locations.md) | `SpringCoreResourcesLabTest#readsClasspathResourceContent` | `Resource` 如何读取 classpath 内容 |
+| `classpath:` 是否需要 `/` | [docs/02](docs/part-01-resource-abstraction/02-classpath-locations.md) | `SpringCoreResourcesLabTest#supportsLeadingSlashInClasspathLocation` | 两种写法为什么都能工作 |
+| `classpath*:` pattern 扫描 | [docs/03](docs/part-01-resource-abstraction/03-classpath-star-and-pattern.md) | `SpringCoreResourcesMechanicsLabTest#classpathStarPatternLoadsResourcesFromClasspath` | 为什么能返回多个 Resource |
+| handle 与 exists | [docs/04](docs/part-01-resource-abstraction/04-exists-and-handles.md) | `SpringCoreResourcesMechanicsLabTest#getResourceReturnsAHandle_evenIfTheResourceDoesNotExist` | 为什么 getResource 不返回 null |
+| `getDescription()` 的 debug 价值 | [docs/05](docs/part-01-resource-abstraction/05-reading-and-encoding.md) | `SpringCoreResourcesMechanicsLabTest#resourceDescriptionsHelpWithDebugging` | 为什么 description 比 path 更可靠 |
 
 ## 常见 Debug 路径
 

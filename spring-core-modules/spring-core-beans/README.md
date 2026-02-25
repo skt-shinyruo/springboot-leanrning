@@ -31,7 +31,7 @@
 
 可先参阅下列“答案先行”索引页（每个问题均绑定最短证据链：Lab + 断点 + watch list）：
 
-- `docs/part-00-guide/009-00-why-index.md`
+- `docs/part-00-guide/01-why-index.md`
 
 最短可运行入口（10 分钟闭环）：
 
@@ -83,13 +83,13 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 
 3) 进入深入分析（通过断点建立“阶段意识”，而非依赖记忆性规则）
 
-- 从这里开始读：[`docs/00-deep-dive-guide.md`](docs/part-00-guide/011-00-deep-dive-guide.md)
+- 从这里开始读：[`docs/00-deep-dive-guide.md`](docs/part-00-guide/03-deep-dive-guide.md)
 
 ## 团队内训（可直接用于授课）
 
 如需在团队内部开展一次“Spring Beans 机制与排障”主题分享，可选用本讲义作为授课材料（含 60/90/120 分钟课时脚本 + Labs/断点/互动题）：
 
-- `docs/appendix/99-team-training-kit.md`
+- `docs/appendix/10-team-training-kit.md`
 
 ## 学习路线（入门→进阶→深入）
 
@@ -173,13 +173,13 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 
 | 核心点 | 章节入口（Docs） | 推荐 Lab/Test |
 | --- | --- | --- |
-| 1. BeanDefinition 体系 | [01. Bean 心智模型](docs/part-01-ioc-container/020-01-bean-mental-model.md)、[22. BeanName 与 alias](docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)、[24. BeanDefinition 覆盖](docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md)、[35. MergedBeanDefinition](docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md) | `SpringCoreBeansContainerLabTest`、`SpringCoreBeansBeanNameAliasLabTest`、`SpringCoreBeansBeanDefinitionOverridingLabTest`、`SpringCoreBeansMergedBeanDefinitionLabTest` |
-| 2. Bean 创建全链路 | [18. refresh→doCreateBean 主线](docs/part-03-container-internals/18-refresh-to-bean-creation-mainline.md)、[30. 注入阶段](docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)、[05. 生命周期](docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md)、[17. 回调顺序](docs/part-03-container-internals/17-lifecycle-callback-order.md) | `SpringCoreBeansBeanCreationTraceLabTest`、`SpringCoreBeansInjectionPhaseLabTest`、`SpringCoreBeansLifecycleCallbackOrderLabTest` |
-| 3. 依赖解析与注入细节 | [03. 依赖注入解析](docs/part-01-ioc-container/014-03-dependency-injection-resolution.md)、[33. 候选选择与优先级](docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)、[37. 泛型匹配注入误区](docs/part-04-wiring-and-boundaries/37-generic-type-matching-pitfalls.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansInjectionAmbiguityLabTest`、`SpringCoreBeansAutowireCandidateSelectionLabTest`、`SpringCoreBeansOptionalInjectionLabTest` |
-| 4. 容器扩展点 | [06. PostProcessor 总览](docs/part-01-ioc-container/017-06-post-processors.md)、[13. BDRPP](docs/part-03-container-internals/13-bdrpp-definition-registration.md)、[14. 顺序（Ordering）](docs/part-03-container-internals/14-post-processor-ordering.md)、[15. 实例化前短路](docs/part-03-container-internals/15-pre-instantiation-short-circuit.md) | `SpringCoreBeansRegistryPostProcessorLabTest`、`SpringCoreBeansPostProcessorOrderingLabTest`、`SpringCoreBeansPreInstantiationLabTest`、`SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
-| 5. 作用域与代理 | [04. Scope 与 prototype](docs/part-01-ioc-container/015-04-scope-and-prototype.md)、[28. 自定义 Scope + scoped proxy](docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md)、[18. Lazy 语义](docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansCustomScopeLabTest`、`SpringCoreBeansLazyLabTest` |
-| 6. 循环依赖 | [09. 循环依赖](docs/part-01-ioc-container/09-circular-dependencies.md)、[16. early reference 与循环依赖](docs/part-03-container-internals/16-early-reference-and-circular.md) | `SpringCoreBeansCircularDependencyBoundaryLabTest`、`SpringCoreBeansEarlyReferenceLabTest`、`SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
-| 7. 类型转换与属性绑定 | [36. 类型转换](docs/part-04-wiring-and-boundaries/36-type-conversion-and-beanwrapper.md)、[50. PropertyEditor 与值解析](docs/part-05-aot-and-real-world/50-property-editor-and-value-resolution.md) | `SpringCoreBeansTypeConversionLabTest`、`SpringCoreBeansValuePlaceholderResolutionLabTest` |
+| 1. BeanDefinition 体系 | [01. Bean 心智模型](docs/part-01-ioc-container/09-bean-mental-model.md)、[22. BeanName 与 alias](docs/part-04-wiring-and-boundaries/05-bean-names-and-aliases.md)、[24. BeanDefinition 覆盖](docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md)、[35. MergedBeanDefinition](docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md) | `SpringCoreBeansContainerLabTest`、`SpringCoreBeansBeanNameAliasLabTest`、`SpringCoreBeansBeanDefinitionOverridingLabTest`、`SpringCoreBeansMergedBeanDefinitionLabTest` |
+| 2. Bean 创建全链路 | [18. refresh→doCreateBean 主线](docs/part-03-container-internals/07-refresh-to-bean-creation-mainline.md)、[30. 注入阶段](docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md)、[05. 生命周期](docs/part-01-ioc-container/04-lifecycle-and-callbacks.md)、[17. 回调顺序](docs/part-03-container-internals/06-lifecycle-callback-order.md) | `SpringCoreBeansBeanCreationTraceLabTest`、`SpringCoreBeansInjectionPhaseLabTest`、`SpringCoreBeansLifecycleCallbackOrderLabTest` |
+| 3. 依赖解析与注入细节 | [03. 依赖注入解析](docs/part-01-ioc-container/02-dependency-injection-resolution.md)、[33. 候选选择与优先级](docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md)、[37. 泛型匹配注入误区](docs/part-04-wiring-and-boundaries/20-generic-type-matching-pitfalls.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansInjectionAmbiguityLabTest`、`SpringCoreBeansAutowireCandidateSelectionLabTest`、`SpringCoreBeansOptionalInjectionLabTest` |
+| 4. 容器扩展点 | [06. PostProcessor 总览](docs/part-01-ioc-container/05-post-processors.md)、[13. BDRPP](docs/part-03-container-internals/02-bdrpp-definition-registration.md)、[14. 顺序（Ordering）](docs/part-03-container-internals/03-post-processor-ordering.md)、[15. 实例化前短路](docs/part-03-container-internals/04-pre-instantiation-short-circuit.md) | `SpringCoreBeansRegistryPostProcessorLabTest`、`SpringCoreBeansPostProcessorOrderingLabTest`、`SpringCoreBeansPreInstantiationLabTest`、`SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
+| 5. 作用域与代理 | [04. Scope 与 prototype](docs/part-01-ioc-container/03-scope-and-prototype.md)、[28. 自定义 Scope + scoped proxy](docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md)、[18. Lazy 语义](docs/part-04-wiring-and-boundaries/01-lazy-semantics.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansCustomScopeLabTest`、`SpringCoreBeansLazyLabTest` |
+| 6. 循环依赖 | [09. 循环依赖](docs/part-01-ioc-container/08-circular-dependencies.md)、[16. early reference 与循环依赖](docs/part-03-container-internals/05-early-reference-and-circular.md) | `SpringCoreBeansCircularDependencyBoundaryLabTest`、`SpringCoreBeansEarlyReferenceLabTest`、`SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
+| 7. 类型转换与属性绑定 | [36. 类型转换](docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md)、[50. PropertyEditor 与值解析](docs/part-05-aot-and-real-world/11-property-editor-and-value-resolution.md) | `SpringCoreBeansTypeConversionLabTest`、`SpringCoreBeansValuePlaceholderResolutionLabTest` |
 
 ## 前置知识
 
@@ -228,54 +228,54 @@ Exercises 默认禁用：打开 `*ExerciseTest`，移除/注释 `@Disabled`，�
 
 ## 推荐 docs 阅读顺序（从“能解释清楚”到“理解机制”）
 
-0. [深入指南：把“Bean 三层模型”落实到源码与断点](docs/part-00-guide/011-00-deep-dive-guide.md)
-1. [Bean 心智模型：BeanDefinition vs 实例](docs/part-01-ioc-container/020-01-bean-mental-model.md)
-2. [Bean 注册入口：扫描、@Bean、@Import、registrar](docs/part-01-ioc-container/02-bean-registration.md)
-3. [依赖注入解析：类型/名称/@Qualifier/@Primary](docs/part-01-ioc-container/014-03-dependency-injection-resolution.md)
-4. [Scope 与 prototype 注入陷阱](docs/part-01-ioc-container/015-04-scope-and-prototype.md)
-5. [生命周期：初始化、销毁与回调](docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md)
-6. [容器扩展点：BFPP vs BPP](docs/part-01-ioc-container/017-06-post-processors.md)
-7. [`@Configuration` 增强与 `@Bean` 语义](docs/part-01-ioc-container/018-07-configuration-enhancement.md)
-8. [`FactoryBean`：产品 vs 工厂](docs/part-01-ioc-container/08-factorybean.md)
-9. [循环依赖：现象、原因与规避](docs/part-01-ioc-container/09-circular-dependencies.md)
-10. [Spring Boot 自动装配如何影响 Bean](docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md)
-11. [调试与自检：如何观察容器正在执行的工作](docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md)
-12. [容器启动与基础设施处理器：为什么注解能工作？](docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md)
-13. [BDRPP：在“注册阶段”动态加定义](docs/part-03-container-internals/13-bdrpp-definition-registration.md)
-14. [顺序：PriorityOrdered / Ordered / 无序](docs/part-03-container-internals/14-post-processor-ordering.md)
-15. [实例化前短路：postProcessBeforeInstantiation](docs/part-03-container-internals/15-pre-instantiation-short-circuit.md)
-16. [early reference 与循环依赖：getEarlyBeanReference](docs/part-03-container-internals/16-early-reference-and-circular.md)
-17. [生命周期回调顺序（含 prototype 不销毁）](docs/part-03-container-internals/17-lifecycle-callback-order.md)
-18. [Lazy：lazy-init vs 注入点 `@Lazy`](docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md)
-19. [dependsOn：强制初始化顺序](docs/part-04-wiring-and-boundaries/19-depends-on.md)
-20. [registerResolvableDependency：能注入但不是 Bean](docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md)
-21. [父子 ApplicationContext：可见性与覆盖边界](docs/part-04-wiring-and-boundaries/21-context-hierarchy.md)
-22. [Bean 名称与 alias](docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md)
-23. [FactoryBean 深潜：类型匹配与缓存语义](docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md)
-24. [BeanDefinition 覆盖（overriding）：同名 bean 的冲突策略](docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md)
-25. [手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md)
-26. [SmartInitializingSingleton：所有单例都创建完之后再做事](docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md)
-27. [SmartLifecycle：start/stop 时机与 phase 顺序](docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md)
-28. [自定义 Scope + scoped proxy：thread scope 的真实语义](docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md)
-29. [FactoryBean 边界：getObjectType 返回 null](docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md)
-30. [注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md)
-31. [代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md)
-32. [`@Resource` 注入：为什么它更像“按名称找 Bean”？](docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md)
-33. [候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` 到底各管什么？](docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md)
-34. [`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md)
-35. [BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？](docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md)
-36. [AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”】【Part 05】](docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md)
-37. [RuntimeHints 入门：完成构建期契约验证【Part 05】](docs/part-05-aot-and-real-world/41-runtimehints-basics.md)
-38. [XML → BeanDefinitionReader：定义层解析与错误分型【Part 05】](docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md)
-39. [容器外对象注入：AutowireCapableBeanFactory【Part 05】](docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md)
-40. [SpEL 与 `@Value("#{...}")`：表达式解析链路【Part 05】](docs/part-05-aot-and-real-world/44-spel-and-value-expression.md)
-41. [自定义 Qualifier：meta-annotation 与候选收敛【Part 05】](docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md)
-42. [常见误区清单（可反复对照）](docs/appendix/025-90-common-pitfalls.md)
-43. [术语表（Glossary）](docs/appendix/91-glossary.md)
-44. [知识点地图（Concept → Chapter → Lab）](docs/appendix/92-knowledge-map.md)
-45. [面试复述模板（决策树 → Lab → 断点入口）](docs/appendix/93-interview-playbook.md)
-46. [生产排障清单（异常分型 → 入口 → 观察点 → 修复策略）](docs/appendix/94-production-troubleshooting-checklist.md)
-47. [自测题：理解自检](docs/appendix/026-99-self-check.md)
+0. [深入指南：把“Bean 三层模型”落实到源码与断点](docs/part-00-guide/03-deep-dive-guide.md)
+1. [Bean 心智模型：BeanDefinition vs 实例](docs/part-01-ioc-container/09-bean-mental-model.md)
+2. [Bean 注册入口：扫描、@Bean、@Import、registrar](docs/part-01-ioc-container/01-bean-registration.md)
+3. [依赖注入解析：类型/名称/@Qualifier/@Primary](docs/part-01-ioc-container/02-dependency-injection-resolution.md)
+4. [Scope 与 prototype 注入陷阱](docs/part-01-ioc-container/03-scope-and-prototype.md)
+5. [生命周期：初始化、销毁与回调](docs/part-01-ioc-container/04-lifecycle-and-callbacks.md)
+6. [容器扩展点：BFPP vs BPP](docs/part-01-ioc-container/05-post-processors.md)
+7. [`@Configuration` 增强与 `@Bean` 语义](docs/part-01-ioc-container/06-configuration-enhancement.md)
+8. [`FactoryBean`：产品 vs 工厂](docs/part-01-ioc-container/07-factorybean.md)
+9. [循环依赖：现象、原因与规避](docs/part-01-ioc-container/08-circular-dependencies.md)
+10. [Spring Boot 自动装配如何影响 Bean](docs/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md)
+11. [调试与自检：如何观察容器正在执行的工作](docs/part-02-boot-autoconfig/01-debugging-and-observability.md)
+12. [容器启动与基础设施处理器：为什么注解能工作？](docs/part-03-container-internals/01-container-bootstrap-and-infrastructure.md)
+13. [BDRPP：在“注册阶段”动态加定义](docs/part-03-container-internals/02-bdrpp-definition-registration.md)
+14. [顺序：PriorityOrdered / Ordered / 无序](docs/part-03-container-internals/03-post-processor-ordering.md)
+15. [实例化前短路：postProcessBeforeInstantiation](docs/part-03-container-internals/04-pre-instantiation-short-circuit.md)
+16. [early reference 与循环依赖：getEarlyBeanReference](docs/part-03-container-internals/05-early-reference-and-circular.md)
+17. [生命周期回调顺序（含 prototype 不销毁）](docs/part-03-container-internals/06-lifecycle-callback-order.md)
+18. [Lazy：lazy-init vs 注入点 `@Lazy`](docs/part-04-wiring-and-boundaries/01-lazy-semantics.md)
+19. [dependsOn：强制初始化顺序](docs/part-04-wiring-and-boundaries/02-depends-on.md)
+20. [registerResolvableDependency：能注入但不是 Bean](docs/part-04-wiring-and-boundaries/03-resolvable-dependency.md)
+21. [父子 ApplicationContext：可见性与覆盖边界](docs/part-04-wiring-and-boundaries/04-context-hierarchy.md)
+22. [Bean 名称与 alias](docs/part-04-wiring-and-boundaries/05-bean-names-and-aliases.md)
+23. [FactoryBean 深潜：类型匹配与缓存语义](docs/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md)
+24. [BeanDefinition 覆盖（overriding）：同名 bean 的冲突策略](docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md)
+25. [手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md)
+26. [SmartInitializingSingleton：所有单例都创建完之后再做事](docs/part-04-wiring-and-boundaries/09-smart-initializing-singleton.md)
+27. [SmartLifecycle：start/stop 时机与 phase 顺序](docs/part-04-wiring-and-boundaries/10-smart-lifecycle-phase.md)
+28. [自定义 Scope + scoped proxy：thread scope 的真实语义](docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md)
+29. [FactoryBean 边界：getObjectType 返回 null](docs/part-04-wiring-and-boundaries/12-factorybean-edge-cases.md)
+30. [注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md)
+31. [代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md)
+32. [`@Resource` 注入：为什么它更像“按名称找 Bean”？](docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md)
+33. [候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` 到底各管什么？](docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md)
+34. [`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md)
+35. [BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？](docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md)
+36. [AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”】【Part 05】](docs/part-05-aot-and-real-world/01-aot-and-native-overview.md)
+37. [RuntimeHints 入门：完成构建期契约验证【Part 05】](docs/part-05-aot-and-real-world/02-runtimehints-basics.md)
+38. [XML → BeanDefinitionReader：定义层解析与错误分型【Part 05】](docs/part-05-aot-and-real-world/03-xml-bean-definition-reader.md)
+39. [容器外对象注入：AutowireCapableBeanFactory【Part 05】](docs/part-05-aot-and-real-world/04-autowirecapablebeanfactory-external-objects.md)
+40. [SpEL 与 `@Value("#{...}")`：表达式解析链路【Part 05】](docs/part-05-aot-and-real-world/05-spel-and-value-expression.md)
+41. [自定义 Qualifier：meta-annotation 与候选收敛【Part 05】](docs/part-05-aot-and-real-world/06-custom-qualifier-meta-annotation.md)
+42. [常见误区清单（可反复对照）](docs/appendix/01-common-pitfalls.md)
+43. [术语表（Glossary）](docs/appendix/02-glossary.md)
+44. [知识点地图（Concept → Chapter → Lab）](docs/appendix/03-knowledge-map.md)
+45. [面试复述模板（决策树 → Lab → 断点入口）](docs/appendix/04-interview-playbook.md)
+46. [生产排障清单（异常分型 → 入口 → 观察点 → 修复策略）](docs/appendix/05-production-troubleshooting-checklist.md)
+47. [自测题：理解自检](docs/appendix/11-self-check.md)
 
 ## 容器主线（refresh call chain）一页纸
 
@@ -293,26 +293,26 @@ Exercises 默认禁用：打开 `*ExerciseTest`，移除/注释 `@Disabled`，�
 
 ## 概念地图（注入相关：从“选候选”到“值怎么解析”）
 
-- DI 解析：类型/名称/Qualifier/Primary → [docs/03](docs/part-01-ioc-container/014-03-dependency-injection-resolution.md) → `SpringCoreBeansLabTest`
-- 注入歧义（NoUnique）与确定化修复：`@Primary/@Qualifier` → [docs/03](docs/part-01-ioc-container/014-03-dependency-injection-resolution.md) / [docs/33](docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) → `SpringCoreBeansInjectionAmbiguityLabTest`
-- 注入发生在哪个阶段：field vs constructor、`postProcessProperties` → [docs/30](docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md) → `SpringCoreBeansInjectionPhaseLabTest`
-- `@Resource`（name-first）与 `CommonAnnotationBeanPostProcessor` → [docs/32](docs/part-04-wiring-and-boundaries/32-resource-injection-name-first.md) → `SpringCoreBeansResourceInjectionLabTest`
-- 候选选择 vs 顺序：`@Primary/@Priority/@Order` → [docs/33](docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) → `SpringCoreBeansAutowireCandidateSelectionLabTest`
-- `@Value("${...}")` 占位符：embedded value resolver（non-strict）vs placeholder configurer（strict）→ [docs/34](docs/part-04-wiring-and-boundaries/34-value-placeholder-resolution-strict-vs-non-strict.md) → `SpringCoreBeansValuePlaceholderResolutionLabTest`
+- DI 解析：类型/名称/Qualifier/Primary → [docs/03](docs/part-01-ioc-container/02-dependency-injection-resolution.md) → `SpringCoreBeansLabTest`
+- 注入歧义（NoUnique）与确定化修复：`@Primary/@Qualifier` → [docs/03](docs/part-01-ioc-container/02-dependency-injection-resolution.md) / [docs/33](docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md) → `SpringCoreBeansInjectionAmbiguityLabTest`
+- 注入发生在哪个阶段：field vs constructor、`postProcessProperties` → [docs/30](docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md) → `SpringCoreBeansInjectionPhaseLabTest`
+- `@Resource`（name-first）与 `CommonAnnotationBeanPostProcessor` → [docs/32](docs/part-04-wiring-and-boundaries/15-resource-injection-name-first.md) → `SpringCoreBeansResourceInjectionLabTest`
+- 候选选择 vs 顺序：`@Primary/@Priority/@Order` → [docs/33](docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md) → `SpringCoreBeansAutowireCandidateSelectionLabTest`
+- `@Value("${...}")` 占位符：embedded value resolver（non-strict）vs placeholder configurer（strict）→ [docs/34](docs/part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md) → `SpringCoreBeansValuePlaceholderResolutionLabTest`
 
 ## 概念地图（深入分析/排障：从“异常现象”到“断点入口”）
 
-- BeanDefinition 合并（merged `RootBeanDefinition`）→ [docs/35](docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md) → `SpringCoreBeansMergedBeanDefinitionLabTest`
-- 排障：异常 → 断点入口（候选集合/最终注入/依赖关系）→ [docs/11](docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md) → `SpringCoreBeansBeanGraphDebugLabTest`
-- 代理定位闭环：最终暴露对象在何处被替换为 proxy → [docs/11](docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md) / [docs/31](docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md) → `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
+- BeanDefinition 合并（merged `RootBeanDefinition`）→ [docs/35](docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md) → `SpringCoreBeansMergedBeanDefinitionLabTest`
+- 排障：异常 → 断点入口（候选集合/最终注入/依赖关系）→ [docs/11](docs/part-02-boot-autoconfig/01-debugging-and-observability.md) → `SpringCoreBeansBeanGraphDebugLabTest`
+- 代理定位闭环：最终暴露对象在何处被替换为 proxy → [docs/11](docs/part-02-boot-autoconfig/01-debugging-and-observability.md) / [docs/31](docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md) → `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
 
 ## 概念地图（真实世界补齐：AOT/XML/外部对象/SpEL/自定义 Qualifier）
 
-- AOT/Native 心智模型 → [docs/40](docs/part-05-aot-and-real-world/024-40-aot-and-native-overview.md) / [docs/41](docs/part-05-aot-and-real-world/41-runtimehints-basics.md) → `SpringCoreBeansAotRuntimeHintsLabTest`
-- XML → BeanDefinitionReader（定义层错误分型）→ [docs/42](docs/part-05-aot-and-real-world/42-xml-bean-definition-reader.md) → `SpringCoreBeansXmlBeanDefinitionReaderLabTest`
-- 容器外对象注入与回调 → [docs/43](docs/part-05-aot-and-real-world/43-autowirecapablebeanfactory-external-objects.md) → `SpringCoreBeansAutowireCapableBeanFactoryLabTest`
-- SpEL 与 `@Value("#{...}")` → [docs/44](docs/part-05-aot-and-real-world/44-spel-and-value-expression.md) → `SpringCoreBeansSpelValueLabTest`
-- 自定义 Qualifier（meta-annotation）→ [docs/45](docs/part-05-aot-and-real-world/45-custom-qualifier-meta-annotation.md) → `SpringCoreBeansCustomQualifierLabTest`
+- AOT/Native 心智模型 → [docs/40](docs/part-05-aot-and-real-world/01-aot-and-native-overview.md) / [docs/41](docs/part-05-aot-and-real-world/02-runtimehints-basics.md) → `SpringCoreBeansAotRuntimeHintsLabTest`
+- XML → BeanDefinitionReader（定义层错误分型）→ [docs/42](docs/part-05-aot-and-real-world/03-xml-bean-definition-reader.md) → `SpringCoreBeansXmlBeanDefinitionReaderLabTest`
+- 容器外对象注入与回调 → [docs/43](docs/part-05-aot-and-real-world/04-autowirecapablebeanfactory-external-objects.md) → `SpringCoreBeansAutowireCapableBeanFactoryLabTest`
+- SpEL 与 `@Value("#{...}")` → [docs/44](docs/part-05-aot-and-real-world/05-spel-and-value-expression.md) → `SpringCoreBeansSpelValueLabTest`
+- 自定义 Qualifier（meta-annotation）→ [docs/45](docs/part-05-aot-and-real-world/06-custom-qualifier-meta-annotation.md) → `SpringCoreBeansCustomQualifierLabTest`
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -378,47 +378,47 @@ Exercises 默认禁用：打开 `*ExerciseTest`，移除/注释 `@Disabled`，�
 
 | 需理解的概念 | 对应章节 | 对应测试/代码入口 | 应能够解释清楚 |
 | --- | --- | --- | --- |
-| 排障：异常 → 断点入口（候选集合/最终注入/依赖关系） | [docs/11](docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md) | `src/test/java/.../SpringCoreBeansBeanGraphDebugLabTest.java` | 如何从异常信息定位到 `doResolveDependency/getSingleton/preInstantiateSingletons` |
-| BeanDefinition 合并（merged `RootBeanDefinition`） | [docs/35](docs/part-04-wiring-and-boundaries/35-merged-bean-definition.md) | `src/test/java/.../SpringCoreBeansMergedBeanDefinitionLabTest.java` | registry 的原始定义如何合并为最终 `RootBeanDefinition`，以及为什么存在 merged-definition hook |
-| “注解为什么能工作”（基础设施处理器） | [docs/12](docs/part-03-container-internals/022-12-container-bootstrap-and-infrastructure.md) | `src/test/java/.../SpringCoreBeansBootstrapInternalsLabTest.java` | `@Autowired/@PostConstruct/@Bean` 并非语言层面的隐式行为，而是 BFPP/BPP 注册与执行的结果 |
-| 注入阶段：field vs constructor 的关键差异 | [docs/30](docs/part-04-wiring-and-boundaries/30-injection-phase-field-vs-constructor.md) | `src/test/java/.../SpringCoreBeansInjectionPhaseLabTest.java` | 为什么 field injection 在构造器里一定是 null、而 constructor injection 在构造器里可用 |
-| 代理/替换阶段：为什么“必须走代理才生效” | [docs/31](docs/part-04-wiring-and-boundaries/31-proxying-phase-bpp-wraps-bean.md) | `src/test/java/.../SpringCoreBeansProxyingPhaseLabTest.java` | BPP 如何把 bean 换成 proxy、为什么自调用绕过、为什么按实现类拿不到 |
-| BDRPP：能在注册阶段加定义 | [docs/13](docs/part-03-container-internals/13-bdrpp-definition-registration.md) | `src/test/java/.../SpringCoreBeansRegistryPostProcessorLabTest.java` | 为什么 BDRPP 比 BFPP 更早、能注册定义并被后续 BFPP 修改 |
-| post-processor 顺序如何影响结果 | [docs/14](docs/part-03-container-internals/14-post-processor-ordering.md) | `src/test/java/.../SpringCoreBeansPostProcessorOrderingLabTest.java` | `PriorityOrdered`/`Ordered`/无序的相对顺序 |
-| 实例化前短路（构造器不执行） | [docs/15](docs/part-03-container-internals/15-pre-instantiation-short-circuit.md) | `src/test/java/.../SpringCoreBeansPreInstantiationLabTest.java` | 为什么一个 bean 可以在构造器抛异常的情况下仍“存在于容器” |
-| early reference 与循环依赖里的代理 | [docs/16](docs/part-03-container-internals/16-early-reference-and-circular.md) | `src/test/java/.../SpringCoreBeansEarlyReferenceLabTest.java` | 为什么循环依赖场景里需要 early proxy、如何保证 early 与 final 一致 |
-| 生命周期回调顺序（含 prototype 不销毁） | [docs/17](docs/part-03-container-internals/17-lifecycle-callback-order.md) | `src/test/java/.../SpringCoreBeansLifecycleCallbackOrderLabTest.java` | init 回调发生在 BPP(before/after) 的哪里、为什么 prototype 默认不销毁 |
-| Lazy：lazy-init vs 注入点 `@Lazy` | [docs/18](docs/part-04-wiring-and-boundaries/023-18-lazy-semantics.md) | `src/test/java/.../SpringCoreBeansLazyLabTest.java` | 为什么 lazy-init 仍可能在 refresh 时被创建、注入点 `@Lazy` 的本质 |
-| dependsOn：强制初始化顺序 | [docs/19](docs/part-04-wiring-and-boundaries/19-depends-on.md) | `src/test/java/.../SpringCoreBeansDependsOnLabTest.java` | dependsOn 解决的是“初始化顺序”而不是“注入” |
-| ResolvableDependency：能注入但不是 bean | [docs/20](docs/part-04-wiring-and-boundaries/20-resolvable-dependency.md) | `src/test/java/.../SpringCoreBeansResolvableDependencyLabTest.java` | 为什么能 autowire，但 `getBean(type)` 会失败 |
-| 父子 ApplicationContext | [docs/21](docs/part-04-wiring-and-boundaries/21-context-hierarchy.md) | `src/test/java/.../SpringCoreBeansContextHierarchyLabTest.java` | child 可见 parent，parent 不可见 child；覆盖只在 child 生效 |
-| beanName 与 alias | [docs/22](docs/part-04-wiring-and-boundaries/22-bean-names-and-aliases.md) | `src/test/java/.../SpringCoreBeansBeanNameAliasLabTest.java` | alias 只是名字映射，不是复制实例 |
-| FactoryBean 深潜（`&`、类型匹配、缓存） | [docs/23](docs/part-04-wiring-and-boundaries/23-factorybean-deep-dive.md) | `src/test/java/.../SpringCoreBeansFactoryBeanDeepDiveLabTest.java` + `src/test/java/.../SpringCoreBeansContainerLabTest.java` | product vs factory、`isSingleton()` 的缓存语义 |
-| BeanDefinition 覆盖（同名冲突策略） | [docs/24](docs/part-04-wiring-and-boundaries/24-bean-definition-overriding.md) | `src/test/java/.../SpringCoreBeansBeanDefinitionOverridingLabTest.java` | 覆盖开关控制的是同名定义冲突，不是按类型注入选择 |
-| Boot 自动装配：主线/定位/覆盖矩阵 | [docs/10](docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) + [docs/11](docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md) | `src/test/java/.../SpringCoreBeansAutoConfigurationImportOrderingLabTest.java` + `src/test/java/.../SpringCoreBeansConditionEvaluationReportLabTest.java` + `src/test/java/.../SpringCoreBeansBeanDefinitionOriginLabTest.java` + `src/test/java/.../SpringCoreBeansAutoConfigurationOverrideMatrixLabTest.java` | 应能够解释“候选清单如何排序（after/before）”“为什么 match/why skip”“这个 bean 谁注册的”“为什么会有重复候选/NoUnique”，并能给出两类修复（确定化选择 vs 让 back-off 生效） |
-| 手工添加 BeanPostProcessor（顺序陷阱） | [docs/25](docs/part-04-wiring-and-boundaries/25-programmatic-bpp-registration.md) | `src/test/java/.../SpringCoreBeansProgrammaticBeanPostProcessorLabTest.java` | 手工注册 BPP 会更早执行，并且不按 Ordered 排序 |
-| SmartInitializingSingleton（afterSingletonsInstantiated） | [docs/26](docs/part-04-wiring-and-boundaries/26-smart-initializing-singleton.md) | `src/test/java/.../SpringCoreBeansSmartInitializingSingletonLabTest.java` | 为什么它发生在非 lazy 单例创建完成之后 |
-| SmartLifecycle（phase） | [docs/27](docs/part-04-wiring-and-boundaries/27-smart-lifecycle-phase.md) | `src/test/java/.../SpringCoreBeansSmartLifecycleLabTest.java` | start 升序、stop 反序，phase 的意义 |
-| 自定义 scope + scoped proxy（thread） | [docs/28](docs/part-04-wiring-and-boundaries/28-custom-scope-and-scoped-proxy.md) | `src/test/java/.../SpringCoreBeansCustomScopeLabTest.java` | 为什么 direct injection 会导致实例冻结，以及如何通过 provider/proxy 进行规避 |
-| FactoryBean 边界：getObjectType=null | [docs/29](docs/part-04-wiring-and-boundaries/29-factorybean-edge-cases.md) | `src/test/java/.../SpringCoreBeansFactoryBeanEdgeCasesLabTest.java` | 为什么 type-based 扫描在 allowEagerInit=false 时会错过它 |
-| `@Qualifier` 解决多实现注入 | [docs/03](docs/part-01-ioc-container/014-03-dependency-injection-resolution.md) | `src/main/java/.../FormattingService.java`、`src/main/java/.../*TextFormatter.java`、`src/test/java/.../SpringCoreBeansLabTest.java` | 为什么会歧义、如何指定注入目标、如何验证注入结果 |
-| 注入歧义（NoUnique）与确定化修复 | [docs/03](docs/part-01-ioc-container/014-03-dependency-injection-resolution.md) / [docs/33](docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md) | `src/test/java/.../SpringCoreBeansInjectionAmbiguityLabTest.java` | 候选太多为什么 fail-fast、`@Primary`（默认胜者） vs `@Qualifier`（显式选择） |
-| prototype 注入 singleton 的“看起来像单例” | [docs/04](docs/part-01-ioc-container/015-04-scope-and-prototype.md) | `src/main/java/.../DirectPrototypeConsumer.java`、`src/main/java/.../ProviderPrototypeConsumer.java`、`src/main/java/.../PrototypeIdGenerator.java` | prototype 的语义是“每次从容器获取均为新实例”，而不是“每次方法调用均为新实例” |
-| `@PostConstruct` 何时运行（基础版） | [docs/05](docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md) | `src/main/java/.../LifecycleLogger.java`、`src/test/java/.../SpringCoreBeansLabTest.java` | 容器启动阶段发生了什么、回调在什么时机触发 |
-| `@Import` / `ImportSelector` / registrar（高级注册入口） | [docs/02](docs/part-01-ioc-container/02-bean-registration.md) | `src/test/java/.../SpringCoreBeansImportLabTest.java` | 配置类解析阶段到底导入了什么、ImportSelector 如何决定导入列表、registrar 如何直接注册 BeanDefinition |
-| `BeanDefinition` vs Bean 实例 | [docs/01](docs/part-01-ioc-container/020-01-bean-mental-model.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | “定义”是元数据，“实例”是对象；扩展点通常围绕两者分别工作 |
-| BFPP 能改定义、BPP 能包/改实例 | [docs/06](docs/part-01-ioc-container/017-06-post-processors.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | 为什么 BFPP 更早、为什么 BPP 常导致代理/增强、它们各自的边界是什么 |
-| `@Configuration` 增强与 `proxyBeanMethods` | [docs/07](docs/part-01-ioc-container/018-07-configuration-enhancement.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | 为什么 “在 `@Bean` 方法里直接调用另一个 `@Bean` 方法” 会改变实例语义 |
-| `FactoryBean` 的 `&` 前缀（基础版） | [docs/08](docs/part-01-ioc-container/08-factorybean.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | 为什么 `getBean("name")` 获取到的是产品而不是工厂本身 |
-| 循环依赖：构造器 vs setter（基础版） | [docs/09](docs/part-01-ioc-container/09-circular-dependencies.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | 为什么构造器循环会失败、setter 为什么有时能靠“提前暴露”成功 |
-| Boot 自动装配带来的“未显式声明但实际存在的 Bean” | [docs/10](docs/part-02-boot-autoconfig/021-10-spring-boot-auto-configuration.md) | `src/test/java/.../SpringCoreBeansAutoConfigurationLabTest.java`（基于 `ApplicationContextRunner`） + [docs/11](docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md) | 自动装配是如何被导入/生效/失效的，以及如何覆盖/禁用它 |
+| 排障：异常 → 断点入口（候选集合/最终注入/依赖关系） | [docs/11](docs/part-02-boot-autoconfig/01-debugging-and-observability.md) | `src/test/java/.../SpringCoreBeansBeanGraphDebugLabTest.java` | 如何从异常信息定位到 `doResolveDependency/getSingleton/preInstantiateSingletons` |
+| BeanDefinition 合并（merged `RootBeanDefinition`） | [docs/35](docs/part-04-wiring-and-boundaries/18-merged-bean-definition.md) | `src/test/java/.../SpringCoreBeansMergedBeanDefinitionLabTest.java` | registry 的原始定义如何合并为最终 `RootBeanDefinition`，以及为什么存在 merged-definition hook |
+| “注解为什么能工作”（基础设施处理器） | [docs/12](docs/part-03-container-internals/01-container-bootstrap-and-infrastructure.md) | `src/test/java/.../SpringCoreBeansBootstrapInternalsLabTest.java` | `@Autowired/@PostConstruct/@Bean` 并非语言层面的隐式行为，而是 BFPP/BPP 注册与执行的结果 |
+| 注入阶段：field vs constructor 的关键差异 | [docs/30](docs/part-04-wiring-and-boundaries/13-injection-phase-field-vs-constructor.md) | `src/test/java/.../SpringCoreBeansInjectionPhaseLabTest.java` | 为什么 field injection 在构造器里一定是 null、而 constructor injection 在构造器里可用 |
+| 代理/替换阶段：为什么“必须走代理才生效” | [docs/31](docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md) | `src/test/java/.../SpringCoreBeansProxyingPhaseLabTest.java` | BPP 如何把 bean 换成 proxy、为什么自调用绕过、为什么按实现类拿不到 |
+| BDRPP：能在注册阶段加定义 | [docs/13](docs/part-03-container-internals/02-bdrpp-definition-registration.md) | `src/test/java/.../SpringCoreBeansRegistryPostProcessorLabTest.java` | 为什么 BDRPP 比 BFPP 更早、能注册定义并被后续 BFPP 修改 |
+| post-processor 顺序如何影响结果 | [docs/14](docs/part-03-container-internals/03-post-processor-ordering.md) | `src/test/java/.../SpringCoreBeansPostProcessorOrderingLabTest.java` | `PriorityOrdered`/`Ordered`/无序的相对顺序 |
+| 实例化前短路（构造器不执行） | [docs/15](docs/part-03-container-internals/04-pre-instantiation-short-circuit.md) | `src/test/java/.../SpringCoreBeansPreInstantiationLabTest.java` | 为什么一个 bean 可以在构造器抛异常的情况下仍“存在于容器” |
+| early reference 与循环依赖里的代理 | [docs/16](docs/part-03-container-internals/05-early-reference-and-circular.md) | `src/test/java/.../SpringCoreBeansEarlyReferenceLabTest.java` | 为什么循环依赖场景里需要 early proxy、如何保证 early 与 final 一致 |
+| 生命周期回调顺序（含 prototype 不销毁） | [docs/17](docs/part-03-container-internals/06-lifecycle-callback-order.md) | `src/test/java/.../SpringCoreBeansLifecycleCallbackOrderLabTest.java` | init 回调发生在 BPP(before/after) 的哪里、为什么 prototype 默认不销毁 |
+| Lazy：lazy-init vs 注入点 `@Lazy` | [docs/18](docs/part-04-wiring-and-boundaries/01-lazy-semantics.md) | `src/test/java/.../SpringCoreBeansLazyLabTest.java` | 为什么 lazy-init 仍可能在 refresh 时被创建、注入点 `@Lazy` 的本质 |
+| dependsOn：强制初始化顺序 | [docs/19](docs/part-04-wiring-and-boundaries/02-depends-on.md) | `src/test/java/.../SpringCoreBeansDependsOnLabTest.java` | dependsOn 解决的是“初始化顺序”而不是“注入” |
+| ResolvableDependency：能注入但不是 bean | [docs/20](docs/part-04-wiring-and-boundaries/03-resolvable-dependency.md) | `src/test/java/.../SpringCoreBeansResolvableDependencyLabTest.java` | 为什么能 autowire，但 `getBean(type)` 会失败 |
+| 父子 ApplicationContext | [docs/21](docs/part-04-wiring-and-boundaries/04-context-hierarchy.md) | `src/test/java/.../SpringCoreBeansContextHierarchyLabTest.java` | child 可见 parent，parent 不可见 child；覆盖只在 child 生效 |
+| beanName 与 alias | [docs/22](docs/part-04-wiring-and-boundaries/05-bean-names-and-aliases.md) | `src/test/java/.../SpringCoreBeansBeanNameAliasLabTest.java` | alias 只是名字映射，不是复制实例 |
+| FactoryBean 深潜（`&`、类型匹配、缓存） | [docs/23](docs/part-04-wiring-and-boundaries/06-factorybean-deep-dive.md) | `src/test/java/.../SpringCoreBeansFactoryBeanDeepDiveLabTest.java` + `src/test/java/.../SpringCoreBeansContainerLabTest.java` | product vs factory、`isSingleton()` 的缓存语义 |
+| BeanDefinition 覆盖（同名冲突策略） | [docs/24](docs/part-04-wiring-and-boundaries/07-bean-definition-overriding.md) | `src/test/java/.../SpringCoreBeansBeanDefinitionOverridingLabTest.java` | 覆盖开关控制的是同名定义冲突，不是按类型注入选择 |
+| Boot 自动装配：主线/定位/覆盖矩阵 | [docs/10](docs/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md) + [docs/11](docs/part-02-boot-autoconfig/01-debugging-and-observability.md) | `src/test/java/.../SpringCoreBeansAutoConfigurationImportOrderingLabTest.java` + `src/test/java/.../SpringCoreBeansConditionEvaluationReportLabTest.java` + `src/test/java/.../SpringCoreBeansBeanDefinitionOriginLabTest.java` + `src/test/java/.../SpringCoreBeansAutoConfigurationOverrideMatrixLabTest.java` | 应能够解释“候选清单如何排序（after/before）”“为什么 match/why skip”“这个 bean 谁注册的”“为什么会有重复候选/NoUnique”，并能给出两类修复（确定化选择 vs 让 back-off 生效） |
+| 手工添加 BeanPostProcessor（顺序陷阱） | [docs/25](docs/part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md) | `src/test/java/.../SpringCoreBeansProgrammaticBeanPostProcessorLabTest.java` | 手工注册 BPP 会更早执行，并且不按 Ordered 排序 |
+| SmartInitializingSingleton（afterSingletonsInstantiated） | [docs/26](docs/part-04-wiring-and-boundaries/09-smart-initializing-singleton.md) | `src/test/java/.../SpringCoreBeansSmartInitializingSingletonLabTest.java` | 为什么它发生在非 lazy 单例创建完成之后 |
+| SmartLifecycle（phase） | [docs/27](docs/part-04-wiring-and-boundaries/10-smart-lifecycle-phase.md) | `src/test/java/.../SpringCoreBeansSmartLifecycleLabTest.java` | start 升序、stop 反序，phase 的意义 |
+| 自定义 scope + scoped proxy（thread） | [docs/28](docs/part-04-wiring-and-boundaries/11-custom-scope-and-scoped-proxy.md) | `src/test/java/.../SpringCoreBeansCustomScopeLabTest.java` | 为什么 direct injection 会导致实例冻结，以及如何通过 provider/proxy 进行规避 |
+| FactoryBean 边界：getObjectType=null | [docs/29](docs/part-04-wiring-and-boundaries/12-factorybean-edge-cases.md) | `src/test/java/.../SpringCoreBeansFactoryBeanEdgeCasesLabTest.java` | 为什么 type-based 扫描在 allowEagerInit=false 时会错过它 |
+| `@Qualifier` 解决多实现注入 | [docs/03](docs/part-01-ioc-container/02-dependency-injection-resolution.md) | `src/main/java/.../FormattingService.java`、`src/main/java/.../*TextFormatter.java`、`src/test/java/.../SpringCoreBeansLabTest.java` | 为什么会歧义、如何指定注入目标、如何验证注入结果 |
+| 注入歧义（NoUnique）与确定化修复 | [docs/03](docs/part-01-ioc-container/02-dependency-injection-resolution.md) / [docs/33](docs/part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md) | `src/test/java/.../SpringCoreBeansInjectionAmbiguityLabTest.java` | 候选太多为什么 fail-fast、`@Primary`（默认胜者） vs `@Qualifier`（显式选择） |
+| prototype 注入 singleton 的“看起来像单例” | [docs/04](docs/part-01-ioc-container/03-scope-and-prototype.md) | `src/main/java/.../DirectPrototypeConsumer.java`、`src/main/java/.../ProviderPrototypeConsumer.java`、`src/main/java/.../PrototypeIdGenerator.java` | prototype 的语义是“每次从容器获取均为新实例”，而不是“每次方法调用均为新实例” |
+| `@PostConstruct` 何时运行（基础版） | [docs/05](docs/part-01-ioc-container/04-lifecycle-and-callbacks.md) | `src/main/java/.../LifecycleLogger.java`、`src/test/java/.../SpringCoreBeansLabTest.java` | 容器启动阶段发生了什么、回调在什么时机触发 |
+| `@Import` / `ImportSelector` / registrar（高级注册入口） | [docs/02](docs/part-01-ioc-container/01-bean-registration.md) | `src/test/java/.../SpringCoreBeansImportLabTest.java` | 配置类解析阶段到底导入了什么、ImportSelector 如何决定导入列表、registrar 如何直接注册 BeanDefinition |
+| `BeanDefinition` vs Bean 实例 | [docs/01](docs/part-01-ioc-container/09-bean-mental-model.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | “定义”是元数据，“实例”是对象；扩展点通常围绕两者分别工作 |
+| BFPP 能改定义、BPP 能包/改实例 | [docs/06](docs/part-01-ioc-container/05-post-processors.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | 为什么 BFPP 更早、为什么 BPP 常导致代理/增强、它们各自的边界是什么 |
+| `@Configuration` 增强与 `proxyBeanMethods` | [docs/07](docs/part-01-ioc-container/06-configuration-enhancement.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | 为什么 “在 `@Bean` 方法里直接调用另一个 `@Bean` 方法” 会改变实例语义 |
+| `FactoryBean` 的 `&` 前缀（基础版） | [docs/08](docs/part-01-ioc-container/07-factorybean.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | 为什么 `getBean("name")` 获取到的是产品而不是工厂本身 |
+| 循环依赖：构造器 vs setter（基础版） | [docs/09](docs/part-01-ioc-container/08-circular-dependencies.md) | `src/test/java/.../SpringCoreBeansContainerLabTest.java` | 为什么构造器循环会失败、setter 为什么有时能靠“提前暴露”成功 |
+| Boot 自动装配带来的“未显式声明但实际存在的 Bean” | [docs/10](docs/part-02-boot-autoconfig/03-spring-boot-auto-configuration.md) | `src/test/java/.../SpringCoreBeansAutoConfigurationLabTest.java`（基于 `ApplicationContextRunner`） + [docs/11](docs/part-02-boot-autoconfig/01-debugging-and-observability.md) | 自动装配是如何被导入/生效/失效的，以及如何覆盖/禁用它 |
 
 ## 常见调试路径
 
 - 首先确认“是否存在该 Bean”：从 `ApplicationContext`/测试断言入手，而非仅依赖日志信息
 - 代理/增强问题：区分“定义阶段”（BFPP/BDRPP）与“实例阶段”（BPP），以及它们的触发时机
 - 自动装配问题：可优先使用 `ApplicationContextRunner` 缩小场景范围（见 `SpringCoreBeansAutoConfigurationLabTest`）
-- 观察容器的运行行为：可优先参阅 [docs/11](docs/part-02-boot-autoconfig/019-11-debugging-and-observability.md)，并按步骤将“观察点”固化为可断言的验证点
+- 观察容器的运行行为：可优先参阅 [docs/11](docs/part-02-boot-autoconfig/01-debugging-and-observability.md)，并按步骤将“观察点”固化为可断言的验证点
 
 ## 进一步学习（相关模块）
 

@@ -47,9 +47,9 @@
 - **Files (docs):**
   - `spring-core-modules/spring-core-beans/docs/README.md`
   - `spring-core-modules/spring-core-beans/docs/deepening-strategies/README.md`
-  - `spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`
-  - `spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
-  - `spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/03-knowledge-map.md`
+  - `spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`
 - **APIs/Data:** None
 
 ## Core Scenarios
@@ -80,14 +80,14 @@
 <a id="requirement-r2-tool-pages-as-hubs-scenario-s1-breakpoint-map-and-knowledge-map-linkage"></a>
 #### Scenario: S1-breakpoint-map-and-knowledge-map-linkage
 
-- `013-02-breakpoint-map.md` 提供“从症状选择断点组”的极短分流，并回链到知识地图。
-- `013-02-breakpoint-map.md` 的断点组具备稳定锚点（C1–C7），便于互链稳定跳转。
-- `92-knowledge-map.md` 的高频现象表格能直接跳到对应断点组（C*），并提供推荐 Lab。
+- `07-breakpoint-map.md` 提供“从症状选择断点组”的极短分流，并回链到知识地图。
+- `07-breakpoint-map.md` 的断点组具备稳定锚点（C1–C7），便于互链稳定跳转。
+- `03-knowledge-map.md` 的高频现象表格能直接跳到对应断点组（C*），并提供推荐 Lab。
 
 <a id="requirement-r2-tool-pages-as-hubs-scenario-s2-production-troubleshooting-shortest-path"></a>
 #### Scenario: S2-production-troubleshooting-shortest-path
 
-- `94-production-troubleshooting-checklist.md` 对 3 类高频事故给出 3–5 步“最短诊断路径”：
+- `05-production-troubleshooting-checklist.md` 对 3 类高频事故给出 3–5 步“最短诊断路径”：
   - 注入失败（NoSuch/NoUnique）
   - 代理不生效（时机/顺序）
   - 循环依赖/early reference（constructor vs setter、early vs final）

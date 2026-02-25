@@ -1,8 +1,8 @@
-# 03：错误页（error/*.html）与内容协商（Accept：HTML vs JSON）
+# 03. 错误页（error/*.html）与内容协商（Accept：HTML vs JSON）
 
 ## 导读
 
-- 本章主题：**03：错误页（error/*.html）与内容协商（Accept：HTML vs JSON）**
+- 本章主题：**03. 错误页（error/*.html）与内容协商（Accept：HTML vs JSON）**
 - 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
 
 !!! summary "本章要点"
@@ -20,7 +20,7 @@
 
 本章把“错误响应”的学习从 JSON API 扩展到页面场景：同一类错误，在浏览器访问与 API 调用时，往往需要不同的呈现方式。
 
-## 你应该观察到什么（What to observe）
+## 应当观察到的现象（What to observe）
 
 1) 当 Accept 偏向 `text/html`（浏览器）
 - 404/4xx/5xx 会返回 HTML 错误页（可读、可导航）
@@ -133,6 +133,6 @@
 - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcViewSpringBootLabTest`
 - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
-上一章：[part-02-view-mvc/02-form-binding-validation-prg.md](02-form-binding-validation-prg.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/082-90-common-pitfalls.md)
+上一章：[part-02-view-mvc/02-form-binding-validation-prg.md](02-form-binding-validation-prg.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

@@ -1,5 +1,10 @@
 # 逐章内容级再加深建议（appendix 工具章节）
 
+## 导读
+
+本文属于“加深策略”说明：用于解释本仓库文档与测试在结构上的组织方式，以及如何用最小入口把阅读、调试与验证连成闭环。
+
+
 ## 官方文档对照（版本语境）
 
 - Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
@@ -18,7 +23,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 90. 常见误区清单
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/025-90-common-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md`
 - 继续加深建议：
     - `SpringCoreBeansAutowireCandidateSelectionLabTest`（再对照 `SpringCoreBeansContainerLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -26,7 +31,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 99. 自测题
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/026-99-self-check.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/11-self-check.md`
 - 继续加深建议：
     - `SpringCoreBeansLabTest`（再对照 `SpringCoreBeansContainerLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -34,7 +39,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 91. 术语表
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/91-glossary.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/02-glossary.md`
 - 继续加深建议：
     - `SpringCoreBeansContainerLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -42,7 +47,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 92. 知识地图
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/92-knowledge-map.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/03-knowledge-map.md`
 - 继续加深建议：
     - `SpringCoreBeansBreakpointPackLabTest`（再对照 `SpringCoreBeansIocBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultSingletonBeanRegistry#getSingleton` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -50,7 +55,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 93. 面试复述模板
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/93-interview-playbook.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/04-interview-playbook.md`
 - 继续加深建议：
     - `SpringCoreBeansIocBranchMatrixLabTest`（再对照 `SpringCoreBeansInternalsBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -58,7 +63,7 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 
 ### 94. 生产排障清单
 
-- 文件：`spring-core-modules/spring-core-beans/docs/appendix/94-production-troubleshooting-checklist.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/appendix/05-production-troubleshooting-checklist.md`
 - 继续加深建议：
     - `SpringCoreBeansBreakpointPackLabTest`（再对照 `SpringCoreBeansIocBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -67,8 +72,8 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 ### 95/96. public API 索引与 gap
 
 - 文件：
-  - `spring-core-modules/spring-core-beans/docs/appendix/95-spring-beans-public-api-index.md`
-  - `spring-core-modules/spring-core-beans/docs/appendix/96-spring-beans-public-api-gap.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/06-spring-beans-public-api-index.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/07-spring-beans-public-api-gap.md`
 - 继续加深建议：
     - `SpringCoreBeansBreakpointPackLabTest`（再对照 `SpringCoreBeansIocBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -77,9 +82,9 @@ Appendix 的再加深重点：把“工具页”做成可复用的训练与排�
 ### 97/98/99. Explore/Debug / Debugger Pack / Team Training
 
 - 文件：
-  - `spring-core-modules/spring-core-beans/docs/appendix/97-explore-debug-tests.md`
-  - `spring-core-modules/spring-core-beans/docs/appendix/98-debugger-pack.md`
-  - `spring-core-modules/spring-core-beans/docs/appendix/99-team-training-kit.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/08-explore-debug-tests.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/09-debugger-pack.md`
+  - `spring-core-modules/spring-core-beans/docs/appendix/10-team-training-kit.md`
 - 继续加深建议：
     - `SpringCoreBeansBreakpointPackLabTest`（再对照 `SpringCoreBeansIocBranchMatrixLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#registerBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

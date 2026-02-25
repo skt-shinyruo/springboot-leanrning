@@ -36,10 +36,10 @@ Directory: `helloagents/history/2026-01/202601030652_spring-core-beans-source-de
 
 ## 4. Documentation（本次必做：把源码解析写进 docs，并引用仓库 src 代码）
 - [√] 4.1 更新 `docs/beans/spring-core-beans/01-bean-mental-model.md`：补齐 refresh/定义层/实例层/最终暴露对象的源码主线，并引用本仓库对应 Lab 代码片段
-- [√] 4.2 更新 `docs/beans/spring-core-beans/02-bean-registration.md`：补齐 ConfigurationClassPostProcessor/扫描/@Import/registrar 的源码解析，并引用本仓库示例代码片段
+- [√] 4.2 更新 `docs/beans/spring-core-beans/01-bean-registration.md`：补齐 ConfigurationClassPostProcessor/扫描/@Import/registrar 的源码解析，并引用本仓库示例代码片段
 - [√] 4.3 更新 `docs/beans/spring-core-beans/03-dependency-injection-resolution.md`：补齐 `doResolveDependency` 候选收集与确定化路径的源码解析，并引用本仓库注入歧义相关 Lab 代码片段
 - [√] 4.4 更新 `docs/beans/spring-core-beans/05-lifecycle-and-callbacks.md`：补齐 doCreateBean 三阶段与回调顺序的源码解析，并引用本仓库 lifecycle Lab/示例代码片段
-- [√] 4.5 更新 `docs/beans/spring-core-beans/09-circular-dependencies.md`：补齐三级缓存与 early reference 的源码解析，并引用本仓库循环依赖最小复现代码片段
+- [√] 4.5 更新 `docs/beans/spring-core-beans/08-circular-dependencies.md`：补齐三级缓存与 early reference 的源码解析，并引用本仓库循环依赖最小复现代码片段
 
 ## 5. Knowledge Base Sync & Migration
 - [√] 5.1 更新 `helloagents/wiki/modules/spring-core-beans.md`：记录本次 docs 源码解析补强与入口

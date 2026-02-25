@@ -14,12 +14,12 @@ mvn -pl :spring-boot-cache test
 
 （docs 目录页：[`docs/README.md`](docs/README.md)）
 
-1. [`@Cacheable` 最小闭环](docs/part-01-cache/109-01-cacheable-basics.md)
-2. [`@CachePut/@CacheEvict`：更新与失效](docs/part-01-cache/110-02-cacheput-and-evict.md)
-3. [key/condition/unless：缓存边界](docs/part-01-cache/111-03-key-condition-unless.md)
-4. [`sync=true`：防缓存击穿（stampede）](docs/part-01-cache/112-04-sync-stampede.md)
-5. [过期与可测性：用 Ticker 控制时间](docs/part-01-cache/113-05-expiry-with-ticker.md)
-6. [常见坑清单](docs/appendix/114-90-common-pitfalls.md)
+1. [`@Cacheable` 最小闭环](docs/part-01-cache/01-cacheable-basics.md)
+2. [`@CachePut/@CacheEvict`：更新与失效](docs/part-01-cache/02-cacheput-and-evict.md)
+3. [key/condition/unless：缓存边界](docs/part-01-cache/03-key-condition-unless.md)
+4. [`sync=true`：防缓存击穿（stampede）](docs/part-01-cache/04-sync-stampede.md)
+5. [过期与可测性：用 Ticker 控制时间](docs/part-01-cache/05-expiry-with-ticker.md)
+6. [常见坑清单](docs/appendix/01-common-pitfalls.md)
 
 ## Labs / Exercises 索引
 

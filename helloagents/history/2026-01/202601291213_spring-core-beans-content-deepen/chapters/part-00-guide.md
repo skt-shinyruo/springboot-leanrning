@@ -4,7 +4,7 @@
 
 ### 第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/010-03-mainline-timeline.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/02-mainline-timeline.md`
 - 内容级加深策略：
   - A：补“主线关键窗口最短调用链”：每个阶段至少给出 1 个入口方法与 1 个必看对象快照（definitions / processors / singleton caches）。
   - B：补“时间线误判反例”：例如把“创建顺序”与“注入选择”混为一谈；把 lazy-init 与 @Lazy 注入点混为一谈。
@@ -14,7 +14,7 @@
 
 ### 第 11 章：00. 深挖指南：把“Bean 三层模型”落到源码与断点
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-00-deep-dive-guide.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/03-deep-dive-guide.md`
 - 内容级加深策略：
   - A：把“分层”再下沉为“第一断点入口选择器”（定义层/实例层/最终对象）并给最短调用链。
   - B：补“新手调试反例”：断点不命中/代理层过深/过早 getBean 导致现象偏移等。
@@ -24,7 +24,7 @@
 
 ### 第 11 章：关键分支矩阵（Branch Decision Matrix）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/011-04-branch-decision-matrix.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/04-branch-decision-matrix.md`
 - 内容级加深策略：
   - A：把每个分支明确到“真实 if/return 发生点”（入口方法 + 分支条件）。
   - B：为每个分支补 1 个反例：何时这条规则不适用/会被更强信号覆盖（如 @Primary 覆盖 @Priority）。
@@ -34,7 +34,7 @@
 
 ### 第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/012-01-quickstart-30min.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/05-quickstart-30min.md`
 - 内容级加深策略：
   - A：为每个实验补“机制证据链入口”：跑完后下一步去哪下断点证明结论。
   - B：补“常见偏差反例”：为什么你可能看不到预期现象（版本差异/代理/初始化顺序等）。
@@ -44,7 +44,7 @@
 
 ### 第 13 章：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-01-applicationcontext-refresh-call-chain.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/06-applicationcontext-refresh-call-chain.md`
 - 内容级加深策略：
   - A：对关键节点补“为什么必须在这里做”：例如为何先 BFPP/再 BPP、为何 preInstantiateSingletons 在后半段。
   - B：补“过早 getBean 反例”：如何导致 BPP 未注册/注解不生效/占位符没解析等偏差。
@@ -54,7 +54,7 @@
 
 ### 第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/013-02-breakpoint-map.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-00-guide/07-breakpoint-map.md`
 - 内容级加深策略：
   - A：为每个断点补“它在证明什么分支”，避免断点清单变成“背方法名”。
   - B：补“断点误用反例”：哪些断点会因为版本/环境差异不稳定，如何替代。

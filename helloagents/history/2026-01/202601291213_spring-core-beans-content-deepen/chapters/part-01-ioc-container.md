@@ -4,7 +4,7 @@
 
 ### 02. Bean 注册入口：扫描、@Bean、@Import、registrar
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-bean-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
 - 内容级加深策略：
   - A：补“最终注册 BeanDefinition 的统一落点”与最短调用链，明确不同入口最终汇聚到哪里。
   - B：补 Import 体系反例：ImportSelector/DeferredImportSelector/Registrar 的典型误用与排障点。
@@ -14,7 +14,7 @@
 
 ### 03. 依赖注入解析：类型/名称/@Qualifier/@Primary
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/014-03-dependency-injection-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
 - 内容级加深策略：
   - A：补“候选收集→收敛→最终选择”的算法骨架（最短调用链 + 关键 if/return）。
   - B：补反例：@Order 不能选单候选、by-name fallback 的边界、泛型信息丢失导致匹配失败。
@@ -24,7 +24,7 @@
 
 ### 04. Scope 与 prototype 注入陷阱
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/015-04-scope-and-prototype.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
 - 内容级加深策略：
   - A：补“prototype 注入 singleton 为什么像单例”的证据链（注入时机 vs 创建时机）。
   - B：补反例：prototype 循环依赖、prototype 销毁不自动、scoped proxy 的 equals/hashCode/序列化坑。
@@ -34,7 +34,7 @@
 
 ### 05. 生命周期：初始化、销毁与回调
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/016-05-lifecycle-and-callbacks.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/04-lifecycle-and-callbacks.md`
 - 内容级加深策略：
   - A：补“完整顺序 + 关键窗口”的证据链（Aware/BPP/init/destroy）并明确发生在 raw 还是 exposed。
   - B：补反例：init 抛异常导致 destroy 不执行、prototype 不自动销毁、代理与回调顺序误判。
@@ -44,7 +44,7 @@
 
 ### 06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/017-06-post-processors.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/05-post-processors.md`
 - 内容级加深策略：
   - A：补“能/不能做什么”的方法级证明：为什么 BPP 不可靠改定义，为什么 BFPP 拿不到实例态。
   - B：补反例：错误时机 getBean 导致 BPP 链不完整、手工注册破坏顺序的坑位。
@@ -54,7 +54,7 @@
 
 ### 07. `@Configuration` 增强与 `@Bean` 语义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/018-07-configuration-enhancement.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/06-configuration-enhancement.md`
 - 内容级加深策略：
   - A：补 full vs lite 的判定链路与证据点（为什么会/不会增强）。
   - B：补反例：proxyBeanMethods=false 导致的“多次调用多次 new”，以及与 AOP 代理的混淆点。
@@ -64,7 +64,7 @@
 
 ### 01. Bean 心智模型：从 BeanDefinition 到最终暴露对象
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/020-01-bean-mental-model.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-bean-mental-model.md`
 - 内容级加深策略：
   - A：把 pre/early/after-init 三个替换窗口做成“证据链对照表”，并给每类窗口的关键入口方法。
   - B：补反例：early reference 与最终代理不一致导致的行为差异；FactoryBean 造成的“看起来类型不对”。
@@ -74,7 +74,7 @@
 
 ### 08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-factorybean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/07-factorybean.md`
 - 内容级加深策略：
   - A：补“getBean vs &getBean”的证据链与缓存语义（FactoryBean 自身 vs product）。
   - B：补反例：getObjectType 返回 null 导致 type matching 失效、isSingleton 声明不一致导致缓存错觉。
@@ -84,7 +84,7 @@
 
 ### 09. 循环依赖：现象、原因与规避
 
-- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-circular-dependencies.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/part-01-ioc-container/08-circular-dependencies.md`
 - 内容级加深策略：
   - A：补“构造器失败 vs setter 可能成功”的完整证据链（三级缓存写入/读出窗口）。
   - B：补反例：prototype 循环依赖、AOP 介入导致 early/final 不一致、allowCircularReferences=false 的行为差异。

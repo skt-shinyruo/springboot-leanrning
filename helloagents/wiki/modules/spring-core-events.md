@@ -29,10 +29,10 @@
 
 ### Docs Index
 - 入口：`spring-core-modules/spring-core-events/docs/README.md`
-- 断点地图：`spring-core-modules/spring-core-events/docs/part-00-guide/128-02-breakpoint-map.md`
-- 关键分支矩阵：`spring-core-modules/spring-core-events/docs/part-00-guide/128-04-branch-decision-matrix.md`
-- 排障 playbook：`spring-core-modules/spring-core-events/docs/appendix/136-90-common-pitfalls.md`
-- 自检清单：`spring-core-modules/spring-core-events/docs/appendix/137-99-self-check.md`
+- 断点地图：`spring-core-modules/spring-core-events/docs/part-00-guide/04-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-events/docs/part-00-guide/05-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-events/docs/appendix/01-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-events/docs/appendix/02-self-check.md`
 - Branch Matrix（关键分支入口）：
   - `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`

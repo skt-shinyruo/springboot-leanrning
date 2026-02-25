@@ -8,11 +8,11 @@
 
 ## Docs placement
 
-- `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/38-environment-and-propertysource.md`
+- `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/21-environment-and-propertysource.md`
   - 覆盖：Environment 接口族谱、PropertySource 抽象、PropertySource 优先级、@PropertySource 的进入链路、占位符解析与 BFPP 的关系
   - 关联已有章节：34（placeholder）、36（type conversion）、10/11（Boot 排障中的 Environment）
 
-- `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/39-beanfactory-api-deep-dive.md`
+- `docs/beans/spring-core-beans/part-04-wiring-and-boundaries/22-beanfactory-api-deep-dive.md`
   - 覆盖：BeanFactory 接口族谱（BeanFactory/Listable/Hierarchical/AutowireCapable/Configurable*）、为什么 plain BeanFactory 没有“自动处理注解”的能力、如何手动 bootstrap（addBeanPostProcessor）以及排障观察点
   - 关联已有内容：01（容器心智模型）、12（注解基础设施 bootstrap）、06/14（post-processors 时机/排序）、43（AutowireCapableBeanFactory）
 

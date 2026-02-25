@@ -45,7 +45,7 @@
 
 <a id="scenario-trace-where-beandefinition-comes-from"></a>
 #### Scenario: Trace where BeanDefinition comes from
-- **Given**：阅读 `docs/02-bean-registration.md`，运行 `SpringCoreBeansBootstrapInternalsLabTest`
+- **Given**：阅读 `docs/01-bean-registration.md`，运行 `SpringCoreBeansBootstrapInternalsLabTest`
 - **Then**：
   - 能区分扫描注册 vs `@Bean` vs `@Import`
   - 能解释“为什么注解能工作”（基础设施处理器在哪里注册、何时生效）

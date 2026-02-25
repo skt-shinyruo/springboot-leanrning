@@ -39,7 +39,7 @@ class SpringCoreEventsExerciseTest {
                         3) 让本测试断言两条 entry 都存在（可自由调整 entry 的文本）。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-events/docs/part-01-event-basics/130-02-multiple-listeners-and-order.md`
+                        - `spring-core-modules/spring-core-events/docs/part-01-event-basics/02-multiple-listeners-and-order.md`
                         """)
                 .contains("userRegistered:Alice");
         assertThat(entries)
@@ -80,7 +80,7 @@ class SpringCoreEventsExerciseTest {
                         3) 用稳定的方式断言异步：记录线程名 + CountDownLatch 等待，而不是靠日志时序。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/133-05-async-listener.md`
+                        - `spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/01-async-listener.md`
                         """)
                 .isFalse();
     }
@@ -98,7 +98,7 @@ class SpringCoreEventsExerciseTest {
                         3) 用测试证明：即使 listener 没标 @Async，也会异步执行。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/134-06-async-multicaster.md`
+                        - `spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/02-async-multicaster.md`
                         """)
                 .isFalse();
     }
@@ -116,7 +116,7 @@ class SpringCoreEventsExerciseTest {
                         3) 用断言证明：只有满足条件时才会写入 auditLog。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-events/docs/part-01-event-basics/131-03-condition-and-payload.md`
+                        - `spring-core-modules/spring-core-events/docs/part-01-event-basics/03-condition-and-payload.md`
                         """)
                 .isFalse();
     }

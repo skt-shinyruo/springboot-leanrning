@@ -29,10 +29,10 @@
 
 ### Docs Index
 - 入口：`spring-core-modules/spring-core-validation/docs/README.md`
-- 断点地图：`spring-core-modules/spring-core-validation/docs/part-00-guide/157-02-breakpoint-map.md`
-- 关键分支矩阵：`spring-core-modules/spring-core-validation/docs/part-00-guide/157-04-branch-decision-matrix.md`
-- 排障 playbook：`spring-core-modules/spring-core-validation/docs/appendix/164-90-common-pitfalls.md`
-- 自检清单：`spring-core-modules/spring-core-validation/docs/appendix/165-99-self-check.md`
+- 断点地图：`spring-core-modules/spring-core-validation/docs/part-00-guide/04-breakpoint-map.md`
+- 关键分支矩阵：`spring-core-modules/spring-core-validation/docs/part-00-guide/05-branch-decision-matrix.md`
+- 排障 playbook：`spring-core-modules/spring-core-validation/docs/appendix/01-common-pitfalls.md`
+- 自检清单：`spring-core-modules/spring-core-validation/docs/appendix/02-self-check.md`
 - Branch Matrix（关键分支入口）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
 - Solution（Exercises 对应答案回归）：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part00_guide/SpringCoreValidationExerciseSolutionTest.java`
 - Lab（并发/性能：Validator 并发使用边界）：`spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part02_perf_concurrency/SpringCoreValidationValidatorConcurrencyLabTest.java`
