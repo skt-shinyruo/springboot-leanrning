@@ -1,80 +1,52 @@
-# 02. 99 - Self Check（springboot-business-case）
+# 99 自检：Business Case（综合案例）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：Self Check（springboot-business-case）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用端到端链路把 Web/Validation/Security/AOP/Tx/JPA/Events 串起来：遇到红测/异常时，先定位“哪个边界没生效”，再回到对应模块主线。
-    - 原理：一次业务请求贯穿：MVC 入参→安全边界→事务边界→持久化上下文→事件时机→可观测信号；排障的关键是把问题归类到具体边界。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.data.jpa.repository.support.SimpleJpaRepository`
-    - 推荐 Lab：`BootBusinessCaseLabTest`
+    - 主线入口：`BootBusinessCaseBookMatrixLabTest`
+    - 分支入口：`BootBusinessCaseBranchMatrixLabTest`
+    - 推荐先跑：`BootBusinessCaseLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[01. 90 - Common Pitfalls（springboot-business-case）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先跑入口（把现象跑成事实）
 
-## 从 Book Matrix 进入（主线最小集合）
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
 
-- `mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
+配套资料（排障更快）：
 
-## 从 Branch Matrix 进入（关键分支最小集合）
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
+- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](01-common-pitfalls.md)
 
-- `mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
+## 自检题（每题都能落到 tests）
 
-- 本章主题：**02. 99 - Self Check（springboot-business-case）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+1. 输入校验失败时，哪些东西应该发生、哪些不该发生？你如何用一条用例证明“不会落库、不会产生副作用事件”？  
+   - 证据入口：`BootBusinessCaseLabTest#returnsValidationErrorWhenRequestIsInvalid`
+2. 请求成功时，你如何用断言同时固定三件事：HTTP 返回正确、数据落库、事件副作用发生在正确时机？  
+   - 证据入口：`BootBusinessCaseLabTest#createsOrderWhenRequestIsValid`
+3. 你如何证明 `OrderService` 真的走了 AOP 代理（不是直接 new 出来的对象）？  
+   - 证据入口：`BootBusinessCaseLabTest#serviceBeanIsAnAopProxy`
+4. tracing aspect 在哪里记录调用？你如何在一次请求里观察它命中了你关心的方法？  
+   - 证据入口：`BootBusinessCaseLabTest#aspectRecordsInvocationForTracedOperation`
+5. 事务回滚时，“数据库状态”和“事件副作用”分别会怎样？为什么 sync listener 与 afterCommit listener 会出现分流？  
+   - 证据入口：`BootBusinessCaseLabTest#rollbackPreventsPersistenceOnFailure` + `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot`
+6. 成功提交时 afterCommit listener 为什么会触发？你如何把“只在提交后发生”写成断言？  
+   - 证据入口：`BootBusinessCaseLabTest#afterCommitListenerRunsOnSuccess`
+7. 这个模块的“幂等”是什么语义？为什么同样请求两次会有两条订单？  
+   - 证据入口：`BootBusinessCaseLabTest#createOrderIsIdempotentAtDatabaseLevel_perRequestOnly`
+8. 你如何定义“边界排障顺序”（MVC → Security → Tx → JPA → Events → Observability）？遇到红测/异常时，你第一步会选哪个入口把它跑成事实？  
+   - 对照：`BootBusinessCaseBookMatrixLabTest` / `BootBusinessCaseBranchMatrixLabTest`
+9. 练习：把你对某个边界的理解固化成一条“可回归”的服务级用例（不要停留在名词解释）。  
+   - 入口：`BootBusinessCaseExerciseTest`
 
-!!! summary "本章要点"
+## 退出条件（完成标准）
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
-
-## 机制主线
-
-这页不展开完整机制主线；其定位更接近复盘题：用问题把主线重新串一遍，并把每个结论指回可复现入口。
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
-- Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
-- 建议命令：`mvn -pl :spring-boot-business-case test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 对应 Exercise（可运行）
-
-- `BootBusinessCaseExerciseTest`
-
-## 常见坑与边界
-
-如果你在回答下面自测题时总觉得“都是概念”，先回去跑一遍 `BootBusinessCaseLabTest`，再对照上一章的 Common Pitfalls：这个模块的价值在于把边界跑成证据，而不是把边界写成口号。
-
-## 自测题
-（建议要求自己：每题都能指出一个“可跑的验证入口”）
-
-1. 输入校验失败时，哪些东西应该发生、哪些不该发生？（验证：`BootBusinessCaseLabTest#returnsValidationErrorWhenRequestIsInvalid`）
-2. 事务回滚时，“数据库状态”和“事件副作用”分别会怎样？（验证：`BootBusinessCaseLabTest#rollbackPreventsPersistenceOnFailure` / `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot`）
-3. 你如何证明 `OrderService` 真的走了 AOP 代理？（验证：`BootBusinessCaseLabTest#serviceBeanIsAnAopProxy`）
-4. tracing aspect 在哪里记录调用？你如何在一次请求里看到它命中你关心的方法？（验证：`BootBusinessCaseLabTest#aspectRecordsInvocationForTracedOperation`）
-5. 这个模块的“幂等”是什么语义？为什么同样请求两次会有两条订单？（验证：`BootBusinessCaseLabTest#createOrderIsIdempotentAtDatabaseLevel_perRequestOnly`）
-6. 如果事件监听器抛异常，你会把异常处理放在哪个边界（listener 内部 / 发布方 / 全局异常处理）？说出你选择的理由，并给出你会用什么测试去锁定这个选择。
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 你能把一次业务请求拆成“边界链路”，并能指出每个边界的证据入口（至少 1 条测试用例）。
+- 你能用“数据是否落库 + 事件时机”作为最终证据，避免只看日志/异常做判断。
 
 <!-- BOOKIFY:START -->
 

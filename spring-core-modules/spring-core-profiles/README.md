@@ -8,6 +8,19 @@
 - 使用 `@ConditionalOnProperty` 进行基于配置项的装配（Spring Boot 自动配置中很常见）
 - 保证每个场景都不会注入歧义（每个场景只存在一个 `GreetingProvider`）
 
+## Start Here（5 分钟闭环）
+
+先把现象跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
 ## 你将学到什么
 
 - `@Profile("dev")` 的 Bean 在什么时候会生效

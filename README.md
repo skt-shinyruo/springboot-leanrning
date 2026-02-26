@@ -6,16 +6,17 @@
 - **测试入口**：测试用例分为两类：  
   - `*LabTest.java`：提供可复现的现象与断言证据链（默认启用，要求全绿）。  
   - `*ExerciseTest.java`：提供动手改写题（默认 `@Disabled`，需学习者手动开启）。  
-- **文档组织**：模块文档位于各自的 `<module>/docs/`；仓库根的 [`docs/SUMMARY.md`](docs/SUMMARY.md) 汇总为全站目录（SSOT，用于文档站侧边栏导航）。
+- **文档组织**：模块文档位于各自的 `<module>/docs/`；仓库根 `docs/` 提供：[`docs/SUMMARY.md`](docs/SUMMARY.md)（全站目录 SSOT）与 [`docs/book/README.md`](docs/book/README.md)（全书主线，教材式顺读）。
 
 建议先跑通一个模块的最小闭环，再阅读机制细节，而不是从索引开始逐条记忆。
 
-## 从哪里开始（两条阅读路径）
+## 从哪里开始（三条阅读路径）
 
-- **路径 A（按目录阅读，推荐）**：从 [`docs/SUMMARY.md`](docs/SUMMARY.md) 进入全站目录，按模块 → 章节阅读。
-- **路径 B（以可运行入口驱动）**：直接进入某个模块的 `docs/README.md`（例如 `spring-boot-modules/spring-boot-basics/docs/README.md`）→ 先运行一个 `*LabTest.java` 形成可验证的证据 → 再开启 `*ExerciseTest.java` 完成改写练习。
+- **路径 A（全书主线，教材式顺读）**：从 [`docs/book/README.md`](docs/book/README.md) 开始按章推进；侧边栏目录与完整索引以 [`docs/SUMMARY.md`](docs/SUMMARY.md) 为准。
+- **路径 B（按目录阅读）**：从 [`docs/SUMMARY.md`](docs/SUMMARY.md) 进入全站目录，按模块 → 章节阅读。
+- **路径 C（以可运行入口驱动）**：直接进入某个模块的 `docs/README.md`（例如 `spring-boot-modules/spring-boot-basics/docs/README.md`）→ 先运行一个 `*LabTest.java` 形成可验证的证据 → 再开启 `*ExerciseTest.java` 完成改写练习。
 
-> 想要可搜索、按“分卷→模块→章节”侧边栏顺读的站点体验：看 [`docs-site/README.md`](docs-site/README.md)（本地预览/构建/Pages 发布）。
+> 想要可搜索、按“全书主线→模块→章节”侧边栏顺读的站点体验：看 [`docs-site/README.md`](docs-site/README.md)（本地预览/构建/Pages 发布）。
 
 ## 环境要求
 

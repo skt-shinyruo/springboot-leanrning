@@ -83,7 +83,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 
 3) 进入深入分析（通过断点建立“阶段意识”，而非依赖记忆性规则）
 
-- 从这里开始读：[`docs/00-deep-dive-guide.md`](docs/part-00-guide/03-deep-dive-guide.md)
+- 从这里开始读：[`docs/part-00-guide/03-deep-dive-guide.md`](docs/part-00-guide/03-deep-dive-guide.md)
 
 ## 团队内训（可直接用于授课）
 
@@ -97,7 +97,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 | --- | --- | --- | --- |
 | 入门 | 建立直觉与可断言结论 | `SpringCoreBeansLabTest` | Qualifier/Scope/生命周期的“外部行为”为什么是这样 |
 | 进阶 | 把概念放回容器主线 | `SpringCoreBeansContainerLabTest` | 定义层 vs 实例层、BFPP vs BPP、为什么最终暴露对象可能是 proxy |
-| 深入 | 断点地图 + 排障闭环 | `docs/00-deep-dive-guide.md` | 能从异常/现象定位到正确断点入口，并用观察点收敛原因 |
+| 深入 | 断点地图 + 排障闭环 | `docs/part-00-guide/03-deep-dive-guide.md` | 能从异常/现象定位到正确断点入口，并用观察点收敛原因 |
 
 ## 学习内容
 - Bean 的心智模型：`BeanDefinition`（定义） vs Bean instance（实例）
@@ -186,6 +186,20 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 - 可优先完成 `springboot-basics`（至少能够运行项目并理解配置）
 - 了解 Java 注解与反射的基本概念（不要求深入）
 - 若希望更快理解“代理相关模块”（AOP/Tx/Validation），可将本模块作为核心基础
+
+## Start Here（5 分钟闭环）
+
+先把现象跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInternalsBranchMatrixLabTest test`
+  - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansIocBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/11-self-check.md`](docs/appendix/11-self-check.md)
 
 ## 关键命令
 

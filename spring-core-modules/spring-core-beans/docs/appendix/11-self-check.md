@@ -1,4 +1,4 @@
-# 11. 自测题：是否能够真的理解了？
+# 99 自检：spring-core-beans 文档导航（Docs TOC）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见误区清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 27 章：AOP/代理主线](../README.md)
+上一章：[01. 常见误区清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 小结与下一章

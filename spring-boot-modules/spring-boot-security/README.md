@@ -4,6 +4,19 @@
 
 本模块的定位是：**用可运行的最小 HTTP 边界 + 可断言的实验测试（Labs/Exercises）**，把“为什么是 401/403、为什么 POST 会被 CSRF 拦、为什么方法注解有时不生效”等现象讲清楚。
 
+## Start Here（5 分钟闭环）
+
+先把现象跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
 ## 你将学到什么
 
 - 认证（Authentication） vs 授权（Authorization）的区别：**401 vs 403**

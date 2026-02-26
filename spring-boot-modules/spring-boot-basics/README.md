@@ -2,6 +2,19 @@
 
 本模块用于学习 Spring Boot 的“最小闭环”：**应用启动**、**配置属性绑定（`@ConfigurationProperties`）**、**Profile（`dev`）切换**。
 
+## Start Here（5 分钟闭环）
+
+先把现象跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
 ## 你将学到什么
 
 - 理解一个最小的 Spring Boot 应用如何启动（从 `main` 到容器）

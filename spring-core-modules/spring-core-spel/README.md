@@ -10,11 +10,18 @@
 
 ## Start Here（5 分钟闭环）
 
-```bash
-mvn -pl :spring-core-spel -Dtest=SpringCoreSpelLabTest test
-```
+先把现象跑成事实，再回到 docs 顺读机制与边界：
 
-你应该能解释清楚：
+- Book Matrix（主线入口）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
+完成标准（你应该能解释清楚）：
 
 - 一段表达式是如何被解析成 AST 并求值的（至少能定位到关键类/入口）
 - 为什么 SpEL 常被用在 Cache key / Validation / Security 表达式里

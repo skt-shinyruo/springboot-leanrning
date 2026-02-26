@@ -12,6 +12,20 @@
 
 > ⚠️ 注意：由于 `aspectj-maven-plugin`（ajc）对 Java 版本的限制，本模块的编译目标设置为 `--release 16`；但运行时仍要求 JDK 17+（与父工程 enforcer 一致）。
 
+## Start Here（5 分钟闭环）
+
+先把现象跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`
+  - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
 ## 你将学到什么
 
 - 你能解释清楚：**Spring AOP（代理） vs AspectJ（织入）** 的能力边界与代价

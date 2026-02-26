@@ -1,16 +1,14 @@
-# 02. 99 - Self Check（springboot-web-mvc）
+# 99 自检：Spring Boot Web MVC
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：Self Check（springboot-web-mvc）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcErrorViewLabTest`
+    - 主线入口：`BootWebMvcBookMatrixLabTest`
+    - 分支入口：`BootWebMvcErrorBranchMatrixLabTest`（400/406/415）
+    - 推荐先跑：`BootWebMvcLabTest` / `BootWebMvcBindingDeepDiveLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（Web MVC）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 84 章：Security 主线](../README.md)
+上一章：[01. 常见坑清单（Web MVC）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -39,9 +37,6 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
-
-## 机制主线
-
 
 ## 自测题
 1. `@Valid` 触发校验发生在 MVC 的哪个阶段？异常如何被塑形为统一响应？
@@ -98,9 +93,9 @@
 
 - `BootWebMvcExerciseTest`
 
-## 常见坑与边界
+## 常见坑索引（本页不重复坑正文）
 
-- 建议先跑 E 中的 Labs，再回到题目对照“异常类型/状态码/断点位置”，把自测题变成可验证事实。
+- 建议对照：[`01-common-pitfalls.md`](01-common-pitfalls.md)
 
 ## 小结与下一章
 

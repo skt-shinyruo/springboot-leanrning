@@ -4,6 +4,19 @@
 
 本模块默认启动一个 HTTP API（端口 `8084`），更贴近真实业务的“入口/边界”学习方式。
 
+## Start Here（5 分钟闭环）
+
+先把现象跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
 ## 你将学到什么
 
 - Web MVC：Controller + 请求绑定 + JSON
@@ -46,10 +59,10 @@ mvn -pl :spring-boot-business-case test
 
 建议按“先跑通链路 → 再拆机制”的顺序：
 
-1. 导读：`docs/part-00-guide/02-deep-dive-guide.md`
-2. 案例架构与主线：`docs/part-01-business-case/01-architecture-and-flow.md`
-3. 常见坑清单：`docs/appendix/01-common-pitfalls.md`
-4. 自测题：`docs/appendix/02-self-check.md`
+1. [导读](docs/part-00-guide/02-deep-dive-guide.md)
+2. [案例架构与主线](docs/part-01-business-case/01-architecture-and-flow.md)
+3. [常见坑清单](docs/appendix/01-common-pitfalls.md)
+4. [自测题](docs/appendix/02-self-check.md)
 5. 先跑接口 + 跑 `BootBusinessCaseLabTest`：把“现象”固定下来
 6. 出现疑问时按链路拆解：
    - 代理/AOP：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md`、`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/03-self-invocation.md`

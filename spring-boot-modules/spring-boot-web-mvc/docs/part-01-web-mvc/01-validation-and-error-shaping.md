@@ -167,8 +167,8 @@
 
 进一步阅读（只做必要连接，不扩散篇幅）：
 
-- Validation 模块（Bean Validation 机制本身）：[`helloagents/wiki/modules/spring-core-validation.md`](../../../../helloagents/wiki/modules/spring-core-validation.md)
-- Beans 模块（类型转换/值解析等底层支撑）：[`helloagents/wiki/modules/spring-core-beans.md`](../../../../helloagents/wiki/modules/spring-core-beans.md)
+- Validation 模块（Bean Validation 机制本身）：[`spring-core-validation/docs/README.md`](../../../../spring-core-modules/spring-core-validation/docs/README.md)
+- Beans 模块（类型转换/值解析等底层支撑）：[`spring-core-beans/docs/README.md`](../../../../spring-core-modules/spring-core-beans/docs/README.md)
 
 ## 常见坑与边界
 

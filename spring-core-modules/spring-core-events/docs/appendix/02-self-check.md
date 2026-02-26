@@ -1,90 +1,55 @@
-# 02. 自测题（Spring Core Events）
+# 99 自检：Spring Events
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：自测题（Spring Core Events）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
-    - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
-    - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
-    - 推荐 Lab：`SpringCoreEventsLabTest`
+    - 主线入口：`SpringCoreEventsBookMatrixLabTest`
+    - 分支入口：`SpringCoreEventsBasicsBranchMatrixLabTest` / `SpringCoreEventsAsyncTransactionalBranchMatrixLabTest`
+    - 推荐先跑：`SpringCoreEventsLabTest` / `SpringCoreEventsTransactionalEventLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 138 章：Resources 主线](../README.md)
+上一章：[01. 常见坑清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先跑入口（把现象跑成事实）
 
-## 从 Book Matrix 进入（主线最小集合）
+- Book Matrix（主线入口）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
+- Branch Matrix（基础事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
+- Branch Matrix（异步/事务事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
 
-- `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
+配套资料（排障更快）：
 
-## 从 Branch Matrix 进入（关键分支最小集合）
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
+- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](01-common-pitfalls.md)
 
-- 基础事件：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
-- 异步/事务事件：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
+## 自检题（每题都能落到 tests）
 
-- 本章主题：**02. 自测题（Spring Core Events）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+1. 发布事件与接收事件的最小闭环是什么？你如何用断言证明 listener 确实收到了事件？  
+   - 证据入口：`SpringCoreEventsLabTest#listenerReceivesPublishedEvent`
+2. 多个监听器能否观察同一个事件？你如何验证“不是只有一个 listener 生效”？  
+   - 证据入口：`SpringCoreEventsLabTest#multipleListenersCanObserveTheSameEvent`
+3. 多 listener 的顺序由什么决定？你如何用 `@Order` 把顺序固定成断言？  
+   - 证据入口：`SpringCoreEventsLabTest#orderedListenersFollowOrderAnnotation`
+4. `@EventListener(condition = ...)` 的 condition 何时求值？不满足时会怎样？  
+   - 证据入口：`SpringCoreEventsLabTest#conditionalEventListenerOnlyRunsWhenConditionMatches`
+5. payload event 是什么？为什么 `publishEvent("hello")` 也能被监听？  
+   - 证据入口：`SpringCoreEventsLabTest#publishingPlainObjectsAlsoWorks_asPayloadEvents`
+6. 事件默认是同步还是异步？你如何用线程名证明“默认同步”？  
+   - 证据入口：`SpringCoreEventsLabTest#eventsAreSynchronousByDefault`
+7. 同步事件里 listener 抛异常会怎样？它会不会打断发布方？  
+   - 证据入口：`SpringCoreEventsMechanicsLabTest#listenerExceptionsPropagateToPublisher_byDefault`
+8. `@Async` listener 的边界是什么？为什么没开 `@EnableAsync` 时它会“看起来没生效”？  
+   - 证据入口：`SpringCoreEventsMechanicsLabTest#asyncListenerRunsOnDifferentThread_whenEnableAsyncIsOn` + `SpringCoreEventsMechanicsLabTest#asyncAnnotationIsIgnored_withoutEnableAsync`
+9. `@TransactionalEventListener` 的 phase 边界是什么？你如何用对照用例证明 AFTER_COMMIT/AFTER_ROLLBACK 的分流？  
+   - 证据入口：`SpringCoreEventsTransactionalEventLabTest#afterCommitListenerRunsOnlyAfterCommit` + `SpringCoreEventsTransactionalEventLabTest#afterCommitDoesNotRunOnRollback_butAfterRollbackDoes`
+10. 你如何把事件分发改为“由 multicaster 异步派发”（而不是靠 `@Async`）？并证明 listener 运行在线程池线程上？  
+    - 证据入口：`SpringCoreEventsAsyncMulticasterLabTest#asyncMulticasterDispatchesListenersOnExecutorThread`
 
-!!! summary "本章要点"
+## 退出条件（完成标准）
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest` / `SpringCoreEventsTransactionalEventLabTest` / `SpringCoreEventsAsyncMulticasterLabTest`
-
-## 机制主线
-
-这一章用“最小实验 + 可断言证据链”复盘 4 个核心分流：
-
-1. 同步默认值（线程模型）
-2. 多监听器与顺序（@Order）
-3. condition/payload（触发条件与类型匹配）
-4. 异常/事务/异步（失败是否影响发布方、何时触发）
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest` / `SpringCoreEventsTransactionalEventLabTest` / `SpringCoreEventsAsyncMulticasterLabTest`
-- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-> 验证入口（可跑）：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest` / `SpringCoreEventsTransactionalEventLabTest` / `SpringCoreEventsAsyncMulticasterLabTest`
-
-> 用来检查你是否能“复述机制 + 解释边界 + 给出最小复现”。
-
-1. 事件发布与监听的核心接口分别是什么？各自的职责边界是什么？
-2. 多个监听器时，顺序由哪些因素决定？你如何最小化验证？
-3. `@EventListener(condition = ...)` 的 condition 在哪里求值？失败时的行为是什么？
-4. 同步事件里监听器抛异常会怎样影响发布方？常见的误解是什么？
-5. 异步事件与事务事件组合时，最容易踩的坑是什么？你会如何设计验证用例？
-
-## 常见坑与边界
-
-### 坑点 1：把事件当“最终一致性工具”却不区分同步/异步/事务阶段
-
-- Symptom：回滚时仍有副作用；或 afterCommit 没触发；或异常把发布方打断
-- Root Cause：事件机制的行为由“线程模型 + 异常传播 + 事务阶段”共同决定
-- Verification：
-  - 异常默认传播：`SpringCoreEventsMechanicsLabTest#listenerExceptionsPropagateToPublisher_byDefault`
-  - @Async 需要 EnableAsync：`SpringCoreEventsMechanicsLabTest#asyncAnnotationIsIgnored_withoutEnableAsync`
-  - 事务阶段：`SpringCoreEventsTransactionalEventLabTest#afterCommitDoesNotRunOnRollback_butAfterRollbackDoes`
-- Fix：先用测试把线程模型/异常策略/事务阶段锁定，再把“副作用”设计到合适的阶段（afterCommit/afterRollback/异步队列等）
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 你能把事件系统拆成三条可验证分支：同步/异步（线程模型）→ 异常传播 → 事务阶段（afterCommit/afterRollback）。
+- 你能在遇到“副作用时机不对/回滚仍触发”时，先用一条测试把事实锁定，再讨论架构（同步事件 vs 事务事件 vs 异步队列）。
 
 <!-- BOOKIFY:START -->
 

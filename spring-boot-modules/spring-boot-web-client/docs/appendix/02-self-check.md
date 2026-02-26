@@ -1,91 +1,54 @@
-# 02. 99 - Self Check（springboot-web-client）
+# 99 自检：Spring Boot Web Client
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：Self Check（springboot-web-client）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
-    - 原理：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
-    - 源码入口：`org.springframework.web.reactive.function.client.WebClient` / `org.springframework.web.reactive.function.client.ExchangeFilterFunction` / `org.springframework.web.reactive.function.client.ExchangeFunction`
-    - 推荐 Lab：`BootWebClientRestClientLabTest`
+    - 主线入口：`BootWebClientBookMatrixLabTest`
+    - 分支入口：`BootWebClientBranchMatrixLabTest`
+    - 推荐先跑：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（Web Client）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 182 章：Testing 主线](../README.md)
+上一章：[01. 常见坑清单（Web Client）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先跑入口（把现象跑成事实）
 
-本章是「99 - Self Check（springboot-web-client）」的自检与复盘页：不引入新概念，而是把关键分支以问题的形式回放。
-建议先运行 `BootWebClientRestClientLabTest`（或本章列出的 Matrix/Lab 入口），再按题目逐一回到对应的证据链。
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
 
-## 从 Book Matrix 进入（主线最小集合）
+配套资料（排障更快）：
 
-- `mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
+- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](01-common-pitfalls.md)
 
-## 从 Branch Matrix 进入（关键分支最小集合）
+## 自检题（每题都能落到 tests）
 
-- `mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
+1. RestClient 的最小闭环是什么？（构建请求 → 反序列化 → 返回领域对象）你如何把它写成断言？  
+   - 证据入口：`BootWebClientRestClientLabTest#restClientGetsGreeting`
+2. 你如何证明“发了你以为的那条请求”（method/path/headers）？为什么这比只断言 response 更可靠？  
+   - 证据入口：`BootWebClientRestClientLabTest#restClientSendsExpectedPathAndHeaders`
+3. 反序列化时未知字段会怎样？你如何把“兼容性策略”固定成回归用例？  
+   - 证据入口：`BootWebClientRestClientLabTest#restClientIgnoresUnknownJsonFieldsByDefault`
+4. 4xx/5xx 应该如何映射成“领域异常”（包含 status）？你如何让调用方不必解读 HTTP 细节？  
+   - 证据入口：`BootWebClientRestClientLabTest#restClientMaps400ToDomainException` + `BootWebClientRestClientLabTest#restClientMaps500ToDomainException`
+5. read timeout 触发时，你如何证明它是“可重复失败”（而不是偶发现象）？  
+   - 证据入口：`BootWebClientRestClientLabTest#restClientReadTimeoutFailsFast`
+6. retry 的边界是什么？你如何用断言证明“失败一次 → 重试成功”，并把请求次数固定下来？  
+   - 证据入口：`BootWebClientRestClientLabTest#restClientRetriesOn5xxAndEventuallySucceeds`
+7. WebClient（响应式）下你如何写断言？为什么这里用 StepVerifier（或 block+timeout）更合适？  
+   - 证据入口：`BootWebClientWebClientLabTest#webClientGetsGreeting`
+8. WebClient 的超时失败与 RestClient 的超时失败有何差异？你如何把“失败模式”写成可回归用例？  
+   - 证据入口：`BootWebClientWebClientLabTest#webClientResponseTimeoutFailsFast`
+9. WebClient 的 filter 链：请求阶段与响应阶段的执行顺序为什么相反？你如何用一条用例把顺序固定下来？  
+   - 证据入口：`BootWebClientWebClientFilterOrderLabTest#webClientFilters_requestOrderAndResponseOrder_areDifferent`
+10. 对比 RestClient 与 WebClient：当你要做“可测试的超时/重试/错误映射”时，两者的取舍点分别是什么？  
+    - 对照：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
 
-- 本章主题：**02. 99 - Self Check（springboot-web-client）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+## 退出条件（完成标准）
 
-!!! summary "本章要点"
-
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
-
-## 机制主线
-
-Web Client 这类模块的学习目标不是“会发一个请求”，而是把三类容易线上翻车的分支写成可重复的证据：
-
-1. **状态码分支**：4xx/5xx 应该映射成什么异常/返回值？
-2. **时机与资源**：超时发生在哪一层（connect/read/整体调用）？取消会怎么传播？
-3. **重试与副作用**：retry 的前提是语义安全（幂等/去重），否则重试会放大副作用
-
-如果你能用 MockWebServer 把这些分支稳定复现出来，并能解释 filter 链路的顺序与异常传播，这模块就算学到位了。
-
-## 自测题
-1. 超时设置应该放在客户端哪一层？（连接/读写/整体调用）
-2. 重试策略如何与幂等性、熔断/限流协同？
-3. 为什么 MockWebServer 能让客户端测试更稳定？
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
-- Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 对应 Exercise（可运行）
-
-- `BootWebClientExerciseTest`
-
-## 常见坑与边界
-
-### 坑点 1：用真实网络做客户端测试，导致测试不稳定且不可重复
-
-- Symptom：在本地能跑、CI 偶发失败；或者外部服务波动导致你的单元测试“背锅”
-- Root Cause：网络与下游服务本身是非确定性的；测试缺少可控证据链
-- Verification：本模块所有 timeout/retry/error mapping 都基于 MockWebServer 可复现：
-  - `BootWebClientRestClientLabTest#restClientReadTimeoutFailsFast`
-  - `BootWebClientWebClientLabTest#webClientRetriesOn5xxAndEventuallySucceeds`
-- Fix：优先用 MockWebServer 固定下游行为，把“失败模式”做成可回归实验
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 你能把客户端行为写成“可控下游 + 可回归断言”的证据链（MockWebServer + 断言 + 请求计数）。
+- 你能区分：状态码分支、超时分支、重试分支，并为每条分支提供一个稳定入口用例。
 
 <!-- BOOKIFY:START -->
 

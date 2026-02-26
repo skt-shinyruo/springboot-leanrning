@@ -1,88 +1,54 @@
-# 02. 自测题（Spring Core Validation）
+# 99 自检：Spring Validation
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：自测题（Spring Core Validation）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
-    - 原理：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
-    - 源码入口：`org.springframework.validation.beanvalidation.LocalValidatorFactoryBean` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor` / `org.springframework.validation.beanvalidation.SpringValidatorAdapter`
-    - 推荐 Lab：`SpringCoreValidationLabTest`
+    - 主线入口：`SpringCoreValidationBookMatrixLabTest`
+    - 分支入口：`SpringCoreValidationBranchMatrixLabTest`
+    - 推荐先跑：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 166 章：Actuator/Observability 主线](../README.md)
+上一章：[01. 常见坑清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先跑入口（把现象跑成事实）
 
-本章是「自测题（Spring Core Validation）」的自检与复盘页：不引入新概念，而是把关键分支以问题的形式回放。
-建议先运行 `SpringCoreValidationLabTest`（或本章列出的 Matrix/Lab 入口），再按题目逐一回到对应的证据链。
+- Book Matrix（主线入口）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
 
-## 从 Book Matrix 进入（主线最小集合）
+配套资料（排障更快）：
 
-- `mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
+- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](01-common-pitfalls.md)
 
-## 从 Branch Matrix 进入（关键分支最小集合）
+## 自检题（每题都能落到 tests）
 
-- `mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
+1. Spring 容器里默认是否有 `Validator`？你如何把“Validator 可用”固定成断言？  
+   - 证据入口：`SpringCoreValidationLabTest#validatorIsAvailableFromTheSpringContext`
+2. programmatic validation 的最小闭环是什么？你如何把“无效输入→violations 集合”写成断言？  
+   - 证据入口：`SpringCoreValidationLabTest#programmaticValidationFindsViolations`
+3. programmatic validation 在有效输入下应该返回什么？你如何避免“看起来没报错但其实没校验”的错觉？  
+   - 证据入口：`SpringCoreValidationLabTest#programmaticValidationReturnsNoViolationsForValidInput`
+4. method validation 的触发边界在哪里？为什么它会以 `ConstraintViolationException` 的形式失败？  
+   - 证据入口：`SpringCoreValidationLabTest#methodValidationThrowsForInvalidInput`
+5. method validation 为什么需要代理？你如何证明“没有 Spring 代理时不会触发校验”？  
+   - 证据入口：`SpringCoreValidationMechanicsLabTest#methodValidationDoesNotRunWhenCallingAServiceDirectly_withoutSpringProxy`
+6. 你如何证明“走的是代理”？  
+   - 证据入口：`SpringCoreValidationLabTest#methodValidatedServiceIsAnAopProxy`
+7. groups 解决的核心问题是什么？你如何用一条对照用例证明“同一对象在不同 group 下违规集合不同”？  
+   - 证据入口：`SpringCoreValidationMechanicsLabTest#groupsControlWhichConstraintsApply`
+8. 自定义约束的最小闭环是什么？（注解 → Validator → violations）你如何把它写成断言？  
+   - 证据入口：`SpringCoreValidationMechanicsLabTest#customConstraintsCanBeDefinedWithConstraintValidator`
+9. violation 的 message/path 为什么重要？你如何用断言把“错误解释性”固定下来？  
+   - 证据入口：`SpringCoreValidationMechanicsLabTest#constraintViolationIncludesMessageAndPropertyPath`
+10. Validator 是否线程安全？你如何用并发实验证明“并发校验一致、不抛异常”？  
+    - 证据入口：`SpringCoreValidationValidatorConcurrencyLabTest#validator_isThreadSafe_underConcurrentValidations`
 
-- 本章主题：**02. 自测题（Spring Core Validation）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+## 退出条件（完成标准）
 
-!!! summary "本章要点"
-
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
-
-## 机制主线
-
-这一章用“最小实验 + 可断言证据链”复盘三条主线：
-
-1. programmatic validation：你显式触发，拿到 violations
-2. method validation：代理触发，失败时抛 `ConstraintViolationException`
-3. groups/custom constraint：决定哪些约束生效、如何扩展约束语义
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
-- Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-> 验证入口（可跑）：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
-
-1. `Validator` 的职责是什么？它和 `Constraint` 的关系是什么？
-2. method validation 为什么需要代理？它和 `@Transactional` 这类注解一样吗？
-3. group 解决的核心问题是什么？你会如何设计一个最小用例验证 group 生效？
-4. 自定义约束的关键点有哪些？（注解、校验器、message、payload）
-
-## 常见坑与边界
-
-### 坑点 1：把校验当成“注解装饰”，忽略触发边界与代理边界
-
-- Symptom：你写了很多注解，但在某些路径上没任何效果（或效果与预期不同）
-- Root Cause：校验是机制系统：触发点（programmatic/method）+ 代理边界（是否走 Spring）+ groups（生效范围）
-- Verification：
-  - programmatic：`SpringCoreValidationLabTest#programmaticValidationFindsViolations`
-  - method proxy 边界：`SpringCoreValidationMechanicsLabTest#methodValidationDoesNotRunWhenCallingAServiceDirectly_withoutSpringProxy`
-  - groups：`SpringCoreValidationMechanicsLabTest#groupsControlWhichConstraintsApply`
-- Fix：先把“触发边界”写成测试断言，再谈“规则设计/错误结构/工程化集成”
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 你能把校验机制拆成两条链路并提供证据：programmatic（显式触发）vs method（代理触发）。
+- 你能把 groups/custom constraint 的行为写成断言（而不是只背注解名）。
 
 <!-- BOOKIFY:START -->
 

@@ -1,4 +1,4 @@
-# 02. 99 - Self Check（springboot-basics）
+# 99 自检：Spring Boot Basics
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（复盘题）"
 

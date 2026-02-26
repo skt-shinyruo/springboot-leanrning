@@ -2,6 +2,19 @@
 
 本模块用于学习 Spring Boot Actuator 的基础用法：暴露常用端点（例如 `/actuator/health`），以及编写一个自定义 `HealthIndicator`。
 
+## Start Here（5 分钟闭环）
+
+先把现象跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
 ## 你将学到什么
 
 - Actuator 是什么、默认有哪些端点
@@ -43,10 +56,10 @@ mvn -pl :spring-boot-actuator test
 
 建议按“端点现象 → 配置开关 → 自定义指标 → 测试验证”的顺序学习：
 
-1. 导读：`docs/part-00-guide/00-deep-dive-guide.md`
-2. Actuator 基础：`docs/part-01-actuator/01-actuator-basics.md`
-3. 常见坑清单：`docs/appendix/90-common-pitfalls.md`
-4. 自测题：`docs/appendix/99-self-check.md`
+1. [导读](docs/part-00-guide/02-deep-dive-guide.md)
+2. [Actuator 基础](docs/part-01-actuator/01-actuator-basics.md)
+3. [常见坑清单](docs/appendix/01-common-pitfalls.md)
+4. [自测题](docs/appendix/02-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

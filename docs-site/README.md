@@ -4,9 +4,9 @@
 
 ## 1. 关键约定（SSOT）
 
-- **单一源文档（SSOT）**：模块文档以各模块目录内的 `*/docs/` 为事实来源；仓库根 `docs/` 仅保留 `docs/SUMMARY.md` 作为全站导航目录。
+- **单一源文档（SSOT）**：模块文档以各模块目录内的 `*/docs/` 为事实来源；仓库根 `docs/` 包含 `docs/SUMMARY.md`（全站导航 SSOT）与 `docs/book/`（全书主线）。
 - **文档即目录（SSOT）**：站点导航/侧边栏目录以 `docs/SUMMARY.md` 为唯一事实来源（按该文件的顺序与层级展示）。
-  - 目录维护：只需要修改 `docs/SUMMARY.md`
+  - 目录维护：只需要修改 `docs/SUMMARY.md`（新增/移动/重命名入口均在此完成）
   - 站点配置：`docs-site/mkdocs.yml` 不再维护 `nav:` 大块 YAML
 
 实现方式：使用 `mkdocs-literate-nav` 插件读取 `SUMMARY.md`。
@@ -57,8 +57,9 @@ mkdocs build -f mkdocs.yml
 维护规则（建议）：
 
 - 目录只放“索引级入口”（模块 README + Guide + Pitfalls/Self-check），深挖页通过站内搜索与文内链接进入
-- 链接一律使用相对 `docs/` 根目录的路径（例如 `book/062-webmvc-mainline.md`）
+- 链接一律使用相对 `docs/` 根目录的路径（例如 `book/06-spring-boot-web-mvc.md`）
 - 目录层级使用 Markdown 列表缩进表达
+- 侧边栏/导航结构调整：只改 `docs/SUMMARY.md`；章节正文在对应的 `*/docs/` 与 `docs/book/` 内维护
 
 ## 4. GitHub Pages（自动构建 + 发布）
 

@@ -10,11 +10,18 @@
 
 ## Start Here（5 分钟闭环）
 
-```bash
-mvn -pl :spring-boot-observability -Dtest=BootObservabilityLabTest test
-```
+先把现象跑成事实，再回到 docs 顺读机制与边界：
 
-你应该能解释清楚：
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
+完成标准（你应该能解释清楚）：
 
 - 一次 HTTP 请求之后，为什么会出现 `http.server.requests` 这类指标
 - 这些指标是在哪一层产生的（FilterChain/MVC/Actuator/Observation）

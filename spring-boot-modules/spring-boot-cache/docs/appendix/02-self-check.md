@@ -1,4 +1,4 @@
-# 02. 99 - Self Check（springboot-cache）
+# 99 自检：Spring Boot Cache
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（复盘题）"
 
@@ -23,6 +23,11 @@
 
 - Book Matrix：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`
 - Branch Matrix：`mvn -q -pl :spring-boot-cache -Dtest=BootCacheBranchMatrixLabTest test`
+
+配套资料（排障更快）：
+
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
 
 ## 自测题（每题都能落到 tests）
 

@@ -1,90 +1,52 @@
-# 02. 99 - Self Check（springboot-testing）
+# 99 自检：Spring Boot Testing
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：Self Check（springboot-testing）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：按目标选择测试切片（如 `@WebMvcTest`）或全量上下文（`@SpringBootTest`）；用 mock/替身把外部依赖固定成可断言证据。
-    - 原理：测试注解决定上下文装配范围 → TestContext 缓存与复用 → slice/full context 的权衡 → 断言固化机制结论 → 快速定位失败。
-    - 源码入口：`org.springframework.boot.test.context.SpringBootTest` / `org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest` / `org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate`
-    - 推荐 Lab：`BootTestingMockBeanLabTest`
+    - 主线入口：`BootTestingBookMatrixLabTest`
+    - 分支入口：`BootTestingBranchMatrixLabTest`
+    - 推荐先跑：`GreetingControllerWebMvcLabTest` / `GreetingControllerSpringBootLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 90 - Common Pitfalls（springboot-testing）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 188 章：Business Case 收束](../README.md)
+上一章：[01. 90 - Common Pitfalls（springboot-testing）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先跑入口（把现象跑成事实）
 
-本章是「99 - Self Check（springboot-testing）」的自检与复盘页：不引入新概念，而是把关键分支以问题的形式回放。
-建议先运行 `BootTestingMockBeanLabTest`（或本章列出的 Matrix/Lab 入口），再按题目逐一回到对应的证据链。
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
 
-## 从 Book Matrix 进入（主线最小集合）
+配套资料（排障更快）：
 
-- `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
+- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](01-common-pitfalls.md)
 
-## 从 Branch Matrix 进入（关键分支最小集合）
+## 自检题（每题都能落到 tests）
 
-- `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
+1. `@WebMvcTest` 是什么边界？它为什么通常需要你显式 `@MockBean` controller 依赖？  
+   - 证据入口：`GreetingControllerWebMvcLabTest`（观察其 `@WebMvcTest(...)` 与 `@MockBean`）
+2. `@SpringBootTest(webEnvironment=RANDOM_PORT)` 与 `@WebMvcTest` 的差异是什么？它们分别证明了什么、不能证明什么？  
+   - 证据入口：`GreetingControllerSpringBootLabTest#returnsGreetingFromRealService` + `GreetingControllerWebMvcLabTest#returnsGreetingFromMockedService`
+3. MockMvc 与 TestRestTemplate 的本质差异是什么？你如何用“是否经过真实网络栈/容器”解释它们的取舍？  
+   - 证据入口：`GreetingControllerWebMvcLabTest` / `GreetingControllerSpringBootLabTest`
+4. `@MockBean` 的“替换边界”是什么？为什么它能影响一次真实 HTTP 调用的返回结果？  
+   - 证据入口：`BootTestingMockBeanLabTest#mockBeanOverridesRealBeanInFullContext`
+5. `@MockBean` 是否会影响默认参数流转（比如缺省 name=World）？你如何把它写成可回归结论？  
+   - 证据入口：`BootTestingMockBeanLabTest#mockBeanAlsoAffectsDefaultParamFlow`
+6. `@WebMvcTest` 中请求参数是如何被解析/传递到 service 的？你如何验证它“确实传了 Bob”？  
+   - 证据入口：`GreetingControllerWebMvcLabTest#callsServiceWithTheResolvedNameParameter`
+7. 如何固定“响应 shape”而不是只断言某个具体字符串？你会选择断言哪一层结构？  
+   - 证据入口：`GreetingControllerWebMvcLabTest#returnsJsonResponseShape` + `GreetingControllerSpringBootLabTest#responseContainsMessageKey`
+8. Unicode 参数在测试里如何保证不出乱码？你如何把它写成一个长期回归用例？  
+   - 证据入口：`GreetingControllerWebMvcLabTest#supportsUnicodeNames`
+9. 练习：写一组“slice vs full”的对照用例，证明某个 bean 在 `@WebMvcTest` 中不会加载，但在 `@SpringBootTest` 会。  
+   - 入口：`BootTestingExerciseTest#exercise_sliceVsFull`
 
-- 本章主题：**02. 99 - Self Check（springboot-testing）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+## 退出条件（完成标准）
 
-!!! summary "本章要点"
-
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest`
-
-## 机制主线
-
-这一章用“对照 + 断言”复盘三件事：
-
-1. **slice vs full 的 bean 图边界**：你到底启动了什么（决定你能断言什么）
-2. **mock 的替换边界**：`@MockBean` 是“替换 Spring 容器里的 bean”，不是 Mockito 的普通字段 mock
-3. **排障分流**：启动失败/bean 缺失/行为不一致时，先确认测试类型与上下文范围
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
-- Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest`
-- 建议命令：`mvn -pl :spring-boot-testing test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 自测题
-1. `@WebMvcTest` 会加载哪些 bean？不会加载哪些 bean？
-2. `@MockBean` 与 Mockito 的 `@Mock` 有何差异？替换发生在哪个阶段？
-
-## 对应 Exercise（可运行）
-
-- `BootTestingExerciseTest`
-
-## 常见坑与边界
-
-### 坑点 1：把 `@Mock` 当成 `@MockBean`，导致“mock 了但并未生效”
-
-- Symptom：你以为某个依赖已经被 mock，但实际请求仍走真实实现（或直接 NPE/启动失败）
-- Root Cause：
-  - `@Mock` 只是 Mockito 字段 mock，不会自动替换 Spring 容器里的 bean
-  - `@MockBean` 才会把容器中的 bean 替换掉，进而影响注入与调用链
-- Verification：
-  - full context + `@MockBean` 覆盖真实 bean：`BootTestingMockBeanLabTest#mockBeanOverridesRealBeanInFullContext`
-  - slice（WebMvcTest）里用 `@MockBean` 兜底 controller 依赖：`GreetingControllerWebMvcLabTest#returnsGreetingFromMockedService`
-- Fix：需要影响 Spring 注入链就用 `@MockBean`；需要测试真实集成边界就减少 mock 并用 `@SpringBootTest`
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 你能基于目标选择测试类型（slice/full），并能用一个反例说明“选错会得到假绿/假红”。
+- 你能把 mock 的边界说清楚：Mockito 字段 mock vs Spring 容器 bean 替换（`@MockBean`）。
 
 <!-- BOOKIFY:START -->
 

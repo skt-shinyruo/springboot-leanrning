@@ -1,8 +1,8 @@
-# 02. 99 - Self Check（springboot-async-scheduling）
+# 99 自检：Spring Boot Async & Scheduling
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（当成习题册）"
 
-    这一章没有新知识点，其定位更接近你读完主线后的“复盘纸”：把关键分支按问题列出来。你如果能顺手回答出来，大概率已经把这模块吃透了；答不上来也没关系，下面每题都有对应的复现入口。
+    这页定位为练习册：把 Async/Scheduling 的关键分支按问题列出来。每题都对应一个可复现入口（tests/断点），用于复盘与回归。
 
     - 主线入口：`BootAsyncSchedulingBookMatrixLabTest`
     - 分支入口：`BootAsyncSchedulingBranchMatrixLabTest`

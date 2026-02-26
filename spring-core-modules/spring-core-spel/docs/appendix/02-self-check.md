@@ -1,46 +1,50 @@
-# 02. 99 - Self Check（spring-core-spel）
+# 99 自检：Spring Core SpEL
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：Self Check（spring-core-spel）
-    - 怎么使用：先跑 Book/Branch Matrix，再用本页问题自检是否真正理解“parse → context → getValue”。
-    - 原理：自检目标：你能从现象回到 context 与求值链，并能用断言/断点验证。
-    - 源码入口：`SpelExpressionParser#parseExpression` / `SpelExpression#getValue`
-    - 推荐 Lab：`SpringCoreSpelLabTest`
+    - 主线入口：`SpringCoreSpelBookMatrixLabTest`
+    - 分支入口：`SpringCoreSpelBranchMatrixLabTest`
+    - 推荐先跑：`SpringCoreSpelLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[01. 90 - Common Pitfalls（spring-core-spel）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先跑入口（把现象跑成事实）
 
-- 本章主题：**02. 99 - Self Check（spring-core-spel）**
-- 建议入口：优先运行 `SpringCoreSpelLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：自检目标：你能从现象回到 context 与求值链，并能用断言/断点验证。
-- 源码入口：`SpelExpressionParser#parseExpression` / `SpelExpression#getValue`
+- Book Matrix（主线入口）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBranchMatrixLabTest test`
 
+配套资料（排障更快）：
 
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
+- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](01-common-pitfalls.md)
 
-## 从 Book Matrix 进入（主线最小集合）
+## 自检题（每题都能落到 tests/断点）
 
-- `mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBookMatrixLabTest test`
+1. SpEL 的最小闭环是什么？（parse → evaluate → 类型转换）你如何用断言把它固定下来？  
+   - 证据入口：`SpringCoreSpelLabTest#parsesAndEvaluatesSimpleExpression`
+2. root object 与 variables 各解决什么问题？为什么 `#var` 与 `property` 不是一回事？  
+   - 证据入口：`SpringCoreSpelLabTest#evaluatesAgainstRootObjectAndVariables`
+3. 同一条表达式在不同 EvaluationContext 下结果为什么可能不同？你会用什么最小对照用例证明？  
+   - 证据入口：`SpringCoreSpelLabTest#evaluatesAgainstRootObjectAndVariables`
+4. 你如何为 SpEL 增加“变量 + 函数”，并把它固化成可回归断言？  
+   - 证据入口：`SpringCoreSpelExerciseSolutionTest#solution_addVariablesAndFunctions`
+5. 表达式对象（`Expression`）与求值上下文（`EvaluationContext`）在并发下能不能共享？你如何用并发实验把边界写成结论？  
+   - 证据入口：`SpringCoreSpelConcurrencyLabTest#parsedExpressionCanBeEvaluatedConcurrently_whenEvaluationContextIsPerThread`
+6. 你会把断点下在什么位置观察：parse 产物是什么、getValue 如何走到读取属性/变量？（写出 1 个入口点即可）  
+   - 证据导航：[`../part-00-guide/04-breakpoint-map.md`](../part-00-guide/04-breakpoint-map.md)
+7. 为什么 SpEL 需要安全边界？你会如何限制“可访问的属性/方法/类型”来降低风险？  
+   - 对照：[`01-common-pitfalls.md`](01-common-pitfalls.md)
+8. 练习：完成“变量/函数”练习题，并用断言锁定行为（不要靠 println）。  
+   - 入口：`SpringCoreSpelExerciseTest#exercise_addVariablesAndFunctions`
 
-## 从 Branch Matrix 进入（关键分支最小集合）
+## 退出条件（完成标准）
 
-- `mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
-
-## 自检问题
-
-1. 为什么同一表达式在不同 context 下结果可能不同？
-2. 你会在哪个入口下断点观察 parse 与 getValue？
-3. 为什么 SpEL 需要安全边界？你会如何限制？
-
-## 小结与下一章
-
-- 小结：自检目标：你能从现象回到 context 与求值链，并能用断言/断点验证。
-- 下一章：[Docs TOC](../README.md)
+- 你能区分：表达式本身（可复用）与 EvaluationContext（承载变量/函数/根对象，通常按线程/请求创建）。
+- 你能用 1–2 个断言用例把一个表达式的行为固定下来（避免靠“看起来能跑”）。
 
 <!-- BOOKIFY:START -->
 

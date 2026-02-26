@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- docs：新增全书主线 `docs/book/`（14 章 + 3 个附录），并在 `docs/SUMMARY.md`（SSOT）与根 `README.md` 挂载入口；主线章节只做聚合与指引（不复制模块正文）。
 - `spring-core-beans` 补齐缺失章节：`02-auto-config-ordering.md`
 - `spring-core-beans`：新增基础问题索引（Why Index），为“三级缓存 / early reference / raw vs wrapped / proxy 替换”等高频问题提供答案先行入口与 10 分钟证据链（Lab/断点/watch list）。
 - `spring-core-aop`：docs 增加 Beans 前置导航与跨模块互链（Beans ↔ AOP），降低“需要拼图才能理解”的成本。
@@ -21,6 +22,7 @@
 
 ### Changed
 
+- docs：全模块入口层“教材化”对齐：模块根 `README.md` 统一补齐 `Start Here（5 分钟闭环）`（Book/Branch Matrix）+ 可点击的 docs 阅读顺序 + 排坑/自检出口；并将各模块 `docs/appendix/*self-check*.md` 统一为“纯自检页”（剥离常见坑正文，改为证据链入口导航与退出条件）。方案包：`.helloagents/archive/2026-02/202602252314_docs-textbook-style-modules-deepen/`；构建校验：`cd docs-site && mkdocs build -f mkdocs.yml -d /tmp/site-springboot-learning`。
 - spring-core-beans：docs 入口与目录拆分，新增 `docs/SUMMARY.md`，README 目录段落书籍化
 - `spring-core-beans`：docs 全章补齐 Spring 官方 Reference 对照链接与版本语境（Spring Framework `6.2.x`（基线 `6.2.15`）/ Spring Boot `3.5.9`），用于对齐权威定义与边界；并通过 `mvn -q -pl :spring-core-beans test` 回归
 - `spring-core-beans`：docs 将官方参考入口“就地下压”到正文关键结论附近（优先落在“机制主线”段落内），并按章主题选择 Beans/注入/JavaConfig/Scopes/Post-Processors/SpEL/Resources/AOT/Boot Auto-Config 等对应 Reference 页面，减少读者上下文切换成本；通过 `mvn -q -pl :spring-core-beans test` 回归

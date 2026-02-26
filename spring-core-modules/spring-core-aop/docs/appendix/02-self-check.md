@@ -1,6 +1,6 @@
-# 02. 自测题：是否真正理解了 AOP？
+# 99 自检：Spring Core AOP
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
     - 知识点：自测题：是否真正理解了 AOP？
     - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
@@ -151,16 +151,9 @@
 - 新增一个 `@Order(0)` 的切面，并证明它会在现有切面之前执行：`SpringCoreAopExerciseTest#exercise_addOrderedAspect`
 - 把 pointcut 从 `@annotation` 改成 `execution(...)`，并更新测试：`SpringCoreAopExerciseTest#exercise_changePointcutStyle`
 
-## 常见坑与边界
+## 常见坑索引（本页不重复坑正文）
 
-### 坑点 1：只背概念不做验证，遇到“不拦截”就只能靠猜
-
-- Symptom：你能复述术语，但在真实项目里某个切面不生效时无法给出证据链
-- Root Cause：AOP 是分支系统（call path / proxy 类型 / pointcut / advisor 顺序），不做实验就很难真正“对齐事实”
-- Verification（建议把这两条作为排障兜底入口）：
-  - this vs target（JDK/CGLIB 差异）：`SpringCoreAopPointcutExpressionsLabTest#this_vs_target_differs_between_JdkProxy_and_CglibProxy`
-  - 单 proxy 多 advisors vs 套娃：`SpringCoreAopMultiProxyStackingLabTest#multiple_advisors_are_applied_within_a_single_proxy_by_default`
-- Fix：遇到问题先跑对应 Lab，把“误判”变成可断言事实，再改 pointcut/配置/调用路径
+- 建议对照：[`01-common-pitfalls.md`](01-common-pitfalls.md)
 
 ## 小结与下一章
 

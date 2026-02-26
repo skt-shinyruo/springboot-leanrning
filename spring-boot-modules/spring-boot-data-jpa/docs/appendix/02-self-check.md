@@ -1,93 +1,54 @@
-# 02. 99 - Self Check（springboot-data-jpa）
+# 99 自检：Spring Boot Data JPA
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：Self Check（springboot-data-jpa）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
-    - 原理：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
-    - 源码入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository` / `org.springframework.data.jpa.repository.support.JpaRepositoryFactory` / `jakarta.persistence.EntityManager` / `org.springframework.orm.jpa.JpaTransactionManager`
-    - 推荐 Lab：`BootDataJpaDebugSqlLabTest`
+    - 主线入口：`BootDataJpaBookMatrixLabTest`
+    - 分支入口：`BootDataJpaBranchMatrixLabTest`
+    - 推荐先跑：`BootDataJpaLabTest` / `BootDataJpaMergeAndDetachLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[第 106 章：Cache 主线](../README.md)
+上一章：[01. 常见坑清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先跑入口（把现象跑成事实）
 
-本章是「99 - Self Check（springboot-data-jpa）」的自检与复盘页：不引入新概念，而是把关键分支以问题的形式回放。
-建议先运行 `BootDataJpaDebugSqlLabTest`（或本章列出的 Matrix/Lab 入口），再按题目逐一回到对应的证据链。
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
 
-## 从 Book Matrix 进入（主线最小集合）
+配套资料（排障更快）：
 
-- `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
+- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](01-common-pitfalls.md)
 
-## 从 Branch Matrix 进入（关键分支最小集合）
+## 自检题（每题都能落到 tests）
 
-- `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
+1. `@DataJpaTest` 默认是否运行在事务里？你如何把“事务存在”固定成断言？  
+   - 证据入口：`BootDataJpaLabTest#dataJpaTestRunsInsideATransaction`
+2. Repository 的最小闭环是什么？（save → id → query）你如何把它写成一条回归用例？  
+   - 证据入口：`BootDataJpaLabTest#savesAndFindsByTitle`
+3. persistence context（一级缓存）意味着什么？`save` 之后实体是否一定是 managed？  
+   - 证据入口：`BootDataJpaLabTest#entityIsManagedAfterSaveInSamePersistenceContext`
+4. `EntityManager#clear` 会带来什么效果？你如何证明“同一个对象不再受管理”？  
+   - 证据入口：`BootDataJpaLabTest#entityManagerClearDetachesEntities`
+5. dirty checking 是如何把“改对象”变成“发 SQL”的？你如何把它固定成可回归事实？  
+   - 证据入口：`BootDataJpaLabTest#dirtyCheckingPersistsChangesOnFlush`
+6. flush 与 commit 的关系是什么？你如何证明“flush 后 JDBC 能看见插入行”（即使事务还没结束）？  
+   - 证据入口：`BootDataJpaLabTest#flushMakesRowsVisibleToJdbcTemplateWithinSameTransaction`
+7. `getReferenceById` 返回的是什么？它什么时候触发真正的 SQL？  
+   - 证据入口：`BootDataJpaLabTest#getReferenceByIdReturnsALazyProxy_andInitializesOnPropertyAccess`
+8. N+1 的根因是什么？你如何用统计/断言证明它真的发生了，而不是“感觉很慢”？  
+   - 证据入口：`BootDataJpaLabTest#nPlusOneHappensWhenAccessingLazyCollections`
+9. 你如何用 EntityGraph（或等价手段）避免 N+1，并证明“访问集合不会额外发 SQL”？  
+   - 证据入口：`BootDataJpaLabTest#entityGraphCanAvoidNPlusOne_whenFetchingCollections`
+10. detach 与 merge 的边界是什么？你如何用对照用例证明“detached 改动不会落库，但 merge 会把改动带回 managed copy”？  
+    - 证据入口：`BootDataJpaMergeAndDetachLabTest#detached_changesWithoutMerge_shouldNotBePersisted` + `BootDataJpaMergeAndDetachLabTest#merge_shouldPersistDetachedChangesIntoManagedCopy`
 
-- 本章主题：**02. 99 - Self Check（springboot-data-jpa）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+## 退出条件（完成标准）
 
-!!! summary "本章要点"
-
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest` / `BootDataJpaMergeAndDetachLabTest`
-
-## 机制主线
-
-这一模块最容易“学着学着就玄学化”，因为你眼前看到的现象，可能来自三件不同的东西叠在一起：
-
-1. **persistence context（一级缓存）**：你以为你在读数据库，其实你在读内存里的 managed entity
-2. **flush vs commit**：你以为“提交了才看得见”，但 flush 可能在查询前就发生
-3. **fetching 策略**：你以为“查一次就是一次 SQL”，但 lazy 访问会把 N+1 藏在循环里
-
-建议把这三条线都用 tests 固化成证据：每次回答自测题时，顺手指出一个对应的 Lab/Test 入口。
-
-## 自测题
-1. `EntityManager` 的一级缓存如何影响“你以为查到了最新数据”？
-2. `flush` 发生的时机有哪些？为什么某些查询会触发 flush？
-3. N+1 的根因是什么？有哪些“看起来优化了但实际上没用”的改法？
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
-- Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest` / `BootDataJpaMergeAndDetachLabTest`
-- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-## 对应 Exercise（可运行）
-
-- `BootDataJpaExerciseTest`
-
-## 常见坑与边界
-
-### 坑点 1：只盯着 Repository API，不建立“证据链”，导致理解停留在玄学层
-
-- Symptom：面对 flush/dirty checking/N+1/getReferenceById 时只能靠猜；遇到慢 SQL 也不知道从哪里排查
-- Root Cause：JPA 的关键机制很多都发生在 persistence context 与事务边界里，不写断言就很难稳定复现
-- Verification（建议作为排障兜底入口）：
-  - dirty checking：`BootDataJpaLabTest#dirtyCheckingPersistsChangesOnFlush`
-  - flush 可见性：`BootDataJpaLabTest#flushMakesRowsVisibleToJdbcTemplateWithinSameTransaction`
-  - getReferenceById（lazy proxy）：`BootDataJpaLabTest#getReferenceByIdReturnsALazyProxy_andInitializesOnPropertyAccess`
-  - N+1：`BootDataJpaLabTest#nPlusOneHappensWhenAccessingLazyCollections`
-- Fix：像 spring-core-beans 一样，把每个关键分支都做成默认 Lab（可运行 + 可断言 + 可回归），再谈“最佳实践/优化方案”
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
+- 你能区分三条线并提供证据入口：persistence context（managed/detached）→ flush/commit → fetching（lazy/N+1）。
+- 你能把“感觉/猜测”替换成“统计/断言”：SQL 次数、是否 initialized、是否落库。
 
 <!-- BOOKIFY:START -->
 

@@ -5,6 +5,19 @@
 - `@WebMvcTest`：只加载 Web 层（Controller），更快、更聚焦
 - `@SpringBootTest`：加载完整应用上下文，更接近集成测试
 
+## Start Here（5 分钟闭环）
+
+先把现象跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：
+  - `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
+
+文档入口：
+- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+
 ## 你将学到什么
 
 - 理解“测试切片（slice test）”的意义
@@ -43,10 +56,10 @@ mvn -pl :spring-boot-testing test
 
 （docs 目录页：[`docs/README.md`](docs/README.md)）
 
-1. 导读：`docs/part-00-guide/00-deep-dive-guide.md`
-2. Slice vs Full Context：`docs/part-01-testing/01-slice-and-mocking.md`
-3. 常见坑清单：`docs/appendix/90-common-pitfalls.md`
-4. 自测题：`docs/appendix/99-self-check.md`
+1. [导读](docs/part-00-guide/02-deep-dive-guide.md)
+2. [Slice vs Full Context](docs/part-01-testing/01-slice-and-mocking.md)
+3. [常见坑清单](docs/appendix/01-common-pitfalls.md)
+4. [自测题](docs/appendix/02-self-check.md)
 
 对应的可运行实验（先跑后读）：
 - `src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerWebMvcLabTest.java`

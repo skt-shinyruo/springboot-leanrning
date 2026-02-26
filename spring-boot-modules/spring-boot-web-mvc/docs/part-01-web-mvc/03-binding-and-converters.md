@@ -156,7 +156,7 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 
 进一步阅读（只做必要连接）：
 
-- 校验机制（Bean Validation）：`helloagents/wiki/modules/spring-core-validation.md`
+- 校验机制（Bean Validation，机制正文与实验入口）：[`spring-core-validation/docs/README.md`](../../../../spring-core-modules/spring-core-validation/docs/README.md)
 - 类型转换（容器视角，ConversionService/TypeConverter/BeanWrapper）：`spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/19-type-conversion-and-beanwrapper.md`
 
 ## 常见坑与边界
