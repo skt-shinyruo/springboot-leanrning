@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「45. 自定义 Qualifier：meta-annotation 与候选收敛」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansCustomQualifierLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansCustomQualifierLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
@@ -28,7 +28,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -59,9 +59,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：注入点与候选 bean 同时标注自定义 Qualifier  
-**分支**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` 做匹配过滤  
-**结果**：候选集合被缩小 → winner 选择更稳定  
+**条件**：注入点与候选 bean 同时标注自定义 Qualifier
+**分支**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` 做匹配过滤
+**结果**：候选集合被缩小 → winner 选择更稳定
 **断点建议**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
 
 ## 1. 结论先行：自定义 Qualifier 的本质
@@ -88,25 +88,25 @@
 
 `DependencyDescriptor` 是注入点语义的入口：
 
-- `descriptor.getAnnotations()`：注入点是否存在自定义 Qualifier  
-- `descriptor.getDependencyType()`：候选收集的类型基线  
-- `descriptor.getDependencyName()`：by-name fallback 的隐式输入  
+- `descriptor.getAnnotations()`：注入点是否存在自定义 Qualifier
+- `descriptor.getDependencyType()`：候选收集的类型基线
+- `descriptor.getDependencyName()`：by-name fallback 的隐式输入
 
 **结论**：Qualifier 不是“改 beanName”，而是“让 resolver 在候选收敛时多一个过滤条件”。
 
 ## 依赖解析分支树（简化版）
 
-1) **快捷路径**：Optional/Provider/@Lazy/@Value  
-2) **候选收集**：`findAutowireCandidates`  
-3) **Qualifier 过滤**：`isAutowireCandidate`  
-4) **winner 收敛**：Primary → by-name → Priority  
+1) **快捷路径**：Optional/Provider/@Lazy/@Value
+2) **候选收集**：`findAutowireCandidates`
+3) **Qualifier 过滤**：`isAutowireCandidate`
+4) **winner 收敛**：Primary → by-name → Priority
 5) **失败**：无法唯一 → `NoUniqueBeanDefinitionException`
 
 ## 关键变量（断点里只看这些）
 
-- `candidates`：候选集合（过滤前后差异）  
-- `qualifiedName` / `value`：Qualifier 的匹配输入  
-- `dependencyName`：by-name fallback 的关键输入  
+- `candidates`：候选集合（过滤前后差异）
+- `qualifiedName` / `value`：Qualifier 的匹配输入
+- `dependencyName`：by-name fallback 的关键输入
 
 - 两个同类型候选（两个实现）
 - 通过自定义 Qualifier 把候选收敛到 1 个
@@ -144,11 +144,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansCustomQualifierLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 2. 复现入口（可运行）
 

@@ -7,12 +7,12 @@
 - 更丰富的 join point：`call/execution/constructor/get/set/...`
 - 更高级的 pointcut：`withincode/cflow/...`
 
-> 学习建议：先完成 `spring-core-aop` 再来本模块。  
+> 学习建议：先完成 `spring-core-aop` 再来本模块。
 > 代理 AOP 的第一性原理是“改调用链（必须走 proxy）”；weaving 的第一性原理是“改字节码（不依赖 proxy）”。
 
 > ⚠️ 注意：由于 `aspectj-maven-plugin`（ajc）对 Java 版本的限制，本模块的编译目标设置为 `--release 16`；但运行时仍要求 JDK 17+（与父工程 enforcer 一致）。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -26,11 +26,11 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
-- 你能解释清楚：**Spring AOP（代理） vs AspectJ（织入）** 的能力边界与代价
-- 你能通过测试验证：LTW/CTW 都能命中“非代理 join point”
-- 你能在真实排障中判断：问题是“没走代理”还是“没织入/织入范围不对”
+- 能解释清楚：**Spring AOP（代理） vs AspectJ（织入）** 的能力边界与代价
+- 能通过测试验证：LTW/CTW 都能命中“非代理 join point”
+- 能在真实排障中判断：问题是“没走代理”还是“没织入/织入范围不对”
 
 ## 关键命令
 
@@ -61,7 +61,7 @@ mvn -pl :spring-core-aop-weaving spring-boot:run
 3. [CTW：编译期织入（无 agent 也能拦截）](docs/part-03-ctw/01-ctw-basics.md)
 4. [Join Point & 表达式速查：call/execution/get/set/withincode/cflow](docs/part-04-join-points/01-join-point-cookbook.md)
 5. [常见坑清单（建议反复对照）](docs/appendix/01-common-pitfalls.md)
-6. [自测题：你是否真的理解了 weaving？](docs/appendix/02-self-check.md)
+6. [自测题：是否真正理解了 weaving？](docs/appendix/02-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 

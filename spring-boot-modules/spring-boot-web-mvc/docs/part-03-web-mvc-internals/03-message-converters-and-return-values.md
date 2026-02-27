@@ -21,7 +21,7 @@
 !!! summary "本章要点"
 
     - `HttpMessageConverter` 是“HTTP body ↔ Java 对象”的关键桥梁；它同时影响入站（read）与出站（write）。
-    - 406/415 通常不是你的业务逻辑问题，而是 **媒体类型与 converter 匹配失败**：`Accept`/`Content-Type`/`produces`/`consumes` 不一致。
+    - 406/415 通常不是业务逻辑问题，而是 **媒体类型与 converter 匹配失败**：`Accept`/`Content-Type`/`produces`/`consumes` 不一致。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -45,16 +45,16 @@
 
 ## 关键分支：read 与 write 的差异
 
-当你看到“406/415”，先判断它属于 read 还是 write：
+当看到“406/415”，先判断它属于 read 还是 write：
 
 - **read（入站）**：`@RequestBody` 读取请求体 → 依赖 `AbstractMessageConverterMethodArgumentResolver#readWithMessageConverters`
   - 典型失败：415（找不到能读该 `Content-Type` 的 converter）
 - **write（出站）**：`@ResponseBody` 写回响应体 → 依赖 `AbstractMessageConverterMethodProcessor#writeWithMessageConverters`
   - 典型失败：406（找不到能写出 `Accept` 的 converter）
 
-这也是为什么你排障时应该优先检查 header 与 method mapping 约束，而不是先改业务逻辑。
+这也是为什么排障时应该优先检查 header 与 method mapping 约束，而不是先改业务逻辑。
 
-## 你真正要理解的“两个链”
+## 真正要理解的“两个链”
 
 ### 1) ReturnValueHandlers（返回值处理链）
 
@@ -70,7 +70,7 @@
 内容协商不是“只看 Accept”：
 - `Accept`：客户端希望的响应格式（write）
 - `Content-Type`：请求体实际格式（read）
-- `produces/consumes`：你在 mapping 上写的约束（会直接影响匹配与异常类型）
+- `produces/consumes`：在 mapping 上写的约束（会直接影响匹配与异常类型）
 
 排障建议：当 406/415 出现时，优先把下面三件事写进证据链：
 1. 请求头（Accept/Content-Type）
@@ -98,7 +98,7 @@ Spring MVC 在 `ResponseBodyAdvice#beforeBodyWrite(...)` 提供了两个非常�
 
 ## 常见坑与边界
 
-- 你“只想对某个自定义 media type 严格校验”，不要全局改默认 ObjectMapper；更安全的做法是 **新增一个只支持该 media type 的 converter**。
+- “只想对某个自定义 media type 严格校验”，不要全局改默认 ObjectMapper；更安全的做法是 **新增一个只支持该 media type 的 converter**。
 
 ## 小结与下一章
 

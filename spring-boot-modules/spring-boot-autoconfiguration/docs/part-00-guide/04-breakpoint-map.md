@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（AutoConfiguration Debugger Pack）
-    - 怎么使用：本页是“排障索引页”。遇到“auto-config 不生效/生效但不是你以为的结果”时，按 A→B→C 顺序下断点收敛原因。
+    - 怎么使用：本页是“排障索引页”。遇到“auto-config 不生效/生效但不是直觉里的结果”时，按 A→B→C 顺序下断点收敛原因。
     - 原理：先确认 imports 是否存在，再确认 condition 是否跳过，再确认 backoff 是否让位。
     - 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome`
     - 推荐 Lab：`BootAutoConfigurationLabTest`

@@ -20,7 +20,7 @@
 
 ## 机制主线（WebAsyncManager）
 
-你可以把 DeferredResult 的流程理解成：
+可以把 DeferredResult 的流程理解成：
 
 1. handler 返回 DeferredResult → 触发 asyncStarted
 2. 业务侧（线程/回调）调用 `setResult`（或触发 timeout → fallback）

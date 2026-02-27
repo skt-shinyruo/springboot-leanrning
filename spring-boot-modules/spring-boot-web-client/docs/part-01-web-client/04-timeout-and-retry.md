@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -76,7 +76,7 @@
 - Verification：
   - timeout 可确定性复现：`BootWebClientRestClientLabTest#restClientReadTimeoutFailsFast` / `BootWebClientWebClientLabTest#webClientResponseTimeoutFailsFast`
   - 5xx 重试可回归 + 请求次数可断言：`BootWebClientRestClientLabTest#restClientRetriesOn5xxAndEventuallySucceeds` / `BootWebClientWebClientLabTest#webClientRetriesOn5xxAndEventuallySucceeds`
-- Fix：只对“你确认可重试且幂等”的失败重试（通常是网络错误/5xx），并把最大次数与行为写成断言（比如 request count）
+- Fix：只对“确认可重试且幂等”的失败重试（通常是网络错误/5xx），并把最大次数与行为写成断言（比如 request count）
 
 ## 小结与下一章
 

@@ -4,7 +4,7 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -17,7 +17,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - 统一抽象：classpath / file / URL 资源读取
 - classpath 位置写法（是否需要 `/`）
@@ -51,7 +51,7 @@ mvn -pl :spring-core-resources test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-1. [`Resource` 抽象：为什么 Spring 不让你直接用 `File`？](docs/part-01-resource-abstraction/01-resource-abstraction.md)
+1. [`Resource` 抽象：为什么 Spring 不直接使用 `File`？](docs/part-01-resource-abstraction/01-resource-abstraction.md)
 2. [classpath 路径：`classpath:data/x` vs `classpath:/data/x`](docs/part-01-resource-abstraction/02-classpath-locations.md)
 3. [`classpath*:` 与 pattern：为什么能扫到多个资源？](docs/part-01-resource-abstraction/03-classpath-star-and-pattern.md)
 4. [`getResource(...)` 的返回值：为什么它会返回不存在资源句柄？](docs/part-01-resource-abstraction/04-exists-and-handles.md)
@@ -71,7 +71,7 @@ mvn -pl :spring-core-resources test
 
 ## 概念 → 在本模块哪里能“看见”
 
-| 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
+| 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
 | classpath 资源读取 | [docs/02](docs/part-01-resource-abstraction/02-classpath-locations.md) | `SpringCoreResourcesLabTest#readsClasspathResourceContent` | `Resource` 如何读取 classpath 内容 |
 | `classpath:` 是否需要 `/` | [docs/02](docs/part-01-resource-abstraction/02-classpath-locations.md) | `SpringCoreResourcesLabTest#supportsLeadingSlashInClasspathLocation` | 两种写法为什么都能工作 |
@@ -81,7 +81,7 @@ mvn -pl :spring-core-resources test
 
 ## 常见 Debug 路径
 
-- 优先用 `Resource#getDescription()` 做 debug（比你猜 path 更可靠）
+- 优先用 `Resource#getDescription()` 做 debug（比猜测 path 更可靠）
 - pattern 扫描结果建议排序后断言，避免“顺序不稳定”学歪
 - 遇到问题先问：是“资源不存在”（`exists=false`）还是“存在但读不了”（IO 错误）
 

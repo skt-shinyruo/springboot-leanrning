@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -34,11 +34,11 @@
 
 > **实体状态机（managed/detached） + Persistence Context（一致性视图） + flush（把变化推到 DB） + fetching（决定 SQL 数量）**
 
-如果你能用这条主线解释现象，你就不会再靠“猜 Hibernate”。
+如果能用这条主线解释现象，就不会再靠“猜 Hibernate”。
 
 ### 1) 时间线：一次 Repository.save 到底发生了什么
 
-1. 你调用 `repository.save(entity)`（Spring Data JPA）
+1. 调用 `repository.save(entity)`（Spring Data JPA）
 2. JPA 把 entity 交给 `EntityManager` 管理（进入 persistence context）
 3. 在同一个事务里：
    - 修改 managed entity：不会立刻打 SQL，但会被 dirty checking 记录
@@ -72,7 +72,7 @@
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
 - 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-  
+
 建议断点（从“现象”快速回到“机制”）：
 
 - `EntityManager#flush`：观察何时真正发 SQL
@@ -116,7 +116,7 @@
 
 ## 常见坑与边界
 
-如果你是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 

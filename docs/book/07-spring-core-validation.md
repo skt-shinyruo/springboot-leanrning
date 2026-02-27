@@ -47,8 +47,8 @@
 - 练习 1（把三段式模型跑成事实）：
   - 运行 `SpringCoreValidationBookMatrixLabTest`；
   - 选择一个校验失败场景，记录：
-    - 触发点（Web 入参 or 方法拦截）；
-    - `ConstraintViolation` 的路径与消息（证据）。
+  - 触发点（Web 入参 or 方法拦截）；
+  - `ConstraintViolation` 的路径与消息（证据）。
 - 练习 2（groups 边界）：
   - 从模块文档选择一个 groups 相关入口；
   - 写出“哪一组会被触发”的规则，并用对应 Lab 验证。

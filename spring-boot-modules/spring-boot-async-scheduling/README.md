@@ -4,7 +4,7 @@
 
 它默认不启动 Web 服务（`spring.main.web-application-type=none`），入口主要在 tests 和 `DemoRunner`。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -31,9 +31,9 @@ mvn -pl :spring-boot-async-scheduling spring-boot:run
 
 ## 两个入口（先从这里走，足够覆盖 80%）
 
-- 主线最小集合（Book Matrix）：`src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java`  
+- 主线最小集合（Book Matrix）：`src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java`
   - 作用：把 `@Async` / executor / `@Scheduled` 的主线跑通（少而关键）
-- 关键分支最小集合（Branch Matrix）：`src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBranchMatrixLabTest.java`  
+- 关键分支最小集合（Branch Matrix）：`src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBranchMatrixLabTest.java`
   - 作用：把“为什么没生效/线程不对/异常去哪了”写成 If/Then，适合排障
 
 ## docs 主线（顺着读一遍就够）
@@ -52,7 +52,7 @@ docs 目录页：[`docs/README.md`](docs/README.md)
 
 ## Labs / Exercises（按用途）
 
-如果你想按用途挑测试入口，可以从下面这些类开始（它们基本覆盖了 docs 主线）。
+如果希望按用途挑选测试入口，可以从下面这些类开始（它们基本覆盖了 docs 主线）。
 
 - `@Async` 主线：`src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingLabTest.java`
 - executor 选择：`src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingExecutorSelectionLabTest.java`

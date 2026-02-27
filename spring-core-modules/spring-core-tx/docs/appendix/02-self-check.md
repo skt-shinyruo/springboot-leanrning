@@ -25,33 +25,33 @@
 
 ## 自检题（每题都能落到 tests）
 
-1. 事务是否真的生效，第一步该验证什么？你如何证明“走到了代理”？  
+1. 事务是否真的生效，第一步该验证什么？如何证明“走到了代理”？
    - 证据入口：`SpringCoreTxLabTest#transactionalBeansAreProxied`
-2. 事务是否真的处于 active 状态？你如何证明“在 @Transactional 方法内部是 active”？  
+2. 事务是否真的处于 active 状态？如何证明“在 @Transactional 方法内部是 active”？
    - 证据入口：`SpringCoreTxLabTest#transactionsAreActiveInsideTransactionalMethods`
-3. 成功提交与 RuntimeException 回滚的最小对照用例是什么？你如何用“行数变化”而不是日志判断？  
+3. 成功提交与 RuntimeException 回滚的最小对照用例是什么？如何用“行数变化”而不是日志判断？
    - 证据入口：`SpringCoreTxLabTest#commitsOnSuccess` + `SpringCoreTxLabTest#rollsBackOnRuntimeException`
-4. CheckedException 默认为什么不回滚？你如何把“默认提交 vs rollbackFor 覆盖”跑成事实？  
+4. CheckedException 默认为什么不回滚？如何把“默认提交 vs rollbackFor 覆盖”跑成事实？
    - 证据入口：`SpringCoreTxLabTest#checkedExceptionsDoNotRollbackByDefault` + `SpringCoreTxLabTest#rollbackForCheckedExceptionsCanBeConfigured`
-5. 没有 `@Transactional` 时，为什么“每条语句像是自动提交”？异常为什么无法回滚已写入的数据？  
+5. 没有 `@Transactional` 时，为什么“每条语句像是自动提交”？异常为什么无法回滚已写入的数据？
    - 证据入口：`SpringCoreTxLabTest#withoutTransactional_eachStatementIsEffectivelyAutoCommitted`
-6. `REQUIRES_NEW` 的核心语义是什么？你如何证明“外层回滚但内层仍提交”？  
+6. `REQUIRES_NEW` 的核心语义是什么？如何证明“外层回滚但内层仍提交”？
    - 证据入口：`SpringCoreTxLabTest#requiresNewCanCommitEvenIfOuterTransactionRollsBack`
-7. 为什么“内层抛异常但外层 catch 住”可能导致外层仍提交？你如何把这个边界写成断言？  
+7. 为什么“内层抛异常但外层 catch 住”可能导致外层仍提交？如何把这个边界写成断言？
    - 证据入口：`SpringCoreTxLabTest#requiresNewRollbackDoesNotNecessarilyRollbackOuter_whenCaught`
-8. `MANDATORY` 与 `NEVER` 的设计目的是什么？它们各自在什么条件下会直接抛异常？  
+8. `MANDATORY` 与 `NEVER` 的设计目的是什么？它们各自在什么条件下会直接抛异常？
    - 证据入口：`SpringCoreTxPropagationMatrixLabTest#mandatoryThrowsWhenNoExistingTransaction` + `SpringCoreTxPropagationMatrixLabTest#neverThrowsWhenTransactionExists`
-9. self-invocation 为什么会绕过事务？你如何用一条可回归用例证明“没走代理→不会回滚”，以及“拆分 bean→恢复拦截器”？  
+9. self-invocation 为什么会绕过事务？如何用一条可回归用例证明“没走代理→不会回滚”，以及“拆分 bean→恢复拦截器”？
    - 证据入口：`SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod` + `SpringCoreTxSelfInvocationPitfallLabTest#splittingBeanRestoresTransactional_interceptorIsApplied`
-10. 事务上下文能否跨线程传播？你如何用并发实验把“ThreadLocal 边界”固定成结论？  
+10. 事务上下文能否跨线程传播？如何用并发实验把“ThreadLocal 边界”固定成结论？
     - 证据入口：`SpringCoreTxThreadLocalBoundaryLabTest#transactionContext_doesNotCrossThreadBoundary`
-11. 什么时候应该用 `TransactionTemplate`？你如何验证“手动标记 rollbackOnly 会回滚”？  
+11. 什么时候应该用 `TransactionTemplate`？如何验证“手动标记 rollbackOnly 会回滚”？
     - 证据入口：`SpringCoreTxLabTest#transactionTemplateAllowsProgrammaticCommitOrRollback`
 
 ## 退出条件（完成标准）
 
-- 你能用“代理是否参与 + 数据是否落库”两条证据链判断事务问题（而不是只看异常/日志）。
-- 你能把 propagation/rollback/self-invocation 这些高频坑写成最小对照用例，作为长期回归入口。
+- 能用“代理是否参与 + 数据是否落库”两条证据链判断事务问题（而不是只看异常/日志）。
+- 能把 propagation/rollback/self-invocation 这些高频坑写成最小对照用例，作为长期回归入口。
 
 <!-- BOOKIFY:START -->
 

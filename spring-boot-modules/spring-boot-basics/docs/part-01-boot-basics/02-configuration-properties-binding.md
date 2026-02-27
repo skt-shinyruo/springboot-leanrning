@@ -19,7 +19,7 @@
 
 
 
-## 你可能已经见过这个现象：Environment 里是字符串，注入到 Bean 里却成了 boolean
+## 可能已经见过这个现象：Environment 里是字符串，注入到 Bean 里却成了 boolean
 
 在 `BootBasicsDefaultLabTest` 里有两条断言很值得对照着看：
 
@@ -45,16 +45,16 @@
 
 ### 2) Binder：负责“取值 + 绑定 + 类型转换”
 
-你不需要记住 Binder 的全部细节，只需要抓住两个稳定事实：
+无需记住 Binder 的全部细节，只需要抓住两个稳定事实：
 
 1. **最终取值仍来自 `Environment`**（上一章的结论仍然成立）
 2. **绑定会做类型转换**（字符串 → boolean/number/enum...）
 
-本模块用 `BootBasicsOverrideLabTest` 证明了另一件很实用的事：当你在测试里覆盖属性值时，绑定结果也会跟着变——因为绑定读取的是“最终值”。
+本模块用 `BootBasicsOverrideLabTest` 证明了另一件很实用的事：当在测试里覆盖属性值时，绑定结果也会跟着变——因为绑定读取的是“最终值”。
 
 ### 3) 绑定的前提：配置类必须被扫描/启用
 
-本模块的启用方式是 `BootBasicsApplication` 上的 `@ConfigurationPropertiesScan`。如果你在自己的项目里遇到“写了 `@ConfigurationProperties` 但怎么也注入不到值”，第一件事不是怀疑配置文件，而是确认它是不是被扫描到了。
+本模块的启用方式是 `BootBasicsApplication` 上的 `@ConfigurationPropertiesScan`。如果在自己的项目里遇到“写了 `@ConfigurationProperties` 但怎么也注入不到值”，第一件事不是怀疑配置文件，而是确认它是不是被扫描到了。
 
 ## 怎么验证（tests 就是最短证据链）
 
@@ -67,12 +67,12 @@
 
 ## Debug 入口（够用版）
 
-当你排查绑定问题时，最省时间的两个入口是：
+当排查绑定问题时，最省时间的两个入口是：
 
 - `org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor#postProcessBeforeInitialization`（绑定发生点）
 - `org.springframework.boot.context.properties.bind.Binder#bind`（绑定与转换发生处）
 
-如果你想确认“最终值来自哪个来源”，回到上一章的取值点：
+如果想确认“最终值来自哪个来源”，回到上一章的取值点：
 
 - `org.springframework.core.env.PropertySourcesPropertyResolver#getProperty`
 
@@ -80,15 +80,15 @@
 
 ### 坑点 1：prefix 写错 / key 写错
 
-最常见也最隐蔽：你以为写的是 `app.feature-enabled`，但实际 key 少了/多了一个字符。因为它不会像“编译错误”那样提醒你，只会表现为“绑定结果一直是默认值”。
+最常见也最隐蔽：以为写的是 `app.feature-enabled`，但实际 key 少了/多了一个字符。因为它不会像“编译错误”那样提醒，只会表现为“绑定结果一直是默认值”。
 
 ### 坑点 2：kebab-case 映射误判
 
-Java 字段 `featureEnabled` 对应的配置 key 是 `feature-enabled`。如果你写成 `featureEnabled`，你可能会得到“看起来像没绑定”的错觉。
+Java 字段 `featureEnabled` 对应的配置 key 是 `feature-enabled`。如果写成 `featureEnabled`，可能会得到“看起来像没绑定”的错觉。
 
 ### 坑点 3：类型转换失败（别断言整段异常文本）
 
-练习里建议你构造一个必然失败的例子（例如 `app.feature-enabled=not-a-boolean`）。断言时建议只抓关键片段（“绑定失败/类型转换失败”），不要依赖完整异常全文（不同版本可能有细微差异）。
+练习里建议构造一个必然失败的例子（例如 `app.feature-enabled=not-a-boolean`）。断言时建议只抓关键片段（“绑定失败/类型转换失败”），不要依赖完整异常全文（不同版本可能有细微差异）。
 
 ## 练习（建议做 2 个就够）
 

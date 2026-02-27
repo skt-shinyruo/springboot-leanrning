@@ -16,7 +16,7 @@
 ## 导读
 
 本章围绕「第 13 章：02. 断点地图（容器主线：可复用断点/观察点清单）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 本章目标：把 `spring-core-beans` 的“高频断点与观察点”收敛成一页纸，避免散落在多章。
 - 使用方式：先运行一个方法级 Lab，然后按本页断点清单逐段观察“定义层 → 实例层 → 代理层”的变化。
@@ -147,10 +147,10 @@
 
 无需记住所有分支，但必须能“观察到”这 5 个最常见的分支触发点：
 
-1) **singleton vs prototype**：`AbstractBeanFactory#doGetBean` → `mbd.isPrototype()`  
-2) **dependsOn 强制顺序**：`AbstractBeanFactory#getBean` → `mbd.getDependsOn()`  
-3) **parent BeanFactory 回退**：`containsBeanDefinition(beanName)` 为 false → `parentBeanFactory.getBean`  
-4) **FactoryBean vs 产品对象**：`AbstractBeanFactory#getObjectForBeanInstance`  
+1) **singleton vs prototype**：`AbstractBeanFactory#doGetBean` → `mbd.isPrototype()`
+2) **dependsOn 强制顺序**：`AbstractBeanFactory#getBean` → `mbd.getDependsOn()`
+3) **parent BeanFactory 回退**：`containsBeanDefinition(beanName)` 为 false → `parentBeanFactory.getBean`
+4) **FactoryBean vs 产品对象**：`AbstractBeanFactory#getObjectForBeanInstance`
 5) **类型匹配（含泛型）**：`AbstractBeanFactory#isTypeMatch` / `ResolvableType` 判定
 
 ## 源码调用链与断点（建议从 Lab 反推）
@@ -171,12 +171,12 @@
 
 ## 证据链样例（现象 → 断点 → 变量 → 结论）
 
-**现象**：明明写了 `@Qualifier`，却还是报 `NoUniqueBeanDefinitionException`  
-**断点**：`DefaultListableBeanFactory#doResolveDependency` → `findAutowireCandidates` → `determineAutowireCandidate`  
-**观察变量**：  
-- `descriptor.getAnnotations()`（是否真的带上 Qualifier）  
-- `matchingBeans.keySet()`（候选集合是否被正确收集）  
-- `autowiredBeanName`（最终候选是否收敛成功）  
+**现象**：明明写了 `@Qualifier`，却还是报 `NoUniqueBeanDefinitionException`
+**断点**：`DefaultListableBeanFactory#doResolveDependency` → `findAutowireCandidates` → `determineAutowireCandidate`
+**观察变量**：
+- `descriptor.getAnnotations()`（是否真的带上 Qualifier）
+- `matchingBeans.keySet()`（候选集合是否被正确收集）
+- `autowiredBeanName`（最终候选是否收敛成功）
 **结论**：如果 Qualifier 未参与收敛，优先检查注入点是否被 `AutowiredAnnotationBeanPostProcessor` 正确解析。
 
 ## 条件断点模板（降噪）：让断点“只为目标 bean 服务”

@@ -18,7 +18,7 @@
 - Tx 排障核心：先确认“是否进入事务代理”，再确认“事务是否创建/加入”，最后确认“异常与规则导致 commit 还是 rollback”。
 - 推荐证据链：测试断言（行数/状态）→ 断点（TransactionInterceptor/transaction manager）→ Watchpoints（rollbackOnly/propagation）。
 
-## 运行入口（建议先跑）
+## 运行入口（先运行）
 
 - Book Matrix：`SpringCoreTxBookMatrixLabTest`
 - Branch Matrix：`SpringCoreTxBranchMatrixLabTest`

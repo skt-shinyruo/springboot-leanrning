@@ -24,13 +24,13 @@
   - [DispatcherServlet 主链路（详）](../part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md)
   - [异常收敛与错误流（详）](../part-03-web-mvc-internals/04-exception-resolvers-and-error-flow.md)
 
-!!! summary "你需要能背下来的 1 句话"
+!!! summary "需要能背下来的 1 句话"
 
     Filter 决定“能不能进 MVC”（401/403/CORS/metrics），`DispatcherServlet` 决定“路由与模型”（404/405/handler 形态），`HandlerAdapter` 决定“怎么调用”（参数解析/绑定/消息转换），Resolver 链决定“错误长什么样”（状态码/错误体）。
 
 ## 1. 调用链一眼图（从外到内）
 
-你可以把一次典型请求压缩成下面的阶段序列（先记阶段，再去记入口）：
+可以把一次典型请求压缩成下面的阶段序列（先记阶段，再去记入口）：
 
 1. **Servlet 容器**
    - `FilterChain#doFilter`（可见：Security、Observations/Metrics、CORS、CharacterEncoding…）
@@ -49,9 +49,9 @@
 8. **写回响应 & 收尾**
    - `HttpServletResponse` / View 渲染 / interceptor `afterCompletion`
 
-## 2. 关键对象：你在断点里“应该盯住什么”
+## 2. 关键对象：在断点里“应该盯住什么”
 
-> 这些对象不要求你背字段，但你要知道它们分别属于哪个阶段、能解释哪类分支。
+> 这些对象不要求背字段，但需要知道它们分别属于哪个阶段、能解释哪类分支。
 
 - `HandlerExecutionChain`：决定了 handler 是谁、哪些 interceptor 会执行（以及为什么会短路）
 - `HandlerMethod`：把 controller 方法包装成“可被反射调用”的模型（参数/注解/返回值）
@@ -59,9 +59,9 @@
 - `WebAsyncManager`：判断是否进入 async 分支（`isConcurrentHandlingStarted`）
 - `Exception` / `resolvedException`（测试里常见）：把“异常路径”变成可断言的证据
 
-## 3. 分支速查：看到某个状态码，你第一反应该去哪段看？
+## 3. 分支速查：看到某个状态码，第一反应该去哪段看？
 
-把“现象 → 最可能发生的阶段”固化下来，你排障会快很多：
+把“现象 → 最可能发生的阶段”固化下来，排障会快很多：
 
 1. **401/403**
    - 多数发生在 FilterChain（尤其 Security），经常还没到 `DispatcherServlet`
@@ -73,7 +73,7 @@
    - 常见原因：参数缺失 / 类型不匹配 / 绑定失败 / 校验失败（ArgumentResolver/Binder/Validation）
 5. **406/415**
    - 常见原因：内容协商（`Accept`）与 converter/produces 不匹配（406），或 `Content-Type` 与 converter/consumes 不匹配（415）
-6. **500（或你看到的“某种 JSON 错误体”）**
+6. **500（或看到的“某种 JSON 错误体”）**
    - 关键：异常是否被 `HandlerExceptionResolver` 链处理；若被处理，controller 的返回值往往已经不重要
 7. **async（请求像是“跑了两遍”）**
    - 关键：`asyncStarted` → `asyncDispatch` 的二阶段流程；Interceptor 回调也会出现“两次 dispatch”行为

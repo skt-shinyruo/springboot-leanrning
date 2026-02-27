@@ -1,11 +1,14 @@
-# Spring Boot Security：目录
+# Spring Boot Security：401/403、FilterChain 与匹配顺序
 
-## 导读
+本模块以一条可运行的 FilterChain 主线为坐标，逐步拆解 401/403 的分支差异、CSRF 的边界、方法安全与代理的关系，以及 JWT 无状态认证的典型链路。安全问题在工程里往往表现为“匹配范围与顺序”：同一份配置在不同路径、不同过滤器顺序下会得到完全不同的结果，因此本模块把这些差异落到断点与断言上。
 
-本页是「Spring Boot Security：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先跑通一次 401/403 分支
 
-> 建议先把“FilterChain 主线 + 401/403 分支”跑通，再进入 CSRF、方法安全与 JWT；安全问题大多是“匹配范围与顺序”的问题。
+- `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
+
+运行后应能回答：请求在 FilterChain 中被哪个过滤器拦下；为何同样“未通过认证/授权”会落到不同的响应形状；匹配顺序改变时行为为何会变化。
 
 ## 从这里开始（建议顺序）
 
@@ -31,10 +34,17 @@
 - 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](part-00-guide/05-branch-decision-matrix.md)
 - 排障 playbook：[01-common-pitfalls.md](appendix/01-common-pitfalls.md)
 - 自检清单：[02-self-check.md](appendix/02-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-boot-security -Dtest=*ExerciseSolutionTest test`
-- 可跑入口（并发/性能 Lab - SecurityContext 并发隔离）：`mvn -q -pl :spring-boot-security -Dtest=BootSecuritySecurityContextIsolationLabTest test`
+
+---
+
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-security -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（SecurityContext 并发隔离）：`mvn -q -pl :spring-boot-security -Dtest=BootSecuritySecurityContextIsolationLabTest test`
+
+---
 
 ## 排坑与自检
 

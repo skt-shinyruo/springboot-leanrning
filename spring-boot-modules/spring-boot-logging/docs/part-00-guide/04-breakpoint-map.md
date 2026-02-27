@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：02：断点地图（Logging Debugger Pack）
-    - 怎么使用：当你遇到“debug 没输出/日志级别不对/日志太多”时，用本页断点把问题收敛到 category/effective level/输出端其中一个。
+    - 怎么使用：当遇到“debug 没输出/日志级别不对/日志太多”时，用本页断点把问题收敛到 category/effective level/输出端其中一个。
     - 原理：先看 effective level，再看输出端（appender）。
     - 源码入口：（logback）`Logger#isDebugEnabled` / `Logger#filterAndLog_*`
     - 推荐 Lab：`BootLoggingLabTest`

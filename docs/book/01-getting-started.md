@@ -1,61 +1,77 @@
-# 01 Getting Started：如何在本仓库学习（入口与证据链）
+# 01 Getting Started：把“学习路径”落到可运行的证据链
 
-## 学习目标
+本章不讲 Spring 机制。它只回答一个更现实的问题：面对一个多模块仓库、上千页文档与大量测试入口时，如何在最短时间内把“阅读—运行—调试”变成闭环。
 
-- 知道本仓库的学习单元是什么（模块、文档、测试入口），以及主线章节的职责边界。
-- 能在 10 分钟内跑通一个稳定入口（Book Matrix），并回到模块文档继续顺读。
-- 知道遇到红测/异常时，应该先去哪里查（常见坑、自检、断点图、分支矩阵）。
+本仓库的组织方式与常见教程不同：目录不是起点，**测试才是起点**。原因很朴素——机制类知识最容易“听懂但用不出来”，而测试能把概念压成事实：能复现它、断言它、也能在它坏掉时把问题定位出来。
 
-## 概念框架
+---
 
-- **模块（module）**：主题边界。每个模块都有自己的 `docs/` 与可运行测试入口。
-- **文档（docs）**：用于组织阅读顺序与断点入口，不替代代码事实。
-- **Labs / Exercises**：
-  - `*LabTest`：可复现现象 + 断言证据链（默认启用，应保持全绿）。
-  - `*ExerciseTest`：动手改写题（通常 `@Disabled`，由学习者手动开启）。
-- **Book Matrix**：把多个关键 Lab 聚合为一个“主线入口”，适合用作每章的起跑线。
+## 问题：从哪里开始，才不会陷入“读了很多但没抓住主线”
 
-## 实验入口
+读者最常见的卡点通常不是“看不懂某段源码”，而是：
 
-建议用一个“可跑入口”验证环境与学习路径是否闭环。默认从 `spring-boot-basics` 起步：
+- 入口太多，不知道哪一个才是稳定的起跑线；
+- 读完一页结论，却不知道它对应哪个现象、哪个断点；
+- 看到异常后开始到处搜答案，最后无法判断“是版本差异，还是理解错了边界”。
 
-- Book Matrix（入门推荐）：
+本章的目标，是让“入口选择”变成一件可重复的事：先跑一个最短实验，把事实钉住；再回到文档，沿着证据链顺着读下去。
+
+---
+
+## 实验：跑通第一条主线入口（10 分钟闭环）
+
+从 `spring-boot-basics` 开始，用一个 Book Matrix 把环境与路径跑通：
+
+- 运行：
   - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`
-  - 测试类：[`BootBasicsBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java)
-- 模块目录页（下一步阅读入口）：
+- 阅读入口（测试类）：
+  - [`BootBasicsBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java)
+- 下一跳（模块目录页）：
   - [`spring-boot-basics/docs/README.md`](../../spring-boot-modules/spring-boot-basics/docs/README.md)
 
-如果希望尽早建立“容器/代理”的可调试心智模型，可追加跑一个底层入口：
+运行成功后，读者不需要立刻解释原因，但应该能说清两件事实：
+
+1. 当前激活了哪些 profile；
+2. 某个配置 key 的最终值是什么（最终事实在 `Environment` 中，而不是在某个配置文件中）。
+
+如果希望更早把“容器/代理”的边界跑起来，可以追加一个更底层的入口（这会在后续章节展开）：
 
 - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
 - 测试类：[`SpringCoreBeansBookMatrixLabTest.java`](../../spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBookMatrixLabTest.java)
 
-## 常见误区
+---
 
-- 只读目录与结论，不跑测试。结果：无法区分“概念理解”与“该项目的真实行为”。
-- 把“模块 README”当成正文读完。模块 README 的职责是导航；正文在各 `part-*` 章节里。
-- 看到异常直接搜博客。优先用本仓库的 **常见坑 / 自检 / 分支矩阵**，把问题归类成可验证分支。
+## 解释：这个仓库的“学习单元”是什么
 
-## 练习
+为了让阅读与回归不互相打架，本仓库把内容拆成三个层次：
 
-- 练习 1（最小闭环）：
-  1) 运行 `BootBasicsBookMatrixLabTest`；
-  2) 打开失败/关键断言所在方法；
-  3) 沿着断言提示回到模块文档的“主线时间线”，确认该现象对应哪一章。
-- 练习 2（建立调试入口）：
-  - 打开 `spring-boot-basics` 的断点地图（模块文档的 `part-00-guide/04-breakpoint-map.md`），选择 3 个稳定断点，验证能命中并观察到关键变量变化。
+- **模块（module）**：主题边界。每个模块都能独立运行与测试。
+- **模块文档（`*/docs/`）**：机制正文、调用链、断点地图、分支矩阵与自检清单都在这里。
+- **测试入口（Labs / Exercises）**：
+  - `*LabTest`：复现现象，并把现象固化为断言（默认启用，作为回归基线）；
+  - `*ExerciseTest`：动手改写题（通常 `@Disabled`，用于练习与自证）。
+
+主线章节（`docs/book/`）只做一件事：把读者送到“下一步可验证动作”。机制正文与细节不在主线重复维护。
+
+---
+
+## 边界：三个高频误区（以及如何在本仓库里自证）
+
+**误区一：只读目录与结论，不跑测试。**
+读完的“理解”没有锚点，很难判断是“概念理解”还是“恰好说对”。解决方式是先固定事实：跑 Book Matrix，然后只围绕失败/关键断言展开阅读。
+
+**误区二：把模块 `docs/README.md` 当成正文。**
+模块 README 的职责是导航与路线，正文在 `part-*` 章节里。判断一个页面是否是“正文”，看它是否提供了实验入口与机制解释，而不仅仅是链接列表。
+
+**误区三：看到异常直接外部搜答案。**
+外部资料无法替对齐本仓库的版本语境与实验入口。更可控的路径是：先用本仓库的“常见坑/自检/分支矩阵”把问题归类成可验证分支，再去对照官方 Reference 或外部资料。
+
+---
 
 ## 小结
 
-- 主线章节负责“把读者送到下一步可验证动作”，不承担“讲完全部细节”。
-- 每章都用 Book Matrix 起跑；读不动时回到附录的“常见坑/自检/分支矩阵”。
-
-## 延伸阅读
-
-- 仓库根导读：[`../../README.md`](../../README.md)
-- 全站导航（SSOT）：[`../../docs/SUMMARY.md`](../../docs/SUMMARY.md)
-- 常见问题索引：[`90-troubleshooting-index.md`](90-troubleshooting-index.md)
-- 术语对照表：[`91-glossary.md`](91-glossary.md)
+- 在这个仓库里，阅读入口不是目录，而是测试：先把现象跑成事实，再回到文档解释原因与边界。
+- 主线章节负责“导航与起跑线”，机制正文在模块 `*/docs/` 中维护。
 
 ---
 

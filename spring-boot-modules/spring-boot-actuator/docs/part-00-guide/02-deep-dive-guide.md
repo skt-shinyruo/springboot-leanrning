@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -36,7 +36,7 @@
 2. **端点是否暴露（Exposed）**：端点有没有被映射到 HTTP（取决于 base-path、include/exclude、web/management 配置）
 3. **端点是否可访问（Accessible）**：端点有没有被安全策略/网络边界允许访问（401/403/404 的分流）
 
-只要把这三段分清楚，你就能把“看起来像 Actuator 坏了”的问题拆成可验证的子问题，而不是靠猜配置。
+只要把这三段分清楚，就能把“看起来像 Actuator 坏了”的问题拆成可验证的子问题，而不是靠猜配置。
 
 ### 1) 时间线：从启动到可访问
 
@@ -51,9 +51,9 @@
 4. **运行阶段：请求进来**
    - 先经过安全过滤链（如果开启）→ 再进入 Actuator handler → 返回 JSON。
 
-### 2) 关键参与者（你应该能点名并解释它们做什么）
+### 2) 关键参与者（应当能点名并解释它们做什么）
 
-- **配置入口（你改的东西）**
+- **配置入口（改的东西）**
   - `management.endpoints.web.base-path`
   - `management.endpoints.web.exposure.include` / `management.endpoints.web.exposure.exclude`
 - **HTTP 层（决定“有没有路由”）**
@@ -64,7 +64,7 @@
   - `org.springframework.boot.actuate.info.InfoEndpoint`
   - `org.springframework.boot.actuate.env.EnvironmentEndpoint`（常见高敏感端点，默认不暴露）
 - **安全边界（决定“能不能访问”）**
-  - Spring Security 的 `SecurityFilterChain`（如果你引入了 security starter）
+  - Spring Security 的 `SecurityFilterChain`（如果引入了 security starter）
 
 ### 3) 本模块的关键分支（2–5 条，默认可回归）
 
@@ -81,14 +81,14 @@
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
 - 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-  
+
 建议断点（从“现象”到“原因”的最短路径）：
 
 - 暴露集合的计算与映射建立：
   - `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping#initHandlerMethods`（看哪些 endpoint 被注册成 handler）
 - links 生成（为什么 `/actuator` 看不到某个端点）：
   - `org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver#resolveLinks`
-- 当你接到 401/403/404 的排障分流：
+- 当接到 401/403/404 的排障分流：
   - 先看响应码（401/403 通常是安全；404 可能是没暴露/路径不对）
   - 再在 `BootActuatorLabTest` / `BootActuatorExposureOverrideLabTest` 的请求处下断点，结合 handler mapping 与 security filter chain 逐层确认
 
@@ -116,7 +116,7 @@
 
 ## 常见坑与边界
 
-如果你是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 

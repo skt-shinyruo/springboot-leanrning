@@ -24,31 +24,31 @@
 
 ## 自检题（每题都能落到 tests）
 
-1. `@DataJpaTest` 默认是否运行在事务里？你如何把“事务存在”固定成断言？  
+1. `@DataJpaTest` 默认是否运行在事务里？如何把“事务存在”固定成断言？
    - 证据入口：`BootDataJpaLabTest#dataJpaTestRunsInsideATransaction`
-2. Repository 的最小闭环是什么？（save → id → query）你如何把它写成一条回归用例？  
+2. Repository 的最小闭环是什么？（save → id → query）如何把它写成一条回归用例？
    - 证据入口：`BootDataJpaLabTest#savesAndFindsByTitle`
-3. persistence context（一级缓存）意味着什么？`save` 之后实体是否一定是 managed？  
+3. persistence context（一级缓存）意味着什么？`save` 之后实体是否一定是 managed？
    - 证据入口：`BootDataJpaLabTest#entityIsManagedAfterSaveInSamePersistenceContext`
-4. `EntityManager#clear` 会带来什么效果？你如何证明“同一个对象不再受管理”？  
+4. `EntityManager#clear` 会带来什么效果？如何证明“同一个对象不再受管理”？
    - 证据入口：`BootDataJpaLabTest#entityManagerClearDetachesEntities`
-5. dirty checking 是如何把“改对象”变成“发 SQL”的？你如何把它固定成可回归事实？  
+5. dirty checking 是如何把“改对象”变成“发 SQL”的？如何把它固定成可回归事实？
    - 证据入口：`BootDataJpaLabTest#dirtyCheckingPersistsChangesOnFlush`
-6. flush 与 commit 的关系是什么？你如何证明“flush 后 JDBC 能看见插入行”（即使事务还没结束）？  
+6. flush 与 commit 的关系是什么？如何证明“flush 后 JDBC 能看见插入行”（即使事务还没结束）？
    - 证据入口：`BootDataJpaLabTest#flushMakesRowsVisibleToJdbcTemplateWithinSameTransaction`
-7. `getReferenceById` 返回的是什么？它什么时候触发真正的 SQL？  
+7. `getReferenceById` 返回的是什么？它什么时候触发真正的 SQL？
    - 证据入口：`BootDataJpaLabTest#getReferenceByIdReturnsALazyProxy_andInitializesOnPropertyAccess`
-8. N+1 的根因是什么？你如何用统计/断言证明它真的发生了，而不是“感觉很慢”？  
+8. N+1 的根因是什么？如何用统计/断言证明它真的发生了，而不是“感觉很慢”？
    - 证据入口：`BootDataJpaLabTest#nPlusOneHappensWhenAccessingLazyCollections`
-9. 你如何用 EntityGraph（或等价手段）避免 N+1，并证明“访问集合不会额外发 SQL”？  
+9. 如何用 EntityGraph（或等价手段）避免 N+1，并证明“访问集合不会额外发 SQL”？
    - 证据入口：`BootDataJpaLabTest#entityGraphCanAvoidNPlusOne_whenFetchingCollections`
-10. detach 与 merge 的边界是什么？你如何用对照用例证明“detached 改动不会落库，但 merge 会把改动带回 managed copy”？  
+10. detach 与 merge 的边界是什么？如何用对照用例证明“detached 改动不会落库，但 merge 会把改动带回 managed copy”？
     - 证据入口：`BootDataJpaMergeAndDetachLabTest#detached_changesWithoutMerge_shouldNotBePersisted` + `BootDataJpaMergeAndDetachLabTest#merge_shouldPersistDetachedChangesIntoManagedCopy`
 
 ## 退出条件（完成标准）
 
-- 你能区分三条线并提供证据入口：persistence context（managed/detached）→ flush/commit → fetching（lazy/N+1）。
-- 你能把“感觉/猜测”替换成“统计/断言”：SQL 次数、是否 initialized、是否落库。
+- 能区分三条线并提供证据入口：persistence context（managed/detached）→ flush/commit → fetching（lazy/N+1）。
+- 能把“感觉/猜测”替换成“统计/断言”：SQL 次数、是否 initialized、是否落库。
 
 <!-- BOOKIFY:START -->
 

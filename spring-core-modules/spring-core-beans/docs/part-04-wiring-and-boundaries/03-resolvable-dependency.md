@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「registerResolvableDependency：能注入，但它不是 Bean」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansResolvableDependencyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansResolvableDependencyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
@@ -48,11 +48,11 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：依赖解析命中 `resolvableDependencies`  
-**分支**：`doResolveDependency` 在“找候选 bean”之前先检查特殊依赖表  
-**结果**：  
-- 可注入但不可 `getBean`  
-- 不走 BPP/生命周期链  
+**条件**：依赖解析命中 `resolvableDependencies`
+**分支**：`doResolveDependency` 在“找候选 bean”之前先检查特殊依赖表
+**结果**：
+- 可注入但不可 `getBean`
+- 不走 BPP/生命周期链
 **断点建议**：`DefaultListableBeanFactory#doResolveDependency`
 
 因此它适用的典型对象是“容器基础设施对象”，例如：
@@ -78,13 +78,13 @@
 
 ### 1.1 DependencyDescriptor 深入分析（决定“能不能命中”）
 
-- `required`：是否允许为 null（`@Autowired(required=false)` / Optional）  
-- `annotations`：`@Qualifier/@Lazy/@Value` 影响解析路径  
-- `resolvableType`：泛型信息会影响匹配  
+- `required`：是否允许为 null（`@Autowired(required=false)` / Optional）
+- `annotations`：`@Qualifier/@Lazy/@Value` 影响解析路径
+- `resolvableType`：泛型信息会影响匹配
 - `dependencyName`：字段名/参数名（影响 by-name fallback）
 
-**两个对照注入点**：  
-1) 字段注入（有名字）：`@Autowired private Environment env;`  
+**两个对照注入点**：
+1) 字段注入（有名字）：`@Autowired private Environment env;`
 2) 构造器注入（名字来自参数）：`Consumer(Environment environment)`
 
 **本章的关键点**：在 `doResolveDependency` 内部，Spring 会在“查找候选 bean”之前先检查 `resolvableDependencies`。
@@ -119,9 +119,9 @@
 
 ### 2.2.1 依赖解析分支树（简化版）
 
-- 快捷路径（Optional/Provider/@Lazy/@Value）  
-- `resolvableDependencies` 命中 → 直接返回  
-- 候选收集/收敛 → 正常注入  
+- 快捷路径（Optional/Provider/@Lazy/@Value）
+- `resolvableDependencies` 命中 → 直接返回
+- 候选收集/收敛 → 正常注入
 - 仍不满足 → `NoSuchBeanDefinitionException`
 
 ### 2.2.2 关键变量速查
@@ -197,14 +197,14 @@
 
 运行完成该 Lab，至少应能够复述 3 条结论：
 
-1) **能注入但不可 getBean**  
-   - 断点：`doResolveDependency`  
+1) **能注入但不可 getBean**
+   - 断点：`doResolveDependency`
    - 断言：命中 `resolvableDependencies` 分支
-2) **注册发生在 prepareBeanFactory**  
-   - 断点：`prepareBeanFactory`  
+2) **注册发生在 prepareBeanFactory**
+   - 断点：`prepareBeanFactory`
    - 断言：默认基础设施对象被注册
-3) **ObjectFactory 会延迟解析**  
-   - 断点：`AutowireUtils#resolveAutowiringValue`  
+3) **ObjectFactory 会延迟解析**
+   - 断点：`AutowireUtils#resolveAutowiringValue`
    - 断言：注入时才解包 value
 
 ## 6. 排障决策表（能注入/不能 getBean/命中不了 → 证据链）

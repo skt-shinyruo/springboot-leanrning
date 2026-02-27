@@ -24,26 +24,26 @@
 
 ## 1. 条件装配：它不是魔法，是“启动期 if”
 
-你可以把下面这些注解理解成“在注册 BeanDefinition 之前的一次判断”：
+可以把下面这些注解理解成“在注册 BeanDefinition 之前的一次判断”：
 
 - `@ConditionalOnProperty`
 - `@ConditionalOnClass`
 - `@ConditionalOnBean`
 
-在真实项目里，当你遇到“为什么加了 starter 但功能不出现”，第一反应应该是：
+在真实项目里，当遇到“为什么加了 starter 但功能不出现”，第一反应应该是：
 
-1) 相关 auto-config 有没有被导入（imports）？  
+1) 相关 auto-config 有没有被导入（imports）？
 2) 导入后是不是被 condition skip 了？
 
 ## 2. backoff：默认配置为什么要让位给用户配置？
 
-核心目标是：让框架提供“默认好用”，但不阻止你自定义。
+核心目标是：让框架提供“默认好用”，但不阻止自定义。
 
 最常见策略：
 
 - `@ConditionalOnMissingBean`：当用户提供了同类型 bean，就不再创建默认 bean
 
-你应该能用断言证明这件事，而不是凭感觉：
+应当能用断言证明这件事，而不是凭感觉：
 
 - `BootAutoConfigurationLabTest#userBeanOverridesAutoConfig_backoffOccurs`
 

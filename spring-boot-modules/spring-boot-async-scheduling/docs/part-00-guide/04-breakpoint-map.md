@@ -4,7 +4,7 @@
 
     我把异步/调度最常用的断点按“从外到内”的顺序整理在这里：先确认有没有走代理、再看提交到了哪个 executor/scheduler、最后才下探异常与上下文传播。
 
-    本页定位更接近备忘录：你可以不按顺序读，但真排障时往往能省不少时间。
+    本页定位更接近备忘录：可以不按顺序读，但真排障时往往能省不少时间。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -20,7 +20,7 @@
 
 ## 这页怎么用
 
-异步/调度的排障，最怕的就是一上来就钻源码细节：你可能在内部类里绕了半小时，最后才发现根因是“根本没启用”或“调用绕开了代理”。
+异步/调度的排障，最怕的就是一上来就钻源码细节：可能在内部类里绕了半小时，最后才发现根因是“根本没启用”或“调用绕开了代理”。
 
 所以这页的顺序是刻意的：先用断点回答“有没有发生”，再用断点回答“为什么是这样”。
 
@@ -42,15 +42,15 @@
 
 ## TaskDecorator 断点（ThreadLocal/MDC 上下文传播与泄漏）
 
-当你遇到“traceId/MDC 在异步线程里丢失”或“串号（上一次任务残留）”时，优先从装饰器与线程池提交点下断点：
+当遇到“traceId/MDC 在异步线程里丢失”或“串号（上一次任务残留）”时，优先从装饰器与线程池提交点下断点：
 
-- 你的 `TaskDecorator#decorate`（或 lambda 实现处）：观察 captured/previous/finally 清理是否正确执行
-- `org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor#execute`：确认任务是否被 decorate 后再提交（同时也能确认你用的是不是 `ThreadPoolTaskExecutor`）
+- `TaskDecorator#decorate`（或 lambda 实现处）：观察 captured/previous/finally 清理是否正确执行
+- `org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor#execute`：确认任务是否被 decorate 后再提交（同时也能确认用的是不是 `ThreadPoolTaskExecutor`）
 - `java.util.concurrent.ThreadPoolExecutor#execute`：观察线程池是否复用线程、任务是否堆积/排队
 
 ## `@Transactional` 断点（`@Async` × 事务边界）
 
-当你怀疑“我以为在事务里执行，但实际不在”时，建议把观察点拆成两条线程：
+当怀疑“我以为在事务里执行，但实际不在”时，建议把观察点拆成两条线程：
 
 - 调用方线程：事务是否 active？
 - 异步线程：事务是否 active？
@@ -68,7 +68,7 @@
 
 ## SecurityContext 断点（Spring Security delegating wrapper）
 
-当你遇到“异步线程拿不到当前用户”或“偶发串号”的问题时，优先确认：
+当遇到“异步线程拿不到当前用户”或“偶发串号”的问题时，优先确认：
 
 - 是否使用了 delegating wrapper（例如 `DelegatingSecurityContextAsyncTaskExecutor`）
 - wrapper 是否在 finally 做了清理
@@ -81,7 +81,7 @@
 
 ## Spring Boot `spring.task.*` 自动装配断点（默认 executor/scheduler 从哪来）
 
-当你遇到“我以为用的是 Boot 默认线程池，但行为不对”时，建议先回答两件事：
+当遇到“我以为用的是 Boot 默认线程池，但行为不对”时，建议先回答两件事：
 
 1. Boot 是否真的装配了默认 `TaskExecutor/TaskScheduler`？
 2. `@Async/@Scheduled` 最终选择的是哪个 bean？

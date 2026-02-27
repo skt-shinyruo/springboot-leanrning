@@ -2,7 +2,7 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（上下文丢失的真相）"
 
-    如果你在异步线程里拿不到“当前用户”或“当前请求”，先不必急于怀疑 Spring Security 或 MVC：它们大概率只是 ThreadLocal 的受害者。
+    如果在异步线程里拿不到“当前用户”或“当前请求”，先不必急于怀疑 Spring Security 或 MVC：它们大概率只是 ThreadLocal 的受害者。
 
     - 默认行为：线程一换，上下文就断（拿到 `null` 是正常的）
     - 更危险的情况：线程池复用 + 没清理 → 偶发串号（上一次任务的上下文残留）
@@ -22,7 +22,7 @@
 
 ## 先把危险说在前面：这不是“日志问题”
 
-在很多团队里，“异步线程拿不到 MDC/traceId”最初只是一个排障不方便的问题；但当你开始在异步线程里读取 `SecurityContext`、读取租户信息、读取 `RequestAttributes`，它就不再只是日志断链——它可能变成权限串号、租户串号、请求串号。
+在很多团队里，“异步线程拿不到 MDC/traceId”最初只是一个排障不方便的问题；但当开始在异步线程里读取 `SecurityContext`、读取租户信息、读取 `RequestAttributes`，它就不再只是日志断链——它可能变成权限串号、租户串号、请求串号。
 
 这一章把“上下文传播”从抽象 ThreadLocal 推进到两个真实对象：
 
@@ -35,7 +35,7 @@
 
 这三类“上下文”在机制上高度同构：
 
-- `ThreadLocal`：你自己写的上下文
+- `ThreadLocal`：自定义的上下文
 - MDC：日志上下文（底层也是 ThreadLocal）
 - `SecurityContextHolder`：安全上下文（默认也是 ThreadLocal）
 - `RequestContextHolder`：请求上下文（ThreadLocal 绑定 RequestAttributes）
@@ -55,7 +55,7 @@
 
 #### 路线 A：通用路线（TaskDecorator）
 
-适用于你自己的 ThreadLocal、MDC、RequestContext 等：
+适用于自己的 ThreadLocal、MDC、RequestContext 等：
 
 - 提交时捕获
 - 执行时设置
@@ -73,9 +73,9 @@
 
 #### 路线 B：领域路线（Spring Security 的 Delegating*）
 
-如果你传播的是 SecurityContext，优先考虑 Spring Security 提供的 delegating wrapper：
+如果传播的是 SecurityContext，优先考虑 Spring Security 提供的 delegating wrapper：
 
-- 它的核心价值不是“能传播”（你当然也能手写 TaskDecorator）
+- 它的核心价值不是“能传播”（当然也能手写 TaskDecorator）
 - 而是把“捕获/设置/finally 清理”的正确细节做成可复用、可审计的基础设施
 
 最小证据链（可传播 + 无泄漏）：
@@ -96,7 +96,7 @@
 ### TaskDecorator（通用上下文）
 
 - `org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor#execute`：任务提交点（decorate 的发生位置）
-- 你的 `TaskDecorator#decorate`：捕获 captured/previous，以及 finally 清理
+- `TaskDecorator#decorate`：捕获 captured/previous，以及 finally 清理
 
 ### Spring Security delegating wrapper
 

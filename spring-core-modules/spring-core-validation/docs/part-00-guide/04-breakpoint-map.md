@@ -22,7 +22,7 @@
 
 
 
-## 运行入口（建议先跑）
+## 运行入口（先运行）
 
 - Book Matrix：`SpringCoreValidationBookMatrixLabTest`
 - Branch Matrix：`SpringCoreValidationBranchMatrixLabTest`

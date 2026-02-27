@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 你看到的状态码，很多时候不是 controller 决定的，而是 `HandlerExceptionResolver` 链路把异常映射出来的结果。
-    - 三个你最常遇到的 resolver（按“理解优先级”）：
-      1. **`ExceptionHandlerExceptionResolver`**：你的 `@ControllerAdvice/@ExceptionHandler` 生效的地方
-      2. **`ResponseStatusExceptionResolver`**：`@ResponseStatus` / `ResponseStatusException` 等语义化异常的映射
-      3. **`DefaultHandlerExceptionResolver`**：Spring MVC 内置异常（405/415/406/400 等）的默认翻译器
+    - 看到的状态码，很多时候不是 controller 决定的，而是 `HandlerExceptionResolver` 链路把异常映射出来的结果。
+    - 三个最常遇到的 resolver（按“理解优先级”）：
+    1. **`ExceptionHandlerExceptionResolver`**： `@ControllerAdvice/@ExceptionHandler` 生效的地方
+    2. **`ResponseStatusExceptionResolver`**：`@ResponseStatus` / `ResponseStatusException` 等语义化异常的映射
+    3. **`DefaultHandlerExceptionResolver`**：Spring MVC 内置异常（405/415/406/400 等）的默认翻译器
     - 排障黄金路线：**先用测试把现象固化 → 再用 `resolvedException` 确定异常类型 → 再定位它来自链路的哪一段 → 最后用断点看 resolver 选择分支**。
 
 
@@ -34,7 +34,7 @@
 
 ## 机制主线（DispatcherServlet 的异常处理段落）
 
-你可以把异常处理理解成 DispatcherServlet 主链路的一个固定“尾部阶段”：
+可以把异常处理理解成 DispatcherServlet 主链路的一个固定“尾部阶段”：
 
 1. handler 执行前/中/后任何阶段抛出异常（包括参数解析、绑定、converter 读写、controller 业务）
 2. `DispatcherServlet` 捕获异常并进入 `processHandlerException`
@@ -96,7 +96,7 @@
   - 排障建议：先用 `resolvedException` 固定异常类型，再决定是补 `@ExceptionHandler` 还是修输入契约
 
 - **坑 2：@WebMvcTest 忘了导入 ControllerAdvice**
-  - slice 测试里，若你没有 `@Import(GlobalExceptionHandler/AdvancedApiExceptionHandler)`，你看到的错误体可能是默认行为而不是你的契约
+  - slice 测试里，若没有 `@Import(GlobalExceptionHandler/AdvancedApiExceptionHandler)`，看到的错误体可能是默认行为而不是契约
 
 - **坑 3：把 401/403 当成 MVC 的异常处理**
   - 很多安全分支发生在 FilterChain 中：优先从 FilterChainProxy/ExceptionTranslationFilter 入手

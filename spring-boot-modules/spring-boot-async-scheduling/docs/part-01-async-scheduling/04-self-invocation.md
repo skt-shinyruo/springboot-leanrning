@@ -22,12 +22,12 @@
 
 ## 这个坑为什么这么“顽固”
 
-你可能遇到过这种情况：
+可能遇到过这种情况：
 
 - 外部调用 `someService.doAsync()`：线程名变了，确实异步
 - 但在 `SomeService` 自己内部调用 `this.doAsync()`：线程名不变，像是没写 `@Async`
 
-这不是你哪里写错了，而是 self-invocation（自调用）天然会绕开 Spring 代理。
+这不是哪里写错了，而是 self-invocation（自调用）天然会绕开 Spring 代理。
 
 ## self-invocation：发生了什么
 
@@ -44,7 +44,7 @@
 - 自调用绕过：`BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall`
 - 跨 bean 边界（走代理）：`BootAsyncSchedulingLabTest#callingAsyncThroughAnotherBeanGoesThroughProxy`
 
-如果你在 IDE 里跟一下调用栈，会很直观：前者不会进入 `CglibAopProxy` / JDK proxy 的 invocation handler，后者会。
+如果在 IDE 里跟一下调用栈，会很直观：前者不会进入 `CglibAopProxy` / JDK proxy 的 invocation handler，后者会。
 
 ## 怎么修才“稳”
 
@@ -55,7 +55,7 @@
 - `OuterService` 负责编排与事务/校验边界
 - `InnerAsyncService` 只负责异步执行
 
-这不是为了“代码好看”，而是为了把机制边界写死：你不会再因为“某个同事顺手写了个内部调用”而让异步悄悄失效。
+这不是为了“代码好看”，而是为了把机制边界写死：不会再因为“某个同事顺手写了个内部调用”而让异步悄悄失效。
 
 ## 断点入口（可选）
 
@@ -64,7 +64,7 @@
 
 ## 小结
 
-self-invocation 不是 `@Async` 的专属坑，`@Transactional`、校验、权限等所有基于 AOP 的能力都共享这条边界。弄明白它，你会少掉很多“看起来像玄学”的排障时间。
+self-invocation 不是 `@Async` 的专属坑，`@Transactional`、校验、权限等所有基于 AOP 的能力都共享这条边界。弄明白它，会少掉很多“看起来像玄学”的排障时间。
 
 <!-- BOOKIFY:START -->
 

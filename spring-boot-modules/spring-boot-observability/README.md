@@ -8,7 +8,7 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -21,7 +21,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-完成标准（你应该能解释清楚）：
+完成标准（应能解释清楚）：
 
 - 一次 HTTP 请求之后，为什么会出现 `http.server.requests` 这类指标
 - 这些指标是在哪一层产生的（FilterChain/MVC/Actuator/Observation）

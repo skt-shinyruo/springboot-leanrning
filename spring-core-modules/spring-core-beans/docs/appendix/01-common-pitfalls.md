@@ -20,9 +20,9 @@
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-### 排障模板（统一结构）
+### 排障骨架（统一结构）
 
-当遇到“行为不符合预期 / 入口无法运行 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口无法运行 / 断点不命中”时，可以按下面 6 步收敛问题（每一步都尽量可复现、可对照、可验证）：
 
 1. 症状（Symptoms）：观察到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
@@ -40,7 +40,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -76,7 +76,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 

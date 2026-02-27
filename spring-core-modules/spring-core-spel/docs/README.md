@@ -1,11 +1,14 @@
-# Spring Core SpEL：目录
+# Spring Core SpEL：解析、求值与边界
 
-## 导读
+本模块以一条最短求值链路为主线，把 SpEL 的三个关键对象跑成事实：parser 如何把表达式解析成 AST，evaluation context 如何提供 root/variables/property access，最终 `getValue()` 在何处完成求值与类型转换。函数扩展与安全边界属于更复杂的分支，本模块先把基础链路固定下来，再进入扩展点。
 
-本页是「Spring Core SpEL：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先跑通 parse → evaluate
 
-> 建议先把“parser → evaluation context → getValue()”跑通，再进入更复杂的函数/安全边界。
+- `mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBookMatrixLabTest test`
+
+运行后应能回答：表达式在何处被解析；属性访问与类型转换在何处发生；不同 evaluation context 下为何会产生不同的求值结果。
 
 ## 从这里开始（建议顺序）
 
@@ -19,11 +22,13 @@
 
 - [SpEL 入门：root/variables/property access](part-01-spel-basics/01-spel-basics.md)
 
-## 进阶入口（可跑入口/关键分支）
+---
 
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBranchMatrixLabTest test`
-- 可跑入口（并发求值 Lab）：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelConcurrencyLabTest test`
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelBranchMatrixLabTest test`
+- 并发求值：`mvn -q -pl :spring-core-spel -Dtest=SpringCoreSpelConcurrencyLabTest test`
 
 ## 排坑与自检
 

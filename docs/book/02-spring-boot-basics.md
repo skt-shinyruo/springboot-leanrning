@@ -1,61 +1,80 @@
-# 02 Spring Boot Basics：启动、配置与可验证的最小闭环
+# 02 Spring Boot Basics：启动与配置，把“最终值”跑成事实
 
-## 学习目标
+当一个 Spring Boot 工程“看起来写了配置但没生效”时，问题往往不在语法，而在事实来源：同一个 key 可能同时出现在默认配置、profile 配置、环境变量、命令行参数、测试覆盖里。读者如果只盯着某个 `application.yml` 文件，很容易把原因猜错。
 
-- 能解释一个 Spring Boot 应用从 `SpringApplication#run` 到容器就绪的大致阶段划分。
-- 能把“配置从哪里来、如何覆盖、如何绑定”为类型安全对象，跑成可回归的断言。
-- 知道配置问题的最短排障路径：现象 → 配置源/优先级 → 断点/证据链。
+本章围绕一个核心问题展开：**运行时的最终配置值到底来自哪里**，以及它如何影响后续的 Bean 装配与应用行为。主线只把证据链与关键概念串起来；机制细节与断点地图放在模块文档中展开。
 
-## 概念框架
+---
 
-- **启动主线**：`SpringApplication#run` → Environment 准备 → ApplicationContext 刷新 → Bean 创建与装配。
-- **配置源（PropertySources）**：命令行参数、环境变量、配置文件、默认值等共同参与“最终值”的决策。
-- **Profiles**：控制配置片段与 Bean 条件生效的开关，常与覆盖规则一起出现。
-- **配置绑定**：`@ConfigurationProperties` 把字符串配置绑定为类型安全对象（含转换/校验/默认值）。
+## 实验：先把“最终值”钉住
 
-本章与后续章节的关系：
-
-- 配置的结果最终体现在 **Bean 装配与代理边界**：下一章进入 [03 Beans](03-spring-core-beans.md)。
-- 配置常用于 Web、数据、观测等模块的开关：在 [06 Web MVC](06-spring-boot-web-mvc.md)、[13 Observability](13-observability-and-actuator.md) 会反复出现。
-
-## 实验入口
-
-- Book Matrix（主线入口）：
+- 运行：
   - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`
-  - 测试类：[`BootBasicsBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java)
-- 模块目录页（顺读主线）：
+- 测试类（入口锚点）：
+  - [`BootBasicsBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java)
+- 模块目录页（正文入口）：
   - [`spring-boot-basics/docs/README.md`](../../spring-boot-modules/spring-boot-basics/docs/README.md)
-- 导航型文档（用于定位断点与分支，而非背结论）：
-  - 主线时间线：[`part-00-guide/01-mainline-timeline.md`](../../spring-boot-modules/spring-boot-basics/docs/part-00-guide/01-mainline-timeline.md)
-  - 断点地图：[`part-00-guide/04-breakpoint-map.md`](../../spring-boot-modules/spring-boot-basics/docs/part-00-guide/04-breakpoint-map.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-basics/docs/appendix/01-common-pitfalls.md)
 
-## 常见误区
+运行后应当能回答两件“事实问题”（先不解释原因）：
 
-- 以为“只要写在 `application.yml` 就一定生效”。需要用 **配置源优先级** 与 **Profile 激活条件** 把事实跑出来。
-- 把 `@Value` 当成 `@ConfigurationProperties` 的等价替代。两者的绑定与可测试性差异很大。
-- 遇到配置问题只看日志不下断点。配置决策通常发生在启动早期，断点能更快看到“最终值来自哪里”。
+1. 激活的 profile 是什么（`Environment#getActiveProfiles()`）；
+2. 目标 key 的最终值是什么（`Environment#getProperty(...)`）。
 
-## 练习
+这两条事实确定后，再回到文档解释“谁覆盖谁”，读者会更容易把分支收敛到具体的可验证入口。
 
-- 练习 1（把覆盖规则跑成事实）：
-  - 运行 `BootBasicsBookMatrixLabTest`，定位其中与 profile/覆盖相关的断言；
-  - 对照模块文档的“关键分支矩阵”，把每个分支写成一句 If/Then 规则（只写你能用测试验证的部分）。
-- 练习 2（把绑定边界跑成事实）：
-  - 选择一个 `@ConfigurationProperties` 相关断言，记录：默认值、转换失败表现、缺失字段行为。
+---
 
-## 小结
+## 解释：Boot 启动与配置的三件事
 
-- Boot 基础阶段的关键产出是：能解释“最终配置值来自哪里”，并能在断点处观察到决策过程。
-- 配置的后果最终体现为 Bean 装配、代理、事务、Web 行为；因此下一章进入容器主线。
+### 1) 启动主线并不神秘：关键分界点在 Environment 与 Context
 
-## 延伸阅读
+从 `SpringApplication#run` 到容器就绪，可以粗略划分为两个阶段：
 
-- 下一章（配置 → Bean 装配）：[`03-spring-core-beans.md`](03-spring-core-beans.md)
-- Boot 自动配置（条件装配/回退策略，扩展阅读）：[`../../spring-boot-modules/spring-boot-autoconfiguration/docs/README.md`](../../spring-boot-modules/spring-boot-autoconfiguration/docs/README.md)
-- 术语对照（Environment / PropertySource / Profile）：[`91-glossary.md`](91-glossary.md)
+- **Environment 准备阶段**：收集并合并配置来源，计算出“最终值”；
+- **ApplicationContext 刷新阶段**：根据最终配置与条件装配结果注册 BeanDefinition、创建 bean、触发后处理器与生命周期回调。
+
+这也是为什么配置问题经常出现在“启动早期”：很多决策在容器真正创建 bean 之前就已经完成了。
+
+### 2) PropertySources：多个来源合并成一个“最终视图”
+
+配置不是“某个文件生效”，而是多个来源共同参与决策。最常见的来源包括：
+
+- 默认配置文件（`application.properties/yml`）
+- profile 配置文件（`application-<profile>.properties/yml`）
+- 环境变量 / 命令行参数
+- 测试覆盖（例如 `@SpringBootTest(properties = ...)`）
+
+这些来源最终都会体现在 `Environment` 的 `PropertySources` 里。排障时更可靠的做法不是背优先级表，而是直接观察：同名 key 在运行时究竟命中了哪个来源。
+
+### 3) Profiles 与绑定：一个控制“参与者”，一个控制“形态”
+
+在实际工程中，Profiles 常常同时影响两类结果：
+
+- **哪些配置片段参与合并**（例如 dev 配置文件是否参与）
+- **哪些 Bean 会被注册**（例如 `@Profile("dev")` 的实现是否存在）
+
+而 `@ConfigurationProperties` 的职责是把字符串配置变成类型安全对象：它决定了“配置值以什么形态进入业务代码”，也决定了“转换失败/缺失字段/默认值”如何在测试中被断言出来。
+
+---
+
+## 边界：三个高频误判（以及如何快速验证）
+
+**误判一：只要写进 `application.yml` 就一定生效。**
+验证方式是回到 `Environment`：先看 active profiles，再看最终属性值。若最终值不符合预期，问题属于“来源与优先级”；若最终值正确但行为不对，问题更可能属于“条件装配/Bean 注册”。
+
+**误判二：`@Value` 与 `@ConfigurationProperties` 可以互换。**
+两者都能读配置，但“可测试性与边界”不同。`@ConfigurationProperties` 更容易形成稳定断言（类型转换、默认值、校验），也更适合作为配置的长期形态。
+
+**误判三：只看日志、不下断点。**
+配置决策发生在启动早期，日志往往不告诉“这个值来自哪里”。在模块文档的断点地图里，通常能直接命中“最终取值点”，从而快速反推来源。
+
+---
+
+## 小结与下一章
+
+- 本章的核心产出是：能把“最终配置值来自哪里”跑成事实，并据此把问题分型为“值不对”还是“装配不对”。
+- 配置的后果最终体现在 Bean 装配与代理边界；下一章进入容器主线：[`03-spring-core-beans.md`](03-spring-core-beans.md)。
 
 ---
 
 [← 上一章](01-getting-started.md) | [目录](README.md) | [下一章 →](03-spring-core-beans.md)
-

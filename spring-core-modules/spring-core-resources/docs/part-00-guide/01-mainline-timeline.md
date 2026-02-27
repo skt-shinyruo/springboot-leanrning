@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：主线时间线：Spring Resources
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
     - 原理：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
     - 源码入口：`org.springframework.core.io.Resource` / `org.springframework.core.io.ResourceLoader` / `org.springframework.core.io.support.PathMatchingResourcePatternResolver`
     - 推荐 Lab：`SpringCoreResourcesLabTest`
@@ -14,18 +14,18 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary
-    - 这一模块关注：Resource 抽象如何统一 classpath/file/jar 等不同资源形态，以及你如何可靠地定位与读取资源。
-    - 读完你应该能复述：**定位（路径/模式）→ 解析（Resource）→ 校验（exists/handles）→ 读取（编码/流）** 这一条主线。
+    - 这一模块关注：Resource 抽象如何统一 classpath/file/jar 等不同资源形态，以及如何可靠地定位与读取资源。
+    - 读完应当能复述：**定位（路径/模式）→ 解析（Resource）→ 校验（exists/handles）→ 读取（编码/流）** 这一条主线。
     - 推荐顺序：先读《深挖导读》→ 本章 → Part 01 顺读 6 章 → 附录排坑。
 
-!!! example "建议先跑的 Lab（把时间线变成证据）"
+!!! example "先运行的 Lab（把时间线变成证据）"
 
     - Lab：`SpringCoreResourcesLabTest`
 
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：主线时间线：Spring Resources —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
+- 一句话总结：主线时间线：Spring Resources —— 先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
 - 回到主线：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
@@ -33,7 +33,7 @@
 ## 导读
 
 本章是「第 139 章：主线时间线：Spring Resources」的路线图：先给出主线顺序与关键分支，再把每一段落到可运行入口。
-建议先跑 `SpringCoreResourcesLabTest` 作为主线证据，再回到正文理解“为什么章节按这个顺序组织”。
+先运行 `SpringCoreResourcesLabTest` 作为主线证据，再回到正文理解“为什么章节按这个顺序组织”。
 
 <!-- BOOKLIKE-V2:INTRO:START -->
 这一章围绕「主线时间线：Spring Resources」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
@@ -68,11 +68,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证理解成立）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Resources」的生效时机/顺序/边界；断点/入口：`org.springframework.core.io.Resource`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Resources」的生效时机/顺序/边界；断点/入口：`org.springframework.core.io.ResourceLoader`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Resources」的生效时机/顺序/边界；断点/入口：`org.springframework.core.io.support.PathMatchingResourcePatternResolver`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``SpringCoreResourcesLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Resources」的生效时机/顺序/边界；断点/入口：`org.springframework.core.io.Resource`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Resources」的生效时机/顺序/边界；断点/入口：`org.springframework.core.io.ResourceLoader`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Resources」的生效时机/顺序/边界；断点/入口：`org.springframework.core.io.support.PathMatchingResourcePatternResolver`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``SpringCoreResourcesLabTest`` 后，把上述观察点逐条对照，写出 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

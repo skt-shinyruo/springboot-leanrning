@@ -30,7 +30,7 @@
 
 ## 2. variables
 
-`ctx.setVariable("x", ...)` 后，你可以用：
+`ctx.setVariable("x", ...)` 后，可以用：
 
 - `#x` 读取变量
 

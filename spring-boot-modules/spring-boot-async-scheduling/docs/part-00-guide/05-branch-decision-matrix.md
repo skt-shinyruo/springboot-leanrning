@@ -4,7 +4,7 @@
 
     这张表是给“排障时不想靠猜”的：把最常见的分支写成 If/Then，并给出最小复现入口与观察点。
 
-    用法也很简单：先找到你当前的触发条件（Trigger），跑一次 Repro，把 Watchpoints 看一眼，结论就基本收敛了。
+    用法也很简单：先找到当前的触发条件（Trigger），跑一次 Repro，把 Watchpoints 看一眼，结论就基本收敛了。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,7 +14,7 @@
 ## 导读
 
 - 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），从你当前的触发条件入手，跑一次 Repro，再对照本表的 Watchpoints 收敛结论。
+- 建议入口：优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），从当前的触发条件入手，跑一次 Repro，再对照本表的 Watchpoints 收敛结论。
 
 
 

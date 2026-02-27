@@ -1,11 +1,14 @@
-# AOP Weaving（织入：LTW/CTW）：目录
+# AOP Weaving（织入：LTW/CTW）：代理之外的另一条路
 
-## 导读
+织入解决的是“代理做不到或不适合做”的那部分 AOP 需求：切点落在构造器、字段、final 方法等代理天然受限的位置；或希望以字节码层面的方式改变行为边界。本模块先把“代理 vs 织入”的边界跑清楚，再分别讨论 LTW（load-time weaving）与 CTW（compile-time weaving），最后用 join point 维度把落点与风险控制住。
 
-本页是「AOP Weaving（织入：LTW/CTW）：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先确认织入是否生效
 
-> 织入是“代理之外的另一条路”：建议先搞清代理 vs 织入的边界，再决定 LTW/CTW，最后用 join point 维度把落点和风险控制住。
+- `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
+
+运行后应能回答：织入在何处介入；哪些 join point 能命中、哪些不能；与代理方案相比，行为边界与可观测性有什么变化。
 
 ## 从这里开始（建议顺序）
 
@@ -25,12 +28,19 @@
 - 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](part-00-guide/05-branch-decision-matrix.md)
 - 排障 playbook：[01-common-pitfalls.md](appendix/01-common-pitfalls.md)
 - 自检清单：[02-self-check.md](appendix/02-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
-- 可跑入口（Branch Matrix - LTW/CTW）：建议直接跑模块 `mvn -q -pl :spring-core-aop-weaving test`（让 Surefire 自动区分 execution）；或分别：
+
+---
+
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
+- Branch Matrix（LTW/CTW）：建议直接运行模块测试（让 Surefire 自动区分 execution）：
+  `mvn -q -pl :spring-core-aop-weaving test`
+  或分别运行：
   - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-core-aop-weaving -Dtest=*ExerciseSolutionTest test`
-- 可跑入口（并发/性能 Lab - LTW 并发织入边界）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwConcurrencyLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-aop-weaving -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（LTW 并发织入边界）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwConcurrencyLabTest test`
 
 ## 排坑与自检
 

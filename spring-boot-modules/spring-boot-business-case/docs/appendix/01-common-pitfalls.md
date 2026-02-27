@@ -17,9 +17,9 @@
 
 ### 排障模板（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
    - Branch Matrix：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
@@ -33,7 +33,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -62,37 +62,37 @@
 
 ## 坑 1：把“请求校验失败”当成业务失败，却没看清它发生在哪个边界
 
-- 你会看到：400 + `validation_failed`；但你仍然在 service/事务/事件里找原因。
+- 会看到：400 + `validation_failed`；但仍然在 service/事务/事件里找原因。
 - Verification：
   - `BootBusinessCaseLabTest#returnsValidationErrorWhenRequestIsInvalid`
   - `BootBusinessCaseLabTest#validationRejectsNegativeQuantity`
   - `BootBusinessCaseLabTest#validationRejectsMissingFields`
-- Fix：先把“校验失败”当成 MVC/Validation 边界问题：字段错误应该在 controller 入参阶段就被拦截；并且不应写库、不应发事件（本模块的 `auditLog` 会帮你验证）。
+- Fix：先把“校验失败”当成 MVC/Validation 边界问题：字段错误应该在 controller 入参阶段就被拦截；并且不应写库、不应发事件（本模块的 `auditLog` 会帮助验证）。
 
-## 坑 2：以为“抛异常就会回滚”，但你没有确认事务边界是否真的生效
+## 坑 2：以为“抛异常就会回滚”，但没有确认事务边界是否真的生效
 
-- 你会看到：失败接口 `/api/orders/fail` 返回 500，但你不确定数据到底有没有落库。
+- 会看到：失败接口 `/api/orders/fail` 返回 500，但不确定数据到底有没有落库。
 - Verification：`BootBusinessCaseLabTest#rollbackPreventsPersistenceOnFailure`
 - Fix：用 `repository.count()` + 断言确认回滚，再回到 Tx 模块定位为什么事务没有生效（代理/入口/self-invocation）。
 
 ## 坑 3：把事件当成 after-commit，结果回滚时仍有副作用
 
-- 你会看到：回滚用例里仍然出现 `sync:` 审计，但 `afterCommit:` 没有。
+- 会看到：回滚用例里仍然出现 `sync:` 审计，但 `afterCommit:` 没有。
 - Verification：
   - `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot`
   - `BootBusinessCaseLabTest#afterCommitListenerRunsOnSuccess`
 - Fix：副作用如果要跟着事务命运走，就用 `@TransactionalEventListener(AFTER_COMMIT)`；否则默认 `@EventListener` 会立刻执行。
 
-## 坑 4：觉得“有 AOP/Tracing”但其实没走代理，或者没打到你以为的入口
+## 坑 4：觉得“有 AOP/Tracing”但其实没走代理，或者没打到直觉里的入口
 
 - Verification：
   - `BootBusinessCaseLabTest#serviceBeanIsAnAopProxy`
   - `BootBusinessCaseLabTest#aspectRecordsInvocationForTracedOperation`
-- Fix：先确认 bean 是 proxy，再确认 aspect 的 pointcut 命中你关心的方法（看 InvocationLog 的“最后一次命中方法”）。
+- Fix：先确认 bean 是 proxy，再确认 aspect 的 pointcut 命中关心的方法（看 InvocationLog 的“最后一次命中方法”）。
 
 ## 坑 5：误以为业务接口天然幂等（重试/重复请求导致重复下单）
 
-- 你会看到：同样请求发两次，库里会有两条订单。
+- 会看到：同样请求发两次，库里会有两条订单。
 - Verification：`BootBusinessCaseLabTest#createOrderIsIdempotentAtDatabaseLevel_perRequestOnly`
 - Fix：幂等要显式设计（幂等键/唯一约束/去重）；不要把“测试里跑两次都 200”当成幂等证明。
 

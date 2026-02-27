@@ -4,7 +4,7 @@
 
 本模块以 tests-first 为主（跑 `*LabTest`），不启动 Web 服务（`spring.main.web-application-type=none`）。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 

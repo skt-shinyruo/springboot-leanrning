@@ -42,8 +42,8 @@
   - 选择一个 Web 相关入口，把它对应到 [06 Web MVC](06-spring-boot-web-mvc.md) 的链路分型（400/406/415/异常收敛）。
 - 练习 2（边界控制复盘）：
   - 选择一个 `@MockBean` 场景，写清：
-    - 替换的是哪个 Bean（类型/名称）；
-    - 替换发生在上下文哪个阶段（对照 Beans/AOP 的代理边界，必要时回看 [03](03-spring-core-beans.md) / [04](04-spring-core-aop.md)）。
+  - 替换的是哪个 Bean（类型/名称）；
+  - 替换发生在上下文哪个阶段（对照 Beans/AOP 的代理边界，必要时回看 [03](03-spring-core-beans.md) / [04](04-spring-core-aop.md)）。
 
 ## 小结
 

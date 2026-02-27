@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：异步监听器：`@Async` 生效需要什么？线程会怎么变？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
     - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
     - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
     - 推荐 Lab：`SpringCoreEventsMechanicsLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreEventsMechanicsLabTest`
 
@@ -68,7 +68,7 @@
 - Lab：`SpringCoreEventsMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 验证入口：`SpringCoreEventsMechanicsLabTest`
 
@@ -79,7 +79,7 @@
 
 ### 坑点 1：`@Async` 写了但没生效（线程没变）
 
-- Symptom：你给 listener 方法加了 `@Async`，但断点/日志显示仍然在发布事件的线程里执行。
+- Symptom：给 listener 方法加了 `@Async`，但断点/日志显示仍然在发布事件的线程里执行。
 - Root Cause：`@Async` 依赖 Spring 的代理机制；如果没有开启 `@EnableAsync`（或 bean 没被代理、发生自调用），`@Async` 会被忽略。
 - Verification：`SpringCoreEventsMechanicsLabTest#asyncAnnotationIsIgnored_withoutEnableAsync`、`SpringCoreEventsMechanicsLabTest#asyncListenerRunsOnDifferentThread_whenEnableAsyncIsOn`
 - Breakpoints：`AsyncAnnotationBeanPostProcessor#postProcessAfterInitialization`、`AnnotationAsyncExecutionInterceptor#invoke`

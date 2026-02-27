@@ -24,31 +24,31 @@
 
 ## 自检题（每题都能落到 tests）
 
-1. RestClient 的最小闭环是什么？（构建请求 → 反序列化 → 返回领域对象）你如何把它写成断言？  
+1. RestClient 的最小闭环是什么？（构建请求 → 反序列化 → 返回领域对象）如何把它写成断言？
    - 证据入口：`BootWebClientRestClientLabTest#restClientGetsGreeting`
-2. 你如何证明“发了你以为的那条请求”（method/path/headers）？为什么这比只断言 response 更可靠？  
+2. 如何证明“发了直觉里的那条请求”（method/path/headers）？为什么这比只断言 response 更可靠？
    - 证据入口：`BootWebClientRestClientLabTest#restClientSendsExpectedPathAndHeaders`
-3. 反序列化时未知字段会怎样？你如何把“兼容性策略”固定成回归用例？  
+3. 反序列化时未知字段会怎样？如何把“兼容性策略”固定成回归用例？
    - 证据入口：`BootWebClientRestClientLabTest#restClientIgnoresUnknownJsonFieldsByDefault`
-4. 4xx/5xx 应该如何映射成“领域异常”（包含 status）？你如何让调用方不必解读 HTTP 细节？  
+4. 4xx/5xx 应该如何映射成“领域异常”（包含 status）？如何让调用方不必解读 HTTP 细节？
    - 证据入口：`BootWebClientRestClientLabTest#restClientMaps400ToDomainException` + `BootWebClientRestClientLabTest#restClientMaps500ToDomainException`
-5. read timeout 触发时，你如何证明它是“可重复失败”（而不是偶发现象）？  
+5. read timeout 触发时，如何证明它是“可重复失败”（而不是偶发现象）？
    - 证据入口：`BootWebClientRestClientLabTest#restClientReadTimeoutFailsFast`
-6. retry 的边界是什么？你如何用断言证明“失败一次 → 重试成功”，并把请求次数固定下来？  
+6. retry 的边界是什么？如何用断言证明“失败一次 → 重试成功”，并把请求次数固定下来？
    - 证据入口：`BootWebClientRestClientLabTest#restClientRetriesOn5xxAndEventuallySucceeds`
-7. WebClient（响应式）下你如何写断言？为什么这里用 StepVerifier（或 block+timeout）更合适？  
+7. WebClient（响应式）下如何写断言？为什么这里用 StepVerifier（或 block+timeout）更合适？
    - 证据入口：`BootWebClientWebClientLabTest#webClientGetsGreeting`
-8. WebClient 的超时失败与 RestClient 的超时失败有何差异？你如何把“失败模式”写成可回归用例？  
+8. WebClient 的超时失败与 RestClient 的超时失败有何差异？如何把“失败模式”写成可回归用例？
    - 证据入口：`BootWebClientWebClientLabTest#webClientResponseTimeoutFailsFast`
-9. WebClient 的 filter 链：请求阶段与响应阶段的执行顺序为什么相反？你如何用一条用例把顺序固定下来？  
+9. WebClient 的 filter 链：请求阶段与响应阶段的执行顺序为什么相反？如何用一条用例把顺序固定下来？
    - 证据入口：`BootWebClientWebClientFilterOrderLabTest#webClientFilters_requestOrderAndResponseOrder_areDifferent`
-10. 对比 RestClient 与 WebClient：当你要做“可测试的超时/重试/错误映射”时，两者的取舍点分别是什么？  
+10. 对比 RestClient 与 WebClient：当需要做“可测试的超时/重试/错误映射”时，两者的取舍点分别是什么？
     - 对照：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
 
 ## 退出条件（完成标准）
 
-- 你能把客户端行为写成“可控下游 + 可回归断言”的证据链（MockWebServer + 断言 + 请求计数）。
-- 你能区分：状态码分支、超时分支、重试分支，并为每条分支提供一个稳定入口用例。
+- 能把客户端行为写成“可控下游 + 可回归断言”的证据链（MockWebServer + 断言 + 请求计数）。
+- 能区分：状态码分支、超时分支、重试分支，并为每条分支提供一个稳定入口用例。
 
 <!-- BOOKIFY:START -->
 

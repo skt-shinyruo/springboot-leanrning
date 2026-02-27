@@ -4,7 +4,7 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -18,7 +18,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - `@Transactional` 的声明式事务（本质是 AOP 拦截器）
 - 提交（commit）与回滚（rollback）行为
@@ -52,7 +52,7 @@ mvn -pl :spring-core-tx test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-1. [事务边界：你到底在“保护”哪一段代码？](docs/part-01-transaction-basics/01-transaction-boundary.md)
+1. [事务边界：到底在“保护”哪一段代码？](docs/part-01-transaction-basics/01-transaction-boundary.md)
 2. [`@Transactional` 如何生效：它也是 AOP（也是代理）](docs/part-01-transaction-basics/02-transactional-proxy.md)
 3. [回滚规则：为什么 checked exception 默认不回滚？](docs/part-01-transaction-basics/03-rollback-rules.md)
 4. [传播行为：`REQUIRED` vs `REQUIRES_NEW`](docs/part-01-transaction-basics/04-propagation.md)
@@ -72,7 +72,7 @@ mvn -pl :spring-core-tx test
 
 ## 概念 → 在本模块哪里能“看见”
 
-| 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
+| 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
 | commit / rollback 的最小闭环 | [docs/01](docs/part-01-transaction-basics/01-transaction-boundary.md) | `SpringCoreTxLabTest#commitsOnSuccess` / `#rollsBackOnRuntimeException` + `AccountService` | 为什么“抛异常”会导致不落库 |
 | `@Transactional` 也是 AOP（代理） | [docs/02](docs/part-01-transaction-basics/02-transactional-proxy.md) | `SpringCoreTxLabTest#transactionalBeansAreProxied` | 事务拦截器在调用链的哪里 |

@@ -4,7 +4,7 @@
 
     - 知识点：01：Testing 调用链（Test Bootstrap → Slice → Context Cache）
     - 怎么使用：先跑 `GreetingControllerWebMvcLabTest` 与 `GreetingControllerSpringBootLabTest`，把“slice vs full context”差异固化成断言，再按本文理解不同 bootstrapper 如何构建上下文。
-    - 原理：测试不是“跑起来就行”，关键在于：你到底启动了多少上下文？哪些 auto-config 被带进来？context cache 如何影响速度与隔离？
+    - 原理：测试不是“跑起来就行”，关键在于：到底启动了多少上下文？哪些 auto-config 被带进来？context cache 如何影响速度与隔离？
     - 源码入口：`SpringBootTestContextBootstrapper` / `WebMvcTestContextBootstrapper` / `TestContextManager`
     - 推荐 Lab：`GreetingControllerWebMvcLabTest`
 <!-- CHAPTER-CARD:END -->
@@ -17,7 +17,7 @@
 
 - 本章主题：**03. Testing 调用链（Test Bootstrap → Slice → Context Cache）**
 - 建议入口：优先运行 `GreetingControllerWebMvcLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：测试不是“跑起来就行”，关键在于：你到底启动了多少上下文？哪些 auto-config 被带进来？context cache 如何影响速度与隔离？
+- 阅读目标：测试不是“跑起来就行”，关键在于：到底启动了多少上下文？哪些 auto-config 被带进来？context cache 如何影响速度与隔离？
 - 源码入口：`SpringBootTestContextBootstrapper` / `WebMvcTestContextBootstrapper` / `TestContextManager`
 
 
@@ -35,7 +35,7 @@
 
 ## 小结与下一章
 
-- 小结：测试不是“跑起来就行”，关键在于：你到底启动了多少上下文？哪些 auto-config 被带进来？context cache 如何影响速度与隔离？
+- 小结：测试不是“跑起来就行”，关键在于：到底启动了多少上下文？哪些 auto-config 被带进来？context cache 如何影响速度与隔离？
 - 下一章：[第 184 章：02：断点地图](04-breakpoint-map.md)
 
 <!-- BOOKIFY:START -->

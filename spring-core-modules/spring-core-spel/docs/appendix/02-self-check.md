@@ -24,27 +24,27 @@
 
 ## 自检题（每题都能落到 tests/断点）
 
-1. SpEL 的最小闭环是什么？（parse → evaluate → 类型转换）你如何用断言把它固定下来？  
+1. SpEL 的最小闭环是什么？（parse → evaluate → 类型转换）如何用断言把它固定下来？
    - 证据入口：`SpringCoreSpelLabTest#parsesAndEvaluatesSimpleExpression`
-2. root object 与 variables 各解决什么问题？为什么 `#var` 与 `property` 不是一回事？  
+2. root object 与 variables 各解决什么问题？为什么 `#var` 与 `property` 不是一回事？
    - 证据入口：`SpringCoreSpelLabTest#evaluatesAgainstRootObjectAndVariables`
-3. 同一条表达式在不同 EvaluationContext 下结果为什么可能不同？你会用什么最小对照用例证明？  
+3. 同一条表达式在不同 EvaluationContext 下结果为什么可能不同？会用什么最小对照用例证明？
    - 证据入口：`SpringCoreSpelLabTest#evaluatesAgainstRootObjectAndVariables`
-4. 你如何为 SpEL 增加“变量 + 函数”，并把它固化成可回归断言？  
+4. 如何为 SpEL 增加“变量 + 函数”，并把它固化成可回归断言？
    - 证据入口：`SpringCoreSpelExerciseSolutionTest#solution_addVariablesAndFunctions`
-5. 表达式对象（`Expression`）与求值上下文（`EvaluationContext`）在并发下能不能共享？你如何用并发实验把边界写成结论？  
+5. 表达式对象（`Expression`）与求值上下文（`EvaluationContext`）在并发下能不能共享？如何用并发实验把边界写成结论？
    - 证据入口：`SpringCoreSpelConcurrencyLabTest#parsedExpressionCanBeEvaluatedConcurrently_whenEvaluationContextIsPerThread`
-6. 你会把断点下在什么位置观察：parse 产物是什么、getValue 如何走到读取属性/变量？（写出 1 个入口点即可）  
+6. 会把断点下在什么位置观察：parse 产物是什么、getValue 如何走到读取属性/变量？（写出 1 个入口点即可）
    - 证据导航：[`../part-00-guide/04-breakpoint-map.md`](../part-00-guide/04-breakpoint-map.md)
-7. 为什么 SpEL 需要安全边界？你会如何限制“可访问的属性/方法/类型”来降低风险？  
+7. 为什么 SpEL 需要安全边界？会如何限制“可访问的属性/方法/类型”来降低风险？
    - 对照：[`01-common-pitfalls.md`](01-common-pitfalls.md)
-8. 练习：完成“变量/函数”练习题，并用断言锁定行为（不要靠 println）。  
+8. 练习：完成“变量/函数”练习题，并用断言锁定行为（不要靠 println）。
    - 入口：`SpringCoreSpelExerciseTest#exercise_addVariablesAndFunctions`
 
 ## 退出条件（完成标准）
 
-- 你能区分：表达式本身（可复用）与 EvaluationContext（承载变量/函数/根对象，通常按线程/请求创建）。
-- 你能用 1–2 个断言用例把一个表达式的行为固定下来（避免靠“看起来能跑”）。
+- 能区分：表达式本身（可复用）与 EvaluationContext（承载变量/函数/根对象，通常按线程/请求创建）。
+- 能用 1–2 个断言用例把一个表达式的行为固定下来（避免靠“看起来能跑”）。
 
 <!-- BOOKIFY:START -->
 

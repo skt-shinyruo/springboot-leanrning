@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Scopes，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
@@ -28,7 +28,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -103,15 +103,15 @@
 
 ### 1.1 关键分支条件（决定“触发/不触发”）
 
-- `mbd.isSingleton()`：决定是否进入统一销毁链路  
-- `mbd.hasInitMethod()` / `mbd.hasDestroyMethod()`：决定是否调用自定义回调  
+- `mbd.isSingleton()`：决定是否进入统一销毁链路
+- `mbd.hasInitMethod()` / `mbd.hasDestroyMethod()`：决定是否调用自定义回调
 - `beanFactory.hasDestructionAwareBeanPostProcessors()`：决定是否触发 `@PreDestroy` 等回调
 
 ### 1.2 回调与代理交织：回调到底发生在谁身上？
 
-- `@PostConstruct` / `afterPropertiesSet`：发生在 raw bean（proxy 还没产生）  
-- after-init BPP：可能返回 proxy，最终暴露对象可能不是 raw  
-- `@PreDestroy`：通常由 DestructionAwareBPP 触发，目标仍指向 raw/target  
+- `@PostConstruct` / `afterPropertiesSet`：发生在 raw bean（proxy 还没产生）
+- after-init BPP：可能返回 proxy，最终暴露对象可能不是 raw
+- `@PreDestroy`：通常由 DestructionAwareBPP 触发，目标仍指向 raw/target
 
 ## 2. prototype 为什么默认不走销毁回调？
 
@@ -154,14 +154,14 @@ prototype 的语义是：
 
 完成该组用例后，至少应能够复述 3 条结论：
 
-1) **注解回调依赖基础设施处理器**  
-   - 断点：`registerAnnotationConfigProcessors`  
+1) **注解回调依赖基础设施处理器**
+   - 断点：`registerAnnotationConfigProcessors`
    - 断言：不注册 → `@PostConstruct` 不触发
-2) **回调顺序可被稳定断言**  
-   - 断点：`initializeBean`  
+2) **回调顺序可被稳定断言**
+   - 断点：`initializeBean`
    - 断言：Aware → before-init → init → after-init
-3) **prototype 默认不进入销毁链路**  
-   - 断点：`destroySingletons`  
+3) **prototype 默认不进入销毁链路**
+   - 断点：`destroySingletons`
    - 断言：prototype 不在 `disposableBeans`
 
 ## 排障分流：这是定义层问题还是实例层问题？

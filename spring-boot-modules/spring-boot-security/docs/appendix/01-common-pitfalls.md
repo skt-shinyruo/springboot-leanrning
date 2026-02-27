@@ -17,9 +17,9 @@
 
 ### 排障模板（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
    - Branch Matrix：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
@@ -33,7 +33,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -71,7 +71,7 @@
 
 ## CSRF 误区
 
-- Basic Auth 并不天然绕过 CSRF：你只要是“写操作”，就可能需要 CSRF token（取决于你的链路配置）。
+- Basic Auth 并不天然绕过 CSRF：只需是“写操作”，就可能需要 CSRF token（取决于链路配置）。
 - 对 API 场景常见做法是禁用 CSRF，但要明确安全边界（本模块用 `/api/jwt/**` 做了演示）。
 
 ## Method Security 没生效
@@ -82,20 +82,20 @@
 ## JWT 授权不匹配
 
 - scope claim 长什么样？（`scope` vs `scp`）
-- 你的规则写的是 `hasRole` 还是 `hasAuthority("SCOPE_xxx")`？
+- 规则写的是 `hasRole` 还是 `hasAuthority("SCOPE_xxx")`？
 
 ## 多个 FilterChain 规则冲突
 
-### 坑点：更“宽”的 matcher 抢先匹配，导致你以为的链路根本没进来
+### 坑点：更“宽”的 matcher 抢先匹配，导致直觉里的链路根本没进来
 
-- Symptom：你以为 `/jwt/**` 会走 JWT 的那条 `SecurityFilterChain`，结果却走了另一条（常见表现：401/403 与预期不一致，或者根本没有走到你加的 Filter）。
+- Symptom：以为 `/jwt/**` 会走 JWT 的那条 `SecurityFilterChain`，结果却走了另一条（常见表现：401/403 与预期不一致，或者根本没有走到加的 Filter）。
 - Root Cause：`FilterChainProxy` 会按顺序遍历 `SecurityFilterChain`，**第一个 matches 的链就会被选中**；如果某条链的 matcher 过宽（例如 `/**`）且顺序更靠前，它会“吃掉”后续更具体的链。
 - Verification：`BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain`
 - Breakpoints：`FilterChainProxy#doFilterInternal`、`FilterChainProxy#getFilters`、`DefaultSecurityFilterChain#matches`
 - Fix：让 matcher 更具体（优先写清路径/方法），并显式控制链顺序（例如 `@Order`）；同时把“到底选了哪条链”用可断言的 Lab/Test 固化下来。
 
 - matcher 覆盖范围是否互斥？
-- `@Order` 是否符合你的预期？
+- `@Order` 是否符合预期？
 
 ## 对应 Lab（可运行）
 

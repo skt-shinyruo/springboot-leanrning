@@ -50,14 +50,14 @@
 
 ## 0. 面试常见误归因对照（先纠错再答题）
 
-- **误归因**：`@Order` 能解决单依赖歧义  
-  **纠正**：单依赖收敛看 `@Qualifier/@Primary/@Priority`（见 Q2）  
+- **误归因**：`@Order` 能解决单依赖歧义
+  **纠正**：单依赖收敛看 `@Qualifier/@Primary/@Priority`（见 Q2）
 
-- **误归因**：`@PostConstruct` 是 Java 语法自带  
-  **纠正**：它依赖 BPP 触发（见 Q4）  
+- **误归因**：`@PostConstruct` 是 Java 语法自带
+  **纠正**：它依赖 BPP 触发（见 Q4）
 
-- **误归因**：循环依赖能启动就安全  
-  **纠正**：early reference 可能是半成品/代理不一致（见 Q6/Q7）  
+- **误归因**：循环依赖能启动就安全
+  **纠正**：early reference 可能是半成品/代理不一致（见 Q6/Q7）
 
 ## 1. 容器主线：refresh 到底干了什么？
 

@@ -1,18 +1,21 @@
-# Spring Boot Data JPA：目录
+# Spring Boot Data JPA：Persistence Context、flush 与查询边界
 
-## 导读
+本模块以 JPA 的核心事实为中心组织内容：实体状态如何变化、持久化上下文如何影响可见性、`flush` 与脏检查在哪些时机发生，以及 fetching 策略如何演变成 N+1。很多行为只有在事务边界内才有意义，因此本模块与事务模块（`spring-core-tx`）是天然的串联关系。
 
-本页是「Spring Boot Data JPA：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：固定持久化上下文的“可见性事实”
 
-> 建议顺读 7 章把实体状态、持久化上下文、flush/脏检查与 N+1 的主线跑通；很多问题需要与事务（Tx）一起看。
+- `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
 
-## 从这里开始（建议顺序）
+运行后应能回答：在同一事务/同一持久化上下文中，查询结果为何会“看起来被缓存”；何时 `flush` 会触发写入与可见性变化；哪些现象属于 ORM 的正常语义而不是“数据库不一致”。
+
+## 从这里开始（先建立坐标）
 
 1. [主线时间线](part-00-guide/01-mainline-timeline.md)
 2. [深挖导读](part-00-guide/02-deep-dive-guide.md)
 
-## 顺读主线
+## 顺读主线（按事实递进）
 
 - [实体状态](part-01-data-jpa/01-entity-states.md)
 - [持久化上下文](part-01-data-jpa/02-persistence-context.md)
@@ -32,10 +35,17 @@
 - 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](part-00-guide/05-branch-decision-matrix.md)
 - 排障 playbook：[01-common-pitfalls.md](appendix/01-common-pitfalls.md)
 - 自检清单：[02-self-check.md](appendix/02-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-boot-data-jpa -Dtest=*ExerciseSolutionTest test`
-- 可跑入口（并发/性能 Lab - EntityManager/事务边界隔离）：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaEntityManagerConcurrencyLabTest test`
+
+---
+
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-data-jpa -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（EntityManager/事务边界隔离）：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaEntityManagerConcurrencyLabTest test`
+
+---
 
 ## 排坑与自检
 

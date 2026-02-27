@@ -8,7 +8,7 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -21,7 +21,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-完成标准（你应该能解释清楚）：
+完成标准（应能解释清楚）：
 
 - 为什么 debug 日志“有时出现、有时不出现”（配置与 logger category）
 - 如何用测试固化“某条日志应该出现/不应该出现”（把日志当成可验证信号）

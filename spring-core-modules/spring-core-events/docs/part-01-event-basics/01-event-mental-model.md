@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
     - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
     - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
     - 推荐 Lab：`SpringCoreEventsLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreEventsLabTest`
 
@@ -34,7 +34,7 @@ Spring 的 Application Events 解决的是一个非常具体的问题：
 
 > 让“发生了什么”（事件）与“需要做什么”（监听器）解耦。
 
-你不需要一开始就把它理解成“消息队列”。在本模块里，把它当成**进程内的回调机制**更合适。
+不需要一开始就把它理解成“消息队列”。在本模块里，把它当成**进程内的回调机制**更合适。
 
 ## 本模块的最小闭环
 
@@ -43,7 +43,7 @@ Spring 的 Application Events 解决的是一个非常具体的问题：
 - 监听方：`UserRegisteredListener`
   - `@EventListener` 接收事件，并写入 `InMemoryAuditLog`
 
-## 你需要记住的 3 件事
+## 需要记住的 3 件事
 
 1) **事件默认是同步的**
 
@@ -53,7 +53,7 @@ Spring 的 Application Events 解决的是一个非常具体的问题：
 2) **事件类型匹配，决定谁会被调用**
 
 - 监听方法的参数类型决定它能接收什么事件
-- 你可以发布任何对象（不仅仅是 `ApplicationEvent` 子类）
+- 可以发布任何对象（不仅仅是 `ApplicationEvent` 子类）
 
 3) **事件对象建议做成“不可变”**
 
@@ -62,7 +62,7 @@ Spring 的 Application Events 解决的是一个非常具体的问题：
 
 本模块的 `UserRegisteredEvent` 就是 `record`，非常适合学习。
 
-事件不是为了“炫技”，而是为了让你的核心流程更清晰：
+事件不是为了“炫技”，而是为了让核心流程更清晰：
 
 - 核心流程：只负责发布“发生了什么”
 - 扩展动作：由监听器决定“要做什么”
@@ -78,7 +78,7 @@ Spring 的 Application Events 解决的是一个非常具体的问题：
 - Lab：`SpringCoreEventsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 对应测试：`SpringCoreEventsLabTest#listenerReceivesPublishedEvent`
 
@@ -90,7 +90,7 @@ Spring 的 Application Events 解决的是一个非常具体的问题：
 
 ### 坑点 1：把进程内事件当成“异步消息”，忽略了默认是同步回调链
 
-- Symptom：你以为发布事件不会影响主流程耗时/异常，结果发布方被监听器拖慢甚至被异常打断
+- Symptom：以为发布事件不会影响主流程耗时/异常，结果发布方被监听器拖慢甚至被异常打断
 - Root Cause：Spring Application Events 默认同步执行，监听器在发布方调用栈里运行
 - Verification：`SpringCoreEventsLabTest#eventsAreSynchronousByDefault`
 - Fix：先把“同步默认值”当成事实；需要隔离耗时/失败就显式引入异步（@Async 或 async multicaster）并用测试锁定线程模型

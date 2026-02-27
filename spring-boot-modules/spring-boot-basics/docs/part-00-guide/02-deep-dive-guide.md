@@ -2,7 +2,7 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（怎么用这模块）"
 
-    这份模块不想让你背“配置优先级表”。它只做一件更实用的事：把“配置从哪来、谁覆盖谁、Profile 到底影响什么”变成可以回归的结论——你跑完几组 Lab，就能在项目里用同一套顺序排“配置没生效”的问题。
+    这份模块不想让人背“配置优先级表”。它只做一件更实用的事：把“配置从哪来、谁覆盖谁、Profile 到底影响什么”变成可以回归的结论——跑完几组 Lab，就能在项目里用同一套顺序排“配置没生效”的问题。
 
     - 主线入口：`BootBasicsBookMatrixLabTest`
     - 排障入口：`BootBasicsBranchMatrixLabTest` + [断点地图](04-breakpoint-map.md)
@@ -19,7 +19,7 @@
 
 
 
-## 你在这里要解决的“真实问题”
+## 在这里要解决的“真实问题”
 
 在项目里，配置相关的坑通常长这样：
 
@@ -27,9 +27,9 @@
 - dev 环境和本地行为不一致，究竟是哪份配置在生效？
 - 测试里为什么又变了？我是不是被 `@SpringBootTest(properties = ...)` 覆盖了？
 
-如果你能把上面三句抱怨翻译成三句事实（active profiles 是什么、最终属性值是什么、Bean 实现是哪一个），这类问题基本就结束了。
+如果能把上面三句抱怨翻译成三句事实（active profiles 是什么、最终属性值是什么、Bean 实现是哪一个），这类问题基本就结束了。
 
-## 两条阅读路线（按你的心情来）
+## 两条阅读路线（按心情来）
 
 ### 路线 A：顺读主线（更接近读一篇短书）
 
@@ -47,16 +47,16 @@
 
 ### 1) 最终值不在“某个文件”里，而在 `Environment` 里
 
-你写的 `application.properties`、dev profile 的配置、测试覆盖……最后都会汇总成同一个事实来源：`Environment`。
+写的 `application.properties`、dev profile 的配置、测试覆盖……最后都会汇总成同一个事实来源：`Environment`。
 
-如果你只做一件事：请在断点或断言里直接看它：
+如果只做一件事：请在断点或断言里直接看它：
 
 - `environment.getActiveProfiles()`
 - `environment.getProperty("app.greeting")`
 
 ### 2) “覆盖”不是魔法，而是优先级
 
-同一个 key 的最终值来自哪个来源，本质是 `PropertySources` 的优先级竞赛。你不需要记住全表，只需要用测试把你关心的那几条覆盖关系钉住。
+同一个 key 的最终值来自哪个来源，本质是 `PropertySources` 的优先级竞赛。无需记住全表，只需要用测试把关心的那几条覆盖关系钉住。
 
 ### 3) Profile 同时影响两条线：配置文件 + Bean 注册
 
@@ -65,11 +65,11 @@ Profile 很容易被误解成“只影响配置文件”。实际上它同时影
 1. 哪些 profile 文件参与（例如 `application-dev.properties`）
 2. 哪些 Bean 会被注册（例如 `@Profile("dev")` 的实现是否存在）
 
-所以排障时必须分清：你是在查“属性没覆盖”，还是在查“Bean 没切换”。
+所以排障时必须分清：是在查“属性没覆盖”，还是在查“Bean 没切换”。
 
 ### 4) `@ConfigurationProperties` 是收敛点
 
-当配置开始变多，散落的 `@Value` 会让你很难判断“最终值是什么”。`@ConfigurationProperties` 把配置集中到一个对象上，让你能在测试里直接断言它。
+当配置开始变多，散落的 `@Value` 会让人很难判断“最终值是什么”。`@ConfigurationProperties` 把配置集中到一个对象上，让能在测试里直接断言它。
 
 ## 本模块能稳定复现的 3 条分支（建议先跑一遍）
 

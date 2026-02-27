@@ -15,7 +15,7 @@
 
 !!! summary
     - 这一模块关注：Actuator 如何把“应用内部状态”以 endpoints 的形式暴露出来（健康检查、指标、信息等）。
-    - 读完你应该能复述：**启用 actuator → 配置暴露范围 → 访问 endpoints → 观测与排障** 这一条主线。
+    - 读完应当能复述：**启用 actuator → 配置暴露范围 → 访问 endpoints → 观测与排障** 这一条主线。
     - 推荐顺序：先读《深挖导读》→ 本章 → 仅 1 章主线 → 附录排坑。
 
 !!! example "建议先跑的 Lab（把时间线变成证据）"
@@ -45,7 +45,7 @@
 
 ## 在 Spring 主线中的位置
 
-- Actuator 是“可观测性入口”：当你要解释系统行为、排查线上问题、做健康探针时，最先想到它。
+- Actuator 是“可观测性入口”：当需要解释系统行为、排查线上问题、做健康探针时，最先想到它。
 - 它通常与安全（认证授权）、Web（暴露路径）一起出现，需要边界意识。
 
 ## 主线时间线（建议顺读）
@@ -58,11 +58,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Actuator」的生效时机/顺序/边界；断点/入口：`org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Actuator」的生效时机/顺序/边界；断点/入口：`org.springframework.boot.actuate.endpoint.annotation.Endpoint`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Actuator」的生效时机/顺序/边界；断点/入口：`org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootActuatorLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Actuator」的生效时机/顺序/边界；断点/入口：`org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Actuator」的生效时机/顺序/边界；断点/入口：`org.springframework.boot.actuate.endpoint.annotation.Endpoint`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Actuator」的生效时机/顺序/边界；断点/入口：`org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``BootActuatorLabTest`` 后，把上述观察点逐条对照，写出自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

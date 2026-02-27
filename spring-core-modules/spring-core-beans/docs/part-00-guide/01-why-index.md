@@ -50,9 +50,9 @@
 
 当读者阅读某个章节但仍难以复述关键结论时，可先按检索关键词匹配下列条目：
 
-- 搜索：`三级缓存` / `three level cache` / `earlySingletonObjects` / `singletonFactories` → 看 Why-01/02  
-- 搜索：`getEarlyBeanReference` / `early reference` / `raw vs wrapped` / `allowRawInjectionDespiteWrapping` → 看 Why-03  
-- 搜索：`proxy` / `exposedObject` / `BeanPostProcessor` / `postProcessAfterInitialization` → 看 Why-04  
+- 搜索：`三级缓存` / `three level cache` / `earlySingletonObjects` / `singletonFactories` → 看 Why-01/02
+- 搜索：`getEarlyBeanReference` / `early reference` / `raw vs wrapped` / `allowRawInjectionDespiteWrapping` → 看 Why-03
+- 搜索：`proxy` / `exposedObject` / `BeanPostProcessor` / `postProcessAfterInitialization` → 看 Why-04
 - 搜索：`self invocation` / `self-invocation` / `call path` / “事务不生效” → 看 Why-05
 
 ---
@@ -100,13 +100,13 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 ### 常见误区对照（Misconceptions）
 
-1) “三级缓存 = Spring 解决循环依赖”  
+1) “三级缓存 = Spring 解决循环依赖”
 更准确：三级缓存只为 **特定窗口期** 提供机制支撑，工程上仍应优先消环。
 
-2) “constructor 循环依赖也是靠三级缓存救”  
+2) “constructor 循环依赖也是靠三级缓存救”
 更准确：constructor 依赖发生在实例化前，通常没有 early exposure 窗口；能“救”的通常是通过改变时机（`@Lazy`/`ObjectProvider`）而不是缓存本身。
 
-3) “earlySingletonObjects 里放的就是原始对象”  
+3) “earlySingletonObjects 里放的就是原始对象”
 更准确：early 引用可能是 raw，也可能已经是 proxy；关键取决于 `getEarlyBeanReference`（见 Why-03）。
 
 ### 下一步去哪读（Next reading）
@@ -124,20 +124,20 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-**二级缓存只能缓存“对象”，而三级缓存额外缓存了“按需创建 early reference 的能力（ObjectFactory）”。**  
+**二级缓存只能缓存“对象”，而三级缓存额外缓存了“按需创建 early reference 的能力（ObjectFactory）”。**
 这让容器能同时满足两个目标：
 
-1) **只在真的需要 early reference 时才创建它**（避免为所有 bean 都提前生成 early proxy/early wrapper）  
+1) **只在真的需要 early reference 时才创建它**（避免为所有 bean 都提前生成 early proxy/early wrapper）
 2) **让 BPP/AOP 有机会决定 early 的形态，并且只创建一次**（尽量保证 early == final，避免 raw 注入绕过代理）
 
 ### 10 分钟证据链（Proof in 10 minutes）
 
-- 断点：`addSingletonFactory` → `getSingleton(..., allowEarlyReference=true)`  
+- 断点：`addSingletonFactory` → `getSingleton(..., allowEarlyReference=true)`
   观察：factory 先被注册，但并不会立刻 `getObject()`；只有出现循环注入“确实需要 A 的引用”时才会调用。
 
 ### 常见误区对照（Misconceptions）
 
-- “多一层缓存只是历史包袱/拍脑袋设计”  
+- “多一层缓存只是历史包袱/拍脑袋设计”
 更准确：第三层解决的是“**延迟决策 + 延迟创建**”，并且把代理介入点固定在可控窗口内。
 
 ### 下一步去哪读（Next reading）
@@ -152,7 +152,7 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 > 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-三级缓存解决的是“**什么时候可以交付引用**”，而 `getEarlyBeanReference` 解决的是“**交付出去的引用应该是什么形态**”。  
+三级缓存解决的是“**什么时候可以交付引用**”，而 `getEarlyBeanReference` 解决的是“**交付出去的引用应该是什么形态**”。
 当 AOP/代理介入时，若 dependent bean 获取到的是 raw，而容器最终对外暴露的是 proxy（wrapped），则可能出现：
 
 - 行为绕过（事务/安全/缓存等拦截失效）
@@ -162,8 +162,8 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 - 运行实验：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabTest test`
 - 设置断点：
-  1) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`  
-  2) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`  
+  1) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+  2) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
   3) `AbstractAutowireCapableBeanFactory#doCreateBean`（尾部一致性检查附近）
 
 ### 下一步去哪读（Next reading）
@@ -184,7 +184,7 @@ Spring 容器返回的是 **exposed object**，而不是“原始实例”；在
 ### 10 分钟证据链（Proof in 10 minutes）
 
 - 运行实验：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test`
-- 设置断点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`  
+- 设置断点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
   观察：`result != bean`（是否发生替换）
 
 如需进一步将“代理由谁生成（AutoProxyCreator）”纳入可运行的证据链（AOP 模块），可参阅：
@@ -205,7 +205,7 @@ Spring 容器返回的是 **exposed object**，而不是“原始实例”；在
 
 > 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-Spring AOP 默认基于代理实现：只有“通过代理对象发起的调用”才会被 advice 包起来。  
+Spring AOP 默认基于代理实现：只有“通过代理对象发起的调用”才会被 advice 包起来。
 同类内部 `this.xxx()` 调用不会经过代理（call path 绕过 proxy），因此不会触发拦截器链。
 
 ### 10 分钟证据链（Proof in 10 minutes）

@@ -7,9 +7,9 @@
 
 !!! summary "本章要点"
 
-    - **ApiError（自定义契约）**：适合“强约束统一契约”，前后端协作成本低，但需要你持续维护语义与兼容性。
+    - **ApiError（自定义契约）**：适合“强约束统一契约”，前后端协作成本低，但需要持续维护语义与兼容性。
     - **ProblemDetail（框架语义）**：更接近标准化错误载体（RFC 7807 风格），语义清晰、可扩展，但需要团队对字段含义达成共识。
-    - 关键不是“选哪个更高级”，而是：**你想把稳定性放在“字段形状”还是“语义表达”上**。
+    - 关键不是“选哪个更高级”，而是：**想把稳定性放在“字段形状”还是“语义表达”上**。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -22,7 +22,7 @@
 
 - 典型入口：`@ControllerAdvice` + `@ExceptionHandler` 返回 `ApiError`
 - 优势：字段固定（`message` / `fieldErrors`），调用方处理简单
-- 风险：语义需要你自定义并维护（例如 message 值、错误码体系）
+- 风险：语义需要自定义并维护（例如 message 值、错误码体系）
 
 本模块示例：
 - `ApiError`：`spring-boot-modules/spring-boot-web-mvc/src/main/java/com/learning/springboot/bootwebmvc/part01_web_mvc/ApiError.java`
@@ -50,7 +50,7 @@
 
 ## 常见坑与边界
 
-- 如果你在同一模块里同时存在两套错误体，一定要写清楚“各自负责哪些端点/哪些场景”，否则调用方会被迫做大量兼容分支。
+- 如果在同一模块里同时存在两套错误体，一定要写清楚“各自负责哪些端点/哪些场景”，否则调用方会被迫做大量兼容分支。
 - `Content-Type` 建议显式使用 `application/problem+json`（ProblemDetail）以避免误解为普通 JSON。
 
 ## 小结与下一章

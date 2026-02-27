@@ -28,7 +28,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -93,9 +93,9 @@ BeanDefinitionReader 的价值在于：
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：选择不同输入源（properties / groovy / xml / 注解）  
-**分支**：对应 Reader 解析 → `BeanDefinition` 注册  
-**结果**：实例化统一走 BeanFactory 主线  
+**条件**：选择不同输入源（properties / groovy / xml / 注解）
+**分支**：对应 Reader 解析 → `BeanDefinition` 注册
+**结果**：实例化统一走 BeanFactory 主线
 **断点建议**：`AbstractBeanDefinitionReader#loadBeanDefinitions`
 
 ## 2. 使用方式：两种典型 reader 的最小闭环
@@ -176,11 +176,11 @@ BeanDefinitionReader 的价值在于：
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 

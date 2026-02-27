@@ -42,12 +42,12 @@
 - 练习 1（异步是否生效的证据链）：
   - 运行 `BootAsyncSchedulingBookMatrixLabTest`；
   - 选择一个“异步不生效”入口，回答两问：
-    - 调用是否经过代理（必要时回看 [04 AOP](04-spring-core-aop.md)）？
-    - 实际执行线程来自哪个 Executor（线程名/配置映射证据）？
+  - 调用是否经过代理（必要时回看 [04 AOP](04-spring-core-aop.md)）？
+  - 实际执行线程来自哪个 Executor（线程名/配置映射证据）？
 - 练习 2（与事务叠加的边界）：
   - 选择一个 `@Async` × `@Transactional` 场景，记录：
-    - 事务边界是否跨线程；
-    - 失败时回滚/可见性是否符合预期（参见 [05 Tx](05-spring-core-tx.md)）。
+  - 事务边界是否跨线程；
+  - 失败时回滚/可见性是否符合预期（参见 [05 Tx](05-spring-core-tx.md)）。
 
 ## 小结
 

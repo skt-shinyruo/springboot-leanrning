@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「44. SpEL 与 `@Value("#{...}")`：表达式解析链路」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansSpelValueLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansSpelValueLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（SpEL，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/expressions.html
@@ -76,9 +76,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：`@Value` 字符串包含 `${...}` 或 `#{...}`  
-**分支**：`resolveEmbeddedValue` 先做占位符解析，再做 SpEL 求值  
-**结果**：得到最终对象后再做类型转换并注入  
+**条件**：`@Value` 字符串包含 `${...}` 或 `#{...}`
+**分支**：`resolveEmbeddedValue` 先做占位符解析，再做 SpEL 求值
+**结果**：得到最终对象后再做类型转换并注入
 **断点建议**：`AbstractBeanFactory#resolveEmbeddedValue`
 
 ## 1. 先运行 Lab：把“链路拆分”固定成断言

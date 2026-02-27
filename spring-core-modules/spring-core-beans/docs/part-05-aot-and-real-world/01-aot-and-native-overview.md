@@ -16,7 +16,7 @@
 ## 导读
 
 本章围绕「40. AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansAotFactoriesLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansAotFactoriesLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -26,7 +26,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -56,7 +56,7 @@
 
 可以把 JVM 与 Native 的差异理解为：
 
-- **JVM（open-world）**：运行期反射/代理/资源扫描默认可用，许多“动态能力”在运行时临时决定  
+- **JVM（open-world）**：运行期反射/代理/资源扫描默认可用，许多“动态能力”在运行时临时决定
 - **Native（closed-world）**：运行期能力被收紧，**必须在构建期声明**（否则镜像里没有）
 
 因此在 Spring 世界里，AOT/Native 的核心问题往往不是“业务逻辑”，而是：
@@ -66,9 +66,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：运行期需要反射/代理/资源/序列化  
-**分支**：是否在构建期注册 RuntimeHints  
-**结果**：未注册 → Native 运行期失败；已注册 → 能在 JVM 单测中被断言验证  
+**条件**：运行期需要反射/代理/资源/序列化
+**分支**：是否在构建期注册 RuntimeHints
+**结果**：未注册 → Native 运行期失败；已注册 → 能在 JVM 单测中被断言验证
 **断点建议**：`RuntimeHintsRegistrar#registerHints`
 
 ---
@@ -87,10 +87,10 @@
 
 可以把 RuntimeHints 理解成“构建期白名单”：
 
-- **反射**：哪些类/方法/构造器可以被反射访问  
-- **代理**：哪些接口/类允许生成代理  
-- **资源**：哪些文件/路径需要打包进镜像  
-- **序列化**：哪些类型允许序列化/反序列化  
+- **反射**：哪些类/方法/构造器可以被反射访问
+- **代理**：哪些接口/类允许生成代理
+- **资源**：哪些文件/路径需要打包进镜像
+- **序列化**：哪些类型允许序列化/反序列化
 
 ### 2.1 spring-beans 的 AOT 基础设施：`META-INF/spring/aot.factories` 与 `AotServices`
 
@@ -112,10 +112,10 @@
 
 下面这些“看起来像业务 bug”的问题，常见根因往往在于 AOT/Native 约束：
 
-- **反射失败**：`NoSuchMethod` / `IllegalAccess` / `ClassNotFound`  
-- **代理失败**：AOP/事务拦截失效，代理类不可生成  
-- **资源缺失**：配置文件/模板/静态资源在 native 中找不到  
-- **运行期扫描失效**：JVM 下能扫描到，Native 下扫描不到  
+- **反射失败**：`NoSuchMethod` / `IllegalAccess` / `ClassNotFound`
+- **代理失败**：AOP/事务拦截失效，代理类不可生成
+- **资源缺失**：配置文件/模板/静态资源在 native 中找不到
+- **运行期扫描失效**：JVM 下能扫描到，Native 下扫描不到
 
 这一章的目标是让读者知道：这些问题都可以被归类到“契约缺失”，并能落到一个具体入口：
 
@@ -179,11 +179,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 学习阶段只要抓住一个主线：**AOT/Native 把很多“运行时的猜测与反射”前移到“构建期的显式声明”**。
 

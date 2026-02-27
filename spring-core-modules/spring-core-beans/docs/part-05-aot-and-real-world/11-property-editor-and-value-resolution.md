@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansBeanDefinitionValueResolutionLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansBeanDefinitionValueResolutionLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -28,7 +28,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -58,15 +58,15 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：BeanDefinition 中存在“定义层 value”  
-**分支**：`BeanDefinitionValueResolver` 先解析引用/集合/占位符 → `TypeConverterDelegate` 再做类型转换  
-**结果**：最终值写入属性（或因转换失败抛异常）  
+**条件**：BeanDefinition 中存在“定义层 value”
+**分支**：`BeanDefinitionValueResolver` 先解析引用/集合/占位符 → `TypeConverterDelegate` 再做类型转换
+**结果**：最终值写入属性（或因转换失败抛异常）
 **断点建议**：`BeanDefinitionValueResolver#resolveValueIfNecessary`
 
 ## 0. `${...}` vs `#{...}` 的职责边界（先分清再排障）
 
-- `${...}`：占位符解析（Environment/PropertySources）  
-- `#{...}`：SpEL 求值（表达式计算/bean 引用）  
+- `${...}`：占位符解析（Environment/PropertySources）
+- `#{...}`：SpEL 求值（表达式计算/bean 引用）
 
 它们都会在 **值解析之后** 再进入类型转换。误判这一步，是“注入失败排障”最大噪声源。
 
@@ -206,11 +206,11 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 > **在配置中写的是字符串/引用/集合，为什么运行时会变成对象？该步骤发生在何处？如何通过断点证明？**
 

@@ -93,17 +93,17 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-- **现象**：`@Value("${...}")` 注入失败  
-  **常见误归因**：以为配置没加载  
-  **正确分流**：先看 `resolveEmbeddedValue` 是否 strict；再看 SpEL/转换（[34]/[44]/[36]）  
+- **现象**：`@Value("${...}")` 注入失败
+  **常见误归因**：以为配置没加载
+  **正确分流**：先看 `resolveEmbeddedValue` 是否 strict；再看 SpEL/转换（[34]/[44]/[36]）
 
-- **现象**：注入到了“不是预期的实现”  
-  **常见误归因**：以为 `@Order` 会影响单依赖  
-  **正确分流**：看 `determineAutowireCandidate` 的收敛规则（[33]）  
+- **现象**：注入到了“不是预期的实现”
+  **常见误归因**：以为 `@Order` 会影响单依赖
+  **正确分流**：看 `determineAutowireCandidate` 的收敛规则（[33]）
 
-- **现象**：Bean 变成代理导致类型不匹配  
-  **常见误归因**：以为“容器拿错类型”  
-  **正确分流**：定位 BPP 替换点（[31]）  
+- **现象**：Bean 变成代理导致类型不匹配
+  **常见误归因**：以为“容器拿错类型”
+  **正确分流**：定位 BPP 替换点（[31]）
 
 ## 2. 推荐顺读路线（从“可运行”到“能解释”）
 

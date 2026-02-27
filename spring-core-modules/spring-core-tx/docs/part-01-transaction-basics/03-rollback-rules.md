@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：回滚规则：为什么 checked exception 默认不回滚？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
     - 原理：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
     - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager`
     - 推荐 Lab：`SpringCoreTxLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreTxLabTest`
 
@@ -42,7 +42,7 @@ Spring 事务默认回滚规则经常让人困惑：
 - checked exception 在 Java 语义里往往表示“可预期的业务分支”
 - Spring 默认认为：这类异常不一定等价于“系统失败”，因此不默认回滚
 
-学习仓库里更重要的是你得形成“可预测规则”：
+学习仓库里更重要的是形成“可预测规则”：
 
 > **想让 checked exception 回滚，就显式写 `rollbackFor`。**
 
@@ -58,7 +58,7 @@ Spring 事务默认回滚规则经常让人困惑：
 - Lab：`SpringCoreTxRollbackRulesLabTest`（Runtime vs Checked + rollbackFor/noRollbackFor）
 - 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 - **运行时异常（RuntimeException / Error）**：默认回滚
 - **受检异常（checked exception）**：默认不回滚
@@ -70,7 +70,7 @@ Spring 事务默认回滚规则经常让人困惑：
 - `insertThenThrowCheckedWithRollback()`：加了 `@Transactional(rollbackFor = ...)` 后 **会回滚**
   - 对应断言：`SpringCoreTxLabTest#rollbackForCheckedExceptionsCanBeConfigured`
 
-如果你想把“规则矩阵”固化成更直观的对照（避免只看单个方法），建议再跑：
+如果想把“规则矩阵”固化成更直观的对照（避免只看单个方法），建议再跑：
 
 - `SpringCoreTxRollbackRulesLabTest`：
   - `runtimeExceptionRollsBackByDefault`：RuntimeException 默认回滚
@@ -82,7 +82,7 @@ Spring 事务默认回滚规则经常让人困惑：
 
 ### 坑点 1：以为“抛异常就一定回滚”，结果 checked exception 仍然提交
 
-- Symptom：你抛了业务异常（checked），却发现数据仍然落库，误以为事务没生效
+- Symptom：抛了业务异常（checked），却发现数据仍然落库，误以为事务没生效
 - Root Cause：Spring 默认回滚规则：RuntimeException/Error 回滚；checked exception 默认不回滚
 - Verification：
   - checked 默认不回滚：`SpringCoreTxLabTest#checkedExceptionsDoNotRollbackByDefault`

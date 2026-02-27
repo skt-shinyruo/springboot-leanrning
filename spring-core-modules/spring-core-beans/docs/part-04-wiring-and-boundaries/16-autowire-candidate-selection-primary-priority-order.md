@@ -75,10 +75,10 @@
 
 ### 依赖解析分支树（简化版）
 
-1) **快捷路径**：`@Value` / `ObjectProvider` / `@Lazy`  
-2) **候选收集**：`findAutowireCandidates`  
-3) **候选收敛**：Qualifier → Primary → by-name → Priority  
-4) **集合排序**（仅集合注入）：`AnnotationAwareOrderComparator#sort`  
+1) **快捷路径**：`@Value` / `ObjectProvider` / `@Lazy`
+2) **候选收集**：`findAutowireCandidates`
+3) **候选收敛**：Qualifier → Primary → by-name → Priority
+4) **集合排序**（仅集合注入）：`AnnotationAwareOrderComparator#sort`
 5) **失败**：仍无法唯一 → `NoUniqueBeanDefinitionException`
 
 ## 2. 单依赖注入：胜者是怎么选出来的？

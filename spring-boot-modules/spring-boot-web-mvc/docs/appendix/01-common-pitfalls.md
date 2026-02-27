@@ -20,9 +20,9 @@
 
 ### 排障模板（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
    - Branch Matrix（错误分支矩阵 400/406/415）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
@@ -36,7 +36,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -46,7 +46,7 @@
 
 ## 机制主线
 
-把“现象（状态码/响应体）”映射回 MVC 主线，是排障的最快路径。本章建议你按下面顺序收敛：
+把“现象（状态码/响应体）”映射回 MVC 主线，是排障的最快路径。本章建议按下面顺序收敛：
 
 1. **先判断发生在 Filter 还是 DispatcherServlet 内**
    - 典型现象：401/403 往往发生在 FilterChain（Security）里，而不是 controller。
@@ -102,7 +102,7 @@
 ## 401/403（Security/CSRF）相关
 
 - 引入 `spring-boot-starter-security` 后，很多 401/403 发生在 MVC 之前：优先从 FilterChainProxy 入手，不要先改 controller。
-- **坑：试图用 `@ControllerAdvice/@ExceptionHandler` 统一处理 401/403**  
+- **坑：试图用 `@ControllerAdvice/@ExceptionHandler` 统一处理 401/403**
   - 这类分支通常发生在 DispatcherServlet 之前，MVC 的异常解析链路根本没机会运行
   - 证据链建议：断言 `handler == null && resolvedException == null`（说明没进入 HandlerMethod/ExceptionResolvers）
   - 对照证据：`BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`
@@ -122,7 +122,7 @@
 - 415：`Content-Type` 与 `consumes`/converter 不匹配（read 失败）
 - 406：`Accept` 与 `produces`/converter 不匹配（write 失败）
   - 对照证据：`BootWebMvcContractJacksonLabTest` / `BootWebMvcTestingDebuggingLabTest`
-- 当你需要确认“到底选了哪个 converter / 协商出的 content-type 是什么”：
+- 当需要确认“到底选了哪个 converter / 协商出的 content-type 是什么”：
   - 用 `ResponseBodyAdvice#beforeBodyWrite` 的 `selectedConverterType/selectedContentType` 写入响应头
   - 对照证据：`BootWebMvcMessageConverterTraceLabTest`
 
@@ -156,10 +156,10 @@
 ## `@WebMvcTest` 相关
 
 - `@WebMvcTest` 只加载 Web 层：如果 controller 依赖 service/repository，通常需要 `@MockBean` 或显式 `@Import`。
-- `@WebMvcTest` 的“更快”来自加载范围更小：如果你把太多东西 `@Import` 进来，它就不再快了。
-- **坑：`@WebMvcTest` 下突然出现 401/403**  
-  - slice 测试默认也会走 filters；当 Security 在 classpath 且 filter chain 生效时，你可能“还没进 controller 就被拦了”
-  - 建议：显式导入你想演示的 `SecurityFilterChain`（教学端点隔离），不要全局禁用 filters（否则你会学到错误结论）
+- `@WebMvcTest` 的“更快”来自加载范围更小：如果把太多东西 `@Import` 进来，它就不再快了。
+- **坑：`@WebMvcTest` 下突然出现 401/403**
+  - slice 测试默认也会走 filters；当 Security 在 classpath 且 filter chain 生效时，可能“还没进 controller 就被拦了”
+  - 建议：显式导入想演示的 `SecurityFilterChain`（教学端点隔离），不要全局禁用 filters（否则会学到错误结论）
   - 对照证据：`BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`（401/403 时 `handler/resolvedException` 为 `null`）
 
 ## 404/路由相关

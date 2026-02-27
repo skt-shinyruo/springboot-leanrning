@@ -15,7 +15,7 @@
 
 !!! summary
     - 这一模块关注：RestClient/WebClient 的调用主线、错误处理与超时重试，以及如何用测试把外部依赖固定下来。
-    - 读完你应该能复述：**构建请求 → 发出调用 → 处理状态码/异常 → 超时/重试 → 测试验证** 这一条主线。
+    - 读完应当能复述：**构建请求 → 发出调用 → 处理状态码/异常 → 超时/重试 → 测试验证** 这一条主线。
     - 推荐顺序：先读《深挖导读》→ 本章 → Part 01 顺读 → 附录排坑。
 
 !!! example "建议先跑的 Lab（把时间线变成证据）"
@@ -45,7 +45,7 @@
 
 ## 在 Spring 主线中的位置
 
-- Web Client 是“对外出口”：它把外部 HTTP 依赖纳入你的系统边界，错误处理与超时策略决定系统韧性。
+- Web Client 是“对外出口”：它把外部 HTTP 依赖纳入系统边界，错误处理与超时策略决定系统韧性。
 - 真实项目里，调用链排障需要“可观察证据”：日志、指标、以及 mock server 测试。
 
 ## 主线时间线（建议顺读）
@@ -66,11 +66,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web Client」的生效时机/顺序/边界；断点/入口：`org.springframework.web.reactive.function.client.WebClient`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web Client」的生效时机/顺序/边界；断点/入口：`org.springframework.web.reactive.function.client.ExchangeFilterFunction`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web Client」的生效时机/顺序/边界；断点/入口：`org.springframework.web.reactive.function.client.ExchangeFunction`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootWebClientWebClientLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web Client」的生效时机/顺序/边界；断点/入口：`org.springframework.web.reactive.function.client.WebClient`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web Client」的生效时机/顺序/边界；断点/入口：`org.springframework.web.reactive.function.client.ExchangeFilterFunction`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web Client」的生效时机/顺序/边界；断点/入口：`org.springframework.web.reactive.function.client.ExchangeFunction`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``BootWebClientWebClientLabTest`` 后，把上述观察点逐条对照，写出自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

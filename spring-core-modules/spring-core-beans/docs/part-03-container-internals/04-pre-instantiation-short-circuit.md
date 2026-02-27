@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansPreInstantiationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansPreInstantiationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -26,7 +26,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -54,8 +54,8 @@
 
 ### 处理器时机与排序（为什么要先注册再创建）
 
-- IABPP 属于 **实例层 BPP**，必须在 `registerBeanPostProcessors` 完成后才能生效  
-- 排序规则仍遵循 `PriorityOrdered → Ordered → 无序`  
+- IABPP 属于 **实例层 BPP**，必须在 `registerBeanPostProcessors` 完成后才能生效
+- 排序规则仍遵循 `PriorityOrdered → Ordered → 无序`
 - 早于 BPP 注册的创建，将无法触发短路
 
 ## 1. 现象：构造器抛异常会让 refresh 直接失败
@@ -74,10 +74,10 @@
 
 ### 1.1 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：是否有 IABPP 在 before-instantiation 阶段返回替身  
-**分支**：`resolveBeforeInstantiation` 返回非 null → 直接暴露  
-**结果**：  
-- 无短路：构造器执行，异常导致 refresh 失败  
+**条件**：是否有 IABPP 在 before-instantiation 阶段返回替身
+**分支**：`resolveBeforeInstantiation` 返回非 null → 直接暴露
+**结果**：
+- 无短路：构造器执行，异常导致 refresh 失败
 - 有短路：构造器不执行，容器获取到 proxy/替身
 
 ## 2. 现象：短路后，构造器不再执行
@@ -123,14 +123,14 @@
 
 至少应能够用 3 条断言讲清楚本章主线：
 
-1) **没有短路时，构造器必然执行**  
-   - 断点：`doCreateBean`  
+1) **没有短路时，构造器必然执行**
+   - 断点：`doCreateBean`
    - 断言：构造器调用次数为 1
-2) **短路时，构造器不执行**  
-   - 断点：`resolveBeforeInstantiation`  
+2) **短路时，构造器不执行**
+   - 断点：`resolveBeforeInstantiation`
    - 断言：构造器调用次数为 0
-3) **短路对象必须满足类型兼容**  
-   - 断点：`applyBeanPostProcessorsBeforeInstantiation`  
+3) **短路对象必须满足类型兼容**
+   - 断点：`applyBeanPostProcessorsBeforeInstantiation`
    - 断言：JDK proxy 只能满足接口注入
 
 ## 排障分流：这是定义层问题还是实例层问题？

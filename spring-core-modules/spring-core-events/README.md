@@ -4,7 +4,7 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -18,7 +18,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - 使用 `ApplicationEventPublisher` 发布事件
 - 使用 `@EventListener` 处理事件（多监听器、`@Order`、condition）
@@ -57,7 +57,7 @@ mvn -pl :spring-core-events test
 ## 推荐 docs 阅读顺序（从现象到机制）
 
 1. [事件心智模型：发布与订阅在解耦什么？](docs/part-01-event-basics/01-event-mental-model.md)
-2. [多监听器与顺序：为什么 `@Order` 值得你认真对待？](docs/part-01-event-basics/02-multiple-listeners-and-order.md)
+2. [多监听器与顺序：为什么 `@Order` 值得认真对待？](docs/part-01-event-basics/02-multiple-listeners-and-order.md)
 3. [condition 与 payload：按条件触发与接收普通对象](docs/part-01-event-basics/03-condition-and-payload.md)
 4. [同步与异常传播：为什么监听器抛异常会炸到发布方？](docs/part-01-event-basics/04-sync-and-exceptions.md)
 5. [异步监听器：`@Async` 生效需要什么？](docs/part-02-async-and-transactional/01-async-listener.md)
@@ -78,7 +78,7 @@ mvn -pl :spring-core-events test
 
 ## 概念 → 在本模块哪里能“看见”
 
-| 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
+| 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
 | 发布事件与最小闭环 | [docs/129](docs/part-01-event-basics/01-event-mental-model.md) | `SpringCoreEventsLabTest#listenerReceivesPublishedEvent` + `UserRegistrationService`/`UserRegisteredListener` | 发布方与监听方如何解耦、如何验证触发 |
 | 多监听器广播 | [docs/130](docs/part-01-event-basics/02-multiple-listeners-and-order.md) | `SpringCoreEventsLabTest#multipleListenersCanObserveTheSameEvent` | 为什么多个监听器都能收到同一事件 |

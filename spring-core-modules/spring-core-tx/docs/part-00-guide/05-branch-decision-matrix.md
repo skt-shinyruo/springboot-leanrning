@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. 断点地图（Spring Tx Debugger Pack）](04-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？](../part-01-transaction-basics/01-transaction-boundary.md)
+上一章：[04. 断点地图（Spring Tx Debugger Pack）](04-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 事务边界（Transaction Boundary）：究竟在“保护”哪一段代码？](../part-01-transaction-basics/01-transaction-boundary.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读

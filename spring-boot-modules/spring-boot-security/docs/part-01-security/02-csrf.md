@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -40,10 +40,10 @@
 
 ## 机制解释（Why）
 
-CSRF 的核心点不是“你有没有登录”，而是：
+CSRF 的核心点不是“有没有登录”，而是：
 
 - 当请求会改变服务器状态（POST/PUT/DELETE 等），Spring Security 默认会要求一个“来自可信页面/会话”的 token。
-- 这个 token 在浏览器场景通常由表单/页面自动携带；但在 API 场景/测试场景需要你显式带上。
+- 这个 token 在浏览器场景通常由表单/页面自动携带；但在 API 场景/测试场景需要显式带上。
 
 - **有认证 ≠ 允许所有写操作**
 
@@ -60,7 +60,7 @@ CSRF 的核心点不是“你有没有登录”，而是：
 
 ### 复现/验证补充说明（来自原文迁移）
 
-本章通过一个最小 POST 接口复现 CSRF 现象，并解释：为什么你“明明已经登录了”，POST 还是会 403。
+本章通过一个最小 POST 接口复现 CSRF 现象，并解释：为什么“明明已经登录了”，POST 还是会 403。
 
 ## 实验入口
 
@@ -77,7 +77,7 @@ CSRF 的核心点不是“你有没有登录”，而是：
 
 ### 坑点 1：为“修复 403”而全局关闭 CSRF，反而把安全边界打穿
 
-- Symptom：你在 API 测试/本地调试里遇到 POST 403，于是直接禁用 CSRF，问题“消失”但风险扩大
+- Symptom：在 API 测试/本地调试里遇到 POST 403，于是直接禁用 CSRF，问题“消失”但风险扩大
 - Root Cause：
   - CSRF 是针对“有状态（cookie/session）”的威胁模型；这类请求默认需要 token
   - JWT 无状态 API 通常不需要 CSRF（或按路径分流），但这不等于所有链路都该关闭
@@ -89,9 +89,9 @@ CSRF 的核心点不是“你有没有登录”，而是：
 
 ### 坑点 2：我“禁用了 CSRF”，但 POST 还是 403（原因：请求命中了另一条 SecurityFilterChain）
 
-- Symptom：你在配置里写了 `csrf.disable()`，但 POST 仍然返回 `csrf_failed`
+- Symptom：在配置里写了 `csrf.disable()`，但 POST 仍然返回 `csrf_failed`
 - Root Cause：
-  - CSRF 是否生效，不取决于“你有没有写 disable”，而取决于**请求最终命中哪条 `SecurityFilterChain`**
+  - CSRF 是否生效，不取决于“有没有写 disable”，而取决于**请求最终命中哪条 `SecurityFilterChain`**
   - 一旦命中的是 Basic 链路（默认 CSRF 开启），就会走 `CsrfFilter`
 - Verification（三段证据链闭环）：
   - Basic 链路缺 token → 403：`BootSecurityLabTest#csrfBlocksPostEvenWhenAuthenticated`

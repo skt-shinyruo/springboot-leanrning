@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 你要记住的不只是“有哪些注解”，而是**一次请求在 MVC 里经历的阶段**，以及每个阶段“为什么会分叉”（例如 404/406/415/400）。
+    - 需要记住的不只是“有哪些注解”，而是**一次请求在 MVC 里经历的阶段**，以及每个阶段“为什么会分叉”（例如 404/406/415/400）。
     - 学习路径建议：**先跑 Lab 看到现象 → 再看 `resolvedException`/handler 证据 → 再打断点看调用链**。
     - 推荐搭配：断点地图（Part 01 Debugger Pack）`part-00-guide/02-breakpoint-map.md`（把断点从“散点”收敛成“按阶段可复用清单”）。
 
@@ -62,8 +62,8 @@
    - `Accept`/`Content-Type`/`produces`/`consumes` → converter 选择
    - 可观测证据：`ResponseBodyAdvice#beforeBodyWrite` 的 `selectedConverterType/selectedContentType`（写回阶段）
    - 关键分支：
-     - 415：请求体格式不被支持（读不到）
-     - 406：响应格式不被接受（写不出）
+   - 415：请求体格式不被支持（读不到）
+   - 406：响应格式不被接受（写不出）
 
 8. **异常处理（Exception Resolvers）**
    - `@ControllerAdvice` / `@ExceptionHandler`：把异常塑形成统一响应（`ApiError` / `ProblemDetail`）

@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「43. 容器外对象注入：AutowireCapableBeanFactory」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansAutowireCapableBeanFactoryLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansAutowireCapableBeanFactoryLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -28,7 +28,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -64,9 +64,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：对象不是 Spring 创建的  
-**分支**：是否显式调用 `autowireBean/initializeBean/destroyBean`  
-**结果**：不调用 → 注解/回调不生效；调用 → 只补齐被调用的那一段管道  
+**条件**：对象不是 Spring 创建的
+**分支**：是否显式调用 `autowireBean/initializeBean/destroyBean`
+**结果**：不调用 → 注解/回调不生效；调用 → 只补齐被调用的那一段管道
 **断点建议**：`AutowireCapableBeanFactory#initializeBean`
 
 ## 集成案例（真实项目高频）：第三方回调对象如何“补齐注入”
@@ -75,8 +75,8 @@
 
 最小实践路径：
 
-1) `autowireBean`：把依赖塞进去  
-2) `initializeBean`：触发 `@PostConstruct` 与 BPP（获取到最终对象）  
+1) `autowireBean`：把依赖塞进去
+2) `initializeBean`：触发 `@PostConstruct` 与 BPP（获取到最终对象）
 
 > 关键提醒：一定要使用 `initializeBean` 的返回值，否则读者可能丢失代理语义。
 
@@ -134,11 +134,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansAutowireCapableBeanFactoryLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 2. 复现入口（可运行）
 

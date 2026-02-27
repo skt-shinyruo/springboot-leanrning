@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -31,7 +31,7 @@
 
 ## 机制主线
 
-本章的目标不是把 Filter/Interceptor 全部讲完，而是建立一个“入口与顺序”的最小心智模型：你知道它们分别在链路的哪里、什么时候该用哪个。
+本章的目标不是把 Filter/Interceptor 全部讲完，而是建立一个“入口与顺序”的最小心智模型：知道它们分别在链路的哪里、什么时候该用哪个。
 
 ## 应当观察到的现象
 
@@ -40,10 +40,10 @@
 
 ## 机制解释（Why）
 
-- **Filter**：发生在 Servlet 容器层，通常对所有请求都可能生效（除非你按 URL pattern 配置）
+- **Filter**：发生在 Servlet 容器层，通常对所有请求都可能生效（除非按 URL pattern 配置）
 - **Interceptor**：发生在 Spring MVC handler 执行链内，便于针对某一类 handler 路由做增强
 
-如果你是“想对 /api/** 生效”，并且增强逻辑与 handler 相关（比如给 response 增 header、记录耗时），Interceptor 往往更直观。
+如果是“想对 /api/** 生效”，并且增强逻辑与 handler 相关（比如给 response 增 header、记录耗时），Interceptor 往往更直观。
 
 ## 源码与断点
 
@@ -101,7 +101,7 @@
 
 ## 常见坑与边界
 
-- 把“顺序问题”当成“业务问题”：很多 401/403/302/304/406 并不在 controller 内发生，先确认你处于 Filter 还是 Interceptor 还是 MessageConverter 阶段。
+- 把“顺序问题”当成“业务问题”：很多 401/403/302/304/406 并不在 controller 内发生，先确认处于 Filter 还是 Interceptor 还是 MessageConverter 阶段。
 - 只用 Interceptor 解决跨域/认证：CORS 与认证通常发生在 Filter（尤其是 Security FilterChain）层，Interceptor 更适合做“靠近 handler 的增强”（计时/审计/统一 header）。
 - async 场景回调缺失：异步请求第一次 dispatch 可能不触发 `postHandle/afterCompletion`，要结合 `afterConcurrentHandlingStarted` 与二次 dispatch 理解（详见下一章）。
 

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：CTW：Compile-Time Weaving（编译期织入）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
     - 原理：代理 vs 织入：选择 LTW/CTW → 定义切点（execution/call/...）→ weaving 生效取决于 classloader/agent/时机 → 用测试/断点验证。
     - 源码入口：`org.springframework.context.weaving.AspectJWeavingEnabler` / `org.springframework.instrument.classloading.LoadTimeWeaver` / `org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter`
     - 推荐 Lab：`AspectjCtwLabTest`
@@ -16,15 +16,15 @@
 ## 导读
 
 本章围绕「03. CTW：Compile-Time Weaving（编译期织入）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `AspectjCtwLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `AspectjCtwLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`AspectjCtwLabTest`
 
@@ -65,19 +65,19 @@ CTW 的代价主要在于：
 - Lab：`AspectjCtwLabTest`
 - 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 > 在 **构建期** 把横切逻辑织入字节码，运行时不需要 `-javaagent`。
 
 ## 1. CTW 的“验证点”与 LTW 不同
 
-LTW 的验证点是“JVM 启动参数 + aop.xml + include 范围”。  
+LTW 的验证点是“JVM 启动参数 + aop.xml + include 范围”。
 CTW 的验证点是“构建产物是否已被织入”。
 
 - `AspectjCtwLabTest#ctw_testJvmIsNotStartedWithAspectjJavaAgent`
 
-> ⚠️ 版本提示：本模块为了兼容 `aspectj-maven-plugin` 内置的 ajc，把编译目标设置为 `--release 16`（运行仍需 JDK 17+）。  
-> 这不影响 weaving 关键结论，但会影响你在本模块里使用 Java 17+ 语法特性。
+> ⚠️ 版本提示：本模块为了兼容 `aspectj-maven-plugin` 内置的 ajc，把编译目标设置为 `--release 16`（运行仍需 JDK 17+）。
+> 这不影响 weaving 关键结论，但会影响在本模块里使用 Java 17+ 语法特性。
 
 并用 Labs 验证“只织入应该织入的类”。
 
@@ -85,11 +85,11 @@ CTW 的验证点是“构建产物是否已被织入”。
 
 ### 坑点 1：IDE 里“单跑某个测试/类”却拿到未织入的字节码，导致误判 CTW 失效
 
-- Symptom：命令行 `mvn test` 一切正常，但你在 IDE 单跑时 advice 不触发
+- Symptom：命令行 `mvn test` 一切正常，但在 IDE 单跑时 advice 不触发
 - Root Cause：CTW 的关键是“构建产物是否被织入”；IDE 的编译/运行配置如果绕过了 maven weaving，可能跑的是未织入 class
 - Verification：
   - 命令行下 JVM 无 agent 仍生效：`AspectjCtwLabTest#ctw_weavingWorksWithoutJavaAgent_forMethodExecutionAndCall`
-  - 若你在 IDE 单跑看不到效果，优先对比“是否使用了 maven 编译产物”
+  - 若在 IDE 单跑看不到效果，优先对比“是否使用了 maven 编译产物”
 - Fix：以 maven 构建产物为准（先跑 `mvn -pl :spring-core-aop-weaving test`）；IDE 场景需要确保复用 maven 编译输出或启用相同 weaving 配置
 
 ## 小结与下一章

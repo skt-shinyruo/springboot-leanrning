@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -26,7 +26,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -62,9 +62,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：注入点是带泛型的 `ResolvableType`，候选类型信息不完整  
-**分支**：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch` 发现泛型参数无法匹配  
-**结果**：按原始类型能匹配，按泛型类型失配  
+**条件**：注入点是带泛型的 `ResolvableType`，候选类型信息不完整
+**分支**：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch` 发现泛型参数无法匹配
+**结果**：按原始类型能匹配，按泛型类型失配
 **断点建议**：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
 
 ## 0. 先建立一个“排障口径”：候选类型信息的三大来源
@@ -92,7 +92,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 

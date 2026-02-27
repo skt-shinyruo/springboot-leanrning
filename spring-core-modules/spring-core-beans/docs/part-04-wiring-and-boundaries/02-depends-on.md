@@ -56,11 +56,11 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：`mbd.getDependsOn()` 是否为空  
-**分支**：`AbstractBeanFactory#doGetBean` 先 `getBean(dep)` 再创建自身  
-**结果**：  
-- 只影响创建/销毁顺序  
-- 不改变候选选择与注入规则  
+**条件**：`mbd.getDependsOn()` 是否为空
+**分支**：`AbstractBeanFactory#doGetBean` 先 `getBean(dep)` 再创建自身
+**结果**：
+- 只影响创建/销毁顺序
+- 不改变候选选择与注入规则
 **断点建议**：`AbstractBeanFactory#doGetBean`
 
 ## 1. 方法级入口：dependsOn 在哪一步生效？
@@ -139,14 +139,14 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 
 ## dependsOn vs SmartLifecycle phase：什么时候用哪一个？
 
-- **dependsOn**：表达“初始化/销毁顺序”，适合基础设施/资源就绪顺序  
-- **SmartLifecycle phase**：表达“启动/停止阶段顺序”，适合需要 start/stop 语义的组件  
+- **dependsOn**：表达“初始化/销毁顺序”，适合基础设施/资源就绪顺序
+- **SmartLifecycle phase**：表达“启动/停止阶段顺序”，适合需要 start/stop 语义的组件
 如果需要严格的 start/stop 控制，优先用 **SmartLifecycle**；只有在“必须强制初始化顺序但没有显式依赖”时考虑 dependsOn。
 
 ## 父子容器边界（层级 context 下的依赖解析）
 
-- dependsOn 只在 **当前 BeanFactory** 范围内生效  
-- 子容器可见父容器 bean，但父容器不可见子容器  
+- dependsOn 只在 **当前 BeanFactory** 范围内生效
+- 子容器可见父容器 bean，但父容器不可见子容器
 - 跨 context 的 dependsOn 容易出现“名字存在但不可见”的误判
 
 ## 5. 交互：dependsOn 会强行拉起 lazy-init 吗？
@@ -182,14 +182,14 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 
 运行完成该 Lab，至少应能够复述 3 条结论：
 
-1) **dependsOn 只影响顺序**  
-   - 断点：`doGetBean` → `mbd.getDependsOn()`  
+1) **dependsOn 只影响顺序**
+   - 断点：`doGetBean` → `mbd.getDependsOn()`
    - 断言：依赖先创建，注入规则不变
-2) **dependsOn 会拉起 lazy-init**  
-   - 断点：`preInstantiateSingletons`  
+2) **dependsOn 会拉起 lazy-init**
+   - 断点：`preInstantiateSingletons`
    - 断言：lazy bean 被强制创建
-3) **依赖图可复盘**  
-   - 断点：`registerDependentBean`  
+3) **依赖图可复盘**
+   - 断点：`registerDependentBean`
    - 断言：依赖边记录在 `dependentBeanMap`
 
 ## 7. 排障决策表（初始化/关闭/异常消息 → 证据链）

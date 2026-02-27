@@ -30,7 +30,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -43,14 +43,14 @@
 2. `@ControllerAdvice` 与 `@ExceptionHandler` 的匹配规则是什么？
 3. Filter 与 Interceptor 的执行顺序与作用域差异是什么？
 4. `@RequestBody` 与 `@ModelAttribute` 分别走哪条路径？它们的“校验失败”常见异常类型分别是什么？
-5. 406 与 415 的本质差异是什么？你会在哪两个断点上分别观察 read/write 的分支？
-6. 接入 Spring Security 后，401 与 403 通常发生在 MVC 的哪个位置之前/之后？你如何用 `handler/resolvedException` 证明“没进入 DispatcherServlet”？CSRF 缺失导致的 403 如何在测试里稳定复现？
+5. 406 与 415 的本质差异是什么？会在哪两个断点上分别观察 read/write 的分支？
+6. 接入 Spring Security 后，401 与 403 通常发生在 MVC 的哪个位置之前/之后？如何用 `handler/resolvedException` 证明“没进入 DispatcherServlet”？CSRF 缺失导致的 403 如何在测试里稳定复现？
 7. ETag/If-None-Match 触发 304 的条件是什么？为什么 304 通常不返回响应体？
 8. async（Callable/DeferredResult）为什么会触发两次 dispatch？Interceptor 的回调为什么“少一截”？
 
 ## 如何把自测题变成“可验证事实”（证据链指引）
 
-建议你对每一题都做到“三段式”：
+建议对每一题都做到“三段式”：
 1) **现象**：先跑 Lab 固定状态码/响应体/headers/asyncStarted
 2) **证据**：拿到 `resolvedException` / handler / event sequence
 3) **断点**：在关键入口打断点观察分支（不要先改业务代码）

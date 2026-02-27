@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -42,7 +42,7 @@
 
 ## 进一步的观察（可选）
 
-如果你希望看到更详细的 SQL 与参数（学习用即可），可以考虑在本模块的 `application.properties` 里增加：
+如果希望看到更详细的 SQL 与参数（学习用即可），可以考虑在本模块的 `application.properties` 里增加：
 
 ## 建议的学习方式
 
@@ -74,7 +74,7 @@
 
 ### 坑点 1：只盯着 SQL 日志，容易把“没 flush/没 commit”误判成“没执行”
 
-- Symptom：你在调试时“怎么没看到 UPDATE/INSERT？”——尤其是在 `@DataJpaTest` 或一个事务里做了修改后立刻查询/断点观察。
+- Symptom：在调试时“怎么没看到 UPDATE/INSERT？”——尤其是在 `@DataJpaTest` 或一个事务里做了修改后立刻查询/断点观察。
 - Root Cause：JPA/Hibernate 的写入通常是 **flush 时机驱动**（提交事务、显式 flush、某些查询触发 flush）；事务没结束时，不一定会立即把 SQL 打出来。
 - Verification：`BootDataJpaDebugSqlLabTest#showSqlHelpsExplainPersistenceBehavior_whenRunningTests`
 - Breakpoints：`org.springframework.orm.jpa.JpaTransactionManager#doCommit`、`org.hibernate.internal.SessionImpl#flush`

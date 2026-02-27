@@ -1,11 +1,14 @@
-# Spring Core AOP：目录
+# Spring Core AOP：代理、切点与叠加边界
 
-## 导读
+本模块把 AOP 的关键问题放回“代理对象”这一事实：代理何时产生、JDK/CGLIB 的选择如何影响边界、自调用为何绕过切面、以及多个代理叠加时如何定位最终执行的 Advice 链。阅读与排障的核心策略是先跑通代理主线，再进入 AutoProxyCreator 的装配主线，最后处理真实工程中常见的多层代理叠加。
 
-本页是「Spring Core AOP：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先跑通一次 Advice 链执行
 
-> 这一模块建议“从代理主线顺读”：先把代理心智模型与边界打牢，再进入 AutoProxyCreator 的主线，最后处理真实世界的多层代理叠加与排障。
+- `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
+
+运行后应能回答：代理入口在哪里；Advice 链的执行顺序如何形成；自调用为何会绕过代理边界。
 
 ## Beans 前置（强烈建议先读一次）
 
@@ -37,7 +40,9 @@ AOP 文档的很多“看起来像 AOP 的问题”，根因其实发生在 **Be
 - [多层代理叠加](part-03-proxy-stacking/01-multi-proxy-stacking.md)
 - [叠加排障手册](part-03-proxy-stacking/02-real-world-stacking-playbook.md)
 
-## 进阶入口（排障/关键分支）
+---
+
+## 排障入口（从症状回到最短分支）
 
 - 断点地图（排障优先）：[04-breakpoint-map.md](part-00-guide/04-breakpoint-map.md)
 - AOP 调用链（源码主线锚点）：[03-aop-invocation-call-chain.md](part-00-guide/03-aop-invocation-call-chain.md)
@@ -45,12 +50,17 @@ AOP 文档的很多“看起来像 AOP 的问题”，根因其实发生在 **Be
 - 并发/性能边界（ThreadLocal 不串线）：[01-proxy-concurrency-perf.md](part-02-perf-concurrency/01-proxy-concurrency-perf.md)
 - 排障 playbook：[01-common-pitfalls.md](appendix/01-common-pitfalls.md)
 - 自检清单：[02-self-check.md](appendix/02-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
-- 可跑入口（Branch Matrix - Proxy 基础）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
-- 可跑入口（Branch Matrix - AutoProxy）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
-- 可跑入口（Branch Matrix - 多代理叠加）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-core-aop -Dtest=*ExerciseSolutionTest test`
-- 可跑入口（并发/性能 Lab - 同一 proxy 并发调用边界）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyConcurrencyLabTest test`
+
+---
+
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
+- Branch Matrix（Proxy 基础）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
+- Branch Matrix（AutoProxy）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
+- Branch Matrix（多代理叠加）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-aop -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（同一 proxy 并发调用边界）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyConcurrencyLabTest test`
 
 ## 排坑与自检
 

@@ -4,7 +4,7 @@
 
     - 知识点：主线时间线：springboot-autoconfiguration
     - 怎么使用：本页是“导航页”。建议先跑 Book Matrix（最小实验集合），再按“导入链 → 条件决策 → 产出 bean”的顺序深挖。
-    - 原理：启动期：AutoConfiguration imports → 条件评估（Condition）→ 注册 bean；运行期：你只是使用这些 bean（真正的魔法都在启动期）。
+    - 原理：启动期：AutoConfiguration imports → 条件评估（Condition）→ 注册 bean；运行期：只是使用这些 bean（真正的魔法都在启动期）。
     - 源码入口：`org.springframework.boot.autoconfigure.AutoConfigurationImportSelector` / `org.springframework.context.annotation.ConditionEvaluator` / `org.springframework.boot.autoconfigure.condition.OnBeanCondition`
     - 推荐 Lab：`BootAutoConfigurationLabTest`
 <!-- CHAPTER-CARD:END -->
@@ -17,7 +17,7 @@
 
 - 本章主题：**01. 主线时间线：springboot-autoconfiguration**
 - 建议入口：优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：启动期：AutoConfiguration imports → 条件评估（Condition）→ 注册 bean；运行期：你只是使用这些 bean（真正的魔法都在启动期）。
+- 阅读目标：启动期：AutoConfiguration imports → 条件评估（Condition）→ 注册 bean；运行期：只是使用这些 bean（真正的魔法都在启动期）。
 - 源码入口：`org.springframework.boot.autoconfigure.AutoConfigurationImportSelector` / `org.springframework.context.annotation.ConditionEvaluator` / `org.springframework.boot.autoconfigure.condition.OnBeanCondition`
 
 
@@ -26,7 +26,7 @@
 
 - `mvn -q -pl :spring-boot-autoconfiguration -Dtest=BootAutoConfigurationBookMatrixLabTest test`
 
-## 机制主线（你要建立的叙事）
+## 机制主线（需要建立的叙事）
 
 1. **AutoConfiguration 从哪里来？**（imports 文件/selector）
 2. **为什么它会/不会生效？**（条件装配：property/class/bean）
@@ -42,7 +42,7 @@
 
 ## 小结与下一章
 
-- 小结：启动期：AutoConfiguration imports → 条件评估（Condition）→ 注册 bean；运行期：你只是使用这些 bean（真正的魔法都在启动期）。
+- 小结：启动期：AutoConfiguration imports → 条件评估（Condition）→ 注册 bean；运行期：只是使用这些 bean（真正的魔法都在启动期）。
 - 下一章：[第 195 章：00. 深挖导读](02-deep-dive-guide.md)
 
 <!-- BOOKIFY:START -->

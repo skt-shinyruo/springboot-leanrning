@@ -13,14 +13,16 @@
 上一章：[01. 调试与自检：如何“观察到”容器正在做什么](../part-02-boot-autoconfig/01-debugging-and-observability.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/03-spring-boot-auto-configuration.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 问题：为什么同一个 “bean” 在调试器里会出现好几种形态
 
-本章围绕「Bean 运行机制：从 BeanDefinition 到最终暴露对象」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansContainerLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+很多容器相关的问题，表面上看是一个简单现象：“我已经把类交给 Spring 了，为什么注入的对象却不是我写的那个类？”
+进一步追下去，调试器里又会出现更多对象：`BeanDefinition`、merged `RootBeanDefinition`、原始实例、proxy……
 
-- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
+这些对象并不是“实现细节噪音”，而是容器机制的分层结果。本章要做的，是把这组分层固定成可复用的心智模型，让排障时的第一个问题变得清晰：
 
-  更准确的理解应该是：**Bean = 容器托管的一套机制**（定义、创建、注入、回调、代理、销毁）。
+> 当前遇到的问题属于定义层、创建层，还是“最终暴露对象”层？
+
+官方参考（Spring Framework 6.2.x；本仓库基线 6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 !!! summary "本章要点"
 
@@ -39,24 +41,24 @@
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
 
-## 机制主线：三层模型 + 一个“最终对象”概念
+## 解释：三层模型 + 最终暴露对象
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-可将容器理解为三层结构（这是后续排障的重要基础）：
+容器可以被理解为三层结构（这是后续排障分层的基础）：
 
 1) **输入层（inputs）**：注解、`@Bean`、`@Import`、XML、programmatic 注册……
 2) **定义层（definitions）**：解析输入并注册 `BeanDefinition`（“如何构造”的配方与元数据）
 3) **实例层（instances）**：按定义创建对象、注入依赖、执行回调、注册销毁钩子
 
-在三层之上，再引入一个“最终对象”概念：
+在三层之上，再补一个读者最常在排障时遇到、但最容易被忽略的概念：
 
 4) **最终暴露对象（exposed object）**：容器对外返回的对象（`getBean()`/注入点获取到的对象），它可能在多个阶段被替换/包装为 proxy。
 
 > 需要内化的一句关键表述：
 > **定义层回答“有没有/谁注册的/配方是什么”，实例层回答“什么时候创建/注入选了谁/最终是不是 proxy”。**
 
-### 机制阐释：三层模型 + 最终对象（条件 → 分支 → 结果）
+### 机制阐释：对象为何会被替换（条件 → 分支 → 结果）
 
 - **条件**：bean 是否走完整 `doCreateBean`，以及是否被 BPP/early reference 替换
 - **分支**：`applyBeanPostProcessorsAfterInitialization` / `getEarlyBeanReference`

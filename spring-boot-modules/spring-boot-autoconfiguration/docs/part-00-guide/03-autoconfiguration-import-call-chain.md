@@ -22,7 +22,7 @@
 
 
 
-## 你要能复述的“最短调用链”
+## 应能复述的“最短调用链”
 
 ### 第 0 段：AutoConfiguration 的候选集合从哪里来？
 
@@ -35,7 +35,7 @@
 
 ### 第 1 段：这些候选什么时候变成 BeanDefinition？
 
-auto-config 最终会进入 Spring 的“配置类解析与注册”主线（你可以把它理解成：配置类也会被解析成 BeanDefinition）。
+auto-config 最终会进入 Spring 的“配置类解析与注册”主线（可以把它理解成：配置类也会被解析成 BeanDefinition）。
 
 关键入口：
 
@@ -49,7 +49,7 @@ auto-config 最终会进入 Spring 的“配置类解析与注册”主线（你
 
 - `ConditionEvaluator#shouldSkip`
 
-当你看到 `@ConditionalOnProperty/@ConditionalOnClass/@ConditionalOnBean/@ConditionalOnMissingBean` 时，不要把它当成“注解魔法”，把它当成：
+当看到 `@ConditionalOnProperty/@ConditionalOnClass/@ConditionalOnBean/@ConditionalOnMissingBean` 时，不要把它当成“注解魔法”，把它当成：
 
 > 配置类/`@Bean` 方法在注册前的一次 if 判断。
 
@@ -61,7 +61,7 @@ auto-config 最终会进入 Spring 的“配置类解析与注册”主线（你
 
 它会在“容器已有/将有某个 bean”时决定不再注册默认 bean，最终表现为：
 
-- 你能拿到用户自定义 bean，但拿不到默认 bean
+- 能拿到用户自定义 bean，但拿不到默认 bean
 
 本模块的证据链入口：
 

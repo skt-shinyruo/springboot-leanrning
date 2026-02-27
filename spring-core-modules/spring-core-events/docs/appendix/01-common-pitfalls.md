@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：常见坑清单（建议反复对照）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
     - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
     - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
     - 推荐 Lab：`SpringCoreEventsLabTest`
@@ -15,11 +15,11 @@
 
 ## 导读
 
-### 排障模板（统一结构）
+### 排障骨架（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，可以按下面 6 步收敛问题（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
    - Branch Matrix - 基础事件：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
@@ -31,14 +31,14 @@
 
 这页不是教材，更接近“排障备忘录”。建议的使用方式是：**先跑最小复现入口，再回来看坑位对照表**，而不是读完概念再猜配置。
 
-!!! summary "这页主要帮你排除的误判"
+!!! summary "这页主要帮助排除的误判"
 
     - “事件是异步的”：不是，默认同步；先用线程名把它断言出来。
     - “监听器没触发”：先排除过滤（参数类型/condition）与事务阶段（after-commit）差异。
     - “异常不会影响发布方”：默认会；想隔离就显式引入异步/捕获策略，并把行为写进测试。
 
 
-!!! example "建议先跑的入口（把坑跑成断言）"
+!!! example "先运行的入口（把坑跑成断言）"
 
     - 基础分支：`SpringCoreEventsLabTest`
     - 异常/异步开关：`SpringCoreEventsMechanicsLabTest`
@@ -67,25 +67,25 @@
 
 ## 坑 1：误以为事件默认异步
 
-- 你会看到：发布方耗时变长、线程名不变；甚至被监听器异常打断，但你以为“只是发了个事件”。
+- 会看到：发布方耗时变长、线程名不变；甚至被监听器异常打断，但以为“只是发了个事件”。
 - 事实：事件默认同步（验证：`SpringCoreEventsLabTest#eventsAreSynchronousByDefault`）。
 - Fix：先把“默认同步”当作基线；需要隔离耗时/失败时，再选 `@Async` listener 或 async multicaster，并用线程名/时机写断言。
 
 ## 坑 2：监听器抛异常会炸到发布方
 
-- 你会看到：监听器一抛异常，发布方也跟着失败；后续 listener 可能没机会执行。
+- 会看到：监听器一抛异常，发布方也跟着失败；后续 listener 可能没机会执行。
 - 事实：同步事件在同一调用栈里执行，异常默认向上冒泡（验证：`SpringCoreEventsMechanicsLabTest#listenerExceptionsPropagateToPublisher_byDefault`）。
-- Fix：先明确“你希望异常怎么处理”（吞掉/转换/重试/隔离），再选择捕获策略或异步方案，并把行为写进测试。
+- Fix：先明确异常处理策略（吞掉/转换/重试/隔离），再选择捕获策略或异步方案，并把行为写进测试。
 
 ## 坑 3：没有 `@Order` 却依赖执行顺序
 
-- 你会看到：多个监听器都能收到事件，但你暗中依赖“先后顺序”，一换环境就开始漂移。
-- 事实：顺序不是你想当然的“注册顺序”。需要顺序就显式 `@Order`（验证：`SpringCoreEventsLabTest#orderedListenersFollowOrderAnnotation`）。
+- 会看到：多个监听器都能收到事件，但暗中依赖“先后顺序”，一换环境就开始漂移。
+- 事实：顺序不是“想当然的注册顺序”。需要顺序就显式 `@Order`（验证：`SpringCoreEventsLabTest#orderedListenersFollowOrderAnnotation`）。
 - Fix：把顺序当成契约：要么明确 `@Order`，要么让监听器互不依赖（避免“靠顺序拼业务”）。
 
 ## 坑 4：以为写了 `@Async` 就一定异步
 
-- 你会看到：你以为会换线程，但它仍在发布方线程里跑（线程名不变、耗时变长）。
+- 会看到：以为会换线程，但它仍在发布方线程里跑（线程名不变、耗时变长）。
 - 事实：没有 `@EnableAsync` 时 `@Async` 会被忽略（验证：`SpringCoreEventsMechanicsLabTest#asyncAnnotationIsIgnored_withoutEnableAsync`）。
 - Fix：先把“是否真的异步”写成断言（线程名/时机），再讨论线程池、上下文传播与失败策略。
 
@@ -93,17 +93,17 @@
 
 事件对象会被同一次分发链路里的多个 listener 共享。如果事件是可变对象，那么：
 
-- 你会得到“看似偶发”的副作用：某个 listener 改了字段，另一个 listener 读到的是被修改后的状态。
-- 你会更难写断言：因为“谁先改、谁后读”会被顺序/异步放大成不稳定。
+- 会得到“看似偶发”的副作用：某个 listener 改了字段，另一个 listener 读到的是被修改后的状态。
+- 会更难写断言：因为“谁先改、谁后读”会被顺序/异步放大成不稳定。
 
-Fix（学习阶段强烈建议）：
+Fix（学习阶段建议）：
 
 - 事件建模为不可变对象（例如 `record`），让事件“只承载事实，不承载过程状态”；
 - 需要派生信息时，在 listener 内部创建新对象（不要回写 event）。
 
 ## 坑 6：监听器“没触发”其实是被过滤掉了（参数类型/条件不匹配）
 
-- Symptom：你 `publishEvent(...)` 了，但某个 `@EventListener` 方法完全没进入；你甚至怀疑 multicaster/线程/事务有问题。
+- Symptom： `publishEvent(...)` 了，但某个 `@EventListener` 方法完全没进入；甚至怀疑 multicaster/线程/事务有问题。
 - Root Cause：Spring 的监听器分发有“筛选”阶段：最常见的是 **按监听器方法参数类型过滤**（以及 `@EventListener(condition = ...)` 进一步过滤）；类型/条件不匹配时，监听器就会被跳过。
 - Verification：`SpringCoreEventsListenerFilteringLabTest#eventListener_shouldFilterByMethodParameterType`
 - Breakpoints：`SimpleApplicationEventMulticaster#multicastEvent`、`ApplicationListenerMethodAdapter#supportsEventType`

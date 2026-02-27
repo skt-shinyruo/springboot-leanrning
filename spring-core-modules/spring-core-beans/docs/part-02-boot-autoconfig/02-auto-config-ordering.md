@@ -51,16 +51,16 @@
 
 ### 角色分工速记（先抓住 4 个入口）
 
-- 导入入口：`AutoConfigurationImportSelector#selectImports`  
-- 排序入口：`AutoConfigurationImportSorter`  
-- 条件评估：`ConditionEvaluator#shouldSkip`  
+- 导入入口：`AutoConfigurationImportSelector#selectImports`
+- 排序入口：`AutoConfigurationImportSorter`
+- 条件评估：`ConditionEvaluator#shouldSkip`
 - 定义注册：`ConfigurationClassPostProcessor#processConfigBeanDefinitions`
 
 ### 机制系统阐述：条件 → 分支 → 结果（顺序问题版）
 
-**条件**：依赖 Auto-Config 的 bean 是否已在定义层注册  
-**分支**：排序后的导入列表 → 条件评估 → 注册/跳过  
-**结果**：顺序不定义时，条件评估“偶发失败”  
+**条件**：依赖 Auto-Config 的 bean 是否已在定义层注册
+**分支**：排序后的导入列表 → 条件评估 → 注册/跳过
+**结果**：顺序不定义时，条件评估“偶发失败”
 **断点建议**：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip`
 
 这类问题在工程里最常见的表现就是：
@@ -108,14 +108,14 @@
 
 运行完成这些用例，应能够复述 3 条结论：
 
-1) **顺序未定义时，条件评估可能失败**  
-   - 断点：`ConditionEvaluator#shouldSkip`  
+1) **顺序未定义时，条件评估可能失败**
+   - 断点：`ConditionEvaluator#shouldSkip`
    - 断言：依赖 bean 的定义未注册 → 条件失败
-2) **`@AutoConfiguration(after=...)` 能稳定顺序**  
-   - 断点：`AutoConfigurationImportSorter`  
+2) **`@AutoConfiguration(after=...)` 能稳定顺序**
+   - 断点：`AutoConfigurationImportSorter`
    - 断言：排序后依赖关系确定，条件稳定通过
-3) **问题属于定义层时机**  
-   - 断点：`processConfigBeanDefinitions`  
+3) **问题属于定义层时机**
+   - 断点：`processConfigBeanDefinitions`
    - 断言：定义是否注册，比实例创建更关键
 
 ## 3. 断点闭环：把“顺序”落到可观察证据

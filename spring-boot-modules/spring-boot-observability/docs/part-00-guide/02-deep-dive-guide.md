@@ -16,7 +16,7 @@
 ## 导读
 
 - 本章主题：**02. 深挖导读：把“HTTP → metrics/observations”落到源码与断点**
-- 目标：你能从一个指标（`http.server.requests`）追溯到“它在哪一段链路被记录”，并能用断点验证。
+- 目标：能从一个指标（`http.server.requests`）追溯到“它在哪一段链路被记录”，并能用断点验证。
 
 !!! example "本章配套实验（先跑再读）"
 

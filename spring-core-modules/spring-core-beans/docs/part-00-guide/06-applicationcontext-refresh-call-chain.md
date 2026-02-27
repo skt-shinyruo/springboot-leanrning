@@ -128,20 +128,20 @@
 
 `refresh()` 的主线整体并不复杂，复杂之处在于分支。下面给出最“高频且决定走向”的最小分支集合：
 
-1) **singleton vs prototype**  
-   - 入口：`AbstractBeanFactory#doGetBean`  
+1) **singleton vs prototype**
+   - 入口：`AbstractBeanFactory#doGetBean`
    - 关键变量：`mbd.isSingleton()` / `mbd.isPrototype()`
-2) **dependsOn 强制依赖顺序**  
-   - 入口：`AbstractBeanFactory#getBean` → `dependsOn`  
+2) **dependsOn 强制依赖顺序**
+   - 入口：`AbstractBeanFactory#getBean` → `dependsOn`
    - 关键变量：`mbd.getDependsOn()` / `isDependent(beanName, dep)`
-3) **parent BeanFactory 回退**  
-   - 入口：`AbstractBeanFactory#doGetBean`  
+3) **parent BeanFactory 回退**
+   - 入口：`AbstractBeanFactory#doGetBean`
    - 关键变量：`containsBeanDefinition(beanName)` / `parentBeanFactory != null`
-4) **FactoryBean vs 产品对象**  
-   - 入口：`AbstractBeanFactory#getObjectForBeanInstance`  
+4) **FactoryBean vs 产品对象**
+   - 入口：`AbstractBeanFactory#getObjectForBeanInstance`
    - 关键变量：`BeanFactoryUtils.isFactoryDereference(beanName)` / `isFactoryBean`
-5) **类型匹配（含泛型/FactoryBean 预测）**  
-   - 入口：`AbstractBeanFactory#isTypeMatch` / `predictBeanType`  
+5) **类型匹配（含泛型/FactoryBean 预测）**
+   - 入口：`AbstractBeanFactory#isTypeMatch` / `predictBeanType`
    - 关键变量：`typeToMatch` / `resolvedType` / `factoryBeanObjectType`
 
 ## 排障分流（refresh 入口版）
@@ -158,11 +158,11 @@
 
 ## 证据链样例（现象 → 断点 → 变量 → 结论）
 
-**现象**：AOP/事务“不生效”，读者获取到的对象不是代理（或代理缺少拦截器）  
-**断点**：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` → `AbstractBeanFactory#doGetBean`  
-**观察变量**：  
-- `beanFactory.getBeanPostProcessors().size()`（此时尚未注册完 BPP）  
-- `beanFactory.containsSingleton(beanName)`（是否已被提前创建）  
+**现象**：AOP/事务“不生效”，读者获取到的对象不是代理（或代理缺少拦截器）
+**断点**：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` → `AbstractBeanFactory#doGetBean`
+**观察变量**：
+- `beanFactory.getBeanPostProcessors().size()`（此时尚未注册完 BPP）
+- `beanFactory.containsSingleton(beanName)`（是否已被提前创建）
 **结论**：在 BFPP 阶段“过早 getBean”会让目标 bean 提前创建，错过后续 BPP 注册与代理替换链路，因此表现为“代理不生效”。
 
 ## 面试常问（refresh 调用链）

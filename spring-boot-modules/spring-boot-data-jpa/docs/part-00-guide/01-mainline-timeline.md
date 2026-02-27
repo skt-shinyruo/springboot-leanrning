@@ -15,7 +15,7 @@
 
 !!! summary
     - 这一模块关注：JPA 的实体状态与持久化上下文如何工作，以及 flush/dirty checking/fetching 等最影响真实项目的分支。
-    - 读完你应该能复述：**实体状态 → Persistence Context → SQL 何时发出（flush）→ 可见性与一致性** 这一条主线。
+    - 读完应当能复述：**实体状态 → Persistence Context → SQL 何时发出（flush）→ 可见性与一致性** 这一条主线。
     - 推荐顺序：先读《深挖导读》→ 本章 → Part 01 顺读 → 附录排坑。
 
 !!! example "建议先跑的 Lab（把时间线变成证据）"
@@ -56,7 +56,7 @@
    - 阅读：[02. 持久化上下文](../part-01-data-jpa/02-persistence-context.md)
 3. flush 与可见性：什么时候会发 SQL，为什么“看起来没写但查到了”
    - 阅读：[03. flush 与可见性](../part-01-data-jpa/03-flush-and-visibility.md)
-4. 脏检查：为什么你没 save 也会 update
+4. 脏检查：为什么没 save 也会 update
    - 阅读：[04. 脏检查](../part-01-data-jpa/04-dirty-checking.md)
 5. 抓住性能分支：fetching 与 N+1
    - 阅读：[05. fetching 与 N+1](../part-01-data-jpa/05-fetching-and-n-plus-one.md)
@@ -70,11 +70,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Data JPA」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Data JPA」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.JpaRepositoryFactory`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Data JPA」的生效时机/顺序/边界；断点/入口：`jakarta.persistence.EntityManager`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootDataJpaLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Data JPA」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Data JPA」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.JpaRepositoryFactory`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Data JPA」的生效时机/顺序/边界；断点/入口：`jakarta.persistence.EntityManager`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``BootDataJpaLabTest`` 后，把上述观察点逐条对照，写出自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

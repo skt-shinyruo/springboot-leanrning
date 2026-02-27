@@ -26,7 +26,7 @@
 
 - `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
 
-## 机制主线（你要建立的叙事）
+## 机制主线（需要建立的叙事）
 
 1. 一次 HTTP 请求经过哪些阶段（FilterChain → MVC）
 2. 观测对象在哪里创建/结束（Observation）

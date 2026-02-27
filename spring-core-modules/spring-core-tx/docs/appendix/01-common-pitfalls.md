@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：常见坑清单（建议反复对照）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
     - 原理：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
     - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager`
     - 推荐 Lab：`SpringCoreTxLabTest`
@@ -15,11 +15,11 @@
 
 ## 导读
 
-### 排障模板（统一结构）
+### 排障骨架（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，可以按下面 6 步收敛问题（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
    - Branch Matrix - 事务主分支：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
@@ -34,11 +34,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreTxLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
 
@@ -59,11 +59,11 @@
 
 ## 常见坑与边界
 
-> 事务排障的第一步永远是同一句话：**你以为有事务，但你真的有吗？**（见上一章 Debug/观察，优先用断言而不是靠日志猜）
+> 事务排障的第一步永远是同一句话：**以为有事务，但事务真的存在吗？**（见上一章 Debug/观察，优先用断言而不是靠日志猜）
 
 ## 坑 1：同类自调用导致 `@Transactional` 不生效
 
-- 现象：你给 `inner()` 加了 `@Transactional`，但从 `outer()` 调 `inner()` 时事务没生效
+- 现象：给 `inner()` 加了 `@Transactional`，但从 `outer()` 调 `inner()` 时事务没生效
 - 原因：和 AOP 一样，自调用绕过代理
 - Verification：
   - 自调用绕过代理：`SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod`
@@ -72,7 +72,7 @@
 
 ## 坑 2：异常被 catch 住，结果没有回滚
 
-- 现象：你以为“抛过异常”就会回滚，但实际提交了
+- 现象：以为“抛过异常”就会回滚，但实际提交了
 - 原因：事务是否回滚取决于异常是否逃逸出事务边界，或是否显式标记 rollback-only
 - 建议：学习阶段优先用“查表行数”做验证，不要只看异常
 
@@ -94,7 +94,7 @@
 
 ## 坑 6：`MANDATORY`/`NEVER` 是“边界约束”，不是默认选择
 
-- 现象：你一调用就抛 `IllegalTransactionStateException`，以为“事务坏了”
+- 现象：一调用就抛 `IllegalTransactionStateException`，以为“事务坏了”
 - 原因：这是传播行为的设计语义：用来把边界写死
 - 对照：
   - `SpringCoreTxPropagationMatrixLabTest#mandatoryThrowsWhenNoExistingTransaction`

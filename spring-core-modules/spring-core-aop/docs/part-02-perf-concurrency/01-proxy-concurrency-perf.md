@@ -16,7 +16,7 @@
 ## 导读
 
 本章围绕「并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreAopProxyConcurrencyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopProxyConcurrencyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
@@ -24,7 +24,7 @@
     - invocation（一次调用的上下文）是每次调用独立的：不要把“每次调用状态”放在 aspect 的字段里。
     - ThreadLocal 是常见的“每线程上下文承载”方案：必须在 finally 清理，否则会在线程池里造成串线/泄露。
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreAopProxyConcurrencyLabTest`
 
@@ -34,13 +34,13 @@
 
 在典型 Spring 应用中：
 
-- 你的 bean（以及它的 proxy）通常是单例（singleton）对象
+- bean（以及其 proxy）通常是单例（singleton）对象
 - 因此在高并发下，多线程会对同一个 proxy 发起调用
 
 这意味着：
 
 - **proxy 本身必须能被并发安全地调用**
-- 但这并不代表“你的 advice 可以随便存状态”
+- 但这并不代表“advice 可以随便存状态”
 
 ### 2) 哪些对象是每次调用独立的？
 
@@ -66,13 +66,13 @@
 
 > 同一个 proxy 并发调用时，每个线程都能看到自己设置的 correlation id（不会串线）。
 
-### 4) 并发与性能：你应该关心的边界
+### 4) 并发与性能：应当关心的边界
 
 - **线程安全边界**：proxy 可共享；advice 要么无状态，要么状态是线程隔离/线程安全的。
 - **线程池风险**：ThreadLocal 如果不清理，会在复用线程时泄露上一次请求的上下文。
 - **链条长度成本**：拦截器链越长，单位调用的开销越大；建议先用最小切点建立基线，再逐步叠加增强验证成本。
 
-## 在本模块如何验证（强烈建议跑一次）
+## 在本模块如何验证（建议跑一次）
 
 跑这一个测试方法即可：
 
@@ -82,13 +82,13 @@
 
 - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyConcurrencyLabTest test`
 
-你应该能得到一个明确结论：
+应当能得到一个明确结论：
 
 - 多线程并发调用同一 proxy，最终断言全部通过（不串线）
 
 ## 推荐断点（可选）
 
-如果你想把“线程隔离”在断点里看见：
+如果想把“线程隔离”在断点里看见：
 
 - advice 入口：`SpringCoreAopProxyConcurrencyLabTest.CorrelationIdAspect#around`
 - 目标方法：`SpringCoreAopProxyConcurrencyLabTest.ConcurrencyTracedService#echoCorrelationId`
@@ -108,7 +108,7 @@
 
 ## 小结与下一章
 
-- 本章把“proxy 并发调用边界”固化成了可断言事实；下一章进入“多增强叠加与顺序”，你会看到并发下更常见的复杂链路形态（Tx/Cache/Security）。
+- 本章把“proxy 并发调用边界”固化成了可断言事实；下一章进入“多增强叠加与顺序”，会看到并发下更常见的复杂链路形态（Tx/Cache/Security）。
 
 <!-- BOOKIFY:START -->
 
@@ -119,4 +119,3 @@
 上一章：[08-pointcut-expression-system](../part-02-autoproxy-and-pointcuts/02-pointcut-expression-system.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[09-multi-proxy-stacking](../part-03-proxy-stacking/01-multi-proxy-stacking.md)
 
 <!-- BOOKIFY:END -->
-

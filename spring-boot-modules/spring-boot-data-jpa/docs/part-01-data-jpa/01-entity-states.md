@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -30,7 +30,7 @@
 
 ## 机制主线
 
-学 JPA 最容易“学成玄学”的原因是：你只看到了 `repository.save()`，没看清楚背后有一套明确的状态机。
+学 JPA 最容易“学成玄学”的原因是：只看到了 `repository.save()`，没看清楚背后有一套明确的状态机。
 
 这一章只讲一个问题：
 
@@ -39,16 +39,16 @@
 ## 四种经典状态（务必记住）
 
 1. **transient（瞬时/新建）**
-   - 你 `new Book(...)` 出来的对象
+   - `new Book(...)` 出来的对象
    - 没有持久化身份（通常 `id == null`）
 
 2. **managed（受管/持久化上下文内）**
    - Entity 被当前 persistence context 管理
-   - 你对它的字段修改会被“脏检查”捕获（见 [docs/04](04-dirty-checking.md)）
+   - 对它的字段修改会被“脏检查”捕获（见 [docs/04](04-dirty-checking.md)）
 
 3. **detached（游离/脱管）**
    - Entity 曾经是 managed，但被 detach/clear 后不再受当前 context 管理
-   - 修改它不会自动同步到数据库（除非你 merge 回去）
+   - 修改它不会自动同步到数据库（除非 merge 回去）
 
 4. **removed（已标记删除）**
    - 删除操作在 flush/commit 时真正反映到数据库
@@ -61,7 +61,7 @@
 ## 应当得到的结论
 
 - JPA 不是“直接对数据库写”，而是“先写进 persistence context，再在 flush/commit 时同步”
-- 所以你后面学 flush / dirty checking / N+1 时，逻辑都会回到这套状态机上
+- 所以后面学 flush / dirty checking / N+1 时，逻辑都会回到这套状态机上
 
 ## 源码与断点
 
@@ -84,7 +84,7 @@
 
 ### 坑点 1：修改 detached entity 以为能落库，结果“改了但没生效”
 
-- Symptom：你拿着一个对象改字段，flush/commit 后数据库没变化，于是怀疑“JPA 不可靠”
+- Symptom：拿着一个对象改字段，flush/commit 后数据库没变化，于是怀疑“JPA 不可靠”
 - Root Cause：dirty checking 的前提是 entity 必须处于 managed 状态；detach/clear 后对象不再受 persistence context 管理
 - Verification：
   - clear 后 contains=false（detached）：`BootDataJpaLabTest#entityManagerClearDetachesEntities`

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：常见坑清单（建议反复对照）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
     - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
     - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
     - 推荐 Lab：`SpringCoreAopLabTest`
@@ -15,11 +15,11 @@
 
 ## 导读
 
-### 排障模板（统一结构）
+### 排障骨架（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，可以按下面 6 步收敛问题（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
    - Branch Matrix - Proxy 基础：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
@@ -35,11 +35,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProxyMechanicsLabTest`
 
@@ -47,11 +47,11 @@
 
 本章不是“再讲一遍机制”，而是把 Spring AOP 最常见的误判收敛成一份 **可复现、可对照、可验证** 的排障手册。
 
-建议你用一个统一心智模型读本章（不会迷路）：
+可以用一个统一心智模型读本章（不会迷路）：
 
 1. **先确认 call path**：调用有没有走进 proxy？（自调用/绕过 Spring bean 是最高频根因）
 2. **再确认 proxy 事实**：有没有 proxy？是什么 proxy？（JDK/CGLIB 会影响类型边界与 this/target 命中）
-3. **再确认 advisor/chain**：proxy 上有没有你期望的 advisor？这次调用的拦截器链里有没有它？
+3. **再确认 advisor/chain**：proxy 上有没有期望的 advisor？这次调用的拦截器链里有没有它？
 4. **最后再谈边界与叠加**：final/private/static/构造期调用、多 advisor 顺序、多层 proxy（套娃）、以及并发下的上下文隔离
 
 本章的每个坑条目都尽量给出：
@@ -102,9 +102,9 @@
 
 - 现象：`new SomeService()` 出来的对象怎么都不进 advice
 - 原因：代理只发生在容器创建 bean 的阶段
-- 排查要点：确认调用入口拿到的是“容器里的 bean”，而不是你手动 new 的对象
+- 排查要点：确认调用入口拿到的是“容器里的 bean”，而不是手动 new 的对象
 
-## 坑 5：切点写错导致“你以为学到了机制，其实是误命中”
+## 坑 5：切点写错导致“以为学到了机制，其实是误命中”
 
 - 建议：从最小切点起步（`@annotation`），再逐步扩大范围（`execution`）
 - 章节：见 [06. debugging](../part-01-proxy-fundamentals/06-debugging.md)
@@ -158,9 +158,9 @@
 
 典型误判：
 
-- 你知道实现类是 `Impl`，于是写了 `this(Impl)`，以为“会命中 Impl”
+- 假设实现类是 `Impl`，于是写了 `this(Impl)`，以为“会命中 Impl”
 - 但项目实际是 JDK proxy（接口代理），proxy 不是 Impl 的子类
-- 结果：`this(Impl)` 永远不命中，导致你误判 AOP 失效
+- 结果：`this(Impl)` 永远不命中，导致误判 AOP 失效
 
 解决：
 

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -63,7 +63,7 @@
 
 - Symptom：测试看起来能跑通成功路径，但错误路径（4xx/5xx/timeout）没有任何断言；或者 `.block()` 没有超时导致卡住
 - Root Cause：
-  - reactive 流的错误是信号（error signal），需要你显式断言
+  - reactive 流的错误是信号（error signal），需要显式断言
   - `.block()` 更接近“临时把响应式当同步用”，容易漏掉语义与边界
 - Verification：
   - StepVerifier 固定成功路径：`BootWebClientWebClientLabTest#webClientGetsGreeting`

@@ -45,7 +45,7 @@
 ## 小结与下一章
 
 - 小结：分支发生在：是否被 AutoProxyCreator 代理、调用是否经过 proxy、advice 链的顺序与 proceed 嵌套。
-- 下一章：[第 30 章：01：代理心智模型：你拿到的到底是不是“那个对象”】【From Proxy to Target】](../part-01-proxy-fundamentals/01-aop-proxy-mental-model.md)
+- 下一章：[第 30 章：01：代理心智模型：拿到的到底是不是“那个对象”】【From Proxy to Target】](../part-01-proxy-fundamentals/01-aop-proxy-mental-model.md)
 
 <!-- BOOKIFY:START -->
 

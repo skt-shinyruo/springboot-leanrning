@@ -16,7 +16,7 @@
 ## 导读
 
 - 本章主题：**02. 深挖导读：把“日志级别生效”落到源码与断点**
-- 目标：遇到“debug 没输出/日志太多/日志看不懂”时，你能先定位到：category 与 effective level。
+- 目标：遇到“debug 没输出/日志太多/日志看不懂”时，能先定位到：category 与 effective level。
 
 !!! example "本章配套实验（先跑再读）"
 

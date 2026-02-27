@@ -4,7 +4,7 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -17,7 +17,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - 在命令对象上声明约束（`@NotBlank`、`@Email`、`@Min` 等）
 - 程序化校验：直接使用 `jakarta.validation.Validator`
@@ -29,7 +29,7 @@
 
 - 了解基本的校验注解（不要求深入）
 - 想理解“method validation 为什么依赖代理”：建议先了解 `spring-core-aop` 的代理心智模型
-- 如果你在 Web 场景学习校验：建议配合 `springboot-web-mvc`
+- 在 Web 场景学习校验时：建议配合 `springboot-web-mvc`
 
 ## 关键命令
 
@@ -52,7 +52,7 @@ mvn -pl :spring-core-validation test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-1. [约束心智模型：你在校验什么？校验结果是什么？](docs/part-01-validation-core/01-constraint-mental-model.md)
+1. [约束心智模型：在校验什么？校验结果是什么？](docs/part-01-validation-core/01-constraint-mental-model.md)
 2. [程序化校验：为什么直接用 `Validator` 仍然很重要？](docs/part-01-validation-core/02-programmatic-validator.md)
 3. [方法参数校验：为什么它必须依赖 Spring 代理？](docs/part-01-validation-core/03-method-validation-proxy.md)
 4. [Groups：按场景启用不同规则](docs/part-01-validation-core/04-groups.md)
@@ -72,7 +72,7 @@ mvn -pl :spring-core-validation test
 
 ## 概念 → 在本模块哪里能“看见”
 
-| 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
+| 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
 | violations 的结构化信息 | [docs/01](docs/part-01-validation-core/01-constraint-mental-model.md) | `SpringCoreValidationLabTest#programmaticValidationFindsViolations` | `propertyPath/message` 分别代表什么 |
 | 程序化校验 | [docs/02](docs/part-01-validation-core/02-programmatic-validator.md) | `ProgrammaticValidationService` + `SpringCoreValidationLabTest#programmaticValidationReturnsNoViolationsForValidInput` | 不依赖 MVC 也能做校验与断言 |
@@ -90,7 +90,7 @@ mvn -pl :spring-core-validation test
 
 - 忘了 `@Validated` 导致方法参数校验不生效
 - 直接 `new` service 没有代理，因此不会触发 method validation
-- group 没指定导致你误以为约束“失效”
+- group 未指定导致误以为约束“失效”
 
 ## 参考
 

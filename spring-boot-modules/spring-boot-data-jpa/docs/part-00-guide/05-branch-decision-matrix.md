@@ -37,7 +37,7 @@ JPA 的大多数“怪现象”都能用两条线解释：
 
 - 第 1 站：`EntityManager#clear` / `#merge` / `#flush`（状态机与 flush）
 - 第 2 站：`SimpleJpaRepository#save`（Repository 到 EM 的桥）
-- 第 3 站：回到断言处，确认“你以为发生的分支”与“真实发生的分支”一致
+- 第 3 站：回到断言处，确认“以为发生的分支”与“真实发生的分支”一致
 
 ## 排障 Playbook（对应模块）
 

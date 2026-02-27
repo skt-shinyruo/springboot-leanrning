@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：多监听器与顺序：为什么 `@Order` 值得认真对待？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
     - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
     - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
     - 推荐 Lab：`SpringCoreEventsLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreEventsLabTest`
 
@@ -39,7 +39,7 @@
 
 本章关注两个问题：
 
-1) 多个监听器会不会都收到同一个事件？  
+1) 多个监听器会不会都收到同一个事件？
 2) 多个监听器的执行顺序能不能依赖？
 
 ## 1) 多监听器：同一个事件会被“广播”
@@ -51,16 +51,16 @@
 
 ## 2) 顺序：默认不要依赖“自然顺序”
 
-如果你没有显式指定顺序：
+如果没有显式指定顺序：
 
-- 监听器的执行顺序可能与你的想象不一致
+- 监听器的执行顺序可能与直觉不一致
 - 甚至在不同 JVM / 不同构建方式下表现不同
 
-当你确实需要顺序（学习阶段很常见，因为你要做确定性断言），就用 `@Order`：
+当确实需要顺序（学习阶段很常见，因为需要做确定性断言），就用 `@Order`：
 
 ## 应当得到的结论
 
-- 多监听器是事件机制的常态：它让你可以在不改发布方的情况下持续扩展能力
+- 多监听器是事件机制的常态：它让可以在不改发布方的情况下持续扩展能力
 - 顺序默认不保证：需要确定性时就显式标注 `@Order`
 
 ## 源码与断点
@@ -74,7 +74,7 @@
 - Lab：`SpringCoreEventsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 验证入口：`SpringCoreEventsLabTest#multipleListenersCanObserveTheSameEvent`
 

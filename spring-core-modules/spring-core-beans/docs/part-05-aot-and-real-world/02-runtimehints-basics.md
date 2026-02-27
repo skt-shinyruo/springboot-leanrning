@@ -54,9 +54,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：运行期需要反射/代理/资源访问  
-**分支**：是否通过 `RuntimeHintsRegistrar` 注册能力  
-**结果**：未注册 → native 运行期失败；已注册 → 可被单测断言保证  
+**条件**：运行期需要反射/代理/资源访问
+**分支**：是否通过 `RuntimeHintsRegistrar` 注册能力
+**结果**：未注册 → native 运行期失败；已注册 → 可被单测断言保证
 **断点建议**：`RuntimeHintsRegistrar#registerHints`
 
 ## 1. RuntimeHints 是什么？（需要记住的最小集合）

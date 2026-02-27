@@ -1,11 +1,14 @@
-# Spring Boot Observability：目录
+# Spring Boot Observability：请求链路到观测信号
 
-## 导读
+本模块以一次 HTTP 请求为主线，把“观测信号从哪里来”跑成事实：metrics/observations 在哪一层被创建、标签（tag）在何处决定、以及这些信号如何落到 meter 与 registry。tracing 与 log correlation 属于更复杂的组合，本模块先把基础链路固定下来，再讨论扩展边界。
 
-本页是「Spring Boot Observability：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先跑通 `http.server.requests` 的来源
 
-> 建议先把“HTTP 请求 → 观测信号（metrics/observations）”跑通，再进入更复杂的 tracing/log correlation。
+- `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
+
+运行后应能回答：一次请求会触发哪些 observation；meter 的创建与命名发生在何处；为何某些 tag 在某些场景下会缺失。
 
 ## 从这里开始（建议顺序）
 
@@ -19,11 +22,13 @@
 
 - [HTTP metrics：`http.server.requests` 从哪里来](part-01-observability-basics/01-http-metrics-and-observations.md)
 
-## 进阶入口（可跑入口/关键分支）
+---
 
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBranchMatrixLabTest test`
-- 可跑入口（Perf/Concurrency Lab）：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityConcurrencyLabTest test`
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBranchMatrixLabTest test`
+- 并发/性能：`mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityConcurrencyLabTest test`
 
 ## 排坑与自检
 

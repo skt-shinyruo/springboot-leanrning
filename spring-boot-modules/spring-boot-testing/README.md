@@ -5,7 +5,7 @@
 - `@WebMvcTest`：只加载 Web 层（Controller），更快、更聚焦
 - `@SpringBootTest`：加载完整应用上下文，更接近集成测试
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -18,7 +18,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - 理解“测试切片（slice test）”的意义
 - 会写一个 `@WebMvcTest` + `@MockBean` 的 Controller 测试
@@ -79,7 +79,7 @@ mvn -pl :spring-boot-testing test
 
 ## 常见 Debug 路径
 
-- `@WebMvcTest` 报 Bean 缺失：先确认缺的是不是你应该 mock 的依赖（`@MockBean`）
+- `@WebMvcTest` 报 Bean 缺失：先确认缺的是不是应当 mock 的依赖（`@MockBean`）
 - `@SpringBootTest` 很慢：优先用 slice test 学机制，再用全量验证集成链路
 - `@MockBean` 不生效：确认 mock 的类型是否与真实注入点一致（接口/实现类差异）
 

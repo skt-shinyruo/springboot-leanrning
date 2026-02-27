@@ -61,9 +61,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：bean 定义存在 parent/子定义或需要解析默认值  
-**分支**：`getMergedLocalBeanDefinition` 递归合并 parent → 生成 `RootBeanDefinition`  
-**结果**：创建阶段只看 **merged**；registry 原始定义仅用于输入  
+**条件**：bean 定义存在 parent/子定义或需要解析默认值
+**分支**：`getMergedLocalBeanDefinition` 递归合并 parent → 生成 `RootBeanDefinition`
+**结果**：创建阶段只看 **merged**；registry 原始定义仅用于输入
 **断点建议**：`AbstractBeanFactory#getMergedLocalBeanDefinition`
 
 可以观察到 3 个关键现象：
@@ -206,11 +206,11 @@ getMergedLocalBeanDefinition(beanName):
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 - 明明注册的是 `GenericBeanDefinition`（或者通过注解解析得到的定义），为什么调试时经常看到的是 `RootBeanDefinition`？
 - 在 registry 中获取到的 `BeanDefinition` 看起来缺了很多信息（property、init-method 等），但创建时又“似乎被自动补齐了”？

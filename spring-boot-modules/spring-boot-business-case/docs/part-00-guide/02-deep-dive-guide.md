@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -32,7 +32,7 @@
 
 本模块把“真实业务流”拆成一条可验证主线：**请求 → 校验 → 事务 → 事件 → AOP → 异常塑形 → 回滚边界**。
 
-你要学到的不是某个注解的用法，而是遇到问题时能用分流判断：
+要学到的不是某个注解的用法，而是遇到问题时能用分流判断：
 
 - 这是 **校验没挡住**？还是 **事务没生效**？还是 **事件时机不对**？
 - 这是 **回滚失败导致落库**？还是 **异常被转换导致看不到原始原因**？
@@ -59,7 +59,7 @@
 8. **回滚边界（Rollback）**
    - 发生异常：事务回滚 → 不落库；但同步事件可能已经执行
 
-### 2) 关键参与者（你应该能把它们连成一条链）
+### 2) 关键参与者（应当能把它们连成一条链）
 
 - Web/MVC：Controller、请求 DTO、`@Valid`（触发 bean validation）
 - Tx：`@Transactional`（事务边界），TransactionInterceptor（代理执行入口）
@@ -85,18 +85,18 @@
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
 - 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-  
+
 建议断点（从“请求现象”反推到“机制分支”）：
 
 - 校验是否真的发生：
-  - 你的 Controller 入参绑定点（DTO 生成处）与异常处理入口（400 返回点）
+  - Controller 入参绑定点（DTO 生成处）与异常处理入口（400 返回点）
 - 事务是否真的生效（代理是否参与）：
   - `org.springframework.transaction.interceptor.TransactionInterceptor#invoke`
 - 事件发布与监听触发：
   - `org.springframework.context.event.SimpleApplicationEventMulticaster#multicastEvent`
   - `org.springframework.transaction.event.TransactionalApplicationListenerMethodAdapter#onApplicationEvent`
 - AOP 调用链：
-  - 你的 `@Aspect` advice 方法（观察入参与返回/异常）
+  - `@Aspect` advice 方法（观察入参与返回/异常）
 
 ## 最小可运行实验（Lab）
 
@@ -122,7 +122,7 @@
 
 ## 常见坑与边界
 
-如果你是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 

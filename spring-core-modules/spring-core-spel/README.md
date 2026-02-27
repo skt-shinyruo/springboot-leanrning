@@ -8,7 +8,7 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -21,7 +21,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-完成标准（你应该能解释清楚）：
+完成标准（应能解释清楚）：
 
 - 一段表达式是如何被解析成 AST 并求值的（至少能定位到关键类/入口）
 - 为什么 SpEL 常被用在 Cache key / Validation / Security 表达式里

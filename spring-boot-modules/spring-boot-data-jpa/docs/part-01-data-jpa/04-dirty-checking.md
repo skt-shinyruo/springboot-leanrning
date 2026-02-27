@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -34,7 +34,7 @@
 
 ## 现象
 
-- 你拿到一个 managed entity
+- 拿到一个 managed entity
 - 修改它的字段
 - 没有再调用 `save()`
 - flush/commit 之后，数据库值变了
@@ -49,7 +49,7 @@
 
 1. dirty checking 的前提是：实体必须是 managed（受 persistence context 管理）
 2. flush/commit 是“把变化写进 DB”的时机
-3. 清理 context（`clear()`）能避免你误把“一级缓存”当成“数据库状态”
+3. 清理 context（`clear()`）能避免误把“一级缓存”当成“数据库状态”
 
 ## 源码与断点
 
@@ -72,7 +72,7 @@
 
 ### 坑点 1：认为“改字段就立刻发 UPDATE”，忽略了 flush/commit 才是写入时机
 
-- Symptom：你修改字段后立刻去看 SQL/DB，发现没变化，于是误判“脏检查没生效”
+- Symptom：修改字段后立刻去看 SQL/DB，发现没变化，于是误判“脏检查没生效”
 - Root Cause：dirty checking 会把变化记录在 persistence context，真正写入发生在 flush/commit
 - Verification：`BootDataJpaLabTest#dirtyCheckingPersistsChangesOnFlush`
 - Fix：学习阶段用 `entityManager.flush()` 主动触发同步，并在 `clear()` 后重新查询验证（避免一级缓存假象）

@@ -16,7 +16,7 @@
 ## 导读
 
 本章围绕「第 12 章：01. 30 分钟快速闭环：先快后深（3 个最小实验入口）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 本章目标：给出一条**30 分钟可完成验证、可设置断点、可形成正反馈**的快启路线。
 - 原则：每个实验都满足“命令可运行 + 应当看到什么 + 断点入口 + 最小 watch list + 下一步去哪读”。
@@ -47,20 +47,20 @@
 
 不追求背细节，只追求“能在断点里观察到”的 5 个对象/入口：
 
-1) **BeanDefinition（定义层）**  
-   - 入口方法：`DefaultListableBeanFactory#registerBeanDefinition`  
+1) **BeanDefinition（定义层）**
+   - 入口方法：`DefaultListableBeanFactory#registerBeanDefinition`
    - 需要看到的变化：定义进 registry，`beanDefinitionMap` 里出现条目
-2) **DependencyDescriptor（依赖解析层）**  
-   - 入口方法：`DefaultListableBeanFactory#doResolveDependency`  
+2) **DependencyDescriptor（依赖解析层）**
+   - 入口方法：`DefaultListableBeanFactory#doResolveDependency`
    - 需要看到的变化：候选集合被收集并收敛为唯一候选
-3) **BeanWrapper（属性填充层）**  
-   - 入口方法：`AbstractAutowireCapableBeanFactory#populateBean`  
+3) **BeanWrapper（属性填充层）**
+   - 入口方法：`AbstractAutowireCapableBeanFactory#populateBean`
    - 需要看到的变化：`PropertyValues` 转换并写入目标对象
-4) **BeanPostProcessor（实例增强层）**  
-   - 入口方法：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`  
+4) **BeanPostProcessor（实例增强层）**
+   - 入口方法：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
    - 需要看到的变化：`bean` → `result` 的第一次替换（proxy/包装）
-5) **Singleton 缓存（生命周期结果层）**  
-   - 入口方法：`DefaultSingletonBeanRegistry#getSingleton`  
+5) **Singleton 缓存（生命周期结果层）**
+   - 入口方法：`DefaultSingletonBeanRegistry#getSingleton`
    - 需要看到的变化：是否命中 `singletonObjects`，以及 early reference 的介入
 
 ## 快启路线（按顺序运行）
@@ -158,14 +158,14 @@
 
 ## 新手易卡点与修复路径（快启版）
 
-- **断点不命中**  
-  - 常见原因：bean 从未创建（`@Lazy`/未触发 `getBean`/未执行到 `preInstantiateSingletons`）  
+- **断点不命中**
+  - 常见原因：bean 从未创建（`@Lazy`/未触发 `getBean`/未执行到 `preInstantiateSingletons`）
   - 修复路径：改成非 lazy 或显式 `getBean`；在 `doGetBean`/`preInstantiateSingletons` 观察是否进入
-- **运行耗时过长/输出噪声过多**  
-  - 常见原因：运行了全量 `@SpringBootTest` 或扫描了整个 classpath  
+- **运行耗时过长/输出噪声过多**
+  - 常见原因：运行了全量 `@SpringBootTest` 或扫描了整个 classpath
   - 修复路径：用 `AnnotationConfigApplicationContext` 只注册最小配置类；仅运行方法级测试（`-Dtest=Class#method`）
-- **调试卡死或断点命中频率过高**  
-  - 常见原因：断点落在高频循环（如 `isTypeMatch`/`doGetBean`）  
+- **调试卡死或断点命中频率过高**
+  - 常见原因：断点落在高频循环（如 `isTypeMatch`/`doGetBean`）
   - 修复路径：加条件断点（`beanName` 过滤）+ 固定 watch list（只看 3–5 个关键变量）
 
 ## 小结与下一章
@@ -199,14 +199,14 @@
 
 若运行了 `SpringCoreBeansBreakpointPackLabTest`，至少能复述以下 3 条“可断言结论”：
 
-1) **循环依赖能不能救，取决于 early reference 介入时机**  
-   - 证据链：`DefaultSingletonBeanRegistry#addSingletonFactory` → `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`  
+1) **循环依赖能不能救，取决于 early reference 介入时机**
+   - 证据链：`DefaultSingletonBeanRegistry#addSingletonFactory` → `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
    - 对应 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
-2) **BPP 顺序决定“先换壳还是先注入”，会导致 raw 注入**  
-   - 证据链：`PostProcessorRegistrationDelegate#registerBeanPostProcessors` → `applyBeanPostProcessorsAfterInitialization`  
+2) **BPP 顺序决定“先换壳还是先注入”，会导致 raw 注入**
+   - 证据链：`PostProcessorRegistrationDelegate#registerBeanPostProcessors` → `applyBeanPostProcessorsAfterInitialization`
    - 对应 Lab：`SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest`
-3) **FactoryBean 与占位符解析是两条“最容易被误解”的分支**  
-   - 证据链：`AbstractBeanFactory#getObjectForBeanInstance` / `FactoryBeanRegistrySupport#getObjectFromFactoryBean`  
+3) **FactoryBean 与占位符解析是两条“最容易被误解”的分支**
+   - 证据链：`AbstractBeanFactory#getObjectForBeanInstance` / `FactoryBeanRegistrySupport#getObjectFromFactoryBean`
    - 对应 Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
 
 <!-- AE-DEEPENING:START -->

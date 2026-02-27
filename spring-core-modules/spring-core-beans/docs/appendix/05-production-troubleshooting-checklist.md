@@ -150,14 +150,14 @@
 
 ## 1.7 误归因对照（生产最常见三错）
 
-- **错因**：把“代理不生效”归因到配置没开  
-  **纠正**：优先确认 BPP 链是否完整，以及 bean 是否过早创建  
+- **错因**：把“代理不生效”归因到配置没开
+  **纠正**：优先确认 BPP 链是否完整，以及 bean 是否过早创建
 
-- **错因**：把 `NoUniqueBeanDefinition` 当成“自动装配坏了”  
-  **纠正**：这是候选收敛规则没表达清楚（Qualifier/Primary/Priority）  
+- **错因**：把 `NoUniqueBeanDefinition` 当成“自动装配坏了”
+  **纠正**：这是候选收敛规则没表达清楚（Qualifier/Primary/Priority）
 
-- **错因**：把 `@Value` 原样字符串当成“配置没加载”  
-  **纠正**：优先确认 strict/non-strict resolver  
+- **错因**：把 `@Value` 原样字符串当成“配置没加载”
+  **纠正**：优先确认 strict/non-strict resolver
 
 ## 2. 常见事故分类（现象 → 证据链入口）
 

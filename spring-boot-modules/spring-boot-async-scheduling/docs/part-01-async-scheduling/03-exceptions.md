@@ -2,7 +2,7 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（失败到底谁能看见）"
 
-    异步异常最容易把人坑到的点是：**它常常不是“丢了”，而是“你看错了地方”。**
+    异步异常最容易把人坑到的点是：**它常常不是“丢了”，而是“看错了地方”。**
 
     - 返回 `Future/CompletableFuture`：失败会回到调用方的 future 上（`get/join` 时才暴露）
     - 返回 `void`：失败不会回到调用方，最终落在 `AsyncUncaughtExceptionHandler`
@@ -22,20 +22,20 @@
 
 ## 先从一个线上味道很重的场景开始
 
-你把某个操作改成 `@Async`，希望它不阻塞调用方。上线后，偶尔有人反馈“没生效”，但调用链上没异常、监控也没报警。你翻日志，发现后台线程里其实早就炸了。
+把某个操作改成 `@Async`，希望它不阻塞调用方。上线后，偶尔有人反馈“没生效”，但调用链上没异常、监控也没报警。翻日志，发现后台线程里其实早就炸了。
 
 异步异常之所以容易被忽略，不是因为它“消失”了，而是因为它有两种完全不同的语义：
 
 - 返回 `Future/CompletableFuture`：失败会回到调用方的 future 上（`get/join` 时才暴露）
 - 返回 `void`：失败不会回到调用方，最终落在 `AsyncUncaughtExceptionHandler`
 
-这不是细枝末节，而是你在设计“失败可见性”时必须做的选择。
+这不是细枝末节，而是在设计“失败可见性”时必须做的选择。
 
 ## Future：把失败留在调用链里
 
 当 `@Async` 方法返回 `Future/CompletableFuture`，异常不会在调用点抛出，而是被塞进 future，等调用方 `get()` / `join()` 时再以包装异常的形式抛出来。
 
-你会在调用方看到的通常是：
+会在调用方看到的通常是：
 
 - `Future#get()` → `ExecutionException`
 - `CompletableFuture#join()` → `CompletionException`
@@ -50,7 +50,7 @@
 
 当返回值是 `void` 时，调用方没有容器接住异常，Spring 会把异常交给 `AsyncUncaughtExceptionHandler`。
 
-这类写法常见于 fire-and-forget：比如发通知、刷缓存、异步打点。但它的隐患也很现实：如果 handler 没处理好，你就只剩“某个线程里有一行 stacktrace”（甚至还不一定看得到）。
+这类写法常见于 fire-and-forget：比如发通知、刷缓存、异步打点。但它的隐患也很现实：如果 handler 没处理好，就只剩“某个线程里有一行 stacktrace”（甚至还不一定看得到）。
 
 证据入口（语义 + 细节）：
 
@@ -59,7 +59,7 @@
 
 ## 断点入口（可选）
 
-如果你想看“异常是怎么被分流”的：
+如果想看“异常是怎么被分流”的：
 
 - `org.springframework.aop.interceptor.AsyncExecutionInterceptor#invoke`：包装与转交发生的位置
 - `org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler#handleUncaughtException`：void 异步异常最终落点
@@ -74,7 +74,7 @@
 
 ## 小结
 
-在异步这件事上，“异常能不能被看到”不是框架帮你做的默认保证，而是你在 API 设计时做的选择：要不要把失败留在调用链里，要不要让调用方背上等待与处理的责任。
+在异步这件事上，“异常能不能被看到”不是框架默认提供的保证，而是在 API 设计时做的选择：要不要把失败留在调用链里，要不要让调用方背上等待与处理的责任。
 
 <!-- BOOKIFY:START -->
 

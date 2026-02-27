@@ -28,7 +28,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -71,9 +71,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：BeanDefinition 存在 `MethodOverrides`  
-**分支**：实例化走 `instantiateWithMethodInjection`（CGLIB 子类化）  
-**结果**：目标方法被替换为 `MethodReplacer` 的实现  
+**条件**：BeanDefinition 存在 `MethodOverrides`
+**分支**：实例化走 `instantiateWithMethodInjection`（CGLIB 子类化）
+**结果**：目标方法被替换为 `MethodReplacer` 的实现
 **断点建议**：`AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`
 
 ## 1. 是什么：它解决什么问题？不解决什么问题？
@@ -106,25 +106,25 @@
 
 两者都属于“方法注入”，但机制与场景不同：
 
-- `replaced-method`：**替换方法实现**（完全由 `MethodReplacer` 接管）  
-- `@Lookup`：**方法返回值由容器按需提供**（常用于 prototype 注入）  
+- `replaced-method`：**替换方法实现**（完全由 `MethodReplacer` 接管）
+- `@Lookup`：**方法返回值由容器按需提供**（常用于 prototype 注入）
 
 选型建议：
 
-- 需要“按调用返回不同 bean” → `@Lookup`  
-- 需要“把方法实现整体替换掉” → `replaced-method`  
+- 需要“按调用返回不同 bean” → `@Lookup`
+- 需要“把方法实现整体替换掉” → `replaced-method`
 
 ## 2.2 AOT/Native 风险与替代
 
 `replaced-method` 依赖 CGLIB 子类化与方法覆写：
 
-- 在 AOT/Native 场景中更脆弱（字节码生成/反射可见性受限）  
-- final 类/方法直接不可用  
+- 在 AOT/Native 场景中更脆弱（字节码生成/反射可见性受限）
+- final 类/方法直接不可用
 
 替代思路：
 
-- 改为显式策略接口 + 注入实现  
-- 或用 `@Lookup` / `ObjectProvider` 解决动态返回需求  
+- 改为显式策略接口 + 注入实现
+- 或用 `@Lookup` / `ObjectProvider` 解决动态返回需求
 
 ## 3. 原理：把现象放回容器主线（它发生在哪个阶段？）
 
@@ -163,11 +163,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansReplacedMethodLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 

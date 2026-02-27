@@ -28,28 +28,28 @@
 
 ## 自检题（每题都能落到 tests）
 
-1. `/actuator/env` 默认返回 404：这意味着“端点未注册”还是“端点未暴露”？你用哪两条证据把它说清楚？  
+1. `/actuator/env` 默认返回 404：这意味着“端点未注册”还是“端点未暴露”？用哪两条证据把它说清楚？
    - 证据入口：`BootActuatorLabTest#envEndpointIsNotExposedByDefault` + `BootActuatorLabTest#actuatorRootListsExposedEndpoints`
-2. 你如何证明 `management.endpoints.web.exposure.include=...` 会改变“根路径 `/actuator` 的 `_links` 集合”？  
+2. 如何证明 `management.endpoints.web.exposure.include=...` 会改变“根路径 `/actuator` 的 `_links` 集合”？
    - 证据入口：`BootActuatorExposureOverrideLabTest#actuatorRootIncludesEnvLinkWhenExposed`
-3. health 输出里的 `components.learning` 来自哪里？它的 `details` 是如何被写进去的？  
+3. health 输出里的 `components.learning` 来自哪里？它的 `details` 是如何被写进去的？
    - 证据入口：`BootActuatorLabTest#healthIncludesCustomIndicator` + `BootActuatorLabTest#learningIndicatorHasExpectedDetailsHint`
-4. `/actuator/info` 的内容来自哪里？你能指出“配置 → 端点输出”的最短链路吗？  
+4. `/actuator/info` 的内容来自哪里？能指出“配置 → 端点输出”的最短链路吗？
    - 证据入口：`BootActuatorLabTest#infoEndpointContainsConfiguredInfoProperties`
-5. 为什么 health 的 HTTP 状态码通常是 200，但 JSON 的 `status` 仍然有语义？你会如何解释“HTTP 与业务状态分离”的边界？  
+5. 为什么 health 的 HTTP 状态码通常是 200，但 JSON 的 `status` 仍然有语义？如何解释“HTTP 与业务状态分离”的边界？
    - 证据入口：`BootActuatorLabTest#healthReturnsHttp200WhenUp`
-6. 你如何验证 health 的响应确实是 JSON（而不是默认字符串/HTML）？  
+6. 如何验证 health 的响应确实是 JSON（而不是默认字符串/HTML）？
    - 证据入口：`BootActuatorLabTest#healthResponseIsJson`
-7. `env` 端点暴露后，它的响应结构里至少包含什么“可用于排障的材料”？  
+7. `env` 端点暴露后，它的响应结构里至少包含什么“可用于排障的材料”？
    - 证据入口：`BootActuatorExposureOverrideLabTest#envResponseContainsPropertySources`
-8. 给你一个线上需求：只对外暴露 health/info，但希望内部排障时能访问 env。你会如何设计“暴露策略 + 最小安全边界”，并写出一条可回归的验证路径？  
+8. 给一个线上需求：只对外暴露 health/info，但希望内部排障时能访问 env。如何设计“暴露策略 + 最小安全边界”，并写出一条可回归的验证路径？
    - 对照：[`01-common-pitfalls.md`](01-common-pitfalls.md)
 
 ## 退出条件（完成标准）
 
-- 你能在不看文档的情况下复述：Registered / Exposed / Accessible 三段式分流，并用 1–2 个测试把它固定下来。
-- 你能用 `_links` + exposure 配置解释“为什么有些端点看起来不存在”（其实是不暴露）。
-- 你能把“端点暴露”与“安全边界”分开讨论：先决定暴露集合，再决定鉴权策略。
+- 能在不看文档的情况下复述：Registered / Exposed / Accessible 三段式分流，并用 1–2 个测试把它固定下来。
+- 能用 `_links` + exposure 配置解释“为什么有些端点看起来不存在”（其实是不暴露）。
+- 能把“端点暴露”与“安全边界”分开讨论：先决定暴露集合，再决定鉴权策略。
 
 ## 下一步（回到主线）
 

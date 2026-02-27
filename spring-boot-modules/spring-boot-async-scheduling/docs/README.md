@@ -1,33 +1,42 @@
-# Spring Boot Async & Scheduling：读者导言
+# Spring Boot Async & Scheduling：线程边界与上下文传播
 
-## 导读
+本模块讨论异步与调度在工程中的真实边界：线程从哪里切换、代理何时生效、异常如何传播、定时任务在失败时如何表现，以及安全/请求上下文在异步线程中为何默认丢失、如何传播与如何避免泄漏。
 
-本页是「Spring Boot Async & Scheduling：读者导言」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+异步类问题常以“现象模糊”出现，例如：
 
+- `@Async` 标注存在，但方法仍同步执行；
+- 线程池配置已改动，但线程名/并发边界没有变化；
+- 异步线程抛异常，调用方看起来“什么也没发生”；
+- 定时任务发生异常后像是“消失”，难以复现与定位。
 
-如果你在项目里用过 `@Async` / `@Scheduled`，大概率也遇到过这些“说不清”的问题：
+本模块的组织方式是把这些现象拆成可运行实验，用断言与断点把分支固定下来。
 
-- 明明写了 `@Async`，怎么还是同步执行？
-- 线程池到底是哪一个？我改了配置，为什么线程名没变？
-- 异步里抛异常，调用方为什么像什么都没发生？
-- 定时任务抛了异常，会不会就此停掉？为什么有时像“消失”了一样？
+---
 
-这组文档和配套代码想做的事很朴素：把上面这些问题拆到足够小、足够可验证，然后用测试把结论钉住。你可以把它当成一份偏工程视角的“异步与调度随手册”——不追求百科全书式罗列，而是把最常踩的边界讲透。
+## 10 分钟入口：先跑通一次“代理 + 线程切换”
 
-## 两条阅读路线
+- `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
 
-第一条路线适合“我想顺着读一篇文章，把主线打通”：
+运行后应能回答：异步代理在何处创建、线程池如何选择、异常传播到哪一层会被吞掉或包装。
 
-1. [主线时间线：为什么章节这么排](part-00-guide/01-mainline-timeline.md)
-2. [深挖导读：这模块到底在深挖什么](part-00-guide/02-deep-dive-guide.md)
-3. 主线顺读（按章节向下走）
+---
 
-第二条路线适合“我现在就是在排障/复现某个分支”：
+## 阅读路线（主线 → 排障）
 
-- [断点地图：从哪里下断点更省时间](part-00-guide/04-breakpoint-map.md)
-- [关键分支矩阵：把常见分支写成 If/Then](part-00-guide/05-branch-decision-matrix.md)
-- [常见坑：按症状写的排障短文](appendix/01-common-pitfalls.md)
-- [自检：像习题册一样把主线复盘一遍](appendix/02-self-check.md)
+主线阅读（按章节推进）：
+
+1. [主线时间线：为什么章节这样排列](part-00-guide/01-mainline-timeline.md)
+2. [深挖导读：本模块的深挖边界](part-00-guide/02-deep-dive-guide.md)
+3. 进入正文顺读（见下节“主线章节”）
+
+排障阅读（从症状回到最短证据链）：
+
+- [断点地图：优先命中的锚点](part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵：把现象收敛成 If/Then](part-00-guide/05-branch-decision-matrix.md)
+- [常见坑：按症状组织的排障短文](appendix/01-common-pitfalls.md)
+- [自检：用问题把主线复盘一遍](appendix/02-self-check.md)
+
+---
 
 ## 主线章节（建议顺读）
 
@@ -40,9 +49,9 @@
 - [07：SecurityContext / RequestContext：默认丢失、传播与泄漏](part-01-async-scheduling/07-security-and-request-context.md)
 - [08：Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](part-01-async-scheduling/08-boot-spring-task-autoconfig.md)
 
-## 可验证入口（如果你想把“理解”变成事实）
+---
 
-这模块的大多数结论，都能在对应的 `*LabTest#method` 里找到最小复现入口。常用的三个入口是：
+## 可运行入口（用于复现/回归）
 
 - Book Matrix（主线最小集合）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
 - Branch Matrix（关键分支最小集合）：`mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`

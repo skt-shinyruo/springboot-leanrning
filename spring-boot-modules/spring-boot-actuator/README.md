@@ -2,7 +2,7 @@
 
 本模块用于学习 Spring Boot Actuator 的基础用法：暴露常用端点（例如 `/actuator/health`），以及编写一个自定义 `HealthIndicator`。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -15,7 +15,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - Actuator 是什么、默认有哪些端点
 - 通过配置暴露端点与显示 health 详情
@@ -42,7 +42,7 @@ mvn -pl :spring-boot-actuator spring-boot:run
 curl http://localhost:8082/actuator/health
 ```
 
-你应该能看到 `components.learning`（或类似字段）出现在 health 输出中。
+输出中应能看到 `components.learning`（或类似字段）出现在 health 输出中。
 
 ### 测试
 

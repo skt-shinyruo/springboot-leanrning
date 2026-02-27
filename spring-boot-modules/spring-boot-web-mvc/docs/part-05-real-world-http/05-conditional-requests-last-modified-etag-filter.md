@@ -9,12 +9,12 @@
 
     - 304 的本质：**资源未变化** → 允许服务端不返回 body（节省带宽与时间），但仍然是一次成功的交互。
     - 两条常见路径：
-      1. **Last-Modified / If-Modified-Since**：常用于静态资源（基于修改时间）
-      2. **ETag / If-None-Match**：常用于内容型资源（基于内容指纹），也可以通过 Filter 自动计算
-    - 本模块提供三种对照，帮助你“工程落地时知道选哪种”：
-      - 静态资源：`Last-Modified → If-Modified-Since → 304`
-      - API 显式 ETag：controller 自己计算并返回 `ETag`，自己判断是否 304
-      - Filter 计算 ETag：controller 只返回 body，`ShallowEtagHeaderFilter` 负责 ETag/304
+    1. **Last-Modified / If-Modified-Since**：常用于静态资源（基于修改时间）
+    2. **ETag / If-None-Match**：常用于内容型资源（基于内容指纹），也可以通过 Filter 自动计算
+    - 本模块提供三种对照，帮助“工程落地时知道选哪种”：
+    - 静态资源：`Last-Modified → If-Modified-Since → 304`
+    - API 显式 ETag：controller 自己计算并返回 `ETag`，自己判断是否 304
+    - Filter 计算 ETag：controller 只返回 body，`ShallowEtagHeaderFilter` 负责 ETag/304
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -28,7 +28,7 @@
 - 第一次请求：拿到 `Last-Modified`
 - 第二次请求：带 `If-Modified-Since`，若未变化 → 304
 
-这条路径的关键点是：**它不需要你手写 ETag**，但它依赖“时间戳是否能正确代表变化”。
+这条路径的关键点是：**它不需要手写 ETag**，但它依赖“时间戳是否能正确代表变化”。
 
 ### 2) API 显式 ETag：可控但要自己维护
 
@@ -36,7 +36,7 @@
 - body 变化就换 ETag（例如基于内容的 hash 或基于版本号）
 - 如果请求头 `If-None-Match` 命中 → 返回 304
 
-优点：契约可控；缺点：你必须决定“ETag 的计算与缓存策略”。
+优点：契约可控；缺点：必须决定“ETag 的计算与缓存策略”。
 
 ### 3) ShallowEtagHeaderFilter：框架级 ETag/304
 

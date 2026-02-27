@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
     - 原理：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
     - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager`
     - 推荐 Lab：`SpringCoreTxLabTest`
@@ -16,15 +16,15 @@
 ## 导读
 
 本章围绕「05. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreTxLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreTxLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreTxLabTest`
 
@@ -41,8 +41,8 @@
 
 ## 学习建议
 
-- 学完 `@Transactional` 后，用 `TransactionTemplate` 复写一遍同样的场景  
-  你会更清楚“事务管理器到底在干什么”。
+- 学完 `@Transactional` 后，用 `TransactionTemplate` 复写一遍同样的场景
+  会更清楚“事务管理器到底在干什么”。
 
 ## 源码与断点
 
@@ -55,7 +55,7 @@
 - Lab：`SpringCoreTxLabTest`
 - 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 在本模块如何验证
 
@@ -63,8 +63,8 @@
 
 ## 常见坑与边界
 
-- 你能清楚看到：什么时候提交、什么时候标记回滚
-- 你能把“事务边界”写成显式代码（帮助建立直觉）
+- 能清楚看到：什么时候提交、什么时候标记回滚
+- 能把“事务边界”写成显式代码（帮助建立直觉）
 
 ## 小结与下一章
 

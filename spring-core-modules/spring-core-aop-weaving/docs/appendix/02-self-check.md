@@ -25,29 +25,29 @@
 
 ## 自检题（每题都能落到 tests）
 
-1. LTW 生效的最小前提是什么？你如何用断言证明“JVM 确实带了 -javaagent”？  
+1. LTW 生效的最小前提是什么？如何用断言证明“JVM 确实带了 -javaagent”？
    - 证据入口：`AspectjLtwLabTest#ltw_testJvmIsStartedWithJavaAgent`
-2. CTW 的最小前提是什么？你如何用断言证明“JVM 没带 aspectjweaver agent”但 weaving 仍然生效？  
+2. CTW 的最小前提是什么？如何用断言证明“JVM 没带 aspectjweaver agent”但 weaving 仍然生效？
    - 证据入口：`AspectjCtwLabTest#ctw_testJvmIsNotStartedWithAspectjJavaAgent` + `AspectjCtwLabTest#ctw_weavingWorksWithoutJavaAgent_forMethodExecutionAndCall`
-3. weaving 与 proxy AOP 的根本差异是什么？你如何用一个“非 Spring 对象”证明 weaving 仍然能拦截？  
+3. weaving 与 proxy AOP 的根本差异是什么？如何用一个“非 Spring 对象”证明 weaving 仍然能拦截？
    - 证据入口：`AspectjLtwLabTest#ltw_canWeaveExecutionForNonSpringObjects`
-4. self-invocation 在 weaving 下会不会绕过拦截？你如何用断言证明“outer/inner 都被织入”？  
+4. self-invocation 在 weaving 下会不会绕过拦截？如何用断言证明“outer/inner 都被织入”？
    - 证据入口：`AspectjLtwLabTest#ltw_selfInvocationDoesNotBypassWeaving` / `AspectjCtwLabTest#ctw_selfInvocationIsStillIntercepted`
-5. `call` 与 `execution` 的差异是什么？你如何用日志/断言证明两类 join point 都触发，并且 kind 不同？  
+5. `call` 与 `execution` 的差异是什么？如何用日志/断言证明两类 join point 都触发，并且 kind 不同？
    - 证据入口：`AspectjLtwLabTest#ltw_callVsExecution_areDifferentJoinPointKinds` / `AspectjCtwLabTest#ctw_weavingWorksWithoutJavaAgent_forMethodExecutionAndCall`
-6. weaving 能不能拦截构造器？你如何验证 constructor-call 与 constructor-execution 都会被记录？  
+6. weaving 能不能拦截构造器？如何验证 constructor-call 与 constructor-execution 都会被记录？
    - 证据入口：`AspectjLtwLabTest#ltw_constructorCallAndExecution_canBeIntercepted` / `AspectjCtwLabTest#ctw_constructorAndFieldJoinPoints_areSupported`
-7. weaving 能不能拦截字段读写？你如何验证 field-get/field-set 的 join point？  
+7. weaving 能不能拦截字段读写？如何验证 field-get/field-set 的 join point？
    - 证据入口：`AspectjLtwLabTest#ltw_fieldGetAndSet_canBeIntercepted` / `AspectjCtwLabTest#ctw_constructorAndFieldJoinPoints_areSupported`
-8. `withincode` 与 `cflow` 各解决什么问题？你如何用对照用例证明“只在指定调用者/控制流下生效”？  
+8. `withincode` 与 `cflow` 各解决什么问题？如何用对照用例证明“只在指定调用者/控制流下生效”？
    - 证据入口：`AspectjLtwLabTest#ltw_withincode_limitsJoinPointByCallerMethodBody` + `AspectjLtwLabTest#ltw_cflow_limitsJoinPointByControlFlow` / `AspectjCtwLabTest#ctw_withincodeAndCflow_workAsAdvancedPointcuts`
-9. 并发下 weaving 的事件记录是否会串线？你如何用并发实验把它固定成结论？  
+9. 并发下 weaving 的事件记录是否会串线？如何用并发实验把它固定成结论？
    - 证据入口：`AspectjLtwConcurrencyLabTest#ltw_concurrentInvocation_recordsEventsWithCorrectThreadNames`
 
 ## 退出条件（完成标准）
 
-- 你能先分流：这是 proxy 世界的问题，还是 weaving 世界的问题（LTW/CTW）？
-- 你能用“是否有 agent/是否为织入产物 + join point kind + 调用链位置”三条证据定位“为什么没拦截”。
+- 能先分流：这是 proxy 世界的问题，还是 weaving 世界的问题（LTW/CTW）？
+- 能用“是否有 agent/是否为织入产物 + join point kind + 调用链位置”三条证据定位“为什么没拦截”。
 
 <!-- BOOKIFY:START -->
 

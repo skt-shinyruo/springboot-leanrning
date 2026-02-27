@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：同步与异常传播：为什么监听器抛异常会“炸到发布方”？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
     - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
     - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
     - 推荐 Lab：`SpringCoreEventsMechanicsLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreEventsMechanicsLabTest`
 
@@ -41,7 +41,7 @@
 
 1) **同步事件不是“吞异常”的机制**
 
-- 如果你希望“监听器失败不影响主流程”，你需要显式设计（比如异步、隔离、重试等）
+- 如果希望“监听器失败不影响主流程”，需要显式设计（比如异步、隔离、重试等）
 - 学习仓库里建议先理解默认行为，再谈工程化处理
 
 2) **事件不是“保证交付”的消息系统**
@@ -54,7 +54,7 @@
 
 ## 学习建议：如何避免“学歪”
 
-当你想用事件做解耦时，先问自己：
+当希望用事件做解耦时，先问自己：
 
 - 这个动作如果失败，是否应该让主流程失败？
   - 应该：同步事件 + 异常传播是合理的
@@ -71,7 +71,7 @@
 - Lab：`SpringCoreEventsMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 在本模块如何验证
 
@@ -81,7 +81,7 @@
 
 ### 坑点 1：以为“监听器失败不会影响主流程”，结果异常直接炸回发布方
 
-- Symptom：某个监听器抛异常后，发布事件的主流程也失败，导致你误判“业务逻辑本身坏了”
+- Symptom：某个监听器抛异常后，发布事件的主流程也失败，导致误判“业务逻辑本身坏了”
 - Root Cause：同步事件的监听器在发布方调用栈里执行，异常默认向发布方传播
 - Verification：`SpringCoreEventsMechanicsLabTest#listenerExceptionsPropagateToPublisher_byDefault`
 - Fix：需要“监听器失败不影响主流程”时，选择异步/隔离策略（并明确异常处理与补偿），不要把同步事件当消息队列

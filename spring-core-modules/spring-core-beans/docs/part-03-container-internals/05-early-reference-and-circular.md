@@ -43,13 +43,13 @@
 
 ## 一页式最短证据链（10 分钟）：观察到 factory 层价值 + early 形态决策
 
-> 若读者在阅读 `09. 循环依赖` 后仍然困惑“为什么需要三级缓存 / 为什么不是二级缓存”，建议先参阅：  
-> - [`00. Why Index（基础问题索引）`](../part-00-guide/01-why-index.md)（答案先行）  
+> 若读者在阅读 `09. 循环依赖` 后仍然困惑“为什么需要三级缓存 / 为什么不是二级缓存”，建议先参阅：
+> - [`00. Why Index（基础问题索引）`](../part-00-guide/01-why-index.md)（答案先行）
 > - AOP 前置理解：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../../spring-core-aop/docs/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md)（为什么要跳：本章要证明 early reference 的形态可能是 raw/proxy；先把“代理是什么 + 调用从哪进”跑通，才能在断点里正确识别 early vs final；验证什么：在 AOP 章跑一个最小 proxy 用例，并在 proxy 创建点与调用入口各停一次）
 
 本章的目标并非重复描述“三级缓存的结构”，而是引导读者在断点中观察到两件事：
 
-1) **factory 层的价值：只有真正需要 early reference 时才创建它（延迟创建）**  
+1) **factory 层的价值：只有真正需要 early reference 时才创建它（延迟创建）**
 2) **early 的形态要尽量等于 final：`getEarlyBeanReference` 让 BPP/AOP 决策 early reference 是 raw 还是 proxy（形态一致性）**
 
 ### Step 1：运行一个最小用例（将现象固化为断言）
@@ -66,8 +66,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 ### Step 2：下 3 个断点（只要这 3 个就能闭环）
 
-1) `DefaultSingletonBeanRegistry#getSingleton`  
-2) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`  
+1) `DefaultSingletonBeanRegistry#getSingleton`
+2) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
 3) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
 ### Step 3：watch list（3–5 个点足够支撑复述）
@@ -79,8 +79,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 ### Step 4：读者应能够复述的 3 句话（3 分钟闭环）
 
-1) 三级缓存解决的是“什么时候能交付引用”（final/early/factory 三类语义，factory 让 early 引用按需创建）。  
-2) `getEarlyBeanReference` 解决的是“交付出去的 early 引用是什么形态”（raw vs proxy），并尽量做到 early == final。  
+1) 三级缓存解决的是“什么时候能交付引用”（final/early/factory 三类语义，factory 让 early 引用按需创建）。
+2) `getEarlyBeanReference` 解决的是“交付出去的 early 引用是什么形态”（raw vs proxy），并尽量做到 early == final。
 3) 如果做不到一致，Spring 默认 fail-fast；打开 `allowRawInjectionDespiteWrapping` 就是读者接受“绕过代理”的隐患。
 
 ## 机制主线：early reference 的“时机”与“形态”
@@ -102,11 +102,11 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 ### 机制系统阐述：时机 → 形态 → 结果（可断点验证）
 
-**条件**：是否进入 early exposure 窗口  
-**分支**：`getSingleton(..., allowEarlyReference=true)` → `getEarlyBeanReference`  
-**结果**：  
-- early == final：循环依赖可被救活且不绕过代理  
-- early ≠ final：触发一致性保护 fail-fast  
+**条件**：是否进入 early exposure 窗口
+**分支**：`getSingleton(..., allowEarlyReference=true)` → `getEarlyBeanReference`
+**结果**：
+- early == final：循环依赖可被救活且不绕过代理
+- early ≠ final：触发一致性保护 fail-fast
 **断点建议**：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
 
 ---
@@ -232,14 +232,14 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 
 运行完成该 Lab，至少应能够复述 3 条结论：
 
-1) **early proxy 可在循环依赖窗口期提供一致形态**  
-   - 断点：`getEarlyBeanReference`  
+1) **early proxy 可在循环依赖窗口期提供一致形态**
+   - 断点：`getEarlyBeanReference`
    - 断言：early 与 final 形态一致
-2) **按实现类注入 + JDK proxy 会失败**  
-   - 断点：`isTypeMatch`  
+2) **按实现类注入 + JDK proxy 会失败**
+   - 断点：`isTypeMatch`
    - 断言：实现类注入不通过
-3) **raw vs wrapped 不一致会 fail-fast**  
-   - 断点：`doCreateBean` 尾部一致性检查  
+3) **raw vs wrapped 不一致会 fail-fast**
+   - 断点：`doCreateBean` 尾部一致性检查
    - 断言：抛出 raw/wrapped 相关异常
 
 ## 5. 两个必须掌握的边界：类型与一致性
@@ -281,14 +281,14 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-1) **先锁定 root cause**：`BeanCurrentlyInCreationException`  
-2) **找环路边**：  
-   - 断点：`DefaultSingletonBeanRegistry#beforeSingletonCreation`  
-   - 观察：`dependentBeanMap` / `dependenciesForBeanMap`  
-3) **判断类型**：constructor / setter / prototype / dependsOn  
-4) **选择手段**：  
-   - `@Lazy`：引入代理延迟依赖  
-   - `ObjectProvider`：显式按需获取（更可控）  
+1) **先锁定 root cause**：`BeanCurrentlyInCreationException`
+2) **找环路边**：
+   - 断点：`DefaultSingletonBeanRegistry#beforeSingletonCreation`
+   - 观察：`dependentBeanMap` / `dependenciesForBeanMap`
+3) **判断类型**：constructor / setter / prototype / dependsOn
+4) **选择手段**：
+   - `@Lazy`：引入代理延迟依赖
+   - `ObjectProvider`：显式按需获取（更可控）
    - **重构**：拆环（长期最优）
 
 ## 常见误区与排障提示

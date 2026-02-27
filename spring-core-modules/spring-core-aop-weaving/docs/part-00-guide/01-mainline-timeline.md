@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：主线时间线：AOP Weaving（织入：LTW/CTW）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
     - 原理：代理 vs 织入：选择 LTW/CTW → 定义切点（execution/call/...）→ weaving 生效取决于 classloader/agent/时机 → 用测试/断点验证。
     - 源码入口：`org.springframework.context.weaving.AspectJWeavingEnabler` / `org.springframework.instrument.classloading.LoadTimeWeaver` / `org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter`
     - 推荐 Lab：`AspectjLtwLabTest`
@@ -15,17 +15,17 @@
 
 !!! summary
     - 这一模块关注：当“代理”无法覆盖需求时，织入（weaving）如何在类加载期/编译期把横切逻辑写进字节码。
-    - 读完你应该能复述：**代理 vs 织入 → 选择 LTW/CTW → 选 Join Point → 验证生效** 这一条主线。
+    - 读完应当能复述：**代理 vs 织入 → 选择 LTW/CTW → 选 Join Point → 验证生效** 这一条主线。
     - 推荐顺序：先读《深挖导读》→ 本章 → 依次顺读 4 章 → 附录排坑。
 
-!!! example "建议先跑的 Lab（把时间线变成证据）"
+!!! example "先运行的 Lab（把时间线变成证据）"
 
     - Lab：`AspectjLtwLabTest`
 
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：主线时间线：AOP Weaving（织入：LTW/CTW） —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
+- 一句话总结：主线时间线：AOP Weaving（织入：LTW/CTW） —— 先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
 - 回到主线：代理 vs 织入：选择 LTW/CTW → 定义切点（execution/call/...）→ weaving 生效取决于 classloader/agent/时机 → 用测试/断点验证。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
@@ -33,7 +33,7 @@
 ## 导读
 
 本章是「第 43 章：主线时间线：AOP Weaving（织入：LTW/CTW）」的路线图：先给出主线顺序与关键分支，再把每一段落到可运行入口。
-建议先跑 `AspectjLtwLabTest` 作为主线证据，再回到正文理解“为什么章节按这个顺序组织”。
+先运行 `AspectjLtwLabTest` 作为主线证据，再回到正文理解“为什么章节按这个顺序组织”。
 
 <!-- BOOKLIKE-V2:INTRO:START -->
 这一章围绕「主线时间线：AOP Weaving（织入：LTW/CTW）」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
@@ -64,11 +64,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证理解成立）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：AOP Weaving（织入：LTW/CTW）」的生效时机/顺序/边界；断点/入口：`org.springframework.context.weaving.AspectJWeavingEnabler`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：AOP Weaving（织入：LTW/CTW）」的生效时机/顺序/边界；断点/入口：`org.springframework.instrument.classloading.LoadTimeWeaver`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：AOP Weaving（织入：LTW/CTW）」的生效时机/顺序/边界；断点/入口：`org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``AspectjLtwLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：AOP Weaving（织入：LTW/CTW）」的生效时机/顺序/边界；断点/入口：`org.springframework.context.weaving.AspectJWeavingEnabler`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：AOP Weaving（织入：LTW/CTW）」的生效时机/顺序/边界；断点/入口：`org.springframework.instrument.classloading.LoadTimeWeaver`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：AOP Weaving（织入：LTW/CTW）」的生效时机/顺序/边界；断点/入口：`org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``AspectjLtwLabTest`` 后，把上述观察点逐条对照，写出 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

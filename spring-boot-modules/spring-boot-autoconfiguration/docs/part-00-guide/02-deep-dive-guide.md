@@ -27,11 +27,11 @@
 ## 深挖时最容易走偏的点
 
 1. **只看配置文件，不看 imports**
-   - 现象：你以为配置没生效，但其实 auto-config 根本没被导入（或被 exclude）。
+   - 现象：以为配置没生效，但其实 auto-config 根本没被导入（或被 exclude）。
 2. **只看 `@ConditionalOnProperty`，忽略 `@ConditionalOnMissingBean`**
-   - 现象：你以为 property 控制了开关，但实际上是用户自定义 bean 触发了 backoff。
+   - 现象：以为 property 控制了开关，但实际上是用户自定义 bean 触发了 backoff。
 3. **把“顺序问题”当成“条件问题”**
-   - 现象：某个 bean 的最终形态不对（被谁包了/没被谁包），但你只在看某一个条件注解。
+   - 现象：某个 bean 的最终形态不对（被谁包了/没被谁包），但只在看某一个条件注解。
 
 ## 推荐抓手（从证据链回到源码）
 

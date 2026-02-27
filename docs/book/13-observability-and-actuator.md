@@ -53,9 +53,9 @@
 - 练习 1（端点分型）：
   - 运行 `BootActuatorBookMatrixLabTest`；
   - 遇到端点不可访问时，先写清三问：
-    - 端点是否暴露（exposure）？
-    - 是否被安全拦截（认证/授权）？
-    - 请求路径与端点映射是否匹配？
+  - 端点是否暴露（exposure）？
+  - 是否被安全拦截（认证/授权）？
+  - 请求路径与端点映射是否匹配？
 - 练习 2（把观测信号接回请求主线）：
   - 运行 `BootObservabilityBookMatrixLabTest`；
   - 对照 Web MVC 的请求主线文档，标出“观测点出现的位置”，并写清它观察的是什么。

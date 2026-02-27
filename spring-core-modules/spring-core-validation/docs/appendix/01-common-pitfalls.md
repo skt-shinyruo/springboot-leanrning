@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：常见坑清单（建议反复对照）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
     - 原理：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
     - 源码入口：`org.springframework.validation.beanvalidation.LocalValidatorFactoryBean` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor` / `org.springframework.validation.beanvalidation.SpringValidatorAdapter`
     - 推荐 Lab：`SpringCoreValidationLabTest`
@@ -15,11 +15,11 @@
 
 ## 导读
 
-### 排障模板（统一结构）
+### 排障骨架（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，可以按下面 6 步收敛问题（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
    - Branch Matrix：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
@@ -33,11 +33,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
 
@@ -62,13 +62,13 @@
 
 ## 坑 1：以为 `@Valid` 自动让 service 方法校验
 
-- 你会看到：Controller 入参校验正常，但 service 方法参数校验“不触发”，于是误以为注解没生效。
+- 会看到：Controller 入参校验正常，但 service 方法参数校验“不触发”，于是误以为注解没生效。
 - Root Cause：方法参数校验需要 Spring 代理拦截（见 [03. method-validation-proxy](../part-01-validation-core/03-method-validation-proxy.md)），本质上是“method interceptor 在运行时做校验”，不是编译期魔法。
 - Fix：把 method validation 当成 AOP 一类问题排：先确认 bean/入口/代理，再看约束本身。
 
 ## 坑 2：忘了加 `@Validated`
 
-- 你会看到：`@Valid` 写在方法参数上，但不抛 `ConstraintViolationException`，像是“完全没校验”。
+- 会看到：`@Valid` 写在方法参数上，但不抛 `ConstraintViolationException`，像是“完全没校验”。
 - Fix：对照 `MethodValidatedUserService` 的类级别 `@Validated`；并顺手确认调用入口不是同类自调用（下一条）。
 
 ## 坑 3：自调用导致 method validation 不触发
@@ -76,15 +76,15 @@
 - 规律：同 AOP/Tx，自调用绕过代理。
 - Fix：学习阶段先用 tests 把它复现成断言，再讨论设计规避方式（拆分 bean、从外部入口调用、或改用更明确的边界）。
 
-## 坑 4：Group 没指定导致你以为规则“失效”
+## 坑 4：Group 没指定导致以为规则“失效”
 
-- 你会看到：你写了 `@NotBlank(groups=Create.class)`，但 validate(Default.class) 没有 violations，于是以为规则没生效。
+- 会看到：编写了 `@NotBlank(groups=Create.class)`，但 validate(Default.class) 没有 violations，于是以为规则没生效。
 - Root Cause：group 决定“启用哪组规则”——没选中就等价于“没声明”。
 - Fix：把“我现在在跑哪个 group”写清楚（尤其是方法校验与 Web 入参校验混在一起时）。
 
 ## 坑 5：把 violations 当成字符串拼接错误
 
-- 你会看到：只看见“校验失败”，却不知道失败在哪个字段、因为什么规则，排障成本急剧上升。
+- 会看到：只看见“校验失败”，却不知道失败在哪个字段、因为什么规则，排障成本急剧上升。
 - Fix：先学会读 `propertyPath` 与 `message`：它们是结构化证据，不是“日志文本”；把它们映射成统一错误模型再返回给调用方。
 
 ## 小结与下一章

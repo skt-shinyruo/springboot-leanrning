@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansInjectionPhaseLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansInjectionPhaseLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -26,7 +26,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -97,11 +97,11 @@
 
 可以把 `doResolveDependency` 的决策流程记成一棵树：
 
-1) **快捷路径**：Optional/Provider/@Lazy/@Value → 有条件地短路  
-2) **resolvableDependencies**：`registerResolvableDependency` 的直接命中  
-3) **候选收集**：`findAutowireCandidates`（按类型收集）  
-4) **候选收敛**：`determineAutowireCandidate`（@Primary/@Priority/@Qualifier/beanName）  
-5) **集合解析**：`Collection/Map/Stream/Array` 类型走“多候选路径”  
+1) **快捷路径**：Optional/Provider/@Lazy/@Value → 有条件地短路
+2) **resolvableDependencies**：`registerResolvableDependency` 的直接命中
+3) **候选收集**：`findAutowireCandidates`（按类型收集）
+4) **候选收敛**：`determineAutowireCandidate`（@Primary/@Priority/@Qualifier/beanName）
+5) **集合解析**：`Collection/Map/Stream/Array` 类型走“多候选路径”
 6) **fallback**：可选依赖或容器默认值
 
 每个分支都可能改变“读者到底获取到哪个对象”的结论。
@@ -160,11 +160,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansInjectionPhaseLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 

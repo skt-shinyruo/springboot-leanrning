@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -63,7 +63,7 @@
 
 看 `BootDataJpaLabTest#dataJpaTestRunsInsideATransaction`：
 
-- 你的实体通常是 managed 的
+- 实体通常是 managed 的
 - flush/dirty checking 的行为更容易复现与验证
 
 看 `BootDataJpaExerciseTest#exercise_rollbackBehavior`：
@@ -78,7 +78,7 @@
 
 ### 坑点 1：把 `@DataJpaTest` 当成“真实运行时”，忽略了默认事务与回滚语义
 
-- Symptom：你以为数据会落库/对外可见，但测试结束后一切“消失”；或在测试里做跨事务验证一直不稳定
+- Symptom：以为数据会落库/对外可见，但测试结束后一切“消失”；或在测试里做跨事务验证一直不稳定
 - Root Cause：`@DataJpaTest` 默认用事务包裹并在测试结束回滚，这对学机制很友好，但不等价于生产运行时
 - Verification：`BootDataJpaLabTest#dataJpaTestRunsInsideATransaction`
 - Fix：学机制优先 `@DataJpaTest`；需要跨层/跨事务的真实边界验证，再切换到 `@SpringBootTest` 或在专门用例里明确事务策略

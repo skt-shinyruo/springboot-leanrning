@@ -1,9 +1,9 @@
-# 01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？
+# 01. 约束（Constraint）心智模型：校验对象与校验结果
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：约束（Constraint）心智模型：你在校验什么？校验结果是什么？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
+    - 知识点：约束（Constraint）心智模型：校验对象与校验结果
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
     - 原理：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
     - 源码入口：`org.springframework.validation.beanvalidation.LocalValidatorFactoryBean` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor` / `org.springframework.validation.beanvalidation.SpringValidatorAdapter`
     - 推荐 Lab：`SpringCoreValidationLabTest`
@@ -15,16 +15,16 @@
 
 ## 导读
 
-本章围绕「01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreValidationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+本章围绕「01. 约束（Constraint）心智模型：校验对象与校验结果」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+优先运行 `SpringCoreValidationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreValidationLabTest`
 
@@ -34,7 +34,7 @@ Bean Validation（Jakarta Validation）解决的是一个核心问题：
 
 > 把“规则”声明在数据结构上，并得到结构化的校验结果（violations）。
 
-## 你需要记住的 3 个对象
+## 需要记住的 3 个对象
 
 1) **Constraint（约束）**
 
@@ -50,7 +50,7 @@ Bean Validation（Jakarta Validation）解决的是一个核心问题：
 
 `Validator` 是执行校验的入口：
 
-- 你可以在代码里直接调用它（程序化校验）
+- 可以在代码里直接调用它（程序化校验）
 - Spring Boot 会把它作为 bean 放进容器
 
 3) **ConstraintViolation**
@@ -65,7 +65,7 @@ Bean Validation（Jakarta Validation）解决的是一个核心问题：
 
 Bean Validation 的价值在于：
 
-> 你得到的不是 boolean，而是一组“可定位、可解释、可断言”的错误信息。
+> 得到的不是 boolean，而是一组“可定位、可解释、可断言”的错误信息。
 
 ## 源码与断点
 
@@ -78,17 +78,27 @@ Bean Validation 的价值在于：
 - Lab：`SpringCoreValidationLabTest`
 - 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
+
+这一章不要求背定义。最短验证路径是：构造一个非法的 `CreateUserCommand`，执行一次程序化校验，然后在断言里读到 `propertyPath/message` 这两类证据字段。
+
+对应验证入口：
+
+- `SpringCoreValidationLabTest#programmaticValidationFindsViolations`
+- `SpringCoreValidationMechanicsLabTest#constraintViolationIncludesMessageAndPropertyPath`
 
 ## 在本模块如何验证
 
 看 `SpringCoreValidationLabTest#programmaticValidationFindsViolations`：
 
+- 先确认 violations 集合非空
+- 再用 propertyPath 把“失败位置”固定成断言（例如 `username/email/age`）
+- 最后用 message 验证“规则语义”确实来自约束声明
 ## 常见坑与边界
 
 ### 坑点 1：只看“校验失败/成功”，忽略 violations 的证据字段，导致排障效率很低
 
-- Symptom：你知道失败了，但不知道“失败在哪个字段、因为什么规则”，只能靠日志/猜测
+- Symptom：知道失败了，但不知道“失败在哪个字段、因为什么规则”，只能靠日志/猜测
 - Root Cause：Bean Validation 的输出不是 boolean，而是 `ConstraintViolation` 集合（propertyPath/message 是第一现场）
 - Verification：
   - violations 含字段路径：`SpringCoreValidationLabTest#programmaticValidationFindsViolations`
@@ -97,7 +107,7 @@ Bean Validation 的价值在于：
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：校验的价值不在“失败/成功”，而在“你拿到了可定位的 violations”——优先学会读 propertyPath/message，再谈 groups、触发方式与错误映射。
+- 一句话总结：校验的价值不在“失败/成功”，而在“拿到了可定位的 violations”——优先学会读 propertyPath/message，再谈 groups、触发方式与错误映射。
 - 回到主线：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->

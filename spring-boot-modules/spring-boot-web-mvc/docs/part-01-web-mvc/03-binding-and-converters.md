@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -31,11 +31,11 @@
 
 ## 机制主线
 
-本章聚焦“请求如何变成 Java 入参”，以及当你希望引入自定义类型（例如 `UserId`）时应该怎么做。
+本章聚焦“请求如何变成 Java 入参”，以及当希望引入自定义类型（例如 `UserId`）时应该怎么做。
 
 ## 应当观察到的现象
 
-同样是“请求不合法”，但它们发生在不同阶段、对应不同异常（这决定了你应该从哪里排查）：
+同样是“请求不合法”，但它们发生在不同阶段、对应不同异常（这决定了应当从哪里排查）：
 
 - **JSON 解析失败**（body → Java 失败）：典型是 `HttpMessageNotReadableException`
 - **校验失败**（`@Valid`）：典型是 `MethodArgumentNotValidException`（`@RequestBody`）或 `BindException`（`@ModelAttribute`）
@@ -45,12 +45,12 @@
 
 ## 机制解释（Why）
 
-你可以把“请求绑定”理解为两条路径（这也是排障时最重要的第一步：**先判断走哪条路**）：
+可以把“请求绑定”理解为两条路径（这也是排障时最重要的第一步：**先判断走哪条路**）：
 
 1) **请求体（body）**：由 message converter 完成（JSON → Java）
 2) **路径/查询参数（path/query）**：由 conversion service 完成（String → Java）
 
-Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字符串转换成你的领域类型。
+Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字符串转换成领域类型。
 
 ## @RequestBody vs @ModelAttribute：它们到底差在哪
 
@@ -62,7 +62,7 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 | 校验异常（无 BindingResult 时） | `MethodArgumentNotValidException` | `BindException`（常见） |
 | 常见误区 | 把 415/400 当成 controller 问题 | 以为加了约束注解就一定触发校验 |
 
-如果你遇到 400：不要直接去 controller 里打印日志。先用测试或断点确认它属于哪条路径。
+如果遇到 400：不要直接去 controller 里打印日志。先用测试或断点确认它属于哪条路径。
 
 ## @InitBinder：它的价值不是“花活”，而是边界
 
@@ -131,12 +131,12 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 
 - 绑定基础（JSON → DTO）：
   - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
-    - `createsUserWhenRequestIsValid`
-    - `ignoresUnknownJsonFieldsByDefault`
+  - `createsUserWhenRequestIsValid`
+  - `ignoresUnknownJsonFieldsByDefault`
 - 练习：path variable + 自定义类型绑定：
   - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
-    - `exercise_pathVariables`
-    - `exercise_converterFormatter`
+  - `exercise_pathVariables`
+  - `exercise_converterFormatter`
 
 - 默认情况下，JSON 多余字段不会导致失败（本模块当前实验断言“unknown 字段被忽略”）
 - 当 controller 的入参不是 String/Long 等简单类型时，需要通过 Converter/Formatter 扩展绑定能力

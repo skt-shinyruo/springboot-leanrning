@@ -44,7 +44,7 @@
 
 ## 为什么最终暴露对象会变化？（统一解释：缓存解决“时机”，BPP 决定“形态”）
 
-> 若读者的困惑为“已观察到 bean 实例被创建，为何最终注入/获取时却变为 proxy？”  
+> 若读者的困惑为“已观察到 bean 实例被创建，为何最终注入/获取时却变为 proxy？”
 > 建议先把这个索引页看完（答案先行）：[`00. Why Index（基础问题索引）`](../part-00-guide/01-why-index.md)。
 
 这一章是 Beans ↔ AOP 的关键桥接点：它把“代理”放回 IoC 容器视角解释清楚。
@@ -76,9 +76,9 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：BPP 返回的 `result` 与原始 `bean` 不同  
-**分支**：`initializeBean` 在 after-init 阶段“用 result 替换 bean”  
-**结果**：容器暴露的是 **proxy/wrapper**，原对象只作为内部目标存在  
+**条件**：BPP 返回的 `result` 与原始 `bean` 不同
+**分支**：`initializeBean` 在 after-init 阶段“用 result 替换 bean”
+**结果**：容器暴露的是 **proxy/wrapper**，原对象只作为内部目标存在
 **断点建议**：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
 ## 1. 方法级主线：代理替换发生在 initializeBean 的哪一步？

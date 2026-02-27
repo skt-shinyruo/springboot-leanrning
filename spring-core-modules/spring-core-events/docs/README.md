@@ -1,11 +1,14 @@
-# Spring Events：目录
+# Spring Events：时序、边界与监听器语义
 
-## 导读
+事件机制的难点几乎都落在“时序与边界”：事件何时发布、监听器何时执行、异常如何传播、异步边界如何改变因果关系、事务事件又如何与提交/回滚绑定。本模块先把同步事件的基本语义跑通，再进入异步监听与事务事件（`@TransactionalEventListener`）的分支。
 
-本页是「Spring Events：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先把同步事件跑成事实
 
-> 建议先把事件模型与同步执行跑通，再进入异步与事务事件；事件问题的根因几乎都在“时序与边界”上。
+- `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
+
+运行后应能回答：同一事件在多个监听器之间的顺序如何决定；异常会如何影响发布方；切换到异步后，这些语义在哪些地方发生变化。
 
 ## 从这里开始（建议顺序）
 
@@ -28,11 +31,16 @@
 - 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](part-00-guide/05-branch-decision-matrix.md)
 - 排障 playbook：[01-common-pitfalls.md](appendix/01-common-pitfalls.md)
 - 自检清单：[02-self-check.md](appendix/02-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
-- 可跑入口（Branch Matrix - 基础事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
-- 可跑入口（Branch Matrix - 异步/事务事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
-- 可跑入口（Perf/Concurrency Lab）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsConcurrencyLabTest test`
-- 可跑入口（Exercises 对应 Solution - 异步 multicaster 边界）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsExerciseSolutionTest test`
+
+---
+
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
+- Branch Matrix（基础事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
+- Branch Matrix（异步/事务事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
+- 并发/性能：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsConcurrencyLabTest test`
+- Solutions（Exercises 对应回归：异步 multicaster 边界）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsExerciseSolutionTest test`
 
 ## 排坑与自检
 

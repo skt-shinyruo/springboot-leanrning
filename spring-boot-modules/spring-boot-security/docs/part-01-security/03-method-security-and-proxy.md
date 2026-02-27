@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -31,7 +31,7 @@
 
 ## 机制主线
 
-本章解释：为什么你在方法上写了 `@PreAuthorize`，但某些调用路径却“没生效”。
+本章解释：为什么在方法上写了 `@PreAuthorize`，但某些调用路径却“没生效”。
 
 对应代码：
 
@@ -90,7 +90,7 @@ Method Security 的本质仍然是 **代理**：
 
 ### 坑点 1：self-invocation 绕过代理，导致 `@PreAuthorize` 看起来“没生效”
 
-- Symptom：你在方法上写了 `@PreAuthorize`，但某条调用路径没有触发拦截
+- Symptom：在方法上写了 `@PreAuthorize`，但某条调用路径没有触发拦截
 - Root Cause：method security 依赖代理；同类内部 `this.xxx()` 属于 self-invocation，会直接调用目标方法，绕过代理
 - Verification：`BootSecurityLabTest#selfInvocationBypassesMethodSecurityAsAPitfall`
 - Breakpoints：
@@ -100,7 +100,7 @@ Method Security 的本质仍然是 **代理**：
 
 ### 坑点 2：roles vs authorities 的前缀差异，导致规则误判（ROLE_ 边界）
 
-- Symptom：你给了 `ADMIN` authority，但 `@PreAuthorize("hasRole('ADMIN')")` 仍然拒绝
+- Symptom：给了 `ADMIN` authority，但 `@PreAuthorize("hasRole('ADMIN')")` 仍然拒绝
 - Root Cause：`hasRole('ADMIN')` 的语义是检查 `ROLE_ADMIN`；只有 `ADMIN` 并不等价于 `ROLE_ADMIN`
 - Verification：`BootSecurityLabTest#methodSecurityDeniesAdminOnlyMethodWhenRolePrefixMissing_asPitfall`
 - Breakpoints：`AdminOnlyService#adminOnlyAction`

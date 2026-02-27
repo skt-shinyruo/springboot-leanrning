@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansValuePlaceholderResolutionLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansValuePlaceholderResolutionLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（SpEL，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/expressions.html
@@ -54,11 +54,11 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：BeanFactory 安装了哪一种 embedded value resolver  
-**分支**：  
-- 默认 resolver（多为 `Environment#resolvePlaceholders`）→ **non-strict**  
-- `PropertySourcesPlaceholderConfigurer` → **strict fail-fast**  
-**结果**：缺失占位符要么“原样保留”，要么直接抛异常  
+**条件**：BeanFactory 安装了哪一种 embedded value resolver
+**分支**：
+- 默认 resolver（多为 `Environment#resolvePlaceholders`）→ **non-strict**
+- `PropertySourcesPlaceholderConfigurer` → **strict fail-fast**
+**结果**：缺失占位符要么“原样保留”，要么直接抛异常
 **断点建议**：`AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
 
 ## 1. 先把链路拆开：`@Value` 不是“直接读 Environment”

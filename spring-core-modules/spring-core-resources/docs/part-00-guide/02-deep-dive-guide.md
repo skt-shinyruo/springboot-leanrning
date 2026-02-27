@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：深挖指南（Spring Core Resources）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
     - 原理：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
     - 源码入口：`org.springframework.core.io.Resource` / `org.springframework.core.io.ResourceLoader` / `org.springframework.core.io.support.PathMatchingResourcePatternResolver`
     - 推荐 Lab：`SpringCoreResourcesLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 
@@ -35,13 +35,13 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 1. **Resource 抽象**：同一个 API 读取 classpath/file/url 等不同来源
 2. **定位语义**：`classpath:` / `classpath*:` / pattern 的差异
 3. **存在性与可读性**：`getResource()` 只是拿到 handle，不等于存在
-4. **读取与编码**：bytes → text 需要你明确 charset（避免默认编码坑）
+4. **读取与编码**：bytes → text 需要显式指定 charset（避免默认编码坑）
 
 ### 1) 时间线：一次资源读取从 location 到 content
 
-1. 你给出一个 location（例如 `classpath:data/hello.txt` 或 `classpath*:data/*.txt`）
+1. 给出一个 location（例如 `classpath:data/hello.txt` 或 `classpath*:data/*.txt`）
 2. `ResourceLoader/Resolver` 解析 location → 得到 `Resource`（或多个）
-3. 你判断存在性（可选）：`resource.exists()`
+3. 判断存在性（可选）：`resource.exists()`
 4. 读取内容：`resource.getInputStream()` → bytes → text（指定 charset）
 5. 输出 debug 证据：`resource.getDescription()`（排障时非常有用）
 
@@ -68,7 +68,7 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
 - 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-  
+
 建议断点（先把“定位失败”与“读取失败”分开）：
 
 - 定位阶段：
@@ -77,7 +77,7 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 - 读取阶段：
   - `Resource#getInputStream`
 - 排障时优先输出：
-  - `Resource#getDescription`（确认你到底拿到了哪个资源句柄）
+  - `Resource#getDescription`（确认究竟拿到了哪个资源句柄）
 
 ## 最小可运行实验（Lab）
 
@@ -85,7 +85,7 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 > 验证入口（可跑）：
 > - `SpringCoreResourcesLabTest`
@@ -98,7 +98,7 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 
 建议阅读顺序：
 1. Resource 抽象是什么、为何存在（Part 01）
-2. classpath 定位规则（含 `classpath:`、`classpath*:`、pattern）与“你以为你找到，其实没找到”（Part 01）
+2. classpath 定位规则（含 `classpath:`、`classpath*:`、pattern）与“以为找到了，其实没找到”（Part 01）
 3. 再进入编码、Jar/文件系统差异与常见坑（Part 01 + Appendix）
 
 ## 小结与下一章

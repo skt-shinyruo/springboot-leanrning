@@ -29,7 +29,7 @@
 - 类名（最常见）
 - 或者显式命名的字符串
 
-配置里你写的 `logging.level.com.xxx=DEBUG` 本质就是在设置这个层级树上的节点。
+配置里写的 `logging.level.com.xxx=DEBUG` 本质就是在设置这个层级树上的节点。
 
 ## 2. effective level 是什么？
 
@@ -43,7 +43,7 @@ effective level 是“继承后最终生效的级别”，它决定：
 
 - `OutputCaptureExtension`（本模块的 `BootLoggingLabTest`）
 
-当你需要验证 MDC/结构化字段时，建议升级为：
+当需要验证 MDC/结构化字段时，建议升级为：
 
 - Logback `ListAppender`
 

@@ -4,7 +4,7 @@
 
 本模块的定位是：**用可运行的最小 HTTP 边界 + 可断言的实验测试（Labs/Exercises）**，把“为什么是 401/403、为什么 POST 会被 CSRF 拦、为什么方法注解有时不生效”等现象讲清楚。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -17,7 +17,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - 认证（Authentication） vs 授权（Authorization）的区别：**401 vs 403**
 - `httpBasic()` 的最小闭环（用户名/密码、角色/权限）

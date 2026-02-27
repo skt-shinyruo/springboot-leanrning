@@ -72,11 +72,11 @@
 
 ### 1.1 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：beanName 是否以 `&` 开头  
-**分支**：`AbstractBeanFactory#getObjectForBeanInstance`  
-**结果**：  
-- `"name"` → product  
-- `"&name"` → factory  
+**条件**：beanName 是否以 `&` 开头
+**分支**：`AbstractBeanFactory#getObjectForBeanInstance`
+**结果**：
+- `"name"` → product
+- `"&name"` → factory
 **断点建议**：`AbstractBeanFactory#getObjectForBeanInstance`
 
 同样的规则也适用于“看类型”：
@@ -171,21 +171,21 @@
 
 ## FactoryBean 与代理/循环依赖的交叉
 
-- early reference 阶段若需要 product，建议确保 **early == final** 形态一致  
+- early reference 阶段若需要 product，建议确保 **early == final** 形态一致
 - 代理介入时，优先让 `getEarlyBeanReference` 返回 proxy，避免 raw 注入绕过增强
 
 ## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
 
 运行完成该 Lab，至少应能够复述 3 条结论：
 
-1) **`"name"` vs `"&name"` 的分流**  
-   - 断点：`getObjectForBeanInstance`  
+1) **`"name"` vs `"&name"` 的分流**
+   - 断点：`getObjectForBeanInstance`
    - 断言：同名不同语义
-2) **product 参与 type matching**  
-   - 断点：`isTypeMatch`  
+2) **product 参与 type matching**
+   - 断点：`isTypeMatch`
    - 断言：按类型返回 product
-3) **isSingleton 决定 product 缓存**  
-   - 断点：`getObjectFromFactoryBean`  
+3) **isSingleton 决定 product 缓存**
+   - 断点：`getObjectFromFactoryBean`
    - 断言：缓存命中取决于 `isSingleton()`
 
 - `AbstractBeanFactory#getObjectForBeanInstance`：处理 “FactoryBean 的 product vs factory” 分流（`&` 前缀的核心路径）
@@ -237,11 +237,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 

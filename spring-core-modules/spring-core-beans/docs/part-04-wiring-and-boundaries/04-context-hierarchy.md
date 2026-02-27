@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「21. 父子 ApplicationContext：可见性与覆盖边界」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansContextHierarchyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansContextHierarchyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -59,11 +59,11 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：当前 BeanFactory 是否存在 parent  
-**分支**：`AbstractBeanFactory#doGetBean` 本地找不到就 fallback parent  
-**结果**：  
-- child 能看到 parent  
-- parent 永远看不到 child  
+**条件**：当前 BeanFactory 是否存在 parent
+**分支**：`AbstractBeanFactory#doGetBean` 本地找不到就 fallback parent
+**结果**：
+- child 能看到 parent
+- parent 永远看不到 child
 **断点建议**：`AbstractBeanFactory#doGetBean`
 
 ## 1. 现象：child 能看到 parent，parent 看不到 child
@@ -111,14 +111,14 @@
 
 运行完成该 Lab，至少应能够复述 3 条结论：
 
-1) **child 能看到 parent，parent 看不到 child**  
-   - 断点：`doGetBean`  
+1) **child 能看到 parent，parent 看不到 child**
+   - 断点：`doGetBean`
    - 断言：fallback 只向上
-2) **override 只在 child 生效**  
-   - 断点：`containsLocalBean`  
+2) **override 只在 child 生效**
+   - 断点：`containsLocalBean`
    - 断言：child 命中本地，parent 不受影响
-3) **按类型包含祖先会扩大候选集**  
-   - 断点：`beanOfTypeIncludingAncestors`  
+3) **按类型包含祖先会扩大候选集**
+   - 断点：`beanOfTypeIncludingAncestors`
    - 断言：容易出现 NoUnique
 
 ## 排障分流：这是定义层问题还是实例层问题？
@@ -151,11 +151,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansContextHierarchyLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 

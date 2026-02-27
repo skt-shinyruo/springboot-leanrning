@@ -17,9 +17,9 @@
 
 ### 排障模板（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
    - Branch Matrix：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
@@ -33,7 +33,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -62,7 +62,7 @@
 
 ## 坑 1：把 404 当成“端点不存在”，忽略了 exposure 分流
 
-- 你会看到：访问 `/actuator/env` 得到 404，于是以为 env endpoint 没注册/没生效。
+- 会看到：访问 `/actuator/env` 得到 404，于是以为 env endpoint 没注册/没生效。
 - Root Cause：端点存在 ≠ 端点暴露到 HTTP；默认 exposure 并不会把所有端点都映射出来。
 - Verification：
   - 默认不暴露：`BootActuatorLabTest#envEndpointIsNotExposedByDefault`
@@ -71,15 +71,15 @@
   - 暴露后 links 才会出现：`BootActuatorExposureOverrideLabTest#actuatorRootIncludesEnvLinkWhenExposed`
 - Fix：先看 `/actuator` 的 `_links`（它只列“暴露端点”），再核对 include/exclude/base-path，而不是上来就怀疑“端点没注册”。
 
-## 坑 2：环境差异把你带偏（profile/配置来源）
+## 坑 2：环境差异把带偏（profile/配置来源）
 
-- 你会看到：本地可以、线上不行；或者 IDE 里 OK、命令行不行。
+- 会看到：本地可以、线上不行；或者 IDE 里 OK、命令行不行。
 - Root Cause：Actuator 的行为高度依赖配置来源与覆盖顺序（profile/环境变量/外部配置）。
 - Fix：先确认“当前生效的配置值是什么、来自哪个 PropertySource”，再讨论“配置写没写对”。
 
 ## 坑 3：暴露端点不等于允许匿名访问（401/403）
 
-- 你会看到：端点已暴露，但访问返回 401/403。
+- 会看到：端点已暴露，但访问返回 401/403。
 - Root Cause：exposure 决定“有没有路由”，安全策略决定“能不能访问”。401/403/404 三种状态码要先分流清楚。
 - Fix：先把 401/403/404 分清：404 多半是没暴露/路径不对，401/403 才是安全边界（鉴权/CSRF/网络隔离等）。
 

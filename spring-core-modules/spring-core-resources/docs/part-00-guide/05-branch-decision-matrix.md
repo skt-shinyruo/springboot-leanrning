@@ -43,7 +43,7 @@
 ## 小结与下一章
 
 - 小结：分支来自 location 语义与底层 URL 形态（jar:file vs file）。
-- 下一章：[第 141 章：01：Resource 抽象：你拿到的到底是什么](../part-01-resource-abstraction/01-resource-abstraction.md)
+- 下一章：[第 141 章：01：Resource 抽象：拿到的到底是什么](../part-01-resource-abstraction/01-resource-abstraction.md)
 
 <!-- BOOKIFY:START -->
 

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -86,11 +86,11 @@
 ### 1) 把 view name 当成 response body（最常见）
 
 症状：
-- 你访问 `/pages/ping`，看到的不是 HTML，而是一个纯字符串（例如 `pages/ping`）。
+- 访问 `/pages/ping`，看到的不是 HTML，而是一个纯字符串（例如 `pages/ping`）。
 
 根因：
 - `@Controller` 的方法返回 `String` 时，默认语义是 **view name**；
-- 但如果方法/类上出现 `@ResponseBody`（或你误用了 `@RestController`），返回值会被当作 **response body** 写回去。
+- 但如果方法/类上出现 `@ResponseBody`（或误用了 `@RestController`），返回值会被当作 **response body** 写回去。
 
 怎么验证：
 - 在 `DispatcherServlet#doDispatch` 后，跟进 `HandlerMethodReturnValueHandlerComposite#handleReturnValue`，看命中的是 view 相关 handler 还是 message converter 相关 handler。

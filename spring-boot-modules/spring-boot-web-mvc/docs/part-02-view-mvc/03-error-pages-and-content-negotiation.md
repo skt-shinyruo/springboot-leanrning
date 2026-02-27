@@ -7,7 +7,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -38,7 +38,7 @@
 - `templates/error/4xx.html`（兜底 4xx）
 - `templates/error/5xx.html`（兜底 5xx）
 
-因此你只要提供这些模板，就能在“无 handler 的 404”等场景看到自定义页面。
+因此只需提供这些模板，就能在“无 handler 的 404”等场景看到自定义页面。
 
 ### 2) 内容协商：Accept 决定“渲染 HTML 还是返回 JSON”
 
@@ -78,9 +78,9 @@
 
 - MockMvc（固定行为，最直观）：
   - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java`
-    - `returnsCustom404HtmlPageForUnknownRoute`
-    - `renders5xxHtmlPageWhenControllerThrows`
-    - `returnsJsonWhenAcceptIsJson`
+  - `returnsCustom404HtmlPageForUnknownRoute`
+  - `renders5xxHtmlPageWhenControllerThrows`
+  - `returnsJsonWhenAcceptIsJson`
 - 端到端（真实端口验证错误页模板生效）：
   - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
@@ -91,15 +91,15 @@
 - **路由 404**：根本没有匹配到 handler（controller 方法不会执行）
   - 这类 404 更依赖 Boot 的错误页模板（`error/404.html`）
   - 对照证据：`BootWebMvcErrorViewLabTest#returnsCustom404HtmlPageForUnknownRoute`
-- **业务 404**：handler 执行了，但你主动返回 404（例如找不到资源）
-  - 这类 404 更依赖你的业务异常/契约（ApiError/ProblemDetail）
+- **业务 404**：handler 执行了，但主动返回 404（例如找不到资源）
+  - 这类 404 更依赖业务异常/契约（ApiError/ProblemDetail）
 
 先分清来源，才能知道该打断点在 HandlerMapping 还是在 controller/exception handler。
 
 ### 2) 浏览器的 Accept 不是“只有 text/html”
 
 真实浏览器通常会带一个很长的 Accept（包含 `text/html`、`application/xhtml+xml`、`*/*` 等）。
-如果你写了过于严格的判断（例如只等于 `text/html`），可能会出现：
+如果写了过于严格的判断（例如只等于 `text/html`），可能会出现：
 - 浏览器访问却返回 JSON
 - 或 API 调用却被当成页面渲染
 

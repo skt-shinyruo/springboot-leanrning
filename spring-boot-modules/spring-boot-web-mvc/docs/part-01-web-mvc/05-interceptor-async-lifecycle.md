@@ -23,7 +23,7 @@
     - 同步（sync）请求：Interceptor 的典型回调顺序是 `preHandle → postHandle → afterCompletion`。
     - 异步（async）请求的**第一次 dispatch**：通常只有 `preHandle`，并且会触发 `afterConcurrentHandlingStarted`，而 **不会触发** `postHandle/afterCompletion`。
     - 异步（async）请求的**第二次 dispatch（asyncDispatch）**：会再次进入 `preHandle → postHandle → afterCompletion`，但 handler 方法通常不会再次执行（结果已由 async 线程产生）。
-    - 这也是为什么：你把“计时/埋点/日志”写在 `postHandle`，在 async 场景下可能会“少打一半日志”——你需要同时理解 `afterConcurrentHandlingStarted` 与二次 dispatch。
+    - 这也是为什么：把“计时/埋点/日志”写在 `postHandle`，在 async 场景下可能会“少打一半日志”——需要同时理解 `afterConcurrentHandlingStarted` 与二次 dispatch。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -32,7 +32,7 @@
 
 ## 机制主线（把 async 视为“两次 dispatch”）
 
-把 async 看成 **两阶段**，你会更容易理解“为什么回调少了”：
+把 async 看成 **两阶段**，会更容易理解“为什么回调少了”：
 
 1. **第一次 dispatch（REQUEST）**
    - 进入 DispatcherServlet，选路与参数解析照常发生
@@ -75,7 +75,7 @@
 mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#asyncTraceRecordsAfterConcurrentHandlingStartedAndAsyncDispatchCallbacks test
 ```
 
-你在测试里会看到两类证据：
+在测试里会看到两类证据：
 
 1. sync：完整回调链路（含 Filter finally 的 after）
 2. async：第一次 dispatch 出现 `afterConcurrentHandlingStarted`，第二次 dispatch 出现 `postHandle/afterCompletion`
@@ -83,14 +83,14 @@ mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#asyncTraceRecordsA
 ## 常见坑与边界
 
 - **坑 1：只在 postHandle 做观测**
-  - async 第一次 dispatch 不会进 postHandle，你会“漏掉一半日志/埋点”。
+  - async 第一次 dispatch 不会进 postHandle，会“漏掉一半日志/埋点”。
   - 处理策略：观测逻辑要么放在 Filter（更外层），要么同时覆盖 async lifecycle（`afterConcurrentHandlingStarted` + 二次 dispatch）。
 
 - **坑 2：把 async 当作“只是换了线程”**
-  - 实际上它改变了 DispatcherServlet 的回调时机：你看到的行为差异通常来自“两次 dispatch”的结构。
+  - 实际上它改变了 DispatcherServlet 的回调时机：看到的行为差异通常来自“两次 dispatch”的结构。
 
 - **坑 3：测试只写一次 perform，不做 asyncDispatch**
-  - 你只能看到“asyncStarted”，看不到最终响应；这会让排障停留在“感觉”而不是“证据”。
+  - 只能看到“asyncStarted”，看不到最终响应；这会让排障停留在“感觉”而不是“证据”。
 
 ## 小结与下一章
 

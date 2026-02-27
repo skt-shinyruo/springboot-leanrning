@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
     - 原理：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
     - 源码入口：`org.springframework.core.io.Resource` / `org.springframework.core.io.ResourceLoader` / `org.springframework.core.io.support.PathMatchingResourcePatternResolver`
     - 推荐 Lab：`SpringCoreResourcesLabTest`
@@ -20,22 +20,22 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 
 ## 机制主线
 
-这一章解决的其实是一个**误会**：你把 `Resource` 当成了 `File`。
+这一章解决的其实是一个**误会**：把 `Resource` 当成了 `File`。
 
 在 IDE 里，这个误会经常“侥幸成立”——因为 `src/main/resources` 会被复制到 `target/classes`，看起来就像普通文件夹；
-但一旦你把应用打成 jar（尤其是 Spring Boot 的可执行 jar），资源就被塞进 jar 里，**不再是文件系统路径**，于是问题就暴露出来。
+但一旦把应用打成 jar（尤其是 Spring Boot 的可执行 jar），资源就被塞进 jar 里，**不再是文件系统路径**，于是问题就暴露出来。
 
-你可以用一句话记住它：
+可以用一句话记住它：
 
 > `Resource` 的底层可能是 file，也可能是 jar 里的 entry；**能稳定依赖的只有 `getInputStream()`**。
 
@@ -48,7 +48,7 @@ Resource resource = resolver.getResource("classpath:data/hello.txt");
 File file = resource.getFile(); // IDE 可能 OK；jar 里通常不可靠
 ```
 
-为什么？关键在于你拿到的“资源 URL”是什么协议：
+为什么？关键在于拿到的“资源 URL”是什么协议：
 
 - IDE / `mvn test`：经常是 `file:/.../target/classes/data/hello.txt`（确实是磁盘文件）
 - jar 运行：常见是 `jar:file:/.../app.jar!/BOOT-INF/classes!/data/hello.txt`（jar 里的 entry，不是文件）
@@ -65,7 +65,7 @@ File file = resource.getFile(); // IDE 可能 OK；jar 里通常不可靠
 
 ### 3) pattern 扫描时：`classpath:` 与 `classpath*:` 的差异
 
-如果你在做“扫描多个资源文件”，强烈建议形成肌肉记忆：
+如果在做“扫描多个资源文件”，建议形成肌肉记忆：
 
 - `classpath:` 更接近“取一个”
 - `classpath*:` 才是“从整个 classpath 里扫一遍”（见本模块的 mechanics/lab）
@@ -80,7 +80,7 @@ File file = resource.getFile(); // IDE 可能 OK；jar 里通常不可靠
 - 路径细节（leading slash）：`SpringCoreResourcesLabTest#supportsLeadingSlashInClasspathLocation`
 - “file 资源”也能走同一套抽象：`SpringCoreResourcesLabTest#fileResourcesCanAlsoBeRead_viaResourceAbstraction`
 
-如果你想把 jar vs filesystem 变成“亲手复现过的结论”：
+如果想把 jar vs filesystem 变成“亲手复现过的结论”：
 
 - 练习题入口（默认禁用，避免影响 CI）：`SpringCoreResourcesExerciseTest#exercise_jarVsFilesystem`
 - 建议把观察记录成两条结论：`getInputStream()` 稳定；`getFile()` 取决于资源是否真的是文件
@@ -92,7 +92,7 @@ File file = resource.getFile(); // IDE 可能 OK；jar 里通常不可靠
 - `Resource#getInputStream()`（最通用）
 - `ResourcePatternResolver`（pattern 扫描）
 
-等你把机制吃透后，再讨论“什么时候可以用 File 优化”。
+待把机制吃透后，再讨论“什么时候可以用 File 优化”。
 
 ## 源码与断点
 
@@ -101,21 +101,21 @@ File file = resource.getFile(); // IDE 可能 OK；jar 里通常不可靠
 
 ## 最小可运行实验（Lab）
 
-- 建议先跑一遍 Lab，再回到本章对照机制；如果你正在排障，可直接从“常见坑与边界”进入。
+- 先运行一遍 Lab，再回到本章对照机制；如果正在排障，可直接从“常见坑与边界”进入。
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
-你不需要背结论，做一次对比就够了：
+不需要背结论，做一次对比就够了：
 
 - IDE 运行：资源在 `target/classes`，通常是 `file:` URL → 很多“把资源当 File 用”的写法会蒙混过关
 - 打包运行：资源在 jar 内部，通常是 `jar:` URL → `getFile()` 不再可靠
 
 建议用“可观察性”做实验记录：
 
-- 在断点/日志里看 `Resource#getDescription()`（它往往比你自己猜路径靠谱）
-- 观察 `Resource#getURL()` 的协议（`file:` vs `jar:`），再决定你能不能用 `getFile()`
+- 在断点/日志里看 `Resource#getDescription()`（它往往比自行猜路径更可靠）
+- 观察 `Resource#getURL()` 的协议（`file:` vs `jar:`），再决定能不能用 `getFile()`
 
 动手题见：`SpringCoreResourcesExerciseTest#exercise_jarVsFilesystem`（练习：对比两种运行方式，并把观察写成笔记）。
 
@@ -127,7 +127,7 @@ File file = resource.getFile(); // IDE 可能 OK；jar 里通常不可靠
 
 - Symptom：IDE 里 `resource.getFile()` 正常，jar 一运行就抛异常（或读不到文件）
 - Root Cause：资源 URL 协议变了（`file:` → `jar:`），资源不再是文件系统路径
-- Fix：读取优先走 `getInputStream()`；如果你确实需要 `File`，把流落到临时文件再处理（并明确这是“复制后的文件”）
+- Fix：读取优先走 `getInputStream()`；如果确实需要 `File`，把流落到临时文件再处理（并明确这是“复制后的文件”）
 
 ### 坑 2：以为 `getResource(...)` 拿到对象就代表资源存在
 
@@ -137,7 +137,7 @@ File file = resource.getFile(); // IDE 可能 OK；jar 里通常不可靠
 
 ### 坑 3：pattern 扫描写成 `classpath:`，结果只拿到“一个”
 
-- Symptom：你以为会扫到多个 `*.txt`，实际只返回一个/甚至为空
+- Symptom：以为会扫到多个 `*.txt`，实际只返回一个/甚至为空
 - Root Cause：`classpath:` 与 `classpath*:` 语义不同
 - Verification：`SpringCoreResourcesMechanicsLabTest#classpathStarPatternLoadsResourcesFromClasspath`
 

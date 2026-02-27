@@ -18,7 +18,7 @@
 - Profiles 排障的第一步：确认 activeProfiles（不要先猜）。
 - 第二步：确认“哪些配置类/bean 被跳过”（ConditionEvaluator 是决定点）。
 
-## 运行入口（建议先跑）
+## 运行入口（先运行）
 
 - Book Matrix：`SpringCoreProfilesBookMatrixLabTest`
 - Branch Matrix：`SpringCoreProfilesBranchMatrixLabTest`

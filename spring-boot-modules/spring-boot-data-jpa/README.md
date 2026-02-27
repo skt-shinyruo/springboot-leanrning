@@ -4,7 +4,7 @@
 
 这份 `README.md` 主要做索引与导航；更深入的解释请按章节阅读：见 [`docs/README.md`](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -17,13 +17,13 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - Entity / Repository 的最小闭环（保存、查询、删除）
 - persistence context（managed / detached）与实体状态机
 - flush 与 JDBC 可见性
 - dirty checking（脏检查）
-- fetching 与 N+1（通过 Exercises 引导你亲手复现）
+- fetching 与 N+1（通过 Exercises 完成可复现验证）
 
 ## 前置知识
 
@@ -71,7 +71,7 @@ mvn -pl :spring-boot-data-jpa test
 
 ## 概念 → 在本模块哪里能“看见”
 
-| 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
+| 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
 | save/find 的最小闭环 | [docs/part-01/01](docs/part-01-data-jpa/01-entity-states.md) | `BootDataJpaLabTest#savesAndFindsByTitle` + `BookRepository` | Repository 方法如何映射成查询 |
 | managed / detached 的差异 | [docs/part-01/02](docs/part-01-data-jpa/02-persistence-context.md) | `BootDataJpaLabTest#entityIsManagedAfterSaveInSamePersistenceContext` | `entityManager.contains(...)` 的语义 |

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Profile 激活与 Bean 选择
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Profile`/`@ConditionalOnProperty` 在不同环境选择 Bean 实现；排障时先确认 profiles 激活方式与条件匹配结果。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Profile`/`@ConditionalOnProperty` 在不同环境选择 Bean 实现；排障时先确认 profiles 激活方式与条件匹配结果。
     - 原理：激活 profiles → 条件评估（shouldSkip）→ Bean 是否注册；profiles 同时影响配置参与与装配选择。
     - 源码入口：`org.springframework.context.annotation.Profile` / `org.springframework.context.annotation.ConditionEvaluator#shouldSkip` / `org.springframework.core.env.ConfigurableEnvironment#getActiveProfiles`
     - 推荐 Lab：`SpringCoreProfilesLabTest`
@@ -20,17 +20,17 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreProfilesLabTest`
 
 ## 机制主线
 
-本章目标：你读完后应该能回答下面三件事：
+本章目标：本章结束后应能回答下面三件事：
 1. Profile 可以从哪里激活？（配置文件、环境变量、启动参数、测试注解）
 2. `@Profile` 的语义是什么？（“是否注册这个 bean 定义”）
 3. 当同一接口有多实现时，在不同 profile 下如何稳定选择到预期的实现？
@@ -46,7 +46,7 @@
 - Lab：`SpringCoreProfilesLabTest`
 - 建议命令：`mvn -pl :spring-core-profiles test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 > 验证入口（可跑）：`SpringCoreProfilesLabTest`
 
@@ -57,7 +57,7 @@
 
 ### 坑点 1：把 default profile 当成 active profile，导致“我以为激活了但其实没有”
 
-- Symptom：你以为某个 profile（如 dev）已经生效，但实际 `Environment#getActiveProfiles()` 为空
+- Symptom：以为某个 profile（如 dev）已经生效，但实际 `Environment#getActiveProfiles()` 为空
 - Root Cause：`spring.profiles.default` 只是兜底；只有 `spring.profiles.active`（或等价来源）才算显式激活
 - Verification：
   - 默认 profiles 含 default：`SpringCoreProfilesProfilePrecedenceLabTest#defaultProfilesContainDefault_whenNoActiveProfilesConfigured`

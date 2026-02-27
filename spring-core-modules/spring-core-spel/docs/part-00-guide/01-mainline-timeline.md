@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：主线时间线：spring-core-spel
-    - 怎么使用：本页是导航页。建议先跑 `SpringCoreSpelLabTest`，把“表达式解析与求值”固化成断言，再按调用链定位到 parser 与 evaluation。
+    - 怎么使用：本页是导航页。先运行 `SpringCoreSpelLabTest`，把“表达式解析与求值”固化成断言，再按调用链定位到 parser 与 evaluation。
     - 原理：SpEL 的核心是：parser 把字符串变成表达式对象（AST），evaluation context 决定如何读取属性/变量/函数，最后 getValue() 求值。
     - 源码入口：`SpelExpressionParser#parseExpression` / `Expression#getValue` / `StandardEvaluationContext`
     - 推荐 Lab：`SpringCoreSpelLabTest`

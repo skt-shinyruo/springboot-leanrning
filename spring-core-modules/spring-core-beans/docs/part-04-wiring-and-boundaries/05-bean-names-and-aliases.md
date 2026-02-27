@@ -26,7 +26,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -66,9 +66,9 @@
 
 ### 1.1 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：是否传入 aliasName  
-**分支**：`canonicalName` / `transformedBeanName` 先做名称归一化  
-**结果**：aliasName 最终映射到同一 canonicalName  
+**条件**：是否传入 aliasName
+**分支**：`canonicalName` / `transformedBeanName` 先做名称归一化
+**结果**：aliasName 最终映射到同一 canonicalName
 **断点建议**：`SimpleAliasRegistry#canonicalName`
 
 ## 2. alias 在容器里的定位
@@ -86,13 +86,13 @@
 
 ### 2.1 名字参与注入的入口集合（容易被忽略）
 
-- `@Resource`：按 name-first  
-- by-name fallback：字段/参数名匹配  
-- `@Qualifier("beanName")`：显式指名  
+- `@Resource`：按 name-first
+- by-name fallback：字段/参数名匹配
+- `@Qualifier("beanName")`：显式指名
 
 ### 2.2 工程建议：让名字稳定、可重构
 
-- 给核心 bean 明确 canonicalName，避免依赖默认生成名  
+- 给核心 bean 明确 canonicalName，避免依赖默认生成名
 - alias 用于兼容旧名/灰度迁移，不要当作“多实例手段”
 
 入口：
@@ -114,14 +114,14 @@
 
 运行完成该 Lab，至少应能够复述 3 条结论：
 
-1) **alias 只做名字映射**  
-   - 断点：`canonicalName`  
+1) **alias 只做名字映射**
+   - 断点：`canonicalName`
    - 断言：aliasName 与 primaryName 返回同一实例
-2) **singleton 缓存只有一份**  
-   - 断点：`getSingleton`  
+2) **singleton 缓存只有一份**
+   - 断点：`getSingleton`
    - 断言：两次获取命中同一缓存条目
-3) **名称归一化发生在最早入口**  
-   - 断点：`transformedBeanName`  
+3) **名称归一化发生在最早入口**
+   - 断点：`transformedBeanName`
    - 断言：`&` 与 alias 统一处理
 
 ## 4. 面试常问（beanName 与 alias）
@@ -140,11 +140,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansBeanNameAliasLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 

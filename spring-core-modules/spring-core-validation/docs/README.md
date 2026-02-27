@@ -1,11 +1,14 @@
-# Spring Validation：目录
+# Spring Validation：约束模型、触发时机与代理边界
 
-## 导读
+本模块以“约束模型 → 触发 → 违规结果（Violation）”为主线，把校验行为拆成可运行的事实：什么时候会触发校验、违规结果如何汇总、groups 如何影响匹配，以及方法校验在代理边界下为何会出现“看起来没生效”的反直觉现象。很多校验问题需要与 AOP（代理/自调用）和 Web MVC（入参绑定与错误映射）串联理解。
 
-本页是「Spring Validation：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先把“触发与结果”跑成事实
 
-> 建议先把“约束模型 → 触发 → 违规结果”的主线跑通，再进入方法校验与代理边界；很多问题需要与 AOP/Web MVC 一起看。
+- `mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
+
+运行后应能回答：一次校验触发发生在什么位置；`ConstraintViolation` 的集合如何形成；方法校验在代理/自调用场景下为何会表现不同。
 
 ## 从这里开始（建议顺序）
 
@@ -32,10 +35,17 @@
 - 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](part-00-guide/05-branch-decision-matrix.md)
 - 排障 playbook：[01-common-pitfalls.md](appendix/01-common-pitfalls.md)
 - 自检清单：[02-self-check.md](appendix/02-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-core-validation -Dtest=*ExerciseSolutionTest test`
-- 可跑入口（并发/性能 Lab - Validator 并发使用边界）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationValidatorConcurrencyLabTest test`
+
+---
+
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-validation -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（Validator 并发使用边界）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationValidatorConcurrencyLabTest test`
+
+---
 
 ## 排坑与自检
 

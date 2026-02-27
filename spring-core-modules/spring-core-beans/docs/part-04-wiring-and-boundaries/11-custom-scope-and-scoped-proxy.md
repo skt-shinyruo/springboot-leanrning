@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「28. 自定义 Scope + scoped proxy：thread scope 的真实语义」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansCustomScopeLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansCustomScopeLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Scopes，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
@@ -61,12 +61,12 @@ Spring 的 scope 机制是可扩展的：可以注册自定义 scope。
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：容器 `getBean` 时发现 bean 定义了 scope（`singleton`/`prototype`/自定义）  
-**分支**：`AbstractBeanFactory#doGetBean` 按 scope 分流  
-**结果**：  
-- singleton：从 `singletonObjects` 取/建  
-- prototype：每次新建  
-- custom scope：委派给 `Scope#get`（语义完全取决于相应的实现）  
+**条件**：容器 `getBean` 时发现 bean 定义了 scope（`singleton`/`prototype`/自定义）
+**分支**：`AbstractBeanFactory#doGetBean` 按 scope 分流
+**结果**：
+- singleton：从 `singletonObjects` 取/建
+- prototype：每次新建
+- custom scope：委派给 `Scope#get`（语义完全取决于相应的实现）
 **断点建议**：`AbstractBeanFactory#doGetBean` / `Scope#get`
 
 ## 1. 注册自定义 scope（thread）
@@ -141,18 +141,18 @@ prototype 是最典型的例子。
 
 请记住这条规则：
 
-- **prototype**：容器创建但不管理销毁  
-- **custom scope**：销毁时机由 scope 自己决定  
+- **prototype**：容器创建但不管理销毁
+- **custom scope**：销毁时机由 scope 自己决定
 
 若不注册销毁回调，最常见的后果是：
 
-- 线程/请求上下文泄漏  
-- 资源未释放（连接、文件句柄等）  
+- 线程/请求上下文泄漏
+- 资源未释放（连接、文件句柄等）
 
 关键方法：
 
-- `Scope#registerDestructionCallback`：注册销毁回调  
-- `Scope#remove`：移除并触发回调  
+- `Scope#registerDestructionCallback`：注册销毁回调
+- `Scope#remove`：移除并触发回调
 
 实务建议：对 thread/request 这类 scope，明确“回收点”是排障核心。
 
@@ -177,11 +177,11 @@ prototype 是最典型的例子。
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansCustomScopeLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 

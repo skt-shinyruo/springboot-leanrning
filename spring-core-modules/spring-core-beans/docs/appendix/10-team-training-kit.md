@@ -51,7 +51,7 @@
 
 - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test`
 
-3) **调试准备（可选，但强烈建议）**
+3) **调试准备（可选，但建议）**
 
 - 方式 A：IDE 直接 Debug 单测（最稳妥）
 - 方式 B：Maven surefire debug（适合演示“如何在真实项目 attach”）

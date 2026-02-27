@@ -18,7 +18,7 @@
 - Events 排障的第一问题：**listener 有没有被匹配到**；第二问题：**在哪个线程执行**；第三问题：**异常会不会影响发布者**。
 - 推荐证据链：测试断言（trace/线程名/事件次数）→ 断点（multicastEvent）→ Watchpoints（listeners 列表）。
 
-## 运行入口（建议先跑）
+## 运行入口（先运行）
 
 - Book Matrix：`SpringCoreEventsBookMatrixLabTest`
 - Branch Matrix（基础）：`SpringCoreEventsBasicsBranchMatrixLabTest`

@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansBeanDefinitionOverridingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansBeanDefinitionOverridingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -71,9 +71,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：`DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` 为 `true`  
-**分支**：`registerBeanDefinition` 检测到同名时进入“覆盖”分支  
-**结果**：registry 中 **BeanDefinition 被替换**（但已创建的单例不会回滚）  
+**条件**：`DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` 为 `true`
+**分支**：`registerBeanDefinition` 检测到同名时进入“覆盖”分支
+**结果**：registry 中 **BeanDefinition 被替换**（但已创建的单例不会回滚）
 **断点建议**：`DefaultListableBeanFactory#registerBeanDefinition`
 
 ## 2. allowBeanDefinitionOverriding=false：同名注册 fail-fast
@@ -90,7 +90,7 @@
 
 ## 3. 覆盖语义的来源：Spring vs Boot 的开关路径
 
-在纯 Spring 容器里，覆盖与否只由 `DefaultListableBeanFactory` 的开关决定；  
+在纯 Spring 容器里，覆盖与否只由 `DefaultListableBeanFactory` 的开关决定；
 在 Spring Boot 中，开关通常会被 `SpringApplication` 或配置项提前设置。
 
 需要明确“是谁设置了开关”：
@@ -156,14 +156,14 @@
 
 至少应能够得到并复述三条结论：
 
-1) **允许覆盖：后注册 wins**  
-   - 断点：`registerBeanDefinition`  
+1) **允许覆盖：后注册 wins**
+   - 断点：`registerBeanDefinition`
    - 断言：最终 `getBeanDefinition(beanName)` 指向第二次注册来源
-2) **禁止覆盖：注册阶段 fail-fast**  
-   - 断点：`registerBeanDefinition`  
+2) **禁止覆盖：注册阶段 fail-fast**
+   - 断点：`registerBeanDefinition`
    - 断言：抛 `BeanDefinitionOverrideException`，无需进入 refresh
-3) **覆盖不影响已创建单例**  
-   - 断点：`AbstractBeanFactory#doGetBean`  
+3) **覆盖不影响已创建单例**
+   - 断点：`AbstractBeanFactory#doGetBean`
    - 断言：已有 `singletonObjects` 时直接返回旧对象
 ## 7. 自检要点
 

@@ -26,7 +26,7 @@
 
 - `mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
 
-## 机制主线（你要建立的叙事）
+## 机制主线（需要建立的叙事）
 
 1. **日志系统何时初始化？**（LoggingSystem + logging config）
 2. **日志级别如何决策？**（category → effective level）

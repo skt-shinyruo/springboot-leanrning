@@ -27,7 +27,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -59,11 +59,11 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 ### 1.1 机制系统阐述：条件 → 分支 → 结果（可断点验证）
 
-**条件**：是否存在 `BeanDefinitionRegistryPostProcessor`  
-**分支**：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 先执行 BDRPP  
-**结果**：  
-- BDRPP 可新增/改名/批量注册定义  
-- BFPP 只能修改已有定义  
+**条件**：是否存在 `BeanDefinitionRegistryPostProcessor`
+**分支**：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 先执行 BDRPP
+**结果**：
+- BDRPP 可新增/改名/批量注册定义
+- BFPP 只能修改已有定义
 **断点建议**：`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`
 
 ## 2. 现象：未显式注册 bean，但它依然出现了
@@ -87,9 +87,9 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 ### 3.1 关键分支解释（refresh 时机）
 
-- `beanFactory instanceof BeanDefinitionRegistry`：决定是否进入 BDRPP 分支  
-- `processedBeans`：避免同一处理器重复执行  
-- `beanDefinitionNames`：定义数量变化是“注册成功”的直观证据  
+- `beanFactory instanceof BeanDefinitionRegistry`：决定是否进入 BDRPP 分支
+- `processedBeans`：避免同一处理器重复执行
+- `beanDefinitionNames`：定义数量变化是“注册成功”的直观证据
 
 - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`：refresh 早期调用链入口（BDRPP/BFPP 的统一调度点）
 - `BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`：BDRPP 的“注册阶段”入口（新增/改名/批量注册定义）
@@ -113,14 +113,14 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 完成该组用例后，至少应能够复述 3 条结论：
 
-1) **BDRPP 能动态注册定义**  
-   - 断点：`postProcessBeanDefinitionRegistry`  
+1) **BDRPP 能动态注册定义**
+   - 断点：`postProcessBeanDefinitionRegistry`
    - 断言：`registeredBean` 出现在 registry
-2) **BDRPP 先于 BFPP**  
-   - 断点：`invokeBeanFactoryPostProcessors`  
+2) **BDRPP 先于 BFPP**
+   - 断点：`invokeBeanFactoryPostProcessors`
    - 断言：BFPP 能修改 BDRPP 新注册的定义
-3) **定义稳定后才实例化**  
-   - 断点：`preInstantiateSingletons`  
+3) **定义稳定后才实例化**
+   - 断点：`preInstantiateSingletons`
    - 断言：实例创建发生在定义加工之后
 
 ## 排障分流：这是定义层问题还是实例层问题？
@@ -220,11 +220,11 @@ BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注�
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansRegistryPostProcessorLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 对应实验：
 

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -79,7 +79,7 @@
 ### 坑点 1：多个 `SecurityFilterChain` 匹配与顺序错误，导致“命中错链路”
 
 - Symptom：
-  - 你以为 `/api/jwt/**` 走的是 JWT chain，结果行为像 Basic chain（或反过来）
+  - 以为 `/api/jwt/**` 走的是 JWT chain，结果行为像 Basic chain（或反过来）
   - 例如：JWT POST 本应不需要 CSRF，却被 CSRF 拦下；或某些 header/filter 只在部分响应出现
 - Root Cause：
   - 多个 chain 的优先级由 matcher 匹配与顺序共同决定；顺序错误时请求可能先命中一个更“宽”的 chain
@@ -91,7 +91,7 @@
 
 ### 坑点 2：只靠“响应码/行为”判断命中哪条链路，容易误判（推荐用 Filter 列表做证据链）
 
-- Symptom：你看到某个路径返回 401/403/CSRF，就主观判断“它一定命中了某条链”，结果排障方向全错
+- Symptom：看到某个路径返回 401/403/CSRF，就主观判断“它一定命中了某条链”，结果排障方向全错
 - Root Cause：行为是“链路整体结果”，很容易被多个因素影响；而 `FilterChainProxy#getFilters(request)` 能直接给出“命中了哪条链的 filters”，证据更硬
 - Verification：`BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain`
 - Breakpoints：

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -30,12 +30,12 @@
 
 ## 机制主线
 
-fetching 不是“性能优化技巧”，而是**关联加载策略**：你查一张表时，关联对象/集合是一次性抓回来，还是等你访问时再补一刀。
+fetching 不是“性能优化技巧”，而是**关联加载策略**：查一张表时，关联对象/集合是一次性抓回来，还是等访问时再补一刀。
 
 N+1 的本质也很朴素：
 
 - 第一条查询拿到 N 个“父对象”（例如 Author 列表）
-- 你在循环里访问 lazy 关联（例如 `author.getBooks()`）
+- 在循环里访问 lazy 关联（例如 `author.getBooks()`）
 - 于是每个父对象都再补一次 select（N 次）→ 形成 N+1
 
 这类问题最怕“只看代码不看 SQL”。在这个模块里，建议至少形成两条证据链：
@@ -45,7 +45,7 @@ N+1 的本质也很朴素：
 
 ## 什么是 N+1（直觉版）
 
-你以为你在做：
+以为在做：
 
 - 1 次查询：查出列表（N 条记录）
 
@@ -61,17 +61,17 @@ N+1 的本质也很朴素：
 典型触发条件：
 
 - 关联关系是懒加载（lazy）
-- 你在循环中访问了关联属性
+- 在循环中访问了关联属性
 - persistence context/事务仍然活着，因此触发了额外 SQL
 
 ## 在本模块的练习入口
 
-如果你只想快速把 N+1 跑出来（强烈推荐先这么做）：
+如果只想快速把 N+1 跑出来（强烈推荐先这么做）：
 
 - N+1 发生：`BootDataJpaLabTest#nPlusOneHappensWhenAccessingLazyCollections`
 - 一个常见修复方向（示例）：`BootDataJpaLabTest#entityGraphCanAvoidNPlusOne_whenFetchingCollections`
 
-如果你想把它变成“自己能写出来的结论”（更推荐）：
+如果想把它变成“自己能写出来的结论”（更推荐）：
 
 - 动手题入口：`BootDataJpaExerciseTest#exercise_relationshipsAndFetching`（新增关系 + 复现 N+1 + 写断言）
 
@@ -92,7 +92,7 @@ N+1 的本质也很朴素：
 
 ### 复现/验证补充说明（来自原文迁移）
 
-这一章以“学习路线图”的方式讲 N+1（本模块目前通过 Exercises 引导你亲手复现）。
+这一章以“学习路线图”的方式讲 N+1（本模块目前通过 Exercises 引导亲手复现）。
 
 看 `BootDataJpaExerciseTest#exercise_relationshipsAndFetching`：
 
@@ -103,7 +103,7 @@ N+1 的本质也很朴素：
 
 ## 常见坑与边界
 
-### 坑点 1：循环里访问 lazy 关联，触发 N+1 但你毫无察觉
+### 坑点 1：循环里访问 lazy 关联，触发 N+1 但毫无察觉
 
 - Symptom：功能测试都通过，但线上接口突然变慢；profiling 发现 SQL 数量暴涨
 - Root Cause：列表查询 + 循环访问 lazy 关联 → 触发额外 select（N+1）

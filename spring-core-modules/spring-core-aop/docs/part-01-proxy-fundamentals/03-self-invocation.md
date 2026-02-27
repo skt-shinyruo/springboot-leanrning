@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
     - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
     - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
     - 推荐 Lab：`SpringCoreAopLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreAopLabTest`
 
@@ -36,7 +36,7 @@
 - `outer(...)` 内部调用 `inner(...)`
 
 - 调用 `selfInvocationExampleService.outer("Bob")`
-- 你会看到 `InvocationLog` 只记录了一次（只拦截了 `outer`）
+- 会看到 `InvocationLog` 只记录了一次（只拦截了 `outer`）
 
 ## 原因（一句话版本）
 
@@ -70,7 +70,7 @@
 
 ## 应当得到的结论
 
-当你遇到 “AOP 不生效” 的问题时，排查顺序建议是：
+当遇到 “AOP 不生效” 的问题时，排查顺序建议是：
 
 1. bean 是否被代理（`AopUtils.isAopProxy`）
 2. 调用入口是否走代理（是否发生自调用）
@@ -81,7 +81,7 @@
 
 然后跑：
 
-你会看到：
+会看到：
 
 - 外部调用 `outer(...)` 会命中代理入口
 - `outer(...)` 内部的 `this.inner(...)` 根本不会命中代理入口（因为它是目标对象内部的普通方法调用）
@@ -97,13 +97,13 @@
 - Lab：`SpringCoreAopLabTest`
 - 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 现象（在本模块如何复现）
 
 在测试 `SpringCoreAopLabTest#selfInvocationDoesNotTriggerAdviceForInnerMethod` 里：
 
-如果你想把“怎么修复”也做成可验证的闭环，直接看练习：
+如果想把“怎么修复”也做成可验证的闭环，直接看练习：
 
 - `SpringCoreAopExerciseTest#exercise_makeSelfInvocationTriggerAdvice`
 

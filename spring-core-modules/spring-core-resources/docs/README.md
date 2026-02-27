@@ -1,11 +1,14 @@
-# Spring Resources：目录
+# Spring Resources：定位、读取与 classpath 边界
 
-## 导读
+资源问题的高频根因在于“同一段路径在不同运行形态下不是同一件事”：classpath、jar 内资源与 filesystem 文件在定位、读取、pattern 扫描、以及 `exists` 语义上都有细微但决定性的差异。本模块按资源抽象逐步展开，目标是把这些边界跑成可验证的事实。
 
-本页是「Spring Resources：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先跑通一次 classpath 定位与读取
 
-> 建议顺读 6 章把资源定位与读取的边界跑通：classpath/jar/filesystem 的差异，是资源问题的高发根因。
+- `mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBookMatrixLabTest test`
+
+运行后应能回答：Resource 抽象背后到底是哪一种实现（classpath/jar/file）；`classpath*:` 与 pattern 扫描在何处展开；为何在 IDE 与打包后运行时表现不同。
 
 ## 从这里开始（建议顺序）
 
@@ -27,10 +30,17 @@
 - 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](part-00-guide/05-branch-decision-matrix.md)
 - 排障 playbook：[01-common-pitfalls.md](appendix/01-common-pitfalls.md)
 - 自检清单：[02-self-check.md](appendix/02-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-core-resources -Dtest=*ExerciseSolutionTest test`
-- 可跑入口（并发/性能 Lab - PathMatchingResourcePatternResolver 并发解析）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesPatternResolverConcurrencyLabTest test`
+
+---
+
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-resources -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（PathMatchingResourcePatternResolver 并发解析）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesPatternResolverConcurrencyLabTest test`
+
+---
 
 ## 排坑与自检
 

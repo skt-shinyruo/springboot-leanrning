@@ -1,11 +1,14 @@
-# Spring Boot Logging：目录
+# Spring Boot Logging：级别决策、分类与初始化链路
 
-## 导读
+日志问题最常见的表象是“为什么 debug 有时出现、有时不出现”，而根因通常落在两处：日志系统初始化顺序，以及日志级别与分类（category）在启动期如何被解析并应用。本模块先把这条调用链跑通，再进入 MDC、结构化日志等扩展主题。
 
-本页是「Spring Boot Logging：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+---
 
+## 10 分钟入口：先确认“最终级别”如何决策
 
-> 建议先把“日志级别如何被解析与应用”跑通，再进入 MDC/结构化日志等扩展。
+- `mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
+
+运行后应能回答：LoggingSystem 在启动期何时初始化；某个 logger 的最终级别来自哪个配置来源；为何同一份配置在不同环境下看起来“时灵时不灵”。
 
 ## 从这里开始（建议顺序）
 
@@ -19,11 +22,13 @@
 
 - [日志级别与分类：为什么 debug 有时出现、有时不出现](part-01-logging-basics/01-logging-levels-and-categories.md)
 
-## 进阶入口（可跑入口/关键分支）
+---
 
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
-- 可跑入口（Branch Matrix）：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBranchMatrixLabTest test`
-- 可跑入口（Perf/Concurrency Lab）：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingConcurrencyLabTest test`
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBranchMatrixLabTest test`
+- 并发/性能：`mvn -q -pl :spring-boot-logging -Dtest=BootLoggingConcurrencyLabTest test`
 
 ## 排坑与自检
 

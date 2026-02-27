@@ -23,13 +23,13 @@
     - `@ControllerAdvice` 的行为不是“看请求路径”，而是**看 handler/controller 的类型是否匹配**（通过 selector：`basePackages` / `annotations` / `assignableTypes` 等）。
     - selector 组合有一个容易踩坑的点：**同一个 advice 上配置多个 selector 时，匹配语义是“并集（OR）”**——任一条件命中就算 applicable，而不是“交集（AND）”。
     - 当异常发生时，选择顺序可以概括为：
-      1. **先找 controller 自己的 `@ExceptionHandler`**
-      2. 再找 **可适用（applicable）的 ControllerAdvice 列表**
-      3. 在可适用的列表中，**按 `@Order` 排序后依次尝试匹配异常类型**（先匹配到的生效）
-    - 真实工程里 “advice 不生效” 的常见原因并不是你 handler 写错了，而是：
-      - advice 根本没被加载进上下文（slice 测试尤为常见）
-      - selector 没匹配到 controller（包范围/注解/可赋值类型）
-      - 你处理的异常类型不对（异常发生在 converter/binder 阶段）
+    1. **先找 controller 自己的 `@ExceptionHandler`**
+    2. 再找 **可适用（applicable）的 ControllerAdvice 列表**
+    3. 在可适用的列表中，**按 `@Order` 排序后依次尝试匹配异常类型**（先匹配到的生效）
+    - 真实工程里 “advice 不生效” 的常见原因并不是 handler 写错了，而是：
+    - advice 根本没被加载进上下文（slice 测试尤为常见）
+    - selector 没匹配到 controller（包范围/注解/可赋值类型）
+    - 处理的异常类型不对（异常发生在 converter/binder 阶段）
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -47,7 +47,7 @@
 
 ### 2) 分支一：先看 controller 本地的 @ExceptionHandler
 
-你在 controller 里声明的 `@ExceptionHandler`（同类或同 controller 的方法）通常优先于全局 advice。
+在 controller 里声明的 `@ExceptionHandler`（同类或同 controller 的方法）通常优先于全局 advice。
 
 ### 3) 分支二：再看 ControllerAdvice（先匹配，再排序）
 
@@ -61,7 +61,7 @@
 3. 把 **命中的 advice** 按 order 排序（`@Order` 数值越小优先级越高）
 4. 依次尝试查找能处理当前异常类型的 `@ExceptionHandler` 方法：**第一个匹配到的生效**
 
-> 你需要在脑子里把 “匹配集合” 与 “排序决策” 分开：先进入集合，再在集合内部比顺序。
+> 需要在脑子里把 “匹配集合” 与 “排序决策” 分开：先进入集合，再在集合内部比顺序。
 
 ## 源码与断点（建议从 Lab 反推）
 
@@ -93,14 +93,14 @@
   - selector 的判断基于 controller 类型，而不是 request path；所以“路径对了但 advice 没生效”更可能是包范围/注解/类型不匹配。
 
 - **坑 2：把多个 selector 当成 AND（结果意外扩大作用域）**
-  - 例如你写了 `basePackages=...` + `annotations=...`，并不代表“只作用于该包内且带该注解的 controller”，而是“包内的 controller + 带该注解的 controller（并集）”。
-  - 如果你期望更强的限定，建议用“更独特的 marker/annotation”来间接收敛范围（本模块的 Lab 即使用专用 `AdviceMatchingTagged/AdviceMatchingMarker` 做演示）。
+  - 例如写了 `basePackages=...` + `annotations=...`，并不代表“只作用于该包内且带该注解的 controller”，而是“包内的 controller + 带该注解的 controller（并集）”。
+  - 如果期望更强的限定，建议用“更独特的 marker/annotation”来间接收敛范围（本模块的 Lab 即使用专用 `AdviceMatchingTagged/AdviceMatchingMarker` 做演示）。
 
 - **坑 3：@WebMvcTest 忘了把 advice 纳入上下文**
   - slice 测试默认不会加载全量组件；建议用 `@Import(...)` 显式把目标 advice 纳入（本模块的 LabTest 都这么做）。
 
-- **坑 4：异常发生在 converter/binder 阶段，你却只处理业务异常**
-  - 406/415、解析失败、类型不匹配等并不会进入你“以为会到的”异常类型。
+- **坑 4：异常发生在 converter/binder 阶段，却只处理业务异常**
+  - 406/415、解析失败、类型不匹配等并不会进入“以为会到的”异常类型。
   - 建议：先用 `resolvedException` 固定异常类型，再决定由哪个 advice 处理。
 
 ## 小结与下一章

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -39,16 +39,16 @@
 ## 应当观察到的现象
 
 - malformed JSON 的失败发生在 **进入 controller 之前**（根本没有 DTO、也没有校验）
-- 统一错误响应的关键在于：你是否在 `GlobalExceptionHandler` 中覆盖了对应异常
+- 统一错误响应的关键在于：是否在 `GlobalExceptionHandler` 中覆盖了对应异常
 
 ## 机制解释（Why）
 
 Spring MVC 的异常可能来自不同阶段：
 
 - **消息转换阶段**（HTTP message conversion）：例如 JSON 无法解析成对象，会抛出类似 `HttpMessageNotReadableException` 的异常
-- **校验阶段**：`@Valid` 触发后，违反约束会抛出校验相关异常（最终被你映射成 `ApiError`）
+- **校验阶段**：`@Valid` 触发后，违反约束会抛出校验相关异常（最终被映射成 `ApiError`）
 
-所以“同样是 400”，你需要用异常处理把原因显式化，避免客户端只能靠猜。
+所以“同样是 400”，需要用异常处理把原因显式化，避免客户端只能靠猜。
 
 - 先用测试把两类失败分开固化（状态码 + 错误形状/字段），避免把“绑定失败”误当成“校验失败”。
 
@@ -87,15 +87,15 @@ Spring MVC 的异常可能来自不同阶段：
 
 - 观察现状（malformed JSON 只断言 400）：
   - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java`
-    - `returnsBadRequestWhenJsonIsMalformed`
+  - `returnsBadRequestWhenJsonIsMalformed`
 - 观察 MVC 内部异常类型（用 resolvedException 固化“400 从哪里来”）：
   - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part03_internals/BootWebMvcExceptionResolverChainLabTest.java`
-    - `canDebugBindExceptionFromModelAttributeValidationViaResolvedException`
-    - `canDebugMethodArgumentNotValidExceptionFromRequestBodyValidationViaResolvedException`
-    - `canDebugHttpMessageNotReadableExceptionFromInvalidJsonViaResolvedException`
+  - `canDebugBindExceptionFromModelAttributeValidationViaResolvedException`
+  - `canDebugMethodArgumentNotValidExceptionFromRequestBodyValidationViaResolvedException`
+  - `canDebugHttpMessageNotReadableExceptionFromInvalidJsonViaResolvedException`
 - 练习：为 malformed JSON 补齐统一错误响应：
   - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
-    - `exercise_handleMalformedJson`
+  - `exercise_handleMalformedJson`
 
 ## Debug 建议
 
@@ -110,7 +110,7 @@ Spring MVC 的异常可能来自不同阶段：
 - 观察点：
   - `MvcResult#getResolvedException()` 的实际类型（这是“400 为什么出现”的最快证据）
 
-### 2) 再看谁处理：resolver 链如何命中你的 @ExceptionHandler
+### 2) 再看谁处理：resolver 链如何命中 @ExceptionHandler
 
 - 推荐断点：
   - `DispatcherServlet#processHandlerException`
@@ -146,21 +146,21 @@ Spring MVC 的异常可能来自不同阶段：
 
 本模块给出对照证据链：`BootWebMvcBindingDeepDiveLabTest#bindingResultCanShortCircuitExceptionFlowWhenHandledManually`。
 
-### 2) @WebMvcTest 里“看不到你的错误体”
+### 2) @WebMvcTest 里“看不到错误体”
 
-如果你在 slice 测试里没有显式纳入对应的 `@ControllerAdvice`（例如 `@Import(GlobalExceptionHandler)`），你看到的可能是 MVC 默认行为，而不是你期望的契约。
+如果在 slice 测试里没有显式纳入对应的 `@ControllerAdvice`（例如 `@Import(GlobalExceptionHandler)`），看到的可能是 MVC 默认行为，而不是期望的契约。
 
-建议：在 LabTest 里显式 `@Import` 你的 advice，避免“偶然生效”。
+建议：在 LabTest 里显式 `@Import` advice，避免“偶然生效”。
 
 ### 3) ControllerAdvice 的匹配规则（为什么我的 advice 不生效）
 
 常见原因：
 
-- `@RestControllerAdvice(basePackages = ...)` 的包范围不包含你的 controller
-- `annotations/assignableTypes` 等 selector 没命中（你以为“全局”，但实际上只作用于某些 controller 类型）
-- 多个 selector 的组合是“并集（OR）”语义：你以为自己在“再收敛范围”，实际上可能在“扩大适用范围”
+- `@RestControllerAdvice(basePackages = ...)` 的包范围不包含 controller
+- `annotations/assignableTypes` 等 selector 没命中（以为“全局”，但实际上只作用于某些 controller 类型）
+- 多个 selector 的组合是“并集（OR）”语义：以为自己在“再收敛范围”，实际上可能在“扩大适用范围”
 - controller 在另一个 module/package，被 slice 测试排除
-- 你处理的异常类型不对（异常发生在 converter/binder 阶段，而不是你以为的业务异常）
+- 处理的异常类型不对（异常发生在 converter/binder 阶段，而不是直觉里的业务异常）
 
 建议：第一步永远是拿证据——用 `MvcResult#getResolvedException()` 固定异常类型，再回头调整 `@ExceptionHandler`。
 
@@ -168,14 +168,14 @@ Spring MVC 的异常可能来自不同阶段：
 - Lab：`BootWebMvcAdviceMatchingLabTest`（覆盖 selector：basePackages / annotations / assignableTypes，并包含与 @Order 叠加的对照）
 - 延伸阅读：Part 03 - Internals 的 `05-controlleradvice-matching-and-ordering.md`
 
-### 3.5) 404（无 handler）为什么不会进你的 ControllerAdvice
+### 3.5) 404（无 handler）为什么不会进 ControllerAdvice
 
 现象：
-- 你访问一个不存在的路由，得到 404，但你的 `@ControllerAdvice/@ExceptionHandler` 没有生效。
+- 访问一个不存在的路由，得到 404，但 `@ControllerAdvice/@ExceptionHandler` 没有生效。
 
 关键原因：
 - 404（无 handler）通常发生在 **HandlerMapping 选路阶段**：根本没有命中的 `HandlerMethod`。
-- 在 Spring Boot 下，很多 404 会走到 `/error` 兜底（`BasicErrorController + ErrorAttributes`），返回的是 Boot 默认错误 envelope，而不是你的自定义错误体。
+- 在 Spring Boot 下，很多 404 会走到 `/error` 兜底（`BasicErrorController + ErrorAttributes`），返回的是 Boot 默认错误 envelope，而不是自定义错误体。
 
 可运行证据链：
 - `BootWebMvcSpringBootLabTest#unknownRouteFallsBackToSpringBootErrorEndpoint`（端到端证明：404 返回 body 里包含 `status/path` 等 Boot 默认字段）

@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -43,7 +43,7 @@
 2) **对象 → 约束检查**（validation：`@Valid` / `@Validated` 决定是否触发）
 3) **异常 → 错误体**（ExceptionResolvers 命中 `GlobalExceptionHandler`，返回统一 `ApiError`）
 
-关键分支（你看到的异常类型与 `message` 不同）：
+关键分支（看到的异常类型与 `message` 不同）：
 
 - `@RequestBody + @Valid`：失败抛 `MethodArgumentNotValidException` → `ApiError.message = "validation_failed"`
 - `@ModelAttribute(+@Valid)`（表单/QueryString 走 binder）：失败抛 `BindException` → `ApiError.message = "validation_failed"`
@@ -73,7 +73,7 @@
 在 Web MVC 里，“写了约束注解”并不等于“校验一定发生”，原因是校验是一个**可选分支**：
 
 - 只有当参数解析器在解析参数时识别到 `@Valid` / `@Validated`，才会调用 `Validator`。
-- 校验失败后，抛出的异常类型取决于你走的是 body 路径还是 binder 路径（见上面的分支表）。
+- 校验失败后，抛出的异常类型取决于走的是 body 路径还是 binder 路径（见上面的分支表）。
 
 而“错误响应形状”则发生在另一个阶段：异常被 `DispatcherServlet#processHandlerException` 交给 resolver 链处理，最终由某个 resolver 产出响应。
 
@@ -176,7 +176,7 @@
 
 1) **数据绑定（binding）**：JSON → DTO（例如 `CreateUserRequest`）
 2) **边界校验（validation）**：`@Valid` 触发 Bean Validation，对 DTO 执行约束检查
-3) **错误映射（error mapping）**：异常被 `@RestControllerAdvice` 捕获，转换成你的 `ApiError` 形状
+3) **错误映射（error mapping）**：异常被 `@RestControllerAdvice` 捕获，转换成 `ApiError` 形状
 
 最常见的三类误判：
 

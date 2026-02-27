@@ -17,9 +17,9 @@
 
 ### 排障模板（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
    - Branch Matrix：`mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBranchMatrixLabTest test`
@@ -33,7 +33,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -62,7 +62,7 @@
 
 ## 只测 happy path
 
-- 只测 200 会让你在线上第一次遇到 400/500 才知道怎么处理。
+- 只测 200 会让人在线上第一次遇到 400/500 才知道怎么处理。
 - 建议至少固化：
   - 4xx → 业务异常（通常不重试）
   - 5xx/网络错误 → 可重试/告警（视场景）
@@ -76,15 +76,15 @@
 
 “重试”在客户端视角是一句很轻的配置；但在服务端视角，它等价于**重复发送同一个请求**。
 
-- 你会看到：线上偶发重复下单/重复扣款/重复写入；而你在本地只做了 happy-path 的 200 断言，完全看不出来。
-- Root Cause：只有当操作语义幂等（或你有幂等键/去重机制）时，retry 才安全；否则重试会把偶发网络问题放大成“重复副作用”。
+- 会看到：线上偶发重复下单/重复扣款/重复写入；而在本地只做了 happy-path 的 200 断言，完全看不出来。
+- Root Cause：只有当操作语义幂等（或有幂等键/去重机制）时，retry 才安全；否则重试会把偶发网络问题放大成“重复副作用”。
 - Fix（先选语义，再谈参数）：
   - GET 通常更安全重试（但也要看服务端实现是否真的无副作用）
   - POST/PUT/DELETE 往往有副作用：重试前先设计幂等键/去重策略（本模块 Exercise 有引导）
 
 ## Filter 顺序误判：request 顺序 ≠ response 顺序
 
-- Symptom：你按注册顺序写了多个 `ExchangeFilterFunction`，以为 request/response 都按同样顺序执行；结果 debug 时发现 response 相关逻辑“倒着来”。
+- Symptom：按注册顺序写了多个 `ExchangeFilterFunction`，以为 request/response 都按同样顺序执行；结果 debug 时发现 response 相关逻辑“倒着来”。
 - Root Cause：`WebClient` 的 filter 本质上是对 `ExchangeFunction` 的一层层包裹：request 走外→内，response 信号回流时是内→外（表现为 response 侧顺序反转）。
 - Verification：`BootWebClientWebClientFilterOrderLabTest#webClientFilters_requestOrderAndResponseOrder_areDifferent`
 - Breakpoints：`DefaultWebClient$DefaultRequestBodyUriSpec#exchange`、`ExchangeFilterFunction` 链路的装配与调用

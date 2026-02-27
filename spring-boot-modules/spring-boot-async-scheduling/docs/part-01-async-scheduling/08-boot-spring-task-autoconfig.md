@@ -2,7 +2,7 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（别和“默认”较劲）"
 
-    这一章解决的其实是一个很具体的痛点：你改了 `spring.task.*`，但线程名没变；你以为自己在用 Boot 的默认线程池，但实际跑的是另一个 executor/scheduler。
+    这一章解决的其实是一个很具体的痛点：改了 `spring.task.*`，但线程名没变；以为自己在用 Boot 的默认线程池，但实际跑的是另一个 executor/scheduler。
 
     - 更稳妥的做法：把线程名前缀写成断言（别靠猜）
     - 进一步验证：`BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`
@@ -21,14 +21,14 @@
 
 ## “我明明改了配置，为什么没生效？”
 
-这句抱怨在排异步/调度问题时特别常见。你改了：
+这句抱怨在排异步/调度问题时特别常见。改了：
 
 - `spring.task.execution.thread-name-prefix`
 - `spring.task.scheduling.thread-name-prefix`
 
-结果线程名没变，于是你开始怀疑是不是配置文件没加载、是不是 profile 没激活、是不是 Boot 有 bug……但很多时候真实原因更直接：**你根本没用到 Boot 给你的那个默认 executor/scheduler**。
+结果线程名没变，于是开始怀疑是不是配置文件没加载、是不是 profile 没激活、是不是 Boot 有 bug……但很多时候真实原因更直接：**根本没用到 Boot 给那个默认 executor/scheduler**。
 
-这一章的目标很简单：不用背 bean 名，也不用背自动装配类的细节，你只要能回答三件事就够了：
+这一章的目标很简单：不用背 bean 名，也不用背自动装配类的细节，只需能回答三件事就够了：
 
 - 这次 `@Async` 实际用的是哪个 executor？
 - 这次 `@Scheduled` 实际用的是哪个 scheduler？
@@ -38,19 +38,19 @@
 
 ### 1) `spring.task.execution.*`：默认 TaskExecutor 的来源与线程名观测点
 
-Spring Boot 会根据 `spring.task.execution.*` 的配置创建默认执行器（TaskExecutor/AsyncTaskExecutor）。你在机制上最需要抓住的不是 bean 名，而是：
+Spring Boot 会根据 `spring.task.execution.*` 的配置创建默认执行器（TaskExecutor/AsyncTaskExecutor）。在机制上最需要抓住的不是 bean 名，而是：
 
 - **线程名是最稳定的观测点**
-- 只要你能把线程名前缀写成断言，就能反向证明“用的是哪个 executor”
+- 只要能把线程名前缀写成断言，就能反向证明“用的是哪个 executor”
 
 最小证据链（属性映射 → @Async 线程名前缀）：
 
 - `BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`
 
-当你遇到“我明明改了 thread-name-prefix，但线程名没变”时，常见原因只有两类：
+当遇到“我明明改了 thread-name-prefix，但线程名没变”时，常见原因只有两类：
 
 1. 没启用 `@EnableAsync`（基础设施未建立，`@Async` 等价于不存在）
-2. 你提供了自己的 executor（按名称/按类型被选中），覆盖了 Boot 的默认
+2. 提供了自己的 executor（按名称/按类型被选中），覆盖了 Boot 的默认
 
 对应排查与证据链：对照 executor 选择矩阵章节与 Lab：
 
@@ -70,9 +70,9 @@ Spring Boot 会根据 `spring.task.execution.*` 的配置创建默认执行器�
 ## 应当观察到的现象
 
 - 配置了 `spring.task.execution.thread-name-prefix`：
-  - `@Async` 的执行线程名应当以该前缀开头（在你没有提供其它 executor 覆盖的前提下）
+  - `@Async` 的执行线程名应当以该前缀开头（在没有提供其它 executor 覆盖的前提下）
 - 配置了 `spring.task.scheduling.thread-name-prefix`：
-  - `@Scheduled` 的触发线程名应当以该前缀开头（在你没有提供其它 scheduler 覆盖的前提下）
+  - `@Scheduled` 的触发线程名应当以该前缀开头（在没有提供其它 scheduler 覆盖的前提下）
 
 ## 源码与断点
 
@@ -93,12 +93,12 @@ Spring Boot 会根据 `spring.task.execution.*` 的配置创建默认执行器�
 
 ### 坑点 1：以为改了 `spring.task.*` 就一定影响 `@Async/@Scheduled`
 
-最常见的现象就是：你改了 `thread-name-prefix`，但线程名没有变化。
+最常见的现象就是：改了 `thread-name-prefix`，但线程名没有变化。
 
 根因通常只有两类：
 
 - 没启用对应基础设施（没开 `@EnableAsync/@EnableScheduling`，那当然不会生效）
-- 被更高优先级覆盖了（你自己提供了 executor/scheduler，或者系统里有多个 executor 被按规则选中了）
+- 被更高优先级覆盖了（自己提供了 executor/scheduler，或者系统里有多个 executor 被按规则选中了）
 
 证据入口：
 

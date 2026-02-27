@@ -9,7 +9,7 @@
 ## 版本语境（建议先对齐）
 
 > 本仓库依赖版本由父工程的 Spring Boot 管理（见仓库根 `pom.xml`）。
-> 文档中提到的类名/方法名/关键分支均以该版本语境为准；当你在其他项目上对照时，若出现行为差异，优先检查版本差异。
+> 文档中提到的类名/方法名/关键分支均以该版本语境为准；当在其他项目上对照时，若出现行为差异，优先检查版本差异。
 
 - Spring Boot：`3.5.9`
 - Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
@@ -187,7 +187,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test
 - 了解 Java 注解与反射的基本概念（不要求深入）
 - 若希望更快理解“代理相关模块”（AOP/Tx/Validation），可将本模块作为核心基础
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -211,13 +211,13 @@ mvn -pl :spring-core-beans spring-boot:run
 
 运行时可观察到 `BeansDemoRunner` 的结构化输出（统一前缀 `BEANS:`）。可将“观察到的现象”与“可断言入口”进行对应关联：
 
-- `BEANS:textFormatters` / `BEANS:formattingService.injectedFormatter`：多实现注入如何被确定化  
+- `BEANS:textFormatters` / `BEANS:formattingService.injectedFormatter`：多实现注入如何被确定化
   - 对照：`docs/03` → `SpringCoreBeansLabTest.usesQualifierToResolveMultipleBeans()`
-- `BEANS:prototype.direct.sameId` / `BEANS:prototype.provider.differentId`：prototype 注入 singleton 的误区与修复方式  
+- `BEANS:prototype.direct.sameId` / `BEANS:prototype.provider.differentId`：prototype 注入 singleton 的误区与修复方式
   - 对照：`docs/04` → `SpringCoreBeansLabTest.demonstratesPrototypeScopeBehavior()`
-- `BEANS:lifecycle.postConstructCalled`：`@PostConstruct` 的时机（init 阶段）  
+- `BEANS:lifecycle.postConstructCalled`：`@PostConstruct` 的时机（init 阶段）
   - 对照：`docs/05` / `docs/17` → `SpringCoreBeansLabTest.postConstructRunsDuringContextInitialization()`
-- `BEANS:beanDefinitionCount`：容器里“定义”的数量（用于建立“定义层”直觉）  
+- `BEANS:beanDefinitionCount`：容器里“定义”的数量（用于建立“定义层”直觉）
   - 对照：`docs/01` / `docs/12`（把它放回 refresh 主线理解）
 
 ### 测试

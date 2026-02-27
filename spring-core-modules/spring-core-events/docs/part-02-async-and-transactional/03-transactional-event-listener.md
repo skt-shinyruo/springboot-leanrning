@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：`@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
     - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
     - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
     - 推荐 Lab：`SpringCoreEventsTransactionalEventLabTest`
@@ -16,15 +16,15 @@
 ## 导读
 
 本章围绕「07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreEventsTransactionalEventLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreEventsTransactionalEventLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreEventsTransactionalEventLabTest`
     - Test file：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
@@ -35,9 +35,9 @@
 
 > “我事务都回滚了，为什么监听器还执行了？”
 
-你看到的不是“事务没回滚”，而是**副作用发生在事务之外**。
+看到的不是“事务没回滚”，而是**副作用发生在事务之外**。
 
-原因很朴素：`@EventListener` 默认就是同步回调——事件发布的那一刻，监听器就已经在同一条调用链里执行过了。事务随后回滚，只会撤销数据库提交，不会“自动撤销”你在监听器里做过的事情（发消息、写审计、调用外部 API）。
+原因很朴素：`@EventListener` 默认就是同步回调——事件发布的那一刻，监听器就已经在同一条调用链里执行过了。事务随后回滚，只会撤销数据库提交，不会“自动撤销”监听器里已经执行过的事情（发消息、写审计、调用外部 API）。
 
 所以这类问题的关键从来不是“要不要用事件”，而是：
 
@@ -48,7 +48,7 @@
 
 > 把监听器的触发时机绑定到事务生命周期（例如 AFTER_COMMIT / AFTER_ROLLBACK / AFTER_COMPLETION）。
 
-## 你需要记住的 2 种监听器
+## 需要记住的 2 种监听器
 
 1) `@EventListener`（默认同步）
 
@@ -62,9 +62,9 @@
 
 ## 在本仓库如何“看见”差异（两条入口）
 
-这类问题最怕“凭感觉”：你以为 after-commit 会触发，但它只在事务真正 commit 时触发；你以为回滚会撤销 listener，但同步 listener 早就执行完了。
+这类问题最怕“凭感觉”：以为 after-commit 会触发，但它只在事务真正 commit 时触发；以为回滚会撤销 listener，但同步 listener 早就执行完了。
 
-本仓库提供两条可以直接跑的入口（建议先跑其一，再带着断言回看源码/断点）：
+本仓库提供两条可以直接跑的入口（先运行其一，再带着断言回看源码/断点）：
 
 - **纯机制入口（推荐先跑）**：`SpringCoreEventsTransactionalEventLabTest`
   - 对比：`@EventListener`（立刻执行） vs `@TransactionalEventListener(AFTER_COMMIT)`（提交后执行）
@@ -90,7 +90,7 @@ mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseLabTest test
 - Lab：`BootBusinessCaseLabTest` / `SpringCoreEventsTransactionalEventLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 - 代码入口：`spring-boot-modules/spring-boot-business-case/src/main/java/com/learning/springboot/bootbusinesscase/events/OrderEventListeners.java`
 - 行为断言：`BootBusinessCaseLabTest` 里有两类断言
@@ -115,16 +115,16 @@ mvn -pl :spring-boot-business-case test
 
 ## 常见坑与边界
 
-### 坑点 1：你以为 “after-commit 一定会触发”，但事务回滚/没有事务时它根本不会跑
+### 坑点 1：以为 “after-commit 一定会触发”，但事务回滚/没有事务时它根本不会跑
 
-- Symptom：你发布了事件，但 `@TransactionalEventListener(phase = AFTER_COMMIT)` 的监听器完全没触发；或者本地调试“偶发触发/偶发不触发”。
+- Symptom：发布了事件，但 `@TransactionalEventListener(phase = AFTER_COMMIT)` 的监听器完全没触发；或者本地调试“偶发触发/偶发不触发”。
 - Root Cause：`AFTER_COMMIT` 监听器依赖事务同步回调：**只有事务真正提交**才会触发；如果事务回滚，或者发布事件时根本没有活跃事务，就不会进入 after-commit（除非显式启用 fallback 行为）。
 - Verification：`SpringCoreEventsTransactionalEventLabTest#afterCommitListenerRunsOnlyAfterCommit`、`SpringCoreEventsTransactionalEventLabTest#afterCommitDoesNotRunOnRollback_butAfterRollbackDoes`
 - Breakpoints：`TransactionalApplicationListenerMethodAdapter#onApplicationEvent`、`TransactionSynchronizationManager#isSynchronizationActive`
 - Fix：确保事件发布发生在事务边界内，并根据语义选对 phase（需要回滚补偿就用 `AFTER_ROLLBACK` / `AFTER_COMPLETION`）；把“提交/回滚 → 哪些 listener 触发”的结论写进 Lab/Test，避免只靠经验判断。
 
-- `@EventListener` 默认是“同步回调”，它不理解事务边界  
-- 事务回滚只影响数据库提交，不会自动撤销你已经执行过的监听器逻辑
+- `@EventListener` 默认是“同步回调”，它不理解事务边界
+- 事务回滚只影响数据库提交，不会自动撤销已经执行过的监听器逻辑
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->

@@ -49,9 +49,9 @@
 
 ## 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：注入点标注 `@Resource`，且容器已注册 `CommonAnnotationBeanPostProcessor`  
-**分支**：`autowireResource` 先按 **name** 查找，找不到再 fallback 按 **type**  
-**结果**：命名稳定时注入可预测；命名失配时容易退化为“按类型歧义”  
+**条件**：注入点标注 `@Resource`，且容器已注册 `CommonAnnotationBeanPostProcessor`
+**分支**：`autowireResource` 先按 **name** 查找，找不到再 fallback 按 **type**
+**结果**：命名稳定时注入可预测；命名失配时容易退化为“按类型歧义”
 **断点建议**：`CommonAnnotationBeanPostProcessor#autowireResource`
 
 ## DependencyDescriptor 深入分析：`@Resource` 的注入点语义从哪来？
@@ -66,8 +66,8 @@
 
 ## 依赖解析分支树（`@Resource` 专用简化版）
 
-1) **name-first**：`containsBean(resourceName)` 命中 → 直接注入  
-2) **fallback type**：name 未命中 → 按类型解析（可能触发多候选歧义）  
+1) **name-first**：`containsBean(resourceName)` 命中 → 直接注入
+2) **fallback type**：name 未命中 → 按类型解析（可能触发多候选歧义）
 3) **失败处理**：不可选依赖 → 抛异常；可选依赖 → 注入 `null`
 
 ## 1. 先运行实验：没有处理器时，`@Resource` 会“完全失效”

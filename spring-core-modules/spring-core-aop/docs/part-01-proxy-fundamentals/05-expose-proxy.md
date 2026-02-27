@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
     - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
     - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
     - 推荐 Lab：`SpringCoreAopExposeProxyLabTest`
@@ -20,17 +20,17 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreAopExposeProxyLabTest` / `SpringCoreAopLabTest`
 
 ## 机制主线
 
-这一章的目标不是鼓励你在项目里大量使用 `AopContext`，而是让你把“代理 = 调用入口”这个概念吃透。
+这一章的目标不是鼓励在项目里大量使用 `AopContext`，而是把“代理 = 调用入口”这个概念吃透。
 
 ## 解决的是什么问题？
 
@@ -38,7 +38,7 @@
 
 - `outer()` 内部调用 `inner()` → 不走 proxy → `inner()` 不被拦截
 
-如果你能在 `outer()` 内部拿到“当前代理对象”，就可以改成：
+如果能在 `outer()` 内部拿到“当前代理对象”，就可以改成：
 
 - `((SelfInvocationExampleService) AopContext.currentProxy()).inner(...)`
 
@@ -53,11 +53,11 @@
    - Spring Boot：`application.properties` 里设置 `spring.aop.expose-proxy=true`
 
 2. **必须在 AOP 调用链上下文中调用**
-   - 也就是：你需要先进入一个被 AOP 拦截的方法（在 advice 链里），此时 `currentProxy()` 才有意义
+   - 也就是：需要先进入一个被 AOP 拦截的方法（在 advice 链里），此时 `currentProxy()` 才有意义
 
 ### 1) 为什么它会“只有在 advice 链里才可用”？
 
-你可以把它理解成：AOP 在执行 advice 链时会把“当前代理”放进一个 thread-local 里。
+可以把它理解成：AOP 在执行 advice 链时会把“当前代理”放进一个 thread-local 里。
 
 所以：
 
@@ -66,7 +66,7 @@
 
 ## 在本模块的练习入口
 
-- 它提示你开启 exposeProxy，并在 `outer(...)` 内通过 `AopContext.currentProxy()` 调用 `inner(...)`
+- 它提示开启 exposeProxy，并在 `outer(...)` 内通过 `AopContext.currentProxy()` 调用 `inner(...)`
 - 这是一个很好的“理解机制”练习
 
 ## 代价与取舍（必须知道）
@@ -80,7 +80,7 @@
 
 ### 一个更工程化的替代方案：自注入（或 ObjectProvider）
 
-如果你确实需要“在同一个类里触发 AOP”，更推荐的写法通常是：
+如果确实需要“在同一个类里触发 AOP”，更推荐的写法通常是：
 
 - 让类依赖自己（注入自己这个 bean），必要时配合 `@Lazy` 来避免循环依赖
 - 或注入 `ObjectProvider<SelfInvocationExampleService>`，在需要时再获取 proxy 并调用
@@ -101,7 +101,7 @@
 - Lab：`SpringCoreAopExposeProxyLabTest` / `SpringCoreAopLabTest`
 - 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 这也是为什么其定位更接近一个“调试/理解机制”的工具，而不是日常业务代码的默认选择。
 
@@ -111,7 +111,7 @@
 
 ### 坑点 1：以为 `AopContext.currentProxy()` “随时可用”，结果线上偶发 NPE/IllegalState
 
-- Symptom：你在方法里调用 `AopContext.currentProxy()`，在某些路径上直接抛异常（或拿不到代理）
+- Symptom：在方法里调用 `AopContext.currentProxy()`，在某些路径上直接抛异常（或拿不到代理）
 - Root Cause：
   - 没有开启 exposeProxy（没有把 proxy 放进 thread-local）
   - 或者当前调用不在 AOP 调用链里（根本没进入 advice）

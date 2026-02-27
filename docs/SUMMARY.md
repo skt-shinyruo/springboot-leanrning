@@ -14,6 +14,7 @@
 - 文档正文以各模块 `*/docs/` 为准；仓库根 `docs/` 包含 `SUMMARY.md` + `book/`（全书主线），其中 `SUMMARY.md` 作为全站导航（SSOT）。
 <!--nav-->
 - [封面](../README.md)
+- [写作规范（维护者）：教材式 / 中性口吻](writing-style-guide.md)
 - 全书主线（教材式顺读）
   - [全书主线（总览）](book/README.md)
   - [01. Getting Started：如何在本仓库学习（入口与证据链）](book/01-getting-started.md)
@@ -364,7 +365,7 @@
         - [04. 断点地图（Validation Debugger Pack）](../spring-core-modules/spring-core-validation/docs/part-00-guide/04-breakpoint-map.md)
         - [05. 关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-validation/docs/part-00-guide/05-branch-decision-matrix.md)
       - part-01-validation-core
-        - [01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/01-constraint-mental-model.md)
+        - [01. 约束（Constraint）心智模型：校验对象与校验结果](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/01-constraint-mental-model.md)
         - [02. 程序化校验：为什么直接用 `Validator` 仍然很重要？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/02-programmatic-validator.md)
         - [03. 方法参数校验：为什么它必须依赖 Spring 代理？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/03-method-validation-proxy.md)
         - [04. Groups：同一个对象，为什么“创建”和“更新”要用不同规则？](../spring-core-modules/spring-core-validation/docs/part-01-validation-core/04-groups.md)
@@ -425,7 +426,7 @@
         - [04. 断点地图（Spring Tx Debugger Pack）](../spring-core-modules/spring-core-tx/docs/part-00-guide/04-breakpoint-map.md)
         - [05. 关键分支矩阵（Branch Decision Matrix）](../spring-core-modules/spring-core-tx/docs/part-00-guide/05-branch-decision-matrix.md)
       - part-01-transaction-basics
-        - [01. 事务边界（Transaction Boundary）：你到底在“保护”哪一段代码？](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/01-transaction-boundary.md)
+        - [01. 事务边界（Transaction Boundary）：究竟在“保护”哪一段代码？](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/01-transaction-boundary.md)
         - [02. `@Transactional` 如何生效：它也是 AOP（也是代理）](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/02-transactional-proxy.md)
         - [03. 回滚规则：为什么 checked exception 默认不回滚？](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/03-rollback-rules.md)
         - [04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？](../spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/04-propagation.md)

@@ -22,13 +22,13 @@
 
 
 
-## 你要能复述的“最短链路”
+## 应能复述的“最短链路”
 
 1. 发起请求（本模块：`/api/ping`）
 2. 请求进入 Web 链路（FilterChain → MVC）
 3. 链路中创建 observation（开始计时/记录标签）
 4. 链路结束时结束 observation，并把数据写入 `MeterRegistry`
-5. 你在 `MeterRegistry` 中能找到 `http.server.requests`，其 count 增长
+5. 在 `MeterRegistry` 中能找到 `http.server.requests`，其 count 增长
 
 本模块的证据链入口：
 

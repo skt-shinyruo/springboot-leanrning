@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
     - 原理：代理 vs 织入：选择 LTW/CTW → 定义切点（execution/call/...）→ weaving 生效取决于 classloader/agent/时机 → 用测试/断点验证。
     - 源码入口：`org.springframework.context.weaving.AspectJWeavingEnabler` / `org.springframework.instrument.classloading.LoadTimeWeaver` / `org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter`
     - 推荐 Lab：`AspectjCtwLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
 
@@ -52,8 +52,8 @@
 - JVM 参数确实带了 `-javaagent`：`AspectjLtwLabTest#ltw_testJvmIsStartedWithJavaAgent`
 - 普通对象（非 Spring bean）也会被织入：`AspectjLtwLabTest#ltw_canWeaveExecutionForNonSpringObjects`
 
-**本模块的 `aop.xml` 放在：**`spring-core-modules/spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`  
-（这也是为什么本模块的 LTW 实验主要用 test scope 来验证：你需要“可控且可重复”的 classpath。）
+**本模块的 `aop.xml` 放在：**`spring-core-modules/spring-core-aop-weaving/src/test/resources/META-INF/aop.xml`
+（这也是为什么本模块的 LTW 实验主要用 test scope 来验证：需要“可控且可重复”的 classpath。）
 
 ### 2) 时间线：CTW（不带 agent）为什么也能拦截
 
@@ -66,7 +66,7 @@
 - JVM 启动参数不包含 aspectjweaver agent：`AspectjCtwLabTest#ctw_testJvmIsNotStartedWithAspectjJavaAgent`
 - weaving 在无 agent 情况下仍生效：`AspectjCtwLabTest#ctw_weavingWorksWithoutJavaAgent_forMethodExecutionAndCall`
 
-### 3) 关键参与者（你应该能解释它们的作用）
+### 3) 关键参与者（应当能解释它们的作用）
 
 - `-javaagent:${project.build.directory}/aspectjweaver.jar`（LTW 开关，见 `spring-core-modules/spring-core-aop-weaving/pom.xml`）
 - `META-INF/aop.xml`（LTW 织入配置：要织谁、怎么织）
@@ -90,10 +90,10 @@
 
 - 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
 - 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-  
+
 建议断点（从“织入没发生”快速分流）：
 
-- 先看你跑的是 LTW 还是 CTW：
+- 先确认运行的是 LTW 还是 CTW：
   - LTW：确认 JVM 是否带 `-javaagent`（看 `AspectjLtwLabTest#ltw_testJvmIsStartedWithJavaAgent`）
   - CTW：确认构建期是否执行了 weaving（看 `aspectj-maven-plugin` 的 weave info 输出）
 - 织入是否触发：
@@ -107,7 +107,7 @@
 - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
 - 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 > 验证入口（可跑）：
 > - `AspectjLtwLabTest`
@@ -120,7 +120,7 @@
 mvn -pl :spring-core-aop-weaving test
 ```
 
-你会看到两套 tests 都跑：
+会看到两套 tests 都跑：
 
 - `*Ltw*Test`：带 `-javaagent:.../aspectjweaver.jar`
 - `*Ctw*Test`：不带 `-javaagent`（用于证明 CTW 独立于 agent）
@@ -129,7 +129,7 @@ LTW 是否生效，最常见的判断点不是“有没有写 @Aspect”，而�
 
 - `src/test/resources/META-INF/aop.xml`
 
-因此它只影响测试运行，不影响你 `spring-boot:run` 的默认启动。
+因此它只影响测试运行，不影响 `spring-boot:run` 的默认启动。
 
 - 确认构建是否真的执行了织入（插件是否生效）
 - 确认织入范围是否正确（只织入目标包/目标类）
@@ -137,7 +137,7 @@ LTW 是否生效，最常见的判断点不是“有没有写 @Aspect”，而�
 
 ## 常见坑与边界
 
-如果你是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 

@@ -14,8 +14,8 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 !!! summary
-    - 这一模块关注：一次 HTTP 请求如何在 Spring MVC 中被“选路、绑定、执行、返回、异常处理”，以及你如何在关键分支上定位问题。
-    - 读完你应该能复述：**DispatcherServlet → HandlerMapping → HandlerAdapter → 参数解析/消息转换 → 返回/异常** 这一条主线。
+    - 这一模块关注：一次 HTTP 请求如何在 Spring MVC 中被“选路、绑定、执行、返回、异常处理”，以及如何在关键分支上定位问题。
+    - 读完应当能复述：**DispatcherServlet → HandlerMapping → HandlerAdapter → 参数解析/消息转换 → 返回/异常** 这一条主线。
     - 推荐顺序：先读《知识地图/断点图》→ 本章 → 先把 Web MVC Internals 的主线跑通 → 再按场景扩展（REST、文件、异步、测试、安全）。
 
 !!! example "建议先跑的 Lab（把时间线变成证据）"
@@ -46,7 +46,7 @@
 ## 在 Spring 主线中的位置
 
 - Web MVC 处在“应用对外入口”：它把 Servlet 容器的请求事件，翻译成 Controller 方法调用与响应输出。
-- 你调试 404/400/415/500、参数绑定失败、返回值序列化异常时，本质都在主线的某个分支上。
+- 调试 404/400/415/500、参数绑定失败、返回值序列化异常时，本质都在主线的某个分支上。
 
 ## 主线时间线（推荐顺读：先把请求跑通）
 
@@ -76,11 +76,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web MVC」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web MVC」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web MVC」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootWebMvcInternalsLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web MVC」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web MVC」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Web MVC」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``BootWebMvcInternalsLabTest`` 后，把上述观察点逐条对照，写出自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

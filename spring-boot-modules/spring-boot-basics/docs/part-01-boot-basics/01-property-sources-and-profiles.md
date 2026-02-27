@@ -12,95 +12,89 @@
 上一章：[02. 00 - Deep Dive Guide（springboot-basics）](../part-00-guide/02-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. `@ConfigurationProperties` 绑定与类型转换](02-configuration-properties-binding.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 问题：为什么改了配置却没有生效
 
-- 本章主题：**01. 配置来源（PropertySources）与 Profile 覆盖**
-- 建议入口：优先运行 `BootBasicsDefaultLabTest`（默认）与 `BootBasicsDevLabTest`（dev）（见文末“对应 Lab/Test”），先把 active profiles 与最终属性值钉住，再解释“谁覆盖谁”。
+在一个实际的 Spring Boot 工程里，同一个配置 key 往往不止出现一次：默认配置文件、profile 配置文件、环境变量、命令行参数、测试覆盖……都可能提供同名值。问题因此变成了一个“事实问题”：
 
+> 运行时的最终值到底是什么？它来自哪个来源？又会影响哪些行为？
 
+本章用三条最小实验把事实钉住，再解释 `PropertySources` 与 Profile 的分工。读者不需要背优先级表，但需要知道如何在断点里看到“命中了哪个来源”。
 
-## 先把结论放前面：最终值不在某个文件里，而在 `Environment`
+---
 
-你在项目里“改配置没生效”时，最容易掉进一个误区：一直盯着某个 `application.properties` 文件找原因。
+## 实验：三条最小证据链（把覆盖关系跑成事实）
 
-但 Spring Boot 真正在运行时依赖的事实来源是 `Environment`。文件、环境变量、命令行参数、测试覆盖……最后都会汇总到这里。排障时不要猜，先把两件事实固定下来：
+这三个入口覆盖了本模块最常见的三种组合：
 
-- 当前到底激活了哪些 profile：`environment.getActiveProfiles()`
-- 你关心的 key 的最终值是什么：`environment.getProperty("app.greeting")`
-
-这两句一旦确定，很多争论（“是不是 dev 配置没加载”“是不是测试覆盖了”）会直接结束。
-
-## 机制主线
-
-### 1) PropertySources：多个来源合并成一个“最终视图”
-
-在这模块里，你会看到三种最常见的来源叠加：
-
-1. 默认配置（`application.properties`）
-2. dev profile 配置（`application-dev.properties`，只有 profile 激活时才参与）
-3. 测试覆盖（`@SpringBootTest(properties = ...)`，它会把同名 key 盖掉）
-
-它们不会各自“独立生效”，而是一起组成 `Environment` 里的 `PropertySources`。同名 key 取哪个值，取决于优先级；而优先级最直观的判断方式，是看测试断言“最终值是什么”。
-
-### 2) Profile 不只是“文件开关”，它也会影响 Bean 注册
-
-Profile 经常被误解成“只决定 `application-<profile>.properties` 参不参与”。在这个模块里你还会看到另一条线：
-
-- 某些 Bean 的存在与否也受 `@Profile` 控制
-
-所以你可能会遇到两种完全不同的问题：
-
-- 属性值不对（属于 `Environment` 的问题）
-- Bean 实现没切换（属于条件注册/`@Profile` 的问题）
-
-这就是为什么本模块的 Lab 同时断言“属性值”和“注入的实现类”。
-
-### 3) 这模块用三条证据链把覆盖关系钉住
-
-你不需要记住一整张优先级表，只需要把本模块的三条最小证据链跑通：
-
-- 默认 profile：属性来自默认文件，Bean 使用 default 实现  
+- **默认**：默认配置参与，profile 未显式激活
   - `BootBasicsDefaultLabTest#loadsDefaultProfileConfigurationAndBean`
-- dev profile：属性被 dev 文件覆盖，Bean 切换到 dev 实现  
+- **dev profile**：profile 配置参与，值与实现类一起切换
   - `BootBasicsDevLabTest#loadsDevProfileConfigurationAndBean`
-- 测试覆盖：测试覆盖的 properties 优先级更高  
+- **测试覆盖**：测试声明的 `properties` 覆盖应用配置
   - `BootBasicsOverrideLabTest#testPropertiesOverrideApplicationProperties`
 
-## 怎么排（先确定事实，再解释原因）
+每次运行后，至少固定两件事实：
 
-当你怀疑“配置没生效”时，我推荐的顺序是：
+1. `Environment#getActiveProfiles()` 的返回值；
+2. `Environment#getProperty("app.greeting")` 的最终值（示例 key）。
 
-1. **先看最终事实**：`Environment#getActiveProfiles()` + `Environment#getProperty(...)`（不要先看日志）
-2. **再看绑定对象**：`AppProperties` 里最终是什么值（类型安全、好断言）
-3. **最后看行为结果**：哪个实现类被注入？输出/行为是否符合最终值？
+如果实验同时断言了注入实现类，则再补充第三件事实：最终注入的是哪个实现。
 
-这三步分别对应本模块的三组 Lab，你可以直接复跑对照。
+---
 
-## 源码与断点（够用版）
+## 解释：PropertySources 负责“值”，Profile 同时影响“值”与“装配”
 
-这章不要求你把整条配置链路背下来；但你至少应该知道两个“排障入口”：
+### 1) PropertySources：多个来源合并成一个最终视图
 
-- `org.springframework.core.env.PropertySourcesPropertyResolver#getProperty`：最终取值点（会告诉你“命中了哪个来源”）
-- `org.springframework.core.env.AbstractEnvironment#getActiveProfiles`：profile 事实来源
+从运行时视角看，配置的事实入口只有一个：`Environment`。不同来源（文件/环境/命令行/测试覆盖）在启动过程中被收集起来，形成一组有序的 `PropertySources`。同名 key 的取值并不是“平均一下”，而是按顺序命中第一个可用来源。
 
-## 常见坑与边界
+因此，排障时与其争论“是不是 `application-dev.properties` 没加载”，不如把问题落到断点上：最终取值点在哪里、命中了哪个 `PropertySource`。
 
-### 坑点 1：把“属性覆盖”误当成“Bean 一定会切换”
+### 2) Profile：不仅决定“哪些配置参与”，也影响“哪些 Bean 存在”
 
-你改了 `app.greeting`，发现输出变了，于是以为“实现类也会跟着切换”；或者反过来，看到实现类变了，以为“属性一定来自 dev 文件”。这两条线其实是独立的。
+Profile 容易被理解为“配置文件开关”，但在工程里它经常同时影响两条线：
 
-证据入口：
+- **配置线**：`application-<profile>.properties` 是否参与合并；
+- **装配线**：某些实现类是否被注册（例如 `@Profile("dev")` 的 Bean 是否存在）。
 
-- 属性 + Bean 同时变化：`BootBasicsDevLabTest#loadsDevProfileConfigurationAndBean`
-- 只覆盖属性但不切换 Bean：`BootBasicsOverrideLabTest#beansSeeOverriddenProperties`
+这也是本模块实验会同时断言“属性值”和“注入实现类”的原因：当行为不对时，先区分是“值不对”还是“装配不对”，才能避免走错排障方向。
 
-### 坑点 2：只盯文件，不看最终值
+---
 
-如果你没有先断言 `environment.getProperty("app.xxx")` 的最终值，那么后面所有分析都可能是“基于错误前提的推理”。
+## 观察点：在断点里确认“命中了哪个来源”
+
+本章不要求把整条启动链路背下来，但至少应能在调试器里命中两个入口：
+
+- `org.springframework.core.env.PropertySourcesPropertyResolver#getProperty`：最终取值点（可用于确认命中来源）
+- `org.springframework.core.env.AbstractEnvironment#getActiveProfiles`：profile 的事实来源
+
+当 `getProperty(...)` 返回的值与预期不一致时，优先看两类信息：
+
+- 当前 `PropertySources` 的顺序（谁在前，谁就可能覆盖谁）；
+- 命中的 `PropertySource` 名称与来源（文件/系统属性/命令行/测试覆盖）。
+
+---
+
+## 边界：属性覆盖 ≠ Bean 一定切换
+
+在工程里常见的误判是把两条线混为一谈：看到 `app.greeting` 的值变了，就认为实现类一定会切换；或者看到实现类切换了，就认为属性一定来自某个 profile 文件。事实上：
+
+- 属性值属于 `Environment` 的最终事实；
+- 实现类是否切换属于条件注册与装配结果；
+- 两者可以相关，但不是必然绑定。
+
+对照实验入口可快速验证这一点：
+
+- 属性与 Bean 同时变化：`BootBasicsDevLabTest#loadsDevProfileConfigurationAndBean`
+- 仅覆盖属性但不切换 Bean：`BootBasicsOverrideLabTest#beansSeeOverriddenProperties`
+
+---
 
 ## 小结与下一章
 
-- 本章把“谁覆盖谁”讲清楚后，下一章进入 `@ConfigurationProperties`：把字符串配置变成类型安全对象，并把“类型转换/绑定失败”变成可断言的事实。
+- 排障的第一步是固定事实：active profiles 是什么、最终属性值是什么；不要先从文件与日志猜原因。
+- Profile 同时影响“配置参与者”与“装配参与者”；先分清是哪一条线出问题。
+- 下一章进入 `@ConfigurationProperties`：把字符串配置绑定为类型安全对象，并把转换失败/缺失字段做成可断言的边界。
 
 <!-- BOOKIFY:START -->
 

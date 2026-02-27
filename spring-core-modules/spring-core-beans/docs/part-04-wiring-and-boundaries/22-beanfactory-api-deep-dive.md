@@ -26,7 +26,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -60,11 +60,11 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：读者使用的是 plain `BeanFactory` 还是 `ApplicationContext`  
-**分支**：  
-- `BeanFactory`：不会自动执行 BFPP/BPP  
-- `ApplicationContext`：refresh 时自动 bootstrap 全套处理器  
-**结果**：前者“注解不生效/能力缺失”，后者“开箱即用”  
+**条件**：读者使用的是 plain `BeanFactory` 还是 `ApplicationContext`
+**分支**：
+- `BeanFactory`：不会自动执行 BFPP/BPP
+- `ApplicationContext`：refresh 时自动 bootstrap 全套处理器
+**结果**：前者“注解不生效/能力缺失”，后者“开箱即用”
 **断点建议**：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`
 
 ---
@@ -120,7 +120,7 @@
 
 **BeanFactory 自带的最小能力**：
 
-- `getBean` / 单例缓存 / 依赖解析 / 基础生命周期骨架  
+- `getBean` / 单例缓存 / 依赖解析 / 基础生命周期骨架
 
 **ApplicationContext 额外提供的能力**（通过 refresh 统一装配）：
 
@@ -133,9 +133,9 @@
 
 当读者手里有“非容器管理对象”时，`AutowireCapableBeanFactory` 提供三段能力：
 
-1) `autowireBean`：只做依赖注入  
-2) `initializeBean`：触发初始化回调/BPP  
-3) `destroyBean`：触发销毁回调  
+1) `autowireBean`：只做依赖注入
+2) `initializeBean`：触发初始化回调/BPP
+3) `destroyBean`：触发销毁回调
 
 **结论**：这三段能力彼此独立，调用顺序决定应能够获取到什么语义。
 
@@ -196,11 +196,11 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 

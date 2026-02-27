@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansPostProcessorOrderingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansPostProcessorOrderingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -26,7 +26,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -67,7 +67,7 @@ Spring 在同一类 post-processor 内，常用的排序规则是：
 
 ### 1.2 一个具体例子：顺序改变最终对象形态
 
-当多个 BPP 都可能“包裹/替换”对象时（如多层代理），顺序决定最终暴露形态。  
+当多个 BPP 都可能“包裹/替换”对象时（如多层代理），顺序决定最终暴露形态。
 对应用例：`SpringCoreAopMultiProxyStackingLabTest`（观察代理栈叠加顺序）。
 
 ## 1.1 源码解析：真正参与排序的“不是接口名”，而是 comparator 的比较规则
@@ -232,14 +232,14 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 运行完成该 Lab，至少应能够复述 3 条结论：
 
-1) **分段规则决定“谁先执行”**  
-   - 断点：`sortPostProcessors`  
+1) **分段规则决定“谁先执行”**
+   - 断点：`sortPostProcessors`
    - 断言：`PriorityOrdered` 永远早于 `Ordered`
-2) **组内排序决定“代理叠加顺序”**  
-   - 断点：`addBeanPostProcessor`  
+2) **组内排序决定“代理叠加顺序”**
+   - 断点：`addBeanPostProcessor`
    - 断言：顺序不同导致代理链叠加顺序不同
-3) **`@Order` 不等于 `Ordered`**  
-   - 断点：`sortPostProcessors`（观察 comparator）  
+3) **`@Order` 不等于 `Ordered`**
+   - 断点：`sortPostProcessors`（观察 comparator）
    - 断言：未实现 `Ordered` 的 BPP 仍可能按注册顺序执行
 
 ## 排障分流：这是定义层问题还是实例层问题？
@@ -310,11 +310,11 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 当容器里存在多个 BFPP/BPP 时，“谁先运行”会直接决定最终结果。
 
@@ -364,7 +364,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 > AOP/事务/缓存/安全这类能力内部还有另一套“链条顺序”（advisor/interceptor 顺序），不要混在一起：
 >
 > - advisor 顺序与 `proceed()` 嵌套：见 [spring-core-aop：debugging](../../../spring-core-aop/docs/part-01-proxy-fundamentals/06-debugging.md)（为什么要跳：本章关注的是“BPP 包裹顺序”，AOP 侧补齐的是“拦截器链/`proceed()` 的嵌套顺序”；验证什么：用 AOP 章的断点观察 `MethodInterceptor#invoke` 的嵌套与返回路径）
-> - 多切面/多代理叠加与顺序（两套顺序分流）：见 [spring-core-aop：multi-proxy stacking](../../../spring-core-aop/docs/part-03-proxy-stacking/01-multi-proxy-stacking.md)（为什么要跳：当你看到“多层 proxy（套娃）”时，要把“外层/内层是谁包的（BPP）”与“链条谁先执行（advisor）”拆开；验证什么：跑对应的 multi-proxy 用例，观察 proxy 叠加与 advisor 顺序是两条不同维度）
+> - 多切面/多代理叠加与顺序（两套顺序分流）：见 [spring-core-aop：multi-proxy stacking](../../../spring-core-aop/docs/part-03-proxy-stacking/01-multi-proxy-stacking.md)（为什么要跳：当看到“多层 proxy（套娃）”时，要把“外层/内层是谁包的（BPP）”与“链条谁先执行（advisor）”拆开；验证什么：跑对应的 multi-proxy 用例，观察 proxy 叠加与 advisor 顺序是两条不同维度）
 >
 > 对应可运行闭环：
 >

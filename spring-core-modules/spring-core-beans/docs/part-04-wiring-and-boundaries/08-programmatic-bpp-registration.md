@@ -62,13 +62,13 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：读者是“手工 add BPP”还是“声明为 bean 让容器注册”  
-**分支**：  
-- 手工 add → 直接操作 `beanFactory.getBeanPostProcessors()` 列表  
-- 容器注册 → `registerBeanPostProcessors` 收集+排序+批量注册  
-**结果**：  
-- 手工 add：**顺序 = 注册顺序**  
-- 容器注册：**顺序 = PriorityOrdered/Ordered/others**  
+**条件**：读者是“手工 add BPP”还是“声明为 bean 让容器注册”
+**分支**：
+- 手工 add → 直接操作 `beanFactory.getBeanPostProcessors()` 列表
+- 容器注册 → `registerBeanPostProcessors` 收集+排序+批量注册
+**结果**：
+- 手工 add：**顺序 = 注册顺序**
+- 容器注册：**顺序 = PriorityOrdered/Ordered/others**
 **断点建议**：`DefaultListableBeanFactory#addBeanPostProcessor` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
 
 ## 1. 现象 1：手工添加的 BPP 会比“作为 bean 自动发现”的 BPP 更早执行
@@ -202,14 +202,14 @@ addBeanPostProcessor(bpp):
 
 运行完成三个测试，至少应能够复述三条结论：
 
-1) **手工 add BPP 的顺序 = 注册顺序**  
-   - 断点：`addBeanPostProcessor`  
+1) **手工 add BPP 的顺序 = 注册顺序**
+   - 断点：`addBeanPostProcessor`
    - 断言：PriorityOrdered 不改变执行顺序
-2) **手工 add 比容器注册更早执行**  
-   - 断点：`registerBeanPostProcessors`  
+2) **手工 add 比容器注册更早执行**
+   - 断点：`registerBeanPostProcessors`
    - 断言：手工注册的 BPP 已经在 list 中
-3) **过早创建 = 永久错过后续 BPP**  
-   - 断点：`getBean` 触发创建 + 之后注册 BPP  
+3) **过早创建 = 永久错过后续 BPP**
+   - 断点：`getBean` 触发创建 + 之后注册 BPP
    - 断言：日志/断点显示 bean 未被后续 BPP 处理
 
 ## 6. 扩展：编程式注册的三种入口（定义层 vs 实例层）

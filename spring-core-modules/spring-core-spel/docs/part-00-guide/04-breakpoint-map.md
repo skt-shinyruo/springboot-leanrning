@@ -25,7 +25,7 @@
 ## A. parser：表达式字符串怎么变成 AST？
 
 - 建议断点：`SpelExpressionParser#parseExpression`
-- 观察点：解析出来的 expression 与内部 AST（如果你进一步深入）
+- 观察点：解析出来的 expression 与内部 AST（如果进一步深入）
 
 ## B. evaluation：为什么取不到值？
 

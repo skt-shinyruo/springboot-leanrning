@@ -37,7 +37,7 @@
   - `/api/advanced/contract/echo`：错误 `Content-Type` → 415
   - `/api/advanced/contract/ping`：错误 `Accept` → 406
 - 然后用 `BootWebMvcContractJacksonLabTest` 把“契约可控”做成可回归证据（strict media type / unknown fields）。
-- 排障时如果你想“把猜测变成证据”，可以对照 `BootWebMvcTestingDebuggingLabTest` 的写法：
+- 排障时如果想“把猜测变成证据”，可以对照 `BootWebMvcTestingDebuggingLabTest` 的写法：
   - 直接拿到 `resolvedException`，最快锁定“到底走的是 406 还是 415（或 400）”的分支入口。
 
 ## 源码与断点
@@ -48,11 +48,11 @@
 - `AbstractMessageConverterMethodArgumentResolver#readWithMessageConverters`
 - `AbstractMessageConverterMethodProcessor#writeWithMessageConverters`
 
-## 你应该怎么定位 406/415（按优先级）
+## 应当怎么定位 406/415（按优先级）
 
 > 目标：别在 controller 里盲改代码，而是沿着链路确认“到底在哪一段失败”。
 
-1. **先确认映射约束**：controller 方法的 `produces/consumes` 是否与你的 `Accept/Content-Type` 对齐？
+1. **先确认映射约束**：controller 方法的 `produces/consumes` 是否与 `Accept/Content-Type` 对齐？
 2. **再确认 converter**：
    - 415（read 失败）：能否找到“能读该 Content-Type”的 converter？
    - 406（write 失败）：能否找到“能写出 Accept 的格式”的 converter？
@@ -66,7 +66,7 @@
 
 ## 常见坑与边界
 
-- 你在 Postman/curl 里不小心带了 `Accept: */*` 或 `Content-Type` 缺失/错误，会让你误以为“后端逻辑坏了”，但实际上是契约不匹配。
+- 在 Postman/curl 里不小心带了 `Accept: */*` 或 `Content-Type` 缺失/错误，容易误以为“后端逻辑坏了”，但实际上是契约不匹配。
 
 ## 小结与下一章
 

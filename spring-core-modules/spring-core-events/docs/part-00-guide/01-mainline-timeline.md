@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：主线时间线：Spring Events
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
     - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
     - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
     - 推荐 Lab：`SpringCoreEventsLabTest`
@@ -15,17 +15,17 @@
 
 !!! summary
     - 这一模块关注：事件发布/监听在 Spring 中如何工作，以及同步/异步/事务事件的边界与落地方式。
-    - 读完你应该能复述：**发布事件 → Multicaster 分发 → Listener 执行（同步/异步/事务）** 这一条主线。
+    - 读完应当能复述：**发布事件 → Multicaster 分发 → Listener 执行（同步/异步/事务）** 这一条主线。
     - 推荐顺序：先读《深挖导读》→ 本章 → Part 01（事件基础）→ Part 02（异步与事务）→ 附录排坑。
 
-!!! example "建议先跑的 Lab（把时间线变成证据）"
+!!! example "先运行的 Lab（把时间线变成证据）"
 
     - Lab：`SpringCoreEventsLabTest`
 
 ## 小结与下一章
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：主线时间线：Spring Events —— 建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+- 一句话总结：主线时间线：Spring Events —— 先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
 - 回到主线：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 - 下一章：建议按模块目录/全书目录继续顺读。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
@@ -33,7 +33,7 @@
 ## 导读
 
 本章是「第 127 章：主线时间线：Spring Events」的路线图：先给出主线顺序与关键分支，再把每一段落到可运行入口。
-建议先跑 `SpringCoreEventsLabTest` 作为主线证据，再回到正文理解“为什么章节按这个顺序组织”。
+先运行 `SpringCoreEventsLabTest` 作为主线证据，再回到正文理解“为什么章节按这个顺序组织”。
 
 <!-- BOOKLIKE-V2:INTRO:START -->
 这一章围绕「主线时间线：Spring Events」展开：先把边界说清楚，再沿主线推进到关键分支，最后用可运行入口把结论验证出来。
@@ -69,11 +69,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证理解成立）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Events」的生效时机/顺序/边界；断点/入口：`org.springframework.context.event.SimpleApplicationEventMulticaster`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Events」的生效时机/顺序/边界；断点/入口：`org.springframework.context.event.ApplicationListenerMethodAdapter`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Events」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.support.TransactionSynchronizationManager`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``SpringCoreEventsLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Events」的生效时机/顺序/边界；断点/入口：`org.springframework.context.event.SimpleApplicationEventMulticaster`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Events」的生效时机/顺序/边界；断点/入口：`org.springframework.context.event.ApplicationListenerMethodAdapter`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Events」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.support.TransactionSynchronizationManager`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``SpringCoreEventsLabTest`` 后，把上述观察点逐条对照，写出 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：Common Pitfalls（springboot-autoconfiguration）
-    - 怎么使用：当你遇到“功能没生效/bean 不存在/注入对象不对”时，用本页把问题收敛到 imports/condition/backoff/顺序其中一个分支。
+    - 怎么使用：当遇到“功能没生效/bean 不存在/注入对象不对”时，用本页把问题收敛到 imports/condition/backoff/顺序其中一个分支。
     - 原理：大多数误判来自：只看某一个条件注解，而忽略了 imports 与 backoff（或忽略了多个 bean 的选择规则）。
     - 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome`
     - 推荐 Lab：`BootAutoConfigurationLabTest`
@@ -29,12 +29,12 @@
 
 ## 坑 2：以为 property 能覆盖一切，但实际是 backoff 让位
 
-- 典型表现：你配了 enabled=true，但默认 bean 还是没出现
-- 根因：你或某个 starter 提供了同类型 bean，触发 `@ConditionalOnMissingBean` backoff
+- 典型表现：配了 enabled=true，但默认 bean 还是没出现
+- 根因：或某个 starter 提供了同类型 bean，触发 `@ConditionalOnMissingBean` backoff
 
 ## 坑 3：以为“装饰器没生效”是条件没命中，但实际是注入选择规则
 
-- 典型表现：容器里有两个同类型 bean，但你拿到的不是你以为的那个
+- 典型表现：容器里有两个同类型 bean，但拿到的不是直觉里的那个
 - 验证：看是否 `@Primary` / 是否有 `@Qualifier`
 
 ## 小结与下一章

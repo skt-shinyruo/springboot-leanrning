@@ -17,9 +17,9 @@
 
 ### 排障模板（统一结构）
 
-当你遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
 
-1. 症状（Symptoms）：你看到的错误/现象（保留关键错误信息）
+1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
 2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
    - Book Matrix：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
    - Branch Matrix：`mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
@@ -33,7 +33,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -58,17 +58,17 @@
 
 ## 常见坑与边界
 
-> 这一模块的坑大多来自“你以为自己在看数据库，其实你在看 persistence context”。需要时用 `flush()+clear()` 把视角切回数据库。
+> 这一模块的坑大多来自“以为自己在看数据库，其实在看 persistence context”。需要时用 `flush()+clear()` 把视角切回数据库。
 
 ## 坑 1：把 persistence context 当成数据库
 
-- 现象：你改了对象字段，立刻 `findById` 看到“变了”，误以为 DB 已更新
+- 现象：改了对象字段，立刻 `findById` 看到“变了”，误以为 DB 已更新
 - 解决：`entityManager.flush()` + `entityManager.clear()` 再查，避免一级缓存假象
 - 对照：见 [docs/04](../part-01-data-jpa/04-dirty-checking.md)
 
 ## 坑 2：不理解 flush 导致“JDBC 查不到/查到了但没提交”
 
-- 现象：你用 `JdbcTemplate` 直接查表，结果和你想象不一致
+- 现象：用 `JdbcTemplate` 直接查表，结果和想象不一致
 - 解决：理解 flush vs commit 的差异（见 [docs/03](../part-01-data-jpa/03-flush-and-visibility.md)）
 
 ## 坑 3：懒加载 + 循环访问触发 N+1
@@ -83,7 +83,7 @@
 
 ## 坑 5：测试里忘记 `@DataJpaTest` 的默认回滚
 
-- 你会看到：你在测试里插入/更新了数据，断言也通过了；但换一个测试再查时，发现“数据没了”，于是误以为 JPA/flush/事务有问题。
+- 会看到：在测试里插入/更新了数据，断言也通过了；但换一个测试再查时，发现“数据没了”，于是误以为 JPA/flush/事务有问题。
 - Root Cause：`@DataJpaTest` 默认在每个测试方法后回滚事务（这通常是好事：隔离、可重复）。
 - Fix：
   - 需要跨测试共享数据：不要靠“上一个测试留下的数据”，改用 `@Sql`/测试数据工厂/在当前测试里准备数据。
@@ -92,7 +92,7 @@
 
 ## 坑 6：以为 `merge()` 会“把原对象重新托管”，结果改了半天没生效
 
-- Symptom：你在 `detach()/clear()` 之后继续改对象，觉得“脏检查会帮我 UPDATE”，但数据库里啥都没变；或者你调用了 `merge()`，但后续仍然在 **原对象** 上继续改，结果再次不生效。
+- Symptom：在 `detach()/clear()` 之后继续改对象，觉得“脏检查会帮我 UPDATE”，但数据库里啥都没变；或者调用了 `merge()`，但后续仍然在 **原对象** 上继续改，结果再次不生效。
 - Root Cause：JPA 的 `merge()` 语义是 **复制状态到一个新的 managed 实例**，并返回这个 managed 实例；传入的那个对象本身仍然是 detached，后续修改不会被脏检查追踪。
 - Verification：`BootDataJpaMergeAndDetachLabTest#detached_changesWithoutMerge_shouldNotBePersisted`、`BootDataJpaMergeAndDetachLabTest#merge_shouldPersistDetachedChangesIntoManagedCopy`
 - Breakpoints：`org.hibernate.internal.SessionImpl#merge`、`org.hibernate.event.internal.DefaultMergeEventListener#onMerge`

@@ -15,7 +15,7 @@
 
 !!! summary
     - 这一模块关注：用一个可运行的综合案例把多个模块串成一条“业务主线”，用于复盘与迁移到真实项目。
-    - 读完你应该能复述：**需求 → 架构分层 → 关键机制选型 → 验证与排障** 这一条主线。
+    - 读完应当能复述：**需求 → 架构分层 → 关键机制选型 → 验证与排障** 这一条主线。
     - 推荐顺序：先读《深挖导读》→ 本章 → 仅 1 章主线 → 附录排坑。
 
 !!! example "建议先跑的 Lab（把时间线变成证据）"
@@ -45,7 +45,7 @@
 
 ## 在 Spring 主线中的位置
 
-- 这是“把知识拼成系统”的地方：当你学完单个机制后，需要一条能落地的整体流程来稳固认知。
+- 这是“把知识拼成系统”的地方：当学完单个机制后，需要一条能落地的整体流程来稳固认知。
 
 ## 主线时间线（建议顺读）
 
@@ -57,11 +57,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Business Case（综合案例）」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Business Case（综合案例）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Business Case（综合案例）」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootBusinessCaseLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Business Case（综合案例）」的生效时机/顺序/边界；断点/入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Business Case（综合案例）」的生效时机/顺序/边界；断点/入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Business Case（综合案例）」的生效时机/顺序/边界；断点/入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``BootBusinessCaseLabTest`` 后，把上述观察点逐条对照，写出自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

@@ -15,7 +15,7 @@
 
 !!! summary
     - 这一模块关注：安全在 Spring 中如何以 FilterChain 形式接入请求链路，以及认证/授权/CSRF/JWT 的关键分支。
-    - 读完你应该能复述：**请求进入 → Security FilterChain → 认证 → 授权 → 继续到 MVC/返回** 这一条主线。
+    - 读完应当能复述：**请求进入 → Security FilterChain → 认证 → 授权 → 继续到 MVC/返回** 这一条主线。
     - 推荐顺序：先读《深挖导读》→ 本章 → Part 01 顺读 → 附录排坑。
 
 !!! example "建议先跑的 Lab（把时间线变成证据）"
@@ -66,11 +66,11 @@
 - 常见坑：[90-common-pitfalls.md](../appendix/01-common-pitfalls.md)
 - 自检：[99-self-check.md](../appendix/02-self-check.md)
 
-## 证据链（如何验证你真的理解了）
+## 证据链（如何验证真的理解了）
 
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
-- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Security」的生效时机/顺序/边界；断点/入口：`org.springframework.security.web.FilterChainProxy`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Security」的生效时机/顺序/边界；断点/入口：`org.springframework.security.web.SecurityFilterChain`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Security」的生效时机/顺序/边界；断点/入口：`org.springframework.security.web.access.intercept.AuthorizationFilter`；断言：你能解释“为什么此处生效/为什么此处不生效”。
-- 建议：跑完 ``BootSecurityLabTest`` 后，把上述观察点逐条对照，写出你自己的 1–2 句结论（可复述）。
+- 观察点 1：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Security」的生效时机/顺序/边界；断点/入口：`org.springframework.security.web.FilterChainProxy`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 2：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Security」的生效时机/顺序/边界；断点/入口：`org.springframework.security.web.SecurityFilterChain`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 观察点 3：运行本章推荐入口后，聚焦「主线时间线：Spring Boot Security」的生效时机/顺序/边界；断点/入口：`org.springframework.security.web.access.intercept.AuthorizationFilter`；断言：能解释“为什么此处生效/为什么此处不生效”。
+- 建议：跑完 ``BootSecurityLabTest`` 后，把上述观察点逐条对照，写出自己的 1–2 句结论（可复述）。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->

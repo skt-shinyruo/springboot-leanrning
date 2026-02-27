@@ -4,7 +4,7 @@
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -19,9 +19,9 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
-- AOP 默认通过 **代理（proxy）** 生效（你的 Bean 可能会被包装成另一个对象）
+- AOP 默认通过 **代理（proxy）** 生效（Bean 可能会被包装成另一个对象）
 - Advice / Pointcut 的最小闭环（本模块以 `@Around` + `@annotation(...)` 为主）
 - 代理的典型限制：JDK vs CGLIB、`final` 方法、以及自调用陷阱
 
@@ -64,7 +64,7 @@ mvn -pl :spring-core-aop test
 10. [真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证](docs/part-03-proxy-stacking/02-real-world-stacking-playbook.md)
 11. [并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）](docs/part-02-perf-concurrency/01-proxy-concurrency-perf.md)
 12. [常见坑清单（建议反复对照）](docs/appendix/01-common-pitfalls.md)
-13. [自测题：你是否真的理解了 AOP？](docs/appendix/02-self-check.md)
+13. [自测题：是否真正理解了 AOP？](docs/appendix/02-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -84,7 +84,7 @@ mvn -pl :spring-core-aop test
 
 ## 概念 → 在本模块哪里能“看见”
 
-| 你要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 你应该能解释清楚 |
+| 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
 | advice 为什么能“拦截”方法 | [docs/01](docs/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md) | `SpringCoreAopLabTest#adviceIsAppliedToTracedMethod` + `TracingAspect` | 代理如何把横切逻辑织入调用链 |
 | 自调用为什么绕过代理 | [docs/03](docs/part-01-proxy-fundamentals/03-self-invocation.md) | `SpringCoreAopLabTest#selfInvocationDoesNotTriggerAdviceForInnerMethod` + `SelfInvocationExampleService` | “走没走代理”决定 advice 生效与否 |
@@ -107,11 +107,11 @@ mvn -pl :spring-core-aop test
 
 ## 常见坑
 
-- 你以为你在调用目标对象，其实你在调用代理对象（类型/调试现象会不一样）
+- 看起来在调用目标对象，实际在调用代理对象（类型/调试现象会不一样）
 - 自调用绕过代理：同类内部 `this.xxx()` 不会触发 advice
 - `final` 方法/类的限制：CGLIB 不能覆盖 final method，JDK 代理也只能代理接口方法
 - 只有 Spring 容器管理的 bean 才能被代理；`new` 出来的对象不会被拦截
-- pointcut 写得“太宽/太窄”都会让你误判机制（建议先用最小切点验证）
+- pointcut 写得“太宽/太窄”都会导致机制误判（建议先用最小切点验证）
 
 ## 参考
 

@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：异步广播：让事件“默认异步”而不是靠 `@Async`
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
     - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
     - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
     - 推荐 Lab：`SpringCoreEventsLabTest`
@@ -20,11 +20,11 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
 
@@ -34,11 +34,11 @@
 
 还有另一种思路是：让事件分发器（multicaster）本身就异步。
 
-> 这会让“所有事件监听器”默认异步执行（除非你显式选择同步）。
+> 这会让“所有事件监听器”默认异步执行（除非显式选择同步）。
 
 ## 为什么这是一个好练习？
 
-它能帮你理解：事件机制不是黑盒，Spring 通过一个 `ApplicationEventMulticaster` 把事件分发到监听器。
+它有助于理解：事件机制不是黑盒，Spring 通过一个 `ApplicationEventMulticaster` 把事件分发到监听器。
 
 ## 在本模块的练习入口
 
@@ -47,7 +47,7 @@
 
 ## 实现思路（提示，不直接给最终代码）
 
-你需要在 Spring 容器里提供一个自定义的 multicaster，并为它设置 `TaskExecutor`。
+需要在 Spring 容器里提供一个自定义的 multicaster，并为它设置 `TaskExecutor`。
 
 学习建议：
 
@@ -68,7 +68,7 @@
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 看 `SpringCoreEventsExerciseTest#exercise_asyncMulticaster`：
 
@@ -76,14 +76,14 @@
 
 ### 坑点 1：只加了 `@Async` 却没想清“异步点在哪里”，导致线程模型与异常策略混乱
 
-- Symptom：你以为“事件已经异步”，但实际只有某个 listener 异步；或者你以为发布方不会被影响，结果仍被同步 listener 拖慢/异常打断
+- Symptom：以为“事件已经异步”，但实际只有某个 listener 异步；或者以为发布方不会被影响，结果仍被同步 listener 拖慢/异常打断
 - Root Cause：
   - `@Async`：异步点在“监听器方法”
   - async multicaster：异步点在“分发过程”（默认让所有 listener 异步）
 - Verification（用线程名把异步点固定成证据）：
   - async multicaster：`SpringCoreEventsAsyncMulticasterLabTest#asyncMulticasterDispatchesListenersOnExecutorThread`
   - @Async listener：`SpringCoreEventsMechanicsLabTest#asyncListenerRunsOnDifferentThread_whenEnableAsyncIsOn`
-- Fix：先选清楚你要异步的是“某个 listener”还是“整个分发过程”，再用可断言的线程名/执行时机把行为锁定
+- Fix：先选清楚需要异步的是“某个 listener”还是“整个分发过程”，再用可断言的线程名/执行时机把行为锁定
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->

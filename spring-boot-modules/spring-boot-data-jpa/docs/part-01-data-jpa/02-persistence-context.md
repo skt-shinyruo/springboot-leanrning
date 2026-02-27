@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -74,17 +74,17 @@ Persistence Context（持久化上下文）是 JPA/Hibernate 的核心：
 ## Debug/观察建议
 
 1. 经常用 `entityManager.contains(entity)` 问自己：它现在是 managed 还是 detached？
-2. 经常用 `entityManager.flush()` 强制把“上下文里的变化”同步到数据库，验证你对机制的理解
+2. 经常用 `entityManager.flush()` 强制把“上下文里的变化”同步到数据库，验证对机制的理解
 
 ## 常见坑与边界
 
 ### 坑点 1：把“一致性视图”误当成“数据库事实”，导致结论被一级缓存误导
 
-- Symptom：你明明改了字段但 SQL 看不到（或你以为查到的就是 DB 最新值），结论混乱
+- Symptom：明明改了字段但 SQL 看不到（或以为查到的就是 DB 最新值），结论混乱
 - Root Cause：persistence context 是“事务内一致性视图”（一级缓存 + 状态管理），不等价于数据库真实状态
 - Verification：
   - managed 状态可被 contains 观察：`BootDataJpaLabTest#entityIsManagedAfterSaveInSamePersistenceContext`
-  - clear 会让你从“上下文视图”回到“数据库事实”：`BootDataJpaLabTest#entityManagerClearDetachesEntities`
+  - clear 会让人从“上下文视图”回到“数据库事实”：`BootDataJpaLabTest#entityManagerClearDetachesEntities`
 - Fix：学习阶段强烈建议在关键断言前后配合 `flush()` 与 `clear()`，避免被一级缓存制造的“假象”带偏
 
 ## 小结与下一章

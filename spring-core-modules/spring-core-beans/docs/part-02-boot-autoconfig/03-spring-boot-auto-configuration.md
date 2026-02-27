@@ -16,7 +16,7 @@
 ## 导读
 
 本章围绕「10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Boot 3.5.9）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -25,7 +25,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -49,9 +49,9 @@
 
 ### 自动装配角色分工（先记住 4 个入口）
 
-- 导入：`AutoConfigurationImportSelector#selectImports`  
-- 排序：`AutoConfigurationImportSorter`  
-- 条件评估：`ConditionEvaluator#shouldSkip`  
+- 导入：`AutoConfigurationImportSelector#selectImports`
+- 排序：`AutoConfigurationImportSorter`
+- 条件评估：`ConditionEvaluator#shouldSkip`
 - 定义注册：`ConfigurationClassPostProcessor#processConfigBeanDefinitions`
 
 ## 1. 先说结论：Boot 做了什么？
@@ -71,11 +71,11 @@
 
 ### 1.1 机制系统阐述：条件 → 分支 → 结果（Boot 版）
 
-**条件**：是否满足 `@Conditional*`（classpath/属性/已有 bean）  
-**分支**：`ConditionEvaluator#shouldSkip` 决定跳过/注册  
-**结果**：  
-- 条件通过 → 注册 BeanDefinition  
-- 条件不通过 → 自动配置被跳过（即使类在导入清单里）  
+**条件**：是否满足 `@Conditional*`（classpath/属性/已有 bean）
+**分支**：`ConditionEvaluator#shouldSkip` 决定跳过/注册
+**结果**：
+- 条件通过 → 注册 BeanDefinition
+- 条件不通过 → 自动配置被跳过（即使类在导入清单里）
 **断点建议**：`ConditionEvaluator#shouldSkip`
 
 ## 2. 自动装配的入口：`@SpringBootApplication` / `@EnableAutoConfiguration`
@@ -237,14 +237,14 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
 
 运行完成该 Lab，至少应能够复述 3 条结论：
 
-1) **back-off 是定义层时机问题**  
-   - 断点：`ConditionEvaluator#shouldSkip`  
+1) **back-off 是定义层时机问题**
+   - 断点：`ConditionEvaluator#shouldSkip`
    - 断言：覆盖 bean 是否在条件评估时已可见
-2) **顺序影响条件判断**  
-   - 断点：`AutoConfigurationImportSorter`  
+2) **顺序影响条件判断**
+   - 断点：`AutoConfigurationImportSorter`
    - 断言：排序变化会改变 back-off 结果
-3) **定义来源可追溯**  
-   - 断点：`registerBeanDefinition`  
+3) **定义来源可追溯**
+   - 断点：`registerBeanDefinition`
    - 断言：`beanDefinition.getSource()` 能定位到 auto-config 类
 
 ## 6. 如何“观察到”自动装配做了什么？

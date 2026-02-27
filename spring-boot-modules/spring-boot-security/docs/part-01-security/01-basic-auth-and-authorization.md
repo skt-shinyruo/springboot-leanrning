@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -43,8 +43,8 @@
 
 可以把 Security 的判断分成两步：
 
-1) **你是谁**（Authentication）：有没有成功登录？当前 `Authentication` 是不是匿名？
-2) **你能做什么**（Authorization）：你是否具备访问该资源所需的 role/authority？
+1) **是谁**（Authentication）：有没有成功登录？当前 `Authentication` 是不是匿名？
+2) **能做什么**（Authorization）：是否具备访问该资源所需的 role/authority？
 
 在本模块里：
 
@@ -92,7 +92,7 @@
 
 ### 坑点 2：`hasRole("ADMIN")` 不是 `authorities("ADMIN")`（ROLE_ 前缀边界）
 
-- Symptom：你以为“我已经给了 ADMIN 权限”，但访问 `/api/admin/**` 仍然 403
+- Symptom：以为“我已经给了 ADMIN 权限”，但访问 `/api/admin/**` 仍然 403
 - Root Cause：
   - `hasRole("ADMIN")` 的语义是：需要 `ROLE_ADMIN`
   - 仅有 `ADMIN` authority 并不等价于 `ROLE_ADMIN`
@@ -100,7 +100,7 @@
 - Breakpoints：
   - `SecurityConfig#apiChain`（`hasRole("ADMIN")` 规则定义）
   - `JsonAccessDeniedHandler#handle`（403 塑形）
-- Fix：在需要 role 语义时给 `ROLE_ADMIN`（或改用 `hasAuthority("ADMIN")` 并统一你的权限命名）
+- Fix：在需要 role 语义时给 `ROLE_ADMIN`（或改用 `hasAuthority("ADMIN")` 并统一权限命名）
 
 ## 小结与下一章
 

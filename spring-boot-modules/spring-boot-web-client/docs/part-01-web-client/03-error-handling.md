@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -30,12 +30,12 @@
 
 ## 机制主线
 
-本章把“HTTP 状态码”变成“你的领域异常”，并对比 RestClient 与 WebClient 的写法。
+本章把“HTTP 状态码”变成“领域异常”，并对比 RestClient 与 WebClient 的写法。
 
 ## 应当观察到的现象
 
 - 关键不在于“抛什么异常”，而在于：
-  - 你能在测试里固定“哪些状态码映射成什么异常”
+  - 能在测试里固定“哪些状态码映射成什么异常”
   - 异常里最好包含 status（用于上层分类处理：重试/降级/告警）
 
 ## 源码与断点
@@ -62,7 +62,7 @@
 ### 坑点 1：把底层异常直接抛给业务层，导致“上层无法分流处理”
 
 - Symptom：上层只拿到一个 `RuntimeException/RestClientException`，无法区分 4xx/5xx/超时；重试/告警/降级都做不了
-- Root Cause：没有把 HTTP 状态码映射成你的领域异常（并携带 status 作为分类依据）
+- Root Cause：没有把 HTTP 状态码映射成领域异常（并携带 status 作为分类依据）
 - Verification：
   - RestClient：`BootWebClientRestClientLabTest#restClientMaps400ToDomainException`
   - WebClient：`BootWebClientWebClientLabTest#webClientMaps500ToDomainException`

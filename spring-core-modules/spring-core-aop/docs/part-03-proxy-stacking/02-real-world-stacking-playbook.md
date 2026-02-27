@@ -16,15 +16,15 @@
 ## 导读
 
 本章围绕「10. 真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreAopRealWorldStackingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopRealWorldStackingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreAopRealWorldStackingLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopProceedNestingLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
 
@@ -35,7 +35,7 @@
 - **主流形态：单 proxy + 多 advisors**（同一个代理上挂很多增强）
 - **少见但要能识别：多层 proxy（套娃）**
 
-但真实项目里，你最终要面对的是 **真实基础设施**：
+但真实项目里最终要面对的是 **真实基础设施**：
 
 - 事务：`@Transactional`
 - 缓存：`@Cacheable`
@@ -43,7 +43,7 @@
 
 ---
 
-如果你需要在启动后挂起等待 IDE attach（默认 5005）：
+如果需要在启动后挂起等待 IDE attach（默认 5005）：
 
 ```bash
 mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldStackingLabTest test
@@ -61,19 +61,19 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 > **一个 bean 最终暴露为一个 proxy，而 Tx/Cache/Security/AOP 都只是这个 proxy 上的一组 advisors/interceptors。**
 
-因此你遇到的所有“增强不生效 / 顺序怪 / 被绕过”问题，本质上都能回到下面 **4 个可断言结论（真实语义）**：
+因此真实项目里遇到的所有“增强不生效 / 顺序怪 / 被绕过”问题，本质上都能回到下面 **4 个可断言结论（真实语义）**：
 
-> 这个分流框架建议背下来。它能让你在真实项目里“少猜、快定位”。
+> 这个分流框架建议背下来。它能在真实项目里减少猜测、加快定位。
 
 ---
 
-1) **鉴权阻断（AccessDenied）**  
+1) **鉴权阻断（AccessDenied）**
    - 未授权调用会在增强链上被阻断，目标方法不执行，缓存不写入。
-2) **事务激活（transaction active）**  
+2) **事务激活（transaction active）**
    - 授权 + 缓存未命中时，目标方法执行，且在方法体内能断言事务处于激活状态。
-3) **缓存短路（cache short-circuit）**  
+3) **缓存短路（cache short-circuit）**
    - 同参二次调用直接命中缓存，目标方法不再执行（返回第一次结果）。
-4) **安全不会被缓存绕过（security before cache）**  
+4) **安全不会被缓存绕过（security before cache）**
    - 即使缓存里已经有值，未授权调用也必须抛出 `AccessDenied`，不能“偷到缓存结果”。
 
 这些结论都对应真实项目里最常见的“疑难杂症”：
@@ -87,27 +87,27 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 ## 2. 断点 Playbook：四步把链条“看见”
 
-> 目标：不要靠猜。你应该能在断点里直接回答：有没有 proxy、有哪些 advisors、这次调用挂了哪些拦截器、顺序如何。
+> 目标：不要靠猜。应当能在断点里直接回答：有没有 proxy、有哪些 advisors、这次调用挂了哪些拦截器、顺序如何。
 
-### 2.1 第一步：确认你拿到的是不是 proxy（不要跳过）
+### 2.1 第一步：确认拿到的是不是 proxy（不要跳过）
 
-在你的业务入口（controller/service 的调用点）先做一个“事实确认”：
+在业务入口（controller/service 的调用点）先做一个“事实确认”：
 
 - `AopUtils.isAopProxy(bean)`
 - `AopUtils.isJdkDynamicProxy(bean)` / `AopUtils.isCglibProxy(bean)`
 - `bean instanceof Advised` → `((Advised) bean).getAdvisors()`
 
-你要得到一个明确结论：
+需要得到一个明确结论：
 
 - **没有 proxy**：后面所有 AOP/Tx/Cache/Security 都不用谈（先回到 call path/配置问题）
 - **有 proxy 但 advisors 缺失**：优先排查 `@Enable...` 是否生效、bean 是否被排除、是否有多个容器
 - **有 proxy 且 advisors 都在**：继续看“链条组装与执行”
 
-### 2.2 第二步：看清“链条组装”（你要看见这次调用挂了哪些拦截器）
+### 2.2 第二步：看清“链条组装”（需要看见这次调用挂了哪些拦截器）
 
 - `DefaultAdvisorChainFactory#getInterceptorsAndDynamicInterceptionAdvice`
 
-你要看的不是源码细节，而是两个观察点：
+需要看的不是源码细节，而是两个观察点：
 
 - `method` / `targetClass`：这次到底在调用哪个方法、目标类是谁
 - 返回的拦截器列表：**这一次调用实际挂了哪些 interceptor，顺序是什么**
@@ -121,13 +121,13 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 观察点：
 
 - `currentInterceptorIndex`：现在执行到第几个 interceptor
-- “before 的顺序 / after 的逆序”：你应该能解释为什么 finally 会倒着出栈
+- “before 的顺序 / after 的逆序”：应当能解释为什么 finally 会倒着出栈
 
 ---
 
 ## 3. 真实基础设施入口：Tx / Cache / Security 分别在哪进场
 
-> 目标：你能在断点里“看到”它们分别在哪拦截、在哪短路、在哪抛错，从而把真实项目的行为归因到具体拦截器。
+> 目标：能在断点里“看到”它们分别在哪拦截、在哪短路、在哪抛错，从而把真实项目的行为归因到具体拦截器。
 
 ### 3.1 事务（@Transactional）
 
@@ -142,7 +142,7 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 - **缓存未命中**：继续 `proceed()` → 执行目标方法 → 写入 cache
 - **缓存命中**：直接返回 cached value（短路），目标方法不会执行
 
-> 当你看到“缓存命中但仍然执行了方法”，优先怀疑：key 计算/缓存名不一致/代理没生效/调用入口绕过 proxy。
+> 当看到“缓存命中但仍然执行了方法”，优先怀疑：key 计算/缓存名不一致/代理没生效/调用入口绕过 proxy。
 
 ### 3.3 方法安全（@PreAuthorize）
 
@@ -154,9 +154,9 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 ---
 
-## 4. 真实项目排障 Checklist（你可以直接照着跑）
+## 4. 真实项目排障 Checklist（可以直接照着跑）
 
-当你遇到“AOP/Tx/Cache/Security 不生效/顺序怪”，按这个顺序做，基本不会走弯路：
+当遇到“AOP/Tx/Cache/Security 不生效/顺序怪”，按这个顺序做，基本不会走弯路：
 
 1) **call path**：入口是否走 Spring bean？是否 self-invocation？是否从 `new` 出来的对象调用？
 2) **proxy 存在性**：`AopUtils.isAopProxy(bean)` 是否为 true？代理类型（JDK/CGLIB）是否符合预期？
@@ -164,24 +164,24 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 4) **本次调用是否命中**：在链条组装断点里看，这次方法调用是否把期望的 interceptor 加入链条？
 5) **短路与顺序**：缓存命中是否直接返回？鉴权是否在结果返回前发生？事务边界是否包住目标执行？
 
-如果你能把这 5 步跑通，基本就具备了在真实项目里独立定位 AOP/Tx/Cache/Security 问题的能力。
+如果能把这 5 步跑通，基本就具备了在真实项目里独立定位 AOP/Tx/Cache/Security 问题的能力。
 
 ---
 
-1) 跑：`unauthorized_call_is_denied_and_does_not_invoke_target_or_cache`  
-   - 你能指出：是谁抛出了 `AccessDeniedException`？目标方法有没有执行？
-2) 跑：`authorized_call_invokes_target_with_transaction_and_populates_cache`  
-   - 你能指出：事务是在链条的哪一层开始的？目标方法里为什么能断言事务 active？
-3) 跑：`cache_hit_short_circuits_target_but_security_still_applies`  
-   - 你能指出：缓存命中时是谁提前返回的？为什么未授权也不能拿到缓存结果？
+1) 跑：`unauthorized_call_is_denied_and_does_not_invoke_target_or_cache`
+   - 能指出：是谁抛出了 `AccessDeniedException`？目标方法有没有执行？
+2) 跑：`authorized_call_invokes_target_with_transaction_and_populates_cache`
+   - 能指出：事务是在链条的哪一层开始的？目标方法里为什么能断言事务 active？
+3) 跑：`cache_hit_short_circuits_target_but_security_still_applies`
+   - 能指出：缓存命中时是谁提前返回的？为什么未授权也不能拿到缓存结果？
 
-如果你能把这三条复述清楚，你会发现：真实项目里大多数 AOP “玄学问题”，已经不再玄学了。
+如果能把这三条复述清楚，会发现：真实项目里大多数 AOP “玄学问题”，已经不再玄学了。
 
 ---
 
 ## 5. 练习：把“机制”复述成一条可运行的主线（建议 30 分钟）
 
-建议你按顺序做三次 Debug，每次只完成一个“可复述结论”：
+可以按顺序做三次 Debug，每次只完成一个“可复述结论”：
 
 - 想把“叠加形态”与“顺序归属（BPP vs Advisor）”彻底讲透：回看 [09. multi-proxy-stacking](01-multi-proxy-stacking.md) + `SpringCoreAopMultiProxyStackingLabTest`
 - 想把“容器视角（AutoProxyCreator/BPP）”拉通：读 [07. autoproxy-creator-mainline](../part-02-autoproxy-and-pointcuts/01-autoproxy-creator-mainline.md) + 跑 `SpringCoreAopAutoProxyCreatorInternalsLabTest`
@@ -201,8 +201,8 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 ## 常见坑与边界
 
-1) **入口没走 proxy（call path 问题）**：自调用/`new` 出来的对象/绕过 Spring 管理  
-2) **这次调用没命中（pointcut/matcher 问题）**：表达式误判、方法不可代理、可见性限制  
+1) **入口没走 proxy（call path 问题）**：自调用/`new` 出来的对象/绕过 Spring 管理
+2) **这次调用没命中（pointcut/matcher 问题）**：表达式误判、方法不可代理、可见性限制
 3) **顺序/短路改变了语义（ordering/short-circuit 问题）**：缓存命中直接返回、鉴权提前抛错、事务边界位置不同
 
 ## 小结与下一章

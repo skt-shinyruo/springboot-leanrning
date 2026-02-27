@@ -3,7 +3,7 @@
 !!! summary "章节学习卡片（五问闭环）"
 
     - 知识点：`classpath*:` 与 pattern：为什么它能“扫到多个资源”？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
+    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
     - 原理：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
     - 源码入口：`org.springframework.core.io.Resource` / `org.springframework.core.io.ResourceLoader` / `org.springframework.core.io.support.PathMatchingResourcePatternResolver`
     - 推荐 Lab：`SpringCoreResourcesLabTest`
@@ -16,21 +16,21 @@
 ## 导读
 
 本章围绕「03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreResourcesLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreResourcesLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
-!!! example "本章配套实验（先跑再读）"
+!!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 
 ## 机制主线
 
-当你想一次性加载多个资源时，会用到两件事：
+当希望一次性加载多个资源时，会用到两件事：
 
 - `ResourcePatternResolver`
 - `classpath*:` + 通配符（pattern）
@@ -65,7 +65,7 @@ pattern 扫描返回的资源数组顺序不一定稳定（与 classpath 顺序�
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 在本模块如何验证
 
@@ -77,7 +77,7 @@ pattern 扫描返回的资源数组顺序不一定稳定（与 classpath 顺序�
 
 ### 坑点 1：把 `classpath:` 当成“能扫多个资源”，结果只拿到一个句柄或根本没匹配
 
-- Symptom：你写了通配符但返回为空/只拿到一个资源，于是怀疑“pattern 不工作”
+- Symptom：编写了通配符但返回为空/只拿到一个资源，于是怀疑“pattern 不工作”
 - Root Cause：
   - `classpath:` 是“单资源定位”语义
   - `classpath*:` 才是“扫描所有 classpath 并按 pattern 匹配”的语义
@@ -88,7 +88,7 @@ pattern 扫描返回的资源数组顺序不一定稳定（与 classpath 顺序�
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：`classpath*:` 的关键是“扫全 classpath 再按 pattern 匹配”——别指望 `classpath:` 帮你扫多个资源，且一定要把结果排序后再断言，避免顺序不稳定带来的误判。
+- 一句话总结：`classpath*:` 的关键是“扫全 classpath 再按 pattern 匹配”——别指望 `classpath:` 帮助扫描多个资源，且一定要把结果排序后再断言，避免顺序不稳定带来的误判。
 - 回到主线：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->

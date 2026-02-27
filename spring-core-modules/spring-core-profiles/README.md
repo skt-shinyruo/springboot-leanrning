@@ -8,7 +8,7 @@
 - 使用 `@ConditionalOnProperty` 进行基于配置项的装配（Spring Boot 自动配置中很常见）
 - 保证每个场景都不会注入歧义（每个场景只存在一个 `GreetingProvider`）
 
-## Start Here（5 分钟闭环）
+## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
 
@@ -21,7 +21,7 @@
 - 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
 - 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
 
-## 你将学到什么
+## 本模块的学习产出
 
 - `@Profile("dev")` 的 Bean 在什么时候会生效
 - 使用配置项开关（例如 `app.mode=fancy`）切换行为

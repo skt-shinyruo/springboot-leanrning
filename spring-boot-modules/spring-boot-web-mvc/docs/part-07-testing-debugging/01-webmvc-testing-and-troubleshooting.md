@@ -23,8 +23,8 @@
     - 看到 406/415，不要盯 controller：先看 `Accept`/`Content-Type`/`produces`/`consumes`，再看 converter 选择。
     - 用 MockMvc 的 `MvcResult#getResolvedException()` 能快速把“猜”变成“证据”：异常类型就是分支位置。
     - 看到 401/403，优先怀疑 Filter/Security，而不是 MVC handler：**很多安全分支发生在 DispatcherServlet 之前**。
-      - 证据链建议：用 `MvcResult#getHandler()` / `MvcResult#getResolvedException()` 先证明“是否进入了 HandlerMethod”（见 `BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`）。
-    - 当你需要“确认到底选了哪个 HttpMessageConverter”：可以用 `ResponseBodyAdvice#beforeBodyWrite` 把 `selectedConverterType/selectedContentType` 写进响应头，再用测试固化它（证据链优先）。
+    - 证据链建议：用 `MvcResult#getHandler()` / `MvcResult#getResolvedException()` 先证明“是否进入了 HandlerMethod”（见 `BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`）。
+    - 当需要“确认到底选了哪个 HttpMessageConverter”：可以用 `ResponseBodyAdvice#beforeBodyWrite` 把 `selectedConverterType/selectedContentType` 写进响应头，再用测试固化它（证据链优先）。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -51,7 +51,7 @@
 
 ### Debug 预设建议（最常用 3 个断点 + 3 个观察字段）
 
-如果你不确定从哪开始，下这 3 个断点通常就能定位 80% 的 Web MVC 问题：
+如果不确定从哪开始，下这 3 个断点通常就能定位 80% 的 Web MVC 问题：
 
 1. `DispatcherServlet#doDispatch`（总入口：证明“是否进入 MVC”）
 2. `HandlerMethodArgumentResolverComposite#resolveArgument`（入参阶段：缺参/类型不匹配/校验入口）
@@ -59,7 +59,7 @@
 
 搭配这 3 个观察字段（Watch List）：
 
-- `request.getRequestURI()` / `request.getMethod()`（你到底在请求什么）
+- `request.getRequestURI()` / `request.getMethod()`（到底在请求什么）
 - `MvcResult#getHandler()`（命中了哪个 handler）
 - `MvcResult#getResolvedException()`（分支的“铁证”）
 
@@ -73,11 +73,11 @@
 
 - `@WebMvcTest` 不会加载完整上下文：当问题涉及 filter chain、真实端口、静态资源链路差异时，需要用 `@SpringBootTest(webEnvironment=RANDOM_PORT)` 再补一条端到端断言。
 - 引入 `spring-boot-starter-security` 后，POST 变 403：常见原因是 CSRF。教学场景可以保留一个端点演示分支；真实 API 通常会对无状态接口关闭 CSRF。
-- 当你需要“确认到底是 401 还是 403”：用 `status()` 固化现象后，再看响应头/异常入口（filter 链断点），避免盲改 controller。
+- 当需要“确认到底是 401 还是 403”：用 `status()` 固化现象后，再看响应头/异常入口（filter 链断点），避免盲改 controller。
 
 ## 小结与下一章
 
-- 本章完成后建议回看 Part 03/04：用断点验证你对 resolver/converter 的理解是否正确。
+- 本章完成后建议回看 Part 03/04：用断点验证对 resolver/converter 的理解是否正确。
 
 <!-- BOOKIFY:START -->
 

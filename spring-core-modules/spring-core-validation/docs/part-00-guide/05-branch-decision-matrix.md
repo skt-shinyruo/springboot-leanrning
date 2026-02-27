@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. 断点地图（Validation Debugger Pack）](04-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 约束（Constraint）心智模型：你在校验什么？校验结果是什么？](../part-01-validation-core/01-constraint-mental-model.md)
+上一章：[04. 断点地图（Validation Debugger Pack）](04-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 约束（Constraint）心智模型：校验对象与校验结果](../part-01-validation-core/01-constraint-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -55,4 +55,3 @@
 上一章：[part-00-guide/02-breakpoint-map.md](04-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-validation-core/01-constraint-mental-model.md](../part-01-validation-core/01-constraint-mental-model.md)
 
 <!-- BOOKIFY:END -->
-

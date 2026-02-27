@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -31,7 +31,7 @@
 
 ## 机制主线
 
-这页不展开完整机制主线；其定位更接近一张“决策表 + 入口清单”：帮你在 slice test 与 mock 策略之间快速收敛分支，并把结论落到可回归的入口上。
+这页不展开完整机制主线；其定位更接近一张“决策表 + 入口清单”：帮助在 slice test 与 mock 策略之间快速收敛分支，并把结论落到可回归的入口上。
 
 ## 源码与断点
 
@@ -59,14 +59,14 @@
 ### 坑点 1：误以为 `@WebMvcTest` 会加载完整业务 bean，导致“启动失败/测试意义跑偏”
 
 - Symptom：
-  - 你想测试 controller，却发现测试启动失败（常见是缺少 service/repository bean）
-  - 或者你为了解决启动失败引入了过多配置，最终把 slice 测试写成了“又慢又不稳定的全量测试”
+  - 想测试 controller，却发现测试启动失败（常见是缺少 service/repository bean）
+  - 或者为了解决启动失败引入了过多配置，最终把 slice 测试写成了“又慢又不稳定的全量测试”
 - Root Cause：
-  - `@WebMvcTest` 的目标是**只启动 MVC slice**，默认不会把你的业务依赖（service/repo）全加载进来
-  - slice 测试里如果 controller 依赖 service，你必须显式提供它（通常用 `@MockBean`）
+  - `@WebMvcTest` 的目标是**只启动 MVC slice**，默认不会把业务依赖（service/repo）全加载进来
+  - slice 测试里如果 controller 依赖 service，必须显式提供它（通常用 `@MockBean`）
 - Verification（证据链）：
   - WebMvc slice 的正确方式：`GreetingControllerWebMvcLabTest`（通过 `@MockBean GreetingService` 固定 controller 契约）
-    - `GreetingControllerWebMvcLabTest#returnsGreetingFromMockedService`
+  - `GreetingControllerWebMvcLabTest#returnsGreetingFromMockedService`
   - full context 的对照组：`GreetingControllerSpringBootLabTest#returnsGreetingFromRealService`
   - `@MockBean` 在 full context 中确实会覆盖真实 bean：`BootTestingMockBeanLabTest#mockBeanOverridesRealBeanInFullContext`
 - Fix：

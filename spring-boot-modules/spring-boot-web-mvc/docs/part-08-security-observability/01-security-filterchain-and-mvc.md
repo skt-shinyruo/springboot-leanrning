@@ -22,8 +22,8 @@
 
     - Spring Security 的主要入口是 **Servlet Filter 链**（FilterChainProxy），它发生在 **DispatcherServlet 之前**。
     - 401/403 往往不是 controller 的问题：
-      - **401**：未认证（Authentication 不存在/失败）
-      - **403**：已认证但不允许（权限不足）或 **CSRF 缺失**（常见于 POST/PUT/DELETE）
+    - **401**：未认证（Authentication 不存在/失败）
+    - **403**：已认证但不允许（权限不足）或 **CSRF 缺失**（常见于 POST/PUT/DELETE）
     - 工程落地建议：把“教学安全端点”与“既有教学主线端点”隔离，避免影响现有 Labs（本模块采用只保护 `/api/advanced/secure/**` 的策略）。
 
 
@@ -42,7 +42,7 @@
 3. **Controller**
 4. **异常解析与响应写回**
 
-因此：当你看到 401/403，第一反应应该是“我有没有走到 DispatcherServlet”，而不是“controller 写错了”。
+因此：当看到 401/403，第一反应应该是“我有没有走到 DispatcherServlet”，而不是“controller 写错了”。
 
 ### C.1 如何证明“没进入 DispatcherServlet”（证据链优先）
 
@@ -57,7 +57,7 @@
 
 1. **401/403 且 `handler == null`**
    - 大概率发生在 **Security FilterChain**（DispatcherServlet 之前）
-   - 此时你再去加 `@ControllerAdvice` 往往是“改不到点上”
+   - 此时再去加 `@ControllerAdvice` 往往是“改不到点上”
 2. **400/5xx 且 `handler != null`（且 `resolvedException != null`）**
    - 说明已经进入 **DispatcherServlet / HandlerMethod**，问题更可能在 MVC 的 binder/converter/exception resolver 段落
 
@@ -97,8 +97,8 @@
 
 ## 常见坑与边界
 
-- **引入 security 依赖后，slice 测试（@WebMvcTest）默认也会受到安全过滤器影响**：要么显式导入你的 `SecurityFilterChain`（本模块示例），要么在特定测试里关闭 filters（不推荐默认关闭）。
-- **CSRF 的“误伤”**：如果你没有刻意控制 CSRF，原本正常的 POST 会突然 403。真实工程里通常对纯 API 关闭 CSRF，但教学场景可以保留一小段端点用于演示分支。
+- **引入 security 依赖后，slice 测试（@WebMvcTest）默认也会受到安全过滤器影响**：要么显式导入 `SecurityFilterChain`（本模块示例），要么在特定测试里关闭 filters（不推荐默认关闭）。
+- **CSRF 的“误伤”**：如果没有刻意控制 CSRF，原本正常的 POST 会突然 403。真实工程里通常对纯 API 关闭 CSRF，但教学场景可以保留一小段端点用于演示分支。
 
 ## 小结与下一章
 

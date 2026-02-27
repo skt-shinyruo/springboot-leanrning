@@ -1,11 +1,16 @@
-# Spring Core Tx（事务）：目录
+# Spring Core Tx（事务）：边界、传播与回滚
 
-## 导读
+本模块把事务相关问题放回同一条可运行主线：事务边界如何建立、`@Transactional` 代理在何处介入、回滚规则如何判定、传播行为如何影响嵌套调用，以及 `TransactionTemplate` 如何作为显式边界工具用于调试与工程化收敛。
 
-本页是「Spring Core Tx（事务）：目录」的目录页，建议以“先跑后读”的方式使用：先选一个可运行入口把现象跑通，再按主线章节顺读，把每个结论落到可回归的断言。
+事务类问题在排障时最常见的误判是“以为走了事务，实际上没走代理”；因此本模块优先把“代理主线 + 边界事实”跑通，再进入回滚与传播等分支。
 
+---
 
-> 建议先把“事务边界 + 代理主线”跑通，再看回滚/传播，最后用模板与调试手段把行为固定下来。
+## 10 分钟入口：先确认事务边界与代理是否生效
+
+- `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
+
+运行后应能回答：事务在何处开始/提交/回滚；拦截器链条在哪个入口触发；自调用等场景为何会绕过代理边界。
 
 ## 从这里开始（建议顺序）
 
@@ -29,11 +34,18 @@
 - 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](part-00-guide/05-branch-decision-matrix.md)
 - 排障 playbook：[01-common-pitfalls.md](appendix/01-common-pitfalls.md)
 - 自检清单：[02-self-check.md](appendix/02-self-check.md)
-- 可跑入口（Book Matrix）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
-- 可跑入口（Branch Matrix - 事务主分支）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
-- 可跑入口（Branch Matrix - 常见坑聚合）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
-- 可跑入口（Solutions - 本模块答案回归）：`mvn -q -pl :spring-core-tx -Dtest=*ExerciseSolutionTest test`
-- 可跑入口（并发/性能 Lab - ThreadLocal 边界证据链）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxThreadLocalBoundaryLabTest test`
+
+---
+
+## 可运行入口（用于复现/回归）
+
+- Book Matrix：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
+- Branch Matrix（事务主分支）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
+- Branch Matrix（常见坑聚合）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-tx -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（ThreadLocal 边界证据链）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxThreadLocalBoundaryLabTest test`
+
+---
 
 ## 排坑与自检
 

@@ -59,9 +59,9 @@
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：属性填充或 `@Value` 注入需要把 String 转成目标类型  
-**分支**：`TypeConverterDelegate#convertIfNecessary` 判断：ConversionService → PropertyEditor → 失败  
-**结果**：转换成功则写入属性；失败则抛 `TypeMismatchException` / `ConversionNotSupportedException`  
+**条件**：属性填充或 `@Value` 注入需要把 String 转成目标类型
+**分支**：`TypeConverterDelegate#convertIfNecessary` 判断：ConversionService → PropertyEditor → 失败
+**结果**：转换成功则写入属性；失败则抛 `TypeMismatchException` / `ConversionNotSupportedException`
 **断点建议**：`TypeConverterDelegate#convertIfNecessary`
 
 ## 1. 两条必须区分的链路：property values vs `@Value`

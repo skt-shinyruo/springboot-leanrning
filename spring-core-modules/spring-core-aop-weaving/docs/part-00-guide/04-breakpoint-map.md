@@ -20,7 +20,7 @@
   - LTW：运行时 inputArgs 包含 `-javaagent:.../aspectjweaver.jar`，并且 advice 记录被写入日志
   - CTW：inputArgs 不包含 agent，但 advice 依然生效（因为类已被织入）
 
-## 运行入口（建议先跑）
+## 运行入口（先运行）
 
 - Book Matrix（手动运行）：`AspectjWeavingBookMatrixLabTest`
 - Branch Matrix（LTW）：`AspectjLtwBranchMatrixLabTest`

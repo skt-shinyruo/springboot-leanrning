@@ -2,150 +2,57 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（复盘出口）"
 
-    - 知识点：自测题：是否真正理解了 AOP？
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
-    - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
-    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
-    - 推荐 Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
+    - 主线入口：`SpringCoreAopBookMatrixLabTest`
+    - 分支入口：`SpringCoreAopProxyBranchMatrixLabTest`（代理基础）/ `SpringCoreAopAutoProxyBranchMatrixLabTest`（AutoProxy）/ `SpringCoreAopStackingBranchMatrixLabTest`（叠加与顺序）
+    - 推荐先跑：`SpringCoreAopLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[01. 常见坑清单（建议反复对照）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先跑入口（把现象跑成事实）
 
-这份自测题的推荐用法是：
+- Book Matrix（主线入口）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
+- Branch Matrix（代理基础）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
+- Branch Matrix（AutoProxy）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
+- Branch Matrix（叠加与顺序）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
 
-1. **先不看代码**，尝试回答（写下你的结论与理由）
-2. **再去跑对应 Lab/Test**，用断言验证你的理解
-3. 最后回读对应章节，把“结论 → 证据链 → 可复述叙事”补齐
+配套资料（排障更快）：
 
-## 从 Book Matrix 进入（主线最小集合）
+- [断点地图](../part-00-guide/04-breakpoint-map.md)
+- [关键分支矩阵](../part-00-guide/05-branch-decision-matrix.md)
+- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](01-common-pitfalls.md)
 
-- `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
+## 自检题（每题都能落到 tests）
 
-## 从 Branch Matrix 进入（关键分支最小集合）
+1. Spring AOP 的“增强”发生在容器的哪个阶段？如何在断点里看到 proxy 替换目标对象？
+   - 证据入口：`SpringCoreAopAutoProxyCreatorInternalsLabTest#autoProxyCreator_isRegisteredAsBeanPostProcessor_whenEnableAspectJAutoProxyIsUsed`
+2. “AOP 生效”的两个前提分别是什么？如何用一条负向用例证明“绕过 proxy 就不会拦截”？
+   - 证据入口：`SpringCoreAopLabTest#selfInvocationDoesNotTriggerAdviceForInnerMethod`
+3. JDK 动态代理与 CGLIB 代理的差异会如何影响“按类型注入/获取”？如何把差异跑成断言？
+   - 证据入口：`SpringCoreAopProxyMechanicsLabTest#proxyType_differsBetweenJdkAndCglib`
+4. pointcut 的核心语义是什么？如何避免“表达式写对了，但入口没走到代理”的误判？
+   - 证据入口：`SpringCoreAopPointcutExpressionsLabTest#pointcut_matches_and_invocation_goes_through_proxy`
+5. `execution/within/this/target` 各自控制的“范围”是什么？如何用对照用例证明差异（尤其在 JDK proxy 下）？
+   - 证据入口：`SpringCoreAopPointcutExpressionsLabTest#this_vs_target_differs_between_JdkProxy_and_CglibProxy`
+6. `@annotation/@within/@target` 的差异是什么？如何在项目内提供一个可复现入口，而不是靠记忆对照表？
+   - 证据入口：`SpringCoreAopPointcutExpressionsLabTest`
+7. 多切面时，顺序影响的到底是“advisor/interceptor 链”，还是“容器阶段的 BPP 顺序”？两类顺序分别去哪里观察？
+   - 证据入口：`SpringCoreAopMultiProxyStackingLabTest`
+8. 为什么“构造器/初始化阶段内部调用”容易造成增强误判？如何用断点证明“调用发生在 proxy 生成之前”？
+   - 证据入口：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
+9. proxy 为什么可以并发调用？哪些状态会在并发下串线？如何把 ThreadLocal 边界写成可回归用例？
+   - 证据入口：`SpringCoreAopProxyConcurrencyLabTest#proxyInvocation_isThreadIsolated_underConcurrentCalls`
+10. 当遇到“不拦截”的问题，稳定的排查顺序是什么？（至少覆盖：入口是否为容器 bean / 是否为 AOP proxy / advisor 是否存在 / 拦截器链是否包含目标 advice）
+    - 证据入口：`SpringCoreAopRealWorldStackingLabTest`
 
-- Proxy 基础：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
-- AutoProxy：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
-- 多代理叠加：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
+## 退出条件（完成标准）
 
-- 本章主题：**02. 自测题：是否真正理解了 AOP？**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
+- 能把 AOP 描述为两段事实链：容器阶段（为何生成 proxy）与调用阶段（为何进入拦截器链）。
+- 能用断点与断言回答：“有没有 proxy、有哪些 advisors、这次调用挂了哪些拦截器、顺序如何”，而不是依赖日志猜测。
 
-!!! summary "本章要点"
-
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
-## 机制主线
-
-本章并不是要你“背术语”，而是检查你是否能把 AOP 讲成一条可验证的主线：
-
-- proxy 什么时候产生、为什么产生（容器阶段）
-- 调用怎么进入 proxy、链条怎么组装、`proceed()` 为什么会嵌套（调用阶段）
-- 不生效怎么分流定位（call path / pointcut / proxy limits / stacking / 并发边界）
-
-## 代理与入口（对应 01/00）
-
-- 你能不能用一句话解释：为什么 Spring AOP 的本质是“改调用链”，而不是“改方法体”？
-- “AOP 生效”的两个前提分别是什么？（提示：call path + pointcut）
-- 你能不能说清：proxy 通常在哪个阶段产生？（提示：BPP after-init）
-
-!!! example "本章配套实验（先跑再读）"
-
-    - Book Matrix：`SpringCoreAopBookMatrixLabTest`
-    - Branch Matrix：`SpringCoreAopProxyBranchMatrixLabTest` / `SpringCoreAopAutoProxyBranchMatrixLabTest` / `SpringCoreAopStackingBranchMatrixLabTest`
-    - Labs：`SpringCoreAopLabTest` / `SpringCoreAopProxyMechanicsLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopRealWorldStackingLabTest`
-
-## 自调用与解决策略（对应 03/05）
-
-- 为什么 `this.inner()` 不会被拦截？你能画出两条调用链的区别吗？
-- 工程上最推荐的修复方案是什么？`AopContext.currentProxy()` 为什么不建议滥用？
-- `AopContext.currentProxy()` 依赖的两个条件是什么？
-
-## 代理限制（对应 04）
-
-- 为什么 CGLIB 拦截不到 final method？private/static 呢？
-- 为什么“构造器/初始化阶段内部调用”经常会让你误判 AOP 失效？
-
-## 顺序与排障（对应 06/90/00）
-
-- 多个切面时，`@Order` 如何影响嵌套关系？（谁在外层、谁先执行）
-- 当你遇到“不拦截”的问题，你的排查顺序是什么？（至少 4 步）
-
-## AutoProxyCreator 主线（对应 07/00）
-
-- AutoProxyCreator 为什么说本质是一个 `BeanPostProcessor`？它为什么是 `SmartInstantiationAwareBeanPostProcessor`？
-- 你能不能说清：候选 Advisors 从哪里来？（`@Aspect` 解析、基础设施 advisors、显式声明的 `Advisor` bean）
-- 你能不能把“决策管线”复述成 5 步：跳过/拿候选/筛 eligible/创建 proxy/暴露最终 bean？
-- 你在源码里想看“为什么这个 bean 会/不会被代理”，应该去哪两个观察点？
-  - 提示：eligible advisors + canApply（以及链条组装）
-
-对应验证入口：
-
-- `SpringCoreAopAutoProxyCreatorInternalsLabTest#autoProxyCreator_isRegisteredAsBeanPostProcessor_whenEnableAspectJAutoProxyIsUsed`
-- `SpringCoreAopAutoProxyCreatorInternalsLabTest#advisor_pointcut_and_advice_form_a_pipeline_that_results_in_a_proxy_and_an_interceptor_chain`
-
-## pointcut 表达式系统（对应 08）
-
-- `execution` 与 `within` 的区别是什么？你会怎么避免“范围太宽/太窄”的误判？
-- `this(实现类)` 与 `target(实现类)` 的区别是什么？为什么在 JDK proxy 下结果会不同？
-- `args(...)` 为什么更偏运行时？什么时候不建议用它？
-- `@annotation/@within/@target` 的差异是什么？你会如何在项目里验证你的理解？
-
-对应验证入口：
-
-- `SpringCoreAopPointcutExpressionsLabTest#this_vs_target_differs_between_JdkProxy_and_CglibProxy`
-- 练习：`SpringCoreAopExerciseTest#exercise_changePointcutStyle`
-
-## 并发 / 性能（对应 11）
-
-- 同一个 proxy 为什么可以被并发调用？什么状态会在并发下串线？
-- 为什么“把上下文写到 aspect 字段里”是危险的？ThreadLocal 的正确用法是什么？
-- ThreadLocal 忘记清理会导致什么问题（尤其在线程池里）？
-
-对应验证入口：
-
-- `SpringCoreAopProxyConcurrencyLabTest#proxyInvocation_isThreadIsolated_underConcurrentCalls`
-
-## H. 多切面/多代理叠加（对应 09）
-
-- 你能否解释清楚两种“叠加”的含义：单 proxy 多 advisors vs 多层 proxy（套娃）？
-- 你能不能说清：顺序问题到底属于 BPP 顺序，还是 advisor/interceptor 顺序？各自去哪里看？
-- 你会如何用 `Advised#getAdvisors()` 把“叠加实体”直接看见，而不是靠猜？
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
-## 最小可运行实验（Lab）
-
-- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
-- Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
-
-### 复现/验证补充说明（来自原文迁移）
-
-- 先不看代码，尝试回答
-- 再去对应章节/实验里验证
-- 最后再启用 Exercises 把理解落实成可运行的结论
-
-- 为什么 JDK proxy 下 `getBean(实现类.class)` 可能会失败？
-- `proxyTargetClass=true/false` 各自意味着什么？你会如何在测试里验证代理类型？
-
-- 你能不能解释：为什么 AutoProxyCreator 的本质是一个 BPP，而不是“运行时改类”？
-- 你能不能说清：Advisor/Pointcut/Advice 三层模型分别是什么？它们如何组合成拦截器链？
-- 你在源码里想看“为什么这个 bean 会/不会被代理”，应该去哪两个断点？（提示：eligible advisors + canApply）
-
-- `execution` 与 `within` 的区别是什么？你会怎么避免“范围太宽/太窄”的误判？
-- `this(实现类)` 与 `target(实现类)` 的区别是什么？为什么在 JDK proxy 下结果会不同？
-- `@annotation/@within/@target` 的差异是什么？你会如何在项目里验证你的理解？
-
-## I. 动手题（建议直接做 Exercises）
+## 动手题（建议直接做 Exercises）
 
 - 让自调用也触发 advice：启用 exposeProxy，并完成 `SpringCoreAopExerciseTest#exercise_makeSelfInvocationTriggerAdvice`
 - 新增一个 `@Order(0)` 的切面，并证明它会在现有切面之前执行：`SpringCoreAopExerciseTest#exercise_addOrderedAspect`
@@ -163,7 +70,7 @@
 
 ### 对应 Lab/Test
 
-- Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopLabTest`
+- Lab：`SpringCoreAopLabTest` / `SpringCoreAopProxyMechanicsLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopRealWorldStackingLabTest` / `SpringCoreAopProxyConcurrencyLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
 上一章：[90-common-pitfalls](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)

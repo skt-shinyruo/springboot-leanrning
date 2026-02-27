@@ -20,7 +20,7 @@
 
 !!! summary "本章要点"
 
-    - 读完本章，你应该能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
+    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
     - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
@@ -56,7 +56,7 @@
 ## 应当得到的结论
 
 - 学习 JPA 一定要区分“上下文里有什么”与“数据库里有什么”
-- flush 是你把两者对齐的手段之一（学习阶段特别好用）
+- flush 是把两者对齐的手段之一（学习阶段特别好用）
 
 ## 源码与断点
 
@@ -79,7 +79,7 @@
 
 ### 坑点 1：把 flush 当成 commit，误以为“flush 后其它事务也能看到”
 
-- Symptom：你在一个事务里 flush 后能查到数据，于是以为数据已经“对外可见/已提交”
+- Symptom：在一个事务里 flush 后能查到数据，于是以为数据已经“对外可见/已提交”
 - Root Cause：flush 只是把 SQL 发出去并执行在当前事务里；是否对其它事务可见取决于 commit
 - Verification：`BootDataJpaLabTest#flushMakesRowsVisibleToJdbcTemplateWithinSameTransaction`
 - Fix：用“同事务 vs 跨事务”的视角分流：flush 用来对齐“上下文 vs DB”，commit 才决定“对外可见”

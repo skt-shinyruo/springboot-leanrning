@@ -18,7 +18,7 @@
 ## 导读
 
 本章围绕「26. SmartInitializingSingleton：所有单例都创建完之后再做事」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `SpringCoreBeansSmartInitializingSingletonLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreBeansSmartInitializingSingletonLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -26,7 +26,7 @@
 !!! summary "本章要点"
 
     - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 如果只看一眼：请先运行一次本章的最小实验，再回到主线对照阅读。
+    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -84,20 +84,20 @@ Spring 提供了一个非常明确的回调：
 
 ### 机制系统阐述：条件 → 分支 → 结果
 
-**条件**：bean 是 **非 lazy 的 singleton**，并实现了 `SmartInitializingSingleton`  
-**分支**：`preInstantiateSingletons` 先创建全部非 lazy 单例 → 再统一回调  
-**结果**：回调发生在“已创建单例集合稳定”之后，但 **不会包含 lazy 单例**  
+**条件**：bean 是 **非 lazy 的 singleton**，并实现了 `SmartInitializingSingleton`
+**分支**：`preInstantiateSingletons` 先创建全部非 lazy 单例 → 再统一回调
+**结果**：回调发生在“已创建单例集合稳定”之后，但 **不会包含 lazy 单例**
 **断点建议**：`DefaultListableBeanFactory#preInstantiateSingletons`
 
 ## 回调来源分型：SmartInitializingSingleton 在生命周期里处于哪一层？
 
 把“回调”分两层看：
 
-1) **单个 bean 级别的初始化回调**  
-   - `@PostConstruct` / `InitializingBean#afterPropertiesSet` / `init-method`  
+1) **单个 bean 级别的初始化回调**
+   - `@PostConstruct` / `InitializingBean#afterPropertiesSet` / `init-method`
    - 发生在 **bean 自己的创建流程** 中（`populateBean` → `initializeBean`）
-2) **容器级别的“全量就绪回调”**  
-   - `SmartInitializingSingleton#afterSingletonsInstantiated`  
+2) **容器级别的“全量就绪回调”**
+   - `SmartInitializingSingleton#afterSingletonsInstantiated`
    - 发生在 **所有非 lazy 单例创建完成之后**
 
 因此它与 `ApplicationRunner`/`CommandLineRunner` 的关系是：
@@ -109,13 +109,13 @@ Spring 提供了一个非常明确的回调：
 
 回调被触发时，容器会通过 `getBean(beanName)` 获取最终单例对象：
 
-- 如果 BPP 在初始化后把 bean **替换为 proxy**，这里获取到的通常就是 **proxy**  
-- 如果没有替换，回调就在 **目标对象** 上执行  
+- 如果 BPP 在初始化后把 bean **替换为 proxy**，这里获取到的通常就是 **proxy**
+- 如果没有替换，回调就在 **目标对象** 上执行
 
 排障建议：
 
-- 断点 `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`：确认是否发生了“对象替换”  
-- 断点 `DefaultListableBeanFactory#preInstantiateSingletons`：确认回调时获取到的是哪种类型  
+- 断点 `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`：确认是否发生了“对象替换”
+- 断点 `DefaultListableBeanFactory#preInstantiateSingletons`：确认回调时获取到的是哪种类型
 
 入口：
 
@@ -144,11 +144,11 @@ Spring 提供了一个非常明确的回调：
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先运行它们）：
+- 本章已在正文中引用以下 LabTest（优先运行它们）：
 - Lab：`SpringCoreBeansSmartInitializingSingletonLabTest`
 - 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 复现/验证补充说明（来自原文迁移）
+### 验证补充（从实验现象出发）
 
 ## 0. 复现入口（可运行）
 
