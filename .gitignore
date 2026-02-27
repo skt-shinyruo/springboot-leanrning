@@ -30,3 +30,6 @@ __pycache__/
 docs-site/.generated/
 docs-site/.site/
 docs-site/.venv/
+
+# Local agent artifacts
+.helloagents/

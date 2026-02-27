@@ -1,1 +1,0 @@
-[OK] Chapter cards upsert finished: updated=326, skipped=0, failed=0
