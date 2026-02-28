@@ -1,12 +1,12 @@
 # 03. 深入分析指南：将“Bean 三层模型”落实到源码与断点
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问框架）"
-
-    - 知识点：深入分析指南：将“Bean 三层模型”落实到源码与断点
     - 使用方式：建议先运行本章给出的最小实验，以断言固定现象；随后沿“现象 → 分层（定义/候选/实例）→ 首要断点 → 观察点”的路径，形成可复核的证据链。
-    - 原理：以 `ApplicationContext#refresh` 为时间线骨架，将 Bean 的行为分解为“定义（BeanDefinition）/实例对象（bean instance）/最终暴露对象（exposed object）”三个层次，并在关键扩展点（BDRPP/BFPP/BPP）处观察定义与实例如何被加工或替换。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
-    - 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
+
+    本章围绕深入分析指南：将“Bean 三层模型”落实到源码与断点展开，主线可以概括为：以 `ApplicationContext#refresh` 为时间线骨架，将 Bean 的行为分解为“定义（BeanDefinition）/实例对象（bean instance）/最终暴露对象（exposed object）”三个层次，并在关键扩展点（BDRPP/BFPP/BPP）处观察定义与实例如何被加工或替换。
+
+    对照入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -22,14 +22,7 @@
 
 本章不再重复 Spring 的概念性介绍，而侧重给出一套可复用的源码级分析方法：当面对“注入为何选择某个候选”“代理为何出现或缺失”“循环依赖为何仅在特定条件下可闭合”等问题时，能够以最小实验固定现象，并借助断点与观察点形成可复核的结论。
 
-- 本章主题：**03. 深入分析指南：将“Bean 三层模型”落实到源码与断点**
 - 阅读建议：先完成一个最小实验（确保入口与断言可复现），再使用“症状驱动导航表”选择章节与断点；必要时对照主线章的时间线，将观察点置于正确阶段理解。
-
-!!! summary "本章要点"
-
-    - 本章的核心内容是“症状驱动导航表”：将现象映射到分层与章节入口，并进一步给出断点与 LabTest 证据链。
-    - 本章给出一张“最小源码导航图”：用少量入口方法把 Bean 的定义、创建、注入、代理与缓存机制串为一条主线。
-    - 建议至少完成一次方法级最小实验（`-Dtest=Class#method`），并在断点中使用固定的监视列表（watch list）验证结论。
 
 !!! example "本章配套实验（建议先运行）"
 
@@ -40,7 +33,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](07-breakpoint-map.md) 选 C 组。

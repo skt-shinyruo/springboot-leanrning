@@ -1,12 +1,12 @@
 # 03. AspectJ Weaving 调用链（CTW/LTW：织入发生在哪里）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：AspectJ Weaving 调用链（CTW/LTW：织入发生在哪里）展开，主线可以概括为：代理只能拦截“走代理入口”的调用；织入是“改字节码”。LTW 通过 javaagent + Instrumentation 在类加载时改字节码；CTW 在编译期/构建期改字节码。
 
-    - 知识点：01：AspectJ Weaving 调用链（CTW/LTW：织入发生在哪里）
-    - 怎么使用：先跑 `AspectjLtwLabTest` / `AspectjCtwLabTest`，把“哪些 join point 能/不能被织入”固化为断言，再按本文理解 CTW 与 LTW 的织入入口。
-    - 原理：代理只能拦截“走代理入口”的调用；织入是“改字节码”。LTW 通过 javaagent + Instrumentation 在类加载时改字节码；CTW 在编译期/构建期改字节码。
-    - 源码入口：（LTW）`java.lang.instrument.Instrumentation` / `ClassFileTransformer` /（AspectJ）weaver
-    - 推荐 Lab：`AspectjLtwLabTest`
+    先跑 `AspectjLtwLabTest` / `AspectjCtwLabTest`，把“哪些 join point 能/不能被织入”固化为断言，再按本文理解 CTW 与 LTW 的织入入口。
+
+    需要下探源码时，可以从 （LTW）`java.lang.instrument.Instrumentation` / `ClassFileTransformer` /（AspectJ）weaver 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. AspectJ Weaving 调用链（CTW/LTW：织入发生在哪里）**
-- 建议入口：优先运行 `AspectjLtwLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：代理只能拦截“走代理入口”的调用；织入是“改字节码”。LTW 通过 javaagent + Instrumentation 在类加载时改字节码；CTW 在编译期/构建期改字节码。
-- 源码入口：（LTW）`java.lang.instrument.Instrumentation` / `ClassFileTransformer` /（AspectJ）weaver
+建议优先运行 `AspectjLtwLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：代理只能拦截“走代理入口”的调用；织入是“改字节码”。LTW 通过 javaagent + Instrumentation 在类加载时改字节码；CTW 在编译期/构建期改字节码。需要下探源码时，可以从 （LTW）`java.lang.instrument.Instrumentation` / `ClassFileTransformer` /（AspectJ）weaver 这些入口切入。
 
 
 ## 最短调用链（应能复述）
@@ -43,8 +41,10 @@
 
 ## 小结与下一章
 
-- 小结：代理只能拦截“走代理入口”的调用；织入是“改字节码”。LTW 通过 javaagent + Instrumentation 在类加载时改字节码；CTW 在编译期/构建期改字节码。
-- 下一章：[第 44 章：02：断点地图](04-breakpoint-map.md)
+代理只能拦截“走代理入口”的调用；织入是“改字节码”。LTW 通过 javaagent + Instrumentation 在类加载时改字节码；CTW 在编译期/构建期改字节码。
+
+下一章见：[第 44 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

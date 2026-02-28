@@ -1,18 +1,17 @@
 # 17. `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`Environment#resolvePlaceholders` / `AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
-    - 推荐 Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
+
+    本章围绕 `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansValuePlaceholderResolutionLabTest`。需要下探源码时，可以从 `Environment#resolvePlaceholders` / `AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[16. 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界](16-autowire-candidate-selection-primary-priority-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[18. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？](18-merged-bean-definition.md)
 <!-- GLOBAL-BOOK-NAV:END -->
-
 
 
 ## 导读
@@ -23,14 +22,6 @@
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（SpEL，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/expressions.html
 
-
-!!! summary "本章要点"
-
-    - `@Value` 本身不“读配置”，它把字符串交给 BeanFactory 的 **embedded value resolver** 解析（`${...}`/`#{...}`），再进入后续注入/转换。
-    - 默认情况下（本章 Lab 的最小纯容器），embedded value resolver 往往委托给 `Environment.resolvePlaceholders(..)`，它是 **non-strict**：缺失 key 时，`${...}` 可能原样保留，不一定 fail-fast。
-    - 想要 strict fail-fast，典型方式是注册 `PropertySourcesPlaceholderConfigurer`（BFPP）：把“缺失占位符就失败”的策略显式安装到容器早期流程里。
-    - 默认值语法 `${key:default}` 是在 strict/non-strict 都应该掌握的“回退手段”：缺失 key 时不会失败，而是注入 default（本仓库 Lab 已补齐对照）。
-    - 排障时先拆三件事：**占位符解析（本章）**、**SpEL 求值**、**类型转换**（见 [44](../part-05-aot-and-real-world/05-spel-and-value-expression.md)、[36](19-type-conversion-and-beanwrapper.md)）。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -219,7 +210,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansValuePlaceholderResolutionLabTest`，再用 `SpringCoreBeansValuePlaceholderResolutionLabTest#defaultEmbeddedValueResolver_resolvesExistingProperty_butLeavesMissingPlaceholderUnresolved` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansValuePlaceholderResolutionLabTest`，再用 `SpringCoreBeansValuePlaceholderResolutionLabTest#defaultEmbeddedValueResolver_resolvesExistingProperty_butLeavesMissingPlaceholderUnresolved` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“6. 排障分流：先确定问题停留读到“解析/求值/转换”的哪一步”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

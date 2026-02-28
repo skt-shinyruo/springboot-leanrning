@@ -1,12 +1,12 @@
 # 07. 断点地图（容器主线：可复用断点/观察点清单）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：断点地图（容器主线：可复用断点/观察点清单）
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
-    - 推荐 Lab：`SpringCoreBeansLabTest`
+
+    本章围绕断点地图（容器主线：可复用断点/观察点清单）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -22,15 +22,6 @@
 - 使用方式：先运行一个方法级 Lab，然后按本页断点清单逐段观察“定义层 → 实例层 → 代理层”的变化。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-!!! summary "本章要点"
-
-    - 容器排障的第一原则：**先证明“发生在 refresh 的哪一段”**（定义注册 / PP 执行 / 单例创建 / 初始化 / 代理替换）。
-    - 若希望看清的通常不是“某个注解使用方式”，而是：
-      1. **数据结构在哪里被写入**（registry / beanDefinitionMap / singletonObjects）
-      2. **哪个分支决定了后续行为**（排序 / 短路 / early reference / candidate 收敛）
-      3. **读者获取到的对象到底是谁**（raw instance vs proxy）
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -67,7 +58,6 @@
 - 入口断点：
   - `ConfigurationClassPostProcessor#processConfigBeanDefinitions`
   - `ClassPathBeanDefinitionScanner#doScan`（component-scan）
-- 观察点：
   - `registry`（beanDefinitionCount、beanDefinitionNames）
   - `BeanDefinition` 的来源与类型（Annotated / Root / Generic）
 - 决定性分支：
@@ -79,7 +69,6 @@
 - 入口断点：
   - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
   - `PostProcessorRegistrationDelegate#invokeBeanDefinitionRegistryPostProcessors`
-- 观察点：
   - `processedBeans`（已处理列表）
   - 执行顺序分段（PriorityOrdered → Ordered → 无序）
 
@@ -88,7 +77,6 @@
 
 - 入口断点：
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
-- 观察点：
   - `beanFactory.getBeanPostProcessorCount()`
   - 已注册的关键 BPP（AABPP/CABPP/Autowired 等）
 
@@ -99,7 +87,6 @@
   - `DefaultListableBeanFactory#preInstantiateSingletons`
   - `AbstractAutowireCapableBeanFactory#createBean`
   - `AbstractAutowireCapableBeanFactory#doCreateBean`
-- 观察点：
   - `singletonObjects` / `earlySingletonObjects` / `singletonFactories`
   - 当前 beanName 是否在 `singletonsCurrentlyInCreation`
 - 决定性分支：
@@ -114,7 +101,6 @@
   - `DefaultListableBeanFactory#doResolveDependency`
   - `DefaultListableBeanFactory#findAutowireCandidates`
   - `DefaultListableBeanFactory#determineAutowireCandidate`
-- 观察点：
   - 候选集合大小变化（歧义/收敛）
   - by-name fallback 是否触发（依赖名匹配 beanName）
 - 决定性分支：
@@ -127,7 +113,6 @@
   - `AbstractAutowireCapableBeanFactory#initializeBean`
   - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`
   - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
-- 观察点：
   - `wrappedBean` 与 `bean` 是否发生替换（proxying）
 - 决定性分支：
   - `postProcessAfterInitialization` 是否返回代理（这通常决定“读者最终获取到的对象是谁”）
@@ -207,7 +192,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansLabTest`，再用 `SpringCoreBeansBootstrapInternalsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansLabTest`，再用 `SpringCoreBeansBootstrapInternalsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：遇到具体现象时，回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；需要固化排障流程时，回到 [生产排障清单](../appendix/05-production-troubleshooting-checklist.md)。

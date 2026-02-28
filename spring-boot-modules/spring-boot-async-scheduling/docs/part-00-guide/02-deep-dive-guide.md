@@ -15,9 +15,7 @@
 
 ## 导读
 
-- 本章主题：**02. 00 - Deep Dive Guide（springboot-async-scheduling）**
-- 建议入口：优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（排障）（见文末“对应 Lab/Test”），先获得可复现现象，再按正文把边界收敛成结论。
-
+建议优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（排障）（见文末“对应 Lab/Test”），先获得可复现现象，再按正文把边界收敛成结论。
 
 
 ## 这份模块的写法：把“边界”写成可回归的事实
@@ -81,8 +79,8 @@
 
 ## 小结与下一章
 
-- 小结：本章围绕关键主线与边界条件展开，建议结合可运行入口进行验证。
-- 下一章：[第 119 章：01：`@Async` 心智模型：代理与线程切换](../part-01-async-scheduling/01-async-proxy-mental-model.md)
+下一章见：[第 119 章：01：`@Async` 心智模型：代理与线程切换](../part-01-async-scheduling/01-async-proxy-mental-model.md)
+
 
 <!-- BOOKIFY:START -->
 

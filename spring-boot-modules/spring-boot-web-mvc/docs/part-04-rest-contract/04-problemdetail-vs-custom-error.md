@@ -5,13 +5,6 @@
 本章围绕「04：ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcContractJacksonLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - **ApiError（自定义契约）**：适合“强约束统一契约”，前后端协作成本低，但需要持续维护语义与兼容性。
-    - **ProblemDetail（框架语义）**：更接近标准化错误载体（RFC 7807 风格），语义清晰、可扩展，但需要团队对字段含义达成共识。
-    - 关键不是“选哪个更高级”，而是：**想把稳定性放在“字段形状”还是“语义表达”上**。
-
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcContractJacksonLabTest`

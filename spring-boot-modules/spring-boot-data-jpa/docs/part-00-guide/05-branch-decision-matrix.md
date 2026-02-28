@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：Persistence Context 是一致性视图；flush/clear/merge 会改变“视图与 DB 的关系”。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把 JPA 的关键边界（managed/detached、flush 可见性）收敛成“可复现 + 可观察”的矩阵表。
-    - 原理：Persistence Context 是一致性视图；flush/clear/merge 会改变“视图与 DB 的关系”。
-    - 源码入口：`EntityManager` / `Session` / `SimpleJpaRepository`
-    - 推荐 Lab：`BootDataJpaBranchMatrixLabTest`
+    把 JPA 的关键边界（managed/detached、flush 可见性）收敛成“可复现 + 可观察”的矩阵表。
+
+    对照入口：`BootDataJpaBranchMatrixLabTest`。需要下探源码时，可以从 `EntityManager` / `Session` / `SimpleJpaRepository` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -46,8 +46,10 @@ JPA 的大多数“怪现象”都能用两条线解释：
 
 ## 小结与下一章
 
-- 小结：Persistence Context 是一致性视图；flush/clear/merge 会改变“视图与 DB 的关系”。
-- 下一章：[第 97 章：01. Entity 状态机：transient / managed / detached / removed](../part-01-data-jpa/01-entity-states.md)
+Persistence Context 是一致性视图；flush/clear/merge 会改变“视图与 DB 的关系”。
+
+下一章见：[第 97 章：01. Entity 状态机：transient / managed / detached / removed](../part-01-data-jpa/01-entity-states.md)
+
 
 <!-- BOOKIFY:START -->
 

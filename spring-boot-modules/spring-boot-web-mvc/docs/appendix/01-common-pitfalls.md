@@ -2,11 +2,9 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：90：常见坑清单（Web MVC）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcLabTest`
+    Web MVC 的坑往往不是“写不出 Controller”，而是“把现象映射回主线时走错了分支”：401/403 发生在 FilterChain 里，还是发生在 `DispatcherServlet` 内？400 是 JSON 解析失败、类型绑定失败，还是校验失败？406/415 又是 read 还是 write 的内容协商问题？
+
+    本章把这些高频误判整理成一张“分流地图”，并给出可以直接运行的 Lab/Test 入口。建议先跑 `BootWebMvcLabTest` 把主线跑通，再回到本章逐条对照；需要下探时，从 `DispatcherServlet#doDispatch` 与 `RequestMappingHandlerAdapter#invokeHandlerMethod` 两个入口切入最省时间。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -18,26 +16,12 @@
 本章整理「90：常见坑清单（Web MVC）」相关的常见误判与排障入口。阅读时建议按“现象 → 分支 → 复现 → 修法”的顺序对照，而不是只背结论。
 推荐先跑 `BootWebMvcLabTest`，用断言把分支固定下来，再回到本文逐条核对根因。
 
-### 排障模板（统一结构）
+为了让“现象 → 边界”变成可重复证据，本章默认依赖两组入口：一组跑主线，一组专门把 400/406/415 这些错误分支跑全。跑完之后再回到断点地图/分支矩阵看调用栈，会更容易判断问题发生在 FilterChain 还是 `DispatcherServlet` 里。
 
-当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+- `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
+- `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 
-1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
-2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
-   - Book Matrix：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
-   - Branch Matrix（错误分支矩阵 400/406/415）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
-3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[06-breakpoint-map.md](../part-00-guide/06-breakpoint-map.md)
-4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[04-branch-decision-matrix.md](../part-00-guide/04-branch-decision-matrix.md)
-5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
-6. 验证（Verify）：复跑入口 + 对照自检清单：[02-self-check.md](02-self-check.md)
-
-- 本章主题：**01. 常见坑清单（Web MVC）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+断点地图见：[06-breakpoint-map.md](../part-00-guide/06-breakpoint-map.md)，关键分支矩阵见：[04-branch-decision-matrix.md](../part-00-guide/04-branch-decision-matrix.md)。当本章的坑都能被这些入口覆盖时，可以再用自检清单做一次回归：[02-self-check.md](02-self-check.md)。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -68,14 +52,8 @@
    - `@ControllerAdvice`（自定义 ApiError/ProblemDetail）
    - MVC 默认 resolver（405/406/415/…）
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest` / `BootWebMvcTestingDebuggingLabTest`
 - Lab：`BootWebMvcRealWorldHttpLabTest` / `BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
@@ -188,7 +166,6 @@
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

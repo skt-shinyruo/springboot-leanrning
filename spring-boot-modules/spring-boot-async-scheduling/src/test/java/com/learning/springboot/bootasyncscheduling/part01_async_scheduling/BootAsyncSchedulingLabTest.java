@@ -9,6 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.support.AopUtils;
@@ -19,6 +20,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.util.concurrent.ListenableFuture;
 
 class BootAsyncSchedulingLabTest {
 
@@ -138,6 +140,28 @@ class BootAsyncSchedulingLabTest {
             AsyncDemoService service = context.getBean(AsyncDemoService.class);
             String threadName = service.currentThreadName().get(1, TimeUnit.SECONDS);
             assertThat(threadName).startsWith("async-");
+        });
+    }
+
+    @Test
+    void asyncListenableFuture_canUseCallbackInsteadOfBlockingGet() {
+        ApplicationContextRunner runner = new ApplicationContextRunner()
+                .withUserConfiguration(AsyncEnabledConfig.class);
+
+        runner.run(context -> {
+            AsyncDemoService service = context.getBean(AsyncDemoService.class);
+
+            AtomicReference<String> threadNameRef = new AtomicReference<>();
+            CountDownLatch latch = new CountDownLatch(1);
+
+            ListenableFuture<String> future = service.currentThreadNameAsListenableFuture();
+            future.addCallback(result -> {
+                threadNameRef.set(result);
+                latch.countDown();
+            }, ex -> latch.countDown());
+
+            assertThat(latch.await(1, TimeUnit.SECONDS)).isTrue();
+            assertThat(threadNameRef.get()).startsWith("async-");
         });
     }
 

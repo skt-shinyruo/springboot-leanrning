@@ -1,12 +1,12 @@
 # 03. HttpMessageConverter 与返回值处理（序列化发生在哪里）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕03：HttpMessageConverter 与返回值处理（序列化发生在哪里）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：03：HttpMessageConverter 与返回值处理（序列化发生在哪里）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcContractJacksonLabTest`
+    阅读时可以先跑 `BootWebMvcContractJacksonLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,12 +17,6 @@
 
 本章围绕「03：HttpMessageConverter 与返回值处理（序列化发生在哪里）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcContractJacksonLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - `HttpMessageConverter` 是“HTTP body ↔ Java 对象”的关键桥梁；它同时影响入站（read）与出站（write）。
-    - 406/415 通常不是业务逻辑问题，而是 **媒体类型与 converter 匹配失败**：`Accept`/`Content-Type`/`produces`/`consumes` 不一致。
-
 
 !!! example "本章配套实验（先跑再读）"
 

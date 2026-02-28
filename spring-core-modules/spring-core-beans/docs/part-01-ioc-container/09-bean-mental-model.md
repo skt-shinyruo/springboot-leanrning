@@ -1,12 +1,12 @@
 # 09. Bean 运行机制：从 BeanDefinition 到最终暴露对象
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：Bean 运行机制：从 BeanDefinition 到最终暴露对象
     - 使用方式：可先运行本章推荐 Lab，将“定义不等于实例、最终暴露对象不一定等于原始实例”固化为断言；随后回到正文，结合主线与断点完成证据链验证。
-    - 原理：`ApplicationContext#refresh` 主线：注册定义（BeanDefinition）→ 定义层处理（BFPP/BDRPP）→ 注册 BPP 链 → 创建/注入/初始化（doCreateBean）→ 最终暴露对象（可能是 proxy）。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`
-    - 推荐 Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBeanCreationTraceLabTest`
+
+    本章围绕Bean 运行机制：从 BeanDefinition 到最终暴露对象展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册定义（BeanDefinition）→ 定义层处理（BFPP/BDRPP）→ 注册 BPP 链 → 创建/注入/初始化（doCreateBean）→ 最终暴露对象（可能是 proxy）。
+
+    对照入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBeanCreationTraceLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -23,12 +23,6 @@
 > 当前遇到的问题属于定义层、创建层，还是“最终暴露对象”层？
 
 官方参考（Spring Framework 6.2.x；本仓库基线 6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-!!! summary "本章要点"
-
-    - 注册阶段的第一性对象是 `BeanDefinition`，不是实例。
-    - 创建阶段的主线是 `doCreateBean`：实例化 → 注入（populate）→ 初始化（initialize）→ 产出最终暴露对象。
-    - `getBean()` 返回的是“最终暴露对象”，它可能不是编写类的原始实例（可能为 proxy/wrapper）。
 
 !!! example "本章配套实验（先运行，后阅读）"
 
@@ -241,7 +235,7 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansBeanCreationTraceLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansBeanCreationTraceLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“4. 排障决策表（将主观判断转化为可验证结论）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

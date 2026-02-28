@@ -1,12 +1,12 @@
 # 05. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：early reference 与循环依赖：getEarlyBeanReference 到底解决什么？
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`DefaultSingletonBeanRegistry#getSingleton` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
-    - 推荐 Lab：`SpringCoreBeansEarlyReferenceLabTest`
+
+    本章围绕early reference 与循环依赖：getEarlyBeanReference 到底解决什么？展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansEarlyReferenceLabTest`。需要下探源码时，可以从 `DefaultSingletonBeanRegistry#getSingleton` / `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` / `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,23 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**05. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？**
 - 阅读方式建议：先运行一遍“early proxy”与“raw injection despite wrapping”两个实验，把“对象形态不一致”的误区变成可复现断言，再回到主线对照源码把证据链走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - `getEarlyBeanReference` 解决的不是“能不能获取到引用”，而是：**循环依赖窗口期获取到的 early reference 是否等于最终暴露形态（proxy/wrapper）**。
-    - 只懂“三级缓存救 setter 环”还不够：一旦 AOP/代理介入，如果 early 是 raw、final 是 proxy，需要么 **fail-fast**，要么 **带着隐患启动（绕过代理）**。
-    - 两个典型失败形态必须见过一次：
-      - **按实现类注入 + JDK proxy** → 类型直接对不上（`BeanNotOfRequiredTypeException` 相关）
-      - **raw 注入但最终 wrapping** → Spring 默认 fail-fast（raw vs wrapped 一致性保护）
-    - 断点主线就三处：`getSingleton`（三层命中）→ `getEarlyBeanReference`（early 形态决定）→ `doCreateBean` 尾部一致性检查（raw vs wrapped）。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -324,7 +313,7 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansEarlyReferenceLabTest`，再用 `SpringCoreBeansRawInjectionDespiteWrappingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansEarlyReferenceLabTest`，再用 `SpringCoreBeansRawInjectionDespiteWrappingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“一页式最短证据链（10 分钟）：观察到 factory 层价值 + early 形态决策”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -332,8 +321,10 @@ Spring 默认倾向 **fail-fast**，并通过 `DefaultListableBeanFactory#setAll
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[17. 生命周期回调顺序：Aware/@PostConstruct/afterPropertiesSet/initMethod](06-lifecycle-callback-order.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[17. 生命周期回调顺序：Aware/@PostConstruct/afterPropertiesSet/initMethod](06-lifecycle-callback-order.md)
+
 
 <!-- BOOKIFY:START -->
 

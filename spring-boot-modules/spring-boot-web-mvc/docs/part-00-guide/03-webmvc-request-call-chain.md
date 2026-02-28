@@ -1,12 +1,12 @@
 # 03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）展开，主线可以概括为：一次 MVC 请求通常经历：FilterChain（含 Security/Observability）→ `DispatcherServlet#doDispatch`（选路）→ `HandlerAdapter#handle`（调用）→ 参数解析/绑定/校验 → 返回值处理/消息转换 → `HandlerExceptionResolver`（异常翻译）→ 写回响应。
 
-    - 知识点：01：请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）
-    - 怎么使用：把它当作“打断点前的路线图”。先跑一条最小请求（推荐 Lab），用断言固定现象；再按本文的“阶段 → 入口 → 分支”把断点打在分支发生处；最后去 Part 03 的详版调用链把细节读透。
-    - 原理：一次 MVC 请求通常经历：FilterChain（含 Security/Observability）→ `DispatcherServlet#doDispatch`（选路）→ `HandlerAdapter#handle`（调用）→ 参数解析/绑定/校验 → 返回值处理/消息转换 → `HandlerExceptionResolver`（异常翻译）→ 写回响应。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getHandlerInternal` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#handleInternal` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcInternalsLabTest` / `BootWebMvcTraceLabTest`
+    把它当作“打断点前的路线图”。先跑一条最小请求（推荐 Lab），用断言固定现象；再按本文的“阶段 → 入口 → 分支”把断点打在分支发生处；最后去 Part 03 的详版调用链把细节读透。
+
+    对照入口：`BootWebMvcInternalsLabTest` / `BootWebMvcTraceLabTest`。需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getHandlerInternal` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#handleInternal` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -18,7 +18,6 @@
 本章围绕「01：请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcInternalsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-- 本章主题：**03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）**
 - 目标：把“Web MVC 是 DispatcherServlet”升级为“我能按阶段定位：在哪一段决定了 404/405/400/406/415/500，以及 async 为什么会二次 dispatch”。
 - 备注：本章是“速览与定位”，详版调用链请读：
   - [DispatcherServlet 主链路（详）](../part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md)

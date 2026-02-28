@@ -1,12 +1,12 @@
 # 04. 断点地图（Business Case Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Business Case Debugger Pack）展开，主线可以概括为：业务入口（Controller/Service）→ 事务边界 → Repository/JPA → 异常触发回滚 → 观测/日志作为证据链。
 
-    - 知识点：02：断点地图（Business Case Debugger Pack）
-    - 怎么使用：先跑 `BootBusinessCaseBranchMatrixLabTest` 固化“成功/失败路径、事务回滚、观测证据”的断言，再沿 Service/Tx 断点把业务流与基础设施（Tx/JPA/日志）串起来。
-    - 原理：业务入口（Controller/Service）→ 事务边界 → Repository/JPA → 异常触发回滚 → 观测/日志作为证据链。
-    - 源码入口：`TransactionInterceptor` / `JpaTransactionManager` / 业务 Service 方法
-    - 推荐 Lab：`BootBusinessCaseBranchMatrixLabTest`
+    先跑 `BootBusinessCaseBranchMatrixLabTest` 固化“成功/失败路径、事务回滚、观测证据”的断言，再沿 Service/Tx 断点把业务流与基础设施（Tx/JPA/日志）串起来。
+
+    需要下探源码时，可以从 `TransactionInterceptor` / `JpaTransactionManager` / 业务 Service 方法 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -46,8 +46,10 @@
 
 ## 小结与下一章
 
-- 小结：业务入口（Controller/Service）→ 事务边界 → Repository/JPA → 异常触发回滚 → 观测/日志作为证据链。
-- 下一章：[第 190 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+业务入口（Controller/Service）→ 事务边界 → Repository/JPA → 异常触发回滚 → 观测/日志作为证据链。
+
+下一章见：[第 190 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

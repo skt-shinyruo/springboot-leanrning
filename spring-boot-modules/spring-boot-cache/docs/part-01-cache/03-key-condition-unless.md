@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**03. key / condition / unless：缓存边界**
-- 建议入口：优先运行 `BootCacheSpelKeyLabTest#spelKeyCreatesIndependentCacheEntries`（见文末“对应 Lab/Test”），先把“key 决定维度”跑成事实，再补齐 condition/unless 的边界分支。
-
+建议优先运行 `BootCacheSpelKeyLabTest#spelKeyCreatesIndependentCacheEntries`（见文末“对应 Lab/Test”），先把“key 决定维度”跑成事实，再补齐 condition/unless 的边界分支。
 
 
 ## 先给一个直觉：key 决定“维度”，condition/unless 决定“边界”
@@ -26,8 +24,6 @@
 - unless：决定“要不要把结果写回缓存”（在方法执行后）
 
 如果把这三件事混在一起，缓存行为会非常像“玄学”。
-
-## 机制主线
 
 ### 1) key：把调用映射成 cache entry
 

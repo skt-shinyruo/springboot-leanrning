@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：缓存本质是“用 key 命中 value”，而分支来自“key 怎么算/何时写/是否跳过”。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把缓存的关键边界（key/condition/unless/sync/expiry）收敛成可回归矩阵表；每行都能用测试复现并用断点观察。
-    - 原理：缓存本质是“用 key 命中 value”，而分支来自“key 怎么算/何时写/是否跳过”。
-    - 源码入口：`CacheInterceptor` / `CacheAspectSupport` / `CacheOperationExpressionEvaluator`
-    - 推荐 Lab：`BootCacheBranchMatrixLabTest`
+    把缓存的关键边界（key/condition/unless/sync/expiry）收敛成可回归矩阵表；每行都能用测试复现并用断点观察。
+
+    对照入口：`BootCacheBranchMatrixLabTest`。需要下探源码时，可以从 `CacheInterceptor` / `CacheAspectSupport` / `CacheOperationExpressionEvaluator` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -44,8 +44,10 @@
 
 ## 小结与下一章
 
-- 小结：缓存本质是“用 key 命中 value”，而分支来自“key 怎么算/何时写/是否跳过”。
-- 下一章：[第 109 章：01：@Cacheable 基础与命中语义](../part-01-cache/01-cacheable-basics.md)
+缓存本质是“用 key 命中 value”，而分支来自“key 怎么算/何时写/是否跳过”。
+
+下一章见：[第 109 章：01：@Cacheable 基础与命中语义](../part-01-cache/01-cacheable-basics.md)
+
 
 <!-- BOOKIFY:START -->
 

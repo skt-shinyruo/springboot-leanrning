@@ -1,12 +1,12 @@
 # 02. RuntimeHints 入门：把构建期契约完成验证
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：RuntimeHints 入门：把构建期契约完成验证
     - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
-    - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
-    - 源码入口：`Class#getDeclaredMethods` / `Constructor#newInstance` / `ClassLoader#getResource`
-    - 推荐 Lab：`SpringCoreBeansAotRuntimeHintsLabTest`
+
+    本章围绕RuntimeHints 入门：把构建期契约完成验证展开，主线可以概括为：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+
+    对照入口：`SpringCoreBeansAotRuntimeHintsLabTest`。需要下探源码时，可以从 `Class#getDeclaredMethods` / `Constructor#newInstance` / `ClassLoader#getResource` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,10 +14,8 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**02. RuntimeHints 入门：把构建期契约完成验证**
 - 目标只有一个：把 RuntimeHints 从“听说过”变成“能断言证明”。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -25,12 +23,6 @@
 - 官方文档对照（Spring Boot Reference，适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
 
   无需先会构建 native image，也能理解 RuntimeHints：因为它本质上是**可测试的契约数据结构**。
-
-!!! summary "本章要点"
-
-    - RuntimeHints 解决的是 “JVM 可运行 ≠ Native 可运行” 的核心矛盾：native image 默认对反射/动态代理/资源访问等能力是**受限**的。
-    - RuntimeHints 的正确方式是：**用 Registrar 注册 + 用单测断言**，把“需要哪些能力”变成可回归的构建期契约。
-    - 需要记住的关键接口只有一个：`RuntimeHintsRegistrar#registerHints(RuntimeHints hints, ClassLoader classLoader)`。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -152,7 +144,7 @@ RuntimeHints = **构建期契约对象**；通过 `RuntimeHintsRegistrar#registe
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansAotRuntimeHintsLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    建议 先跑 `SpringCoreBeansAotRuntimeHintsLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
     - 第一断点：`RuntimeHintsRegistrar#registerHints`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“5. 排障决策表（Native 异常 → 该补哪类 hints）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

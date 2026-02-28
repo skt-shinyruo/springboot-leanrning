@@ -1,12 +1,12 @@
 # 06. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`FactoryBean#isSingleton()` / `AbstractBeanFactory#getObjectForBeanInstance` / `FactoryBean#getObject()`
-    - 推荐 Lab：`SpringCoreBeansContainerLabTest`
+
+    本章围绕23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansContainerLabTest`。需要下探源码时，可以从 `FactoryBean#isSingleton()` / `AbstractBeanFactory#getObjectForBeanInstance` / `FactoryBean#getObject()` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,25 +14,11 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**06. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义**
 - 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-!!! summary "本章要点"
-
-    - `FactoryBean` 有两种“对外暴露形态”：
-      - `getBean("name")` / `getType("name")` → **product**
-      - `getBean("&name")` / `getType("&name")` → **factory**
-    - product 会参与按类型匹配/注入；**product 是否缓存**取决于 `FactoryBean#isSingleton()`（这和 factory bean 自己是否 singleton 是两回事）。
-    - `getObjectType()` 是 type discovery 的关键输入：返回 `null`/不稳定会导致“按类型发现失效、但按名字仍能取到”的边界（尤其 `allowEagerInit=false` 时）。
-    - 当 product 不缓存（`isSingleton=false`）时：
-      - direct injection（直接注入 Value）只解析一次（consumer 持有固定引用）
-      - `ObjectProvider<Value>` 可以每次获取到新的 product（更贴近“按需解析”语义）
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -49,7 +35,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansFactoryBeanDeepDiveLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansFactoryBeanDeepDiveLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`AbstractBeanFactory#getObjectForBeanInstance`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -230,11 +216,6 @@
 - 常见追问：`getObjectType()` 为什么重要？它会影响什么？
   - 答题要点：影响按类型查找/条件装配/候选收集；返回 `null` 或不稳定会导致“按类型发现失效/偶现缺 bean”等问题（见 [29](12-factorybean-edge-cases.md)）。
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
 - 本章已在正文中引用以下 LabTest（优先运行它们）：
@@ -247,7 +228,6 @@
 
 - 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java`
-- 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansFactoryBeanDeepDiveLabTest test`
 
 对应实验：
@@ -302,10 +282,6 @@
 
 - **误区 2：`isSingleton()` 返回与真实行为不一致**
   - 容器会按读者声明的语义缓存/不缓存；声明错了很容易造成“看起来像缓存 bug”。
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 ## 自检要点
 应能够解释清楚：

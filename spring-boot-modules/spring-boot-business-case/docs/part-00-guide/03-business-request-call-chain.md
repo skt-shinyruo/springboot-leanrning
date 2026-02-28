@@ -1,12 +1,12 @@
 # 03. 业务链路调用链（MVC → Security → Tx → JPA → Events）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：业务链路调用链（MVC → Security → Tx → JPA → Events）展开，主线可以概括为：真实项目的“问题”往往发生在边界：校验边界/安全边界/事务边界/持久化上下文边界/事件时机边界。
 
-    - 知识点：01：业务链路调用链（MVC → Security → Tx → JPA → Events）
-    - 怎么使用：先跑 `BootBusinessCaseLabTest`，把端到端链路固化成断言，再用本文把“每个边界在哪一层生效”串起来。
-    - 原理：真实项目的“问题”往往发生在边界：校验边界/安全边界/事务边界/持久化上下文边界/事件时机边界。
-    - 源码入口：`DispatcherServlet#doDispatch` / `FilterChainProxy` / `TransactionInterceptor#invoke` / `SimpleJpaRepository`
-    - 推荐 Lab：`BootBusinessCaseLabTest`
+    先跑 `BootBusinessCaseLabTest`，把端到端链路固化成断言，再用本文把“每个边界在哪一层生效”串起来。
+
+    需要下探源码时，可以从 `DispatcherServlet#doDispatch` / `FilterChainProxy` / `TransactionInterceptor#invoke` / `SimpleJpaRepository` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. 业务链路调用链（MVC → Security → Tx → JPA → Events）**
-- 建议入口：优先运行 `BootBusinessCaseLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：真实项目的“问题”往往发生在边界：校验边界/安全边界/事务边界/持久化上下文边界/事件时机边界。
-- 源码入口：`DispatcherServlet#doDispatch` / `FilterChainProxy` / `TransactionInterceptor#invoke` / `SimpleJpaRepository`
+建议优先运行 `BootBusinessCaseLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：真实项目的“问题”往往发生在边界：校验边界/安全边界/事务边界/持久化上下文边界/事件时机边界。需要下探源码时，可以从 `DispatcherServlet#doDispatch` / `FilterChainProxy` / `TransactionInterceptor#invoke` / `SimpleJpaRepository` 这些入口切入。
 
 
 ## 最短调用链（应能复述）
@@ -37,8 +35,10 @@
 
 ## 小结与下一章
 
-- 小结：真实项目的“问题”往往发生在边界：校验边界/安全边界/事务边界/持久化上下文边界/事件时机边界。
-- 下一章：[第 190 章：02：断点地图](04-breakpoint-map.md)
+真实项目的“问题”往往发生在边界：校验边界/安全边界/事务边界/持久化上下文边界/事件时机边界。
+
+下一章见：[第 190 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

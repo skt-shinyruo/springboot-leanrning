@@ -1,12 +1,12 @@
 # 06. `refresh()` 调用链（容器从“定义”到“实例”的主线）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）
     - 使用方式：可先运行本章推荐 Lab，把“容器阶段”固化为可观察现象，再按本文的调用链从 `refresh()` 走到 `doCreateBean()`；最后回到断点地图把断点收敛成“可复用清单”。
-    - 原理：`AbstractApplicationContext#refresh` 按阶段推进：准备环境 → 生成 BeanFactory → 注册/执行 BFPP/BDRPP（改定义）→ 注册 BPP（改实例/可换成 proxy）→ 单例预实例化 → 容器就绪。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.context.support.PostProcessorRegistrationDelegate` / `org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`
-    - 推荐 Lab：`SpringCoreBeansContainerLabTest`
+
+    本章围绕01：`refresh()` 调用链（容器从“定义”到“实例”的主线）展开，主线可以概括为：`AbstractApplicationContext#refresh` 按阶段推进：准备环境 → 生成 BeanFactory → 注册/执行 BFPP/BDRPP（改定义）→ 注册 BPP（改实例/可换成 proxy）→ 单例预实例化 → 容器就绪。
+
+    对照入口：`SpringCoreBeansContainerLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.context.support.PostProcessorRegistrationDelegate` / `org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,17 +15,11 @@
 
 ## 导读
 
-- 本章主题：**06. `refresh()` 调用链（容器从“定义”到“实例”的主线）**
 - 目标：将“知道 refresh 很重要”提升为“能够解释 refresh 的阶段，并能将断点设置在正确的阶段入口”。
 - 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。本章提到的方法名以该版本为准。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 深入分析 Beans 的第一要务不是背类名，而是建立**阶段感**：需要明确“当前观察的是定义层（BeanDefinition）还是实例层（bean instance/proxy）”。
-    - `refresh()` 里最值得先固定的 3 个节点：**BFPP（改定义）**、**BPP（改实例/可能换代理）**、**单例预实例化（批量创建）**。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -199,7 +193,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansBootstrapInternalsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansBootstrapInternalsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“排障分流（refresh 入口版）”时，建议将“跑完用例”与“证明结论”绑定：明确跑完哪个测试方法后，应去哪个入口方法断点验证哪一个结论，避免“跑了但不知道证明了什么”。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](07-breakpoint-map.md) 选 C 组。

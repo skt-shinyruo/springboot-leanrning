@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**02. 99 - Self Check（springboot-cache）**
-- 建议入口：优先运行 `BootCacheBookMatrixLabTest`（见文末“对应 Lab/Test”），先跑一遍主线最小集合，再按题目回到对应证据入口逐一验证。
-
+建议优先运行 `BootCacheBookMatrixLabTest`（见文末“对应 Lab/Test”），先跑一遍主线最小集合，再按题目回到对应证据入口逐一验证。
 
 
 ## 先跑入口（比做纸面题更快）

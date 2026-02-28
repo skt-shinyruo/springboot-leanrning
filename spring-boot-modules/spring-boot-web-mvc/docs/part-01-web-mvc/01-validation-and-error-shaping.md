@@ -1,12 +1,12 @@
 # 01. 校验（Validation）与错误响应形状（Error Shape）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：校验（Validation）与错误响应形状（Error Shape）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：01：校验（Validation）与错误响应形状（Error Shape）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcLabTest`
+    阅读时可以先跑 `BootWebMvcLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,14 +14,6 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
-
-- 本章主题：**01. 校验（Validation）与错误响应形状（Error Shape）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -97,11 +89,6 @@
 - endpoint：`GET /api/advanced/binding/age-validated?age=-1`
 - Lab：`BootWebMvcBindingDeepDiveLabTest#returnsMethodValidationFailedWhenRequestParamViolatesConstraint`
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ### 主链路（Call-chain sketch）
 
 以 `@WebMvcTest + MockMvc` 为例，一条“@RequestBody + @Valid 失败 → 统一错误体”的主链路可以粗略理解为：
@@ -124,18 +111,10 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
 - 建议命令（方法级入口）：
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
 
-### 复现/验证补充说明（来自原文迁移）
-
-## 实验入口（先跑再看）
-
-<!-- BOOKLIKE-V2:EVIDENCE:START -->
-实验入口已在章首提示框给出（先跑再读）。建议跑完后回到本章“证据链”逐条验证关键结论。
-<!-- BOOKLIKE-V2:EVIDENCE:END -->
 
 ## Debug 建议
 
@@ -145,20 +124,16 @@
 - 入口测试：`BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid`
 - 建议命令：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
 - 对照用例（故意省略 `@Valid`，证明“写了注解但没触发”）：`BootWebMvcLabTest#createUserSucceedsWhenControllerOmitsValidAnnotation`
-- 断点建议：
   - `RequestResponseBodyMethodProcessor#resolveArgument`
   - `SpringValidatorAdapter#validate`
-- 观察点：
   - DTO 上是否有约束注解（`CreateUserRequest`）
   - controller 入参是否带 `@Valid`
 - 决定性分支：
   - **没有 `@Valid`**：约束注解不会自动生效（这是最常见的“我写了注解但没校验”的原因）
 
 2) **异常如何被塑形成 ApiError（错误体分支）**
-- 断点建议：
   - `ExceptionHandlerExceptionResolver#doResolveHandlerMethodException`
   - `GlobalExceptionHandler#handleValidation`
-- 观察点：
   - `ex.getBindingResult().getFieldErrors()`（字段错误列表）
   - 最终响应体的 `message/fieldErrors`
 

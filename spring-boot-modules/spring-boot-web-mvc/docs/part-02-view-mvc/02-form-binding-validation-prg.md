@@ -2,14 +2,6 @@
 
 ## 导读
 
-- 本章主题：**02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
-
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -70,18 +62,11 @@
 - 表单模板：`spring-boot-modules/spring-boot-web-mvc/src/main/resources/templates/pages/user-form.html`
 - 详情模板：`spring-boot-modules/spring-boot-web-mvc/src/main/resources/templates/pages/user-detail.html`
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootWebMvcViewLabTest`
 - 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
 
 目标是把一个完整闭环跑通并可测试验证：
 
@@ -132,7 +117,6 @@
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

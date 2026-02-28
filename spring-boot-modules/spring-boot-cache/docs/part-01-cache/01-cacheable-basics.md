@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**01. `@Cacheable` 最小闭环**
-- 建议入口：优先运行 `BootCacheLabTest#cacheableCachesResultForSameKey`（见文末“对应 Lab/Test”），先把“命中后方法体不执行”的现象跑出来，再回到正文对照机制。
-
+建议优先运行 `BootCacheLabTest#cacheableCachesResultForSameKey`（见文末“对应 Lab/Test”），先把“命中后方法体不执行”的现象跑出来，再回到正文对照机制。
 
 
 ## 先从最常见的误会开始：以为它每次都会执行

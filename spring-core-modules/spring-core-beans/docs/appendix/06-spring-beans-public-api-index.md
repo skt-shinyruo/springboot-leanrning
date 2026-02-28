@@ -8,12 +8,12 @@
 # 95. spring-beans Public API 索引（Spring Framework 6.2.15）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：spring-beans Public API Index（索引）
     - 使用方式：先按本索引把 API 定位到包/机制域，再回到对应章节用断点与 Lab 把行为证明出来；遇到排障场景优先用索引反查“入口方法/关键数据结构”。
-    - 原理：Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。
-    - 源码入口：`org.springframework.beans.factory.BeanFactory` / `org.springframework.beans.factory.support.DefaultListableBeanFactory#getBean`
-    - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
+
+    本章围绕spring-beans Public API Index（索引）展开，主线可以概括为：Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。
+
+    对照入口：`SpringCoreBeansBreakpointPackLabTest`。需要下探源码时，可以从 `org.springframework.beans.factory.BeanFactory` / `org.springframework.beans.factory.support.DefaultListableBeanFactory#getBean` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -21,20 +21,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**06. <!--**
 - 阅读方式建议：这是一份“查阅型文档”。当遇到某个 API/类名但不确定它属于哪类机制时，先在本章定位，再回到对应章节/测试完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 这份索引解决的是“定位问题”：它告诉读者 *有哪些 Public API*，以及它们大致归属哪个机制域。
-    - 索引不是教程：需要结合正文章节 + Lab + 断点闭环，才能把 API 变成可解释能力。
-    - 推荐用法：**从现象/类名出发 → 在索引定位 → 跳到章节/断点/Lab 验证**。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -535,7 +527,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：把该页从“信息堆”变成“可用入口”：每个条目尽量落到“去哪里验证/怎么验证”，避免只列名词。
     - 下一跳：若是从现象进入，优先回到 [知识地图](03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -543,8 +535,10 @@
 
 ## 小结与下一章
 
-- 小结：Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。
-- 下一章：[96. spring-beans Public API Gap 清单](07-spring-beans-public-api-gap.md)
+Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。
+
+下一章见：[96. spring-beans Public API Gap 清单](07-spring-beans-public-api-gap.md)
+
 
 <!-- BOOKIFY:START -->
 

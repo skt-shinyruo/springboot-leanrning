@@ -1,12 +1,12 @@
 # 04. 断点地图（Cache Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Cache Debugger Pack）展开，主线可以概括为：`@Cacheable/@CachePut/@CacheEvict` → AOP 拦截（CacheInterceptor）→ key 计算/SpEL → CacheManager 命中 cache → get/put/evict。
 
-    - 知识点：02：断点地图（Cache Debugger Pack）
-    - 怎么使用：先跑 `BootCacheBranchMatrixLabTest` 固化“命中/不命中/条件/同步”的断言，再沿 `CacheInterceptor` 断点观察 key、condition/unless 与缓存写入时机。
-    - 原理：`@Cacheable/@CachePut/@CacheEvict` → AOP 拦截（CacheInterceptor）→ key 计算/SpEL → CacheManager 命中 cache → get/put/evict。
-    - 源码入口：`org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport`
-    - 推荐 Lab：`BootCacheBranchMatrixLabTest`
+    先跑 `BootCacheBranchMatrixLabTest` 固化“命中/不命中/条件/同步”的断言，再沿 `CacheInterceptor` 断点观察 key、condition/unless 与缓存写入时机。
+
+    需要下探源码时，可以从 `org.springframework.cache.interceptor.CacheInterceptor` / `org.springframework.cache.interceptor.CacheAspectSupport` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -60,8 +60,10 @@
 
 ## 小结与下一章
 
-- 小结：`@Cacheable/@CachePut/@CacheEvict` → AOP 拦截（CacheInterceptor）→ key 计算/SpEL → CacheManager 命中 cache → get/put/evict。
-- 下一章：[第 108 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+`@Cacheable/@CachePut/@CacheEvict` → AOP 拦截（CacheInterceptor）→ key 计算/SpEL → CacheManager 命中 cache → get/put/evict。
+
+下一章见：[第 108 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

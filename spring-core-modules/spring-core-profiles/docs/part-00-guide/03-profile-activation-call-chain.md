@@ -1,12 +1,12 @@
 # 03. Profiles 调用链（Environment → activeProfiles → 条件生效）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Profiles 调用链（Environment → activeProfiles → 条件生效）展开，主线可以概括为：Profiles 的核心是 Environment：activeProfiles 决定哪些配置/bean 生效；很多条件装配最终都回到 environment/property sources。
 
-    - 知识点：01：Profiles 调用链（Environment → activeProfiles → 条件生效）
-    - 怎么使用：先跑 `SpringCoreProfilesLabTest`，把“profile 激活与 bean 选择”固化成断言，再按本文把 Environment 与条件决策串起来。
-    - 原理：Profiles 的核心是 Environment：activeProfiles 决定哪些配置/bean 生效；很多条件装配最终都回到 environment/property sources。
-    - 源码入口：`ConfigurableEnvironment` / `AbstractEnvironment#getActiveProfiles` / `ConditionEvaluator#shouldSkip`
-    - 推荐 Lab：`SpringCoreProfilesLabTest`
+    先跑 `SpringCoreProfilesLabTest`，把“profile 激活与 bean 选择”固化成断言，再按本文把 Environment 与条件决策串起来。
+
+    需要下探源码时，可以从 `ConfigurableEnvironment` / `AbstractEnvironment#getActiveProfiles` / `ConditionEvaluator#shouldSkip` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Profiles 调用链（Environment → activeProfiles → 条件生效）**
-- 建议入口：优先运行 `SpringCoreProfilesLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：Profiles 的核心是 Environment：activeProfiles 决定哪些配置/bean 生效；很多条件装配最终都回到 environment/property sources。
-- 源码入口：`ConfigurableEnvironment` / `AbstractEnvironment#getActiveProfiles` / `ConditionEvaluator#shouldSkip`
+建议优先运行 `SpringCoreProfilesLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：Profiles 的核心是 Environment：activeProfiles 决定哪些配置/bean 生效；很多条件装配最终都回到 environment/property sources。需要下探源码时，可以从 `ConfigurableEnvironment` / `AbstractEnvironment#getActiveProfiles` / `ConditionEvaluator#shouldSkip` 这些入口切入。
 
 
 ## 最短调用链
@@ -35,8 +33,10 @@
 
 ## 小结与下一章
 
-- 小结：Profiles 的核心是 Environment：activeProfiles 决定哪些配置/bean 生效；很多条件装配最终都回到 environment/property sources。
-- 下一章：[第 151 章：02：断点地图](04-breakpoint-map.md)
+Profiles 的核心是 Environment：activeProfiles 决定哪些配置/bean 生效；很多条件装配最终都回到 environment/property sources。
+
+下一章见：[第 151 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

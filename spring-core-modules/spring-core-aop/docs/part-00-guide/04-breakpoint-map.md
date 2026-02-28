@@ -1,12 +1,12 @@
 # 04. 断点地图（Spring AOP Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Spring AOP Debugger Pack）展开，主线可以概括为：bean 初始化后由 AutoProxyCreator 决定是否创建代理；调用时由 `MethodInvocation#proceed` 驱动 advice 链；自调用/最终方法等是典型边界。
 
-    - 知识点：02：断点地图（Spring AOP Debugger Pack）
-    - 怎么使用：先跑 3 个 Branch Matrix（Proxy/AutoProxy/Stacking）固化关键分支，再用断点观察代理创建点、拦截点与 advice 链路。
-    - 原理：bean 初始化后由 AutoProxyCreator 决定是否创建代理；调用时由 `MethodInvocation#proceed` 驱动 advice 链；自调用/最终方法等是典型边界。
-    - 源码入口：`AbstractAutoProxyCreator` / `ProxyFactory` / `CglibAopProxy` / `ReflectiveMethodInvocation`
-    - 推荐 Lab：`SpringCoreAopProxyBranchMatrixLabTest`
+    先跑 3 个 Branch Matrix（Proxy/AutoProxy/Stacking）固化关键分支，再用断点观察代理创建点、拦截点与 advice 链路。
+
+    对照入口：`SpringCoreAopProxyBranchMatrixLabTest`。需要下探源码时，可以从 `AbstractAutoProxyCreator` / `ProxyFactory` / `CglibAopProxy` / `ReflectiveMethodInvocation` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**04. 断点地图（Spring AOP Debugger Pack）**
-- 建议入口：优先运行 `SpringCoreAopProxyBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：bean 初始化后由 AutoProxyCreator 决定是否创建代理；调用时由 `MethodInvocation#proceed` 驱动 advice 链；自调用/最终方法等是典型边界。
-- 源码入口：`AbstractAutoProxyCreator` / `ProxyFactory` / `CglibAopProxy` / `ReflectiveMethodInvocation`
+建议优先运行 `SpringCoreAopProxyBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：bean 初始化后由 AutoProxyCreator 决定是否创建代理；调用时由 `MethodInvocation#proceed` 驱动 advice 链；自调用/最终方法等是典型边界。需要下探源码时，可以从 `AbstractAutoProxyCreator` / `ProxyFactory` / `CglibAopProxy` / `ReflectiveMethodInvocation` 这些入口切入。
 
 
 ## 运行入口（先运行）
@@ -60,8 +58,10 @@
 
 ## 小结与下一章
 
-- 小结：bean 初始化后由 AutoProxyCreator 决定是否创建代理；调用时由 `MethodInvocation#proceed` 驱动 advice 链；自调用/最终方法等是典型边界。
-- 下一章：[第 29 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+bean 初始化后由 AutoProxyCreator 决定是否创建代理；调用时由 `MethodInvocation#proceed` 驱动 advice 链；自调用/最终方法等是典型边界。
+
+下一章见：[第 29 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

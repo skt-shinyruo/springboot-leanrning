@@ -1,12 +1,12 @@
 # 04. 断点地图（Spring Events Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Spring Events Debugger Pack）展开，主线可以概括为：publishEvent → ApplicationEventMulticaster 选 listener → 逐个调用（同步/异步取决于 multicaster/executor）→ 事务事件依赖事务同步回调。
 
-    - 知识点：02：断点地图（Spring Events Debugger Pack）
-    - 怎么使用：先跑 `SpringCoreEventsBasicsBranchMatrixLabTest`/`SpringCoreEventsAsyncTransactionalBranchMatrixLabTest` 固化“同步/异步/事务事件”的断言，再用断点观察 multicaster 如何选择 listener、在哪个线程执行、异常如何传播。
-    - 原理：publishEvent → ApplicationEventMulticaster 选 listener → 逐个调用（同步/异步取决于 multicaster/executor）→ 事务事件依赖事务同步回调。
-    - 源码入口：`org.springframework.context.event.AbstractApplicationEventMulticaster` / `org.springframework.context.event.SimpleApplicationEventMulticaster`
-    - 推荐 Lab：`SpringCoreEventsBasicsBranchMatrixLabTest`
+    先跑 `SpringCoreEventsBasicsBranchMatrixLabTest`/`SpringCoreEventsAsyncTransactionalBranchMatrixLabTest` 固化“同步/异步/事务事件”的断言，再用断点观察 multicaster 如何选择 listener、在哪个线程执行、异常如何传播。
+
+    需要下探源码时，可以从 `org.springframework.context.event.AbstractApplicationEventMulticaster` / `org.springframework.context.event.SimpleApplicationEventMulticaster` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -44,8 +44,10 @@
 
 ## 小结与下一章
 
-- 小结：publishEvent → ApplicationEventMulticaster 选 listener → 逐个调用（同步/异步取决于 multicaster/executor）→ 事务事件依赖事务同步回调。
-- 下一章：[第 128 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+publishEvent → ApplicationEventMulticaster 选 listener → 逐个调用（同步/异步取决于 multicaster/executor）→ 事务事件依赖事务同步回调。
+
+下一章见：[第 128 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

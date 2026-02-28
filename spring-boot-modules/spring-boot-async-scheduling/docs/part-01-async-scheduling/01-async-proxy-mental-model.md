@@ -15,9 +15,7 @@
 
 ## 导读
 
-- 本章主题：**01. `@Async` 心智模型：代理与线程切换**
-- 建议入口：优先运行 `BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync`（见文末“对应 Lab/Test”），先跑一次“反例”，再跑一次“正例”，会更快建立边界感。
-
+建议优先运行 `BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync`（见文末“对应 Lab/Test”），先跑一次“反例”，再跑一次“正例”，会更快建立边界感。
 
 
 ## 先说清楚：`@Async` 到底“异步”在哪

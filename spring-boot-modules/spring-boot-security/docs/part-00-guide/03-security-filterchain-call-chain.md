@@ -1,12 +1,12 @@
 # 03. Security 调用链（FilterChainProxy → Authentication → Authorization）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Security 调用链（FilterChainProxy → Authentication → Authorization）展开，主线可以概括为：Spring Security 的核心在 FilterChain：请求先过 `FilterChainProxy`，匹配具体 SecurityFilterChain，再做认证与鉴权决策。
 
-    - 知识点：01：Security 调用链（FilterChainProxy → Authentication → Authorization）
-    - 怎么使用：先跑 `BootSecurityLabTest`，把“未认证/已认证/拒绝访问”等分支固化成断言，再按本文把 FilterChain 到最终决策串起来。
-    - 原理：Spring Security 的核心在 FilterChain：请求先过 `FilterChainProxy`，匹配具体 SecurityFilterChain，再做认证与鉴权决策。
-    - 源码入口：`FilterChainProxy` / `SecurityFilterChain` / `AuthenticationManager` / `AuthorizationManager`
-    - 推荐 Lab：`BootSecurityLabTest`
+    先跑 `BootSecurityLabTest`，把“未认证/已认证/拒绝访问”等分支固化成断言，再按本文把 FilterChain 到最终决策串起来。
+
+    需要下探源码时，可以从 `FilterChainProxy` / `SecurityFilterChain` / `AuthenticationManager` / `AuthorizationManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Security 调用链（FilterChainProxy → Authentication → Authorization）**
-- 建议入口：优先运行 `BootSecurityLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：Spring Security 的核心在 FilterChain：请求先过 `FilterChainProxy`，匹配具体 SecurityFilterChain，再做认证与鉴权决策。
-- 源码入口：`FilterChainProxy` / `SecurityFilterChain` / `AuthenticationManager` / `AuthorizationManager`
+建议优先运行 `BootSecurityLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：Spring Security 的核心在 FilterChain：请求先过 `FilterChainProxy`，匹配具体 SecurityFilterChain，再做认证与鉴权决策。需要下探源码时，可以从 `FilterChainProxy` / `SecurityFilterChain` / `AuthenticationManager` / `AuthorizationManager` 这些入口切入。
 
 
 ## 最短调用链
@@ -36,8 +34,10 @@
 
 ## 小结与下一章
 
-- 小结：Spring Security 的核心在 FilterChain：请求先过 `FilterChainProxy`，匹配具体 SecurityFilterChain，再做认证与鉴权决策。
-- 下一章：[第 86 章：02：断点地图](04-breakpoint-map.md)
+Spring Security 的核心在 FilterChain：请求先过 `FilterChainProxy`，匹配具体 SecurityFilterChain，再做认证与鉴权决策。
+
+下一章见：[第 86 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

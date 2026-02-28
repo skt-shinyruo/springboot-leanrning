@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：分支通常发生在：status→异常映射、reactive operator（timeout/retry）、filter 的“洋葱”顺序。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把 Web Client 最常见的分支（错误映射/超时/重试/filter 顺序）整理成矩阵表；每行都对应一个最小复现入口。
-    - 原理：分支通常发生在：status→异常映射、reactive operator（timeout/retry）、filter 的“洋葱”顺序。
-    - 源码入口：`WebClient#retrieve` / `ExchangeFilterFunction` / Reactor `timeout` / `retry`
-    - 推荐 Lab：`BootWebClientBranchMatrixLabTest`
+    把 Web Client 最常见的分支（错误映射/超时/重试/filter 顺序）整理成矩阵表；每行都对应一个最小复现入口。
+
+    对照入口：`BootWebClientBranchMatrixLabTest`。需要下探源码时，可以从 `WebClient#retrieve` / `ExchangeFilterFunction` / Reactor `timeout` / `retry` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `BootWebClientBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：分支通常发生在：status→异常映射、reactive operator（timeout/retry）、filter 的“洋葱”顺序。
-- 源码入口：`WebClient#retrieve` / `ExchangeFilterFunction` / Reactor `timeout` / `retry`
+建议优先运行 `BootWebClientBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：分支通常发生在：status→异常映射、reactive operator（timeout/retry）、filter 的“洋葱”顺序。需要下探源码时，可以从 `WebClient#retrieve` / `ExchangeFilterFunction` / Reactor `timeout` / `retry` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -43,8 +41,10 @@
 
 ## 小结与下一章
 
-- 小结：分支通常发生在：status→异常映射、reactive operator（timeout/retry）、filter 的“洋葱”顺序。
-- 下一章：[第 175 章：01：RestClient 基础：请求构造与错误处理](../part-01-web-client/01-restclient-basics.md)
+分支通常发生在：status→异常映射、reactive operator（timeout/retry）、filter 的“洋葱”顺序。
+
+下一章见：[第 175 章：01：RestClient 基础：请求构造与错误处理](../part-01-web-client/01-restclient-basics.md)
+
 
 <!-- BOOKIFY:START -->
 

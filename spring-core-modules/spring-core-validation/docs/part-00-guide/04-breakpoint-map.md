@@ -1,12 +1,12 @@
 # 04. 断点地图（Validation Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Validation Debugger Pack）展开，主线可以概括为：对象校验走 `Validator#validate`；方法校验依赖代理（MethodValidationPostProcessor/Interceptor）；groups 决定哪些约束参与。
 
-    - 知识点：02：断点地图（Validation Debugger Pack）
-    - 怎么使用：先跑 `SpringCoreValidationBranchMatrixLabTest` 固化“对象校验/方法校验/groups”的断言，再用断点观察 constraint violations 的产生点与方法校验的代理边界。
-    - 原理：对象校验走 `Validator#validate`；方法校验依赖代理（MethodValidationPostProcessor/Interceptor）；groups 决定哪些约束参与。
-    - 源码入口：`org.springframework.validation.beanvalidation.SpringValidatorAdapter` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor`
-    - 推荐 Lab：`SpringCoreValidationBranchMatrixLabTest`
+    先跑 `SpringCoreValidationBranchMatrixLabTest` 固化“对象校验/方法校验/groups”的断言，再用断点观察 constraint violations 的产生点与方法校验的代理边界。
+
+    需要下探源码时，可以从 `org.springframework.validation.beanvalidation.SpringValidatorAdapter` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**04. 断点地图（Validation Debugger Pack）**
-- 建议入口：优先运行 `SpringCoreValidationBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：对象校验走 `Validator#validate`；方法校验依赖代理（MethodValidationPostProcessor/Interceptor）；groups 决定哪些约束参与。
-- 源码入口：`org.springframework.validation.beanvalidation.SpringValidatorAdapter` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor`
+建议优先运行 `SpringCoreValidationBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：对象校验走 `Validator#validate`；方法校验依赖代理（MethodValidationPostProcessor/Interceptor）；groups 决定哪些约束参与。需要下探源码时，可以从 `org.springframework.validation.beanvalidation.SpringValidatorAdapter` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor` 这些入口切入。
 
 
 ## 运行入口（先运行）
@@ -50,8 +48,10 @@
 
 ## 小结与下一章
 
-- 小结：对象校验走 `Validator#validate`；方法校验依赖代理（MethodValidationPostProcessor/Interceptor）；groups 决定哪些约束参与。
-- 下一章：[第 157 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+对象校验走 `Validator#validate`；方法校验依赖代理（MethodValidationPostProcessor/Interceptor）；groups 决定哪些约束参与。
+
+下一章见：[第 157 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：测试注解决定“加载哪些 auto-config 与 bean”，mock 决定“用哪个实现参与注入”。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把测试里最常见的“边界条件”写成矩阵表（slice、mock、上下文范围），并为每个分支提供复现入口。
-    - 原理：测试注解决定“加载哪些 auto-config 与 bean”，mock 决定“用哪个实现参与注入”。
-    - 源码入口：`ContextBootstrapper` / `MockitoTestExecutionListener`
-    - 推荐 Lab：`BootTestingBranchMatrixLabTest`
+    把测试里最常见的“边界条件”写成矩阵表（slice、mock、上下文范围），并为每个分支提供复现入口。
+
+    对照入口：`BootTestingBranchMatrixLabTest`。需要下探源码时，可以从 `ContextBootstrapper` / `MockitoTestExecutionListener` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `BootTestingBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：测试注解决定“加载哪些 auto-config 与 bean”，mock 决定“用哪个实现参与注入”。
-- 源码入口：`ContextBootstrapper` / `MockitoTestExecutionListener`
+建议优先运行 `BootTestingBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：测试注解决定“加载哪些 auto-config 与 bean”，mock 决定“用哪个实现参与注入”。需要下探源码时，可以从 `ContextBootstrapper` / `MockitoTestExecutionListener` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -41,8 +39,10 @@
 
 ## 小结与下一章
 
-- 小结：测试注解决定“加载哪些 auto-config 与 bean”，mock 决定“用哪个实现参与注入”。
-- 下一章：[第 185 章：01：Slice Test 与 Mocking：把边界变成可断言](../part-01-testing/01-slice-and-mocking.md)
+测试注解决定“加载哪些 auto-config 与 bean”，mock 决定“用哪个实现参与注入”。
+
+下一章见：[第 185 章：01：Slice Test 与 Mocking：把边界变成可断言](../part-01-testing/01-slice-and-mocking.md)
+
 
 <!-- BOOKIFY:START -->
 

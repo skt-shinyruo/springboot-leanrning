@@ -1,12 +1,12 @@
 # 18. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`AbstractBeanFactory#getMergedLocalBeanDefinition` / `DefaultListableBeanFactory#getMergedBeanDefinition` / `AbstractBeanFactory#getMergedLocalBeanDefinition(beanName)`
-    - 推荐 Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
+
+    本章围绕35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansMergedBeanDefinitionLabTest`。需要下探源码时，可以从 `AbstractBeanFactory#getMergedLocalBeanDefinition` / `DefaultListableBeanFactory#getMergedBeanDefinition` / `AbstractBeanFactory#getMergedLocalBeanDefinition(beanName)` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,11 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**18. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？**
 - 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-!!! summary "本章要点"
-
-    - registry 里存的是 **原始 BeanDefinition**（可能是 `GenericBeanDefinition`，还带 `parentName`）；创建链路里真正使用的是 **merged 后的 `RootBeanDefinition`**。
-    - merged 不只是“把 propertyValues 拼起来”，它还会把 **scope/lazy-init/init-method/解析出的类型缓存** 等元信息统一成“最终配方”（本仓库 Lab 已补齐“继承 vs 覆盖”的对照）。
-    - merged 会被容器 **缓存**：在断点里看到的 `RootBeanDefinition` 往往不是“每次现算”，而是命中缓存（这也是很多人“改了定义却没生效”的根因之一）。
-    - `MergedBeanDefinitionPostProcessor` 的触发点很关键：它发生在 `doCreateBean` 中、`populateBean` 之前（实例已创建，但属性还没注入），非常适合做元数据准备/缓存。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -42,7 +32,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansMergedBeanDefinitionLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    建议 先跑 `SpringCoreBeansMergedBeanDefinitionLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
     - 第一断点：`AbstractBeanFactory#getMergedLocalBeanDefinition`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -199,11 +189,6 @@ getMergedLocalBeanDefinition(beanName):
 - 真正参与创建的是 `getMergedLocalBeanDefinition(beanName)` 返回的 `RootBeanDefinition`（元数据已合并）
 - 若只盯着原始定义，会把“定义层对象”误当成“创建时用的最终配方”，因此结论必然错位
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
 - 本章已在正文中引用以下 LabTest（优先运行它们）：
@@ -238,7 +223,7 @@ getMergedLocalBeanDefinition(beanName):
 
 **反例：一直盯着 `getBeanDefinition(beanName)` 的返回值进行调试，越看越觉得“Spring 怎么不按预期生效”。**
 
-最小复现入口：
+最小对照入口如下：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
 

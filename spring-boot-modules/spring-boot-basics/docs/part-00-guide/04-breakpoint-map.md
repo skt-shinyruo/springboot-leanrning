@@ -1,12 +1,12 @@
 # 04. 断点地图（Boot Basics Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Boot Basics Debugger Pack）展开，主线可以概括为：PropertySources → Environment 覆盖/分流（Profile）→ Binder 绑定（`@ConfigurationProperties`）→ 影响条件装配与运行期行为。
 
-    - 知识点：02：断点地图（Boot Basics Debugger Pack）
-    - 怎么使用：先跑 `BootBasicsBranchMatrixLabTest` 固化“Profile/覆盖”的现象，再按本页断点从 `@ConfigurationProperties` 绑定一路追到最终 bean 选择与业务结果。
-    - 原理：PropertySources → Environment 覆盖/分流（Profile）→ Binder 绑定（`@ConfigurationProperties`）→ 影响条件装配与运行期行为。
-    - 源码入口：`org.springframework.core.env.Environment` / `org.springframework.boot.context.properties.bind.Binder` / `org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor`
-    - 推荐 Lab：`BootBasicsBranchMatrixLabTest`
+    先跑 `BootBasicsBranchMatrixLabTest` 固化“Profile/覆盖”的现象，再按本页断点从 `@ConfigurationProperties` 绑定一路追到最终 bean 选择与业务结果。
+
+    需要下探源码时，可以从 `org.springframework.core.env.Environment` / `org.springframework.boot.context.properties.bind.Binder` / `org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -63,8 +63,10 @@
 
 ## 小结与下一章
 
-- 小结：PropertySources → Environment 覆盖/分流（Profile）→ Binder 绑定（`@ConfigurationProperties`）→ 影响条件装配与运行期行为。
-- 下一章：[第 4 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+PropertySources → Environment 覆盖/分流（Profile）→ Binder 绑定（`@ConfigurationProperties`）→ 影响条件装配与运行期行为。
+
+下一章见：[第 4 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 08. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`DefaultListableBeanFactory#addBeanPostProcessor` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticallyAddedBpp_runsBeforeBeanDefinedBpp_evenIfBeanDefinedIsPriorityOrdered`
-    - 推荐 Lab：`SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
+
+    本章围绕手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansProgrammaticBeanPostProcessorLabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#addBeanPostProcessor` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticallyAddedBpp_runsBeforeBeanDefinedBpp_evenIfBeanDefinedIsPriorityOrdered` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,22 +14,13 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**08. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱**
 - 阅读方式建议：先运行本章两个核心测试，把“为什么 Ordered 不生效 / 为什么手工注册会更早执行”固定成断言；再用断点把它放回 `refresh()` 的注册时机里看清楚。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（容器扩展点，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-
-!!! summary "本章要点"
-
-    - `addBeanPostProcessor(...)` 的语义不是“注册一个可排序的处理器”，而是：**直接修改 `beanFactory.getBeanPostProcessors()` 这个 list**。因此它天然是“按注册顺序”，而不是“按 Ordered 排序”。
-    - 手工注册的 BPP 通常发生在 `refresh()` 之前，因此它会早于容器自动发现/排序注册的 BPP 执行 —— **哪怕后者是 PriorityOrdered**。
-    - BPP 不是“事后补丁”：**bean 一旦在 BPP 链完整之前被创建出来，就永远错过后续 BPP**。排障时要先分清：遇到的是“顺序问题”还是“时机问题”。
-    - “编程式注册”还有一个更容易误诊的分支：`registerSingleton`（实例层）会绕开创建管线，因此“没注入/没代理/没回调”常常不是顺序问题，而是读者根本没走过 `doCreateBean`。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -292,7 +283,7 @@ addBeanPostProcessor(bpp):
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticallyAddedBpp_runsBeforeBeanDefinedBpp_evenIfBeanDefinedIsPriorityOrdered`，再用 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticallyAddedBpp_runsBeforeBeanDefinedBpp_evenIfBeanDefinedIsPriorityOrdered`，再用 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`DefaultListableBeanFactory#addBeanPostProcessor` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“4. 排障分流：顺序问题 vs 时机问题（先分清楚再下手）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -300,8 +291,10 @@ addBeanPostProcessor(bpp):
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[26. SmartInitializingSingleton：容器就绪后回调](09-smart-initializing-singleton.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[26. SmartInitializingSingleton：容器就绪后回调](09-smart-initializing-singleton.md)
+
 
 <!-- BOOKIFY:START -->
 

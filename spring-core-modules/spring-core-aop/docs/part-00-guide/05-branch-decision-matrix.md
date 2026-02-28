@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：分支发生在：是否被 AutoProxyCreator 代理、调用是否经过 proxy、advice 链的顺序与 proceed 嵌套。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把 Spring AOP 的关键分支（代理创建、自调用、ExposeProxy、advisor 顺序）整理成矩阵表，并给出最小复现入口。
-    - 原理：分支发生在：是否被 AutoProxyCreator 代理、调用是否经过 proxy、advice 链的顺序与 proceed 嵌套。
-    - 源码入口：`AbstractAutoProxyCreator` / `ReflectiveMethodInvocation`
-    - 推荐 Lab：`SpringCoreAopProxyBranchMatrixLabTest`
+    把 Spring AOP 的关键分支（代理创建、自调用、ExposeProxy、advisor 顺序）整理成矩阵表，并给出最小复现入口。
+
+    对照入口：`SpringCoreAopProxyBranchMatrixLabTest`。需要下探源码时，可以从 `AbstractAutoProxyCreator` / `ReflectiveMethodInvocation` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `SpringCoreAopProxyBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：分支发生在：是否被 AutoProxyCreator 代理、调用是否经过 proxy、advice 链的顺序与 proceed 嵌套。
-- 源码入口：`AbstractAutoProxyCreator` / `ReflectiveMethodInvocation`
+建议优先运行 `SpringCoreAopProxyBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：分支发生在：是否被 AutoProxyCreator 代理、调用是否经过 proxy、advice 链的顺序与 proceed 嵌套。需要下探源码时，可以从 `AbstractAutoProxyCreator` / `ReflectiveMethodInvocation` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -44,8 +42,10 @@
 
 ## 小结与下一章
 
-- 小结：分支发生在：是否被 AutoProxyCreator 代理、调用是否经过 proxy、advice 链的顺序与 proceed 嵌套。
-- 下一章：[第 30 章：01：代理心智模型：拿到的到底是不是“那个对象”】【From Proxy to Target】](../part-01-proxy-fundamentals/01-aop-proxy-mental-model.md)
+分支发生在：是否被 AutoProxyCreator 代理、调用是否经过 proxy、advice 链的顺序与 proceed 嵌套。
+
+下一章见：[第 30 章：01：代理心智模型：拿到的到底是不是“那个对象”】【From Proxy to Target】](../part-01-proxy-fundamentals/01-aop-proxy-mental-model.md)
+
 
 <!-- BOOKIFY:START -->
 

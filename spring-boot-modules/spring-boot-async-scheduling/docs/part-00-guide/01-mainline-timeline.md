@@ -15,9 +15,7 @@
 
 ## 导读
 
-- 本章主题：**01. 主线时间线：Spring Boot Async & Scheduling**
-- 建议入口：优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），先把结论跑成断言，再回到正文理解顺序与边界。
-
+建议优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），先把结论跑成断言，再回到正文理解顺序与边界。
 
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
@@ -91,5 +89,5 @@
 
 ## 小结与下一章
 
-- 小结：本章围绕关键主线与边界条件展开，建议结合可运行入口进行验证。
-- 下一章：[第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）](02-deep-dive-guide.md)
+下一章见：[第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）](02-deep-dive-guide.md)
+

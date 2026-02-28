@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：分支发生在：activeProfiles 如何设置、ConditionEvaluator 如何决定 skip。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把 Profiles 的关键分支（激活/优先级/条件装配）整理成矩阵表；每行都对应可跑入口与观察点。
-    - 原理：分支发生在：activeProfiles 如何设置、ConditionEvaluator 如何决定 skip。
-    - 源码入口：`AbstractEnvironment` / `ConditionEvaluator`
-    - 推荐 Lab：`SpringCoreProfilesBranchMatrixLabTest`
+    把 Profiles 的关键分支（激活/优先级/条件装配）整理成矩阵表；每行都对应可跑入口与观察点。
+
+    对照入口：`SpringCoreProfilesBranchMatrixLabTest`。需要下探源码时，可以从 `AbstractEnvironment` / `ConditionEvaluator` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `SpringCoreProfilesBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：分支发生在：activeProfiles 如何设置、ConditionEvaluator 如何决定 skip。
-- 源码入口：`AbstractEnvironment` / `ConditionEvaluator`
+建议优先运行 `SpringCoreProfilesBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：分支发生在：activeProfiles 如何设置、ConditionEvaluator 如何决定 skip。需要下探源码时，可以从 `AbstractEnvironment` / `ConditionEvaluator` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -41,8 +39,10 @@
 
 ## 小结与下一章
 
-- 小结：分支发生在：activeProfiles 如何设置、ConditionEvaluator 如何决定 skip。
-- 下一章：[第 152 章：01：Profile 激活与 Bean 选择（最小可复现主线）](../part-01-profiles/01-profile-activation-and-bean-selection.md)
+分支发生在：activeProfiles 如何设置、ConditionEvaluator 如何决定 skip。
+
+下一章见：[第 152 章：01：Profile 激活与 Bean 选择（最小可复现主线）](../part-01-profiles/01-profile-activation-and-bean-selection.md)
+
 
 <!-- BOOKIFY:START -->
 

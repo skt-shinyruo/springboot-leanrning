@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**02. 00 - Deep Dive Guide（springboot-cache）**
-- 建议入口：优先运行 `BootCacheBookMatrixLabTest`（见文末“对应 Lab/Test”），用最小集合把“命中/写入/边界/并发/过期”跑成事实，再回到正文系统化串起来。
-
+建议优先运行 `BootCacheBookMatrixLabTest`（见文末“对应 Lab/Test”），用最小集合把“命中/写入/边界/并发/过期”跑成事实，再回到正文系统化串起来。
 
 
 ## 无需背 API，但要抓住“缓存其实是一套分支系统”

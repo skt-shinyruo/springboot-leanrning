@@ -1,12 +1,12 @@
 # 04. 断点地图（Profiles Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Profiles Debugger Pack）展开，主线可以概括为：activeProfiles → ConditionEvaluator 决定是否跳过 bean/config → 最终 bean 集合与属性值不同。
 
-    - 知识点：02：断点地图（Profiles Debugger Pack）
-    - 怎么使用：先跑 `SpringCoreProfilesBranchMatrixLabTest` 固化“Profile 激活/优先级”的断言，再用断点观察 profile 如何影响条件装配与配置覆盖。
-    - 原理：activeProfiles → ConditionEvaluator 决定是否跳过 bean/config → 最终 bean 集合与属性值不同。
-    - 源码入口：`org.springframework.core.env.AbstractEnvironment` / `org.springframework.context.annotation.ConditionEvaluator`
-    - 推荐 Lab：`SpringCoreProfilesBranchMatrixLabTest`
+    先跑 `SpringCoreProfilesBranchMatrixLabTest` 固化“Profile 激活/优先级”的断言，再用断点观察 profile 如何影响条件装配与配置覆盖。
+
+    需要下探源码时，可以从 `org.springframework.core.env.AbstractEnvironment` / `org.springframework.context.annotation.ConditionEvaluator` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -42,8 +42,10 @@
 
 ## 小结与下一章
 
-- 小结：activeProfiles → ConditionEvaluator 决定是否跳过 bean/config → 最终 bean 集合与属性值不同。
-- 下一章：[第 151 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+activeProfiles → ConditionEvaluator 决定是否跳过 bean/config → 最终 bean 集合与属性值不同。
+
+下一章见：[第 151 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

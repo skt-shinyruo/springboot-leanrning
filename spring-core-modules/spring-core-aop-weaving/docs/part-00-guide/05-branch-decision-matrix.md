@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：LTW/CTW 运行方式决定织入时机；join point 决定 advice 触发点。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把织入的关键分支（LTW/CTW、join point 种类）整理成矩阵表；每行都能被测试复现并用断点验证。
-    - 原理：LTW/CTW 运行方式决定织入时机；join point 决定 advice 触发点。
-    - 源码入口：advice 方法 + target 方法/字段访问点
-    - 推荐 Lab：`AspectjLtwBranchMatrixLabTest`
+    把织入的关键分支（LTW/CTW、join point 种类）整理成矩阵表；每行都能被测试复现并用断点验证。
+
+    对照入口：`AspectjLtwBranchMatrixLabTest`。需要下探源码时，可以从 advice 方法 + target 方法/字段访问点 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `AspectjLtwBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：LTW/CTW 运行方式决定织入时机；join point 决定 advice 触发点。
-- 源码入口：advice 方法 + target 方法/字段访问点
+建议优先运行 `AspectjLtwBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：LTW/CTW 运行方式决定织入时机；join point 决定 advice 触发点。需要下探源码时，可以从 advice 方法 + target 方法/字段访问点 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -44,8 +42,10 @@
 
 ## 小结与下一章
 
-- 小结：LTW/CTW 运行方式决定织入时机；join point 决定 advice 触发点。
-- 下一章：[第 45 章：01：代理 vs 织入：边界、能力与成本](../part-01-mental-model/01-proxy-vs-weaving.md)
+LTW/CTW 运行方式决定织入时机；join point 决定 advice 触发点。
+
+下一章见：[第 45 章：01：代理 vs 织入：边界、能力与成本](../part-01-mental-model/01-proxy-vs-weaving.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 04. 断点地图（AspectJ Weaving Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（AspectJ Weaving Debugger Pack）展开，主线可以概括为：LTW 依赖 `-javaagent:aspectjweaver.jar`；CTW 依赖 ajc 编译期织入；两者的差异决定“什么时候发生织入”与“运行时是否需要 agent”。
 
-    - 知识点：02：断点地图（AspectJ Weaving Debugger Pack）
-    - 怎么使用：先跑 LTW/CTW 两个 Branch Matrix 固化“是否织入/织入位置”的断言，再用断点在 advice 与 target 上观察 join point（call/execution/field/constructor）是否被拦截。
-    - 原理：LTW 依赖 `-javaagent:aspectjweaver.jar`；CTW 依赖 ajc 编译期织入；两者的差异决定“什么时候发生织入”与“运行时是否需要 agent”。
-    - 源码入口：本模块的 `*WeavingAspect` advice 方法 + 目标类方法（断点在 advice 最直接）
-    - 推荐 Lab：`AspectjLtwBranchMatrixLabTest`
+    先跑 LTW/CTW 两个 Branch Matrix 固化“是否织入/织入位置”的断言，再用断点在 advice 与 target 上观察 join point（call/execution/field/constructor）是否被拦截。
+
+    对照入口：`AspectjLtwBranchMatrixLabTest`。需要下探源码时，可以从 本模块的 `*WeavingAspect` advice 方法 + 目标类方法（断点在 advice 最直接） 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -47,8 +47,10 @@
 
 ## 小结与下一章
 
-- 小结：LTW 依赖 `-javaagent:aspectjweaver.jar`；CTW 依赖 ajc 编译期织入；两者的差异决定“什么时候发生织入”与“运行时是否需要 agent”。
-- 下一章：[第 44 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+LTW 依赖 `-javaagent:aspectjweaver.jar`；CTW 依赖 ajc 编译期织入；两者的差异决定“什么时候发生织入”与“运行时是否需要 agent”。
+
+下一章见：[第 44 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

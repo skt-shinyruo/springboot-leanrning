@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**02. 99 - Self Check（springboot-async-scheduling）**
-- 建议入口：优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），再按题目回到对应复现入口。
-
+建议优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），再按题目回到对应复现入口。
 
 
 ## 从 Book Matrix 进入（主线最小集合）
@@ -26,7 +24,7 @@
 ## 从 Branch Matrix 进入（关键分支最小集合）
 
 - `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/04-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
+- 配套资料：[`断点地图 `](../part-00-guide/04-breakpoint-map.md) / [` 关键分支矩阵`](../part-00-guide/05-branch-decision-matrix.md)
 
 ## 自测题
 
@@ -78,8 +76,8 @@
 
 ## 小结与下一章
 
-- 小结：本章围绕关键主线与边界条件展开，建议结合可运行入口进行验证。
-- 下一章：[Docs TOC](../README.md)
+下一章见：[Docs TOC](../README.md)
+
 
 <!-- BOOKIFY:START -->
 

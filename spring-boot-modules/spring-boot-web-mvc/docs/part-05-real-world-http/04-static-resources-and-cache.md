@@ -5,12 +5,6 @@
 本章围绕「04：静态资源与缓存（Static Resources / Cache-Control）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - 默认情况下，Spring Boot 会从 `classpath:/static/` 提供静态资源（如 `/css/app.css`）。
-    - 静态资源一旦纳入教学示例，就要用测试断言它确实能被访问到，否则前端页面示例会“偶尔坏”。
-
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

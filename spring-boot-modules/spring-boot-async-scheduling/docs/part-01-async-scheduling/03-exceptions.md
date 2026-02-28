@@ -15,9 +15,7 @@
 
 ## 导读
 
-- 本章主题：**03. 异常传播：Future vs void**
-- 建议入口：优先运行 `BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`（见文末“对应 Lab/Test”），先明确“异常不是丢了”，再对照 void 的 handler 语义补齐边界。
-
+建议优先运行 `BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`（见文末“对应 Lab/Test”），先明确“异常不是丢了”，再对照 void 的 handler 语义补齐边界。
 
 
 ## 先从一个线上味道很重的场景开始
@@ -45,6 +43,16 @@
 证据入口：
 
 - `BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`
+
+### ListenableFuture：回调式 Future（仍能见到，但更推荐 CompletableFuture）
+
+在一些历史代码里，`@Async` 也会返回 `ListenableFuture`：它仍然是 Future，只是多了一层 callback API，让调用方可以用“回调 + 超时”的方式完成断言，而不是在调用线程里阻塞 `get()`。
+
+对新代码而言，`CompletableFuture` 往往更自然（语言层面的 API、组合能力更强）。但理解 `ListenableFuture` 的语义仍然有价值：它常常出现在老项目或旧的组件接口里，排障时仍会遇到。
+
+对照入口（可选）：
+
+- `BootAsyncSchedulingLabTest#asyncListenableFuture_canUseCallbackInsteadOfBlockingGet`
 
 ## void：把失败交给 handler（但别指望“默认就够用”）
 

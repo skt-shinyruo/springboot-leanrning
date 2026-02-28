@@ -1,12 +1,12 @@
 # 02. 深挖导读：把“日志级别生效”落到源码与断点
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕深挖导读：把“日志级别生效”落到源码与断点展开，主线可以概括为：日志不是“越多越好”，而是“可解释、可过滤、可关联”。第一步是把 level/category 的机制跑通。
 
-    - 知识点：深挖导读：把“日志级别生效”落到源码与断点
-    - 怎么使用：先跑 `BootLoggingLabTest`，把“debug 输出出现”固化成断言；再用断点回答：这条 debug 为什么会/不会输出？
-    - 原理：日志不是“越多越好”，而是“可解释、可过滤、可关联”。第一步是把 level/category 的机制跑通。
-    - 源码入口：（Boot）`LoggingSystem` /（SLF4J）`Logger` /（Logback）`Logger#isDebugEnabled`
-    - 推荐 Lab：`BootLoggingLabTest`
+    先跑 `BootLoggingLabTest`，把“debug 输出出现”固化成断言；再用断点回答：这条 debug 为什么会/不会输出？
+
+    需要下探源码时，可以从 （Boot）`LoggingSystem` /（SLF4J）`Logger` /（Logback）`Logger#isDebugEnabled` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,7 +15,6 @@
 
 ## 导读
 
-- 本章主题：**02. 深挖导读：把“日志级别生效”落到源码与断点**
 - 目标：遇到“debug 没输出/日志太多/日志看不懂”时，能先定位到：category 与 effective level。
 
 !!! example "本章配套实验（先跑再读）"
@@ -29,8 +28,10 @@
 
 ## 小结与下一章
 
-- 小结：日志不是“越多越好”，而是“可解释、可过滤、可关联”。第一步是把 level/category 的机制跑通。
-- 下一章：[第 200 章：01：Logging 调用链](03-logging-call-chain.md)
+日志不是“越多越好”，而是“可解释、可过滤、可关联”。第一步是把 level/category 的机制跑通。
+
+下一章见：[第 200 章：01：Logging 调用链](03-logging-call-chain.md)
+
 
 <!-- BOOKIFY:START -->
 

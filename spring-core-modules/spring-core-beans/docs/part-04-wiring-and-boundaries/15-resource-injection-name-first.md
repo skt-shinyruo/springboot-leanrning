@@ -1,12 +1,12 @@
 # 15. `@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`CommonAnnotationBeanPostProcessor#autowireResource` / `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored` / `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst`
-    - 推荐 Lab：`SpringCoreBeansResourceInjectionLabTest`
+
+    本章围绕 `@Resource` 注入：为什么其定位更接近“按名称找 Bean”？展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansResourceInjectionLabTest`。需要下探源码时，可以从 `CommonAnnotationBeanPostProcessor#autowireResource` / `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored` / `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,13 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**15. `@Resource` 注入：为什么其定位更接近“按名称找 Bean”？**
 - 阅读方式建议：先运行本章 Lab 得到两个对照结论（没装处理器 → 注解无效；装了处理器 → name-first 稳定注入），再回到源码把“是谁在什么时候把字段赋值”的证据链走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Resources，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/resources.html
 
-
-!!! summary "本章要点"
-
-    - `@Resource` 不是 “另一个 @Autowired”。其定位更接近：**先按 name 找（字段名/显式 name），必要时才按 type 回退**。
-    - `@Resource` 能工作，前提是容器里安装了 `CommonAnnotationBeanPostProcessor`（JSR-250/Jakarta 注解处理器）。没装处理器，注解就只是“写在代码上的字”。
-    - name-first 的代价也很明确：**重构字段名/beanName/alias** 时更容易产生隐性回归；当需要要“按类型 + 候选规则”时，应切回 `@Autowired + @Qualifier/@Primary`。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -199,7 +191,9 @@
   - 因为没有注册 annotation processors（没有对应的 BPP），注解无人处理；plain BeanFactory 并不会自动装这些基础设施。
 - 证据链（方法级）：
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（是否注册了 CABPP）
-  - 观察点：`beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`
+  
+  调试时建议重点盯：`beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`。
+  
 
 ## 自检要点
 应能够用 2 句答题：
@@ -209,7 +203,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored`，再用 `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored`，再用 `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`CommonAnnotationBeanPostProcessor#autowireResource`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“5. 排障分流：三类问题，三条路”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -217,8 +211,10 @@
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[33. 候选选择与优先级：@Primary/@Priority/@Order 的边界](16-autowire-candidate-selection-primary-priority-order.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[33. 候选选择与优先级：@Primary/@Priority/@Order 的边界](16-autowire-candidate-selection-primary-priority-order.md)
+
 
 <!-- BOOKIFY:START -->
 

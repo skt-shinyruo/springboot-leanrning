@@ -1,12 +1,12 @@
 # 02. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
-    - 知识点：Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
-    - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
-    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
-    - 推荐 Lab：`SpringCoreAopPointcutExpressionsLabTest`
+    先运行 `SpringCoreAopPointcutExpressionsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+
+    需要下探源码时，可以从 `org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,14 +14,6 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
-
-- 本章主题：**02. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行实验，再阅读）"
@@ -160,14 +152,8 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 
 ---
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopPointcutExpressionsLabTest`
 - 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
@@ -213,14 +199,16 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 
 ### 坑点 1：把 this/target 当成同一件事，JDK proxy 下“写对了也不命中”
 
-- Symptom：编写了 `this(实现类)` 以为命中实现类，但实际项目用 JDK proxy（接口代理），导致切面完全不生效
-- Root Cause：`this` 匹配的是“代理对象类型”，JDK proxy 不是实现类子类；`target` 匹配的才是目标对象类型
-- Verification：`SpringCoreAopPointcutExpressionsLabTest#this_vs_target_differs_between_JdkProxy_and_CglibProxy`
-- Fix：先确定项目是 JDK 还是 CGLIB，再选择 this/target；不确定时用更稳定的 `execution(...)` 建立基线
+编写了 `this(实现类)` 以为命中实现类，但实际项目用 JDK proxy（接口代理），导致切面完全不生效
+
+`this` 匹配的是“代理对象类型”，JDK proxy 不是实现类子类；`target` 匹配的才是目标对象类型
+
+`SpringCoreAopPointcutExpressionsLabTest#this_vs_target_differs_between_JdkProxy_and_CglibProxy`
+
+先确定项目是 JDK 还是 CGLIB，再选择 this/target；不确定时用更稳定的 `execution(...)` 建立基线
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

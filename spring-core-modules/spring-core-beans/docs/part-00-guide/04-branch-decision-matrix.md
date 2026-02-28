@@ -1,12 +1,12 @@
 # 04. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：关键分支矩阵（Branch Decision Matrix）
     - 使用方式：建议先运行本章推荐 Lab，完成主线与断点闭环验证；再回到正文按“时间线/分支矩阵/证据链”定位机制窗口；最后用自检题将表达固化为可复述答案。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`DefaultListableBeanFactory#doResolveDependency` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue`
-    - 推荐 Lab：`LabTest`
+
+    本章围绕关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`LabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#doResolveDependency` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**04. 关键分支矩阵（Branch Decision Matrix）**
 - 阅读建议：建议先运行 Branch Matrix 的聚合入口测试（用于将关键分支固化为断言），再结合本章表格将“现象 → 阶段 → 关键方法 → 必看变量”组织为一条可复用的排障调用链。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 这章是“排障索引页”：遇到一个现象时，不宜首先全局检索代码，而应先将其定位到某个分支点（if/then）。
-    - 分支矩阵的价值在于“可复现”：每个分支都应能在本仓库的 LabTest 中复现，而非依赖主观推断。
-    - 学会用最少观察点做最大判断：一个关键方法 + 3 个变量，往往足够把问题收敛到根因。
-    - 先学会“读异常 cause chain”：很多错误的外层异常是 `BeanCreationException`/`UnsatisfiedDependencyException`，真正的分支点往往藏在 root cause。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -126,7 +117,7 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansIocBranchMatrixLabTest`，再用 `SpringCoreBeansInternalsBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansIocBranchMatrixLabTest`，再用 `SpringCoreBeansInternalsBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“机制主线：把“排障经验”压缩成决策表”时，建议将关键入口串成更清晰的主线（例如：ApplicationContext#refresh → DefaultListableBeanFactory#doResolveDependency），并在关键分支处点明触发条件与结果形态。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](07-breakpoint-map.md) 选 C 组。
@@ -134,8 +125,10 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[第 12 章：00 - Deep Dive Guide（spring-core-beans）](03-deep-dive-guide.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[第 12 章：00 - Deep Dive Guide（spring-core-beans）](03-deep-dive-guide.md)
+
 
 <!-- BOOKIFY:START -->
 

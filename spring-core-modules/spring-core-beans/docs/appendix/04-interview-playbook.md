@@ -1,12 +1,12 @@
 # 04. 面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：面试复述模板：用“证据链”回答 Spring IoC
     - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`ApplicationContext#refresh` / `AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
-    - 推荐 Lab：`SpringCoreBeansIocBranchMatrixLabTest`
+
+    本章围绕面试复述模板：用“证据链”回答 Spring IoC展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansIocBranchMatrixLabTest`。需要下探源码时，可以从 `ApplicationContext#refresh` / `AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,20 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**04. 面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC**
 - 阅读方式建议：把本章当作“可复习题库”。每道题都给出：一句话结论 → 关键证据链（方法/数据结构）→ 对应 Lab。读者不依赖背诵，而以“可运行 + 可断点验证”作为得分依据。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 绝大多数 IoC 面试题不是考 API，而是考：应能够不能把“概念”落到 **refresh 主线 + 关键分支 + 数据结构**。
-    - 复述最常见扣分点：只有结论没有证据；只有名词没有时机；只会说“三级缓存”但说不清它解决了什么问题。
-    - 本章每题都给出“最小证据链入口”：至少能够说出 1 个关键方法 + 3 个观察点 + 1 个可运行 Lab。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -85,7 +77,9 @@
 - 一句话结论：单依赖注入不是“按类型拿一个”，而是：先收集候选（by type）→ 再按规则收敛（primary/qualifier/name/priority...）→ 最终注入。
 - 证据链：
   - `doResolveDependency` → `findAutowireCandidates` → `determineAutowireCandidate`
-  - 观察点：`matchingBeans.keySet()`、`dependencyName`、`primaryCandidate`
+  
+  调试时建议重点盯：`matchingBeans.keySet()`、`dependencyName`、`primaryCandidate`。
+  
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
 对照章节：
@@ -98,7 +92,9 @@
 - 一句话结论：`@Resource` 更偏 name-first（字段名/显式 name），由 `CommonAnnotationBeanPostProcessor` 处理；`@Autowired` 更偏 type-first，由 `AutowiredAnnotationBeanPostProcessor` 处理。
 - 证据链：
   - `CommonAnnotationBeanPostProcessor#postProcessProperties`
-  - 观察点：`resourceName`（默认字段名）是否命中 beanName
+  
+  调试时建议重点盯：`resourceName`（默认字段名）是否命中 beanName。
+  
 - Lab：`SpringCoreBeansResourceInjectionLabTest`
 
 对照章节：
@@ -131,7 +127,9 @@
 - 一句话结论：BFPP/BDRPP 发生在实例化之前，改的是 BeanDefinition；BPP 发生在 bean 创建过程中，改的是实例（甚至替换成 proxy）。
 - 证据链：
   - `invokeBeanFactoryPostProcessors` vs `registerBeanPostProcessors`
-  - 观察点：BPP 链是否完整、目标 bean 是否创建过早错过 BPP
+  
+  调试时建议重点盯：BPP 链是否完整、目标 bean 是否创建过早错过 BPP。
+  
 - Lab：processor/ordering 相关 Lab（本模块有多条）
 
 对照章节：
@@ -178,7 +176,9 @@
 - 一句话结论：`getBean("name")` 默认拿 product；`getBean("&name")` 才拿 factory 本身。
 - 证据链：
   - `FactoryBeanRegistrySupport` 相关路径
-  - 观察点：`&` 前缀分流
+  
+  调试时建议重点盯：`&` 前缀分流。
+  
 - Lab：`SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 
 对照章节：
@@ -278,7 +278,9 @@
 - 证据链：
   - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
-  - 观察点：`beanFactory.getBeanPostProcessors()` 是否为空/是否包含注解处理器
+  
+  调试时建议重点盯：`beanFactory.getBeanPostProcessors()` 是否为空/是否包含注解处理器。
+  
 - Lab：`SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansAutowireCapableBeanFactoryLabTest`
 
 对照章节：
@@ -356,7 +358,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansIocBranchMatrixLabTest`，再用 `SpringCoreBeansInternalsBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansIocBranchMatrixLabTest`，再用 `SpringCoreBeansInternalsBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：面试复述页为每个高频题补“可验证证据”：明确可以用哪个测试 + 哪个断点证明，而不是只给口头答案。
     - 下一跳：若是从现象进入，优先回到 [知识地图](03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -364,8 +366,10 @@
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[94. 生产排障清单（Troubleshooting Checklist）](05-production-troubleshooting-checklist.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[94. 生产排障清单（Troubleshooting Checklist）](05-production-troubleshooting-checklist.md)
+
 
 <!-- BOOKIFY:START -->
 

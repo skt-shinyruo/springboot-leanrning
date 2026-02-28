@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Observability）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Observability）展开，主线可以概括为：请求链路存在 → observation/meter 记录 → 指标可查询。
 
-    - 知识点：04：关键分支矩阵（Observability）
-    - 怎么使用：把“请求后指标是否出现”变成可复现分支：每个分支都有入口（测试）与断点锚点。
-    - 原理：请求链路存在 → observation/meter 记录 → 指标可查询。
-    - 源码入口：`DispatcherServlet#doDispatch` / `MeterRegistry`
-    - 推荐 Lab：`BootObservabilityLabTest`
+    把“请求后指标是否出现”变成可复现分支：每个分支都有入口（测试）与断点锚点。
+
+    对照入口：`BootObservabilityLabTest`。需要下探源码时，可以从 `DispatcherServlet#doDispatch` / `MeterRegistry` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Observability）**
-- 建议入口：优先运行 `BootObservabilityLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：请求链路存在 → observation/meter 记录 → 指标可查询。
-- 源码入口：`DispatcherServlet#doDispatch` / `MeterRegistry`
+建议优先运行 `BootObservabilityLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：请求链路存在 → observation/meter 记录 → 指标可查询。需要下探源码时，可以从 `DispatcherServlet#doDispatch` / `MeterRegistry` 这些入口切入。
 
 
 ## 分支矩阵（最小闭环）
@@ -30,8 +28,10 @@
 
 ## 小结与下一章
 
-- 小结：请求链路存在 → observation/meter 记录 → 指标可查询。
-- 下一章：[第 206 章：01：HTTP metrics](../part-01-observability-basics/01-http-metrics-and-observations.md)
+请求链路存在 → observation/meter 记录 → 指标可查询。
+
+下一章见：[第 206 章：01：HTTP metrics](../part-01-observability-basics/01-http-metrics-and-observations.md)
+
 
 <!-- BOOKIFY:START -->
 

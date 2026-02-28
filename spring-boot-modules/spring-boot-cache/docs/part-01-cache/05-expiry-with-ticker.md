@@ -13,9 +13,7 @@
 
 ## 导读
 
-- 本章主题：**05. 过期与可测性：用 Ticker 控制时间**
-- 建议入口：优先运行 `BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`（见文末“对应 Lab/Test”），把“时间推进”变成可控输入，再写确定性断言。
-
+建议优先运行 `BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`（见文末“对应 Lab/Test”），把“时间推进”变成可控输入，再写确定性断言。
 
 
 ## 想验证的其实不是“等 5 秒”，而是“过期发生了”

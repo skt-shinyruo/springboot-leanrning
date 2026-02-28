@@ -1,12 +1,12 @@
 # 02. 00 - Deep Dive Guide（springboot-security）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕Deep Dive Guide（springboot-security）展开，主线可以概括为：HTTP 请求 → `FilterChainProxy` 选择 SecurityFilterChain → 认证（Authentication）→ 授权（Authorization）→ 异常处理（401/403）→ 继续进入 MVC。
 
-    - 知识点：Deep Dive Guide（springboot-security）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：将认证/授权配置为 FilterChain；区分 401/403 与 CSRF 场景；方法级安全依赖代理与拦截器链。
-    - 原理：HTTP 请求 → `FilterChainProxy` 选择 SecurityFilterChain → 认证（Authentication）→ 授权（Authorization）→ 异常处理（401/403）→ 继续进入 MVC。
-    - 源码入口：`org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain` / `org.springframework.security.web.access.intercept.AuthorizationFilter`
-    - 推荐 Lab：`BootSecurityDevProfileLabTest`
+    阅读时可以先跑 `BootSecurityDevProfileLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：将认证/授权配置为 FilterChain；区分 401/403 与 CSRF 场景；方法级安全依赖代理与拦截器链。
+
+    需要下探源码时，可以从 `org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain` / `org.springframework.security.web.access.intercept.AuthorizationFilter` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,14 +14,6 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
-
-- 本章主题：**02. 00 - Deep Dive Guide（springboot-security）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -69,85 +61,84 @@
 
 ### 3) 本模块的关键分支（默认可回归 + 可下断点）
 
-> 记忆方式（强烈推荐）：先跑 Evidence（可断言），再用 Call Chain Sketch 把“现象 → 机制 → 断点锚点”串起来。
+> 记忆方式：先跑对照入口（可断言），再用调用链速记把“现象 → 机制 → 断点锚点”串起来。
 
 #### S1. 多 `SecurityFilterChain` 的匹配与顺序（securityMatcher + @Order）
 
-- Evidence：
-  - `BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain`
-  - `BootSecurityMultiFilterChainOrderLabTest#traceIdFilterIsPresentInBothChains_asCrossCuttingConcern`
+先把这个分支跑成断言（建议按顺序）：
+
+- `BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain`
+- `BootSecurityMultiFilterChainOrderLabTest#traceIdFilterIsPresentInBothChains_asCrossCuttingConcern`
 - Call Chain Sketch（最小可复述）：
   1) request → `FilterChainProxy#doFilterInternal`
   2) 遍历 `SecurityFilterChain` → `DefaultSecurityFilterChain#matches`
   3) 选择“第一个匹配”的 chain（顺序由 @Order + matcher 覆盖范围共同决定）
   4) 进入该 chain 的 filters（后续所有认证/鉴权/CSRF 行为都由这条链决定）
-- Breakpoints（断点锚点）：
-  - repo：`SecurityConfig#jwtApiChain` / `SecurityConfig#apiChain`（规则定义入口）
-  - spring：`org.springframework.security.web.FilterChainProxy#doFilterInternal`（分流入口）
-  - spring：`org.springframework.security.web.DefaultSecurityFilterChain#matches`（匹配判定）
+断点锚点
+
+- repo：`SecurityConfig#jwtApiChain` / `SecurityConfig#apiChain`（规则定义入口）
+- spring：`org.springframework.security.web.FilterChainProxy#doFilterInternal`（分流入口）
+- spring：`org.springframework.security.web.DefaultSecurityFilterChain#matches`（匹配判定）
 
 #### S2. 401 vs 403 分流（AuthenticationEntryPoint vs AccessDeniedHandler）
 
-- Evidence：
-  - 401：`BootSecurityLabTest#secureEndpointReturns401WhenAnonymous`
-  - 403：`BootSecurityLabTest#adminEndpointReturns403ForNonAdminUser`
+对照入口：
+
+- 401：`BootSecurityLabTest#secureEndpointReturns401WhenAnonymous`
+- 403：`BootSecurityLabTest#adminEndpointReturns403ForNonAdminUser`
 - Call Chain Sketch：
   1) filter chain 内抛出 `AuthenticationException` / `AccessDeniedException`
   2) `ExceptionTranslationFilter#doFilter` 捕获并分流
   3) 未认证 → `AuthenticationEntryPoint#commence`（401）
   4) 已认证但拒绝 → `AccessDeniedHandler#handle`（403）
-- Breakpoints：
-  - repo：`JsonAuthenticationEntryPoint#commence`（401 统一错误响应）
-  - repo：`JsonAccessDeniedHandler#handle`（403 统一错误响应，含 csrf_failed 分支）
-  - spring：`org.springframework.security.web.access.ExceptionTranslationFilter#doFilter`（401/403 分流点）
+- repo：`JsonAuthenticationEntryPoint#commence`（401 统一错误响应）
+- repo：`JsonAccessDeniedHandler#handle`（403 统一错误响应，含 csrf_failed 分支）
+- spring：`org.springframework.security.web.access.ExceptionTranslationFilter#doFilter`（401/403 分流点）
 
 #### S3. CSRF：Basic 链路默认开启，JWT 链路明确关闭（禁用只对“命中到的链”生效）
 
-- Evidence：
-  - Basic + 缺 token → 403：`BootSecurityLabTest#csrfBlocksPostEvenWhenAuthenticated`
-  - Basic + csrf() → 200：`BootSecurityLabTest#csrfTokenAllowsPostWhenAuthenticated`
-  - JWT + POST 不需要 csrf → 200：`BootSecurityLabTest#jwtPostDoesNotRequireCsrf`
-  - 命中哪条链的证据链：`BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain`
+对照入口（把“是否命中到 Basic/JWT 链”也一并写成证据）：
+
+- Basic + 缺 token → 403：`BootSecurityLabTest#csrfBlocksPostEvenWhenAuthenticated`
+- Basic + csrf() → 200：`BootSecurityLabTest#csrfTokenAllowsPostWhenAuthenticated`
+- JWT + POST 不需要 csrf → 200：`BootSecurityLabTest#jwtPostDoesNotRequireCsrf`
+- 命中哪条链：`BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain`
 - Call Chain Sketch：
   1) request 命中 chain → 是否包含 `CsrfFilter`
   2) CSRF 校验失败 → `AccessDeniedHandler`（本模块映射成 `csrf_failed`）
   3) JWT chain 明确 `csrf.disable()`：因此同样的 POST 在 JWT 链路不会被 CSRF 拦截
-- Breakpoints：
-  - spring：`org.springframework.security.web.csrf.CsrfFilter#doFilterInternal`（CSRF 校验点）
-  - repo：`JsonAccessDeniedHandler#handle`（csrf_failed 映射分支）
-  - repo：`SecurityConfig#jwtApiChain`（JWT 链路禁用 CSRF）
+- spring：`org.springframework.security.web.csrf.CsrfFilter#doFilterInternal`（CSRF 校验点）
+- repo：`JsonAccessDeniedHandler#handle`（csrf_failed 映射分支）
+- repo：`SecurityConfig#jwtApiChain`（JWT 链路禁用 CSRF）
 
 #### S4. JWT：scope → `SCOPE_xxx` authority 映射（401/403 与 scope 缺失）
 
-- Evidence：
-  - 缺 bearer token → 401：`BootSecurityLabTest#jwtSecureEndpointReturns401WhenMissingBearerToken`
-  - Bearer 前缀缺失 → 401：`BootSecurityLabTest#jwtSecureEndpointReturns401WhenBearerPrefixMissing_asPitfall`
-  - scope 不足 → 403：`BootSecurityLabTest#jwtAdminEndpointReturns403WhenScopeMissing`
+对照入口：
+
+- 缺 bearer token → 401：`BootSecurityLabTest#jwtSecureEndpointReturns401WhenMissingBearerToken`
+- Bearer 前缀缺失 → 401：`BootSecurityLabTest#jwtSecureEndpointReturns401WhenBearerPrefixMissing_asPitfall`
+- scope 不足 → 403：`BootSecurityLabTest#jwtAdminEndpointReturns403WhenScopeMissing`
 - Call Chain Sketch：
   1) `Authorization: Bearer <token>` → Resource Server 从 header 提取 token
   2) token → decoder → Authentication
   3) `scope` claim（空格分隔）→ authorities（`SCOPE_xxx`）
   4) 授权规则基于 `hasAuthority("SCOPE_admin")` 做 403 分流
-- Breakpoints：
-  - repo：`JwtTokenService#issueToken`（scope claim 的形态：空格分隔）
-  - repo：`JsonAuthenticationEntryPoint#commence`（401）
-  - repo：`JsonAccessDeniedHandler#handle`（403）
+- repo：`JwtTokenService#issueToken`（scope claim 的形态：空格分隔）
+- repo：`JsonAuthenticationEntryPoint#commence`（401）
+- repo：`JsonAccessDeniedHandler#handle`（403）
 
 #### S5. Method Security：代理边界（self-invocation 绕过）
 
-- Evidence：`BootSecurityLabTest#selfInvocationBypassesMethodSecurityAsAPitfall`
+对照入口：`BootSecurityLabTest#selfInvocationBypassesMethodSecurityAsAPitfall`
 - Call Chain Sketch：
   1) 外部 bean 调用 → 走代理 → 触发 method security 拦截
   2) 类内部 `this.xxx()` → 直接调用目标方法 → 绕过代理（因此注解“看起来写了但没生效”）
-- Breakpoints：
-  - repo：`SelfInvocationPitfallService#outerCallsAdminOnly`（自调用入口）
-  - repo：`SelfInvocationPitfallService#adminOnly`（被绕过的注解方法）
-  - repo：`AdminOnlyService#adminOnlyAction`（对照：正常经过代理的受保护方法）
+- repo：`SelfInvocationPitfallService#outerCallsAdminOnly`（自调用入口）
+- repo：`SelfInvocationPitfallService#adminOnly`（被绕过的注解方法）
+- repo：`AdminOnlyService#adminOnlyAction`（对照：正常经过代理的受保护方法）
 
 ## 源码与断点
 
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
 
 建议断点（先分流再深入）：
 
@@ -191,11 +182,9 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootSecurityDevProfileLabTest` / `BootSecurityLabTest`
 - 建议命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
 
 ## 如何跑实验
 - 运行本模块测试：`mvn -pl :spring-boot-security test`
@@ -226,7 +215,6 @@
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

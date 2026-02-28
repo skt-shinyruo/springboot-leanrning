@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**02. `@ConfigurationProperties` 绑定与类型转换**
-- 建议入口：优先运行 `BootBasicsDefaultLabTest`（见文末“对应 Lab/Test”），对照 `Environment#getProperty(...)` 的字符串与绑定对象的类型值，建立“绑定=取值+转换”的直觉。
-
+建议优先运行 `BootBasicsDefaultLabTest`（见文末“对应 Lab/Test”），对照 `Environment#getProperty(...)` 的字符串与绑定对象的类型值，建立“绑定=取值+转换”的直觉。
 
 
 ## 可能已经见过这个现象：Environment 里是字符串，注入到 Bean 里却成了 boolean
@@ -27,8 +25,6 @@
 - `AppProperties#isFeatureEnabled()` 却是 `false`（boolean）
 
 这不是“Spring 变魔法”，而是 **绑定阶段发生了类型转换**：Binder 把字符串转换成目标字段的类型。
-
-## 机制主线
 
 ### 1) `@ConfigurationProperties(prefix = "app")`：声明“我想绑定哪一段配置”
 

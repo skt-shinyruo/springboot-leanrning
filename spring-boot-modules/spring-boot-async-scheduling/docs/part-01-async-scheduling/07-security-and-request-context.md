@@ -15,9 +15,7 @@
 
 ## 导读
 
-- 本章主题：**07. SecurityContext / RequestContext：默认丢失、传播与泄漏**
-- 建议入口：优先运行 `BootAsyncSchedulingSecurityContextPropagationLabTest#delegatingSecurityContextExecutorCanPropagate_andCleansUpToAvoidThreadReuseLeaks`（见文末“对应 Lab/Test”），再对照 RequestContext/ThreadLocal 的 decorator 用例把“清理”变成肌肉记忆。
-
+建议优先运行 `BootAsyncSchedulingSecurityContextPropagationLabTest#delegatingSecurityContextExecutorCanPropagate_andCleansUpToAvoidThreadReuseLeaks`（见文末“对应 Lab/Test”），再对照 RequestContext/ThreadLocal 的 decorator 用例把“清理”变成肌肉记忆。
 
 
 ## 先把危险说在前面：这不是“日志问题”
@@ -28,8 +26,6 @@
 
 - `SecurityContext`（当前用户/权限）
 - `RequestContext`（请求属性：requestId/header/locale 等）
-
-## 机制主线
 
 ### 1) 为什么默认会丢失：它们都是 ThreadLocal
 
@@ -90,8 +86,6 @@
 - 修复后：
   - 异步线程读到与调用方一致的上下文
   - 当调用方上下文清空后，第二次异步任务不会读到上一次残留（无串号）
-
-## 源码与断点
 
 ### TaskDecorator（通用上下文）
 

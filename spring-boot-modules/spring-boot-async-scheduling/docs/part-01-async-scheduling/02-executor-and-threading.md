@@ -15,9 +15,7 @@
 
 ## 导读
 
-- 本章主题：**02. Executor 与线程命名/并发边界**
-- 建议入口：优先运行 `BootAsyncSchedulingExecutorSelectionLabTest#whenMultipleExecutorsExist_namedTaskExecutorWinsAsDefault`（见文末“对应 Lab/Test”），用线程名前缀把“到底选中了谁”写成断言。
-
+建议优先运行 `BootAsyncSchedulingExecutorSelectionLabTest#whenMultipleExecutorsExist_namedTaskExecutorWinsAsDefault`（见文末“对应 Lab/Test”），用线程名前缀把“到底选中了谁”写成断言。
 
 
 ## 这一章要解决的不是“怎么配线程池”，而是“怎么不再猜”

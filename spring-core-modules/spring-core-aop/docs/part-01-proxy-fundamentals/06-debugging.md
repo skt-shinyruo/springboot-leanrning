@@ -1,12 +1,12 @@
 # 06. Debug / 观察：如何“看见”代理与切点
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕Debug / 观察：如何“看见”代理与切点展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
-    - 知识点：Debug / 观察：如何“看见”代理与切点
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
-    - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
-    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
-    - 推荐 Lab：`SpringCoreAopLabTest`
+    先运行 `SpringCoreAopLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+
+    需要下探源码时，可以从 `org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,12 +17,6 @@
 
 本章围绕「06. Debug / 观察：如何“看见”代理与切点」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 优先运行 `SpringCoreAopLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
-
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -108,14 +102,8 @@
 
 对应章节：
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
 - 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
@@ -159,16 +147,19 @@
 
 ### 坑点 1：用 `getClass()` 误判代理类型与目标类型，导致排障结论完全错误
 
-- Symptom：看到 `com.sun.proxy.$ProxyXX` 或 `$$SpringCGLIB$$` 就下结论，结果切点/注入/类型判断一路错
-- Root Cause：proxy 的运行时类型与目标类型不同；要用 AOP 工具类/Advised 来观测
-- Verification（把“代理类型差异”做成可断言事实）：
-  - JDK proxy：`SpringCoreAopProxyMechanicsLabTest#jdkDynamicProxyIsUsedForInterfaceBasedBeans_whenProxyTargetClassIsFalse`
-  - CGLIB proxy：`SpringCoreAopProxyMechanicsLabTest#cglibProxyIsUsedForClassBasedBeans_whenProxyTargetClassIsTrue`
-- Fix：判断 proxy 用 `AopUtils`；判断目标类型用 `AopUtils.getTargetClass`；需要看 advisors 用 `Advised#getAdvisors()`
+看到 `com.sun.proxy.$ProxyXX` 或 `$$SpringCGLIB$$` 就下结论，结果切点/注入/类型判断一路错
+
+proxy 的运行时类型与目标类型不同；要用 AOP 工具类/Advised 来观测
+
+把“代理类型差异”做成可断言事实
+
+- JDK proxy：`SpringCoreAopProxyMechanicsLabTest#jdkDynamicProxyIsUsedForInterfaceBasedBeans_whenProxyTargetClassIsFalse`
+- CGLIB proxy：`SpringCoreAopProxyMechanicsLabTest#cglibProxyIsUsedForClassBasedBeans_whenProxyTargetClassIsTrue`
+
+判断 proxy 用 `AopUtils`；判断目标类型用 `AopUtils.getTargetClass`；需要看 advisors 用 `Advised#getAdvisors()`
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

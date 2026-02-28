@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：分支本质是“请求匹配 → chain 选择 → filter 顺序 → 鉴权决策”。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把 Security 的关键分支（多 filter chain、profile 差异）写成矩阵表；每行都能被测试复现并用断点定位。
-    - 原理：分支本质是“请求匹配 → chain 选择 → filter 顺序 → 鉴权决策”。
-    - 源码入口：`FilterChainProxy` / `SecurityFilterChain`
-    - 推荐 Lab：`BootSecurityBranchMatrixLabTest`
+    把 Security 的关键分支（多 filter chain、profile 差异）写成矩阵表；每行都能被测试复现并用断点定位。
+
+    对照入口：`BootSecurityBranchMatrixLabTest`。需要下探源码时，可以从 `FilterChainProxy` / `SecurityFilterChain` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `BootSecurityBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：分支本质是“请求匹配 → chain 选择 → filter 顺序 → 鉴权决策”。
-- 源码入口：`FilterChainProxy` / `SecurityFilterChain`
+建议优先运行 `BootSecurityBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：分支本质是“请求匹配 → chain 选择 → filter 顺序 → 鉴权决策”。需要下探源码时，可以从 `FilterChainProxy` / `SecurityFilterChain` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -41,8 +39,10 @@
 
 ## 小结与下一章
 
-- 小结：分支本质是“请求匹配 → chain 选择 → filter 顺序 → 鉴权决策”。
-- 下一章：[第 87 章：01：Basic Auth 与授权（最小可跑主线）](../part-01-security/01-basic-auth-and-authorization.md)
+分支本质是“请求匹配 → chain 选择 → filter 顺序 → 鉴权决策”。
+
+下一章见：[第 87 章：01：Basic Auth 与授权（最小可跑主线）](../part-01-security/01-basic-auth-and-authorization.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 19. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`TypeConverterDelegate#convertIfNecessary` / `BeanDefinition#getPropertyValues()` / `AbstractAutowireCapableBeanFactory#populateBean`
-    - 推荐 Lab：`SpringCoreBeansTypeConversionLabTest`
+
+    本章围绕类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansTypeConversionLabTest`。需要下探源码时，可以从 `TypeConverterDelegate#convertIfNecessary` / `BeanDefinition#getPropertyValues()` / `AbstractAutowireCapableBeanFactory#populateBean` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**19. 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界**
 - 阅读方式建议：先运行一遍本章 Lab，把“字符串 → 目标类型”的现象固定成断言；再带着断点把它放回 `populateBean(...)` / `@Value` 的真实调用链里看清楚。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - Spring 里的“类型转换”不是一个点，而是两条常见链路：**定义层 property values**（`populateBean/applyPropertyValues`）与 **注入点 `@Value`**（`resolveEmbeddedValue` → `convertIfNecessary`）。
-    - 真正负责“写属性 + 触发 convert”的组件通常是 `BeanWrapper`（`BeanWrapperImpl`）；真正负责“怎么转”的决策点通常在 `TypeConverterDelegate#convertIfNecessary`。
-    - `ConversionService` 是现代主力；`PropertyEditor` 是历史兼容（仍可能在栈里出现）。应能够解释两者谁优先、各自在哪些路径里出现。
-    - 最常见的误归因：把 **Boot Binder（@ConfigurationProperties）** 的转换链路当成 **Bean 注入/属性填充** 的转换链路 —— 两者不是一个系统。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -287,7 +278,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansTypeConversionLabTest`，再用 `SpringCoreBeansBeansSupportUtilitiesLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansTypeConversionLabTest`，再用 `SpringCoreBeansBeansSupportUtilitiesLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`TypeConverterDelegate#convertIfNecessary`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“机制主线：两条链路 + 一个决策点”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

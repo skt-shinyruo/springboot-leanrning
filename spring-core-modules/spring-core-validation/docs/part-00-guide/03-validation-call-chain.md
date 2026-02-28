@@ -1,12 +1,12 @@
 # 03. Validation 调用链（@Valid → Validator → violations）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Validation 调用链（@Valid → Validator → violations）展开，主线可以概括为：校验不是注解本身触发，而是框架在边界处调用 Validator；方法级校验通常依赖代理（MethodValidationPostProcessor）。
 
-    - 知识点：01：Validation 调用链（@Valid → Validator → violations）
-    - 怎么使用：先跑 `SpringCoreValidationMechanicsLabTest`，把“校验触发与结果形态”固化成断言，再按本文把 MVC 参数校验与方法级校验的链路区分开。
-    - 原理：校验不是注解本身触发，而是框架在边界处调用 Validator；方法级校验通常依赖代理（MethodValidationPostProcessor）。
-    - 源码入口：`LocalValidatorFactoryBean` /（MVC）`HandlerMethodArgumentResolver` / `MethodValidationPostProcessor`
-    - 推荐 Lab：`SpringCoreValidationMechanicsLabTest`
+    先跑 `SpringCoreValidationMechanicsLabTest`，把“校验触发与结果形态”固化成断言，再按本文把 MVC 参数校验与方法级校验的链路区分开。
+
+    需要下探源码时，可以从 `LocalValidatorFactoryBean` /（MVC）`HandlerMethodArgumentResolver` / `MethodValidationPostProcessor` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Validation 调用链（@Valid → Validator → violations）**
-- 建议入口：优先运行 `SpringCoreValidationMechanicsLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：校验不是注解本身触发，而是框架在边界处调用 Validator；方法级校验通常依赖代理（MethodValidationPostProcessor）。
-- 源码入口：`LocalValidatorFactoryBean` /（MVC）`HandlerMethodArgumentResolver` / `MethodValidationPostProcessor`
+建议优先运行 `SpringCoreValidationMechanicsLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：校验不是注解本身触发，而是框架在边界处调用 Validator；方法级校验通常依赖代理（MethodValidationPostProcessor）。需要下探源码时，可以从 `LocalValidatorFactoryBean` /（MVC）`HandlerMethodArgumentResolver` / `MethodValidationPostProcessor` 这些入口切入。
 
 
 ## 最短调用链
@@ -42,8 +40,10 @@
 
 ## 小结与下一章
 
-- 小结：校验不是注解本身触发，而是框架在边界处调用 Validator；方法级校验通常依赖代理（MethodValidationPostProcessor）。
-- 下一章：[第 157 章：02：断点地图](04-breakpoint-map.md)
+校验不是注解本身触发，而是框架在边界处调用 Validator；方法级校验通常依赖代理（MethodValidationPostProcessor）。
+
+下一章见：[第 157 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

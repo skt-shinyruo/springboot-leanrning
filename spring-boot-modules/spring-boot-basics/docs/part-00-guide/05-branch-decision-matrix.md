@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：Profile/优先级的差异最终体现在 `Environment` 与 `@ConfigurationProperties` 的绑定结果上。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把“配置覆盖/Profile 分流”的关键分支写成矩阵表；每一行都对应一个可运行入口 + 可观察点（断点/变量）。
-    - 原理：Profile/优先级的差异最终体现在 `Environment` 与 `@ConfigurationProperties` 的绑定结果上。
-    - 源码入口：`Environment#getProperty` / `Binder#bind` / `ConfigurationPropertiesBindingPostProcessor`
-    - 推荐 Lab：`BootBasicsBranchMatrixLabTest`
+    把“配置覆盖/Profile 分流”的关键分支写成矩阵表；每一行都对应一个可运行入口 + 可观察点（断点/变量）。
+
+    对照入口：`BootBasicsBranchMatrixLabTest`。需要下探源码时，可以从 `Environment#getProperty` / `Binder#bind` / `ConfigurationPropertiesBindingPostProcessor` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -46,8 +46,10 @@
 
 ## 小结与下一章
 
-- 小结：Profile/优先级的差异最终体现在 `Environment` 与 `@ConfigurationProperties` 的绑定结果上。
-- 下一章：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](../part-01-boot-basics/01-property-sources-and-profiles.md)
+Profile/优先级的差异最终体现在 `Environment` 与 `@ConfigurationProperties` 的绑定结果上。
+
+下一章见：[第 5 章：01：配置来源（PropertySources）与 Profile 覆盖](../part-01-boot-basics/01-property-sources-and-profiles.md)
+
 
 <!-- BOOKIFY:START -->
 

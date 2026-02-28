@@ -1,12 +1,12 @@
 # 01. 条件装配与 backoff（为什么它“有时生效、有时不生效”）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：条件装配与 backoff（为什么它“有时生效、有时不生效”）展开，主线可以概括为：`@ConditionalOn...` 是启动期 if；`@ConditionalOnMissingBean` 是“默认让位策略”；顺序与 primary 决定最终注入对象。
 
-    - 知识点：01：条件装配与 backoff（为什么它“有时生效、有时不生效”）
-    - 怎么使用：先跑 `BootAutoConfigurationLabTest`，把三种结果（默认/装饰/用户覆盖）固化成断言，再对照本文把每个结果映射到对应条件与 backoff 规则。
-    - 原理：`@ConditionalOn...` 是启动期 if；`@ConditionalOnMissingBean` 是“默认让位策略”；顺序与 primary 决定最终注入对象。
-    - 源码入口：`ConditionEvaluator#shouldSkip` / `OnBeanCondition` / `DefaultListableBeanFactory#doResolveDependency`
-    - 推荐 Lab：`BootAutoConfigurationLabTest`
+    先跑 `BootAutoConfigurationLabTest`，把三种结果（默认/装饰/用户覆盖）固化成断言，再对照本文把每个结果映射到对应条件与 backoff 规则。
+
+    需要下探源码时，可以从 `ConditionEvaluator#shouldSkip` / `OnBeanCondition` / `DefaultListableBeanFactory#doResolveDependency` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**01. 条件装配与 backoff（为什么它“有时生效、有时不生效”）**
-- 建议入口：优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：`@ConditionalOn...` 是启动期 if；`@ConditionalOnMissingBean` 是“默认让位策略”；顺序与 primary 决定最终注入对象。
-- 源码入口：`ConditionEvaluator#shouldSkip` / `OnBeanCondition` / `DefaultListableBeanFactory#doResolveDependency`
+建议优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：`@ConditionalOn...` 是启动期 if；`@ConditionalOnMissingBean` 是“默认让位策略”；顺序与 primary 决定最终注入对象。需要下探源码时，可以从 `ConditionEvaluator#shouldSkip` / `OnBeanCondition` / `DefaultListableBeanFactory#doResolveDependency` 这些入口切入。
 
 
 ## 1. 条件装配：它不是魔法，是“启动期 if”

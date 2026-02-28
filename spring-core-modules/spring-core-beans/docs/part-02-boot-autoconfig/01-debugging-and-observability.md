@@ -1,12 +1,12 @@
 # 01. 调试与自检：如何“观察到”容器正在做什么
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：调试与自检：如何“观察到”容器正在做什么
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
-    - 推荐 Lab：`SpringCoreBeansAutoConfigurationLabTest`
+
+    本章围绕调试与自检：如何“观察到”容器正在做什么展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansAutoConfigurationLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -22,12 +22,6 @@
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-!!! summary "本章要点"
-
-    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
-
-
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansMergedBeanDefinitionLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansExceptionNavigationLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansResourceInjectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
@@ -36,7 +30,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansAutoConfigurationLabTest`，再用 `SpringCoreBeansAutoConfigurationOrderingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansAutoConfigurationLabTest`，再用 `SpringCoreBeansAutoConfigurationOrderingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`DefaultListableBeanFactory#doResolveDependency`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“机制主线”时，建议将关键入口串成更清晰的主线（例如：ApplicationContext#refresh → org.springframework.context.support.AbstractApplicationContext#refresh），并在关键分支处点明触发条件与结果形态。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -437,7 +431,7 @@ mvn -pl :spring-core-beans spring-boot:run
 
 > 目标：给读者一套“遇到现象即可快速定位到断点入口”的固定方法。每条 playbook 都绑定本仓库的最小复现入口（建议先运行验证，再设置断点）。
 
-复现入口：
+可以用下面的 Lab 把“注解基础设施是否注册”这件事跑出来：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`
@@ -451,7 +445,7 @@ mvn -pl :spring-core-beans spring-boot:run
 4) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：观察 `@Autowired/@Value` 注入发生点
 5) `CommonAnnotationBeanPostProcessor#postProcessBeforeInitialization`：观察 `@PostConstruct` 的触发点
 
-复现入口：
+依赖注入歧义这条线，可以用下面这些 Lab 做最小对照：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionAmbiguityLabTest.java`
   - `singleInjectionFailsFast_whenMultipleCandidatesExist_andNoPrimaryOrQualifierIsPresent()`
@@ -468,7 +462,7 @@ mvn -pl :spring-core-beans spring-boot:run
 4) `DefaultListableBeanFactory#determinePrimaryCandidate`：`@Primary` 分支（为什么它赢）
 5) `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`：`@Qualifier` 的过滤与匹配（为什么其它候选被剔除）
 
-复现入口：
+生命周期回调顺序这条线的最小入口如下：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
   - `singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization()`
@@ -481,7 +475,7 @@ mvn -pl :spring-core-beans spring-boot:run
 4) `CommonAnnotationBeanPostProcessor#postProcessBeforeInitialization`：`@PostConstruct` 的触发点
 5) `AbstractAutowireCapableBeanFactory#invokeInitMethods`：`afterPropertiesSet` / initMethod 的触发点
 
-复现入口：
+如果要把“代理替换发生在哪一步”看清楚，可以从下面这些 Lab 作为入口：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
   - `beanCreationTrace_recordsPhases_andExposesProxyReplacement()`

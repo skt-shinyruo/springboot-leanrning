@@ -1,12 +1,12 @@
 # 01. WebMvc 测试与排障（resolvedException / handler / 断点清单）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：WebMvc 测试与排障（resolvedException / handler / 断点清单）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：01：WebMvc 测试与排障（resolvedException / handler / 断点清单）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcTestingDebuggingLabTest`
+    阅读时可以先跑 `BootWebMvcTestingDebuggingLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,15 +17,6 @@
 
 本章围绕「01：WebMvc 测试与排障（resolvedException / handler / 断点清单）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcTestingDebuggingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - 看到 406/415，不要盯 controller：先看 `Accept`/`Content-Type`/`produces`/`consumes`，再看 converter 选择。
-    - 用 MockMvc 的 `MvcResult#getResolvedException()` 能快速把“猜”变成“证据”：异常类型就是分支位置。
-    - 看到 401/403，优先怀疑 Filter/Security，而不是 MVC handler：**很多安全分支发生在 DispatcherServlet 之前**。
-    - 证据链建议：用 `MvcResult#getHandler()` / `MvcResult#getResolvedException()` 先证明“是否进入了 HandlerMethod”（见 `BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`）。
-    - 当需要“确认到底选了哪个 HttpMessageConverter”：可以用 `ResponseBodyAdvice#beforeBodyWrite` 把 `selectedConverterType/selectedContentType` 写进响应头，再用测试固化它（证据链优先）。
-
 
 !!! example "本章配套实验（先跑再读）"
 

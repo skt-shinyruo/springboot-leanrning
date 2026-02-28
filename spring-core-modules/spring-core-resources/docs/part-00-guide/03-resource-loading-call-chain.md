@@ -1,12 +1,12 @@
 # 03. Resources 调用链（ResourceLoader → Resource → 读取）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Resources 调用链（ResourceLoader → Resource → 读取）展开，主线可以概括为：资源不是字符串路径：Spring 用 `Resource` 抽象统一 classpath/file/url 等；pattern 扫描由 ResourcePatternResolver 负责。
 
-    - 知识点：01：Resources 调用链（ResourceLoader → Resource → 读取）
-    - 怎么使用：先跑 `SpringCoreResourcesLabTest`，把“不同资源前缀/加载方式”固化成断言，再按本文把 resource resolution 主线串起来。
-    - 原理：资源不是字符串路径：Spring 用 `Resource` 抽象统一 classpath/file/url 等；pattern 扫描由 ResourcePatternResolver 负责。
-    - 源码入口：`ResourceLoader#getResource` / `DefaultResourceLoader` / `PathMatchingResourcePatternResolver`
-    - 推荐 Lab：`SpringCoreResourcesLabTest`
+    先跑 `SpringCoreResourcesLabTest`，把“不同资源前缀/加载方式”固化成断言，再按本文把 resource resolution 主线串起来。
+
+    需要下探源码时，可以从 `ResourceLoader#getResource` / `DefaultResourceLoader` / `PathMatchingResourcePatternResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Resources 调用链（ResourceLoader → Resource → 读取）**
-- 建议入口：优先运行 `SpringCoreResourcesLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：资源不是字符串路径：Spring 用 `Resource` 抽象统一 classpath/file/url 等；pattern 扫描由 ResourcePatternResolver 负责。
-- 源码入口：`ResourceLoader#getResource` / `DefaultResourceLoader` / `PathMatchingResourcePatternResolver`
+建议优先运行 `SpringCoreResourcesLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：资源不是字符串路径：Spring 用 `Resource` 抽象统一 classpath/file/url 等；pattern 扫描由 ResourcePatternResolver 负责。需要下探源码时，可以从 `ResourceLoader#getResource` / `DefaultResourceLoader` / `PathMatchingResourcePatternResolver` 这些入口切入。
 
 
 ## 最短调用链
@@ -35,8 +33,10 @@
 
 ## 小结与下一章
 
-- 小结：资源不是字符串路径：Spring 用 `Resource` 抽象统一 classpath/file/url 等；pattern 扫描由 ResourcePatternResolver 负责。
-- 下一章：[第 140 章：02：断点地图](04-breakpoint-map.md)
+资源不是字符串路径：Spring 用 `Resource` 抽象统一 classpath/file/url 等；pattern 扫描由 ResourcePatternResolver 负责。
+
+下一章见：[第 140 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 02. dependsOn：强制初始化顺序（即使没有显式依赖）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：dependsOn：强制初始化顺序（即使没有显式依赖）
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`AbstractBeanFactory#doGetBean` / `AbstractApplicationContext#refresh` / `DefaultListableBeanFactory#preInstantiateSingletons`
-    - 推荐 Lab：`SpringCoreBeansDependsOnLabTest`
+
+    本章围绕dependsOn：强制初始化顺序（即使没有显式依赖）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansDependsOnLabTest`。需要下探源码时，可以从 `AbstractBeanFactory#doGetBean` / `AbstractApplicationContext#refresh` / `DefaultListableBeanFactory#preInstantiateSingletons` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,25 +14,14 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**02. dependsOn：强制初始化顺序（即使没有显式依赖）**
 - 这章解决两个高频误判：
   - **误判 1**：把 `dependsOn` 当成“注入依赖”（实际上它只管**初始化/销毁顺序**）
   - **误判 2**：把“循环 depends-on”当成“三级缓存循环依赖”（本质是**定义层拓扑环**）
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - `dependsOn` 是 **BeanDefinition 元数据**，不会改变候选选择，不会让某个类型“变得可注入”。
-    - 生效点在 `AbstractBeanFactory#doGetBean`：创建 bean A 之前，先读取 `mbd.getDependsOn()` 并 `getBean(dep)` 强行“拉起”依赖 bean。
-    - Spring 会把这条关系记录到 `DefaultSingletonBeanRegistry` 的两张图里：
-      - `dependentBeanMap`：**dep → set(dependentBeans)**（dep 被哪些 bean 依赖）
-      - `dependenciesForBeanMap`：**bean → set(dependencies)**（bean 依赖哪些 dep）
-    - 关闭容器时，销毁顺序通常是初始化顺序的“逆序”，因为**先销毁 dependent，再销毁 dependency**。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -246,7 +235,7 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansDependsOnLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    建议 先跑 `SpringCoreBeansDependsOnLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
     - 第一断点：`AbstractBeanFactory#doGetBean`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“7. 排障决策表（初始化/关闭/异常消息 → 证据链）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

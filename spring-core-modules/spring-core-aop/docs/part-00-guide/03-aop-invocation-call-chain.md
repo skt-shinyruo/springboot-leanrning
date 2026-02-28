@@ -1,12 +1,12 @@
 # 03. AOP 调用链（从代理入口到 Advice 链执行）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：AOP 调用链（从代理入口到 Advice 链执行）展开，主线可以概括为：Spring AOP 以代理实现：容器阶段由 AutoProxyCreator 作为 BPP 创建代理；运行阶段由 JDK/CGLIB 代理把调用转发到 `ReflectiveMethodInvocation#proceed`，逐个执行拦截器（Advice）。
 
-    - 知识点：01：AOP 调用链（从代理入口到 Advice 链执行）
-    - 怎么使用：先运行本章推荐 Lab，把“proceed 嵌套顺序/拦截器链”固化成断言，再按本文把调用链串起来：代理如何生成（BPP 阶段）→ 调用如何进入代理 → 如何执行 `MethodInterceptor` 链。
-    - 原理：Spring AOP 以代理实现：容器阶段由 AutoProxyCreator 作为 BPP 创建代理；运行阶段由 JDK/CGLIB 代理把调用转发到 `ReflectiveMethodInvocation#proceed`，逐个执行拦截器（Advice）。
-    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator` / `org.springframework.aop.framework.JdkDynamicAopProxy#invoke` / `org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
-    - 推荐 Lab：`SpringCoreAopProceedNestingLabTest`
+    先运行 `SpringCoreAopProceedNestingLabTest`，把“proceed 嵌套顺序/拦截器链”固化成断言，再按本文把调用链串起来：代理如何生成（BPP 阶段）→ 调用如何进入代理 → 如何执行 `MethodInterceptor` 链。
+
+    需要下探源码时，可以从 `org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator` / `org.springframework.aop.framework.JdkDynamicAopProxy#invoke` / `org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,11 +17,6 @@
 
 本章围绕「01：AOP 调用链（从代理入口到 Advice 链执行）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 优先运行 `SpringCoreAopProceedNestingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - AOP 有两条链：**生成链（容器启动期）**与**执行链（运行期调用时）**。排障时先判断卡在哪条链上。
-    - Advice 链的核心抓手只有一个：`ReflectiveMethodInvocation#proceed`（它决定了 before/after 的嵌套顺序）。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 

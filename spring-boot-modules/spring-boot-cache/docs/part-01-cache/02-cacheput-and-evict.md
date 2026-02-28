@@ -13,9 +13,7 @@
 
 ## 导读
 
-- 本章主题：**02. `@CachePut/@CacheEvict`：更新与失效**
-- 建议入口：优先运行 `BootCacheLabTest#cachePutUpdatesCacheValue`（见文末“对应 Lab/Test”），先把“put 不短路、evict 让下一次回源”的语义写成断言。
-
+建议优先运行 `BootCacheLabTest#cachePutUpdatesCacheValue`（见文末“对应 Lab/Test”），先把“put 不短路、evict 让下一次回源”的语义写成断言。
 
 
 ## 两句人话先说清楚

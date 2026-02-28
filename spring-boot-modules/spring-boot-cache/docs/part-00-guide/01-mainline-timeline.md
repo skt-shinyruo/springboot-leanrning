@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**01. 主线时间线：Spring Boot Cache**
-- 建议入口：优先运行 `BootCacheBookMatrixLabTest`（见文末“对应 Lab/Test”），把主线现象先跑通，再按本章顺序补齐每条分支的机制与代价。
-
+建议优先运行 `BootCacheBookMatrixLabTest`（见文末“对应 Lab/Test”），把主线现象先跑通，再按本章顺序补齐每条分支的机制与代价。
 
 
 ## 这条主线解决什么问题

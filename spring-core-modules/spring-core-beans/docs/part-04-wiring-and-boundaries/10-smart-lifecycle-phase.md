@@ -1,12 +1,12 @@
 # 10. SmartLifecycle：start/stop 时机与 phase 顺序
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：27. SmartLifecycle：start/stop 时机与 phase 顺序
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`LifecycleProcessor#onRefresh` / `DefaultLifecycleProcessor#startBeans` / `DefaultLifecycleProcessor#stopBeans`
-    - 推荐 Lab：`SpringCoreBeansSmartLifecycleLabTest`
+
+    本章围绕27. SmartLifecycle：start/stop 时机与 phase 顺序展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansSmartLifecycleLabTest`。需要下探源码时，可以从 `LifecycleProcessor#onRefresh` / `DefaultLifecycleProcessor#startBeans` / `DefaultLifecycleProcessor#stopBeans` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,11 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**10. SmartLifecycle：start/stop 时机与 phase 顺序**
 - 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-!!! summary "本章要点"
-
-    - `SmartLifecycle` 把 start/stop 变成“容器生命周期的一部分”：refresh 收尾自动 start、close 自动 stop（由 `LifecycleProcessor` 统一触发）。
-    - start 的顺序按 `phase` 升序；stop 的顺序按 `phase` 反序（更符合依赖停机的安全性）。
-    - `isAutoStartup()` 决定是否自动 start：false 时 refresh 不会自动启动它（本仓库 Lab 已补齐对照）。
-    - 对 `SmartLifecycle`，容器通常走 `stop(Runnable callback)`（支持异步 stop）：不调用 callback 可能导致关闭卡住直到超时（本仓库 Lab 已补齐“调用的是 stop(callback)”的证据）。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -39,7 +29,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansSmartLifecycleLabTest`，再用 `SpringCoreBeansSmartLifecycleLabTest#smartLifecycleDoesNotAutoStart_whenIsAutoStartupIsFalse` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansSmartLifecycleLabTest`，再用 `SpringCoreBeansSmartLifecycleLabTest#smartLifecycleDoesNotAutoStart_whenIsAutoStartupIsFalse` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`DefaultLifecycleProcessor#startBeans` / `DefaultLifecycleProcessor#stopBeans`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -143,11 +133,6 @@
 2) 为什么 start 按 phase 升序，而 stop 按 phase 反序？（提示：依赖关系与安全停机）
 3) `stop(Runnable)` 为什么必须调用 callback？如果不调用，会出现什么现象？
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
 - 本章已在正文中引用以下 LabTest（优先运行它们）：
@@ -160,7 +145,6 @@
 
 - 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartLifecycleLabTest.java`
-- 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSmartLifecycleLabTest test`
 
 对应实验：
@@ -203,10 +187,6 @@
 
 - **误区 2：stop(Runnable) 不调用 callback**
   - 容器会等待 callback，用于支持异步 stop；若不调用 callback，关闭可能卡住。
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 ## 自检要点
 应能够解释清楚：

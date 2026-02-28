@@ -1,12 +1,12 @@
 # 04. 断点地图（Data JPA Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Data JPA Debugger Pack）展开，主线可以概括为：Repository 代理 → `EntityManager`（Persistence Context）→ flush/dirty checking → 事务提交/回滚 → fetching 决定 SQL 数量与边界。
 
-    - 知识点：02：断点地图（Data JPA Debugger Pack）
-    - 怎么使用：先跑 `BootDataJpaBranchMatrixLabTest` 固化“实体状态/flush/merge-detach”的断言，再用断点把每次 SQL 的产生点与 persistence context 的状态变化对齐。
-    - 原理：Repository 代理 → `EntityManager`（Persistence Context）→ flush/dirty checking → 事务提交/回滚 → fetching 决定 SQL 数量与边界。
-    - 源码入口：`org.springframework.data.jpa.repository.support.SimpleJpaRepository` / `jakarta.persistence.EntityManager` / `org.hibernate.Session`
-    - 推荐 Lab：`BootDataJpaBranchMatrixLabTest`
+    先跑 `BootDataJpaBranchMatrixLabTest` 固化“实体状态/flush/merge-detach”的断言，再用断点把每次 SQL 的产生点与 persistence context 的状态变化对齐。
+
+    需要下探源码时，可以从 `org.springframework.data.jpa.repository.support.SimpleJpaRepository` / `jakarta.persistence.EntityManager` / `org.hibernate.Session` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -58,8 +58,10 @@
 
 ## 小结与下一章
 
-- 小结：Repository 代理 → `EntityManager`（Persistence Context）→ flush/dirty checking → 事务提交/回滚 → fetching 决定 SQL 数量与边界。
-- 下一章：[第 96 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+Repository 代理 → `EntityManager`（Persistence Context）→ flush/dirty checking → 事务提交/回滚 → fetching 决定 SQL 数量与边界。
+
+下一章见：[第 96 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

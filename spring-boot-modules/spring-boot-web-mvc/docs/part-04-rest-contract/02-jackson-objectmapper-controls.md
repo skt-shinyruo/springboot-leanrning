@@ -2,14 +2,7 @@
 
 ## 导读
 
-- 本章主题：**02. Jackson ObjectMapper 可控（严格模式、未知字段、时间）**
 - 目标：把“序列化/反序列化差异”收敛到可控边界：该严格时严格、该兼容时兼容。
-
-!!! summary "本章要点"
-
-    - 不要为了一个端点的严格校验去全局开启 `FAIL_ON_UNKNOWN_PROPERTIES`；更好的方式是：**自定义 media type + 专用 converter + 专用 ObjectMapper**。
-    - 对日期时间（如 `Instant`）的约束要靠测试锁定：不要依赖“猜测默认行为”。
-
 
 !!! example "本章配套实验（先跑再读）"
 

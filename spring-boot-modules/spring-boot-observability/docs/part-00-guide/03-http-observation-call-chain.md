@@ -1,12 +1,12 @@
 # 03. Observability 调用链（请求 → observation → meter）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Observability 调用链（请求 → observation → meter）展开，主线可以概括为：一次请求会触发 observation 的开始/结束；结束时会把耗时等数据写入 meter（timer/counter）。
 
-    - 知识点：01：Observability 调用链（请求 → observation → meter）
-    - 怎么使用：先跑 `BootObservabilityLabTest`，再按本文把“请求发生一次 → 指标 count 增长”串成可复述调用链。
-    - 原理：一次请求会触发 observation 的开始/结束；结束时会把耗时等数据写入 meter（timer/counter）。
-    - 源码入口：`MeterRegistry` / `Timer` / `Observation` /（MVC）`DispatcherServlet#doDispatch`
-    - 推荐 Lab：`BootObservabilityLabTest`
+    先跑 `BootObservabilityLabTest`，再按本文把“请求发生一次 → 指标 count 增长”串成可复述调用链。
+
+    需要下探源码时，可以从 `MeterRegistry` / `Timer` / `Observation` /（MVC）`DispatcherServlet#doDispatch` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Observability 调用链（请求 → observation → meter）**
-- 建议入口：优先运行 `BootObservabilityLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：一次请求会触发 observation 的开始/结束；结束时会把耗时等数据写入 meter（timer/counter）。
-- 源码入口：`MeterRegistry` / `Timer` / `Observation` /（MVC）`DispatcherServlet#doDispatch`
+建议优先运行 `BootObservabilityLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：一次请求会触发 observation 的开始/结束；结束时会把耗时等数据写入 meter（timer/counter）。需要下探源码时，可以从 `MeterRegistry` / `Timer` / `Observation` /（MVC）`DispatcherServlet#doDispatch` 这些入口切入。
 
 
 ## 应能复述的“最短链路”

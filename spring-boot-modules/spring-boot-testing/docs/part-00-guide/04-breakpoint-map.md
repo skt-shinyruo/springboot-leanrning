@@ -1,12 +1,12 @@
 # 04. 断点地图（Testing Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Testing Debugger Pack）展开，主线可以概括为：测试注解决定 ContextBootstrapper 与 auto-config 范围；Mock 注入通过 TestExecutionListener 参与容器装配。
 
-    - 知识点：02：断点地图（Testing Debugger Pack）
-    - 怎么使用：先跑 `BootTestingBranchMatrixLabTest` 固化 “@WebMvcTest vs @SpringBootTest vs @MockBean” 的边界，再用断点定位测试上下文如何装配、mock 如何注入、为什么 bean 不存在。
-    - 原理：测试注解决定 ContextBootstrapper 与 auto-config 范围；Mock 注入通过 TestExecutionListener 参与容器装配。
-    - 源码入口：`SpringBootTestContextBootstrapper` / `WebMvcTestContextBootstrapper` / `MockitoTestExecutionListener`
-    - 推荐 Lab：`BootTestingBranchMatrixLabTest`
+    先跑 `BootTestingBranchMatrixLabTest` 固化 “@WebMvcTest vs @SpringBootTest vs @MockBean” 的边界，再用断点定位测试上下文如何装配、mock 如何注入、为什么 bean 不存在。
+
+    需要下探源码时，可以从 `SpringBootTestContextBootstrapper` / `WebMvcTestContextBootstrapper` / `MockitoTestExecutionListener` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -46,8 +46,10 @@
 
 ## 小结与下一章
 
-- 小结：测试注解决定 ContextBootstrapper 与 auto-config 范围；Mock 注入通过 TestExecutionListener 参与容器装配。
-- 下一章：[第 184 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+测试注解决定 ContextBootstrapper 与 auto-config 范围；Mock 注入通过 TestExecutionListener 参与容器装配。
+
+下一章见：[第 184 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

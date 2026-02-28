@@ -1,12 +1,12 @@
 # 03. SpEL 调用链（parse → AST → evaluate）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：SpEL 调用链（parse → AST → evaluate）展开，主线可以概括为：parser 把表达式字符串解析为 AST；getValue() 用 evaluation context 提供 root/variables/property access/method resolve 来求值。
 
-    - 知识点：01：SpEL 调用链（parse → AST → evaluate）
-    - 怎么使用：先跑 `SpringCoreSpelLabTest`，再按本文把 parse/getValue 串成可复述调用链。
-    - 原理：parser 把表达式字符串解析为 AST；getValue() 用 evaluation context 提供 root/variables/property access/method resolve 来求值。
-    - 源码入口：`SpelExpressionParser#parseExpression` / `SpelExpression#getValue` / `StandardEvaluationContext`
-    - 推荐 Lab：`SpringCoreSpelLabTest`
+    先跑 `SpringCoreSpelLabTest`，再按本文把 parse/getValue 串成可复述调用链。
+
+    需要下探源码时，可以从 `SpelExpressionParser#parseExpression` / `SpelExpression#getValue` / `StandardEvaluationContext` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. SpEL 调用链（parse → AST → evaluate）**
-- 建议入口：优先运行 `SpringCoreSpelLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：parser 把表达式字符串解析为 AST；getValue() 用 evaluation context 提供 root/variables/property access/method resolve 来求值。
-- 源码入口：`SpelExpressionParser#parseExpression` / `SpelExpression#getValue` / `StandardEvaluationContext`
+建议优先运行 `SpringCoreSpelLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：parser 把表达式字符串解析为 AST；getValue() 用 evaluation context 提供 root/variables/property access/method resolve 来求值。需要下探源码时，可以从 `SpelExpressionParser#parseExpression` / `SpelExpression#getValue` / `StandardEvaluationContext` 这些入口切入。
 
 
 ## 最短调用链
@@ -38,8 +36,10 @@
 
 ## 小结与下一章
 
-- 小结：parser 把表达式字符串解析为 AST；getValue() 用 evaluation context 提供 root/variables/property access/method resolve 来求值。
-- 下一章：[第 210 章：02：断点地图](04-breakpoint-map.md)
+parser 把表达式字符串解析为 AST；getValue() 用 evaluation context 提供 root/variables/property access/method resolve 来求值。
+
+下一章见：[第 210 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

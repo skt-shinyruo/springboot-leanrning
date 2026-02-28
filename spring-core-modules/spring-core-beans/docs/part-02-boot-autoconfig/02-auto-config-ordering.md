@@ -1,12 +1,12 @@
 # 02. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
     - 使用方式：可先运行本章推荐 Lab/Exercise，再结合条件评估报告（ConditionEvaluationReport）把“为什么装配/为什么 back-off/为什么顺序影响结果”用证据链讲清楚。
-    - 原理：Boot 的自动配置本质是“导入 + 条件评估 + 定义注册”，最终仍落到 BeanDefinition 与 refresh 主线（定义层→实例层→最终暴露对象）。
-    - 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions`
-    - 推荐 Lab：`SpringCoreBeansAutoConfigurationOrderingLabTest`
+
+    本章围绕Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？展开，主线可以概括为：Boot 的自动配置本质是“导入 + 条件评估 + 定义注册”，最终仍落到 BeanDefinition 与 refresh 主线（定义层→实例层→最终暴露对象）。
+
+    对照入口：`SpringCoreBeansAutoConfigurationOrderingLabTest`。需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,13 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**02. Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？**
 - 阅读方式建议：先运行本章 Lab，看清楚“同一份条件、不同顺序，结果不同”的反直觉现象；再用断点把它放回 Boot 的 auto-config 导入与排序链路里理解。
 
 - 官方文档对照（适用版本：Spring Boot 3.5.9）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 在写 `@ConditionalOnBean` 时，隐含假设是“依赖的 bean 会在其之前注册/创建”。跨 auto-config 时，这个假设可能不成立：**顺序未定义就会不稳定**。
-    - 解决思路不是“调整 import 列表顺序”，而是让依赖关系显式化：例如用 `@AutoConfiguration(after=...)` 把顺序从“偶然”变成“确定”。
-    - 排障时优先问：问题发生在“定义是否注册”还是“实例是否创建”？大多数 auto-config 顺序问题本质是 **定义层顺序**。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -186,7 +178,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansAutoConfigurationOrderingLabTest`，再用 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansAutoConfigurationOrderingLabTest`，再用 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“4. 常见误区（工程里最容易误诊的点）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -194,8 +186,10 @@
 
 ## 小结与下一章
 
-- 小结：Boot 的自动配置本质是“导入 + 条件评估 + 定义注册”，最终仍落到 BeanDefinition 与 refresh 主线（定义层→实例层→最终暴露对象）。
-- 下一章：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](03-spring-boot-auto-configuration.md)
+Boot 的自动配置本质是“导入 + 条件评估 + 定义注册”，最终仍落到 BeanDefinition 与 refresh 主线（定义层→实例层→最终暴露对象）。
+
+下一章见：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](03-spring-boot-auto-configuration.md)
+
 
 <!-- BOOKIFY:START -->
 

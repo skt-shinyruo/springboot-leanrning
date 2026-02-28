@@ -1,12 +1,12 @@
 # 07. 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：把 `ApplicationContext#refresh` 的“定义阶段”与“创建阶段”连成一条可设置断点的主线
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`ApplicationContext#refresh` / `AbstractApplicationContext#refresh` / `AbstractBeanFactory#doGetBean`
-    - 推荐 Lab：`SpringCoreBeansBootstrapInternalsLabTest`
+
+    本章围绕把 `ApplicationContext#refresh` 的“定义阶段”与“创建阶段”连成一条可设置断点的主线展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansBootstrapInternalsLabTest`。需要下探源码时，可以从 `ApplicationContext#refresh` / `AbstractApplicationContext#refresh` / `AbstractBeanFactory#doGetBean` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**07. 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）**
 - 阅读方式建议：先运行本章推荐 Lab（把现象固化为断言），再对照本文的“十步走/五段式/分支决策表”去源码设置断点。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 读者只需要记住两条流水线：**图（BeanDefinition）如何扩张**、**图如何变成对象（bean instance）**。
-    - 需要能按现象分流：注册缺失/条件没生效 → 看 refresh 第 5 步（BFPP/BDRPP）；注入/代理/生命周期 → 看第 9 步（`getBean` → `doCreateBean`）。
-    - 需要能复述三类关键分支：`PriorityOrdered/Ordered` 顺序、`preInstantiateSingletons` 预实例化 vs lazy、early reference vs circular boundary。
-    - 需要知道“该在哪设置断点”：`AbstractApplicationContext#refresh`、`PostProcessorRegistrationDelegate`、`AbstractBeanFactory#doGetBean`、`AbstractAutowireCapableBeanFactory#doCreateBean`。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -38,7 +29,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansBootstrapInternalsLabTest`，再用 `SpringCoreBeansRegistryPostProcessorLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansBootstrapInternalsLabTest`，再用 `SpringCoreBeansRegistryPostProcessorLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`AbstractApplicationContext#finishBeanFactoryInitialization`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“排障分流：现象 → 阶段 → 关键方法 → 必看变量 → 对应 LabTest”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -753,12 +744,16 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
   - `SpringCoreBeansBeanCreationTraceLabTest`
   - `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest`
   - `SpringCoreBeansLifecycleCallbackOrderLabTest`
-- 推荐命令：`mvn -pl :spring-core-beans test`
+
+命令行可以用：`mvn -pl :spring-core-beans test`。
+
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../part-04-wiring-and-boundaries/01-lazy-semantics.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[第 23 章：18. Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](../part-04-wiring-and-boundaries/01-lazy-semantics.md)
+
 
 <!-- BOOKIFY:START -->
 

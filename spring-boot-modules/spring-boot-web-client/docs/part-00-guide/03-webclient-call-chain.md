@@ -1,12 +1,12 @@
 # 03. Web Client 调用链（RestClient/WebClient：过滤器/拦截器在哪里生效）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Web Client 调用链（RestClient/WebClient：过滤器/拦截器在哪里生效）展开，主线可以概括为：客户端也有链路：builder 组装 filter/interceptor → exchange/execute → 底层 connector/HttpClient；排障关键是定位“链上哪个环节改写了请求/响应”。
 
-    - 知识点：01：Web Client 调用链（RestClient/WebClient：过滤器/拦截器在哪里生效）
-    - 怎么使用：先跑 `BootWebClientWebClientLabTest` 与 `BootWebClientRestClientLabTest`，把“请求经过 filter/interceptor”固化成断言，再按本文串起调用链。
-    - 原理：客户端也有链路：builder 组装 filter/interceptor → exchange/execute → 底层 connector/HttpClient；排障关键是定位“链上哪个环节改写了请求/响应”。
-    - 源码入口：（WebClient）`ExchangeFilterFunction` / `ExchangeFunction` /（RestClient）interceptors /（底层）connector
-    - 推荐 Lab：`BootWebClientWebClientLabTest`
+    先跑 `BootWebClientWebClientLabTest` 与 `BootWebClientRestClientLabTest`，把“请求经过 filter/interceptor”固化成断言，再按本文串起调用链。
+
+    需要下探源码时，可以从 （WebClient）`ExchangeFilterFunction` / `ExchangeFunction` /（RestClient）interceptors /（底层）connector 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Web Client 调用链（RestClient/WebClient：过滤器/拦截器在哪里生效）**
-- 建议入口：优先运行 `BootWebClientWebClientLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：客户端也有链路：builder 组装 filter/interceptor → exchange/execute → 底层 connector/HttpClient；排障关键是定位“链上哪个环节改写了请求/响应”。
-- 源码入口：（WebClient）`ExchangeFilterFunction` / `ExchangeFunction` /（RestClient）interceptors /（底层）connector
+建议优先运行 `BootWebClientWebClientLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：客户端也有链路：builder 组装 filter/interceptor → exchange/execute → 底层 connector/HttpClient；排障关键是定位“链上哪个环节改写了请求/响应”。需要下探源码时，可以从 （WebClient）`ExchangeFilterFunction` / `ExchangeFunction` /（RestClient）interceptors /（底层）connector 这些入口切入。
 
 
 ## 最短调用链
@@ -43,8 +41,10 @@
 
 ## 小结与下一章
 
-- 小结：客户端也有链路：builder 组装 filter/interceptor → exchange/execute → 底层 connector/HttpClient；排障关键是定位“链上哪个环节改写了请求/响应”。
-- 下一章：[第 174 章：02：断点地图](04-breakpoint-map.md)
+客户端也有链路：builder 组装 filter/interceptor → exchange/execute → 底层 connector/HttpClient；排障关键是定位“链上哪个环节改写了请求/响应”。
+
+下一章见：[第 174 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

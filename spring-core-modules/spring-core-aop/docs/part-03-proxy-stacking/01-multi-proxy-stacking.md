@@ -1,12 +1,12 @@
 # 01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
-    - 知识点：多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
-    - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
-    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
-    - 推荐 Lab：`SpringCoreAopMultiProxyStackingLabTest`
+    先运行 `SpringCoreAopMultiProxyStackingLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+
+    需要下探源码时，可以从 `org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,12 +17,6 @@
 
 本章围绕「09. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 优先运行 `SpringCoreAopMultiProxyStackingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
-
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -201,14 +195,8 @@ AutoProxyCreator 主线详见：[07 - AutoProxyCreator 主线](../part-02-autopr
 
 如果能把这 5 步跑通，基本就能独立定位真实项目里 AOP/Tx/Cache/Security “不生效”与“顺序怪”的大多数原因。
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopRealWorldStackingLabTest`
 - 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
@@ -229,14 +217,15 @@ AutoProxyCreator 主线详见：[07 - AutoProxyCreator 主线](../part-02-autopr
 
 ### 坑点 1：把“顺序问题”一股脑归到 `@Order`，忽略了 BPP 顺序与 advisor 顺序是两套系统
 
-- Symptom：调 `@Order` 发现顺序没变，或看起来变了但实际只是换了“外层/内层 proxy”而不是拦截器链顺序
-- Root Cause：
-  - 容器阶段：BPP 顺序影响“有没有套娃/谁包谁”
-  - 调用阶段：advisor/interceptor 顺序影响 `proceed()` 嵌套关系
-- Verification：
-  - 单 proxy 多 advisors（主流形态）：`SpringCoreAopMultiProxyStackingLabTest#multiple_advisors_are_applied_within_a_single_proxy_by_default`
-  - 多层 proxy（套娃）可被识别：`SpringCoreAopMultiProxyStackingLabTest#nested_proxy_can_wrap_an_existing_proxy_and_is_detectable_via_target_introspection`
-- Fix：先判断排查的是“容器阶段顺序”还是“调用阶段顺序”，再选对观察点（BPP 列表 vs advisors/interceptors）
+调 `@Order` 发现顺序没变，或看起来变了但实际只是换了“外层/内层 proxy”而不是拦截器链顺序
+
+- 容器阶段：BPP 顺序影响“有没有套娃/谁包谁”
+- 调用阶段：advisor/interceptor 顺序影响 `proceed()` 嵌套关系
+
+- 单 proxy 多 advisors（主流形态）：`SpringCoreAopMultiProxyStackingLabTest#multiple_advisors_are_applied_within_a_single_proxy_by_default`
+- 多层 proxy（套娃）可被识别：`SpringCoreAopMultiProxyStackingLabTest#nested_proxy_can_wrap_an_existing_proxy_and_is_detectable_via_target_introspection`
+
+先判断排查的是“容器阶段顺序”还是“调用阶段顺序”，再选对观察点（BPP 列表 vs advisors/interceptors）
 
 ## 小结与下一章
 

@@ -1,12 +1,12 @@
 # 03. AutoConfiguration 调用链（imports → 条件决策 → 产出 bean）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：AutoConfiguration 调用链（imports → 条件决策 → 产出 bean）展开，主线可以概括为：imports 决定“候选集合”，Condition 决定“是否注册”，backoff 决定“是否让位给用户配置”。
 
-    - 知识点：01：AutoConfiguration 调用链（imports → 条件决策 → 产出 bean）
-    - 怎么使用：先跑 `BootAutoConfigurationLabTest`，再按本文从 `AutoConfigurationImportSelector` 走到 `ConditionEvaluator`，最后回到断点地图把入口固化。
-    - 原理：imports 决定“候选集合”，Condition 决定“是否注册”，backoff 决定“是否让位给用户配置”。
-    - 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConditionEvaluator#shouldSkip`
-    - 推荐 Lab：`BootAutoConfigurationLabTest`
+    先跑 `BootAutoConfigurationLabTest`，再按本文从 `AutoConfigurationImportSelector` 走到 `ConditionEvaluator`，最后回到断点地图把入口固化。
+
+    需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConditionEvaluator#shouldSkip` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. AutoConfiguration 调用链（imports → 条件决策 → 产出 bean）**
-- 建议入口：优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：imports 决定“候选集合”，Condition 决定“是否注册”，backoff 决定“是否让位给用户配置”。
-- 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConditionEvaluator#shouldSkip`
+建议优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：imports 决定“候选集合”，Condition 决定“是否注册”，backoff 决定“是否让位给用户配置”。需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConditionEvaluator#shouldSkip` 这些入口切入。
 
 
 ## 应能复述的“最短调用链”

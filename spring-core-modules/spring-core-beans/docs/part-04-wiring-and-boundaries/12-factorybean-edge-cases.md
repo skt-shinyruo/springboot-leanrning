@@ -1,18 +1,17 @@
 # 12. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`FactoryBean#getObjectType()` / `FactoryBean#getObjectType()==null` / `DefaultListableBeanFactory#getBeanNamesForType`
-    - 推荐 Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
+
+    本章围绕29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`。需要下探源码时，可以从 `FactoryBean#getObjectType()` / `FactoryBean#getObjectType()==null` / `DefaultListableBeanFactory#getBeanNamesForType` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[11. 自定义 Scope + scoped proxy：thread scope 的真实语义](11-custom-scope-and-scoped-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[13. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](13-injection-phase-field-vs-constructor.md)
 <!-- GLOBAL-BOOK-NAV:END -->
-
 
 
 ## 导读
@@ -23,12 +22,6 @@
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-!!! summary "本章要点"
-
-    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
-
-
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
@@ -37,7 +30,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansFactoryBeanEdgeCasesLabTest`，再用 `SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansFactoryBeanEdgeCasesLabTest`，再用 `SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`DefaultListableBeanFactory#getBeanNamesForType` / `FactoryBeanRegistrySupport#getTypeForFactoryBean`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -148,11 +141,6 @@
 - 应能够解释：为什么 `getBean("sequence")` 获取到的是 product，但 `getBean("&sequence")` 获取到的是 FactoryBean 本体？入口：`SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory`
 - 应能够解释：`FactoryBean#isSingleton()` 会如何影响 product 的缓存语义？入口：`SpringCoreBeansFactoryBeanDeepDiveLabTest#singletonFactoryBeanProduct_isCached_byTheContainer` / `SpringCoreBeansFactoryBeanDeepDiveLabTest#nonSingletonFactoryBeanProduct_isNotCached_byTheContainer`
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
 - 本章已在正文中引用以下 LabTest（优先运行它们）：
@@ -165,7 +153,6 @@
 
 - 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
-- 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansFactoryBeanEdgeCasesLabTest test`
 
 对应实验：
@@ -208,10 +195,6 @@
 
 - **误区 2：类型判断导致条件注解误判**
   - Boot 的条件装配经常依赖 type matching；FactoryBean 的 object type 不准会产生非常诡异的条件匹配结果。
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 ## 自检要点
 应能够解释清楚：

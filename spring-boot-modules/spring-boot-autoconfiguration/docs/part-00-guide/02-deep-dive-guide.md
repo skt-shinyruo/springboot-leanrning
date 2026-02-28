@@ -1,12 +1,12 @@
 # 02. 深挖导读：把“自动配置导入 + 条件决策”落到源码与断点
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕深挖导读：把“自动配置导入 + 条件决策”落到源码与断点展开，主线可以概括为：自动配置不是“运行期魔法”，而是启动期的“条件化注册”：imports 决定候选集合，Condition 决定是否注册，backoff 决定是否让位。
 
-    - 知识点：深挖导读：把“自动配置导入 + 条件决策”落到源码与断点
-    - 怎么使用：先跑 `BootAutoConfigurationLabTest` 看见 3 个分支（默认/装饰/用户覆盖），再按调用链定位到 imports 与 condition 的关键入口。
-    - 原理：自动配置不是“运行期魔法”，而是启动期的“条件化注册”：imports 决定候选集合，Condition 决定是否注册，backoff 决定是否让位。
-    - 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome`
-    - 推荐 Lab：`BootAutoConfigurationLabTest`
+    先跑 `BootAutoConfigurationLabTest` 看见 3 个分支（默认/装饰/用户覆盖），再按调用链定位到 imports 与 condition 的关键入口。
+
+    需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,7 +15,6 @@
 
 ## 导读
 
-- 本章主题：**02. 深挖导读：把“自动配置导入 + 条件决策”落到源码与断点**
 - 目标：建立两个“排障先问”的问题：
   1) auto-config 有没有被导入？（imports/selector）
   2) 导入后为什么被跳过？（condition/backoff）
@@ -42,8 +41,10 @@
 
 ## 小结与下一章
 
-- 小结：自动配置不是“运行期魔法”，而是启动期的“条件化注册”：imports 决定候选集合，Condition 决定是否注册，backoff 决定是否让位。
-- 下一章：[第 195 章：01：AutoConfiguration 调用链](03-autoconfiguration-import-call-chain.md)
+自动配置不是“运行期魔法”，而是启动期的“条件化注册”：imports 决定候选集合，Condition 决定是否注册，backoff 决定是否让位。
+
+下一章见：[第 195 章：01：AutoConfiguration 调用链](03-autoconfiguration-import-call-chain.md)
+
 
 <!-- BOOKIFY:START -->
 

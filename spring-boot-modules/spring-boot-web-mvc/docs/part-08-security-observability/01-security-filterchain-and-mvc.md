@@ -1,12 +1,12 @@
 # 01. Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcSecurityLabTest`
+    阅读时可以先跑 `BootWebMvcSecurityLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,15 +17,6 @@
 
 本章围绕「01：Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcSecurityLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - Spring Security 的主要入口是 **Servlet Filter 链**（FilterChainProxy），它发生在 **DispatcherServlet 之前**。
-    - 401/403 往往不是 controller 的问题：
-    - **401**：未认证（Authentication 不存在/失败）
-    - **403**：已认证但不允许（权限不足）或 **CSRF 缺失**（常见于 POST/PUT/DELETE）
-    - 工程落地建议：把“教学安全端点”与“既有教学主线端点”隔离，避免影响现有 Labs（本模块采用只保护 `/api/advanced/secure/**` 的策略）。
-
 
 !!! example "本章配套实验（先跑再读）"
 

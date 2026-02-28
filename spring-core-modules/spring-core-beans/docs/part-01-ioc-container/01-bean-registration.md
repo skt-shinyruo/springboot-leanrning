@@ -1,12 +1,12 @@
 # 01. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：Bean 注册入口：扫描、@Bean、@Import、registrar
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#registerSingleton` / `ClassPathBeanDefinitionScanner#doScan`
-    - 推荐 Lab：`SpringCoreBeansComponentScanLabTest`
+
+    本章围绕Bean 注册入口：扫描、@Bean、@Import、registrar展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansComponentScanLabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#registerSingleton` / `ClassPathBeanDefinitionScanner#doScan` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,13 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**01. Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）**
 - 阅读方式建议：先运行“注册入口对照”的最小 Lab（ComponentScan / Import / Programmatic），再回到正文把“注册发生在 refresh 的哪一段、到底注册了什么”彻底讲清楚。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Java Config / @Bean，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 
-
-!!! summary "本章要点"
-
-    - Bean 注册不是“new 一个对象放进容器”，而是：先把 **BeanDefinition** 注册进 `BeanDefinitionRegistry`，再在创建阶段按定义生成实例。
-    - 必须区分两类入口：**定义层注册（推荐）** vs **实例层注册（容易易错点）**。实例层 `registerSingleton` 会绕开创建管线，因此不会自动注入/不会 retroactive 走 BPP。
-    - 真正的分水岭问题是“注册发生在什么时候”：在 BFPP/BDRPP（定义层）阶段之前还是之后，决定了应能够不能被后处理器观察到/改写。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -785,7 +777,7 @@ AbstractBeanFactory#doGetBean(beanName)
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansComponentScanLabTest`，再用 `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansComponentScanLabTest`，再用 `SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#registerSingleton`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“5. 排障决策表（注册相关：现象 → 分层 → 证据 → 修复）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

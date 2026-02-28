@@ -1,12 +1,12 @@
 # 06. 断点地图（Part 01 Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Part 01 Debugger Pack）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：02：断点地图（Part 01 Debugger Pack）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcLabTest`
+    阅读时可以先跑 `BootWebMvcLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -20,13 +20,6 @@
 
 - 本章目标：把 Web MVC Part 01 的关键机制，收敛成一份“可复制粘贴到 IDE 断点列表”的断点地图。
 - 使用方式：先跑一次“最小入口”，再按本页的断点清单逐段观察（不要一上来就全局搜日志）。
-
-!!! summary "本章要点"
-
-    - Web MVC 排障的第一原则：**先确认分支发生在哪一段（Filter / mapping / argument / binder / converter / resolver），再决定去哪下断点**。
-    - 400/404/405/406/415 这类“看起来像 controller 的问题”，大量其实发生在 controller 之前/之后。
-    - 最省时间的证据链：**测试断言 → resolvedException（异常类型）→ 断点（分支发生点）→ 观察字段（关键数据结构）**。
-
 
 !!! example "本章配套实验（先跑再读）"
 

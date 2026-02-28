@@ -1,12 +1,12 @@
 # 01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕AOP 心智模型：代理（Proxy）+ 入口（Call Path）展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
-    - 知识点：AOP 心智模型：代理（Proxy）+ 入口（Call Path）
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
-    - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
-    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
-    - 推荐 Lab：`SpringCoreAopLabTest`
+    先运行 `SpringCoreAopLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+
+    需要下探源码时，可以从 `org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -25,12 +25,6 @@
     - Beans 基础问题索引（Why Index）：`../../../spring-core-beans/docs/part-00-guide/01-why-index.md`
     - Beans：代理替换发生在哪个阶段（exposed object / BPP 替身对象）：`../../../spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`
     - Beans：early reference 与循环依赖（raw vs wrapped 一致性）：`../../../spring-core-beans/docs/part-03-container-internals/05-early-reference-and-circular.md`
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
-
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -109,14 +103,8 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 - 想系统掌握 pointcut 表达式并避免误判（execution/within/this/target/...）→ 见 [08. pointcut-expression-system](../part-02-autoproxy-and-pointcuts/02-pointcut-expression-system.md)
 - 想看懂“多切面/多代理叠加与顺序”（AOP/Tx/Cache/Security）→ 见 [09. multi-proxy-stacking](../part-03-proxy-stacking/01-multi-proxy-stacking.md)
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopLabTest`
 - 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 

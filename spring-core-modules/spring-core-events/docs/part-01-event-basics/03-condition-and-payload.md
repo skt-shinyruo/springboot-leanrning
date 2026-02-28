@@ -1,12 +1,12 @@
 # 03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
-    - 知识点：condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
-    - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
-    - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
-    - 推荐 Lab：`SpringCoreEventsLabTest`
+    先运行 `SpringCoreEventsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+
+    需要下探源码时，可以从 `org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,14 +14,6 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
-
-- 本章主题：**03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行实验，再阅读）"
@@ -62,14 +54,8 @@ Spring 事件有两个很实用的能力：
 - publish：`eventPublisher.publishEvent("hello")`
 - listen：`public void on(String payload)`
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreEventsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
@@ -86,17 +72,23 @@ Spring 事件有两个很实用的能力：
 
 ### 坑点 1：把复杂业务规则塞进 condition（SpEL），导致可读性差且难排障
 
-- Symptom：监听器“偶尔不触发”，只能猜 condition 到底在什么时候、用什么上下文求值
-- Root Cause：condition 属于轻量过滤机制，复杂规则会让行为与排障成本急剧上升
-- Verification：`SpringCoreEventsLabTest#conditionalEventListenerOnlyRunsWhenConditionMatches`
-- Fix：condition 保持简单（例如基于字段前缀/flag）；复杂规则放到监听器内部或上游业务逻辑，并用测试锁定触发分支
+监听器“偶尔不触发”，只能猜 condition 到底在什么时候、用什么上下文求值
+
+condition 属于轻量过滤机制，复杂规则会让行为与排障成本急剧上升
+
+`SpringCoreEventsLabTest#conditionalEventListenerOnlyRunsWhenConditionMatches`
+
+condition 保持简单（例如基于字段前缀/flag）；复杂规则放到监听器内部或上游业务逻辑，并用测试锁定触发分支
 
 ### 坑点 2：payload 事件类型不匹配，导致监听器根本收不到
 
-- Symptom： publish 了一个对象，但监听器方法从未被调用
-- Root Cause：payload 匹配依赖“监听器参数类型”与 publish 的对象类型
-- Verification：`SpringCoreEventsLabTest#publishingPlainObjectsAlsoWorks_asPayloadEvents`
-- Fix：先用最小 payload（如 String）验证类型匹配，再逐步升级为专用 event class（推荐 immutable record）
+publish 了一个对象，但监听器方法从未被调用
+
+payload 匹配依赖“监听器参数类型”与 publish 的对象类型
+
+`SpringCoreEventsLabTest#publishingPlainObjectsAlsoWorks_asPayloadEvents`
+
+先用最小 payload（如 String）验证类型匹配，再逐步升级为专用 event class（推荐 immutable record）
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->

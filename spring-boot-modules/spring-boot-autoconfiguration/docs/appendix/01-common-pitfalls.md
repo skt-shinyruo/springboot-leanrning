@@ -1,12 +1,12 @@
 # 01. 90 - Common Pitfalls（springboot-autoconfiguration）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕Common Pitfalls（springboot-autoconfiguration）展开，主线可以概括为：大多数误判来自：只看某一个条件注解，而忽略了 imports 与 backoff（或忽略了多个 bean 的选择规则）。
 
-    - 知识点：Common Pitfalls（springboot-autoconfiguration）
-    - 怎么使用：当遇到“功能没生效/bean 不存在/注入对象不对”时，用本页把问题收敛到 imports/condition/backoff/顺序其中一个分支。
-    - 原理：大多数误判来自：只看某一个条件注解，而忽略了 imports 与 backoff（或忽略了多个 bean 的选择规则）。
-    - 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome`
-    - 推荐 Lab：`BootAutoConfigurationLabTest`
+    当遇到“功能没生效/bean 不存在/注入对象不对”时，用本页把问题收敛到 imports/condition/backoff/顺序其中一个分支。
+
+    对照入口：`BootAutoConfigurationLabTest`。需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**01. 90 - Common Pitfalls（springboot-autoconfiguration）**
-- 建议入口：优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：大多数误判来自：只看某一个条件注解，而忽略了 imports 与 backoff（或忽略了多个 bean 的选择规则）。
-- 源码入口：`AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome`
+建议优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：大多数误判来自：只看某一个条件注解，而忽略了 imports 与 backoff（或忽略了多个 bean 的选择规则）。需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome` 这些入口切入。
 
 
 ## 坑 1：以为“没生效”就是 property 没配对
@@ -39,8 +37,10 @@
 
 ## 小结与下一章
 
-- 小结：大多数误判来自：只看某一个条件注解，而忽略了 imports 与 backoff（或忽略了多个 bean 的选择规则）。
-- 下一章：[第 198 章：99 - Self Check（springboot-autoconfiguration）](02-self-check.md)
+大多数误判来自：只看某一个条件注解，而忽略了 imports 与 backoff（或忽略了多个 bean 的选择规则）。
+
+下一章见：[第 198 章：99 - Self Check（springboot-autoconfiguration）](02-self-check.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 01. 约束（Constraint）心智模型：校验对象与校验结果
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕约束（Constraint）心智模型：校验对象与校验结果展开，主线可以概括为：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
 
-    - 知识点：约束（Constraint）心智模型：校验对象与校验结果
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
-    - 原理：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
-    - 源码入口：`org.springframework.validation.beanvalidation.LocalValidatorFactoryBean` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor` / `org.springframework.validation.beanvalidation.SpringValidatorAdapter`
-    - 推荐 Lab：`SpringCoreValidationLabTest`
+    先运行 `SpringCoreValidationLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
+
+    需要下探源码时，可以从 `org.springframework.validation.beanvalidation.LocalValidatorFactoryBean` / `org.springframework.validation.beanvalidation.MethodValidationPostProcessor` / `org.springframework.validation.beanvalidation.SpringValidatorAdapter` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,12 +17,6 @@
 
 本章围绕「01. 约束（Constraint）心智模型：校验对象与校验结果」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 优先运行 `SpringCoreValidationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
-
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -67,14 +61,8 @@ Bean Validation 的价值在于：
 
 > 得到的不是 boolean，而是一组“可定位、可解释、可断言”的错误信息。
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreValidationLabTest`
 - 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
 
@@ -98,12 +86,14 @@ Bean Validation 的价值在于：
 
 ### 坑点 1：只看“校验失败/成功”，忽略 violations 的证据字段，导致排障效率很低
 
-- Symptom：知道失败了，但不知道“失败在哪个字段、因为什么规则”，只能靠日志/猜测
-- Root Cause：Bean Validation 的输出不是 boolean，而是 `ConstraintViolation` 集合（propertyPath/message 是第一现场）
-- Verification：
-  - violations 含字段路径：`SpringCoreValidationLabTest#programmaticValidationFindsViolations`
-  - violations 含 message/propertyPath：`SpringCoreValidationMechanicsLabTest#constraintViolationIncludesMessageAndPropertyPath`
-- Fix：排障先看 propertyPath/message，再决定是改数据、改规则，还是改 groups/触发方式
+知道失败了，但不知道“失败在哪个字段、因为什么规则”，只能靠日志/猜测
+
+Bean Validation 的输出不是 boolean，而是 `ConstraintViolation` 集合（propertyPath/message 是第一现场）
+
+- violations 含字段路径：`SpringCoreValidationLabTest#programmaticValidationFindsViolations`
+- violations 含 message/propertyPath：`SpringCoreValidationMechanicsLabTest#constraintViolationIncludesMessageAndPropertyPath`
+
+排障先看 propertyPath/message，再决定是改数据、改规则，还是改 groups/触发方式
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->

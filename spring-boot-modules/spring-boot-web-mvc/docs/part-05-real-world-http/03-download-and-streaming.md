@@ -5,12 +5,6 @@
 本章围绕「03：下载与 Header（Content-Disposition / Content-Type / bytes）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - 下载是否触发“另存为”，核心看 `Content-Disposition: attachment; filename="..."`。
-    - `Content-Type` 决定浏览器如何解释 bytes；缺失时通常退化为 `application/octet-stream`。
-
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

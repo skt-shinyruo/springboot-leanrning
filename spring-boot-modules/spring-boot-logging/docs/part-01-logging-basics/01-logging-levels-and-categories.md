@@ -1,12 +1,12 @@
 # 01. 日志级别与分类（为什么 debug 有时出现、有时不出现）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：日志级别与分类（为什么 debug 有时出现、有时不出现）展开，主线可以概括为：日志是否输出取决于 effective level；配置用 logger category（包名/类名）做层级继承。
 
-    - 知识点：01：日志级别与分类（为什么 debug 有时出现、有时不出现）
-    - 怎么使用：先跑 `BootLoggingLabTest`，再对照本文把“配置项 → category → effective level”串起来。
-    - 原理：日志是否输出取决于 effective level；配置用 logger category（包名/类名）做层级继承。
-    - 源码入口：（logback）`LoggerContext` / `Logger#isDebugEnabled`
-    - 推荐 Lab：`BootLoggingLabTest`
+    先跑 `BootLoggingLabTest`，再对照本文把“配置项 → category → effective level”串起来。
+
+    需要下探源码时，可以从 （logback）`LoggerContext` / `Logger#isDebugEnabled` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**01. 日志级别与分类（为什么 debug 有时出现、有时不出现）**
-- 建议入口：优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：日志是否输出取决于 effective level；配置用 logger category（包名/类名）做层级继承。
-- 源码入口：（logback）`LoggerContext` / `Logger#isDebugEnabled`
+建议优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：日志是否输出取决于 effective level；配置用 logger category（包名/类名）做层级继承。需要下探源码时，可以从 （logback）`LoggerContext` / `Logger#isDebugEnabled` 这些入口切入。
 
 
 ## 1. category 是什么？
@@ -49,8 +47,10 @@ effective level 是“继承后最终生效的级别”，它决定：
 
 ## 小结与下一章
 
-- 小结：日志是否输出取决于 effective level；配置用 logger category（包名/类名）做层级继承。
-- 下一章：[第 202 章：90 - Common Pitfalls（springboot-logging）](../appendix/01-common-pitfalls.md)
+日志是否输出取决于 effective level；配置用 logger category（包名/类名）做层级继承。
+
+下一章见：[第 202 章：90 - Common Pitfalls（springboot-logging）](../appendix/01-common-pitfalls.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 03. Actuator 调用链（端点发现 → 映射 → 执行）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Actuator 调用链（端点发现 → 映射 → 执行）展开，主线可以概括为：Actuator 的端点不是“写了就能访问”，中间有两层决策：端点被发现（discover）与端点被暴露（exposure/安全）。
 
-    - 知识点：01：Actuator 调用链（端点发现 → 映射 → 执行）
-    - 怎么使用：先跑 `BootActuatorLabTest`，把“端点存在/暴露/可访问”固化为断言，再按本文从 endpoint discoverer 走到 handler mapping。
-    - 原理：Actuator 的端点不是“写了就能访问”，中间有两层决策：端点被发现（discover）与端点被暴露（exposure/安全）。
-    - 源码入口：`org.springframework.boot.actuate.endpoint.web.annotation.WebEndpointDiscoverer` / `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping` / `org.springframework.boot.actuate.endpoint.invoke.reflect.ReflectiveOperationInvoker`
-    - 推荐 Lab：`BootActuatorLabTest`
+    先跑 `BootActuatorLabTest`，把“端点存在/暴露/可访问”固化为断言，再按本文从 endpoint discoverer 走到 handler mapping。
+
+    需要下探源码时，可以从 `org.springframework.boot.actuate.endpoint.web.annotation.WebEndpointDiscoverer` / `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping` / `org.springframework.boot.actuate.endpoint.invoke.reflect.ReflectiveOperationInvoker` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Actuator 调用链（端点发现 → 映射 → 执行）**
-- 建议入口：优先运行 `BootActuatorLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：Actuator 的端点不是“写了就能访问”，中间有两层决策：端点被发现（discover）与端点被暴露（exposure/安全）。
-- 源码入口：`org.springframework.boot.actuate.endpoint.web.annotation.WebEndpointDiscoverer` / `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping` / `org.springframework.boot.actuate.endpoint.invoke.reflect.ReflectiveOperationInvoker`
+建议优先运行 `BootActuatorLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：Actuator 的端点不是“写了就能访问”，中间有两层决策：端点被发现（discover）与端点被暴露（exposure/安全）。需要下探源码时，可以从 `org.springframework.boot.actuate.endpoint.web.annotation.WebEndpointDiscoverer` / `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping` / `org.springframework.boot.actuate.endpoint.invoke.reflect.ReflectiveOperationInvoker` 这些入口切入。
 
 
 ## 最短调用链（应能复述）
@@ -39,8 +37,10 @@
 
 ## 小结与下一章
 
-- 小结：Actuator 的端点不是“写了就能访问”，中间有两层决策：端点被发现（discover）与端点被暴露（exposure/安全）。
-- 下一章：[第 168 章：02：断点地图](04-breakpoint-map.md)
+Actuator 的端点不是“写了就能访问”，中间有两层决策：端点被发现（discover）与端点被暴露（exposure/安全）。
+
+下一章见：[第 168 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

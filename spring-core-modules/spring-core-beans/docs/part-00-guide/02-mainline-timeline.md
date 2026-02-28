@@ -1,12 +1,12 @@
 # 02. 主线时间线：IoC 容器从 refresh 到创建 Bean
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：主线时间线：IoC 容器从 refresh 到创建 Bean
     - 使用方式：可先运行本章推荐 Lab，把主线/断点闭环完成验证，再回到正文按“时间线/分支矩阵/证据链”定位机制窗口；最后用自检题把表达固化成可复述答案。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`AbstractApplicationContext#refresh` / `AbstractApplicationContext#prepareBeanFactory` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
-    - 推荐 Lab：`SpringCoreBeansMainlineCallChainLabTest`
+
+    本章围绕主线时间线：IoC 容器从 refresh 到创建 Bean展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansMainlineCallChainLabTest`。需要下探源码时，可以从 `AbstractApplicationContext#refresh` / `AbstractApplicationContext#prepareBeanFactory` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,20 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**02. 主线时间线：IoC 容器从 refresh 到创建 Bean**
 - 阅读方式建议：这章不是“讲知识点”，而是给读者一张时间线地图。读者先运行一个主线 Lab，把 refresh 走一遍；然后拿这张时间线去定位每个现象属于哪个阶段。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 读者只要记住一件事：**99% 的排障都能被归到 refresh 的某一段**（定义层/实例层/初始化/完成后回调）。
-    - BFPP/BDRPP（定义层）与 BPP（实例层）是两个世界：先改“定义”，再造“实例”；顺序错了，后果往往是“代理/注入/回调不生效”。
-    - 无需背完整 refresh 步骤，但必须能说清：BPP 什么时候注册？单例什么时候创建？循环依赖窗口在哪里？
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -188,7 +180,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansMainlineCallChainLabTest`，再用 `SpringCoreBeansBreakpointPackLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansMainlineCallChainLabTest`，再用 `SpringCoreBeansBreakpointPackLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“2. 这条时间线使用方式来排障（3 个经典分流）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](07-breakpoint-map.md) 选 C 组。
@@ -196,8 +188,10 @@
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[第 13 章：01. `ApplicationContext#refresh` 调用链（主线）](06-applicationcontext-refresh-call-chain.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[第 13 章：01. `ApplicationContext#refresh` 调用链（主线）](06-applicationcontext-refresh-call-chain.md)
+
 
 <!-- BOOKIFY:START -->
 

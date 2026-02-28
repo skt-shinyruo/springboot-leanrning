@@ -1,12 +1,12 @@
 # 99 自检：spring-core-beans 文档导航（Docs TOC）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：自测题：是否能够真的理解了？
     - 使用方式：建议先运行本章推荐 Lab，将现象固化为断言，再结合正文理解机制；在真实项目中，常见路径包括：通过配置类/扫描/导入注册 Bean；通过注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
-    - 推荐 Lab：`SpringCoreBeansLabTest`
+
+    本章围绕自测题：是否能够真的理解了？展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -42,7 +42,7 @@
 
 - IoC 分支：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansIocBranchMatrixLabTest test`
 - 内部机制分支：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInternalsBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/07-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/04-branch-decision-matrix.md)
+- 配套资料：[`断点地图 `](../part-00-guide/07-breakpoint-map.md) / [` 关键分支矩阵`](../part-00-guide/04-branch-decision-matrix.md)
 
 <!-- BOOKLIKE-V2:INTRO:START -->
 本章围绕「自测题：是否能够真的理解了？」展开：首先明确边界，再沿主线推进到关键分支，最后通过可运行入口验证结论。
@@ -56,7 +56,6 @@
 
 - 入口测试：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java`
-- 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansExerciseTest test`
 
 建议学习方式：
@@ -76,20 +75,6 @@
 1) 用一句话解释：什么是 `BeanDefinition`？它与 Bean 实例的关系是什么？
 2) BFPP 与 BPP 的差别是什么？它们分别作用在“定义层”还是“实例层”？
 3) 为什么说“自动装配本质上也是在注册 BeanDefinition”？
-
-!!! summary "本章要点"
-
-    - 应能够列出 4 条常见注册入口，并说明它们“注册的是谁/发生在什么时候”吗？
-      - `@ComponentScan`
-      - `@Configuration + @Bean`
-      - `@Import`（含 `ImportSelector`）
-      - `ImportBeanDefinitionRegistrar`
-    - Spring Boot 自动装配对“Bean 注册”的本质影响是什么？（提示：其定位更接近“按条件批量 @Import”）
-
-    4) `@ComponentScan`、`@Bean`、`@Import` 这三种入口分别解决什么问题？
-    5) `ImportSelector` 与 `ImportBeanDefinitionRegistrar` 的角色差异是什么？
-    6) 如何解释 Spring Boot 自动装配“从哪里获取到要导入的配置类列表”？
-
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -240,7 +225,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansLabTest`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansLabTest`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：将自检题的“答案”改为“验证路线”：每题后给出最短回链（去哪个章节/跑哪个用例/在哪个入口断点验证）。
     - 下一跳：若是从现象进入，优先回到 [知识地图](03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

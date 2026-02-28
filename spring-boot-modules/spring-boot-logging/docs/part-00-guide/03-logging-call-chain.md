@@ -1,12 +1,12 @@
 # 03. Logging 调用链（LoggingSystem 初始化与级别决策）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Logging 调用链（LoggingSystem 初始化与级别决策）展开，主线可以概括为：启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。
 
-    - 知识点：01：Logging 调用链（LoggingSystem 初始化与级别决策）
-    - 怎么使用：先跑 `BootLoggingLabTest`，再用本文把“配置 → effective level → 输出”串成一条链。
-    - 原理：启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。
-    - 源码入口：`LoggingSystem` / `LoggerFactory` /（logback）`Logger#isDebugEnabled`
-    - 推荐 Lab：`BootLoggingLabTest`
+    先跑 `BootLoggingLabTest`，再用本文把“配置 → effective level → 输出”串成一条链。
+
+    需要下探源码时，可以从 `LoggingSystem` / `LoggerFactory` /（logback）`Logger#isDebugEnabled` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Logging 调用链（LoggingSystem 初始化与级别决策）**
-- 建议入口：优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。
-- 源码入口：`LoggingSystem` / `LoggerFactory` /（logback）`Logger#isDebugEnabled`
+建议优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。需要下探源码时，可以从 `LoggingSystem` / `LoggerFactory` /（logback）`Logger#isDebugEnabled` 这些入口切入。
 
 
 ## 1. 启动期：LoggingSystem 什么时候初始化？
@@ -49,8 +47,10 @@
 
 ## 小结与下一章
 
-- 小结：启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。
-- 下一章：[第 200 章：02：断点地图](04-breakpoint-map.md)
+启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。
+
+下一章见：[第 200 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

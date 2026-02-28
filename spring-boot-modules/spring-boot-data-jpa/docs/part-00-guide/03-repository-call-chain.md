@@ -1,12 +1,12 @@
 # 03. Repository 调用链（RepositoryProxy → SimpleJpaRepository → EntityManager）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Repository 调用链（RepositoryProxy → SimpleJpaRepository → EntityManager）展开，主线可以概括为：Spring Data JPA 通过代理把接口方法路由到 `SimpleJpaRepository`；真实落库行为取决于事务边界与 persistence context（flush 时机）。
 
-    - 知识点：01：Repository 调用链（RepositoryProxy → SimpleJpaRepository → EntityManager）
-    - 怎么使用：先跑 `BootDataJpaLabTest`，把“保存/查询/flush 行为差异”固化成断言，再按本文串起 Repository 到 Hibernate 的调用链。
-    - 原理：Spring Data JPA 通过代理把接口方法路由到 `SimpleJpaRepository`；真实落库行为取决于事务边界与 persistence context（flush 时机）。
-    - 源码入口：`RepositoryFactorySupport` / `SimpleJpaRepository` / `EntityManager` /（Hibernate）`Session`
-    - 推荐 Lab：`BootDataJpaLabTest`
+    先跑 `BootDataJpaLabTest`，把“保存/查询/flush 行为差异”固化成断言，再按本文串起 Repository 到 Hibernate 的调用链。
+
+    需要下探源码时，可以从 `RepositoryFactorySupport` / `SimpleJpaRepository` / `EntityManager` /（Hibernate）`Session` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Repository 调用链（RepositoryProxy → SimpleJpaRepository → EntityManager）**
-- 建议入口：优先运行 `BootDataJpaLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：Spring Data JPA 通过代理把接口方法路由到 `SimpleJpaRepository`；真实落库行为取决于事务边界与 persistence context（flush 时机）。
-- 源码入口：`RepositoryFactorySupport` / `SimpleJpaRepository` / `EntityManager` /（Hibernate）`Session`
+建议优先运行 `BootDataJpaLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：Spring Data JPA 通过代理把接口方法路由到 `SimpleJpaRepository`；真实落库行为取决于事务边界与 persistence context（flush 时机）。需要下探源码时，可以从 `RepositoryFactorySupport` / `SimpleJpaRepository` / `EntityManager` /（Hibernate）`Session` 这些入口切入。
 
 
 ## 最短调用链
@@ -35,8 +33,10 @@
 
 ## 小结与下一章
 
-- 小结：Spring Data JPA 通过代理把接口方法路由到 `SimpleJpaRepository`；真实落库行为取决于事务边界与 persistence context（flush 时机）。
-- 下一章：[第 96 章：02：断点地图](04-breakpoint-map.md)
+Spring Data JPA 通过代理把接口方法路由到 `SimpleJpaRepository`；真实落库行为取决于事务边界与 persistence context（flush 时机）。
+
+下一章见：[第 96 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

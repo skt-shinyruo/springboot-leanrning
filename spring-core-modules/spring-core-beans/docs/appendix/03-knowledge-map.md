@@ -1,12 +1,12 @@
 # 03. 知识地图（Knowledge Map）：从现象直达章节/断点/Lab
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：知识地图（从现象直达章节/断点/Lab）
     - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`DefaultSingletonBeanRegistry#getSingleton` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue`
-    - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
+
+    本章围绕知识地图（从现象直达章节/断点/Lab）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansBreakpointPackLabTest`。需要下探源码时，可以从 `DefaultSingletonBeanRegistry#getSingleton` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,21 +14,13 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**03. 知识地图（Knowledge Map）：从现象直达章节/断点/Lab**
 - 阅读方式建议：把本章当成“导航页”：在真实项目里遇到问题时，不需要从头顺读文档，而是先在这里按现象定位到章节与断点入口，再回到对应章节补齐机制主线。
 - 团队内训场景：若要给团队“按课时讲一遍”，优先看：[`10-team-training-kit.md`](10-team-training-kit.md)（60/90/120 分钟脚本 + Labs/断点/互动题）。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 本模块的学习目标是“可验证”：每个关键机制都应该有 **对应 Lab（可运行）** 与 **断点入口（可观察到）**。
-    - 排障优先级：先定位阶段（refresh 的哪一段）→ 再定位关键方法（最短调用链）→ 再看最小观察点（watch list）。
-    - 读者 B/C 建议：遇到任何现象，先运行对应 Lab，把现象固定成断言，再去看章节，这样读者不会被“像是理解了”的幻觉欺骗。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -126,7 +118,7 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：知识地图优先服务“快速定位”：把每个节点压缩为“常见现象 → 对应章节 → 最小可跑入口（测试方法名）”，避免过多枚举。
     - 下一跳：需要可复用断点组时，回到 [断点地图](../part-00-guide/07-breakpoint-map.md)；需要把现象分型成最短 SOP 时，回到 [生产排障清单](05-production-troubleshooting-checklist.md)。
@@ -134,8 +126,10 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[93. 面试复述模板（Interview Playbook）](04-interview-playbook.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[93. 面试复述模板（Interview Playbook）](04-interview-playbook.md)
+
 
 <!-- BOOKIFY:START -->
 

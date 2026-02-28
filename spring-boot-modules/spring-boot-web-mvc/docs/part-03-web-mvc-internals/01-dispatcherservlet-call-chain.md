@@ -1,12 +1,12 @@
 # 01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcInternalsLabTest`
+    阅读时可以先跑 `BootWebMvcInternalsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,14 +15,8 @@
 
 ## 导读
 
-- 本章主题：**01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）**
 - 目标：建立“请求在 MVC 内部如何被分派”的可观察心智模型：从 `@RequestMapping` 找到 handler，到参数解析、返回值写回、异常映射。
 - 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。本章提到的方法名以该版本为准。
-
-!!! summary "本章要点"
-
-    - 学 MVC 内核不要背类名：**用测试用例固定一个可观察点**（例如“某个参数由自定义 ArgumentResolver 填充”），再从断点把调用链串起来。
-    - `DispatcherServlet#doDispatch` 是主入口，但真正帮助定位“为什么行为不同”的通常是：`HandlerMapping`（选路）与 `HandlerAdapter`（如何调用 handler）。
 
 !!! example "本章配套实验（先跑再读）"
 

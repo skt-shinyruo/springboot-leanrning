@@ -1,12 +1,12 @@
 # 02. 真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
-    - 知识点：真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证
-    - 怎么使用：直接跑本章配套集成 Lab，把“鉴权阻断 / 缓存短路 / 事务激活 / 链条可观察”固化成断言；再按本文的断点 Playbook 逐层把 proxy/advisors/chain 看清楚，最后能在真实项目里复用同一套排障路径。
-    - 原理：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
-    - 源码入口：`org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
-    - 推荐 Lab：`SpringCoreAopRealWorldStackingLabTest`
+    直接跑本章配套集成 Lab，把“鉴权阻断 / 缓存短路 / 事务激活 / 链条可观察”固化成断言；再按本文的断点 Playbook 逐层把 proxy/advisors/chain 看清楚，最后能在真实项目里复用同一套排障路径。
+
+    对照入口：`SpringCoreAopRealWorldStackingLabTest`。需要下探源码时，可以从 `org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,12 +17,6 @@
 
 本章围绕「10. 真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 优先运行 `SpringCoreAopRealWorldStackingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
-
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -188,14 +182,8 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 - 想把“pointcut 误判”系统补齐：读 [08. pointcut-expression-system](../part-02-autoproxy-and-pointcuts/02-pointcut-expression-system.md) + 跑 `SpringCoreAopPointcutExpressionsLabTest`
 - 想补齐并发边界直觉：读 [11. proxy-concurrency-perf](../part-02-perf-concurrency/01-proxy-concurrency-perf.md) + 跑 `SpringCoreAopProxyConcurrencyLabTest`
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreAopRealWorldStackingLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopProceedNestingLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
 - 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
@@ -207,7 +195,6 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

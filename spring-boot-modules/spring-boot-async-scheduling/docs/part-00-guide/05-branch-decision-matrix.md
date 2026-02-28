@@ -13,9 +13,7 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），从当前的触发条件入手，跑一次 Repro，再对照本表的 Watchpoints 收敛结论。
-
+建议优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），从当前的触发条件入手，跑一次 Repro，再对照本表的 Watchpoints 收敛结论。
 
 
 ## 关键分支矩阵（最小集合）
@@ -66,8 +64,8 @@
 
 ## 小结与下一章
 
-- 小结：本章围绕关键主线与边界条件展开，建议结合可运行入口进行验证。
-- 下一章：[第 119 章：01：@Async 的心智模型：代理、线程池与返回值](../part-01-async-scheduling/01-async-proxy-mental-model.md)
+下一章见：[第 119 章：01：@Async 的心智模型：代理、线程池与返回值](../part-01-async-scheduling/01-async-proxy-mental-model.md)
+
 
 <!-- BOOKIFY:START -->
 

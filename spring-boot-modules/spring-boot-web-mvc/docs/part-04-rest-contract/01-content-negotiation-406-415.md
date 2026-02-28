@@ -1,12 +1,12 @@
 # 01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：01：Content Negotiation（406/415：Accept/Content-Type/produces/consumes）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcErrorBranchMatrixLabTest`
+    阅读时可以先跑 `BootWebMvcErrorBranchMatrixLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,15 +15,7 @@
 
 ## 导读
 
-- 本章主题：**01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）**
 - 目标：让 406/415 变成“可预期、可复现、可排障”的问题，而不是靠猜。
-
-!!! summary "本章要点"
-
-    - 415：客户端发来的 `Content-Type` 不被服务端接受（`consumes` 或 converter 不匹配）
-    - 406：客户端的 `Accept` 要求服务端无法满足（`produces` 或 converter 不匹配）
-    - 解决问题的第一步不是改业务代码，而是把 **请求头与方法映射约束** 对齐。
-
 
 !!! example "本章配套实验（先跑再读）"
 

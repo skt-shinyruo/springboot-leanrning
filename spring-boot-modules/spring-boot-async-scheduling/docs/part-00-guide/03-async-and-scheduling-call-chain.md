@@ -13,9 +13,7 @@
 
 ## 导读
 
-- 本章主题：**03. Async/Scheduling 调用链（@Async / @Scheduled 的生效时机）**
-- 建议入口：优先运行 `BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`（见文末“对应 Lab/Test”），对照断言与调用栈，定位“代理建立/任务注册”发生点。
-
+建议优先运行 `BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`（见文末“对应 Lab/Test”），对照断言与调用栈，定位“代理建立/任务注册”发生点。
 
 
 ## 最短调用链
@@ -39,8 +37,8 @@
 
 ## 小结与下一章
 
-- 小结：本章围绕关键主线与边界条件展开，建议结合可运行入口进行验证。
-- 下一章：[第 118 章：02：断点地图](04-breakpoint-map.md)
+下一章见：[第 118 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

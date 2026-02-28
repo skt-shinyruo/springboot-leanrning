@@ -5,12 +5,6 @@
 本章围绕「02：Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - multipart 是“一个请求里有多个 part”，不是 JSON body；常见写法是 `@RequestParam("file") MultipartFile file`。
-    - 上传接口要明确：文件名、content-type、大小、返回的 id；否则很难测试/排障。
-
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

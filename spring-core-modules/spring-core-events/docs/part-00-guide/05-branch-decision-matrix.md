@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：分支来自：listener 是否匹配（condition/payload/type）、multicaster 是否有 executor、事务事件是否在事务内发布。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把事件系统的关键分支（listener 匹配/同步异步/事务事件）整理成矩阵表；每行都对应一个可跑入口与观察点。
-    - 原理：分支来自：listener 是否匹配（condition/payload/type）、multicaster 是否有 executor、事务事件是否在事务内发布。
-    - 源码入口：`AbstractApplicationEventMulticaster#multicastEvent`
-    - 推荐 Lab：`SpringCoreEventsBasicsBranchMatrixLabTest`
+    把事件系统的关键分支（listener 匹配/同步异步/事务事件）整理成矩阵表；每行都对应一个可跑入口与观察点。
+
+    对照入口：`SpringCoreEventsBasicsBranchMatrixLabTest`。需要下探源码时，可以从 `AbstractApplicationEventMulticaster#multicastEvent` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `SpringCoreEventsBasicsBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：分支来自：listener 是否匹配（condition/payload/type）、multicaster 是否有 executor、事务事件是否在事务内发布。
-- 源码入口：`AbstractApplicationEventMulticaster#multicastEvent`
+建议优先运行 `SpringCoreEventsBasicsBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：分支来自：listener 是否匹配（condition/payload/type）、multicaster 是否有 executor、事务事件是否在事务内发布。需要下探源码时，可以从 `AbstractApplicationEventMulticaster#multicastEvent` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -42,8 +40,10 @@
 
 ## 小结与下一章
 
-- 小结：分支来自：listener 是否匹配（condition/payload/type）、multicaster 是否有 executor、事务事件是否在事务内发布。
-- 下一章：[第 129 章：01：事件心智模型：publish/subscribe 的真实语义](../part-01-event-basics/01-event-mental-model.md)
+分支来自：listener 是否匹配（condition/payload/type）、multicaster 是否有 executor、事务事件是否在事务内发布。
+
+下一章见：[第 129 章：01：事件心智模型：publish/subscribe 的真实语义](../part-01-event-basics/01-event-mental-model.md)
+
 
 <!-- BOOKIFY:START -->
 

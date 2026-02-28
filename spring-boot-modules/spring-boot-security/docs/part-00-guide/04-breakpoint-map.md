@@ -1,12 +1,12 @@
 # 04. 断点地图（Security Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Security Debugger Pack）展开，主线可以概括为：请求 → `FilterChainProxy` 选择 `SecurityFilterChain` → 逐个 filter 执行 → `Authentication`/`Authorization` 决策 → 可能影响 MVC 异常边界。
 
-    - 知识点：02：断点地图（Security Debugger Pack）
-    - 怎么使用：先跑 `BootSecurityBranchMatrixLabTest` 固化“哪条 SecurityFilterChain 被命中”的断言，再用断点沿 `FilterChainProxy` 观察 chain 匹配、过滤器顺序与鉴权失败点。
-    - 原理：请求 → `FilterChainProxy` 选择 `SecurityFilterChain` → 逐个 filter 执行 → `Authentication`/`Authorization` 决策 → 可能影响 MVC 异常边界。
-    - 源码入口：`org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain`
-    - 推荐 Lab：`BootSecurityBranchMatrixLabTest`
+    先跑 `BootSecurityBranchMatrixLabTest` 固化“哪条 SecurityFilterChain 被命中”的断言，再用断点沿 `FilterChainProxy` 观察 chain 匹配、过滤器顺序与鉴权失败点。
+
+    需要下探源码时，可以从 `org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -50,8 +50,10 @@
 
 ## 小结与下一章
 
-- 小结：请求 → `FilterChainProxy` 选择 `SecurityFilterChain` → 逐个 filter 执行 → `Authentication`/`Authorization` 决策 → 可能影响 MVC 异常边界。
-- 下一章：[第 86 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+请求 → `FilterChainProxy` 选择 `SecurityFilterChain` → 逐个 filter 执行 → `Authentication`/`Authorization` 决策 → 可能影响 MVC 异常边界。
+
+下一章见：[第 86 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

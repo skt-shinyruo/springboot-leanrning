@@ -5,12 +5,6 @@
 本章围绕「02：SSE（SseEmitter：text/event-stream 最小闭环）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcAsyncSseLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - SSE 是基于 HTTP 的单向推送：响应的 `Content-Type` 通常是 `text/event-stream`，body 由多条 `data:` 事件组成。
-    - 教学示例里不要做“无限流”：测试会变得 flaky 或挂死。用 1–2 条事件后 `complete()` 更适合教学与回归。
-
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcAsyncSseLabTest`

@@ -2,17 +2,7 @@
 
 ## 导读
 
-- 本章主题：**03. DeferredResult（回调式异步）与 timeout/fallback（可控分支）**
 - 目标：在已有 Callable/SSE 的基础上补齐 DeferredResult：讲清它与 Callable 的模型差异、timeout 分支的工程落地方式，并用测试把 `asyncStarted → asyncDispatch` 的闭环固定下来。
-
-!!! summary "本章要点"
-
-    - `Callable`：更接近“把 controller 的返回值延迟到另一个线程计算”，模型偏函数式（return a value）。
-    - `DeferredResult`：更接近“先返回一个承诺（promise），稍后由回调把结果塞进去”，模型偏事件式（setResult）。
-    - timeout/fallback 的价值：把“超时后的行为”做成可控契约（而不是靠默认超时抛异常或让客户端猜）。
-    - 教学实现里，为了让 MockMvc 回归稳定，本模块用“可控延迟回退”来模拟 timeout 分支（不依赖真实 Servlet 容器的 timeout 事件）。
-    - 对测试来说：只要返回的是 async 类型（Callable/DeferredResult/SseEmitter），就要用 MockMvc 的 `asyncDispatch` 固定最终响应。
-
 
 !!! example "本章配套实验（先跑再读）"
 

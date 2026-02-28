@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**02. 99 - Self Check（springboot-basics）**
-- 建议入口：优先运行 `BootBasicsBookMatrixLabTest`（主线）或 `BootBasicsBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），再按题目回到对应复现入口逐一验证。
-
+建议优先运行 `BootBasicsBookMatrixLabTest`（主线）或 `BootBasicsBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），再按题目回到对应复现入口逐一验证。
 
 
 ## 先跑入口（不要只做“纸面题”）
@@ -58,8 +56,8 @@
 
 ## 小结与下一章
 
-- 小结：本章围绕关键主线与边界条件展开，建议结合可运行入口进行验证。
-- 下一章：[Docs TOC](../README.md)
+下一章见：[Docs TOC](../README.md)
+
 
 <!-- BOOKIFY:START -->
 

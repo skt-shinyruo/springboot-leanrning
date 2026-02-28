@@ -1,12 +1,12 @@
 # 03. Cache 调用链（@Cacheable → CacheInterceptor → CacheManager）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：Cache 调用链（@Cacheable → CacheInterceptor → CacheManager）展开，主线可以概括为：缓存是 AOP 拦截器：调用进入代理 → `CacheInterceptor` 解析 cache operation → 生成 key → 从 CacheManager 读写。
 
-    - 知识点：01：Cache 调用链（@Cacheable → CacheInterceptor → CacheManager）
-    - 怎么使用：先跑 `BootCacheLabTest`，把“同 key 命中缓存”固化成断言，再按本文从代理入口走到 `CacheInterceptor` 的分支。
-    - 原理：缓存是 AOP 拦截器：调用进入代理 → `CacheInterceptor` 解析 cache operation → 生成 key → 从 CacheManager 读写。
-    - 源码入口：`CacheInterceptor` / `CacheAspectSupport#execute` / `KeyGenerator` / `CacheManager`
-    - 推荐 Lab：`BootCacheLabTest`
+    先跑 `BootCacheLabTest`，把“同 key 命中缓存”固化成断言，再按本文从代理入口走到 `CacheInterceptor` 的分支。
+
+    需要下探源码时，可以从 `CacheInterceptor` / `CacheAspectSupport#execute` / `KeyGenerator` / `CacheManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. Cache 调用链（@Cacheable → CacheInterceptor → CacheManager）**
-- 建议入口：优先运行 `BootCacheLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：缓存是 AOP 拦截器：调用进入代理 → `CacheInterceptor` 解析 cache operation → 生成 key → 从 CacheManager 读写。
-- 源码入口：`CacheInterceptor` / `CacheAspectSupport#execute` / `KeyGenerator` / `CacheManager`
+建议优先运行 `BootCacheLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：缓存是 AOP 拦截器：调用进入代理 → `CacheInterceptor` 解析 cache operation → 生成 key → 从 CacheManager 读写。需要下探源码时，可以从 `CacheInterceptor` / `CacheAspectSupport#execute` / `KeyGenerator` / `CacheManager` 这些入口切入。
 
 
 ## 最短调用链
@@ -36,8 +34,10 @@
 
 ## 小结与下一章
 
-- 小结：缓存是 AOP 拦截器：调用进入代理 → `CacheInterceptor` 解析 cache operation → 生成 key → 从 CacheManager 读写。
-- 下一章：[第 108 章：02：断点地图](04-breakpoint-map.md)
+缓存是 AOP 拦截器：调用进入代理 → `CacheInterceptor` 解析 cache operation → 生成 key → 从 CacheManager 读写。
+
+下一章见：[第 108 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

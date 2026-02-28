@@ -2,97 +2,80 @@
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
 
-    - 知识点：90：常见坑清单（Security）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：将认证/授权配置为 FilterChain；区分 401/403 与 CSRF 场景；方法级安全依赖代理与拦截器链。
-    - 原理：HTTP 请求 → `FilterChainProxy` 选择 SecurityFilterChain → 认证（Authentication）→ 授权（Authorization）→ 异常处理（401/403）→ 继续进入 MVC。
-    - 源码入口：`org.springframework.security.web.FilterChainProxy` / `org.springframework.security.web.SecurityFilterChain` / `org.springframework.security.web.access.intercept.AuthorizationFilter`
-    - 推荐 Lab：`BootSecurityDevProfileLabTest`
+    Security 的坑很少是“注解写错了”，更多是“请求在 FilterChain 里走到了哪一步”。本章把高频误判（401/403/CSRF、method security 的代理边界、多条 FilterChain 的匹配顺序）整理成一份可对照的排障笔记。
+
+    建议先跑 `BootSecurityDevProfileLabTest` / `BootSecurityLabTest` 把状态码与错误体的分流跑成事实，再回到本章逐条对照；需要下探源码时，从 `FilterChainProxy` 选择链、`AuthorizationFilter` 的授权决策，以及异常翻译链路切入最省时间。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[05. JWT/Stateless：Bearer token + scope（最小闭环）](../part-01-security/05-jwt-stateless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-security）](02-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
-## 导读
+## 先把 FilterChain 的分流跑成断言（再谈 401/403/CSRF）
 
-### 排障模板（统一结构）
+安全行为的第一个事实是：请求是否进入了预期的 `SecurityFilterChain`。只有把这个事实跑出来，401/403/CSRF 这些分支才有讨论基础；否则很容易在“没走到那条链”的前提下讨论授权规则。
 
-当遇到“行为不符合预期 / 入口跑不通 / 断点不命中”时，建议按下面 6 步收敛（每一步都尽量可复现、可对照、可验证）：
+建议先用两组矩阵测试把主线与分支固定下来：
 
-1. 症状（Symptoms）：看到的错误/现象（保留关键错误信息）
-2. 复现（Repro）：用最小可运行入口稳定复现（优先用测试入口，而不是手工点 UI）
-   - Book Matrix：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
-   - Branch Matrix：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
-3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[04-breakpoint-map.md](../part-00-guide/04-breakpoint-map.md)
-4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[05-branch-decision-matrix.md](../part-00-guide/05-branch-decision-matrix.md)
-5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
-6. 验证（Verify）：复跑入口 + 对照自检清单：[02-self-check.md](02-self-check.md)
+- `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
+- `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
 
-- 本章主题：**01. 常见坑清单（Security）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+需要沿源码追时，再对照本模块的断点地图与关键分支矩阵去命中入口，它们把“链选择点/异常翻译点/CSRF 拦截点”都标出来了：[04-breakpoint-map.md](../part-00-guide/04-breakpoint-map.md) / [05-branch-decision-matrix.md](../part-00-guide/05-branch-decision-matrix.md)。
 
 
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityDevProfileLabTest` / `BootSecurityLabTest`
 
-## 机制主线
-
-这页不展开完整机制主线；其定位更接近排障备忘录：把常见分支与可复现入口列出来，便于回到 tests 验证。
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`BootSecurityDevProfileLabTest` / `BootSecurityLabTest`
 - 建议命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
+下面几个坑围绕的是同一条主线：HTTP 请求进入 `FilterChainProxy`，选择链之后完成认证（Authentication）与授权（Authorization），最后由异常翻译链路把结果变成 401/403/CSRF，再决定是否继续进入 MVC。
 
+## 401 vs 403：先问“有没有认证”，再谈“有没有权限”
 
-## 401 vs 403 判断错
+401 的核心含义是“没有通过认证”，调用方要做的动作是“登录/携带凭证”；403 则是“已经认证但被拒绝”，需要回到权限/CSRF 等策略上找原因。把它们混为一谈，排障通常会在错误的层里来回折返。
 
-- 401：没认证（anonymous / 登录失败）
-- 403：已认证但没权限（或 CSRF 拦截）
+本模块的示例会把错误响应的 `message` 固定成三类：`unauthorized`、`forbidden`、`csrf_failed`。当错误体能稳定落在这三类之一时，排障速度会明显提升，因为“分支结果”被写进了证据里，而不是留在脑补里。
 
-建议先看本模块统一错误响应的 `message`：
-- `unauthorized`
-- `forbidden`
-- `csrf_failed`
+对应的最小对照（建议先跑一遍再读本节）：
+
+- 401（匿名访问 secure）：`BootSecurityLabTest#secureEndpointReturns401WhenAnonymous`
+- 403（已认证但无权限）：`BootSecurityLabTest#adminEndpointReturns403ForNonAdminUser`
+- 403（CSRF 缺失导致的拦截）：`BootSecurityLabTest#csrfBlocksPostEvenWhenAuthenticated`
 
 ## CSRF 误区
 
-- Basic Auth 并不天然绕过 CSRF：只需是“写操作”，就可能需要 CSRF token（取决于链路配置）。
-- 对 API 场景常见做法是禁用 CSRF，但要明确安全边界（本模块用 `/api/jwt/**` 做了演示）。
+Basic Auth 并不天然绕过 CSRF：只要是“写操作”，就可能需要 CSRF token（取决于链路配置）。因此当看到 403 时，先不要急着改授权规则，可以先确认是不是 CSRF 分支命中了（上面的测试就是最短证据）。
+
+对于纯 API 场景，常见做法是禁用 CSRF，但前提是安全边界被明确表达出来（例如选择 stateless 的 JWT 链路）。本模块在 `/api/jwt/**` 上给了一个对照：`BootSecurityLabTest#jwtPostDoesNotRequireCsrf`。
 
 ## Method Security 没生效
 
-- 最常见根因：self-invocation 没走代理。
-- 排查时先问自己：调用是从另一个 bean 进来的吗？还是同类 `this.xxx()`？
+方法级安全依赖代理与拦截器链，因此最常见的根因仍然是 self-invocation：调用发生在同一个类内部，绕过了代理，于是 `@PreAuthorize` 等拦截器根本没有机会介入。
+
+排查时先问自己一个问题：调用是从另一个 bean 进来的吗？还是同类 `this.xxx()`？这个边界可以用 `BootSecurityLabTest#selfInvocationBypassesMethodSecurityAsAPitfall` 直接对照。
 
 ## JWT 授权不匹配
 
-- scope claim 长什么样？（`scope` vs `scp`）
-- 规则写的是 `hasRole` 还是 `hasAuthority("SCOPE_xxx")`？
+JWT 的授权失败往往不是“token 不对”，而是 claim 的形状与授权规则对不上：scope claim 叫 `scope` 还是 `scp`？规则写的是 `hasRole` 还是 `hasAuthority("SCOPE_xxx")`？这些差异都属于“语义不匹配”，而不是实现错误。
+
+本模块用 `BootSecurityLabTest#jwtAdminEndpointReturns403WhenScopeMissing` 与 `BootSecurityLabTest#jwtAdminEndpointIsAccessibleWhenAdminScopePresent` 把这个分支写成了最小对照。
 
 ## 多个 FilterChain 规则冲突
 
 ### 坑点：更“宽”的 matcher 抢先匹配，导致直觉里的链路根本没进来
 
-- Symptom：以为 `/jwt/**` 会走 JWT 的那条 `SecurityFilterChain`，结果却走了另一条（常见表现：401/403 与预期不一致，或者根本没有走到加的 Filter）。
-- Root Cause：`FilterChainProxy` 会按顺序遍历 `SecurityFilterChain`，**第一个 matches 的链就会被选中**；如果某条链的 matcher 过宽（例如 `/**`）且顺序更靠前，它会“吃掉”后续更具体的链。
-- Verification：`BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain`
-- Breakpoints：`FilterChainProxy#doFilterInternal`、`FilterChainProxy#getFilters`、`DefaultSecurityFilterChain#matches`
-- Fix：让 matcher 更具体（优先写清路径/方法），并显式控制链顺序（例如 `@Order`）；同时把“到底选了哪条链”用可断言的 Lab/Test 固化下来。
+以为 `/jwt/**` 会走 JWT 的那条 `SecurityFilterChain`，结果却走了另一条（常见表现：401/403 与预期不一致，或者根本没有走到加的 Filter）。这类问题之所以“像玄学”，是因为链路在最开始就选错了分支，后面的所有判断都建立在错误前提上。
+
+`FilterChainProxy` 会按顺序遍历 `SecurityFilterChain`，**第一个 matches 的链就会被选中**；如果某条链的 matcher 过宽（例如 `/**`）且顺序更靠前，它会“吃掉”后续更具体的链。
+
+这件事可以直接用 `BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain` 复现：同一个 `FilterChainProxy`，对不同 path 会选择不同链。断点入口通常落在 `FilterChainProxy#doFilterInternal`、`FilterChainProxy#getFilters`、`DefaultSecurityFilterChain#matches`。
+
+修复思路也应当服务于“让分支变得确定”：把 matcher 写得更具体（优先写清路径/方法），并显式控制链顺序（例如 `@Order`）。同时，把“到底选了哪条链”用可断言的 Lab/Test 固化下来，避免把行为留在口头约定里。
 
 - matcher 覆盖范围是否互斥？
 - `@Order` 是否符合预期？
@@ -104,7 +87,6 @@
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

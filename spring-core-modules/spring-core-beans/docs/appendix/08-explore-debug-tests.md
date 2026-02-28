@@ -1,18 +1,17 @@
 # 08. Explore/Debug 用例（可选启用，不影响默认回归）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：Explore/Debug 用例：如何开启、看什么、怎么把观察结果“用回主线”
     - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`DefaultSingletonBeanRegistry#getSingleton` / `DefaultSingletonBeanRegistry#addSingleton` / `DefaultSingletonBeanRegistry#addSingletonFactory`
-    - 推荐 Lab：`SpringCoreBeansSingletonCacheExploreTest`
+
+    本章围绕Explore/Debug 用例：如何开启、看什么、怎么把观察结果“用回主线”展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansSingletonCacheExploreTest`。需要下探源码时，可以从 `DefaultSingletonBeanRegistry#getSingleton` / `DefaultSingletonBeanRegistry#addSingleton` / `DefaultSingletonBeanRegistry#addSingletonFactory` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[07. spring-beans Public API Gap 清单（按包/机制域分批深化）](07-spring-beans-public-api-gap.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[11. 自测题：是否能够真的理解了？](11-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
-
 
 
 ## 导读
@@ -22,13 +21,6 @@
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - Explore 用例的定位：**学习期的“显微镜”**——把 Spring 内部数据结构（缓存/表/映射）变化变成应能够在调试器里观察到的东西。
-    - 它们默认不运行：用 `@EnabledIfSystemProperty(named = "springcorebeans.explore", matches = "true")` 保护，避免 CI/回归因为“观察型断言”而不稳定。
-    - 它们不是“生产诊断方案”：测试会用反射访问内部字段、依赖实现细节；Spring 升级后可能需要同步调整。
-    - 正确使用方式：先用 Core Labs 固化结论（可断言、稳定），再用 Explore 用例补齐“希望观察缓存如何变化”的证据链。
 
 !!! example "本章配套实验（Explore 用例，先运行再读）"
 
@@ -200,7 +192,7 @@ Explore 用例本身不是面试题，但它能显著提升读者答题的“可
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansSingletonCacheExploreTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
+    建议 先跑 `SpringCoreBeansSingletonCacheExploreTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：把该页从“信息堆”变成“可用入口”：每个条目尽量落到“去哪里验证/怎么验证”，避免只列名词。
     - 下一跳：若是从现象进入，优先回到 [知识地图](03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

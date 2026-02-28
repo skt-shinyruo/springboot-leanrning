@@ -5,18 +5,6 @@
 本章围绕「05：条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - 304 的本质：**资源未变化** → 允许服务端不返回 body（节省带宽与时间），但仍然是一次成功的交互。
-    - 两条常见路径：
-    1. **Last-Modified / If-Modified-Since**：常用于静态资源（基于修改时间）
-    2. **ETag / If-None-Match**：常用于内容型资源（基于内容指纹），也可以通过 Filter 自动计算
-    - 本模块提供三种对照，帮助“工程落地时知道选哪种”：
-    - 静态资源：`Last-Modified → If-Modified-Since → 304`
-    - API 显式 ETag：controller 自己计算并返回 `ETag`，自己判断是否 304
-    - Filter 计算 ETag：controller 只返回 body，`ShallowEtagHeaderFilter` 负责 ETag/304
-
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcRealWorldHttpLabTest`

@@ -1,12 +1,12 @@
 # 05. Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcTraceLabTest`
+    阅读时可以先跑 `BootWebMvcTraceLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,14 +17,6 @@
 
 本章围绕「05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcTraceLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - 同步（sync）请求：Interceptor 的典型回调顺序是 `preHandle → postHandle → afterCompletion`。
-    - 异步（async）请求的**第一次 dispatch**：通常只有 `preHandle`，并且会触发 `afterConcurrentHandlingStarted`，而 **不会触发** `postHandle/afterCompletion`。
-    - 异步（async）请求的**第二次 dispatch（asyncDispatch）**：会再次进入 `preHandle → postHandle → afterCompletion`，但 handler 方法通常不会再次执行（结果已由 async 线程产生）。
-    - 这也是为什么：把“计时/埋点/日志”写在 `postHandle`，在 async 场景下可能会“少打一半日志”——需要同时理解 `afterConcurrentHandlingStarted` 与二次 dispatch。
-
 
 !!! example "本章配套实验（先跑再读）"
 

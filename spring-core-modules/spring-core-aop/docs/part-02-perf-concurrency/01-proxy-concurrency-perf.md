@@ -1,12 +1,12 @@
 # 01. 并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）展开，主线可以概括为：AOP proxy 通常是单例复用；每次方法调用会创建独立的 `MethodInvocation` 并执行拦截器链；如果 advice 需要携带“调用上下文”，应使用 ThreadLocal（并在 finally 清理）或显式上下文传递机制。
 
-    - 知识点：并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）
-    - 怎么使用：先跑本章 Lab，把“proxy 可并发调用 + advice 的 ThreadLocal 状态不跨线程串线”固化成断言；再回到正文理解为什么 proxy 是共享对象、invocation 是每次调用独立对象，以及什么状态是安全的、什么是危险的。
-    - 原理：AOP proxy 通常是单例复用；每次方法调用会创建独立的 `MethodInvocation` 并执行拦截器链；如果 advice 需要携带“调用上下文”，应使用 ThreadLocal（并在 finally 清理）或显式上下文传递机制。
-    - 源码入口：`org.springframework.aop.framework.DefaultAdvisorChainFactory#getInterceptorsAndDynamicInterceptionAdvice` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed`
-    - 推荐 Lab：`SpringCoreAopProxyConcurrencyLabTest`
+    先跑本章 Lab，把“proxy 可并发调用 + advice 的 ThreadLocal 状态不跨线程串线”固化成断言；再回到正文理解为什么 proxy 是共享对象、invocation 是每次调用独立对象，以及什么状态是安全的、什么是危险的。
+
+    对照入口：`SpringCoreAopProxyConcurrencyLabTest`。需要下探源码时，可以从 `org.springframework.aop.framework.DefaultAdvisorChainFactory#getInterceptorsAndDynamicInterceptionAdvice` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -18,17 +18,9 @@
 本章围绕「并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 优先运行 `SpringCoreAopProxyConcurrencyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - proxy 通常是单例复用：多个线程会同时调用同一个 proxy 对象。
-    - invocation（一次调用的上下文）是每次调用独立的：不要把“每次调用状态”放在 aspect 的字段里。
-    - ThreadLocal 是常见的“每线程上下文承载”方案：必须在 finally 清理，否则会在线程池里造成串线/泄露。
-
 !!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreAopProxyConcurrencyLabTest`
-
-## 机制主线
 
 ### 1) 先澄清一个误解：proxy 不是“每次调用新建的”
 

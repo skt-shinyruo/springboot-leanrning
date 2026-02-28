@@ -1,18 +1,17 @@
 # 11. 自定义 Scope + scoped proxy：thread scope 的真实语义
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：28. 自定义 Scope + scoped proxy：thread scope 的真实语义
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`AbstractBeanFactory#doGetBean` / `Scope#get` / `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly`
-    - 推荐 Lab：`SpringCoreBeansCustomScopeLabTest`
+
+    本章围绕28. 自定义 Scope + scoped proxy：thread scope 的真实语义展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansCustomScopeLabTest`。需要下探源码时，可以从 `AbstractBeanFactory#doGetBean` / `Scope#get` / `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[10. SmartLifecycle：start/stop 时机与 phase 顺序](10-smart-lifecycle-phase.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[12. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](12-factorybean-edge-cases.md)
 <!-- GLOBAL-BOOK-NAV:END -->
-
 
 
 ## 导读
@@ -24,16 +23,6 @@
 - 官方文档对照（Scopes，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
 
 
-!!! summary "本章要点"
-
-    - scope 管的不是“对象长什么样”，而是：**容器每次 `getBean` 时如何取对象**（singleton/prototype/custom scope 只是不同分流）。
-    - 把短生命周期 scope（prototype/thread/request 等）直接注入 singleton，最易落入“冻结引用”陷阱：注入只发生一次，之后一直用那一个引用。
-    - 两个最常见解法：
-      - `ObjectProvider<T>`：把解析推迟到“使用时”（每次调用回到容器解析）
-      - scoped proxy：注入 proxy，把“回到 scope 找真实对象”的动作隐藏在方法调用里
-    - 本仓库已补齐对照实验：thread scope 与 prototype 都能复现“冻结 vs 延迟解析”的差异。
-
-
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansCustomScopeLabTest`
@@ -42,7 +31,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly`，再用 `SpringCoreBeansCustomScopeLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly`，再用 `SpringCoreBeansCustomScopeLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`AbstractBeanFactory#doGetBean` / `Scope#get`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -170,11 +159,6 @@ prototype 是最典型的例子。
 2) 为什么 thread scope 注入到 singleton 会“冻结”？应能够给出两种解法并说明代价吗？
 3) scoped proxy 的本质是什么？它为什么会提高 debug 成本？
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
 - 本章已在正文中引用以下 LabTest（优先运行它们）：
@@ -187,7 +171,6 @@ prototype 是最典型的例子。
 
 - 入口测试（推荐先运行通再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
-- 推荐运行命令：
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomScopeLabTest test`
 
 对应实验：
@@ -241,10 +224,6 @@ prototype 是最典型的例子。
 
 - **误区 1：以为 scope 会自动传播到注入点**
   - scope 的语义是“容器如何管理对象”；注入点如果不做延迟解析，仍然只取一次。
-
-## 小结与下一章
-
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 ## 自检要点
 应能够解释清楚：

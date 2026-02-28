@@ -1,12 +1,12 @@
 # 05. 生产排障清单（Troubleshooting Checklist）：从症状到证据链
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：生产排障清单：从症状到证据链
     - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`DefaultListableBeanFactory#registerBeanDefinition` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultSingletonBeanRegistry#getSingleton`
-    - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
+
+    本章围绕生产排障清单：从症状到证据链展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansBreakpointPackLabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#registerBeanDefinition` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultSingletonBeanRegistry#getSingleton` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,20 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**05. 生产排障清单（Troubleshooting Checklist）：从症状到证据链**
 - 阅读方式建议：把本章当成“排障 SOP”。遇到问题时不要凭感觉改配置/改注入，而是按本章固定流程：先定位阶段 → 再找最短断点入口 → 再用最小复现验证。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 排障优先级：**先确定发生阶段**（definition vs bean creation vs after-init）→ 再确定分支点（if/then）→ 最后才谈修复方案。
-    - 生产排障不要直接“猜改”：优先把现象缩小到最小容器/最小配置（本仓库的 Lab 就是为这一步准备的）。
-    - 证据链要闭环：Symptoms → Repro → Evidence → Decision → Fix → Verify（少一步就容易复发）。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -84,7 +76,7 @@
    - 注入点语义：`DependencyDescriptor`（是否 required / 是否 @Lazy / 是否带 Qualifier）
 4) 最短下一跳：
    - 章节：`part-01-ioc-container/02-dependency-injection-resolution.md`、`part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md`
-   - 复现入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`
+   - 对照入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
 ### 0.1.2 代理不生效（像绕过 AOP）：先证“BPP 链是否完整”再证“替换是否发生”
 
@@ -98,7 +90,7 @@
    - after-init 返回的对象是否发生替换（raw vs proxy）
 4) 最短下一跳：
    - 章节：`part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`、`part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
-   - 复现入口：`SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
+   - 对照入口：`SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
 
 ### 0.1.3 循环依赖/early reference：先区分 constructor vs setter，再看 early 与 final 是否一致
 
@@ -110,38 +102,38 @@
    - early reference 的形态（raw vs proxy）与最终暴露对象是否一致
 4) 最短下一跳：
    - 章节：`part-01-ioc-container/08-circular-dependencies.md`、`part-03-container-internals/05-early-reference-and-circular.md`
-   - 复现入口：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
+   - 对照入口：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 
-## 1. 排障 SOP（建议固定为团队模板）
+## 1. 排障的最短闭环（把“感觉”压成可验证步骤）
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-### 1.1 Symptoms（现象）
+### 1.1 先把现象写成事实
 
 - 异常类型是什么（root cause 关键词）？
 - 是启动时失败，还是运行一段时间后失败？
 - 影响面：所有请求都挂，还是某条路径触发？
 
-### 1.2 Repro（最小复现）
+### 1.2 把复现入口缩小到“可重复”
 
 - 能否用 **最小容器** 复现（`AnnotationConfigApplicationContext`/`GenericApplicationContext`）？
 - 能否用本仓库 **对应 Lab** 复现同类机制边界？
 
-### 1.3 Evidence（证据链）
+### 1.3 证据链：断点 + 观察点
 
 - 选 1 个关键方法设置断点 + 3 个观察点（watch list）
 - 把“猜”变成“观察到”：候选集合是什么？BPP 链顺序是什么？三层缓存状态是什么？
 
-### 1.4 Decision（分流决策）
+### 1.4 分流：这是定义层、实例层还是时机问题？
 
 - 定义层问题？实例层问题？时机问题（过早实例化）？
 - 顺序问题（谁包谁）？还是形态问题（early vs final）？
 
-### 1.5 Fix（修复）
+### 1.5 修复：先消根因，再谈策略
 
 - 修复优先级：消除根因（设计/边界） > 改注入策略（Qualifier/Provider/Lazy） > 开关回退（最后才用）
 
-### 1.6 Verify（验证）
+### 1.6 回归：把修复写成可重复验证
 
 - 写一个可回归的最小测试（或在现有 Lab 中补断言）
 - 再运行一次主线回归（本模块 `mvn -pl :spring-core-beans test`）
@@ -163,99 +155,99 @@
 
 ### 2.1 启动失败：`BeanDefinitionStoreException` / XML/Reader 相关
 
-**Symptoms：**
+现象通常表现为：
 
 - `BeanDefinitionStoreException`、`BeanDefinitionParsingException`、XML 解析失败等
 
-**Evidence：**
+可以从这些断点/观察点收敛：
 
 - `AbstractApplicationContext#refresh`（定位阶段）
 - `XmlBeanDefinitionReader#loadBeanDefinitions`（如果走 XML）
 - `DefaultListableBeanFactory#registerBeanDefinition`（注册入口）
 
-**Decision：**
+分流时重点问：
 
 - 定义层输入有误（XML/资源路径/占位符）还是 processor 改写造成冲突？
 
-**Docs：**
+对应章节：
 
 - `part-01-ioc-container/01-bean-registration.md`
 - `part-05-aot-and-real-world/03-xml-bean-definition-reader.md`
 
 ### 2.2 启动失败：`NoSuchBeanDefinitionException` / `NoUniqueBeanDefinitionException`
 
-**Symptoms：**
+现象通常表现为：
 
 - 缺 bean / 多候选歧义
 
-**Evidence：**
+可以从这些断点/观察点收敛：
 
 - `DefaultListableBeanFactory#doResolveDependency`
 - `findAutowireCandidates`（候选集合）
 - `determineAutowireCandidate`（收敛规则）
 
-**Docs：**
+对应章节：
 
 - `part-01-ioc-container/02-dependency-injection-resolution.md`
 - `part-04-wiring-and-boundaries/16-autowire-candidate-selection-primary-priority-order.md`
 
 ### 2.3 代理不生效（事务/安全/缓存像没开）
 
-**Symptoms：**
+现象通常表现为：
 
 - 读者“确定加了 AOP”，但调用路径像绕过代理
 
-**Evidence：**
+可以从这些断点/观察点收敛：
 
 - `beanFactory.getBeanPostProcessors()`（BPP 链是否完整 & 顺序）
 - `applyBeanPostProcessorsAfterInitialization`（代理/替换发生点）
 - 是否存在“过早实例化”（bean 在 BPP 注册前就被创建）
 
-**Decision：**
+分流时重点问：
 
 - 顺序问题（谁包谁） vs 时机问题（错过 BPP）
 
-**Docs：**
+对应章节：
 
 - `part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`
 - `part-04-wiring-and-boundaries/08-programmatic-bpp-registration.md`
 
 ### 2.4 循环依赖 / 提前引用相关（启动失败或行为诡异）
 
-**Symptoms：**
+现象通常表现为：
 
 - `BeanCurrentlyInCreationException`
 - 代理/增强后开始出现循环依赖相关异常
 
-**Evidence：**
+可以从这些断点/观察点收敛：
 
 - `DefaultSingletonBeanRegistry#getSingleton`（三层缓存命中分支）
 - `DefaultSingletonBeanRegistry#addSingletonFactory`（early exposure 起点）
 - `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`（early 形态决定）
 
-**Decision：**
+分流时重点问：
 
 - constructor cycle（通常 fail-fast）还是 setter cycle（窗口期可救）？
 - early/raw 与 final/proxy 是否一致？
 
-**Docs：**
+对应章节：
 
 - `part-01-ioc-container/08-circular-dependencies.md`
 - `part-03-container-internals/05-early-reference-and-circular.md`
 
 ### 2.5 `@Value` 值不对 / 缺失不失败 / 运行期才暴露
 
-**Symptoms：**
+现象通常表现为：
 
 - 值是 `"${missing}"` 原样字符串
 - strict/non-strict 行为在不同环境不一致
 
-**Evidence：**
+可以从这些断点/观察点收敛：
 
 - `AbstractBeanFactory#resolveEmbeddedValue`（解析输入/输出）
 - `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`（strict 策略来源）
 
-**Docs：**
+对应章节：
 
 - `part-04-wiring-and-boundaries/17-value-placeholder-resolution-strict-vs-non-strict.md`
 - `part-05-aot-and-real-world/05-spel-and-value-expression.md`
@@ -271,9 +263,9 @@
 
 它把常见问题都压缩成“断点入口 + watch list + 对应 Lab”，适合作为生产排障的第一跳转页。
 
-## 最短调用链（方法级）：把“Evidence”写成可执行路线
+## 最短调用链（方法级）：把“证据链”写成可执行路线
 
-本页每个条目都给了 Evidence（方法名），但读者真正落地排障时，需要把它组装成 3 步的最短调用链：
+本页每个条目都给了“证据链入口”（方法名），但真正落地排障时，需要把它组装成 3 步的最短调用链：
 
 1) **定位阶段**：先在 `AbstractApplicationContext#refresh`（或启动异常栈顶）确认自己处在 refresh 的哪一段。
 2) **锁定入口**：选择该现象的第一入口方法（例如 `doResolveDependency` / `getSingleton` / `resolveEmbeddedValue`）。
@@ -292,7 +284,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：生产排障清单按症状给分流：注入失败/代理不生效/循环依赖/配置不生效等，每类给出第一入口断点与对应章节/用例。
     - 下一跳：需要补齐“现象 → 章节 → 断点组 → Lab”时，回到 [知识地图](03-knowledge-map.md)；需要快速选断点组时，回到 [断点地图](../part-00-guide/07-breakpoint-map.md)。
@@ -300,8 +292,10 @@
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[95. spring-beans Public API Index（索引）](06-spring-beans-public-api-index.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[95. spring-beans Public API Index（索引）](06-spring-beans-public-api-index.md)
+
 
 <!-- BOOKIFY:START -->
 

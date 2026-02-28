@@ -5,7 +5,7 @@
     工程里很常见的一种误解是：调用方在 `@Transactional` 里调 `@Async`，以为异步逻辑也“在同一个事务里”。这章专门把这件事说清楚：事务到底在哪个线程里生效。
 
     - 最简单的判断：在两个线程里分别看 `TransactionSynchronizationManager.isActualTransactionActive()`
-    - 最小复现入口：`BootAsyncSchedulingTransactionBoundaryLabTest#transactionContextDoesNotPropagateAcrossAsyncThreadBoundaryByDefault`
+    - 对照入口：`BootAsyncSchedulingTransactionBoundaryLabTest#transactionContextDoesNotPropagateAcrossAsyncThreadBoundaryByDefault`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**06. `@Async` × `@Transactional`：事务边界与执行线程**
-- 建议入口：优先运行 `BootAsyncSchedulingTransactionBoundaryLabTest#transactionContextDoesNotPropagateAcrossAsyncThreadBoundaryByDefault`（见文末“对应 Lab/Test”），先看清“不会自动传播”，再理解“同一方法同时标注时事务在哪里开启”。
-
+建议优先运行 `BootAsyncSchedulingTransactionBoundaryLabTest#transactionContextDoesNotPropagateAcrossAsyncThreadBoundaryByDefault`（见文末“对应 Lab/Test”），先看清“不会自动传播”，再理解“同一方法同时标注时事务在哪里开启”。
 
 
 ## 先从“以为能回滚”的那种 bug 说起
@@ -24,8 +22,6 @@
 很多事故的起点都很朴素：在一个事务里做了一些校验，然后顺手调用 `@Async` 去做写库/发消息，心想失败就回滚、成功就提交。上线后会发现：调用方事务回滚了，但异步那边已经“写出去了”。
 
 这不是 Spring 在耍赖，而是事务的底层语义决定的：**事务上下文绑定在线程上**。线程一换，事务也就跟着断开了。
-
-## 机制主线
 
 ### 1) 事务上下文属于线程：它不是“调用链共享变量”
 

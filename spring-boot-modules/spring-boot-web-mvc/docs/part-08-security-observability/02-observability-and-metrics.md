@@ -5,13 +5,6 @@
 本章围绕「02：Observability（Interceptor 计时 vs Actuator 指标）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcObservabilityLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - **Interceptor 计时**：更贴近 Web MVC 链路（DispatcherServlet 内），适合解释“handler 处理时间”。
-    - **Actuator 指标（Micrometer）**：更贴近运行时观测（聚合/统计），适合回答“总体趋势/分布/标签维度”的问题。
-    - 两者不是互斥关系：教学目标是理解“观测点在哪里”以及“为什么它们看到的东西不完全相同”。
-
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcObservabilityLabTest`

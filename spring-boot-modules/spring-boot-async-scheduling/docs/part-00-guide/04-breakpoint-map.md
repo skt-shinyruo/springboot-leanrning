@@ -13,9 +13,7 @@
 
 ## 导读
 
-- 本章主题：**04. 断点地图（Async & Scheduling Debugger Pack）**
-- 建议入口：优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），在断言处下断点，再按本页清单逐步把分支与观察点对齐。
-
+建议优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），在断言处下断点，再按本页清单逐步把分支与观察点对齐。
 
 
 ## 这页怎么用
@@ -122,8 +120,8 @@
 
 ## 小结与下一章
 
-- 小结：本章围绕关键主线与边界条件展开，建议结合可运行入口进行验证。
-- 下一章：[第 118 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+下一章见：[第 118 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

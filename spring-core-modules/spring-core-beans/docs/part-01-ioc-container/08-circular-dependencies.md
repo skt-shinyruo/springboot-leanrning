@@ -1,12 +1,12 @@
 # 08. 循环依赖：现象、原因与规避（constructor vs setter）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：循环依赖：现象、原因与规避（constructor vs setter）
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean` / `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`
-    - 推荐 Lab：`SpringCoreBeansContainerLabTest`
+
+    本章围绕循环依赖：现象、原因与规避（constructor vs setter）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansContainerLabTest`。需要下探源码时，可以从 `ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean` / `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,22 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**08. 循环依赖：现象、原因与规避（constructor vs setter）**
 - 阅读方式建议：先运行“constructor fail-fast vs setter 可能成功”的最小实验，再带着断点把“为什么能救/为什么救不了”的证据链走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 循环依赖不是“Spring 的黑箱机制题”，它首先是一个**依赖图/职责边界**问题：能启动不代表设计健康。
-    - **constructor cycle 基本 fail-fast**：因为构造器依赖发生在实例化之前，容器还没机会产生“可注入的引用”。
-    - **setter cycle 有时能成功**：因为 singleton 创建过程中存在一个“提前暴露（early exposure）”窗口，容器可以先让依赖方获取到一个 early reference，从而使依赖环得以闭合。
-    - “三级缓存”不是背字段名：它表达的是三种语义（final / early / factory），并把 early reference 的产生时机固定在 `doCreateBean` 的窗口期。
-    - 工程上优先级：**重构消环 > 延迟依赖（@Lazy/ObjectProvider）> 临时开关**；把所有注入改成 setter 只是在制造更隐蔽的故障。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -356,7 +346,7 @@ setter 注入能够“使依赖环得以闭合”的前提是：需要接受半�
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ConstructorResolver#autowireConstructor` / `AbstractAutowireCapableBeanFactory#populateBean`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“排障配方：如何定位“环路边”并选择打断手段”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -364,8 +354,10 @@ setter 注入能够“使依赖环得以闭合”的前提是：需要接受半�
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/03-spring-boot-auto-configuration.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）](../part-02-boot-autoconfig/03-spring-boot-auto-configuration.md)
+
 
 <!-- BOOKIFY:START -->
 

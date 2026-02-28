@@ -1,12 +1,12 @@
 # 04. 关键分支矩阵（Web MVC Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Web MVC Branch Decision Matrix）展开，主线可以概括为：错误分支多数发生在 controller 前后：argument resolver/binder/message converter/exception resolvers。
 
-    - 知识点：04：关键分支矩阵（Web MVC Branch Decision Matrix）
-    - 怎么使用：把 Web MVC 最常见的错误分支（400/406/415）与对应的异常类型/收敛点写成矩阵表，并提供可复现入口（Branch Matrix Test）。
-    - 原理：错误分支多数发生在 controller 前后：argument resolver/binder/message converter/exception resolvers。
-    - 源码入口：`DispatcherServlet#doDispatch` / `HandlerMethodArgumentResolverComposite#resolveArgument` / `AbstractMessageConverterMethodArgumentResolver#readWithMessageConverters`
-    - 推荐 Lab：`BootWebMvcErrorBranchMatrixLabTest`
+    把 Web MVC 最常见的错误分支（400/406/415）与对应的异常类型/收敛点写成矩阵表，并提供可复现入口（Branch Matrix Test）。
+
+    对照入口：`BootWebMvcErrorBranchMatrixLabTest`。需要下探源码时，可以从 `DispatcherServlet#doDispatch` / `HandlerMethodArgumentResolverComposite#resolveArgument` / `AbstractMessageConverterMethodArgumentResolver#readWithMessageConverters` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -50,8 +50,10 @@
 
 ## 小结与下一章
 
-- 小结：错误分支多数发生在 controller 前后：argument resolver/binder/message converter/exception resolvers。
-- 下一章：[第 65 章：01：知识地图（Web MVC Deep Dive Map）](05-knowledge-map.md)
+错误分支多数发生在 controller 前后：argument resolver/binder/message converter/exception resolvers。
+
+下一章见：[第 65 章：01：知识地图（Web MVC Deep Dive Map）](05-knowledge-map.md)
+
 
 <!-- BOOKIFY:START -->
 

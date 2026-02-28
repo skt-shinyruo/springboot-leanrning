@@ -1,18 +1,17 @@
 # 07. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(...)` / `DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` / `DefaultListableBeanFactory#registerBeanDefinition`
-    - 推荐 Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
+
+    本章围绕24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansBeanDefinitionOverridingLabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(...)` / `DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` / `DefaultListableBeanFactory#registerBeanDefinition` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[06. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义](06-factorybean-deep-dive.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08. 手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](08-programmatic-bpp-registration.md)
 <!-- GLOBAL-BOOK-NAV:END -->
-
 
 
 ## 导读
@@ -23,14 +22,6 @@
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-!!! summary "本章要点"
-
-    - BeanDefinition overriding 解决的是 **name-based 的定义冲突**：同一个 beanName 被注册多次时，是 last-wins 还是 fail-fast。
-    - `allowBeanDefinitionOverriding=true`：后注册覆盖先注册（更“灵活”，但更难排障）；`false`：注册阶段直接失败（更安全、更可控）。
-    - overriding ≠ 按类型多候选（`NoUniqueBeanDefinitionException`）：不要用“允许覆盖”去解决注入歧义。
-    - 排障关键不是“类型”，而是 **beanName + 来源**：谁先注册、谁后注册、最终 registry 里保存的是哪一个（本仓库 Lab 已补齐 BeanDefinition 来源 dump 的证据链）。
-
-
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
@@ -39,7 +30,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansBeanDefinitionOverridingLabTest`，再用 `SpringCoreBeansBeanDefinitionOriginLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansBeanDefinitionOverridingLabTest`，再用 `SpringCoreBeansBeanDefinitionOriginLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`DefaultListableBeanFactory#registerBeanDefinition`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“6. 排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -201,7 +192,6 @@
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

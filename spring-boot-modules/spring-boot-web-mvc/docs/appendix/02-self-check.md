@@ -23,15 +23,7 @@
 ## 从 Branch Matrix 进入（关键分支最小集合）
 
 - 错误分支矩阵 400/406/415：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
-- 配套资料：[`断点地图`](../part-00-guide/06-breakpoint-map.md) / [`关键分支矩阵`](../part-00-guide/04-branch-decision-matrix.md)
-
-- 本章主题：**02. 99 - Self Check（springboot-web-mvc）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 读完本章，应当能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 如果只看一眼：请先跑一次本章的最小实验，再回到主线对照阅读。
+- 配套资料：[`断点地图 `](../part-00-guide/06-breakpoint-map.md) / [` 关键分支矩阵`](../part-00-guide/04-branch-decision-matrix.md)
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -68,11 +60,6 @@
 | 7 | `BootWebMvcRealWorldHttpLabTest` | `ServletWebRequest#checkNotModified` / `ShallowEtagHeaderFilter` | ETag/Last-Modified/304 |
 | 8 | `BootWebMvcAsyncSseLabTest` / `BootWebMvcTraceLabTest` | `WebAsyncManager#startDeferredResultProcessing` / `AsyncHandlerInterceptor#afterConcurrentHandlingStarted` | asyncStarted + 二次 dispatch |
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
 - 本章按“题目 → 证据链”的方式引用 Labs（建议优先跑它们）：
@@ -87,7 +74,6 @@
 - Lab：`BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
 - 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
-### 复现/验证补充说明（来自原文迁移）
 
 ## 对应 Exercise（可运行）
 
@@ -99,7 +85,6 @@
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

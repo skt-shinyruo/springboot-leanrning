@@ -15,9 +15,7 @@
 
 ## 导读
 
-- 本章主题：**05. `@Scheduled` 基础与可测试性**
-- 建议入口：优先运行 `BootAsyncSchedulingSchedulingRegistrationLabTest#scheduledTasksAreRegisteredAsDifferentTaskTypes`（见文末“对应 Lab/Test”），先把“注册语义”钉住，再做最小触发验证。
-
+建议优先运行 `BootAsyncSchedulingSchedulingRegistrationLabTest#scheduledTasksAreRegisteredAsDifferentTaskTypes`（见文末“对应 Lab/Test”），先把“注册语义”钉住，再做最小触发验证。
 
 
 ## 把 `@Scheduled` 当成“系统级开关”，排障会简单很多

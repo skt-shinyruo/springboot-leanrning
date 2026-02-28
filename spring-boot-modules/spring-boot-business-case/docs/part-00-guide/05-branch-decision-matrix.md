@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：业务逻辑的分支最终会落到“是否抛异常、异常类型、事务边界是否覆盖”。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把业务案例里的关键分支（成功/失败、回滚/不回滚）写成矩阵表；每行都有复现入口与证据链。
-    - 原理：业务逻辑的分支最终会落到“是否抛异常、异常类型、事务边界是否覆盖”。
-    - 源码入口：业务 Service + `TransactionInterceptor`
-    - 推荐 Lab：`BootBusinessCaseBranchMatrixLabTest`
+    把业务案例里的关键分支（成功/失败、回滚/不回滚）写成矩阵表；每行都有复现入口与证据链。
+
+    对照入口：`BootBusinessCaseBranchMatrixLabTest`。需要下探源码时，可以从 业务 Service + `TransactionInterceptor` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `BootBusinessCaseBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：业务逻辑的分支最终会落到“是否抛异常、异常类型、事务边界是否覆盖”。
-- 源码入口：业务 Service + `TransactionInterceptor`
+建议优先运行 `BootBusinessCaseBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：业务逻辑的分支最终会落到“是否抛异常、异常类型、事务边界是否覆盖”。需要下探源码时，可以从 业务 Service + `TransactionInterceptor` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -41,8 +39,10 @@
 
 ## 小结与下一章
 
-- 小结：业务逻辑的分支最终会落到“是否抛异常、异常类型、事务边界是否覆盖”。
-- 下一章：[第 191 章：01：业务架构与调用链（从入口到事务与持久化）](../part-01-business-case/01-architecture-and-flow.md)
+业务逻辑的分支最终会落到“是否抛异常、异常类型、事务边界是否覆盖”。
+
+下一章见：[第 191 章：01：业务架构与调用链（从入口到事务与持久化）](../part-01-business-case/01-architecture-and-flow.md)
+
 
 <!-- BOOKIFY:START -->
 

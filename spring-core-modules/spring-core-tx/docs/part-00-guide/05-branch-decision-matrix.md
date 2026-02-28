@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：事务分支由“异常类型 + rollback 规则 + propagation + 代理边界”共同决定。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把事务最常见的分支（rollback rules / propagation / self-invocation pitfall）整理成矩阵表；每一行都能被测试复现并用断点验证。
-    - 原理：事务分支由“异常类型 + rollback 规则 + propagation + 代理边界”共同决定。
-    - 源码入口：`TransactionInterceptor` / `AbstractPlatformTransactionManager`
-    - 推荐 Lab：`SpringCoreTxBranchMatrixLabTest`
+    把事务最常见的分支（rollback rules / propagation / self-invocation pitfall）整理成矩阵表；每一行都能被测试复现并用断点验证。
+
+    对照入口：`SpringCoreTxBranchMatrixLabTest`。需要下探源码时，可以从 `TransactionInterceptor` / `AbstractPlatformTransactionManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `SpringCoreTxBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：事务分支由“异常类型 + rollback 规则 + propagation + 代理边界”共同决定。
-- 源码入口：`TransactionInterceptor` / `AbstractPlatformTransactionManager`
+建议优先运行 `SpringCoreTxBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：事务分支由“异常类型 + rollback 规则 + propagation + 代理边界”共同决定。需要下探源码时，可以从 `TransactionInterceptor` / `AbstractPlatformTransactionManager` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -42,8 +40,10 @@
 
 ## 小结与下一章
 
-- 小结：事务分支由“异常类型 + rollback 规则 + propagation + 代理边界”共同决定。
-- 下一章：[第 54 章：01：事务边界：什么情况下“算在一个事务里”](../part-01-transaction-basics/01-transaction-boundary.md)
+事务分支由“异常类型 + rollback 规则 + propagation + 代理边界”共同决定。
+
+下一章见：[第 54 章：01：事务边界：什么情况下“算在一个事务里”](../part-01-transaction-basics/01-transaction-boundary.md)
+
 
 <!-- BOOKIFY:START -->
 

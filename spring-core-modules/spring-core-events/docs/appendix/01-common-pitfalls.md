@@ -1,19 +1,17 @@
 # 01. 常见坑清单（建议反复对照）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕常见坑清单（建议反复对照）展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
-    - 知识点：常见坑清单（建议反复对照）
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
-    - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
-    - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
-    - 推荐 Lab：`SpringCoreEventsLabTest`
+    先运行 `SpringCoreEventsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+
+    需要下探源码时，可以从 `org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[03. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](../part-02-async-and-transactional/03-transactional-event-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 自测题（Spring Core Events）](02-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
-
-## 导读
 
 ### 排障骨架（统一结构）
 
@@ -46,18 +44,8 @@
     - 事务阶段：`SpringCoreEventsTransactionalEventLabTest`
     - 异步 multicaster：`SpringCoreEventsAsyncMulticasterLabTest`
 
-## 机制主线
-
-这页不展开完整机制主线；其定位更接近排障备忘录：把常见分支与可复现入口列出来，便于回到 tests 验证。
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
@@ -69,25 +57,25 @@
 
 - 会看到：发布方耗时变长、线程名不变；甚至被监听器异常打断，但以为“只是发了个事件”。
 - 事实：事件默认同步（验证：`SpringCoreEventsLabTest#eventsAreSynchronousByDefault`）。
-- Fix：先把“默认同步”当作基线；需要隔离耗时/失败时，再选 `@Async` listener 或 async multicaster，并用线程名/时机写断言。
+先把“默认同步”当作基线；需要隔离耗时/失败时，再选 `@Async` listener 或 async multicaster，并用线程名/时机写断言。
 
 ## 坑 2：监听器抛异常会炸到发布方
 
 - 会看到：监听器一抛异常，发布方也跟着失败；后续 listener 可能没机会执行。
 - 事实：同步事件在同一调用栈里执行，异常默认向上冒泡（验证：`SpringCoreEventsMechanicsLabTest#listenerExceptionsPropagateToPublisher_byDefault`）。
-- Fix：先明确异常处理策略（吞掉/转换/重试/隔离），再选择捕获策略或异步方案，并把行为写进测试。
+先明确异常处理策略（吞掉/转换/重试/隔离），再选择捕获策略或异步方案，并把行为写进测试。
 
 ## 坑 3：没有 `@Order` 却依赖执行顺序
 
 - 会看到：多个监听器都能收到事件，但暗中依赖“先后顺序”，一换环境就开始漂移。
 - 事实：顺序不是“想当然的注册顺序”。需要顺序就显式 `@Order`（验证：`SpringCoreEventsLabTest#orderedListenersFollowOrderAnnotation`）。
-- Fix：把顺序当成契约：要么明确 `@Order`，要么让监听器互不依赖（避免“靠顺序拼业务”）。
+把顺序当成契约：要么明确 `@Order`，要么让监听器互不依赖（避免“靠顺序拼业务”）。
 
 ## 坑 4：以为写了 `@Async` 就一定异步
 
 - 会看到：以为会换线程，但它仍在发布方线程里跑（线程名不变、耗时变长）。
 - 事实：没有 `@EnableAsync` 时 `@Async` 会被忽略（验证：`SpringCoreEventsMechanicsLabTest#asyncAnnotationIsIgnored_withoutEnableAsync`）。
-- Fix：先把“是否真的异步”写成断言（线程名/时机），再讨论线程池、上下文传播与失败策略。
+先把“是否真的异步”写成断言（线程名/时机），再讨论线程池、上下文传播与失败策略。
 
 ## 坑 5：事件对象可变导致监听器互相污染
 
@@ -96,22 +84,22 @@
 - 会得到“看似偶发”的副作用：某个 listener 改了字段，另一个 listener 读到的是被修改后的状态。
 - 会更难写断言：因为“谁先改、谁后读”会被顺序/异步放大成不稳定。
 
-Fix（学习阶段建议）：
-
-- 事件建模为不可变对象（例如 `record`），让事件“只承载事实，不承载过程状态”；
-- 需要派生信息时，在 listener 内部创建新对象（不要回写 event）。
+学习阶段最简单的修法是把“可变事件”当成代码味道：把事件建模为不可变对象（例如 `record`），让事件只承载事实而不承载过程状态；如果需要派生信息，在 listener 内部创建新对象（不要回写 event）。
 
 ## 坑 6：监听器“没触发”其实是被过滤掉了（参数类型/条件不匹配）
 
-- Symptom： `publishEvent(...)` 了，但某个 `@EventListener` 方法完全没进入；甚至怀疑 multicaster/线程/事务有问题。
-- Root Cause：Spring 的监听器分发有“筛选”阶段：最常见的是 **按监听器方法参数类型过滤**（以及 `@EventListener(condition = ...)` 进一步过滤）；类型/条件不匹配时，监听器就会被跳过。
-- Verification：`SpringCoreEventsListenerFilteringLabTest#eventListener_shouldFilterByMethodParameterType`
-- Breakpoints：`SimpleApplicationEventMulticaster#multicastEvent`、`ApplicationListenerMethodAdapter#supportsEventType`
-- Fix：先把“到底有没有被分发/为什么被过滤”用可断言的最小 Lab 固化，再决定要不要换事件类型/改监听器签名/调整 condition。
+`publishEvent(...)` 了，但某个 `@EventListener` 方法完全没进入；甚至怀疑 multicaster/线程/事务有问题。
+
+Spring 的监听器分发有“筛选”阶段：最常见的是 **按监听器方法参数类型过滤**（以及 `@EventListener(condition = ...)` 进一步过滤）；类型/条件不匹配时，监听器就会被跳过。
+
+`SpringCoreEventsListenerFilteringLabTest#eventListener_shouldFilterByMethodParameterType`
+
+`SimpleApplicationEventMulticaster#multicastEvent`、`ApplicationListenerMethodAdapter#supportsEventType`
+
+先把“到底有没有被分发/为什么被过滤”用可断言的最小 Lab 固化，再决定要不要换事件类型/改监听器签名/调整 condition。
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

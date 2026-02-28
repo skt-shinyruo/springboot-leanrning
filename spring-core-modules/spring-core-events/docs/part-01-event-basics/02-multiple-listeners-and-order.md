@@ -1,12 +1,12 @@
 # 02. 多监听器与顺序：为什么 `@Order` 值得认真对待？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕多监听器与顺序：为什么 `@Order` 值得认真对待？展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
-    - 知识点：多监听器与顺序：为什么 `@Order` 值得认真对待？
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
-    - 原理：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
-    - 源码入口：`org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager`
-    - 推荐 Lab：`SpringCoreEventsLabTest`
+    先运行 `SpringCoreEventsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
+
+    需要下探源码时，可以从 `org.springframework.context.event.SimpleApplicationEventMulticaster` / `org.springframework.context.event.ApplicationListenerMethodAdapter` / `org.springframework.transaction.support.TransactionSynchronizationManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,14 +14,6 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
-
-- 本章主题：**02. 多监听器与顺序：为什么 `@Order` 值得认真对待？**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
 
 
 !!! example "本章配套实验（先运行实验，再阅读）"
@@ -63,14 +55,8 @@
 - 多监听器是事件机制的常态：它让可以在不改发布方的情况下持续扩展能力
 - 顺序默认不保证：需要确定性时就显式标注 `@Order`
 
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
-
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（建议优先跑它们）：
 - Lab：`SpringCoreEventsLabTest`
 - 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
@@ -84,14 +70,16 @@
 
 ### 坑点 1：依赖“自然顺序”，导致监听器执行顺序在不同环境下不稳定
 
-- Symptom：本地顺序正常，换了 JVM/构建方式后顺序变化，引发副作用顺序问题（日志/审计/补偿）
-- Root Cause：不显式声明顺序时，监听器顺序不应被依赖；需要确定性就用 `@Order`
-- Verification：`SpringCoreEventsLabTest#orderedListenersFollowOrderAnnotation`
-- Fix：当顺序是业务语义的一部分时就显式 `@Order`；否则把监听器设计成顺序无关（幂等/无共享可变状态）
+本地顺序正常，换了 JVM/构建方式后顺序变化，引发副作用顺序问题（日志/审计/补偿）
+
+不显式声明顺序时，监听器顺序不应被依赖；需要确定性就用 `@Order`
+
+`SpringCoreEventsLabTest#orderedListenersFollowOrderAnnotation`
+
+当顺序是业务语义的一部分时就显式 `@Order`；否则把监听器设计成顺序无关（幂等/无共享可变状态）
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

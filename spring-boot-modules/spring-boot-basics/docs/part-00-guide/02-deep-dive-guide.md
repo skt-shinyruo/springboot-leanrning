@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**02. 00 - Deep Dive Guide（springboot-basics）**
-- 建议入口：优先运行 `BootBasicsBookMatrixLabTest`（见文末“对应 Lab/Test”），先把“最终值来自哪里”跑成事实，再按章节把排障顺序补齐。
-
+建议优先运行 `BootBasicsBookMatrixLabTest`（见文末“对应 Lab/Test”），先把“最终值来自哪里”跑成事实，再按章节把排障顺序补齐。
 
 
 ## 在这里要解决的“真实问题”

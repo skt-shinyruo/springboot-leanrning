@@ -1,12 +1,12 @@
 # 04. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：Bean 生命周期骨架（instantiate→populate→initialize→destroy）；初始化回调链（Aware / BPP / `@PostConstruct` / `afterPropertiesSet` / `initMethod` / after-init proxy）；销毁链路（DestructionAwareBPP / `@PreDestroy` / `DisposableBean` / `destroyMethod`）；Scope 语义（prototype 默认不自动销毁）；容器级生命周期钩子（`SmartInitializingSingleton` / `SmartLifecycle` / refresh 事件）。
     - 使用方式：先运行本章推荐 Lab，把“回调顺序/触发窗口/prototype 销毁边界/顺序控制/容器级 start-stop”固化为断言；回到正文用 `doCreateBean`/`initializeBean`/`destroySingletons` 把顺序映射到方法级证据链；最后用断点确认 raw vs exposed（proxy）以及依赖图（dependsOn/phase）是否符合预期。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`AbstractAutowireCapableBeanFactory#doCreateBean` / `#populateBean` / `#initializeBean` / `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization` / `DefaultSingletonBeanRegistry#destroySingletons` / `DisposableBeanAdapter#destroy`
-    - 推荐 Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansSmartInitializingSingletonLabTest` / `SpringCoreBeansSmartLifecycleLabTest`
+
+    本章围绕Bean 生命周期骨架（instantiate→populate→initialize→destroy）；初始化回调链（Aware / BPP / `@PostConstruct` / `afterPropertiesSet` / `initMethod` / after-init proxy）；销毁链路（DestructionAwareBPP / `@PreDestroy` / `DisposableBean` / `destroyMethod`）；Scope 语义（prototype 默认不自动销毁）；容器级生命周期钩子（`SmartInitializingSingleton` / `SmartLifecycle` / refresh 事件）。展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest` / `SpringCoreBeansDependsOnLabTest` / `SpringCoreBeansSmartInitializingSingletonLabTest` / `SpringCoreBeansSmartLifecycleLabTest`。需要下探源码时，可以从 `AbstractAutowireCapableBeanFactory#doCreateBean` / `#populateBean` / `#initializeBean` / `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization` / `DefaultSingletonBeanRegistry#destroySingletons` / `DisposableBeanAdapter#destroy` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,19 +15,10 @@
 
 ## 导读
 
-- 本章主题：**04. 生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）**
 - 阅读方式建议：先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest` 把“顺序”变成断言，再回到正文把顺序映射到关键方法。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - 生命周期不是“一个 init-method”，而是一条稳定骨架：**instantiate → populate → initialize → (use) → destroy**。
-    - `@PostConstruct/@PreDestroy` 不是 Java 语法“自带”的生命周期；它们依赖容器注册了相应的 `BeanPostProcessor`（典型是 `CommonAnnotationBeanPostProcessor`）。
-    - 最终暴露对象可能是 proxy：初始化后（after-init）BPP 可以返回“另一个对象”，因此**回调发生在 raw 还是 exposed**是很多误判根源（`@PostConstruct` 在 raw 上发生，after-init 才可能产生 proxy）。
-    - prototype 的销毁默认不由容器托管：`close()` 只会统一销毁 singleton，prototype 需要调用方显式销毁（或改造为更合适的生命周期模型）。
-    - “顺序控制”有两类：`dependsOn` 只管初始化/销毁顺序；`SmartLifecycle` 通过 `phase` 管 start/stop 顺序（两者都不是注入规则）。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -60,7 +51,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansLifecycleCallbackOrderLabTest`，再用 `SpringCoreBeansPrototypeDestroySemanticsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansLifecycleCallbackOrderLabTest`，再用 `SpringCoreBeansPrototypeDestroySemanticsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“排障决策表（生命周期/回调：从“没执行”到“证据链”）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -473,7 +464,6 @@ void init() {
   - `SpringCoreBeansDependsOnLabTest`
   - `SpringCoreBeansSmartInitializingSingletonLabTest`
   - `SpringCoreBeansSmartLifecycleLabTest`
-- 推荐命令：
   - `mvn -pl :spring-core-beans test`
   - 或单独运行：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleCallbackOrderLabTest test`
 
@@ -550,8 +540,10 @@ void init() {
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](05-post-processors.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[第 17 章：06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](05-post-processors.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -5,13 +5,6 @@
 本章围绕「03：错误契约加固（解析失败 vs 校验失败 vs 类型不匹配）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! summary "本章要点"
-
-    - 解析失败（malformed JSON）：通常是 `HttpMessageNotReadableException`
-    - 校验失败（@Valid）：通常是 `MethodArgumentNotValidException`
-    - 类型不匹配（query/path 无法转型）：通常是 `MethodArgumentTypeMismatchException`
-
-
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest` / `BootWebMvcContractJacksonLabTest`

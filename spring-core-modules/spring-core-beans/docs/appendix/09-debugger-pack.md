@@ -1,12 +1,12 @@
 # 09. Debugger Pack（断点包总入口）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：Debugger Pack（断点包总入口）
     - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
-    - 推荐 Lab：`SpringCoreBeansBreakpointPackLabTest`
+
+    本章围绕Debugger Pack（断点包总入口）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansBreakpointPackLabTest`。需要下探源码时，可以从 `AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -14,20 +14,12 @@
 <!-- GLOBAL-BOOK-NAV:END -->
 
 
-
 ## 导读
 
-- 本章主题：**09. Debugger Pack（断点包总入口）**
 - 阅读方式建议：把本章当成“进入本模块的调试入口索引页”——先运行一条最小回归，再按本章的断点清单去看关键数据结构变化，最后回到对应章节补齐理论与边界。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-
-!!! summary "本章要点"
-
-    - Debugger Pack 的目标不是“讲知识”，而是给读者一套**可复用的断点入口**：遇到注入失败/循环依赖/代理不生效/占位符不对时，应该第一时间去哪设置断点、看什么变量。
-    - 一旦能够在调试器里观察到 `refresh → doCreateBean → populateBean → initializeBean` 的主线与关键分支，后续任何章节都会变得“可验证、可复述”。
-    - 建议：每次读完一章，至少用本章的断点清单运行一次对应 Lab，将概念落实为证据链。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -191,7 +183,7 @@ Debugger Pack 的目的不是“列断点”，而是帮读者形成一种稳定
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansMainlineCallChainLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansMainlineCallChainLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：将断点包写成“路线”：每条路线明确起点（测试方法）→ 关键断点 → 需要确认的变量/状态，读者可以按路线复刻结论。
     - 下一跳：若是从现象进入，优先回到 [知识地图](03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -199,8 +191,10 @@ Debugger Pack 的目的不是“列断点”，而是帮读者形成一种稳定
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[99. 团队内训讲义（Training Kit）](10-team-training-kit.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[99. 团队内训讲义（Training Kit）](10-team-training-kit.md)
+
 
 <!-- BOOKIFY:START -->
 

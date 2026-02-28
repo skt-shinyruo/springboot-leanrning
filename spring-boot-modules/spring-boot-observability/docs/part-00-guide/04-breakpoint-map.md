@@ -1,12 +1,12 @@
 # 04. 断点地图（Observability Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Observability Debugger Pack）展开，主线可以概括为：先确认请求是否真的走到了 MVC，再确认观测信号是否被记录到 registry。
 
-    - 知识点：02：断点地图（Observability Debugger Pack）
-    - 怎么使用：遇到“指标没出现/标签不对/观测不到位”时，用本页断点把问题收敛到链路节点。
-    - 原理：先确认请求是否真的走到了 MVC，再确认观测信号是否被记录到 registry。
-    - 源码入口：`MeterRegistry` / `Timer` / `DispatcherServlet#doDispatch`
-    - 推荐 Lab：`BootObservabilityLabTest`
+    遇到“指标没出现/标签不对/观测不到位”时，用本页断点把问题收敛到链路节点。
+
+    对照入口：`BootObservabilityLabTest`。需要下探源码时，可以从 `MeterRegistry` / `Timer` / `DispatcherServlet#doDispatch` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,22 +15,22 @@
 
 ## 导读
 
-- 本章主题：**04. 断点地图（Observability Debugger Pack）**
-- 建议入口：优先运行 `BootObservabilityLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：先确认请求是否真的走到了 MVC，再确认观测信号是否被记录到 registry。
-- 源码入口：`MeterRegistry` / `Timer` / `DispatcherServlet#doDispatch`
+建议优先运行 `BootObservabilityLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：先确认请求是否真的走到了 MVC，再确认观测信号是否被记录到 registry。需要下探源码时，可以从 `MeterRegistry` / `Timer` / `DispatcherServlet#doDispatch` 这些入口切入。
 
 
 ## A. 先确认请求链路（MVC 主线）
 
-- 断点建议：`org.springframework.web.servlet.DispatcherServlet#doDispatch`
-- 观察点：请求是否进入 `DispatcherServlet`，以及是否走到了 handler
+断点可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` 这些位置开始。调试时建议重点盯：请求是否进入 `DispatcherServlet`，以及是否走到了 handler。
+
 
 ## B. 再确认指标是否写入
 
 - 断点/观察建议：在 `BootObservabilityLabTest` 里直接观察 `MeterRegistry`
-- 观察点：`http.server.requests` timer 是否存在、count 是否变化
+
+调试时建议重点盯：`http.server.requests` timer 是否存在、count 是否变化。
+
 
 ## Watch List
 
@@ -39,8 +39,10 @@
 
 ## 小结与下一章
 
-- 小结：先确认请求是否真的走到了 MVC，再确认观测信号是否被记录到 registry。
-- 下一章：[第 205 章：04：关键分支矩阵](05-branch-decision-matrix.md)
+先确认请求是否真的走到了 MVC，再确认观测信号是否被记录到 registry。
+
+下一章见：[第 205 章：04：关键分支矩阵](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 04. 断点地图（Resources Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Resources Debugger Pack）展开，主线可以概括为：Resource 解析（location/pattern）→ 找到 URL/stream → 读取（encoding）→ jar 与 filesystem 的差异来自底层 URL/URLConnection。
 
-    - 知识点：02：断点地图（Resources Debugger Pack）
-    - 怎么使用：先跑 `SpringCoreResourcesBranchMatrixLabTest` 固化“classpath/jar/pattern/encoding”的断言，再用断点观察 Resource 如何被解析、以及读取流的边界条件。
-    - 原理：Resource 解析（location/pattern）→ 找到 URL/stream → 读取（encoding）→ jar 与 filesystem 的差异来自底层 URL/URLConnection。
-    - 源码入口：`org.springframework.core.io.DefaultResourceLoader` / `org.springframework.core.io.support.PathMatchingResourcePatternResolver`
-    - 推荐 Lab：`SpringCoreResourcesBranchMatrixLabTest`
+    先跑 `SpringCoreResourcesBranchMatrixLabTest` 固化“classpath/jar/pattern/encoding”的断言，再用断点观察 Resource 如何被解析、以及读取流的边界条件。
+
+    需要下探源码时，可以从 `org.springframework.core.io.DefaultResourceLoader` / `org.springframework.core.io.support.PathMatchingResourcePatternResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**04. 断点地图（Resources Debugger Pack）**
-- 建议入口：优先运行 `SpringCoreResourcesBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：Resource 解析（location/pattern）→ 找到 URL/stream → 读取（encoding）→ jar 与 filesystem 的差异来自底层 URL/URLConnection。
-- 源码入口：`org.springframework.core.io.DefaultResourceLoader` / `org.springframework.core.io.support.PathMatchingResourcePatternResolver`
+建议优先运行 `SpringCoreResourcesBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：Resource 解析（location/pattern）→ 找到 URL/stream → 读取（encoding）→ jar 与 filesystem 的差异来自底层 URL/URLConnection。需要下探源码时，可以从 `org.springframework.core.io.DefaultResourceLoader` / `org.springframework.core.io.support.PathMatchingResourcePatternResolver` 这些入口切入。
 
 
 ## 运行入口（先运行）
@@ -46,8 +44,10 @@
 
 ## 小结与下一章
 
-- 小结：Resource 解析（location/pattern）→ 找到 URL/stream → 读取（encoding）→ jar 与 filesystem 的差异来自底层 URL/URLConnection。
-- 下一章：[第 140 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+Resource 解析（location/pattern）→ 找到 URL/stream → 读取（encoding）→ jar 与 filesystem 的差异来自底层 URL/URLConnection。
+
+下一章见：[第 140 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

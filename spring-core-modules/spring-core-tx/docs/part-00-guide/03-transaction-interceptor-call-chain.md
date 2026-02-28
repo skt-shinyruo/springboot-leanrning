@@ -1,12 +1,12 @@
 # 03. 事务拦截器调用链（从 `@Transactional` 到 commit/rollback）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）展开，主线可以概括为：声明式事务本质是 AOP：容器用 Advisor + TransactionInterceptor 包装 bean；运行时 `invokeWithinTransaction` 根据传播与回滚规则建立/加入事务，执行目标方法，再 commit/rollback 收尾。
 
-    - 知识点：01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）
-    - 怎么使用：先运行本章推荐 Lab，把“commit/rollback/传播/回滚规则”固化为断言，再按本文把调用链串起来：容器阶段如何把 `@Transactional` 变成 Advisor → 运行阶段如何进入 `TransactionInterceptor` → 如何决定提交/回滚。
-    - 原理：声明式事务本质是 AOP：容器用 Advisor + TransactionInterceptor 包装 bean；运行时 `invokeWithinTransaction` 根据传播与回滚规则建立/加入事务，执行目标方法，再 commit/rollback 收尾。
-    - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager` / `org.springframework.transaction.support.TransactionSynchronizationManager`
-    - 推荐 Lab：`SpringCoreTxLabTest`
+    先运行 `SpringCoreTxLabTest`，把“commit/rollback/传播/回滚规则”固化为断言，再按本文把调用链串起来：容器阶段如何把 `@Transactional` 变成 Advisor → 运行阶段如何进入 `TransactionInterceptor` → 如何决定提交/回滚。
+
+    需要下探源码时，可以从 `org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager` / `org.springframework.transaction.support.TransactionSynchronizationManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,11 +17,6 @@
 
 本章围绕「01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 优先运行 `SpringCoreTxLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - 事务有两条链：**代理生成链（容器期）**与**事务边界执行链（运行期）**。先判断卡在“有没有代理/有没有进入拦截器”，再判断“拦截器里走了哪个分支”。
-    - 事务的核心抓手是：`TransactionInterceptor#invoke` → `TransactionAspectSupport#invokeWithinTransaction`。能在这里把“传播/回滚规则/异常”落到可观察事实。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 

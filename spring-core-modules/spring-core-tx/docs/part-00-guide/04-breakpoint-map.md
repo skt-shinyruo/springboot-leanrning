@@ -1,12 +1,12 @@
 # 04. 断点地图（Spring Tx Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Spring Tx Debugger Pack）展开，主线可以概括为：`@Transactional` → AOP 拦截（TransactionInterceptor）→ 事务管理器创建事务（getTransaction）→ 业务执行 → commit/rollback（取决于异常与规则）。
 
-    - 知识点：02：断点地图（Spring Tx Debugger Pack）
-    - 怎么使用：先跑 `SpringCoreTxBranchMatrixLabTest` 固化“rollback/propagation/自调用坑”的断言，再用断点把 `@Transactional` 的代理入口、事务创建/提交/回滚分支串起来。
-    - 原理：`@Transactional` → AOP 拦截（TransactionInterceptor）→ 事务管理器创建事务（getTransaction）→ 业务执行 → commit/rollback（取决于异常与规则）。
-    - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor` / `org.springframework.transaction.support.AbstractPlatformTransactionManager`
-    - 推荐 Lab：`SpringCoreTxBranchMatrixLabTest`
+    先跑 `SpringCoreTxBranchMatrixLabTest` 固化“rollback/propagation/自调用坑”的断言，再用断点把 `@Transactional` 的代理入口、事务创建/提交/回滚分支串起来。
+
+    需要下探源码时，可以从 `org.springframework.transaction.interceptor.TransactionInterceptor` / `org.springframework.transaction.support.AbstractPlatformTransactionManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -59,8 +59,10 @@
 
 ## 小结与下一章
 
-- 小结：`@Transactional` → AOP 拦截（TransactionInterceptor）→ 事务管理器创建事务（getTransaction）→ 业务执行 → commit/rollback（取决于异常与规则）。
-- 下一章：[第 53 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+`@Transactional` → AOP 拦截（TransactionInterceptor）→ 事务管理器创建事务（getTransaction）→ 业务执行 → commit/rollback（取决于异常与规则）。
+
+下一章见：[第 53 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

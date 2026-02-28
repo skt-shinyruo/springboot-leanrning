@@ -11,12 +11,12 @@
 
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：009-00-why-index
     - 使用方式：可先运行本章推荐 Lab，建立主线/断点闭环；随后回到正文，按“时间线/分支矩阵/证据链”定位机制窗口；最后通过自检题将表述固化为可复述答案。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton` / `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
-    - 推荐 Lab：`SpringCoreBeansCircularDependencyBoundaryLabTest`
+
+    本章围绕009-00-why-index展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansCircularDependencyBoundaryLabTest`。需要下探源码时，可以从 `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton` / `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -25,13 +25,9 @@
 
 ## 导读
 
-- 本章主题：**01. 基础问题索引（Why Index）：把高频“为什么”做成可验证闭环**
-- 建议入口：优先运行 `SpringCoreBeansCircularDependencyBoundaryLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 源码入口：`org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton` / `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+建议优先运行 `SpringCoreBeansCircularDependencyBoundaryLabTest`，以获得可回归的现象与断言入口。
 
-
-
+读完这一章，你应该能把这件事讲清楚：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。需要下探源码时，可以从 `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton` / `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference` 这些入口切入。
 
 
 ## 这页解决什么问题
@@ -50,7 +46,7 @@
 
 当读者阅读某个章节但仍难以复述关键结论时，可先按检索关键词匹配下列条目：
 
-- 搜索：`三级缓存` / `three level cache` / `earlySingletonObjects` / `singletonFactories` → 看 Why-01/02
+- 搜索：`三级缓存 ` / `three level cache` / `earlySingletonObjects` / `singletonFactories` → 看 Why-01/02
 - 搜索：`getEarlyBeanReference` / `early reference` / `raw vs wrapped` / `allowRawInjectionDespiteWrapping` → 看 Why-03
 - 搜索：`proxy` / `exposedObject` / `BeanPostProcessor` / `postProcessAfterInitialization` → 看 Why-04
 - 搜索：`self invocation` / `self-invocation` / `call path` / “事务不生效” → 看 Why-05
@@ -260,7 +256,7 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopExposeProxyLabTest#exposeProxyAllow
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansCircularDependencyBoundaryLabTest`，再用 `SpringCoreBeansEarlyReferenceLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansCircularDependencyBoundaryLabTest`，再用 `SpringCoreBeansEarlyReferenceLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：对跨模块链接补“跳转目的”：在链接附近用 1–2 句说明为什么此处需要 AOP/TX 视角，以及跳过去应验证的关键点（例如代理创建点/自调用行为/拦截器链顺序）。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](07-breakpoint-map.md) 选 C 组。
@@ -268,8 +264,10 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopExposeProxyLabTest#exposeProxyAllow
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean](02-mainline-timeline.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[第 10 章：主线时间线：IoC 容器从 refresh 到创建 Bean](02-mainline-timeline.md)
+
 
 <!-- BOOKIFY:START -->
 

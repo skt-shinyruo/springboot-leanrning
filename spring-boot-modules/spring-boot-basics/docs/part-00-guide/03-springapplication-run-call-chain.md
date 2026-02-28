@@ -1,12 +1,12 @@
 # 03. `SpringApplication#run` 调用链（启动 → 环境 → 容器）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕01：`SpringApplication#run` 调用链（启动 → 环境 → 容器）展开，主线可以概括为：Boot 启动是“先环境、后容器”：先构建 Environment（含 profile/property sources），再创建 ApplicationContext 并 refresh。
 
-    - 知识点：01：`SpringApplication#run` 调用链（启动 → 环境 → 容器）
-    - 怎么使用：先跑 `BootBasicsDefaultLabTest`/`BootBasicsDevLabTest`，把“profile/配置覆盖”固化为断言，再按本文把 `run()` 的关键阶段串起来。
-    - 原理：Boot 启动是“先环境、后容器”：先构建 Environment（含 profile/property sources），再创建 ApplicationContext 并 refresh。
-    - 源码入口：`org.springframework.boot.SpringApplication#run` / `ConfigDataEnvironmentPostProcessor` / `org.springframework.context.support.AbstractApplicationContext#refresh`
-    - 推荐 Lab：`BootBasicsDefaultLabTest`
+    先跑 `BootBasicsDefaultLabTest`/`BootBasicsDevLabTest`，把“profile/配置覆盖”固化为断言，再按本文把 `run()` 的关键阶段串起来。
+
+    需要下探源码时，可以从 `org.springframework.boot.SpringApplication#run` / `ConfigDataEnvironmentPostProcessor` / `org.springframework.context.support.AbstractApplicationContext#refresh` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**03. `SpringApplication#run` 调用链（启动 → 环境 → 容器）**
-- 建议入口：优先运行 `BootBasicsDefaultLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：Boot 启动是“先环境、后容器”：先构建 Environment（含 profile/property sources），再创建 ApplicationContext 并 refresh。
-- 源码入口：`org.springframework.boot.SpringApplication#run` / `ConfigDataEnvironmentPostProcessor` / `org.springframework.context.support.AbstractApplicationContext#refresh`
+建议优先运行 `BootBasicsDefaultLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：Boot 启动是“先环境、后容器”：先构建 Environment（含 profile/property sources），再创建 ApplicationContext 并 refresh。需要下探源码时，可以从 `org.springframework.boot.SpringApplication#run` / `ConfigDataEnvironmentPostProcessor` / `org.springframework.context.support.AbstractApplicationContext#refresh` 这些入口切入。
 
 
 ## 最短调用链（应能复述）
@@ -36,8 +34,10 @@
 
 ## 小结与下一章
 
-- 小结：Boot 启动是“先环境、后容器”：先构建 Environment（含 profile/property sources），再创建 ApplicationContext 并 refresh。
-- 下一章：[第 4 章：02：断点地图](04-breakpoint-map.md)
+Boot 启动是“先环境、后容器”：先构建 Environment（含 profile/property sources），再创建 ApplicationContext 并 refresh。
+
+下一章见：[第 4 章：02：断点地图](04-breakpoint-map.md)
+
 
 <!-- BOOKIFY:START -->
 

@@ -1,19 +1,17 @@
 # 01. 常见坑清单（建议反复对照）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕常见坑清单（建议反复对照）展开，主线可以概括为：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
 
-    - 知识点：常见坑清单（建议反复对照）
-    - 怎么使用：先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
-    - 原理：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
-    - 源码入口：`org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager`
-    - 推荐 Lab：`SpringCoreTxLabTest`
+    先运行 `SpringCoreTxLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
+
+    需要下探源码时，可以从 `org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[02. Debug / 观察：如何判断“当前是否真的有事务”？](../part-02-template-and-debugging/02-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 自测题（Spring Core Tx）](02-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
-
-## 导读
 
 ### 排障骨架（统一结构）
 
@@ -29,27 +27,10 @@
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
 6. 验证（Verify）：复跑入口 + 对照自检清单：[02-self-check.md](02-self-check.md)
 
-- 本章主题：**01. 常见坑清单（建议反复对照）**
-- 阅读方式建议：先看“本章要点”，再沿主线阅读；需要时穿插源码/断点，最后跑通实验闭环。
-
-!!! summary "本章要点"
-
-    - 本章结束后，应能用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见坑在哪里”。
-    - 速读路径：请先跑一次本章的最小实验，再回到主线对照阅读。
-
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreTxLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
-
-## 机制主线
-
-这页不展开完整机制主线；其定位更接近排障备忘录：把常见分支与可复现入口列出来，便于回到 tests 验证。
-
-## 源码与断点
-
-- 建议优先从“E 中的测试用例断言”反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
 
 ## 最小可运行实验（Lab）
 
@@ -65,10 +46,9 @@
 
 - 现象：给 `inner()` 加了 `@Transactional`，但从 `outer()` 调 `inner()` 时事务没生效
 - 原因：和 AOP 一样，自调用绕过代理
-- Verification：
-  - 自调用绕过代理：`SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod`
-  - 拆分 bean 后拦截器恢复：`SpringCoreTxSelfInvocationPitfallLabTest#splittingBeanRestoresTransactional_interceptorIsApplied`
-  - （练习）`SpringCoreTxExerciseTest#exercise_selfInvocation`
+- 自调用绕过代理：`SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod`
+- 拆分 bean 后拦截器恢复：`SpringCoreTxSelfInvocationPitfallLabTest#splittingBeanRestoresTransactional_interceptorIsApplied`
+- （练习）`SpringCoreTxExerciseTest#exercise_selfInvocation`
 
 ## 坑 2：异常被 catch 住，结果没有回滚
 
@@ -108,7 +88,6 @@
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

@@ -1,12 +1,12 @@
 # 05. ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcAdviceMatchingLabTest`
+    阅读时可以先跑 `BootWebMvcAdviceMatchingLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,20 +17,6 @@
 
 本章围绕「05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcAdviceMatchingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - `@ControllerAdvice` 的行为不是“看请求路径”，而是**看 handler/controller 的类型是否匹配**（通过 selector：`basePackages` / `annotations` / `assignableTypes` 等）。
-    - selector 组合有一个容易踩坑的点：**同一个 advice 上配置多个 selector 时，匹配语义是“并集（OR）”**——任一条件命中就算 applicable，而不是“交集（AND）”。
-    - 当异常发生时，选择顺序可以概括为：
-    1. **先找 controller 自己的 `@ExceptionHandler`**
-    2. 再找 **可适用（applicable）的 ControllerAdvice 列表**
-    3. 在可适用的列表中，**按 `@Order` 排序后依次尝试匹配异常类型**（先匹配到的生效）
-    - 真实工程里 “advice 不生效” 的常见原因并不是 handler 写错了，而是：
-    - advice 根本没被加载进上下文（slice 测试尤为常见）
-    - selector 没匹配到 controller（包范围/注解/可赋值类型）
-    - 处理的异常类型不对（异常发生在 converter/binder 阶段）
-
 
 !!! example "本章配套实验（先跑再读）"
 

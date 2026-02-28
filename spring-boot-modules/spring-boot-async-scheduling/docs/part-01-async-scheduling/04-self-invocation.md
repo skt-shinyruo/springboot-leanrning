@@ -15,9 +15,7 @@
 
 ## 导读
 
-- 本章主题：**04. self-invocation：为什么异步有时不生效**
-- 建议入口：优先运行 `BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall`（见文末“对应 Lab/Test”），再跑一次“跨 bean 边界”的对照用例，差异会非常直观。
-
+建议优先运行 `BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall`（见文末“对应 Lab/Test”），再跑一次“跨 bean 边界”的对照用例，差异会非常直观。
 
 
 ## 这个坑为什么这么“顽固”

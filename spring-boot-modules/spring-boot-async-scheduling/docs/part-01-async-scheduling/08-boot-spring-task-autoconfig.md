@@ -14,9 +14,7 @@
 
 ## 导读
 
-- 本章主题：**08. Spring Boot `spring.task.*`：默认线程池/调度器与属性映射**
-- 建议入口：优先运行 `BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`（见文末“对应 Lab/Test”），用线程名前缀把“配置到底影响了谁”写成断言。
-
+建议优先运行 `BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`（见文末“对应 Lab/Test”），用线程名前缀把“配置到底影响了谁”写成断言。
 
 
 ## “我明明改了配置，为什么没生效？”
@@ -33,8 +31,6 @@
 - 这次 `@Async` 实际用的是哪个 executor？
 - 这次 `@Scheduled` 实际用的是哪个 scheduler？
 - `spring.task.*` 的属性，最终映射到了哪里？
-
-## 机制主线
 
 ### 1) `spring.task.execution.*`：默认 TaskExecutor 的来源与线程名观测点
 

@@ -1,18 +1,17 @@
 # 05. SpEL 与 `@Value("#{...}")`：表达式解析链路
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：44. SpEL 与 `@Value("#{...}")`：表达式解析链路
     - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
-    - 原理：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
-    - 源码入口：`@Value("#{...}")` / `BeanFactory#resolveEmbeddedValue` / `AbstractBeanFactory#resolveEmbeddedValue`
-    - 推荐 Lab：`SpringCoreBeansSpelValueLabTest`
+
+    本章围绕44. SpEL 与 `@Value("#{...}")`：表达式解析链路展开，主线可以概括为：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+
+    对照入口：`SpringCoreBeansSpelValueLabTest`。需要下探源码时，可以从 `@Value("#{...}")` / `BeanFactory#resolveEmbeddedValue` / `AbstractBeanFactory#resolveEmbeddedValue` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
 上一章：[04. 容器外对象注入：AutowireCapableBeanFactory](04-autowirecapablebeanfactory-external-objects.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. 自定义 Qualifier：meta-annotation 与候选收敛](06-custom-qualifier-meta-annotation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
-
 
 
 ## 导读
@@ -23,15 +22,6 @@
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（SpEL，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/expressions.html
 - 官方文档对照（Spring Boot Reference，适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
-
-
-!!! summary "本章要点"
-
-    - `${...}` 与 `#{...}` 并不是两套“注入系统”，它们都要先经过 `BeanFactory#resolveEmbeddedValue`（解析字符串），再进入**类型转换**，最后才注入到字段/参数。
-    - 组合写法 `@Value("#{ ${demo.base:40} + 2 }")` 能成立，是因为通常先做 `${...}` 占位符解析，再对剩余字符串做 `#{...}` SpEL 求值。
-    - 排障时不要混：值注入失败可以拆成三段（按最短断点链路）：
-      1) 占位符解析（`${...}`）→ 2) SpEL 求值（`#{...}`）→ 3) 类型转换（注入点类型）
-    - 最常见误判：把“类型转换失败（NumberFormatException 等）”误以为“SpEL 解析失败”；把“缺失占位符原样通过”误以为“配置没加载”。
 
 
 !!! example "本章配套实验（先运行再读）"
@@ -46,7 +36,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansSpelValueLabTest`，再用 `SpringCoreBeansValuePlaceholderResolutionLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansSpelValueLabTest`，再用 `SpringCoreBeansValuePlaceholderResolutionLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`AbstractBeanFactory#resolveEmbeddedValue`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“3. 三连排障（强烈推荐把这张表背下来）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。

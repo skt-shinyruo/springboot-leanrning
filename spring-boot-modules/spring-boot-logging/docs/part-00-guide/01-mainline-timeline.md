@@ -1,12 +1,12 @@
 # 01. 主线时间线：springboot-logging
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕主线时间线：springboot-logging展开，主线可以概括为：日志系统在启动早期初始化；之后每条日志是否输出取决于：logger category 的有效级别 + appender/encoder 输出形态。
 
-    - 知识点：主线时间线：springboot-logging
-    - 怎么使用：本页是导航页。建议先跑 `BootLoggingLabTest` 固化“debug 级别是否生效”，再按“LoggingSystem 初始化 → logger level 决策”顺读。
-    - 原理：日志系统在启动早期初始化；之后每条日志是否输出取决于：logger category 的有效级别 + appender/encoder 输出形态。
-    - 源码入口：`org.springframework.boot.logging.LoggingSystem` / `org.slf4j.Logger` /（logback）`ch.qos.logback.classic.Logger`
-    - 推荐 Lab：`BootLoggingLabTest`
+    本页是导航页。建议先跑 `BootLoggingLabTest` 固化“debug 级别是否生效”，再按“LoggingSystem 初始化 → logger level 决策”顺读。
+
+    需要下探源码时，可以从 `org.springframework.boot.logging.LoggingSystem` / `org.slf4j.Logger` /（logback）`ch.qos.logback.classic.Logger` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**01. 主线时间线：springboot-logging**
-- 建议入口：优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：日志系统在启动早期初始化；之后每条日志是否输出取决于：logger category 的有效级别 + appender/encoder 输出形态。
-- 源码入口：`org.springframework.boot.logging.LoggingSystem` / `org.slf4j.Logger` /（logback）`ch.qos.logback.classic.Logger`
+建议优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：日志系统在启动早期初始化；之后每条日志是否输出取决于：logger category 的有效级别 + appender/encoder 输出形态。需要下探源码时，可以从 `org.springframework.boot.logging.LoggingSystem` / `org.slf4j.Logger` /（logback）`ch.qos.logback.classic.Logger` 这些入口切入。
 
 
 ## 从 Book Matrix 进入（主线最小集合）
@@ -34,8 +32,10 @@
 
 ## 小结与下一章
 
-- 小结：日志系统在启动早期初始化；之后每条日志是否输出取决于：logger category 的有效级别 + appender/encoder 输出形态。
-- 下一章：[第 200 章：00. 深挖导读](02-deep-dive-guide.md)
+日志系统在启动早期初始化；之后每条日志是否输出取决于：logger category 的有效级别 + appender/encoder 输出形态。
+
+下一章见：[第 200 章：00. 深挖导读](02-deep-dive-guide.md)
+
 
 <!-- BOOKIFY:START -->
 

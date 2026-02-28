@@ -1,12 +1,12 @@
 # 01. 90 - Common Pitfalls（springboot-logging）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕Common Pitfalls（springboot-logging）展开，主线可以概括为：大多数日志问题不是“加更多日志”，而是“让日志更可解释、可过滤、可关联”。
 
-    - 知识点：Common Pitfalls（springboot-logging）
-    - 怎么使用：遇到“日志太多/太少/看不懂/不好关联”时，用本页把问题收敛到 level/category/输出端/MDC 其中一个。
-    - 原理：大多数日志问题不是“加更多日志”，而是“让日志更可解释、可过滤、可关联”。
-    - 源码入口：（logback）`Logger#isDebugEnabled` / `Logger#callAppenders`
-    - 推荐 Lab：`BootLoggingLabTest`
+    遇到“日志太多/太少/看不懂/不好关联”时，用本页把问题收敛到 level/category/输出端/MDC 其中一个。
+
+    对照入口：`BootLoggingLabTest`。需要下探源码时，可以从 （logback）`Logger#isDebugEnabled` / `Logger#callAppenders` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**01. 90 - Common Pitfalls（springboot-logging）**
-- 建议入口：优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：大多数日志问题不是“加更多日志”，而是“让日志更可解释、可过滤、可关联”。
-- 源码入口：（logback）`Logger#isDebugEnabled` / `Logger#callAppenders`
+建议优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：大多数日志问题不是“加更多日志”，而是“让日志更可解释、可过滤、可关联”。需要下探源码时，可以从 （logback）`Logger#isDebugEnabled` / `Logger#callAppenders` 这些入口切入。
 
 
 ## 坑 1：写了 debug 日志，但永远看不到
@@ -38,8 +36,10 @@
 
 ## 小结与下一章
 
-- 小结：大多数日志问题不是“加更多日志”，而是“让日志更可解释、可过滤、可关联”。
-- 下一章：[第 203 章：99 - Self Check（springboot-logging）](02-self-check.md)
+大多数日志问题不是“加更多日志”，而是“让日志更可解释、可过滤、可关联”。
+
+下一章见：[第 203 章：99 - Self Check（springboot-logging）](02-self-check.md)
+
 
 <!-- BOOKIFY:START -->
 

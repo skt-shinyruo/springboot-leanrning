@@ -1,12 +1,12 @@
 # 02. 依赖注入解析：类型/名称/@Qualifier/@Primary
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：依赖注入解析：类型/名称/@Qualifier/@Primary
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency` / `#findAutowireCandidates` / `#determineAutowireCandidate`
-    - 推荐 Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
+
+    本章围绕依赖注入解析：类型/名称/@Qualifier/@Primary展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`。需要下探源码时，可以从 `org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency` / `#findAutowireCandidates` / `#determineAutowireCandidate` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,18 +15,11 @@
 
 ## 导读
 
-- 本章主题：**02. 依赖注入解析：类型/名称/@Qualifier/@Primary**
 - 阅读方式建议：先运行一次“候选歧义”的最小 Lab，再回到正文按“候选收集 → 候选收敛 → 最终注入”把主线走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
-
-!!! summary "本章要点"
-
-    - 读者写下 `private final X x;` 时，Spring 做的不是“按类型找一个即可”，而是：**先收集候选（by type），再用一套规则缩小候选（by qualifier/primary/priority/name…）**。
-    - `@Order` 管的是“集合注入怎么排”，不是“单依赖注入选谁”。单依赖选谁主要看 `@Primary/@Qualifier`，必要时才用 `@Priority` 做 tie-break。
-    - 排障不要靠猜：在 `doResolveDependency(...)` 里盯住固定观察点（dependencyType / candidates / selectedName），即可解释“为什么注入的是它/为什么失败”。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -516,7 +509,6 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 ## 源码与断点
 
 - 建议优先从 Lab 的断言反推调用链，再定位到关键类/方法设置断点。
-- 若本章包含 Spring 内部机制，请以“入口方法 → 关键分支 → 数据结构变化”三段式观察。
 
 ## 最小可运行实验（Lab）
 
@@ -525,7 +517,6 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
   - `SpringCoreBeansBeanGraphDebugLabTest`
   - `SpringCoreBeansOptionalInjectionLabTest`
   - `SpringCoreBeansJsr330InjectionLabTest`
-- 推荐命令：
   - `mvn -pl :spring-core-beans test`
   - 或单独运行：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCandidateSelectionLabTest test`
 
@@ -554,7 +545,7 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再用 `SpringCoreBeansBeanGraphDebugLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再用 `SpringCoreBeansBeanGraphDebugLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“机制主线：候选收集 → 候选收敛 → 最终注入”时，建议将关键入口串成更清晰的主线（例如：ApplicationContext#refresh → org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency），并在关键分支处点明触发条件与结果形态。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -562,8 +553,10 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 
 ## 小结与下一章
 
-- 小结：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-- 下一章：[第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](03-scope-and-prototype.md)
+`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+下一章见：[第 15 章：04. Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](03-scope-and-prototype.md)
+
 
 <!-- BOOKIFY:START -->
 

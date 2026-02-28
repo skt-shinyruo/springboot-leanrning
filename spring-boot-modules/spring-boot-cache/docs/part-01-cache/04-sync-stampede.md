@@ -13,9 +13,7 @@
 
 ## 导读
 
-- 本章主题：**04. `sync=true`：防缓存击穿（stampede）**
-- 建议入口：优先运行 `BootCacheLabTest#syncTrueAvoidsDuplicateComputationsForSameKey`（见文末“对应 Lab/Test”），先把“同 key 只算一次”钉住，再评估等待成本是否可接受。
-
+建议优先运行 `BootCacheLabTest#syncTrueAvoidsDuplicateComputationsForSameKey`（见文末“对应 Lab/Test”），先把“同 key 只算一次”钉住，再评估等待成本是否可接受。
 
 
 ## 这类问题一定见过：并发一上来，下游就被打爆

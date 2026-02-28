@@ -1,12 +1,12 @@
 # 04. 断点地图（Actuator Debugger Pack）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕02：断点地图（Actuator Debugger Pack）展开，主线可以概括为：Actuator endpoint 注册（discover）→ exposure 配置决定是否暴露 → web handler mapping 映射到 `/actuator/**`。
 
-    - 知识点：02：断点地图（Actuator Debugger Pack）
-    - 怎么使用：先跑 `BootActuatorBranchMatrixLabTest` 固化“exposure include 能否生效”的断言，再用断点确认 endpoint 的注册、暴露与 handler mapping 的分支。
-    - 原理：Actuator endpoint 注册（discover）→ exposure 配置决定是否暴露 → web handler mapping 映射到 `/actuator/**`。
-    - 源码入口：`org.springframework.boot.actuate.endpoint.web.annotation.WebEndpointDiscoverer` / `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping`
-    - 推荐 Lab：`BootActuatorBranchMatrixLabTest`
+    先跑 `BootActuatorBranchMatrixLabTest` 固化“exposure include 能否生效”的断言，再用断点确认 endpoint 的注册、暴露与 handler mapping 的分支。
+
+    需要下探源码时，可以从 `org.springframework.boot.actuate.endpoint.web.annotation.WebEndpointDiscoverer` / `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -46,8 +46,10 @@
 
 ## 小结与下一章
 
-- 小结：Actuator endpoint 注册（discover）→ exposure 配置决定是否暴露 → web handler mapping 映射到 `/actuator/**`。
-- 下一章：[第 168 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+Actuator endpoint 注册（discover）→ exposure 配置决定是否暴露 → web handler mapping 映射到 `/actuator/**`。
+
+下一章见：[第 168 章：04：关键分支矩阵（Branch Decision Matrix）](05-branch-decision-matrix.md)
+
 
 <!-- BOOKIFY:START -->
 

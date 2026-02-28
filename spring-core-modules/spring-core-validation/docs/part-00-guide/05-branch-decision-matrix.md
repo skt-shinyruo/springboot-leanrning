@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：分支发生在“是否走 Validator.validate”与“是否通过 proxy 触发 ExecutableValidator”。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把 Validation 的关键分支（programmatic vs method validation、groups、自定义约束）整理成矩阵表。
-    - 原理：分支发生在“是否走 Validator.validate”与“是否通过 proxy 触发 ExecutableValidator”。
-    - 源码入口：`SpringValidatorAdapter` / `MethodValidationInterceptor`
-    - 推荐 Lab：`SpringCoreValidationBranchMatrixLabTest`
+    把 Validation 的关键分支（programmatic vs method validation、groups、自定义约束）整理成矩阵表。
+
+    对照入口：`SpringCoreValidationBranchMatrixLabTest`。需要下探源码时，可以从 `SpringValidatorAdapter` / `MethodValidationInterceptor` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `SpringCoreValidationBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：分支发生在“是否走 Validator.validate”与“是否通过 proxy 触发 ExecutableValidator”。
-- 源码入口：`SpringValidatorAdapter` / `MethodValidationInterceptor`
+建议优先运行 `SpringCoreValidationBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：分支发生在“是否走 Validator.validate”与“是否通过 proxy 触发 ExecutableValidator”。需要下探源码时，可以从 `SpringValidatorAdapter` / `MethodValidationInterceptor` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -42,8 +40,10 @@
 
 ## 小结与下一章
 
-- 小结：分支发生在“是否走 Validator.validate”与“是否通过 proxy 触发 ExecutableValidator”。
-- 下一章：[第 158 章：01：约束心智模型：annotation → ConstraintValidator](../part-01-validation-core/01-constraint-mental-model.md)
+分支发生在“是否走 Validator.validate”与“是否通过 proxy 触发 ExecutableValidator”。
+
+下一章见：[第 158 章：01：约束心智模型：annotation → ConstraintValidator](../part-01-validation-core/01-constraint-mental-model.md)
+
 
 <!-- BOOKIFY:START -->
 

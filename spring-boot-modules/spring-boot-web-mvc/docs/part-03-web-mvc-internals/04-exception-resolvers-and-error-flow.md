@@ -1,12 +1,12 @@
 # 04. ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
-    - 知识点：04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）
-    - 怎么使用：建议先跑本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
-    - 原理：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
-    - 源码入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver`
-    - 推荐 Lab：`BootWebMvcTestingDebuggingLabTest`
+    阅读时可以先跑 `BootWebMvcTestingDebuggingLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
+
+    需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -17,16 +17,6 @@
 
 本章围绕「04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
 建议优先运行 `BootWebMvcTestingDebuggingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
-
-!!! summary "本章要点"
-
-    - 看到的状态码，很多时候不是 controller 决定的，而是 `HandlerExceptionResolver` 链路把异常映射出来的结果。
-    - 三个最常遇到的 resolver（按“理解优先级”）：
-    1. **`ExceptionHandlerExceptionResolver`**： `@ControllerAdvice/@ExceptionHandler` 生效的地方
-    2. **`ResponseStatusExceptionResolver`**：`@ResponseStatus` / `ResponseStatusException` 等语义化异常的映射
-    3. **`DefaultHandlerExceptionResolver`**：Spring MVC 内置异常（405/415/406/400 等）的默认翻译器
-    - 排障黄金路线：**先用测试把现象固化 → 再用 `resolvedException` 确定异常类型 → 再定位它来自链路的哪一段 → 最后用断点看 resolver 选择分支**。
-
 
 !!! example "本章配套实验（先跑再读）"
 

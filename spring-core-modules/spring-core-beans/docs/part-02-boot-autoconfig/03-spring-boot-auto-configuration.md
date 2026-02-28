@@ -1,12 +1,12 @@
 # 03. Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
-
-    - 知识点：Spring Boot 自动装配如何影响 Bean（Auto-configuration）
     - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
-    - 原理：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-    - 源码入口：`org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate`
-    - 推荐 Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest`
+
+    本章围绕Spring Boot 自动装配如何影响 Bean（Auto-configuration）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+
+    对照入口：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -22,12 +22,6 @@
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-!!! summary "本章要点"
-
-    - 读完本章，应能够用 2–3 句话复述“它解决什么问题 / 关键约束是什么 / 常见误区在哪里”。
-    - 速读路径：请先运行一次本章的最小实验，再回到主线对照阅读。
-
-
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutoConfigurationBackoffTimingLabTest` / `SpringCoreBeansAutoConfigurationImportOrderingLabTest` / `SpringCoreBeansAutoConfigurationLabTest` / `SpringCoreBeansConditionEvaluationReportLabTest` / `SpringCoreBeansAutoConfigurationOrderingLabTest` / `SpringCoreBeansAutoConfigurationOverrideMatrixLabTest` / `SpringCoreBeansBeanDefinitionOriginLabTest`
@@ -36,7 +30,7 @@
 <!-- AE-DEEPENING:START -->
 !!! tip "继续加深：把本章跑成可验证路线"
 
-    - 建议入口：先跑 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`，再用 `SpringCoreBeansAutoConfigurationImportOrderingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
+    建议 先跑 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`，再用 `SpringCoreBeansAutoConfigurationImportOrderingLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
     - 第一断点：`ConditionEvaluator#shouldSkip`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
     - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
     - 下一跳：若是从现象进入，优先回到 [知识地图](../appendix/03-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](../part-00-guide/07-breakpoint-map.md) 选 C 组。
@@ -130,7 +124,9 @@ Boot 会从依赖的 jar 包里读取“自动配置类清单”，然后把这�
    - 细分：`OnBeanCondition#getMatchOutcome` / `SpringBootCondition#matches`
 3) 定义注册（决定“哪些 BeanDefinition 真正进入 registry”）
    - `DefaultListableBeanFactory#registerBeanDefinition`
-   - 观察点：beanName 冲突、是否允许 overriding、是否已有同类定义
+   
+   调试时建议重点盯：beanName 冲突、是否允许 overriding、是否已有同类定义。
+   
 4) 最终注入（当有注入点出现时，候选才会被收敛/可能 fail-fast）
    - `DefaultListableBeanFactory#doResolveDependency` → `findAutowireCandidates` → `determineAutowireCandidate`
 
@@ -411,7 +407,7 @@ mvn -pl :spring-core-beans test
   - **missing**：属性未配置（会触发 matchIfMissing 的语义）
   - **false**：显式关闭
   - **true**：显式开启
-- 复现入口：`SpringCoreBeansConditionEvaluationReportLabTest`（missing/false/true 三态对照）
+- 这一点可以用 `SpringCoreBeansConditionEvaluationReportLabTest` 做 missing/false/true 三态对照。
 
 ## 自检要点
 - 应能够用一句话解释：自动装配（auto-configuration）主要发生在定义阶段还是创建阶段吗？为什么？
@@ -420,7 +416,6 @@ mvn -pl :spring-core-beans test
 
 ## 小结与下一章
 
-- 本章完成后：请对照上一章/下一章导航继续阅读，形成模块内连续主线。
 
 <!-- BOOKIFY:START -->
 

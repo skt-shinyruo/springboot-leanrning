@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（Branch Decision Matrix）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：exposure 配置决定 endpoint 是否被映射到 web；root links 是最便宜的“是否暴露”的证据链。
 
-    - 知识点：04：关键分支矩阵（Branch Decision Matrix）
-    - 怎么使用：把 Actuator 的关键分支（是否暴露、root links 是否出现）固化为矩阵表，并给出复现入口与观察点。
-    - 原理：exposure 配置决定 endpoint 是否被映射到 web；root links 是最便宜的“是否暴露”的证据链。
-    - 源码入口：`WebEndpointDiscoverer` / `WebMvcEndpointHandlerMapping`
-    - 推荐 Lab：`BootActuatorBranchMatrixLabTest`
+    把 Actuator 的关键分支（是否暴露、root links 是否出现）固化为矩阵表，并给出复现入口与观察点。
+
+    对照入口：`BootActuatorBranchMatrixLabTest`。需要下探源码时，可以从 `WebEndpointDiscoverer` / `WebMvcEndpointHandlerMapping` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（Branch Decision Matrix）**
-- 建议入口：优先运行 `BootActuatorBranchMatrixLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：exposure 配置决定 endpoint 是否被映射到 web；root links 是最便宜的“是否暴露”的证据链。
-- 源码入口：`WebEndpointDiscoverer` / `WebMvcEndpointHandlerMapping`
+建议优先运行 `BootActuatorBranchMatrixLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：exposure 配置决定 endpoint 是否被映射到 web；root links 是最便宜的“是否暴露”的证据链。需要下探源码时，可以从 `WebEndpointDiscoverer` / `WebMvcEndpointHandlerMapping` 这些入口切入。
 
 
 ## 关键分支矩阵（最小集合）
@@ -41,8 +39,10 @@
 
 ## 小结与下一章
 
-- 小结：exposure 配置决定 endpoint 是否被映射到 web；root links 是最便宜的“是否暴露”的证据链。
-- 下一章：[第 169 章：01：Actuator 基础：健康检查与端点暴露](../part-01-actuator/01-actuator-basics.md)
+exposure 配置决定 endpoint 是否被映射到 web；root links 是最便宜的“是否暴露”的证据链。
+
+下一章见：[第 169 章：01：Actuator 基础：健康检查与端点暴露](../part-01-actuator/01-actuator-basics.md)
+
 
 <!-- BOOKIFY:START -->
 

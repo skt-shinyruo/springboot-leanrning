@@ -1,12 +1,12 @@
 # 05. 关键分支矩阵（AutoConfiguration）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节学习卡片（五问闭环）"
+    本章围绕04：关键分支矩阵（AutoConfiguration）展开，主线可以概括为：imports 决定候选集合；Condition 决定是否注册；backoff 决定是否让位；顺序决定最终形态。
 
-    - 知识点：04：关键分支矩阵（AutoConfiguration）
-    - 怎么使用：把“条件装配”变成可复现矩阵：每个分支都能落到一个最小入口（Lab）与一个断点锚点。
-    - 原理：imports 决定候选集合；Condition 决定是否注册；backoff 决定是否让位；顺序决定最终形态。
-    - 源码入口：`ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome`
-    - 推荐 Lab：`BootAutoConfigurationLabTest`
+    把“条件装配”变成可复现矩阵：每个分支都能落到一个最小入口（Lab）与一个断点锚点。
+
+    对照入口：`BootAutoConfigurationLabTest`。需要下探源码时，可以从 `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome` 这些入口切入。
+
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -15,11 +15,9 @@
 
 ## 导读
 
-- 本章主题：**05. 关键分支矩阵（AutoConfiguration）**
-- 建议入口：优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
-- 阅读目标：imports 决定候选集合；Condition 决定是否注册；backoff 决定是否让位；顺序决定最终形态。
-- 源码入口：`ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome`
+建议优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
 
+读完这一章，你应该能把这件事讲清楚：imports 决定候选集合；Condition 决定是否注册；backoff 决定是否让位；顺序决定最终形态。需要下探源码时，可以从 `ConditionEvaluator#shouldSkip` / `OnBeanCondition#getMatchOutcome` 这些入口切入。
 
 
 ## 分支矩阵（最小闭环）
@@ -32,8 +30,10 @@
 
 ## 小结与下一章
 
-- 小结：imports 决定候选集合；Condition 决定是否注册；backoff 决定是否让位；顺序决定最终形态。
-- 下一章：[第 196 章：01：条件装配与 backoff](../part-01-autoconfig-basics/01-conditional-and-backoff.md)
+imports 决定候选集合；Condition 决定是否注册；backoff 决定是否让位；顺序决定最终形态。
+
+下一章见：[第 196 章：01：条件装配与 backoff](../part-01-autoconfig-basics/01-conditional-and-backoff.md)
+
 
 <!-- BOOKIFY:START -->
 
