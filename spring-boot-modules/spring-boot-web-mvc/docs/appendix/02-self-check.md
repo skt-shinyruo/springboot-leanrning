@@ -23,7 +23,7 @@
 ## 从 Branch Matrix 进入（关键分支最小集合）
 
 - 错误分支矩阵 400/406/415：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
-- 配套资料：[`断点地图 `](../part-00-guide/06-breakpoint-map.md) / [` 关键分支矩阵`](../part-00-guide/04-branch-decision-matrix.md)
+- 配套资料：[`断点地图 `](../14-testing-observability/06-breakpoint-map.md) / [` 关键分支矩阵`](../14-testing-observability/04-branch-decision-matrix.md)
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -101,6 +101,5 @@
 - Lab：`BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
 - Exercise：`BootWebMvcExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
-
+上一章：[01. 常见坑清单（Web MVC）](01-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
 <!-- BOOKIFY:END -->

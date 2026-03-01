@@ -27,8 +27,8 @@
 - 模块目录页（顺读主线）：
   - [`spring-boot-web-mvc/docs/README.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/README.md)
 - 导航型文档（用于快速定位链路与断点）：
-  - 请求调用链速览：[`part-00-guide/03-webmvc-request-call-chain.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/03-webmvc-request-call-chain.md)
-  - 断点图：[`part-00-guide/06-breakpoint-map.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/06-breakpoint-map.md)
+  - 请求调用链速览：[`02-dispatcherservlet/03-webmvc-request-call-chain.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/02-dispatcherservlet/03-webmvc-request-call-chain.md)
+  - 断点图：[`14-testing-observability/06-breakpoint-map.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/14-testing-observability/06-breakpoint-map.md)
   - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/appendix/01-common-pitfalls.md)
 
 ## 常见误区
@@ -63,4 +63,3 @@
 ---
 
 [← 上一章](05-spring-core-tx.md) | [目录](README.md) | [下一章 →](07-spring-core-validation.md)
-

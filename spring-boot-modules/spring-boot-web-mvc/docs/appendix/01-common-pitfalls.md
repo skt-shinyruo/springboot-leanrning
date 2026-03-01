@@ -8,7 +8,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../part-08-security-observability/01-security-filterchain-and-mvc.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-web-mvc）](02-self-check.md)
+上一章：[02. Observability（Interceptor 计时 vs Actuator 指标）](../14-testing-observability/02-observability-and-metrics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99 自检：Spring Boot Web MVC](02-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -21,7 +21,7 @@
 - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
 - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 
-断点地图见：[06-breakpoint-map.md](../part-00-guide/06-breakpoint-map.md)，关键分支矩阵见：[04-branch-decision-matrix.md](../part-00-guide/04-branch-decision-matrix.md)。当本章的坑都能被这些入口覆盖时，可以再用自检清单做一次回归：[02-self-check.md](02-self-check.md)。
+断点地图见：[06-breakpoint-map.md](../14-testing-observability/06-breakpoint-map.md)，关键分支矩阵见：[04-branch-decision-matrix.md](../14-testing-observability/04-branch-decision-matrix.md)。当本章的坑都能被这些入口覆盖时，可以再用自检清单做一次回归：[02-self-check.md](02-self-check.md)。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -183,6 +183,5 @@
 - Lab：`BootWebMvcSecurityLabTest`
 - Lab：`BootWebMvcObservabilityLabTest`
 
-上一章：[part-08-security-observability/02-observability-and-metrics.md](../part-08-security-observability/02-observability-and-metrics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](02-self-check.md)
-
+上一章：[02. Observability（Interceptor 计时 vs Actuator 指标）](../14-testing-observability/02-observability-and-metrics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99 自检：Spring Boot Web MVC](02-self-check.md)
 <!-- BOOKIFY:END -->

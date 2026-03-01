@@ -53,49 +53,58 @@
         - [02. 99 - Self Check（springboot-basics）](../spring-boot-modules/spring-boot-basics/docs/appendix/02-self-check.md)
     - spring-boot-web-mvc
       - [spring-boot-web-mvc](../spring-boot-modules/spring-boot-web-mvc/docs/README.md)
-      - part-00-guide
-        - [01. 主线时间线：Spring Boot Web MVC](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/01-mainline-timeline.md)
-        - [02. 00 - Deep Dive Guide（springboot-web-mvc）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/02-deep-dive-guide.md)
-        - [03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/03-webmvc-request-call-chain.md)
-        - [04. 关键分支矩阵（Web MVC Branch Decision Matrix）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/04-branch-decision-matrix.md)
-        - [05. 知识地图（Web MVC Deep Dive Map）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/05-knowledge-map.md)
-        - [06. 断点地图（Part 01 Debugger Pack）](../spring-boot-modules/spring-boot-web-mvc/docs/part-00-guide/06-breakpoint-map.md)
-      - part-01-web-mvc
-        - [01. 校验（Validation）与错误响应形状（Error Shape）](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/01-validation-and-error-shaping.md)
-        - [02. 统一异常处理（ControllerAdvice）与“坏输入”](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/02-exception-handling.md)
-        - [03. 请求绑定（Binding）与 Converter/Formatter](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/03-binding-and-converters.md)
-        - [04. Interceptor 与 Filter：入口在哪里、顺序怎么理解](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/04-interceptor-and-filter-ordering.md)
-        - [05. Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](../spring-boot-modules/spring-boot-web-mvc/docs/part-01-web-mvc/05-interceptor-async-lifecycle.md)
-      - part-02-view-mvc
-        - [01. 传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../spring-boot-modules/spring-boot-web-mvc/docs/part-02-view-mvc/01-thymeleaf-and-view-resolver.md)
-        - [02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](../spring-boot-modules/spring-boot-web-mvc/docs/part-02-view-mvc/02-form-binding-validation-prg.md)
-        - [03. 错误页（error/*.html）与内容协商（Accept：HTML vs JSON）](../spring-boot-modules/spring-boot-web-mvc/docs/part-02-view-mvc/03-error-pages-and-content-negotiation.md)
-      - part-03-web-mvc-internals
-        - [01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/01-dispatcherservlet-call-chain.md)
-        - [02. ArgumentResolver 与 Binder（已合并）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/02-argument-resolver-and-binder.md)
-        - [03. HttpMessageConverter 与返回值处理（序列化发生在哪里）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/03-message-converters-and-return-values.md)
-        - [04. ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/04-exception-resolvers-and-error-flow.md)
-        - [05. ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](../spring-boot-modules/spring-boot-web-mvc/docs/part-03-web-mvc-internals/05-controlleradvice-matching-and-ordering.md)
-      - part-04-rest-contract
-        - [01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../spring-boot-modules/spring-boot-web-mvc/docs/part-04-rest-contract/01-content-negotiation-406-415.md)
-        - [02. Jackson ObjectMapper 可控（严格模式、未知字段、时间）](../spring-boot-modules/spring-boot-web-mvc/docs/part-04-rest-contract/02-jackson-objectmapper-controls.md)
-        - [03. 错误契约加固（解析失败 vs 校验失败 vs 类型不匹配）](../spring-boot-modules/spring-boot-web-mvc/docs/part-04-rest-contract/03-error-contract-hardening.md)
-        - [04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](../spring-boot-modules/spring-boot-web-mvc/docs/part-04-rest-contract/04-problemdetail-vs-custom-error.md)
-      - part-05-real-world-http
-        - [01. CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/01-cors-preflight.md)
-        - [02. Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/02-multipart-upload.md)
-        - [03. 下载与 Header（Content-Disposition / Content-Type / bytes）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/03-download-and-streaming.md)
-        - [04. 静态资源与缓存（Static Resources / Cache-Control）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/04-static-resources-and-cache.md)
-        - [05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](../spring-boot-modules/spring-boot-web-mvc/docs/part-05-real-world-http/05-conditional-requests-last-modified-etag-filter.md)
-      - part-06-async-sse
-        - [01. Servlet Async（Callable）与测试（asyncDispatch）](../spring-boot-modules/spring-boot-web-mvc/docs/part-06-async-sse/01-servlet-async-and-testing.md)
-        - [02. SSE（SseEmitter：text/event-stream 最小闭环）](../spring-boot-modules/spring-boot-web-mvc/docs/part-06-async-sse/02-sse-emitter.md)
-        - [03. DeferredResult（回调式异步）与 timeout/fallback（可控分支）](../spring-boot-modules/spring-boot-web-mvc/docs/part-06-async-sse/03-deferredresult-and-timeout.md)
-      - part-07-testing-debugging
-        - [01. WebMvc 测试与排障（resolvedException / handler / 断点清单）](../spring-boot-modules/spring-boot-web-mvc/docs/part-07-testing-debugging/01-webmvc-testing-and-troubleshooting.md)
-      - part-08-security-observability
-        - [01. Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../spring-boot-modules/spring-boot-web-mvc/docs/part-08-security-observability/01-security-filterchain-and-mvc.md)
-        - [02. Observability（Interceptor 计时 vs Actuator 指标）](../spring-boot-modules/spring-boot-web-mvc/docs/part-08-security-observability/02-observability-and-metrics.md)
+      - 00-guide
+        - [00. 从注解到断点：用一条主线学会 Spring MVC](../spring-boot-modules/spring-boot-web-mvc/docs/00-guide/00-from-annotations-to-breakpoints.md)
+        - [01. 主线时间线：Spring Boot Web MVC](../spring-boot-modules/spring-boot-web-mvc/docs/00-guide/01-mainline-timeline.md)
+        - [02. 00 - Deep Dive Guide（springboot-web-mvc）](../spring-boot-modules/spring-boot-web-mvc/docs/00-guide/02-deep-dive-guide.md)
+        - [05. 知识地图（Web MVC Deep Dive Map）](../spring-boot-modules/spring-boot-web-mvc/docs/00-guide/05-knowledge-map.md)
+      - 01-filterchain-security
+        - [01. Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](../spring-boot-modules/spring-boot-web-mvc/docs/01-filterchain-security/01-security-filterchain-and-mvc.md)
+      - 02-dispatcherservlet
+        - [03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）](../spring-boot-modules/spring-boot-web-mvc/docs/02-dispatcherservlet/03-webmvc-request-call-chain.md)
+        - [01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](../spring-boot-modules/spring-boot-web-mvc/docs/02-dispatcherservlet/01-dispatcherservlet-call-chain.md)
+      - 03-handlermapping
+        - [01. HandlerMapping：路由、404/405 与 mapping 约束](../spring-boot-modules/spring-boot-web-mvc/docs/03-handlermapping/01-handlermapping-routing.md)
+      - 04-handleradapter-interceptor
+        - [04. Interceptor 与 Filter：入口在哪里、顺序怎么理解](../spring-boot-modules/spring-boot-web-mvc/docs/04-handleradapter-interceptor/04-interceptor-and-filter-ordering.md)
+      - 05-argument-resolver
+        - [02. ArgumentResolver 与 Binder（解析参数/绑定/校验触发点）](../spring-boot-modules/spring-boot-web-mvc/docs/05-argument-resolver/02-argument-resolver-and-binder.md)
+      - 06-binding-validation
+        - [03. 请求绑定（Binding）与 Converter/Formatter](../spring-boot-modules/spring-boot-web-mvc/docs/06-binding-validation/03-binding-and-converters.md)
+        - [01. 校验（Validation）与错误响应形状（Error Shape）](../spring-boot-modules/spring-boot-web-mvc/docs/06-binding-validation/01-validation-and-error-shaping.md)
+      - 07-message-conversion
+        - [01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](../spring-boot-modules/spring-boot-web-mvc/docs/07-message-conversion/01-content-negotiation-406-415.md)
+        - [02. Jackson ObjectMapper 可控（严格模式、未知字段、时间）](../spring-boot-modules/spring-boot-web-mvc/docs/07-message-conversion/02-jackson-objectmapper-controls.md)
+      - 08-controller
+        - [01. Controller：边界、异常与契约的位置](../spring-boot-modules/spring-boot-web-mvc/docs/08-controller/01-controller-boundary.md)
+      - 09-return-value-view
+        - [01. 传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](../spring-boot-modules/spring-boot-web-mvc/docs/09-return-value-view/01-thymeleaf-and-view-resolver.md)
+        - [02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](../spring-boot-modules/spring-boot-web-mvc/docs/09-return-value-view/02-form-binding-validation-prg.md)
+        - [03. HttpMessageConverter 与返回值处理（序列化发生在哪里）](../spring-boot-modules/spring-boot-web-mvc/docs/09-return-value-view/03-message-converters-and-return-values.md)
+      - 10-exception-resolvers
+        - [02. 统一异常处理（ControllerAdvice）与“坏输入”](../spring-boot-modules/spring-boot-web-mvc/docs/10-exception-resolvers/02-exception-handling.md)
+        - [03. 错误契约加固（解析失败 vs 校验失败 vs 类型不匹配）](../spring-boot-modules/spring-boot-web-mvc/docs/10-exception-resolvers/03-error-contract-hardening.md)
+        - [04. ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](../spring-boot-modules/spring-boot-web-mvc/docs/10-exception-resolvers/04-exception-resolvers-and-error-flow.md)
+        - [04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](../spring-boot-modules/spring-boot-web-mvc/docs/10-exception-resolvers/04-problemdetail-vs-custom-error.md)
+        - [05. ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](../spring-boot-modules/spring-boot-web-mvc/docs/10-exception-resolvers/05-controlleradvice-matching-and-ordering.md)
+      - 11-boot-error
+        - [03. 错误页（error/*.html）与内容协商（Accept：HTML vs JSON）](../spring-boot-modules/spring-boot-web-mvc/docs/11-boot-error/03-error-pages-and-content-negotiation.md)
+      - 12-async-sse
+        - [01. Servlet Async（Callable）与测试（asyncDispatch）](../spring-boot-modules/spring-boot-web-mvc/docs/12-async-sse/01-servlet-async-and-testing.md)
+        - [02. SSE（SseEmitter：text/event-stream 最小闭环）](../spring-boot-modules/spring-boot-web-mvc/docs/12-async-sse/02-sse-emitter.md)
+        - [03. DeferredResult（回调式异步）与 timeout/fallback（可控分支）](../spring-boot-modules/spring-boot-web-mvc/docs/12-async-sse/03-deferredresult-and-timeout.md)
+        - [05. Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](../spring-boot-modules/spring-boot-web-mvc/docs/12-async-sse/05-interceptor-async-lifecycle.md)
+      - 13-real-world-http
+        - [01. CORS 与预检（OPTIONS：浏览器为什么要先问一句）](../spring-boot-modules/spring-boot-web-mvc/docs/13-real-world-http/01-cors-preflight.md)
+        - [02. Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）](../spring-boot-modules/spring-boot-web-mvc/docs/13-real-world-http/02-multipart-upload.md)
+        - [03. 下载与 Header（Content-Disposition / Content-Type / bytes）](../spring-boot-modules/spring-boot-web-mvc/docs/13-real-world-http/03-download-and-streaming.md)
+        - [04. 静态资源与缓存（Static Resources / Cache-Control）](../spring-boot-modules/spring-boot-web-mvc/docs/13-real-world-http/04-static-resources-and-cache.md)
+        - [05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](../spring-boot-modules/spring-boot-web-mvc/docs/13-real-world-http/05-conditional-requests-last-modified-etag-filter.md)
+      - 14-testing-observability
+        - [01. WebMvc 测试与排障（resolvedException / handler / 断点清单）](../spring-boot-modules/spring-boot-web-mvc/docs/14-testing-observability/01-webmvc-testing-and-troubleshooting.md)
+        - [02. Observability（Interceptor 计时 vs Actuator 指标）](../spring-boot-modules/spring-boot-web-mvc/docs/14-testing-observability/02-observability-and-metrics.md)
+        - [04. 关键分支矩阵（Web MVC Branch Decision Matrix）](../spring-boot-modules/spring-boot-web-mvc/docs/14-testing-observability/04-branch-decision-matrix.md)
+        - [06. 断点地图（Part 01 Debugger Pack）](../spring-boot-modules/spring-boot-web-mvc/docs/14-testing-observability/06-breakpoint-map.md)
       - appendix
         - [01. 常见坑清单（Web MVC）](../spring-boot-modules/spring-boot-web-mvc/docs/appendix/01-common-pitfalls.md)
         - [02. 99 - Self Check（springboot-web-mvc）](../spring-boot-modules/spring-boot-web-mvc/docs/appendix/02-self-check.md)
