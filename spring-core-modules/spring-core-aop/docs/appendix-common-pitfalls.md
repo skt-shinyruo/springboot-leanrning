@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证](proxy-stacking-real-world-stacking-playbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 自测题：是否真正理解了 AOP？](appendix-self-check.md)
+上一章：[02. Weaving vs Proxy：能力边界决策表（跳转 aop-weaving）](appendix-weaving-vs-proxy-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 自测题：是否真正理解了 AOP？](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ### 排障骨架（统一结构）
@@ -183,6 +183,6 @@
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProxyMechanicsLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[10-real-world-stacking-playbook](proxy-stacking-real-world-stacking-playbook.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](appendix-self-check.md)
+上一章：[92-weaving-vs-proxy](appendix-weaving-vs-proxy-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

@@ -61,16 +61,33 @@
    - 阅读：[05. exposeProxy](proxy-fundamentals-expose-proxy.md)
 5. 学会调试代理：先能把代理链看清楚
    - 阅读：[06. 调试代理](proxy-fundamentals-debugging.md)
-6. 进入主线：AutoProxyCreator 是怎么决定“要不要代理”的
-   - 阅读：[07. AutoProxyCreator 主线](autoproxy-and-pointcuts-autoproxy-creator-mainline.md)
-7. 再进入“选择切点”的系统：表达式与匹配规则
-   - 阅读：[08. 切点表达式系统](autoproxy-and-pointcuts-pointcut-expression-system.md)
-8. 最后处理真实世界：多个代理/多个增强如何叠加与排查
-   - 阅读：[09. 多层代理叠加](proxy-stacking-multi-proxy-stacking.md)
-   - 阅读：[10. 叠加排障手册](proxy-stacking-real-world-stacking-playbook.md)
+6. 把 Advice 全家桶补齐：不同 advice 类型的语义差异与绑定规则
+   - 阅读：[07. Advice 全家桶（语义与绑定）](proxy-fundamentals-advice-types-and-binding.md)
+7. 认识 “不是拦截方法，而是扩展类型能力”：Introduction / Mixin
+   - 阅读：[08. Introduction / Mixin](proxy-fundamentals-introduction-mixin.md)
+8. 把 “target 从哪来” 模型化：TargetSource（LazyInit/HotSwap…）
+   - 阅读：[09. TargetSource 模型](proxy-fundamentals-targetsource-model.md)
+9. 把 “proxy 当对象用” 的坑提前打掉：对象语义与自证手段
+   - 阅读：[10. Proxy 对象语义](proxy-fundamentals-proxy-object-semantics.md)
+10. 回到容器主线：AutoProxyCreator 是怎么决定“要不要代理”的
+   - 阅读：[01. AutoProxyCreator 主线](autoproxy-and-pointcuts-autoproxy-creator-mainline.md)
+11. 再进入“选择切点”的系统：表达式、静态/动态匹配与误判
+   - 阅读：[02. 切点表达式系统](autoproxy-and-pointcuts-pointcut-expression-system.md)
+12. 覆盖遗留入口：BeanNameAutoProxyCreator / ProxyFactoryBean / XML
+   - 阅读：[03. 其它装配入口](autoproxy-and-pointcuts-other-configuration-entries.md)
+13. 处理高级语义：@Aspect 实例模型（prototype gate）
+   - 阅读：[04. Aspect 实例模型](autoproxy-and-pointcuts-aspect-instantiation-models.md)
+14. 并发/性能边界：同一 proxy 并发调用与 per-invocation 状态隔离
+   - 阅读：[01. 并发 / 性能边界](perf-concurrency-proxy-concurrency-perf.md)
+15. 最后处理真实世界：多个代理/多个增强如何叠加与排查
+   - 阅读：[01. 多层代理叠加](proxy-stacking-multi-proxy-stacking.md)
+   - 阅读：[02. 叠加排障手册](proxy-stacking-real-world-stacking-playbook.md)
+16. 选型/排障出口：Weaving vs Proxy（哪些问题 proxy 永远解决不了）
+   - 阅读：[Weaving vs Proxy 决策表](appendix-weaving-vs-proxy-decision-matrix.md)
 
 ## 排坑与自检
 
+- 选型/边界：[Weaving vs Proxy 决策表](appendix-weaving-vs-proxy-decision-matrix.md)
 - 常见坑：[90-common-pitfalls.md](appendix-common-pitfalls.md)
 - 自检：[99-self-check.md](appendix-self-check.md)
 

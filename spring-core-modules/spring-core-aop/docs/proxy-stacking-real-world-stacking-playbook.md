@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](proxy-stacking-multi-proxy-stacking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（建议反复对照）](appendix-common-pitfalls.md)
+上一章：[01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](proxy-stacking-multi-proxy-stacking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. Weaving vs Proxy：能力边界决策表（跳转 aop-weaving）](appendix-weaving-vs-proxy-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -202,6 +202,6 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopRealWorldStackingLabTest` / `SpringCoreAopProceedNestingLabTest`
 
-上一章：[09-multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
+上一章：[09-multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[92-weaving-vs-proxy](appendix-weaving-vs-proxy-decision-matrix.md)
 
 <!-- BOOKIFY:END -->

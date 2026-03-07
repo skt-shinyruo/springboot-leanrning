@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](autoproxy-and-pointcuts-pointcut-expression-system.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](proxy-stacking-multi-proxy-stacking.md)
+上一章：[04. `@Aspect` 实例模型：singleton vs perthis/pertarget/pertypewithin（Spring AOP 语境）](autoproxy-and-pointcuts-aspect-instantiation-models.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](proxy-stacking-multi-proxy-stacking.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -108,6 +108,6 @@
 
 - Lab：`SpringCoreAopProxyConcurrencyLabTest`
 
-上一章：[08-pointcut-expression-system](autoproxy-and-pointcuts-pointcut-expression-system.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[09-multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md)
+上一章：[10-aspect-instantiation-models](autoproxy-and-pointcuts-aspect-instantiation-models.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[09-multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md)
 
 <!-- BOOKIFY:END -->

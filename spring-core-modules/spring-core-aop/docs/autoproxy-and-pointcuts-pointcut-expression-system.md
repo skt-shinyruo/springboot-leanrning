@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）](perf-concurrency-proxy-concurrency-perf.md)
+上一章：[01. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 除 `@EnableAspectJAutoProxy` 之外：BeanNameAutoProxyCreator / ProxyFactoryBean / XML](autoproxy-and-pointcuts-other-configuration-entries.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,6 +19,7 @@
 !!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreAopPointcutExpressionsLabTest`
+    - Lab：`SpringCoreAopRuntimePointcutCostLabTest`（args 的运行期匹配/成本模型）
 
 ## 机制主线
 
@@ -176,6 +177,26 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 - 以为 args(String) 匹配“声明是 String 的参数”，但实际可能是运行时传入的子类型/代理类型
 - 在泛型/集合参数下，args 往往不是预期语义（更建议把范围收敛到 execution + within）
 
+### 3.1 runtime matcher（成本模型）：`MethodMatcher#isRuntime()`
+
+当 pointcut 需要运行期上下文（入参/this/target）才能确定“命中/不命中”时，它会变成 runtime matcher：
+
+- **命中是否成立可能依赖本次调用的实参**（同一方法，不同实参，命中结果不同）
+- 这会引入 **per-invocation 的判断开销**（每次调用都要再判断一次）
+
+你不需要背实现，但要能自证两件事：
+
+1) 这个表达式是否是 runtime matcher（`MethodMatcher#isRuntime()`）  
+2) 命中是否确实受实参影响（字符串命中、整数不命中）
+
+对应最小证据链入口：
+
+- `SpringCoreAopRuntimePointcutCostLabTest`
+
+调试入口（更贴近源码观察）：
+
+- `interceptorsAndDynamicMethodMatchers`（链条里出现 dynamic matcher 的典型载体）
+
 - `@annotation(X)`：方法上有注解 X
 - `@within(X)`：声明该方法的类上有注解 X（更偏静态）
 - `@target(X)`：运行时目标对象的类上有注解 X（更偏运行时）
@@ -192,6 +213,7 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 ## 7. Labs 对应关系（建议按顺序跑）
 
 - this vs target（JDK/CGLIB 差异，可断言）：`SpringCoreAopPointcutExpressionsLabTest`
+- args runtime matcher（运行期匹配/成本模型）：`SpringCoreAopRuntimePointcutCostLabTest`
 - 从最小切点换到 execution（练习题）：`SpringCoreAopExerciseTest#exercise_changePointcutStyle`
 - 代理与链条断点导航：见 [00. 深挖指南](guide-deep-dive-guide.md)、[06. debugging](proxy-fundamentals-debugging.md)
 
@@ -216,7 +238,8 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 
 - Lab：`SpringCoreAopPointcutExpressionsLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
+- Lab：`SpringCoreAopRuntimePointcutCostLabTest`
 
-上一章：[07-autoproxy-creator-mainline](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[11-proxy-concurrency-perf](perf-concurrency-proxy-concurrency-perf.md)
+上一章：[07-autoproxy-creator-mainline](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[09-other-config-entries](autoproxy-and-pointcuts-other-configuration-entries.md)
 
 <!-- BOOKIFY:END -->

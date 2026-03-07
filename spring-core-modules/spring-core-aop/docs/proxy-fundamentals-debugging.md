@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](proxy-fundamentals-expose-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）](autoproxy-and-pointcuts-autoproxy-creator-mainline.md)
+上一章：[05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](proxy-fundamentals-expose-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07. Advice 全家桶：@Before/@After/@AfterReturning/@AfterThrowing（语义与绑定）](proxy-fundamentals-advice-types-and-binding.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -168,6 +168,6 @@ proxy 的运行时类型与目标类型不同；要用 AOP 工具类/Advised 来
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProceedNestingLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[05-expose-proxy](proxy-fundamentals-expose-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07-autoproxy-creator-mainline](autoproxy-and-pointcuts-autoproxy-creator-mainline.md)
+上一章：[05-expose-proxy](proxy-fundamentals-expose-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07-advice-types](proxy-fundamentals-advice-types-and-binding.md)
 
 <!-- BOOKIFY:END -->

@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[06. Debug / 观察：如何“看见”代理与切点](proxy-fundamentals-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](autoproxy-and-pointcuts-pointcut-expression-system.md)
+上一章：[10. Proxy 的对象语义：equals/hashCode/toString/Map key（以及如何自证）](proxy-fundamentals-proxy-object-semantics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](autoproxy-and-pointcuts-pointcut-expression-system.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -218,6 +218,6 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyCreatorInternalsLabTest te
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
 
-上一章：[06-debugging](proxy-fundamentals-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08-pointcut-expression-system](autoproxy-and-pointcuts-pointcut-expression-system.md)
+上一章：[10-proxy-semantics](proxy-fundamentals-proxy-object-semantics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08-pointcut-expression-system](autoproxy-and-pointcuts-pointcut-expression-system.md)
 
 <!-- BOOKIFY:END -->
