@@ -12,8 +12,12 @@
 
 ## 导读
 
-本章围绕「08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansContainerLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+这一章的阅读目标很具体：当读者看到“按名字/按类型拿到的对象类型不符合预期”时，应能够立刻想到 `FactoryBean` 的两条硬规则：
+
+- `getBean("name")` 默认拿到的是 **product**
+- `getBean("&name")` 才能拿到 **factory 本体**
+
+建议先跑 `SpringCoreBeansContainerLabTest` 里的最小对照（`"name"` vs `"&name"`），再用 `SpringCoreBeansFactoryBeanDeepDiveLabTest` 深入“类型推断/缓存/isSingleton/getObjectType 为 null 的边界”。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 

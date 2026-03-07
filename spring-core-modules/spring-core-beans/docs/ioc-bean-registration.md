@@ -12,7 +12,7 @@
 
 ## 导读
 
-- 阅读方式建议：先运行“注册入口对照”的最小 Lab（ComponentScan / Import / Programmatic），再回到正文把“注册发生在 refresh 的哪一段、到底注册了什么”彻底讲清楚。
+- 建议先运行“注册入口对照”的最小 Lab（ComponentScan / Import / Programmatic），再回到正文把“注册发生在 refresh 的哪一段、到底注册了什么”对齐到断点与证据链。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Java Config / @Bean，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/java.html

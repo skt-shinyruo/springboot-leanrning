@@ -12,8 +12,13 @@
 
 ## 导读
 
-本章围绕「07. `@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansContainerLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+这一章解释一个非常高频、也非常“像是 Spring 坏了”的现象：
+
+> 在 `@Configuration` 里调用另一个 `@Bean` 方法，为什么有时是同一个实例，有时会 new 出一个新实例？
+
+关键不在“BeanDefinition 有没有注册”，而在 **配置类的 `@Bean` 方法调用语义** 是否被增强（`proxyBeanMethods`）。
+
+建议读者先运行 `SpringCoreBeansContainerLabTest` 里 proxyBeanMethods 的对照用例，把“互调走容器 vs 互调走普通 Java 调用”跑成事实，再回到正文对照 `ConfigurationClassEnhancer` 的拦截点理解原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Java Config / @Bean，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/java.html

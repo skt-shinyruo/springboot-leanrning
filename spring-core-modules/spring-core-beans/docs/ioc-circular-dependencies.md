@@ -12,7 +12,7 @@
 
 ## 导读
 
-- 阅读方式建议：先运行“constructor fail-fast vs setter 可能成功”的最小实验，再带着断点把“为什么能救/为什么救不了”的证据链走通。
+- 建议先运行“constructor fail-fast vs setter 可能成功”的最小实验，再带着断点把“为什么能救/为什么救不了”的证据链走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 

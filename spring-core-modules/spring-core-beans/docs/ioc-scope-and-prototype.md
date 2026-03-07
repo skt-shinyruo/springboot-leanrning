@@ -12,7 +12,8 @@
 
 ## 导读
 
-- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+- 这一章解决一个最常见的 scope 误判：把 “prototype” 理解成“每次方法调用都会 new”。
+- 建议读者先运行 `SpringCoreBeansLabTest#demonstratesPrototypeScopeBehavior`，把“prototype 注入 singleton 为什么像单例”“ObjectProvider 为什么能修”跑成断言，再回到正文对照 `doGetBean` 的 singleton/prototype 分支。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Scopes，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html

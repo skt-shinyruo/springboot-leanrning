@@ -12,8 +12,14 @@
 
 ## 导读
 
-本章围绕「06. 容器扩展点：BFPP vs BPP（以及它们能/不能做什么）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansContainerLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+这一章回答一个“源码阅读/排障”的关键问题：同样是 post-processor，为什么有的能改定义、有的能改对象，甚至还能把对象换成 proxy？
+
+读者只要先把两句结论吃透，后面的高级用法（注解为什么生效、AOP 代理在哪里产生、为什么会早实例化）就不容易走偏：
+
+- BFPP/BDRPP：改 **定义**（`BeanDefinition`，配方与元数据）
+- BPP：改 **实例**（对象创建流程中的钩子点，甚至可能替换最终暴露对象）
+
+建议先运行 `SpringCoreBeansContainerLabTest` 与 `SpringCoreBeansPostProcessorOrderingLabTest`，把“定义层/实例层”分层跑成事实，再回到正文看 `invokeBeanFactoryPostProcessors/registerBeanPostProcessors/doCreateBean` 的窗口期。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（容器扩展点，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
