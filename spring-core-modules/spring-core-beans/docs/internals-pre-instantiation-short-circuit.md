@@ -12,9 +12,13 @@
 
 ## 导读
 
-本章围绕「15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansPreInstantiationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+本章解释一个调试时很“反直觉”的现象：读者明明在构造器里打了断点，但它就是不进；或者构造器抛异常按理会让容器启动失败，但某些情况下容器却还能正常拿到 bean。
 
+原因是：`InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation` 可以在实例化之前返回一个替身对象（常见是 proxy），从而短路默认的 `doCreateBean` 路径——构造器、注入、初始化回调都有可能被绕过。
+
+建议先运行 `SpringCoreBeansPreInstantiationLabTest` 的两条对照用例（有短路 vs 无短路），把“构造器是否执行/容器是否失败”的差异跑成断言；再回正文对照 `resolveBeforeInstantiation` 的分叉点。
+
+- 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPreInstantiationLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 

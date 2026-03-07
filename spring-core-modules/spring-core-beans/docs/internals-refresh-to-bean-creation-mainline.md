@@ -12,8 +12,13 @@
 
 ## 导读
 
-- 阅读方式建议：先运行本章推荐 Lab（把现象固化为断言），再对照本文的“十步走/五段式/分支决策表”去源码设置断点。
+这章是 “Container Internals” 的主线地图：把 `refresh()` 的十步骨架、以及 `doGetBean/doCreateBean` 的创建主线，串成一条能下断点的路线。
 
+读者在排障时经常卡在一句话：**问题到底发生在 refresh 的哪一段？是定义没生成，还是对象创建被短路/被代理替换？**
+
+建议先运行 `SpringCoreBeansBeanCreationTraceLabTest`（或本章任一 Lab），把一次完整的“refresh → getBean → doCreateBean”调用链跑通，再用本文的“十步走/两条流水线”对齐断点与关键变量。
+
+- 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanCreationTraceLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 

@@ -12,9 +12,14 @@
 
 ## 导读
 
-本章围绕「12. 容器启动与基础设施处理器：为什么注解能工作？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansBootstrapInternalsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+这一章回答两个排障高频问题：
 
+1) 为什么“同样是 Spring 容器”，有的启动方式里 `@Autowired/@PostConstruct/@Bean` 统统不生效？
+2) 注解能力到底从哪来？它在 `refresh()` 的哪一步开始“真的生效”？
+
+建议读者先运行 `SpringCoreBeansBootstrapInternalsLabTest`：对照 `GenericApplicationContext` 与 `AnnotationConfigApplicationContext` 的启动差异，把“基础设施没装/已装”的分界跑成事实；再回正文对照 `registerAnnotationConfigProcessors → invokeBeanFactoryPostProcessors → registerBeanPostProcessors` 三段时机。
+
+- 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBootstrapInternalsLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
@@ -35,13 +40,16 @@
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-这一章回答一个很容易被忽略的问题：
+这一章回答一个很容易被忽略的问题：**注解能力不是“refresh 自带”的魔法，而是一组基础设施处理器在 refresh 主线上分阶段装进去的。**
 
 ## 现象：同样是 Spring 容器，不同启动方式结果不一样
 
 ### 1.1 `GenericApplicationContext` 默认不处理注解
 
-若直接用 `GenericApplicationContext` 注册 bean：
+若直接用 `GenericApplicationContext` 注册业务 bean（不额外注册 annotation processors），读者会看到两个典型现象：
+
+- `@Autowired` 注入为 null
+- `@PostConstruct` 未执行
 
 这不是 bug，而是：读者没有把“注解解析与回调”的那套基础设施装进去。
 

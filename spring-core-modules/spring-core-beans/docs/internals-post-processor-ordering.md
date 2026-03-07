@@ -12,9 +12,23 @@
 
 ## 导读
 
-本章围绕「14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansPostProcessorOrderingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+这一章处理的不是“接口名记忆”，而是一个很工程化的困惑：**同样是一组 post-processor，为什么换个注册方式/加一个 `@Order`，最终对象形态、代理叠加顺序、甚至某些定义是否生效都会变？**
 
+读者只要先把两件事跑成事实，后面看源码就不容易被术语绕晕：
+
+1) `PriorityOrdered/Ordered/无序` 决定的是 **分段执行/分段注册**（宏观顺序）
+2) 同一段内部才谈 `order` 值与 comparator（微观排序；是否认 `@Order` 取决于 comparator）
+
+建议先运行 `SpringCoreBeansPostProcessorOrderingLabTest`，把 BFPP/BDRPP/BPP 的分段顺序与组内排序跑成断言，再回正文对照 `PostProcessorRegistrationDelegate` 的两段算法（`invokeBeanFactoryPostProcessors` 与 `registerBeanPostProcessors`）。
+
+读者读完后应能够回答（≤5）：
+
+- `PriorityOrdered` 与 `Ordered` 的“分段”语义是什么？
+- `@Order` 为什么经常不影响 BFPP/BDRPP/BPP 的执行顺序？
+- Spring 到底用哪个 comparator 来排序？`dependencyComparator` 缺失会造成什么现象？
+- 为什么 internal BPP 有时会在最后“被挪到尾部”？
+
+- 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPostProcessorOrderingLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 

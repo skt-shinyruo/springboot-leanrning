@@ -12,8 +12,20 @@
 
 ## 导读
 
-- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+这一章解决“定义从哪里来”的问题：读者明明没有显式注册某个 bean，但 refresh 之后它却出现了；或者某个 BFPP 能修改到一个“看起来后来才出现”的 `BeanDefinition`。
 
+抓手只有一个：把 refresh 前半段当成 **定义阶段**。在这个阶段，BDRPP 可以继续往 registry 里加节点，从而直接改变后续“会创建哪些对象”。
+
+建议先运行 `SpringCoreBeansRegistryPostProcessorLabTest`，用断言证明“BDRPP 注册的定义确实进了 registry，并且先于 BFPP 执行”，再回正文对照 `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 的分段算法。
+
+读者读完后应能够回答（≤5）：
+
+- BDRPP 与 BFPP 的本质差别是什么？为什么说它更“早、更强”？
+- 如何用断点证明“某个 bean 是 BDRPP 动态注册出来的”？
+- 为什么不建议在 BDRPP/BFPP 阶段 `getBean()`？它会破坏哪些后续语义？
+- 当问题是“BeanDefinition 从哪来/为什么被改写”时，应该优先看 refresh 的哪一段？
+
+- 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRegistryPostProcessorLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（容器扩展点，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
@@ -41,9 +53,12 @@
 
 ## 一句话结论：先有“定义”，后有“实例”
 
-容器启动阶段的关键流程可以粗略理解为：
+容器启动阶段的关键流程可以先按“两段”理解：
 
-BDRPP 的价值在于：它可以在 **第 1 步和第 2 步之间** 动态注册新的 `BeanDefinition`。
+1) 定义阶段：注册/扩张/加工 `BeanDefinition`（BDRPP/BFPP 在这里动手）
+2) 创建阶段：把定义变成对象并完成初始化（BPP/生命周期/AOP 在这里动手）
+
+BDRPP 的价值在于：它可以在 **定义阶段仍然可增长** 的窗口期动态注册新的 `BeanDefinition`，从而让“容器里最终会有哪些 bean”发生变化。
 
 ### 1.1 机制系统阐述：条件 → 分支 → 结果（可断点验证）
 

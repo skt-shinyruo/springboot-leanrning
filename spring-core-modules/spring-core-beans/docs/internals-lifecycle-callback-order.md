@@ -12,9 +12,16 @@
 
 ## 导读
 
-本章围绕「17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+生命周期顺序是解释很多“看起来不按直觉发生”的容器行为的钥匙：注入为什么发生在回调之前？代理到底在哪一步出现？为什么 `@PreDestroy` 有时永远不会触发？
 
+这一章聚焦两个高频问题：
+
+1) 一个 singleton bean 从创建到初始化，会按什么顺序触发 Aware、BPP、`@PostConstruct/afterPropertiesSet/initMethod`？
+2) 为什么 prototype 默认不会在容器关闭时触发 `@PreDestroy/destroyMethod`？
+
+建议先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest`，把回调顺序与 prototype 边界跑成断言；再回正文对照 `initializeBean` 与 `DisposableBeanAdapter#destroy` 两个“串联点”，读者就能把“触发/不触发”定位回源码分支。
+
+- 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleCallbackOrderLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Scopes，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
 - 官方文档对照（容器扩展点，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
@@ -76,14 +83,7 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
   - `singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization()`（初始化顺序：aware → BPP before → @PostConstruct → afterPropertiesSet/initMethod → BPP after）
 
-- constructor
-- BeanNameAware / BeanFactoryAware
-- BeanPostProcessor.beforeInit
-- `@PostConstruct`
-- `InitializingBean.afterPropertiesSet`
-- `initMethod`
-- BeanPostProcessor.afterInit
--（容器关闭时）`@PreDestroy` → `DisposableBean.destroy` → `destroyMethod`
+该用例只断言关键节点的相对顺序；读者无需依赖日志，按断言与断点即可复核。
 
 学习重点：
 

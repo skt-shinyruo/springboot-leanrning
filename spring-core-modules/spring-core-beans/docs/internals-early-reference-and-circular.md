@@ -12,7 +12,11 @@
 
 ## 导读
 
-- 阅读方式建议：先运行一遍“early proxy”与“raw injection despite wrapping”两个实验，把“对象形态不一致”的误区变成可复现断言，再回到主线对照源码把证据链走通。
+这一章把“循环依赖能不能救”继续推进一步：**救出来的 early reference 应该是什么形态？**
+
+三级缓存解决的是“什么时候能交付引用”，而 `getEarlyBeanReference` 解决的是“交付出去的是 raw 还是 proxy（以及尽量做到 early == final）”。如果只记住“三级缓存”，却忽略“形态一致性”，读者很容易在 AOP 代理与循环依赖交叉时误判。
+
+建议先运行 `SpringCoreBeansEarlyReferenceLabTest` 与 `SpringCoreBeansRawInjectionDespiteWrappingLabTest`，把“early proxy 成功路径”与“形态不一致 fail-fast（或带隐患继续运行）”跑成断言；再回正文对照 `getSingleton → getEarlyBeanReference → doCreateBean` 的关键分支。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
