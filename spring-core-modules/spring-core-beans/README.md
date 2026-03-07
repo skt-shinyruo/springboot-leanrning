@@ -178,7 +178,7 @@
 - [面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC](docs/appendix-interview-playbook.md)
 - [生产排障清单（Troubleshooting Checklist）：从症状到证据链](docs/appendix-production-troubleshooting-checklist.md)
 - [spring-beans Public API Index](docs/appendix-spring-beans-public-api-index.md)
-- [spring-beans Public API Gap 清单（按包/机制域分批深化）](docs/appendix-spring-beans-public-api-gap.md)
+- [spring-beans Public API Gap 清单（按包/机制域分批深化；含“缺口清单→最小 Labs”）](docs/appendix-spring-beans-public-api-gap.md)
 - [Explore/Debug 用例（可选启用，不影响默认回归）](docs/appendix-explore-debug-tests.md)
 - [Debugger Pack（断点包总入口）](docs/appendix-debugger-pack.md)
 - [团队内训讲义（Training Kit）：可直接用于授课的课时脚本](docs/appendix-team-training-kit.md)

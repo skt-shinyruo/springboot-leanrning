@@ -65,6 +65,19 @@ Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审�
 2) 编写一条最小 Lab，将现象固化为断言
 3) 在对应章节补齐断点闭环与常见误区
 
+---
+
+## 缺口清单（可对照最小 Labs）
+
+> 本节刻意只挑“读者很容易卡住，但又很少有人把它做成最小实验”的点。
+> 目标不是增加名词，而是把“结论”固化为可回归入口（docs + labs + 断点观察点）。
+
+| 缺口点（机制域的细粒度短板） | 最短证据链入口（方法级） | 最小可跑入口（Lab/Test） | 文档入口（Docs） | 状态 |
+| --- | --- | --- | --- | --- |
+| 程序化依赖解析：把 `resolveDependency(...)` 当成可编程 probe（无需真的把字段注入进对象） | `DefaultListableBeanFactory#resolveDependency` / `#doResolveDependency` | `SpringCoreBeansProgrammaticResolveDependencyLabTest` | `ioc-dependency-injection-resolution.md` / `wiring-autowire-candidate-selection-primary-priority-order.md` | ✅ 已补齐 |
+| BeanDefinition 元数据 flags：primary/autowireCandidate/qualifiers 对候选收敛的影响（不仅是注解） | `determineAutowireCandidate` / `isAutowireCandidate` | `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest` | `wiring-autowire-candidate-selection-primary-priority-order.md` | ✅ 已补齐 |
+| 基础设施 Bean 的 role：`ROLE_INFRASTRUCTURE` 如何帮助排障（把“注解能力”识别为基础设施处理器） | `AnnotationConfigUtils#registerAnnotationConfigProcessors` | `SpringCoreBeansInfrastructureBeanRoleLabTest` | `internals-container-bootstrap-and-infrastructure.md` | ✅ 已补齐 |
+
 ## 源码调用链（方法级）定位模板（Gap 场景）
 
 当在某个 API/机制域上出现 Gap，最容易偏离主线的方式是“在源码细节中长时间徘徊”。更稳妥的方法是优先将 **最短调用链** 固定下来：
@@ -107,5 +120,4 @@ Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审�
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
 

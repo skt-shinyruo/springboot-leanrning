@@ -21,8 +21,8 @@
 
 !!! example "本章配套实验（先运行再读）"
 
-    - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+    - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansProgrammaticResolveDependencyLabTest` / `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticResolveDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionMetadataFlagsLabTest.java`
 
 ## 机制主线：先问“注入的是一个，还是一组？”
 
@@ -80,6 +80,20 @@
 5) 仍无法唯一 ⇒ fail-fast（NoUnique）
 
 > 注意：`@Order` 不在这条链路里解决“唯一胜者”问题。
+
+## 补充：BeanDefinition 元数据也参与候选收敛（primary/autowireCandidate/qualifiers）
+
+候选选择并不是“只看注解”，它最终依赖的是 BeanDefinition 上的元数据。
+
+其中三个最常见、也最容易在排障时被忽略的字段是：
+
+- `BeanDefinition#isPrimary()`：默认实现信号（可能来自 `@Primary`，也可能来自程序化注册时设置的 primary flag）
+- `BeanDefinition#isAutowireCandidate()`：是否允许参与自动装配（`false` 时 bean 仍存在，但会被候选匹配忽略）
+- `AbstractBeanDefinition#getQualifiers()`：Qualifier 信号既可以来自注解，也可以来自 BeanDefinition qualifiers（例如框架/auto-config programmatic 注册）
+
+本仓库对应的最小对照入口：
+
+- Lab：`SpringCoreBeansBeanDefinitionMetadataFlagsLabTest`
 
 ## 集合注入：`@Order` 到底管什么？
 

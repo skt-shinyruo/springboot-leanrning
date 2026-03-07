@@ -64,8 +64,8 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 
 | 现象（Symptoms） | 分流问题（Decision） | 阶段（Phase） | 关键方法（Entry） | 必看变量（Watch List） | 对应 Lab |
 | --- | --- | --- | --- | --- | --- |
-| `NoSuchBeanDefinitionException` | 是真的没注册？还是没命中候选？ | 依赖解析 | `DefaultListableBeanFactory#doResolveDependency` | `descriptor/requiredType`、`matchingBeans.keySet()` | `SpringCoreBeansContainerLabTest` / 候选相关 Lab |
-| `NoUniqueBeanDefinitionException` | 多候选如何收敛？有没有 @Primary/@Qualifier/by-name fallback？ | 依赖解析 | `determineAutowireCandidate` | `candidates`、`primaryCandidate`、`dependencyName` | `SpringCoreBeansAutowireCandidateSelectionLabTest` |
+| `NoSuchBeanDefinitionException` | 是真的没注册？还是没命中候选？ | 依赖解析 | `DefaultListableBeanFactory#doResolveDependency` | `descriptor/requiredType`、`matchingBeans.keySet()` | `SpringCoreBeansContainerLabTest` / `SpringCoreBeansProgrammaticResolveDependencyLabTest` / 候选相关 Lab |
+| `NoUniqueBeanDefinitionException` | 多候选如何收敛？有没有 @Primary/@Qualifier/by-name fallback？ | 依赖解析 | `determineAutowireCandidate` | `candidates`、`primaryCandidate`、`dependencyName` | `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest` |
 | “`@Resource` 字段为 null” | 容器是否装了 JSR-250 处理器？ | 注解处理（实例层） | `CommonAnnotationBeanPostProcessor#postProcessProperties` | 容器里是否存在该 BPP、`resourceName` | `SpringCoreBeansResourceInjectionLabTest` |
 | `@Value("${missing}")` 未失败，值变成原样字符串 | resolver 是否 non-strict？ | 值解析 | `AbstractBeanFactory#resolveEmbeddedValue` | 输入/输出是否仍含 `${` | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
 | 类型转换失败（TypeMismatch 等） | 解析后字符串是什么？转换走 ConversionService 还是 PropertyEditor？ | 注入/属性填充 | `TypeConverterDelegate#convertIfNecessary` | `requiredType`、`conversionService`、`customEditor` | `SpringCoreBeansTypeConversionLabTest` |
@@ -122,5 +122,4 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
 

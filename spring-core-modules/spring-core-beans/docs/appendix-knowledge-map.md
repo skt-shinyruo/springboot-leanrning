@@ -54,7 +54,7 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 | --- | --- | --- |
 | 1. BeanDefinition 体系 | [Bean 运行机制](ioc-bean-mental-model.md)、[BeanName 与 alias](wiring-bean-names-and-aliases.md)、[BeanDefinition 覆盖](wiring-bean-definition-overriding.md)、[MergedBeanDefinition](wiring-merged-bean-definition.md) | `SpringCoreBeansContainerLabTest`、`SpringCoreBeansBeanNameAliasLabTest`、`SpringCoreBeansBeanDefinitionOverridingLabTest`、`SpringCoreBeansMergedBeanDefinitionLabTest` |
 | 2. Bean 创建全链路 | [refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md)、[注入阶段](wiring-injection-phase-field-vs-constructor.md)、[生命周期](ioc-lifecycle-and-callbacks.md)、[回调顺序](internals-lifecycle-callback-order.md) | `SpringCoreBeansBeanCreationTraceLabTest`、`SpringCoreBeansInjectionPhaseLabTest`、`SpringCoreBeansLifecycleCallbackOrderLabTest` |
-| 3. 依赖解析与注入细节 | [依赖注入解析](ioc-dependency-injection-resolution.md)、[候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)、[泛型匹配注入误区](wiring-generic-type-matching-pitfalls.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansInjectionAmbiguityLabTest`、`SpringCoreBeansAutowireCandidateSelectionLabTest`、`SpringCoreBeansOptionalInjectionLabTest` |
+| 3. 依赖解析与注入细节 | [依赖注入解析](ioc-dependency-injection-resolution.md)、[候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)、[泛型匹配注入误区](wiring-generic-type-matching-pitfalls.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansInjectionAmbiguityLabTest`、`SpringCoreBeansAutowireCandidateSelectionLabTest`、`SpringCoreBeansProgrammaticResolveDependencyLabTest`、`SpringCoreBeansBeanDefinitionMetadataFlagsLabTest`、`SpringCoreBeansOptionalInjectionLabTest` |
 | 4. 容器扩展点 | [PostProcessor 总览](ioc-post-processors.md)、[BDRPP](internals-bdrpp-definition-registration.md)、[顺序（Ordering）](internals-post-processor-ordering.md)、[实例化前短路](internals-pre-instantiation-short-circuit.md) | `SpringCoreBeansRegistryPostProcessorLabTest`、`SpringCoreBeansPostProcessorOrderingLabTest`、`SpringCoreBeansPreInstantiationLabTest`、`SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
 | 5. 作用域与代理 | [Scope 与 prototype](ioc-scope-and-prototype.md)、[自定义 Scope + scoped proxy](wiring-custom-scope-and-scoped-proxy.md)、[Lazy 语义](wiring-lazy-semantics.md) | `SpringCoreBeansLabTest`、`SpringCoreBeansCustomScopeLabTest`、`SpringCoreBeansLazyLabTest` |
 | 6. 循环依赖 | [循环依赖](ioc-circular-dependencies.md)、[early reference 与循环依赖](internals-early-reference-and-circular.md) | `SpringCoreBeansCircularDependencyBoundaryLabTest`、`SpringCoreBeansEarlyReferenceLabTest`、`SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
@@ -64,7 +64,7 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 
 | 现象（Symptoms） | 章节入口（Docs） | 最短断点入口（Entry） | 断点组（断点地图） | 推荐 Lab |
 | --- | --- | --- | --- | --- |
-| 注入失败/注入歧义：NoSuch/NoUnique/注入到了不是预期实现 | [依赖注入解析](ioc-dependency-injection-resolution.md)、[候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md) | `doResolveDependency/findAutowireCandidates/determineAutowireCandidate` | [C6](guide-breakpoint-map.md#c6) | `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` |
+| 注入失败/注入歧义：NoSuch/NoUnique/注入到了不是预期实现 | [依赖注入解析](ioc-dependency-injection-resolution.md)、[候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md) | `doResolveDependency/findAutowireCandidates/determineAutowireCandidate` | [C6](guide-breakpoint-map.md#c6) | `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansProgrammaticResolveDependencyLabTest` / `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest` |
 | 循环依赖：constructor 死 / setter 可能活 | [循环依赖](ioc-circular-dependencies.md) | `DefaultSingletonBeanRegistry#getSingleton` / `addSingletonFactory` | [C5](guide-breakpoint-map.md#c5) | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
 | early reference / raw vs wrapped | [early reference 与循环依赖](internals-early-reference-and-circular.md) | `getEarlyBeanReference` / `doCreateBean` 尾部检查 | [C5](guide-breakpoint-map.md#c5) / [C7](guide-breakpoint-map.md#c7) | `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
 | 代理不生效 / 顺序不对 | [代理发生的阶段](wiring-proxying-phase-bpp-wraps-bean.md)、[手工注册 BPP](wiring-programmatic-bpp-registration.md) | `registerBeanPostProcessors` / `applyBeanPostProcessorsAfterInitialization` | [C4](guide-breakpoint-map.md#c4) / [C7](guide-breakpoint-map.md#c7) | `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest` |
@@ -123,5 +123,4 @@ Spring IoC 的知识点非常多，但真实排障并不会按“章节编号”
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
 

@@ -20,8 +20,8 @@
 
 !!! example "本章配套实验（先运行再读）"
 
-    - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansOptionalInjectionLabTest` / `SpringCoreBeansJsr330InjectionLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansOptionalInjectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansJsr330InjectionLabTest.java`
+    - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansProgrammaticResolveDependencyLabTest` / `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansOptionalInjectionLabTest` / `SpringCoreBeansJsr330InjectionLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
+    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionAmbiguityLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticResolveDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionMetadataFlagsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansOptionalInjectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansJsr330InjectionLabTest.java`
 
 ## 机制主线：候选收集 → 候选收敛 → 最终注入
 
@@ -126,6 +126,20 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 - `DefaultListableBeanFactory#findAutowireCandidates`
 
 需要建立的直觉是：**by type 的候选集合通常不小**，需要先把它“观察到”，再谈“为什么最终选中它”。
+
+### 可对照实验：把 `resolveDependency(...)` 当成“调试 API”使用
+
+很多读者学习/排障时会卡在这里：
+
+- “我知道大概规则，但我没法在不改业务代码的情况下复现它”
+- “我能打断点，但我很难把‘结论’固化成可回归的实验”
+
+一个很实用的做法是：直接构造 `DependencyDescriptor`（从 Field/MethodParameter 来），然后调用 `beanFactory.resolveDependency(...)`，
+把“依赖解析”当成一个可编程、可断言的 probe。
+
+本仓库最小对照入口：
+
+- Lab：`SpringCoreBeansProgrammaticResolveDependencyLabTest`
 
 ### 2.0 依赖解析分支树（全链路视角）
 
@@ -551,5 +565,4 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
 

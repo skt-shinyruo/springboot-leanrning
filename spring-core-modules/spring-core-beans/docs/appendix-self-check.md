@@ -62,7 +62,7 @@
 
 ## 基础抓手（对应 01/06）
 
-验证入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
+验证入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansInfrastructureBeanRoleLabTest`
 
 - 应能够用一句话区分：`BeanDefinition`（定义元数据） vs bean instance（运行时对象）？
 - BFPP/BPP/BDRPP 分别“改的是定义还是实例”？它们在哪个阶段发生？
@@ -81,7 +81,7 @@
 
 > 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
-验证入口：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest`
+验证入口：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansProgrammaticResolveDependencyLabTest` / `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest`
 
 - 当一个接口有两个实现时，`@Autowired` 单注入会发生什么？可以优先用 `@Qualifier` 还是 `@Primary`，为什么？
 - `@Order` 能不能解决单注入歧义？它主要解决什么问题？

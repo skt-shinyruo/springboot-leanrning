@@ -190,6 +190,11 @@ T3（refresh 第 9 步 或首次 getBean）：进入创建链路
 - 找到对应 `BeanDefinition`，观察 `getRole()` / `getSource()` / `getResourceDescription()`（这类元信息经常能快速定位“它从哪里来的”）
 - 对照本章的“处理器速查表”，对“应存在的基础设施”与“实际存在的基础设施”进行差异比对（避免仅凭直觉判断）。
 
+**本仓库最小可复现入口：**
+
+- Lab：`SpringCoreBeansInfrastructureBeanRoleLabTest`
+- 观察对象建议优先从常量开始：`AnnotationConfigUtils.AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME` / `AnnotationConfigUtils.CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME`
+
 ## 可复现闭环（基于 `SpringCoreBeansBootstrapInternalsLabTest`）
 
 运行完成这些用例，至少应能够复述 3 条结论：
