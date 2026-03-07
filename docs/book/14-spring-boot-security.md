@@ -24,11 +24,11 @@
   - `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
   - 测试类：[`BootSecurityBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-boot-security/docs/README.md`](../../spring-boot-modules/spring-boot-security/docs/README.md)
+  - [`spring-boot-security/README.md`](../../spring-boot-modules/spring-boot-security/README.md)
 - 导航型文档（用于定位链路与顺序）：
-  - FilterChain 与顺序：[`part-01-security/04-filter-chain-and-order.md`](../../spring-boot-modules/spring-boot-security/docs/part-01-security/04-filter-chain-and-order.md)
-  - 方法安全与代理：[`part-01-security/03-method-security-and-proxy.md`](../../spring-boot-modules/spring-boot-security/docs/part-01-security/03-method-security-and-proxy.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-security/docs/appendix/01-common-pitfalls.md)
+  - FilterChain 与顺序：[`part-01-security/04-filter-chain-and-order.md`](../../spring-boot-modules/spring-boot-security/docs/security-filter-chain-and-order.md)
+  - 方法安全与代理：[`part-01-security/03-method-security-and-proxy.md`](../../spring-boot-modules/spring-boot-security/docs/security-method-security-and-proxy.md)
+  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-security/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 

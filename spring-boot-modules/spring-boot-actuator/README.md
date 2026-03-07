@@ -11,9 +11,9 @@
   - `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
 
 ## 本模块的学习产出
 
@@ -52,14 +52,14 @@ mvn -pl :spring-boot-actuator test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](docs/README.md)）
+（目录：见本 README 的「目录（唯一顺序来源）」）
 
 建议按“端点现象 → 配置开关 → 自定义指标 → 测试验证”的顺序学习：
 
-1. [导读](docs/part-00-guide/02-deep-dive-guide.md)
-2. [Actuator 基础](docs/part-01-actuator/01-actuator-basics.md)
-3. [常见坑清单](docs/appendix/01-common-pitfalls.md)
-4. [自测题](docs/appendix/02-self-check.md)
+1. [导读](docs/guide-deep-dive-guide.md)
+2. [Actuator 基础](docs/actuator-basics.md)
+3. [常见坑清单](docs/appendix-common-pitfalls.md)
+4. [自测题](docs/appendix-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -86,3 +86,44 @@ mvn -pl :spring-boot-actuator test
 ## 参考
 
 - Spring Boot Actuator
+
+## 目录（唯一顺序来源）
+
+> 本模块 `docs/` 目录保持扁平；阅读顺序只在本 `README.md` 维护。正文页不再提供“上一章/下一章”导航。
+> 原 `docs/README.md` 标题：Spring Boot Actuator：端点、暴露与观测信号
+
+本模块围绕 Actuator 的三个高频问题展开：端点是否存在、端点是否暴露、端点是否可访问。它的目标不是记住端点清单，而是把“为什么看不到/为什么访问不到/为什么指标不变化”这类问题压成可验证的分支，并能在断点里快速定位到决策点。
+
+---
+
+### 10 分钟入口：先把端点跑通
+- `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
+
+运行后应能确认三件事实：端点的注册结果、暴露配置的最终值、访问时的安全与路径边界。
+
+---
+
+### 阅读路线（主线 → 排障 → 自证）
+1. 建立主线坐标（章节为何这样排列）
+   - [主线时间线](docs/guide-mainline-timeline.md)
+   - [深挖导读](docs/guide-deep-dive-guide.md)
+2. 顺读正文（把 endpoint 暴露与访问跑通）
+   - [Actuator 基础](docs/actuator-basics.md)
+3. 遇到问题时回到排障入口
+   - [断点地图](docs/guide-breakpoint-map.md)（优先：快速命中关键分支）
+   - [关键分支矩阵](docs/guide-branch-decision-matrix.md)（把现象收敛成 If/Then）
+   - [常见坑](docs/appendix-common-pitfalls.md) / [自检](docs/appendix-self-check.md)
+
+---
+
+### 可运行入口（用于复现/回归）
+- Book Matrix：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-actuator -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（并发请求驱动 metrics 增量）：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorMetricsConcurrencyLabTest test`
+
+---
+
+### 排坑与自检
+- [常见坑](docs/appendix-common-pitfalls.md)
+- [自检](docs/appendix-self-check.md)

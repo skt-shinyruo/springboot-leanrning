@@ -23,11 +23,11 @@
   - `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
   - 测试类：[`BootTestingBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-testing/src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-boot-testing/docs/README.md`](../../spring-boot-modules/spring-boot-testing/docs/README.md)
+  - [`spring-boot-testing/README.md`](../../spring-boot-modules/spring-boot-testing/README.md)
 - 导航型文档（用于选择 slice 与定位覆盖边界）：
-  - 主线时间线：[`part-00-guide/01-mainline-timeline.md`](../../spring-boot-modules/spring-boot-testing/docs/part-00-guide/01-mainline-timeline.md)
-  - 断点地图：[`part-00-guide/04-breakpoint-map.md`](../../spring-boot-modules/spring-boot-testing/docs/part-00-guide/04-breakpoint-map.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-testing/docs/appendix/01-common-pitfalls.md)
+  - 主线时间线：[`part-00-guide/01-mainline-timeline.md`](../../spring-boot-modules/spring-boot-testing/docs/guide-mainline-timeline.md)
+  - 断点地图：[`part-00-guide/04-breakpoint-map.md`](../../spring-boot-modules/spring-boot-testing/docs/guide-breakpoint-map.md)
+  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-testing/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 

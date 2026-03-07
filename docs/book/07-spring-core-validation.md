@@ -31,10 +31,10 @@
   - `mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
   - 测试类：[`SpringCoreValidationBookMatrixLabTest.java`](../../spring-core-modules/spring-core-validation/src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-core-validation/docs/README.md`](../../spring-core-modules/spring-core-validation/docs/README.md)
+  - [`spring-core-validation/README.md`](../../spring-core-modules/spring-core-validation/README.md)
 - 导航型文档（用于快速定位“方法校验与代理”）：
-  - 方法校验与代理：[`part-01-validation-core/03-method-validation-proxy.md`](../../spring-core-modules/spring-core-validation/docs/part-01-validation-core/03-method-validation-proxy.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-validation/docs/appendix/01-common-pitfalls.md)
+  - 方法校验与代理：[`part-01-validation-core/03-method-validation-proxy.md`](../../spring-core-modules/spring-core-validation/docs/validation-core-method-validation-proxy.md)
+  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-validation/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 

@@ -13,7 +13,7 @@
 - 测试类（入口锚点）：
   - [`BootBasicsBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java)
 - 模块目录页（正文入口）：
-  - [`spring-boot-basics/docs/README.md`](../../spring-boot-modules/spring-boot-basics/docs/README.md)
+  - [`spring-boot-basics/README.md`](../../spring-boot-modules/spring-boot-basics/README.md)
 
 运行后应当能回答两件“事实问题”（先不解释原因）：
 

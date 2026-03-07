@@ -30,12 +30,12 @@
   - `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
   - 测试类：[`SpringCoreBeansBookMatrixLabTest.java`](../../spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-core-beans/docs/README.md`](../../spring-core-modules/spring-core-beans/docs/README.md)
+  - [`spring-core-beans/README.md`](../../spring-core-modules/spring-core-beans/README.md)
 - 导航型文档（优先用来定位断点）：
-  - Why Index（从“为什么”进入）：[`part-00-guide/01-why-index.md`](../../spring-core-modules/spring-core-beans/docs/part-00-guide/01-why-index.md)
-  - 30 分钟快启：[`part-00-guide/05-quickstart-30min.md`](../../spring-core-modules/spring-core-beans/docs/part-00-guide/05-quickstart-30min.md)
-  - 代理替换阶段（AOP/事务前置）：[`part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md`](../../spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/14-proxying-phase-bpp-wraps-bean.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md)
+- Why Index（从“为什么”进入）：[`guide-why-index.md`](../../spring-core-modules/spring-core-beans/docs/guide-why-index.md)
+- 30 分钟快启：[`guide-quickstart-30min.md`](../../spring-core-modules/spring-core-beans/docs/guide-quickstart-30min.md)
+- 代理替换阶段（AOP/事务前置）：[`wiring-proxying-phase-bpp-wraps-bean.md`](../../spring-core-modules/spring-core-beans/docs/wiring-proxying-phase-bpp-wraps-bean.md)
+- 常见坑：[`appendix-common-pitfalls.md`](../../spring-core-modules/spring-core-beans/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
@@ -64,10 +64,9 @@
 ## 延伸阅读
 
 - 下一章（代理心智模型）：[`04-spring-core-aop.md`](04-spring-core-aop.md)
-- 资源抽象（资源加载与模式扫描）：[`../../spring-core-modules/spring-core-resources/docs/README.md`](../../spring-core-modules/spring-core-resources/docs/README.md)
-- Profiles（条件装配前置概念）：[`../../spring-core-modules/spring-core-profiles/docs/README.md`](../../spring-core-modules/spring-core-profiles/docs/README.md)
+- 资源抽象（资源加载与模式扫描）：[`../../spring-core-modules/spring-core-resources/README.md`](../../spring-core-modules/spring-core-resources/README.md)
+- Profiles（条件装配前置概念）：[`../../spring-core-modules/spring-core-profiles/README.md`](../../spring-core-modules/spring-core-profiles/README.md)
 
 ---
 
 [← 上一章](02-spring-boot-basics.md) | [目录](README.md) | [下一章 →](04-spring-core-aop.md)
-

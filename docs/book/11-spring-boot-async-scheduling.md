@@ -25,11 +25,11 @@
   - `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test`
   - 测试类：[`BootAsyncSchedulingBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-async-scheduling/src/test/java/com/learning/springboot/bootasyncscheduling/part01_async_scheduling/BootAsyncSchedulingBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-boot-async-scheduling/docs/README.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/README.md)
+  - [`spring-boot-async-scheduling/README.md`](../../spring-boot-modules/spring-boot-async-scheduling/README.md)
 - 导航型文档（用于定位 self-invocation/线程池/事务叠加）：
-  - `@Async` 心智模型：[`part-01-async-scheduling/01-async-proxy-mental-model.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/part-01-async-scheduling/01-async-proxy-mental-model.md)
-  - self-invocation：[`part-01-async-scheduling/04-self-invocation.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/part-01-async-scheduling/04-self-invocation.md)
-  - `@Async` × `@Transactional`：[`part-01-async-scheduling/06-async-and-transactions.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/part-01-async-scheduling/06-async-and-transactions.md)
+  - `@Async` 心智模型：[`part-01-async-scheduling/01-async-proxy-mental-model.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-async-proxy-mental-model.md)
+  - self-invocation：[`part-01-async-scheduling/04-self-invocation.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-self-invocation.md)
+  - `@Async` × `@Transactional`：[`part-01-async-scheduling/06-async-and-transactions.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-async-and-transactions.md)
 
 ## 常见误区
 

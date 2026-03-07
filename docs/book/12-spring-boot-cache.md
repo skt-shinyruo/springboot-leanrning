@@ -26,11 +26,11 @@
   - `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`
   - 测试类：[`BootCacheBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-boot-cache/docs/README.md`](../../spring-boot-modules/spring-boot-cache/docs/README.md)
+  - [`spring-boot-cache/README.md`](../../spring-boot-modules/spring-boot-cache/README.md)
 - 导航型文档（用于定位“拦截器链路/击穿分支”）：
-  - Cache 调用链：[`part-00-guide/03-cache-interceptor-call-chain.md`](../../spring-boot-modules/spring-boot-cache/docs/part-00-guide/03-cache-interceptor-call-chain.md)
-  - `sync` 与击穿：[`part-01-cache/04-sync-stampede.md`](../../spring-boot-modules/spring-boot-cache/docs/part-01-cache/04-sync-stampede.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-cache/docs/appendix/01-common-pitfalls.md)
+  - Cache 调用链：[`part-00-guide/03-cache-interceptor-call-chain.md`](../../spring-boot-modules/spring-boot-cache/docs/guide-cache-interceptor-call-chain.md)
+  - `sync` 与击穿：[`part-01-cache/04-sync-stampede.md`](../../spring-boot-modules/spring-boot-cache/docs/cache-sync-stampede.md)
+  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-cache/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 

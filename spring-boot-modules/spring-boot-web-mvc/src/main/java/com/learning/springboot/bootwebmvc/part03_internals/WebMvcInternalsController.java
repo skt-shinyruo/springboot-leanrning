@@ -1,5 +1,6 @@
 package com.learning.springboot.bootwebmvc.part03_internals;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,5 +22,18 @@ public class WebMvcInternalsController {
                 "userAgent", userAgent
         );
     }
-}
 
+    @GetMapping("/request-info")
+    public Map<String, Object> requestInfo(HttpServletRequest request) {
+        return Map.of(
+                "scheme", request.getScheme(),
+                "secure", request.isSecure(),
+                "serverName", request.getServerName(),
+                "serverPort", request.getServerPort(),
+                "contextPath", request.getContextPath(),
+                "requestUri", request.getRequestURI(),
+                "requestUrl", request.getRequestURL().toString(),
+                "remoteAddr", request.getRemoteAddr()
+        );
+    }
+}

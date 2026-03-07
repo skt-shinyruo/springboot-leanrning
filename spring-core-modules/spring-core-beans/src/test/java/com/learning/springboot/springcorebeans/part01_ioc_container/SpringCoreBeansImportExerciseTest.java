@@ -21,7 +21,7 @@ class SpringCoreBeansImportExerciseTest {
 
                         参考：
                         - `spring-core-modules/spring-core-beans/src/test/java/.../SpringCoreBeansImportLabTest.java`
-                        - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
+                        - `spring-core-modules/spring-core-beans/docs/ioc-bean-registration.md`
                         """)
                 .isFalse();
     }
@@ -39,7 +39,7 @@ class SpringCoreBeansImportExerciseTest {
                         3) 断言最终导入的配置/Bean 符合预期。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/01-bean-registration.md`
+                        - `spring-core-modules/spring-core-beans/docs/ioc-bean-registration.md`
                         """)
                 .isFalse();
     }

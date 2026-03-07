@@ -17,9 +17,9 @@
   - `mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
 
 ## 本模块的学习产出
 
@@ -70,9 +70,9 @@ mvn -pl :spring-core-profiles test
 
 > 本模块已补齐 `docs/`，建议按“先理解激活与选择 → 再用 runner 证明”的顺序：
 
-1. [深挖指南](docs/part-00-guide/02-deep-dive-guide.md)
-2. [Profile 激活与 Bean 选择](docs/part-01-profiles/01-profile-activation-and-bean-selection.md)
-3. [常见坑清单](docs/appendix/01-common-pitfalls.md) + [自测题](docs/appendix/02-self-check.md)
+1. [深挖指南](docs/guide-deep-dive-guide.md)
+2. [Profile 激活与 Bean 选择](docs/profiles-profile-activation-and-bean-selection.md)
+3. [常见坑清单](docs/appendix-common-pitfalls.md) + [自测题](docs/appendix-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -99,3 +99,44 @@ mvn -pl :spring-core-profiles test
 
 - Spring Framework Reference：Bean Profiles
 - Spring Boot Reference：Conditional auto-configuration annotations
+
+## 目录（唯一顺序来源）
+
+> 本模块 `docs/` 目录保持扁平；阅读顺序只在本 `README.md` 维护。正文页不再提供“上一章/下一章”导航。
+> 原 `docs/README.md` 标题：Spring Profiles：激活条件与 Bean 选择
+
+Profile 的核心语义不是“加载哪个配置文件”，而是决定哪些配置片段与哪些 Bean 会进入容器。环境不一致、条件不生效、Bean 缺失等问题，往往可以先回到 profile 的事实：到底激活了哪些 profile、这些 profile 如何影响条件注册与装配结果。
+
+---
+
+### 10 分钟入口：先把“激活事实”钉住
+- `mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBookMatrixLabTest test`
+
+运行后应能回答：active profiles 的最终值是什么；哪些 Bean 因 profile 条件进入或退出容器；同一配置在不同启动参数下为何会产生不同的 bean graph。
+
+### 从这里开始（建议顺序）
+1. [主线时间线](docs/guide-mainline-timeline.md)
+2. [深挖导读](docs/guide-deep-dive-guide.md)
+
+### 顺读主线
+- [Profile 激活与 Bean 选择](docs/profiles-profile-activation-and-bean-selection.md)
+
+### 进阶入口（排障/关键分支）
+- 断点地图（排障优先）：[04-breakpoint-map.md](docs/guide-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
+- 排障 playbook：[01-common-pitfalls.md](docs/appendix-common-pitfalls.md)
+- 自检清单：[02-self-check.md](docs/appendix-self-check.md)
+
+---
+
+### 可运行入口（用于复现/回归）
+- Book Matrix：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-profiles -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（Environment 并发读取边界）：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesEnvironmentConcurrencyLabTest test`
+
+---
+
+### 排坑与自检
+- [常见坑](docs/appendix-common-pitfalls.md)
+- [自检](docs/appendix-self-check.md)

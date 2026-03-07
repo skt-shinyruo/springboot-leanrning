@@ -2,7 +2,7 @@
 
 本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”讲透 **Spring 事务管理**。
 
-这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
+这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 docs/。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -14,9 +14,9 @@
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
 
 ## 本模块的学习产出
 
@@ -52,13 +52,13 @@ mvn -pl :spring-core-tx test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-1. [事务边界：到底在“保护”哪一段代码？](docs/part-01-transaction-basics/01-transaction-boundary.md)
-2. [`@Transactional` 如何生效：它也是 AOP（也是代理）](docs/part-01-transaction-basics/02-transactional-proxy.md)
-3. [回滚规则：为什么 checked exception 默认不回滚？](docs/part-01-transaction-basics/03-rollback-rules.md)
-4. [传播行为：`REQUIRED` vs `REQUIRES_NEW`](docs/part-01-transaction-basics/04-propagation.md)
-5. [程序化事务：`TransactionTemplate` 的价值](docs/part-02-template-and-debugging/01-transaction-template.md)
-6. [Debug / 观察：如何判断“当前是否真的有事务”？](docs/part-02-template-and-debugging/02-debugging.md)
-7. [常见坑清单（建议反复对照）](docs/appendix/01-common-pitfalls.md)
+1. [事务边界：到底在“保护”哪一段代码？](docs/transaction-basics-transaction-boundary.md)
+2. [`@Transactional` 如何生效：它也是 AOP（也是代理）](docs/transaction-basics-transactional-proxy.md)
+3. [回滚规则：为什么 checked exception 默认不回滚？](docs/transaction-basics-rollback-rules.md)
+4. [传播行为：`REQUIRED` vs `REQUIRES_NEW`](docs/transaction-basics-propagation.md)
+5. [程序化事务：`TransactionTemplate` 的价值](docs/template-and-debugging-transaction-template.md)
+6. [Debug / 观察：如何判断“当前是否真的有事务”？](docs/template-and-debugging-debugging.md)
+7. [常见坑清单（建议反复对照）](docs/appendix-common-pitfalls.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -74,12 +74,12 @@ mvn -pl :spring-core-tx test
 
 | 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
-| commit / rollback 的最小闭环 | [docs/01](docs/part-01-transaction-basics/01-transaction-boundary.md) | `SpringCoreTxLabTest#commitsOnSuccess` / `#rollsBackOnRuntimeException` + `AccountService` | 为什么“抛异常”会导致不落库 |
-| `@Transactional` 也是 AOP（代理） | [docs/02](docs/part-01-transaction-basics/02-transactional-proxy.md) | `SpringCoreTxLabTest#transactionalBeansAreProxied` | 事务拦截器在调用链的哪里 |
-| 自调用绕过事务（同类内部调用） | [docs/02](docs/part-01-transaction-basics/02-transactional-proxy.md) | `SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod` | 为什么 `this.inner()` 不走代理、如何做最小规避 |
-| checked exception 回滚规则 | [docs/03](docs/part-01-transaction-basics/03-rollback-rules.md) | `SpringCoreTxLabTest#checkedExceptionsDoNotRollbackByDefault` | 为什么默认不回滚、如何用 `rollbackFor` 改 |
-| `REQUIRES_NEW` 的独立事务边界 | [docs/04](docs/part-01-transaction-basics/04-propagation.md) | `SpringCoreTxLabTest#requiresNewCanCommitEvenIfOuterTransactionRollsBack` | 外层回滚时内层为何还能提交 |
-| 程序化事务与 rollback-only | [docs/05](docs/part-02-template-and-debugging/01-transaction-template.md) | `SpringCoreTxLabTest#transactionTemplateAllowsProgrammaticCommitOrRollback` | `setRollbackOnly()` 的真实效果 |
+| commit / rollback 的最小闭环 | [docs/01](docs/transaction-basics-transaction-boundary.md) | `SpringCoreTxLabTest#commitsOnSuccess` / `#rollsBackOnRuntimeException` + `AccountService` | 为什么“抛异常”会导致不落库 |
+| `@Transactional` 也是 AOP（代理） | [docs/02](docs/transaction-basics-transactional-proxy.md) | `SpringCoreTxLabTest#transactionalBeansAreProxied` | 事务拦截器在调用链的哪里 |
+| 自调用绕过事务（同类内部调用） | [docs/02](docs/transaction-basics-transactional-proxy.md) | `SpringCoreTxSelfInvocationPitfallLabTest#selfInvocationBypassesTransactional_onInnerMethod` | 为什么 `this.inner()` 不走代理、如何做最小规避 |
+| checked exception 回滚规则 | [docs/03](docs/transaction-basics-rollback-rules.md) | `SpringCoreTxLabTest#checkedExceptionsDoNotRollbackByDefault` | 为什么默认不回滚、如何用 `rollbackFor` 改 |
+| `REQUIRES_NEW` 的独立事务边界 | [docs/04](docs/transaction-basics-propagation.md) | `SpringCoreTxLabTest#requiresNewCanCommitEvenIfOuterTransactionRollsBack` | 外层回滚时内层为何还能提交 |
+| 程序化事务与 rollback-only | [docs/05](docs/template-and-debugging-transaction-template.md) | `SpringCoreTxLabTest#transactionTemplateAllowsProgrammaticCommitOrRollback` | `setRollbackOnly()` 的真实效果 |
 
 ## 常见 Debug 路径
 
@@ -97,3 +97,54 @@ mvn -pl :spring-core-tx test
 ## 参考
 
 - Spring Framework Reference：Transaction Management
+
+## 目录（唯一顺序来源）
+
+> 本模块 `docs/` 目录保持扁平；阅读顺序只在本 `README.md` 维护。正文页不再提供“上一章/下一章”导航。
+> 原 `docs/README.md` 标题：Spring Core Tx（事务）：边界、传播与回滚
+
+本模块把事务相关问题放回同一条可运行主线：事务边界如何建立、`@Transactional` 代理在何处介入、回滚规则如何判定、传播行为如何影响嵌套调用，以及 `TransactionTemplate` 如何作为显式边界工具用于调试与工程化收敛。
+
+事务类问题在排障时最常见的误判是“以为走了事务，实际上没走代理”；因此本模块优先把“代理主线 + 边界事实”跑通，再进入回滚与传播等分支。
+
+---
+
+### 10 分钟入口：先确认事务边界与代理是否生效
+- `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
+
+运行后应能回答：事务在何处开始/提交/回滚；拦截器链条在哪个入口触发；自调用等场景为何会绕过代理边界。
+
+### 从这里开始（建议顺序）
+1. [主线时间线](docs/guide-mainline-timeline.md)
+2. [深挖导读](docs/guide-deep-dive-guide.md)
+3. [事务拦截器调用链（从 @Transactional 到 commit/rollback）](docs/guide-transaction-interceptor-call-chain.md)
+
+### 顺读主线
+- [事务边界](docs/transaction-basics-transaction-boundary.md)
+- [@Transactional 代理](docs/transaction-basics-transactional-proxy.md)
+- [回滚规则](docs/transaction-basics-rollback-rules.md)
+- [传播行为](docs/transaction-basics-propagation.md)
+- [TransactionTemplate](docs/template-and-debugging-transaction-template.md)
+- [事务调试](docs/template-and-debugging-debugging.md)
+
+### 进阶入口（排障/关键分支）
+- 断点地图（排障优先）：[04-breakpoint-map.md](docs/guide-breakpoint-map.md)
+- 事务拦截器调用链（源码主线锚点）：[03-transaction-interceptor-call-chain.md](docs/guide-transaction-interceptor-call-chain.md)
+- 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
+- 排障 playbook：[01-common-pitfalls.md](docs/appendix-common-pitfalls.md)
+- 自检清单：[02-self-check.md](docs/appendix-self-check.md)
+
+---
+
+### 可运行入口（用于复现/回归）
+- Book Matrix：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
+- Branch Matrix（事务主分支）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
+- Branch Matrix（常见坑聚合）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-tx -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（ThreadLocal 边界证据链）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxThreadLocalBoundaryLabTest test`
+
+---
+
+### 排坑与自检
+- [常见坑](docs/appendix-common-pitfalls.md)
+- [自检](docs/appendix-self-check.md)

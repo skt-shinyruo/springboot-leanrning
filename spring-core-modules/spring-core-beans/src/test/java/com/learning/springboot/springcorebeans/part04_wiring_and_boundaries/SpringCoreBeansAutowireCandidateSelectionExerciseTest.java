@@ -24,7 +24,7 @@ class SpringCoreBeansAutowireCandidateSelectionExerciseTest {
                            - `SpringCoreBeansInjectionAmbiguityLabTest`
                            - `SpringCoreBeansAutowireCandidateSelectionLabTest`
                         2) 阅读 doc（把规则写成决策树）：
-                           - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
+                           - `spring-core-modules/spring-core-beans/docs/wiring-autowire-candidate-selection-primary-priority-order.md`
                         3) 下断点验证你看到的分支（不要只看日志）：
                            - `DefaultListableBeanFactory#doResolveDependency`
                            - `DefaultListableBeanFactory#determineAutowireCandidate`
@@ -78,7 +78,7 @@ class SpringCoreBeansAutowireCandidateSelectionExerciseTest {
                         1) 先跑 Lab 固定行为：
                            - `SpringCoreBeansAutowireCandidateSelectionLabTest#objectProvider_getIfUnique_returnsNull_whenMultipleCandidatesExist`
                         2) 阅读 doc：
-                           - `spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md`（ObjectProvider 条目）
+                           - `spring-core-modules/spring-core-beans/docs/appendix-common-pitfalls.md`（ObjectProvider 条目）
 
                         额外加分（可选）：
                         - 设计一个场景：0 候选 / 1 候选 / 多候选，分别写出你希望的行为（返回 null/返回对象/显式失败）。

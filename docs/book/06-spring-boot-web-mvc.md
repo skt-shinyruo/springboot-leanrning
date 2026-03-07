@@ -25,11 +25,11 @@
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
   - 测试类：[`BootWebMvcBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-boot-web-mvc/docs/README.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/README.md)
+  - [`spring-boot-web-mvc/README.md`](../../spring-boot-modules/spring-boot-web-mvc/README.md)
 - 导航型文档（用于快速定位链路与断点）：
-  - 请求调用链速览：[`02-dispatcherservlet/03-webmvc-request-call-chain.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/02-dispatcherservlet/03-webmvc-request-call-chain.md)
-  - 断点图：[`14-testing-observability/06-breakpoint-map.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/14-testing-observability/06-breakpoint-map.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/appendix/01-common-pitfalls.md)
+  - 请求调用链速览：[`02-dispatcherservlet/03-webmvc-request-call-chain.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/dispatcherservlet-webmvc-request-call-chain.md)
+  - 断点图：[`14-testing-observability/06-breakpoint-map.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/testing-observability-breakpoint-map.md)
+  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 

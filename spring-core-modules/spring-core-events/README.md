@@ -2,7 +2,7 @@
 
 本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”学习 **Spring Application Events（应用事件）**。
 
-这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 [docs/](docs/README.md)。
+这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 docs/。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -14,9 +14,9 @@
   - `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
 
 ## 本模块的学习产出
 
@@ -56,14 +56,14 @@ mvn -pl :spring-core-events test
 
 ## 推荐 docs 阅读顺序（从现象到机制）
 
-1. [事件心智模型：发布与订阅在解耦什么？](docs/part-01-event-basics/01-event-mental-model.md)
-2. [多监听器与顺序：为什么 `@Order` 值得认真对待？](docs/part-01-event-basics/02-multiple-listeners-and-order.md)
-3. [condition 与 payload：按条件触发与接收普通对象](docs/part-01-event-basics/03-condition-and-payload.md)
-4. [同步与异常传播：为什么监听器抛异常会炸到发布方？](docs/part-01-event-basics/04-sync-and-exceptions.md)
-5. [异步监听器：`@Async` 生效需要什么？](docs/part-02-async-and-transactional/01-async-listener.md)
-6. [异步广播：让事件“默认异步”（multicaster）](docs/part-02-async-and-transactional/02-async-multicaster.md)
-7. [`@TransactionalEventListener`：after-commit 监听器与事务边界](docs/part-02-async-and-transactional/03-transactional-event-listener.md)
-8. [常见坑清单（建议反复对照）](docs/appendix/01-common-pitfalls.md)
+1. [事件心智模型：发布与订阅在解耦什么？](docs/event-basics-event-mental-model.md)
+2. [多监听器与顺序：为什么 `@Order` 值得认真对待？](docs/event-basics-multiple-listeners-and-order.md)
+3. [condition 与 payload：按条件触发与接收普通对象](docs/event-basics-condition-and-payload.md)
+4. [同步与异常传播：为什么监听器抛异常会炸到发布方？](docs/event-basics-sync-and-exceptions.md)
+5. [异步监听器：`@Async` 生效需要什么？](docs/async-and-transactional-async-listener.md)
+6. [异步广播：让事件“默认异步”（multicaster）](docs/async-and-transactional-async-multicaster.md)
+7. [`@TransactionalEventListener`：after-commit 监听器与事务边界](docs/async-and-transactional-transactional-event-listener.md)
+8. [常见坑清单（建议反复对照）](docs/appendix-common-pitfalls.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -80,15 +80,15 @@ mvn -pl :spring-core-events test
 
 | 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
-| 发布事件与最小闭环 | [docs/129](docs/part-01-event-basics/01-event-mental-model.md) | `SpringCoreEventsLabTest#listenerReceivesPublishedEvent` + `UserRegistrationService`/`UserRegisteredListener` | 发布方与监听方如何解耦、如何验证触发 |
-| 多监听器广播 | [docs/130](docs/part-01-event-basics/02-multiple-listeners-and-order.md) | `SpringCoreEventsLabTest#multipleListenersCanObserveTheSameEvent` | 为什么多个监听器都能收到同一事件 |
-| 监听器顺序（`@Order`） | [docs/130](docs/part-01-event-basics/02-multiple-listeners-and-order.md) | `SpringCoreEventsLabTest#orderedListenersFollowOrderAnnotation` | 为什么默认不该依赖顺序、如何做确定性断言 |
-| 条件触发（SpEL） | [docs/131](docs/part-01-event-basics/03-condition-and-payload.md) | `SpringCoreEventsLabTest#conditionalEventListenerOnlyRunsWhenConditionMatches` | condition 如何过滤事件 |
-| payload 事件 | [docs/131](docs/part-01-event-basics/03-condition-and-payload.md) | `SpringCoreEventsLabTest#publishingPlainObjectsAlsoWorks_asPayloadEvents` | 为什么 publish String 也能被监听 |
-| 默认同步线程 | [docs/129](docs/part-01-event-basics/01-event-mental-model.md) | `SpringCoreEventsLabTest#eventsAreSynchronousByDefault` | 默认事件分发发生在发布方线程 |
-| 异常传播 | [docs/132](docs/part-01-event-basics/04-sync-and-exceptions.md) | `SpringCoreEventsMechanicsLabTest#listenerExceptionsPropagateToPublisher_byDefault` | 为什么 listener 抛异常会炸到 publisher |
-| `@Async` 监听器 | [docs/133](docs/part-02-async-and-transactional/01-async-listener.md) | `SpringCoreEventsMechanicsLabTest#asyncListenerRunsOnDifferentThread_whenEnableAsyncIsOn` | `@EnableAsync` 对 `@Async` 的影响 |
-| after-commit 监听器（事务集成） | [docs/135](docs/part-02-async-and-transactional/03-transactional-event-listener.md) | `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot` + `OrderEventListeners` | 为什么回滚时 sync 会执行但 after-commit 不会 |
+| 发布事件与最小闭环 | [docs/129](docs/event-basics-event-mental-model.md) | `SpringCoreEventsLabTest#listenerReceivesPublishedEvent` + `UserRegistrationService`/`UserRegisteredListener` | 发布方与监听方如何解耦、如何验证触发 |
+| 多监听器广播 | [docs/130](docs/event-basics-multiple-listeners-and-order.md) | `SpringCoreEventsLabTest#multipleListenersCanObserveTheSameEvent` | 为什么多个监听器都能收到同一事件 |
+| 监听器顺序（`@Order`） | [docs/130](docs/event-basics-multiple-listeners-and-order.md) | `SpringCoreEventsLabTest#orderedListenersFollowOrderAnnotation` | 为什么默认不该依赖顺序、如何做确定性断言 |
+| 条件触发（SpEL） | [docs/131](docs/event-basics-condition-and-payload.md) | `SpringCoreEventsLabTest#conditionalEventListenerOnlyRunsWhenConditionMatches` | condition 如何过滤事件 |
+| payload 事件 | [docs/131](docs/event-basics-condition-and-payload.md) | `SpringCoreEventsLabTest#publishingPlainObjectsAlsoWorks_asPayloadEvents` | 为什么 publish String 也能被监听 |
+| 默认同步线程 | [docs/129](docs/event-basics-event-mental-model.md) | `SpringCoreEventsLabTest#eventsAreSynchronousByDefault` | 默认事件分发发生在发布方线程 |
+| 异常传播 | [docs/132](docs/event-basics-sync-and-exceptions.md) | `SpringCoreEventsMechanicsLabTest#listenerExceptionsPropagateToPublisher_byDefault` | 为什么 listener 抛异常会炸到 publisher |
+| `@Async` 监听器 | [docs/133](docs/async-and-transactional-async-listener.md) | `SpringCoreEventsMechanicsLabTest#asyncListenerRunsOnDifferentThread_whenEnableAsyncIsOn` | `@EnableAsync` 对 `@Async` 的影响 |
+| after-commit 监听器（事务集成） | [docs/135](docs/async-and-transactional-transactional-event-listener.md) | `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot` + `OrderEventListeners` | 为什么回滚时 sync 会执行但 after-commit 不会 |
 
 ## 常见 Debug 路径
 
@@ -106,3 +106,49 @@ mvn -pl :spring-core-events test
 ## 参考
 
 - Spring Framework Reference：Application Events and Listeners
+
+## 目录（唯一顺序来源）
+
+> 本模块 `docs/` 目录保持扁平；阅读顺序只在本 `README.md` 维护。正文页不再提供“上一章/下一章”导航。
+> 原 `docs/README.md` 标题：Spring Events：时序、边界与监听器语义
+
+事件机制的难点几乎都落在“时序与边界”：事件何时发布、监听器何时执行、异常如何传播、异步边界如何改变因果关系、事务事件又如何与提交/回滚绑定。本模块先把同步事件的基本语义跑通，再进入异步监听与事务事件（`@TransactionalEventListener`）的分支。
+
+---
+
+### 10 分钟入口：先把同步事件跑成事实
+- `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
+
+运行后应能回答：同一事件在多个监听器之间的顺序如何决定；异常会如何影响发布方；切换到异步后，这些语义在哪些地方发生变化。
+
+### 从这里开始（建议顺序）
+1. [主线时间线](docs/guide-mainline-timeline.md)
+2. [深挖导读](docs/guide-deep-dive-guide.md)
+
+### 顺读主线
+- [事件心智模型](docs/event-basics-event-mental-model.md)
+- [多监听器与顺序](docs/event-basics-multiple-listeners-and-order.md)
+- [条件与 payload](docs/event-basics-condition-and-payload.md)
+- [同步与异常](docs/event-basics-sync-and-exceptions.md)
+- [异步监听](docs/async-and-transactional-async-listener.md)
+- [异步 multicaster](docs/async-and-transactional-async-multicaster.md)
+- [事务事件](docs/async-and-transactional-transactional-event-listener.md)
+
+### 进阶入口（排障/关键分支）
+- 断点地图（排障优先）：[04-breakpoint-map.md](docs/guide-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
+- 排障 playbook：[01-common-pitfalls.md](docs/appendix-common-pitfalls.md)
+- 自检清单：[02-self-check.md](docs/appendix-self-check.md)
+
+---
+
+### 可运行入口（用于复现/回归）
+- Book Matrix：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
+- Branch Matrix（基础事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
+- Branch Matrix（异步/事务事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
+- 并发/性能：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsConcurrencyLabTest test`
+- Solutions（Exercises 对应回归：异步 multicaster 边界）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsExerciseSolutionTest test`
+
+### 排坑与自检
+- [常见坑](docs/appendix-common-pitfalls.md)
+- [自检](docs/appendix-self-check.md)

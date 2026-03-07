@@ -28,19 +28,19 @@
 
 - `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
 - 测试类：[`BootActuatorBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-actuator/src/test/java/com/learning/springboot/bootactuator/part01_actuator/BootActuatorBookMatrixLabTest.java)
-- 模块目录页：[`spring-boot-actuator/docs/README.md`](../../spring-boot-modules/spring-boot-actuator/docs/README.md)
+- 模块目录页：[`spring-boot-actuator/README.md`](../../spring-boot-modules/spring-boot-actuator/README.md)
 
 ### Observability
 
 - `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBookMatrixLabTest test`
 - 测试类：[`BootObservabilityBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-observability/src/test/java/com/learning/springboot/bootobservability/part00_guide/BootObservabilityBookMatrixLabTest.java)
-- 模块目录页：[`spring-boot-observability/docs/README.md`](../../spring-boot-modules/spring-boot-observability/docs/README.md)
+- 模块目录页：[`spring-boot-observability/README.md`](../../spring-boot-modules/spring-boot-observability/README.md)
 
 ### Logging
 
 - `mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
 - 测试类：[`BootLoggingBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-logging/src/test/java/com/learning/springboot/bootlogging/part00_guide/BootLoggingBookMatrixLabTest.java)
-- 模块目录页：[`spring-boot-logging/docs/README.md`](../../spring-boot-modules/spring-boot-logging/docs/README.md)
+- 模块目录页：[`spring-boot-logging/README.md`](../../spring-boot-modules/spring-boot-logging/README.md)
 
 ## 常见误区
 

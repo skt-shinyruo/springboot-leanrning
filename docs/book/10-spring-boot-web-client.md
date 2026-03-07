@@ -24,11 +24,11 @@
   - `mvn -q -pl :spring-boot-web-client -Dtest=BootWebClientBookMatrixLabTest test`
   - 测试类：[`BootWebClientBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-boot-web-client/docs/README.md`](../../spring-boot-modules/spring-boot-web-client/docs/README.md)
+  - [`spring-boot-web-client/README.md`](../../spring-boot-modules/spring-boot-web-client/README.md)
 - 导航型文档（用于定位“拦截链/错误映射/测试入口”）：
-  - Web Client 调用链：[`part-00-guide/03-webclient-call-chain.md`](../../spring-boot-modules/spring-boot-web-client/docs/part-00-guide/03-webclient-call-chain.md)
-  - 错误处理：[`part-01-web-client/03-error-handling.md`](../../spring-boot-modules/spring-boot-web-client/docs/part-01-web-client/03-error-handling.md)
-  - MockWebServer 测试：[`part-01-web-client/05-testing-with-mockwebserver.md`](../../spring-boot-modules/spring-boot-web-client/docs/part-01-web-client/05-testing-with-mockwebserver.md)
+  - Web Client 调用链：[`part-00-guide/03-webclient-call-chain.md`](../../spring-boot-modules/spring-boot-web-client/docs/guide-webclient-call-chain.md)
+  - 错误处理：[`part-01-web-client/03-error-handling.md`](../../spring-boot-modules/spring-boot-web-client/docs/web-client-error-handling.md)
+  - MockWebServer 测试：[`part-01-web-client/05-testing-with-mockwebserver.md`](../../spring-boot-modules/spring-boot-web-client/docs/web-client-testing-with-mockwebserver.md)
 
 ## 常见误区
 

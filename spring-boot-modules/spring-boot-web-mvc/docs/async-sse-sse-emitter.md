@@ -1,0 +1,41 @@
+# 02. SSE（SseEmitter：text/event-stream 最小闭环）
+
+## 导读
+
+本章围绕「02：SSE（SseEmitter：text/event-stream 最小闭环）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+建议优先运行 `BootWebMvcAsyncSseLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+
+!!! example "本章配套实验（先跑再读）"
+
+    - Lab：`BootWebMvcAsyncSseLabTest`
+
+## 机制主线
+
+- 本章用 `BootWebMvcAsyncSseLabTest` 固定 SSE：断言 `Content-Type` 与响应体包含 `data: ping-1`。
+
+## 源码与断点
+
+建议断点：
+- `org.springframework.web.servlet.mvc.method.annotation.SseEmitter#send`
+- `org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler#handleReturnValue`
+
+## 最小可运行实验（Lab）
+
+- Lab：`BootWebMvcAsyncSseLabTest`
+
+## 常见坑与边界
+
+- SSE 与代理/网关/超时设置强相关：本模块只讨论“MVC 侧最小实现与测试”，不扩展到生产部署策略。
+
+## 小结与下一章
+
+- 下一章进入 DeferredResult：回调式异步 + timeout/fallback 的可控分支，并补齐对应测试闭环。
+
+<!-- BOOKIFY:START -->
+
+### 对应 Lab/Test
+
+- Lab：`BootWebMvcAsyncSseLabTest`
+
+上一章：[01. Servlet Async（Callable）与测试（asyncDispatch）](async-sse-servlet-async-and-testing.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. DeferredResult（回调式异步）与 timeout/fallback（可控分支）](async-sse-deferredresult-and-timeout.md)
+<!-- BOOKIFY:END -->

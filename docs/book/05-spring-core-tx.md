@@ -22,10 +22,10 @@
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
   - 测试类：[`SpringCoreTxBookMatrixLabTest.java`](../../spring-core-modules/spring-core-tx/src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-core-tx/docs/README.md`](../../spring-core-modules/spring-core-tx/docs/README.md)
+  - [`spring-core-tx/README.md`](../../spring-core-modules/spring-core-tx/README.md)
 - 导航型文档（用于快速定位 commit/rollback 发生点）：
-  - 事务拦截器调用链：[`part-00-guide/03-transaction-interceptor-call-chain.md`](../../spring-core-modules/spring-core-tx/docs/part-00-guide/03-transaction-interceptor-call-chain.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-tx/docs/appendix/01-common-pitfalls.md)
+  - 事务拦截器调用链：[`part-00-guide/03-transaction-interceptor-call-chain.md`](../../spring-core-modules/spring-core-tx/docs/guide-transaction-interceptor-call-chain.md)
+  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-tx/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 

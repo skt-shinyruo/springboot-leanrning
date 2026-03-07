@@ -9,7 +9,7 @@
 ## 概念框架
 
 - **仓库内资料**：
-  - 模块 `docs/README.md`：导航与入口；正文与断点在 `part-*`。
+  - 模块根 `README.md`：导航与入口（目录/阅读顺序 SSOT）；正文与断点在模块 `docs/*.md`。
   - `*BookMatrixLabTest`：主线可运行入口；用来固定事实与回归验证。
   - 本目录 `docs/book/`：跨模块聚合与指引，不复制正文。
 - **官方资料**：
@@ -40,7 +40,7 @@
 - 练习 1（参考 → 事实）：
   - 从官方文档选一个主题（例如 `@Transactional` 回滚规则），在本仓库找到对应模块章节与 Book Matrix，写出“可验证事实清单”（3 条即可）。
 - 练习 2（调用链定位）：
-  - 从任一模块的 `part-00-guide/` 找到调用链文档，挑一个关键方法，记录：
+  - 从任一模块的 `docs/guide-*.md` 找到调用链文档，挑一个关键方法，记录：
   - 为什么这个方法是断点锚点；
   - 观察哪几个变量可以决定分支。
 
@@ -54,11 +54,11 @@
 ### 仓库内入口（优先）
 
 - 仓库根导读：[`../../README.md`](../../README.md)
-- 全站导航（SSOT）：[`../../docs/SUMMARY.md`](../../docs/SUMMARY.md)
+- 全站导航（SSOT）：[`../../docs/SUMMARY.md`](../SUMMARY.md)
 - 模块文档（示例入口）：
-  - Boot Basics：[`../../spring-boot-modules/spring-boot-basics/docs/README.md`](../../spring-boot-modules/spring-boot-basics/docs/README.md)
-  - Beans：[`../../spring-core-modules/spring-core-beans/docs/README.md`](../../spring-core-modules/spring-core-beans/docs/README.md)
-  - Web MVC：[`../../spring-boot-modules/spring-boot-web-mvc/docs/README.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/README.md)
+  - Boot Basics：[`../../spring-boot-modules/spring-boot-basics/README.md`](../../spring-boot-modules/spring-boot-basics/README.md)
+  - Beans：[`../../spring-core-modules/spring-core-beans/README.md`](../../spring-core-modules/spring-core-beans/README.md)
+  - Web MVC：[`../../spring-boot-modules/spring-boot-web-mvc/README.md`](../../spring-boot-modules/spring-boot-web-mvc/README.md)
 
 ### 官方参考（按主题）
 

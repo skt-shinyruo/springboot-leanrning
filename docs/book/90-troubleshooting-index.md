@@ -20,15 +20,15 @@
 
 | 症状（先分型） | 先看章节 | 先跑的 Book Matrix | 模块常见坑 |
 | --- | --- | --- | --- |
-| 配置不生效 / Profile 覆盖异常 | [02 Boot Basics](02-spring-boot-basics.md) | `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test` | [`spring-boot-basics 常见坑`](../../spring-boot-modules/spring-boot-basics/docs/appendix/01-common-pitfalls.md) |
-| Bean 找不到 / 注入歧义 / 生命周期与顺序问题 | [03 Beans](03-spring-core-beans.md) | `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test` | [`spring-core-beans 常见坑`](../../spring-core-modules/spring-core-beans/docs/appendix/01-common-pitfalls.md) |
+| 配置不生效 / Profile 覆盖异常 | [02 Boot Basics](02-spring-boot-basics.md) | `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test` | [`spring-boot-basics 常见坑`](../../spring-boot-modules/spring-boot-basics/docs/appendix-common-pitfalls.md) |
+| Bean 找不到 / 注入歧义 / 生命周期与顺序问题 | [03 Beans](03-spring-core-beans.md) | `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test` | [`spring-core-beans 常见坑`](../../spring-core-modules/spring-core-beans/docs/appendix-common-pitfalls.md) |
 | AOP/事务/校验注解不生效 | [04 AOP](04-spring-core-aop.md) / [05 Tx](05-spring-core-tx.md) / [07 Validation](07-spring-core-validation.md) | 对应模块 Book Matrix | 对应模块常见坑 |
-| 400/406/415 / 绑定与错误响应形状 | [06 Web MVC](06-spring-boot-web-mvc.md) | `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test` | [`spring-boot-web-mvc 常见坑`](../../spring-boot-modules/spring-boot-web-mvc/docs/appendix/01-common-pitfalls.md) |
-| JPA flush/脏检查/N+1 | [09 Data JPA](09-spring-boot-data-jpa.md) | `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test` | [`spring-boot-data-jpa 常见坑`](../../spring-boot-modules/spring-boot-data-jpa/docs/appendix/01-common-pitfalls.md) |
-| 异步不生效 / 异常消失 / 上下文丢失 | [11 Async](11-spring-boot-async-scheduling.md) | `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test` | [`async-scheduling 常见坑`](../../spring-boot-modules/spring-boot-async-scheduling/docs/appendix/01-common-pitfalls.md) |
-| 缓存命中异常 / key/条件表达式 / 击穿 | [12 Cache](12-spring-boot-cache.md) | `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test` | [`spring-boot-cache 常见坑`](../../spring-boot-modules/spring-boot-cache/docs/appendix/01-common-pitfalls.md) |
+| 400/406/415 / 绑定与错误响应形状 | [06 Web MVC](06-spring-boot-web-mvc.md) | `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test` | [`spring-boot-web-mvc 常见坑`](../../spring-boot-modules/spring-boot-web-mvc/docs/appendix-common-pitfalls.md) |
+| JPA flush/脏检查/N+1 | [09 Data JPA](09-spring-boot-data-jpa.md) | `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test` | [`spring-boot-data-jpa 常见坑`](../../spring-boot-modules/spring-boot-data-jpa/docs/appendix-common-pitfalls.md) |
+| 异步不生效 / 异常消失 / 上下文丢失 | [11 Async](11-spring-boot-async-scheduling.md) | `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBookMatrixLabTest test` | [`async-scheduling 常见坑`](../../spring-boot-modules/spring-boot-async-scheduling/docs/appendix-common-pitfalls.md) |
+| 缓存命中异常 / key/条件表达式 / 击穿 | [12 Cache](12-spring-boot-cache.md) | `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test` | [`spring-boot-cache 常见坑`](../../spring-boot-modules/spring-boot-cache/docs/appendix-common-pitfalls.md) |
 | 端点不可访问 / 指标缺失 / 日志级别异常 | [13 Observability](13-observability-and-actuator.md) | Actuator/Observability/Logging 各自 Book Matrix | 对应模块常见坑 |
-| 401/403/CSRF / FilterChain 顺序 | [14 Security](14-spring-boot-security.md) | `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test` | [`spring-boot-security 常见坑`](../../spring-boot-modules/spring-boot-security/docs/appendix/01-common-pitfalls.md) |
+| 401/403/CSRF / FilterChain 顺序 | [14 Security](14-spring-boot-security.md) | `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test` | [`spring-boot-security 常见坑`](../../spring-boot-modules/spring-boot-security/docs/appendix-common-pitfalls.md) |
 
 ## 实验入口
 
@@ -77,4 +77,3 @@
 ---
 
 [← 上一章](14-spring-boot-security.md) | [目录](README.md) | [下一章 →](91-glossary.md)
-

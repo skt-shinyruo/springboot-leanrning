@@ -28,7 +28,7 @@
 5. 小结（≤3 条可复述句）
 6. 延伸阅读（少量且说明“为何读它”）
 
-对目录页（`*/docs/README.md`）优先使用：
+对目录页（`*/README.md`）优先使用：
 
 - 导论（本模块边界/读完能做什么）
 - 入口（10 分钟最短闭环 + 症状/主题索引）
@@ -87,8 +87,8 @@ Expected: build 成功。
 ## Task 3: 样板模块一（spring-boot-basics）
 
 **Files:**
-- Modify: `spring-boot-modules/spring-boot-basics/docs/README.md`
-- Modify: `spring-boot-modules/spring-boot-basics/docs/part-01-boot-basics/01-property-sources-and-profiles.md`
+- Modify: `spring-boot-modules/spring-boot-basics/README.md`
+- Modify: `spring-boot-modules/spring-boot-basics/docs/boot-basics-property-sources-and-profiles.md`
 
 **Step 1: 目录页改为“导论 + 路线 + 索引”**
 
@@ -109,8 +109,8 @@ Expected: build 成功。
 ## Task 4: 样板模块二（spring-core-beans）
 
 **Files:**
-- Modify: `spring-core-modules/spring-core-beans/docs/README.md`
-- Modify: `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/09-bean-mental-model.md`
+- Modify: `spring-core-modules/spring-core-beans/README.md`
+- Modify: `spring-core-modules/spring-core-beans/docs/ioc-bean-mental-model.md`
 
 **Step 1: 目录页从“导航清单”改成“课程导论”**
 
@@ -149,13 +149,13 @@ Expected: build 成功。
 
 ## Task 6: 批量迁移“所有模块”的入口页（目录页 + 模块 README）
 
-**Goal:** 让读者无论从 GitHub 模块页（`*/README.md`）还是从站点侧边栏（`*/docs/README.md`）进入，都能看到一致的教材式入口：问题边界、10 分钟实验、阅读路线、排障入口与可运行回归命令。
+**Goal:** 让读者无论从 GitHub 模块页（`*/README.md`）还是从站点侧边栏（`*/README.md`）进入，都能看到一致的教材式入口：问题边界、10 分钟实验、阅读路线、排障入口与可运行回归命令。
 
 **Files (per module):**
 - Modify: `spring-boot-modules/<module>/README.md`
-- Modify: `spring-boot-modules/<module>/docs/README.md`
+- Modify: `spring-boot-modules/<module>/README.md`
 - Modify: `spring-core-modules/<module>/README.md`
-- Modify: `spring-core-modules/<module>/docs/README.md`
+- Modify: `spring-core-modules/<module>/README.md`
 
 **Step 1: 统一入口结构**
 

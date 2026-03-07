@@ -13,9 +13,9 @@
   - `mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
 
 ## 本模块的学习产出
 
@@ -55,19 +55,19 @@ mvn -pl :spring-boot-business-case test
 
 ## 推荐 docs 阅读顺序
 
-（docs 目录页：[`docs/README.md`](docs/README.md)）
+（目录：见本 README 的「目录（唯一顺序来源）」）
 
 建议按“先跑通链路 → 再拆机制”的顺序：
 
-1. [导读](docs/part-00-guide/02-deep-dive-guide.md)
-2. [案例架构与主线](docs/part-01-business-case/01-architecture-and-flow.md)
-3. [常见坑清单](docs/appendix/01-common-pitfalls.md)
-4. [自测题](docs/appendix/02-self-check.md)
+1. [导读](docs/guide-deep-dive-guide.md)
+2. [案例架构与主线](docs/business-case-architecture-and-flow.md)
+3. [常见坑清单](docs/appendix-common-pitfalls.md)
+4. [自测题](docs/appendix-self-check.md)
 5. 先跑接口 + 跑 `BootBusinessCaseLabTest`：把“现象”固定下来
 6. 出现疑问时按链路拆解：
-   - 代理/AOP：`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/01-aop-proxy-mental-model.md`、`spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/03-self-invocation.md`
-   - 事务：`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/01-transaction-boundary.md`、`spring-core-modules/spring-core-tx/docs/part-01-transaction-basics/02-transactional-proxy.md`
-   - 事件与事务时机：`spring-core-modules/spring-core-events/docs/part-02-async-and-transactional/03-transactional-event-listener.md`
+   - 代理/AOP：[`AOP 心智模型`](../../spring-core-modules/spring-core-aop/docs/proxy-fundamentals-aop-proxy-mental-model.md)、[`self-invocation`](../../spring-core-modules/spring-core-aop/docs/proxy-fundamentals-self-invocation.md)
+   - 事务：[`事务边界`](../../spring-core-modules/spring-core-tx/docs/transaction-basics-transaction-boundary.md)、[`@Transactional 也是代理`](../../spring-core-modules/spring-core-tx/docs/transaction-basics-transactional-proxy.md)
+   - 事件与事务时机：[`@TransactionalEventListener`](../../spring-core-modules/spring-core-events/docs/async-and-transactional-transactional-event-listener.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -84,3 +84,44 @@ mvn -pl :spring-boot-business-case test
 - 对比同步事件与 `@TransactionalEventListener` 的触发时机（commit/rollback）
 - 在测试里用断点跟进：Controller → Service → Repository → Listener → Aspect
 - 遇到“事务不生效”：优先排查是否自调用绕过代理（AOP/Tx 常见坑）
+
+## 目录（唯一顺序来源）
+
+> 本模块 `docs/` 目录保持扁平；阅读顺序只在本 `README.md` 维护。正文页不再提供“上一章/下一章”导航。
+> 原 `docs/README.md` 标题：Business Case（综合案例）：把模块串成系统
+
+本模块提供一个端到端的综合案例，用来把 Web、Security、Tx、JPA、Events 等分散主题串成一条可运行链路。它的价值不在于“再学一套 API”，而在于把边界放回真实调用链：一个请求从进入控制器到落库、发事件、回响应，中间哪些位置是代理边界、事务边界与一致性边界。
+
+---
+
+### 10 分钟入口：先跑通一次端到端链路
+- `mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
+
+运行后应能回答：端到端流程中关键的边界落在什么位置；异常与回滚如何影响最终结果；并发时哪些状态会出现竞争与可见性差异。
+
+### 从这里开始（建议顺序）
+1. [主线时间线](docs/guide-mainline-timeline.md)
+2. [深挖导读](docs/guide-deep-dive-guide.md)
+
+### 顺读主线
+- [架构与端到端流转](docs/business-case-architecture-and-flow.md)
+
+### 进阶入口（排障/关键分支）
+- 断点地图（排障优先）：[04-breakpoint-map.md](docs/guide-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
+- 排障 playbook：[01-common-pitfalls.md](docs/appendix-common-pitfalls.md)
+- 自检清单：[02-self-check.md](docs/appendix-self-check.md)
+
+---
+
+### 可运行入口（用于复现/回归）
+- Book Matrix：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBookMatrixLabTest test`
+- Branch Matrix：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-business-case -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（并发下的业务边界证据链）：`mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseConcurrentOrderPlacementLabTest test`
+
+---
+
+### 排坑与自检
+- [常见坑](docs/appendix-common-pitfalls.md)
+- [自检](docs/appendix-self-check.md)

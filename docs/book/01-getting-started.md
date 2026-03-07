@@ -27,7 +27,7 @@
 - 阅读入口（测试类）：
   - [`BootBasicsBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsBookMatrixLabTest.java)
 - 下一跳（模块目录页）：
-  - [`spring-boot-basics/docs/README.md`](../../spring-boot-modules/spring-boot-basics/docs/README.md)
+  - [`spring-boot-basics/README.md`](../../spring-boot-modules/spring-boot-basics/README.md)
 
 运行成功后，读者不需要立刻解释原因，但应该能说清两件事实：
 
@@ -60,8 +60,8 @@
 **误区一：只读目录与结论，不跑测试。**
 读完的“理解”没有锚点，很难判断是“概念理解”还是“恰好说对”。解决方式是先固定事实：跑 Book Matrix，然后只围绕失败/关键断言展开阅读。
 
-**误区二：把模块 `docs/README.md` 当成正文。**
-模块 README 的职责是导航与路线，正文在 `part-*` 章节里。判断一个页面是否是“正文”，看它是否提供了实验入口与机制解释，而不仅仅是链接列表。
+**误区二：把模块根 `README.md` 当成正文。**
+模块 `README.md` 的职责是导航与路线，正文在模块 `docs/*.md` 章节里（`docs/` 目录保持扁平、顺序只在 `README.md` 维护）。判断一个页面是否是“正文”，看它是否提供了实验入口与机制解释，而不仅仅是链接列表。
 
 **误区三：看到异常直接外部搜答案。**
 外部资料无法替对齐本仓库的版本语境与实验入口。更可控的路径是：先用本仓库的“常见坑/自检/分支矩阵”把问题归类成可验证分支，再去对照官方 Reference 或外部资料。

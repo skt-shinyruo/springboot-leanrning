@@ -22,9 +22,9 @@
   - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：[`docs/README.md`](docs/README.md)
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix/01-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix/02-self-check.md)
+- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
 
 ## 本模块的学习产出
 
@@ -55,13 +55,13 @@ mvn -pl :spring-core-aop-weaving spring-boot:run
 
 ## 推荐 docs 阅读顺序
 
-0. [深挖指南：如何跑通 LTW/CTW + 常见排障路径](docs/part-00-guide/02-deep-dive-guide.md)
-1. [心智模型：Proxy vs Weaving（为什么 weaving 不依赖 call path）](docs/part-01-mental-model/01-proxy-vs-weaving.md)
-2. [LTW：`-javaagent` + `META-INF/aop.xml`（最小闭环与边界）](docs/part-02-ltw/01-ltw-basics.md)
-3. [CTW：编译期织入（无 agent 也能拦截）](docs/part-03-ctw/01-ctw-basics.md)
-4. [Join Point & 表达式速查：call/execution/get/set/withincode/cflow](docs/part-04-join-points/01-join-point-cookbook.md)
-5. [常见坑清单（建议反复对照）](docs/appendix/01-common-pitfalls.md)
-6. [自测题：是否真正理解了 weaving？](docs/appendix/02-self-check.md)
+0. [深挖指南：如何跑通 LTW/CTW + 常见排障路径](docs/guide-deep-dive-guide.md)
+1. [心智模型：Proxy vs Weaving（为什么 weaving 不依赖 call path）](docs/mental-model-proxy-vs-weaving.md)
+2. [LTW：`-javaagent` + `META-INF/aop.xml`（最小闭环与边界）](docs/ltw-basics.md)
+3. [CTW：编译期织入（无 agent 也能拦截）](docs/ctw-basics.md)
+4. [Join Point & 表达式速查：call/execution/get/set/withincode/cflow](docs/join-points-join-point-cookbook.md)
+5. [常见坑清单（建议反复对照）](docs/appendix-common-pitfalls.md)
+6. [自测题：是否真正理解了 weaving？](docs/appendix-self-check.md)
 
 ## Labs / Exercises 索引（按知识点 / 难度）
 
@@ -72,3 +72,49 @@ mvn -pl :spring-core-aop-weaving spring-boot:run
 | Lab | `src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjLtwLabTest.java` | LTW：agent + aop.xml；call/execution；self-invocation；get/set；withincode/cflow | ⭐⭐⭐ | docs/00、02、04 |
 | Lab | `src/test/java/com/learning/springboot/springcoreaopweaving/part03_ctw_fundamentals/AspectjCtwLabTest.java` | CTW：无 agent；同样覆盖 call/execution/get/set/withincode/cflow | ⭐⭐⭐ | docs/03、04 |
 | Exercise | `src/test/java/com/learning/springboot/springcoreaopweaving/part00_guide/SpringCoreAopWeavingExerciseTest.java` | 改造：扩展一个 join point / 表达式并保持断言全绿 | ⭐⭐ | docs/04 |
+
+## 目录（唯一顺序来源）
+
+> 本模块 `docs/` 目录保持扁平；阅读顺序只在本 `README.md` 维护。正文页不再提供“上一章/下一章”导航。
+> 原 `docs/README.md` 标题：AOP Weaving（织入：LTW/CTW）：代理之外的另一条路
+
+织入解决的是“代理做不到或不适合做”的那部分 AOP 需求：切点落在构造器、字段、final 方法等代理天然受限的位置；或希望以字节码层面的方式改变行为边界。本模块先把“代理 vs 织入”的边界跑清楚，再分别讨论 LTW（load-time weaving）与 CTW（compile-time weaving），最后用 join point 维度把落点与风险控制住。
+
+---
+
+### 10 分钟入口：先确认织入是否生效
+- `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
+
+运行后应能回答：织入在何处介入；哪些 join point 能命中、哪些不能；与代理方案相比，行为边界与可观测性有什么变化。
+
+### 从这里开始（建议顺序）
+1. [主线时间线](docs/guide-mainline-timeline.md)
+2. [深挖导读](docs/guide-deep-dive-guide.md)
+
+### 顺读主线
+- [代理 vs 织入](docs/mental-model-proxy-vs-weaving.md)
+- [LTW 基础](docs/ltw-basics.md)
+- [CTW 基础](docs/ctw-basics.md)
+- [Join Point 菜谱](docs/join-points-join-point-cookbook.md)
+
+### 进阶入口（排障/关键分支）
+- 断点地图（排障优先）：[04-breakpoint-map.md](docs/guide-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
+- 排障 playbook：[01-common-pitfalls.md](docs/appendix-common-pitfalls.md)
+- 自检清单：[02-self-check.md](docs/appendix-self-check.md)
+
+---
+
+### 可运行入口（用于复现/回归）
+- Book Matrix：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
+- Branch Matrix（LTW/CTW）：建议直接运行模块测试（让 Surefire 自动区分 execution）：
+  `mvn -q -pl :spring-core-aop-weaving test`
+  或分别运行：
+  - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
+  - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`
+- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-aop-weaving -Dtest=*ExerciseSolutionTest test`
+- 并发/性能（LTW 并发织入边界）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwConcurrencyLabTest test`
+
+### 排坑与自检
+- [常见坑](docs/appendix-common-pitfalls.md)
+- [自检](docs/appendix-self-check.md)

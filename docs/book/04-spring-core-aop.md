@@ -28,11 +28,11 @@
   - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopBookMatrixLabTest test`
   - 测试类：[`SpringCoreAopBookMatrixLabTest.java`](../../spring-core-modules/spring-core-aop/src/test/java/com/learning/springboot/springcoreaop/part01_proxy_fundamentals/SpringCoreAopBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-core-aop/docs/README.md`](../../spring-core-modules/spring-core-aop/docs/README.md)
+  - [`spring-core-aop/README.md`](../../spring-core-modules/spring-core-aop/README.md)
 - 导航型文档（用于快速定位“代理入口/Advice 链”）：
-  - AOP 调用链：[`part-00-guide/03-aop-invocation-call-chain.md`](../../spring-core-modules/spring-core-aop/docs/part-00-guide/03-aop-invocation-call-chain.md)
-  - self-invocation：[`part-01-proxy-fundamentals/03-self-invocation.md`](../../spring-core-modules/spring-core-aop/docs/part-01-proxy-fundamentals/03-self-invocation.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-aop/docs/appendix/01-common-pitfalls.md)
+  - AOP 调用链：[`part-00-guide/03-aop-invocation-call-chain.md`](../../spring-core-modules/spring-core-aop/docs/guide-aop-invocation-call-chain.md)
+  - self-invocation：[`part-01-proxy-fundamentals/03-self-invocation.md`](../../spring-core-modules/spring-core-aop/docs/proxy-fundamentals-self-invocation.md)
+  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-aop/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 

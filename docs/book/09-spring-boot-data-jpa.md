@@ -25,12 +25,12 @@
   - `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
   - 测试类：[`BootDataJpaBookMatrixLabTest.java`](../../spring-boot-modules/spring-boot-data-jpa/src/test/java/com/learning/springboot/bootdatajpa/part01_data_jpa/BootDataJpaBookMatrixLabTest.java)
 - 模块目录页（顺读主线）：
-  - [`spring-boot-data-jpa/docs/README.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/README.md)
+  - [`spring-boot-data-jpa/README.md`](../../spring-boot-modules/spring-boot-data-jpa/README.md)
 - 导航型文档（用于快速定位“状态/上下文/flush/N+1”）：
-  - 实体状态：[`part-01-data-jpa/01-entity-states.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/01-entity-states.md)
-  - 持久化上下文：[`part-01-data-jpa/02-persistence-context.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/02-persistence-context.md)
-  - flush 与可见性：[`part-01-data-jpa/03-flush-and-visibility.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/part-01-data-jpa/03-flush-and-visibility.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/appendix/01-common-pitfalls.md)
+  - 实体状态：[`part-01-data-jpa/01-entity-states.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-entity-states.md)
+  - 持久化上下文：[`part-01-data-jpa/02-persistence-context.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-persistence-context.md)
+  - flush 与可见性：[`part-01-data-jpa/03-flush-and-visibility.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-flush-and-visibility.md)
+  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 

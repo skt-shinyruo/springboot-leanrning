@@ -46,7 +46,7 @@ class SpringCoreBeansExerciseTest {
                         2) 再把异常类型固定为断言（本题就是做这个）。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-beans/docs/part-02-boot-autoconfig/01-debugging-and-observability.md`
+                        - `spring-core-modules/spring-core-beans/docs/boot-debugging-and-observability.md`
                         """)
                 .isInstanceOf(NoSuchBeanDefinitionException.class);
     }
@@ -64,7 +64,7 @@ class SpringCoreBeansExerciseTest {
                         3) 让本断言通过。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
+                        - `spring-core-modules/spring-core-beans/docs/ioc-dependency-injection-resolution.md`
                         """)
                 .isEqualTo("hello");
     }
@@ -85,7 +85,7 @@ class SpringCoreBeansExerciseTest {
                         3) 让本断言变绿。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
+                        - `spring-core-modules/spring-core-beans/docs/ioc-scope-and-prototype.md`
                         """)
                 .isNotEqualTo(second);
     }
@@ -139,8 +139,8 @@ class SpringCoreBeansExerciseTest {
                             - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionAmbiguityLabTest.java`
 
                             建议阅读：
-                            - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/02-dependency-injection-resolution.md`
-                            - `spring-core-modules/spring-core-beans/docs/part-04-wiring-and-boundaries/33-autowire-candidate-selection-primary-priority-order.md`
+                            - `spring-core-modules/spring-core-beans/docs/ioc-dependency-injection-resolution.md`
+                            - `spring-core-modules/spring-core-beans/docs/wiring-autowire-candidate-selection-primary-priority-order.md`
                             """)
                     .isEqualTo("primary");
         }
@@ -162,7 +162,7 @@ class SpringCoreBeansExerciseTest {
                         3) 让本断言变绿。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-beans/docs/part-01-ioc-container/03-scope-and-prototype.md`
+                        - `spring-core-modules/spring-core-beans/docs/ioc-scope-and-prototype.md`
                         """)
                 .isEqualTo(provider2);
     }
