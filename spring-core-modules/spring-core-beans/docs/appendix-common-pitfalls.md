@@ -26,12 +26,12 @@
    - Book Matrix：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
    - Branch Matrix - IoC 分支：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansIocBranchMatrixLabTest test`
    - Branch Matrix - 内部机制分支：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInternalsBranchMatrixLabTest test`
-3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[appendix-breakpoint-map.md](guide-breakpoint-map.md)
-4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[appendix-branch-decision-matrix.md](guide-branch-decision-matrix.md)
+3. 证据（Evidence）：对照 [断点地图](guide-breakpoint-map.md)，把断点/Watchpoints/关键日志收齐
+4. 决策（Decision）：对照 [关键分支矩阵](guide-branch-decision-matrix.md)，把 If/Then 选路写清楚
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
-6. 验证（Verify）：重新运行入口 + 对照自检清单：[appendix-self-check.md](appendix-self-check.md)
+6. 验证（Verify）：重新运行入口 + 对照 [自检清单](appendix-self-check.md)
 
-- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+3/4/6 三个入口分别对应“看证据/做分流/做复述”，建议读者把它们当成固定工具页反复使用，而不是只读一遍。
 
 !!! example "本章配套实验（先运行再读）"
 

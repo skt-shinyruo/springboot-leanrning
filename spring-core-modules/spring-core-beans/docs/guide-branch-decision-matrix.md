@@ -12,7 +12,7 @@
 
 ## 导读
 
-- 阅读建议：建议先运行 Branch Matrix 的聚合入口测试（用于将关键分支固化为断言），再结合本章表格将“现象 → 阶段 → 关键方法 → 必看变量”组织为一条可复用的排障调用链。
+- 这页的用法很“工具化”：先运行 Branch Matrix 的聚合入口测试，把关键分支跑成断言；再用本页表格把异常/现象翻译成“阶段 → 第一断点 → watch list → 对应 Lab”。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -122,4 +122,3 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-

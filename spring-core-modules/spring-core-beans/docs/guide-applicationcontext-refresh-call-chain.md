@@ -29,9 +29,9 @@
 - **10 分钟**：能把 refresh 分成“定义层扩张 → 规则装载 → 对象创建”三幕，并能说清楚每幕最常见的故障类型。
 - **30 分钟**：能用 3 个锚点断点（BFPP/BDRPP、BPP、预实例化）把一次启动过程串起来，且能解释一次真实异常属于哪一幕。
 - **3 个链接（可继续深入分析）**：本章只提供“地图”，细节必须跳转到对应章节完成证明：
-  - refresh → doCreateBean 主线：`guide-refresh-to-bean-creation-mainline.md`
-  - 处理器排序与两段式算法：`guide-post-processor-ordering.md`
-  - early reference 与循环依赖：`guide-early-reference-and-circular.md`
+  - refresh → doCreateBean 主线：[从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）](internals-refresh-to-bean-creation-mainline.md)
+  - 处理器排序与两段式算法：[顺序（Ordering）：PriorityOrdered / Ordered / 无序](internals-post-processor-ordering.md)
+  - early reference 与循环依赖：[early reference 与循环依赖：getEarlyBeanReference / 三层缓存](internals-early-reference-and-circular.md)
 
 ## 主线伪代码（把 refresh 当成“时间线”读）
 

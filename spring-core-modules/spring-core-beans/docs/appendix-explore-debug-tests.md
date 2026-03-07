@@ -12,8 +12,11 @@
 
 ## 导读
 
-本章围绕「Explore/Debug 用例：如何开启、看什么、怎么把观察结果“用回主线”」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansSingletonCacheExploreTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+本页介绍一类“可选启用”的用例：它们不追求断言覆盖面，而追求把容器内部状态（缓存/内省结果/窗口期变量）变成可观察事实。
+
+当读者已经能跑通 Core Labs（默认回归的 `*LabTest`），但在“为什么会这样”上仍缺少直觉时，可以打开 Explore 用例做一次观察：看内部结构怎么变、在哪个阶段变、变完如何影响最终行为。
+
+建议先跑 `SpringCoreBeansSingletonCacheExploreTest`（三层缓存最直观），再按本页的断点与 watch list 扩展到其它 Explore 用例。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 

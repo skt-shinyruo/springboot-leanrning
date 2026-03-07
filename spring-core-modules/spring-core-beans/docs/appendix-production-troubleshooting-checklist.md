@@ -12,7 +12,7 @@
 
 ## 导读
 
-- 阅读方式建议：把本章当成“排障 SOP”。遇到问题时不要凭感觉改配置/改注入，而是按本章固定流程：先定位阶段 → 再找最短断点入口 → 再用最小复现验证。
+- 这页可以直接当成“排障 SOP”：遇到问题时先定位阶段，再找最短断点入口，最后用最小复现验证；尽量避免在业务项目里凭感觉改配置/改注入。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -289,5 +289,4 @@
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
 

@@ -12,7 +12,7 @@
 
 ## 导读
 
-- 阅读方式建议：把本章当成“进入本模块的调试入口索引页”——先运行一条最小回归，再按本章的断点清单去看关键数据结构变化，最后回到对应章节补齐理论与边界。
+- 这页可以当成“进入本模块的调试入口索引”：先运行一条最小回归，再按本页断点清单观察关键数据结构变化，最后回到对应章节补齐解释与边界。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -188,5 +188,4 @@ Debugger Pack 的目的不是“列断点”，而是帮读者形成一种稳定
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
 

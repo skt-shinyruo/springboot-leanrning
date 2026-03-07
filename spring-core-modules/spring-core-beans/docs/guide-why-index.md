@@ -22,9 +22,13 @@
 
 ## 导读
 
-建议优先运行 `SpringCoreBeansCircularDependencyBoundaryLabTest`，以获得可回归的现象与断言入口。
+这页是一个“高频为什么”的索引页：每个 Why 都试图把一个常见困惑压缩成三样东西：
 
-读完这一章，你应该能把这件事讲清楚：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。需要下探源码时，可以从 `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton` / `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference` 这些入口切入。
+1) 一句话结论（能复述）
+2) 10 分钟证据链（能验证：Lab + 断点 + watch list）
+3) 常见误区对照（能避免误归因）
+
+建议读者先跑 `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`，把“三级缓存/early reference”这类高频现象跑成事实，再回到本页逐条对照。
 
 
 ## 这页解决什么问题
@@ -262,5 +266,4 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopExposeProxyLabTest#exposeProxyAllow
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
 

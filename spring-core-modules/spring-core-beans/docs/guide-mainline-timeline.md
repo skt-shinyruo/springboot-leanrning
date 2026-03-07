@@ -12,7 +12,7 @@
 
 ## 导读
 
-- 阅读方式建议：这章不是“讲知识点”，而是给读者一张时间线地图。读者先运行一个主线 Lab，把 refresh 走一遍；然后拿这张时间线去定位每个现象属于哪个阶段。
+- 这章是一张时间线地图：读者先运行一个主线 Lab，把 refresh 走一遍；再用本页把每个现象定位到“它发生在哪一段、第一断点该下在哪里”。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -185,5 +185,4 @@
 ## 小结
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
 

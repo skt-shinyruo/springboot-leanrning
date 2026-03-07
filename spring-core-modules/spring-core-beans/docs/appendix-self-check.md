@@ -86,7 +86,7 @@
 - 当一个接口有两个实现时，`@Autowired` 单注入会发生什么？可以优先用 `@Qualifier` 还是 `@Primary`，为什么？
 - `@Order` 能不能解决单注入歧义？它主要解决什么问题？
 - `@Priority` 能不能作为“默认实现”方案？它与 `@Primary` 的优先级如何？（建议用 Lab 验证，不要靠猜）
-- 应能够不能说出注入解析的“源码级决策树”：先收集候选，再缩小候选？关键断点打在哪里？
+- 应能够说出注入解析的“源码级决策树”：先收集候选，再缩小候选？关键断点打在哪里？
 
 7) 同类型多个候选时，`@Qualifier` 与 `@Primary` 各自适合什么场景？
 8) `ObjectProvider` 解决的是什么问题？它为什么有助于 prototype 注入？
@@ -98,7 +98,7 @@
 
 - `singleton` 与 `prototype` 的真实语义分别是什么？它们的“创建时机/销毁时机”有什么根本区别？
 - prototype 注入 singleton 后为什么“看起来像单例”？应能够给出 2 种正确的解决方式吗？
-- 应能够不能写出（或复述）初始化阶段的回调顺序：BPP before-init / `@PostConstruct` / `afterPropertiesSet` / initMethod / BPP after-init？
+- 应能够写出（或复述）初始化阶段的回调顺序：BPP before-init / `@PostConstruct` / `afterPropertiesSet` / initMethod / BPP after-init？
 
 10) prototype 的语义是什么？为什么“prototype 注入 singleton”会像单例？
 11) `@PostConstruct` 在 bean 创建流程的哪个阶段触发？
@@ -122,8 +122,8 @@
 
 验证入口：`SpringCoreBeansValuePlaceholderResolutionLabTest` / `SpringCoreBeansTypeConversionLabTest`
 
-- 应能够不能说清 `@Value` 的链路：先做 `${...}`/SpEL 解析，再做类型转换？核心断点打在哪里？
-- 应能够不能解释“为什么在 BFPP 里把 property value 写成字符串，最后能注入到 `int` 属性里”？这属于 bean 创建的哪个阶段？
+- 应能够说清 `@Value` 的链路：先做 `${...}`/SpEL 解析，再做类型转换？核心断点打在哪里？
+- 应能够解释“为什么在 BFPP 里把 property value 写成字符串，最后能注入到 `int` 属性里”？这属于 bean 创建的哪个阶段？
 - 需要让字符串能注入为自定义值对象（例如 `UserId`），可以把 Converter 注册在哪里？它怎么被安装进 BeanFactory？
 
 16) `@Value("${demo.port}") int port` 这行代码背后至少经历了哪两步（解析与转换）？
@@ -135,7 +135,7 @@
 
 验证入口：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 
-- 应能够不能用一句话解释：为什么按 `Handler` 能找到，但按 `Handler<String>` 找不到？
+- 应能够用一句话解释：为什么按 `Handler` 能找到，但按 `Handler<String>` 找不到？
 - `ResolvableType` 在这个问题里扮演什么角色？
 - 为什么“候选是运行时 proxy 实例”时，泛型信息更容易丢失？
 

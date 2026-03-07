@@ -12,8 +12,9 @@
 
 ## 导读
 
-本页用于兼容旧链接或记录章节合并结果：正文内容已迁移至新的章节位置。
-若需要回归验证，可直接运行 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再按本页指向的目标章节继续阅读。
+本页保留为“源码级深入分析方法论”的入口页：当读者需要解释“为什么注入的是它/为什么变成 proxy/为什么循环依赖只在某些条件下能闭合”时，可以按本页的表格与断点抓手组织证据链。
+
+若读者只想尽快获得一个可回归的事实入口，建议先运行 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再回到本页按“现象 → 分层 → 第一断点 → watch list”推进。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
