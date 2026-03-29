@@ -1,7 +1,0 @@
-interface:
-  display_name: "Humanizer（中文降 AI）"
-  short_description: "去 AI 味中文改写，保留原意与术语，读起来更像人写的"
-  default_prompt: "Use $humanizer-zh to rewrite the provided Chinese text so it sounds more natural and less AI-generated while preserving meaning, terminology, and structure."
-
-policy:
-  allow_implicit_invocation: true
