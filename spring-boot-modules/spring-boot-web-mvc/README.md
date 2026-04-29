@@ -1,10 +1,33 @@
 # spring-boot-web-mvc
 
-本模块用于学习 Spring MVC 的常见入门点，并覆盖两条主线：
+本模块用于学习 Spring MVC 请求从进入容器到写回响应的完整路径。排查 Web 问题时，第一步不是先改 controller，而是把现象定位到请求阶段：
+
+- **进入容器**：FilterChain / Security。
+- **进入 MVC**：`DispatcherServlet`。
+- **选路**：`HandlerMapping`。
+- **调用**：`HandlerAdapter`。
+- **参数**：ArgumentResolver / Binder / Converter / Validator。
+- **返回**：ReturnValueHandler / MessageConverter / ViewResolver。
+- **异常**：HandlerExceptionResolver / Boot error fallback。
+
+本模块覆盖两条可运行主线：
 
 - **REST API（JSON）主线**：`@RestController`、参数校验（Validation）、统一错误响应（`@RestControllerAdvice`）
 - **传统 MVC（HTML）主线**：`@Controller`、Thymeleaf 页面渲染、表单提交（绑定/校验/回显/PRG）、错误页与内容协商（Accept：HTML vs JSON）
 
+
+## 5 分钟入口
+
+先把“主线 + 错误分支”跑成事实，再回到 docs 顺读机制与边界：
+
+- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
+- Branch Matrix（关键分支入口）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
+
+运行后，读者应能回答三个事实问题：
+
+1. 一次请求是从哪里进入 MVC 的；
+2. 绑定、校验、消息转换失败时分别会落到哪类异常；
+3. 错误响应形状由 controller、advice、resolver、Boot error fallback 中的哪一段决定。
 
 ## 本模块读法
 
@@ -13,14 +36,6 @@
 - **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
 - **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
 - **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
-
-## 从这里开始（5 分钟闭环）
-
-先把现象跑成事实，再回到 docs 顺读机制与边界：
-
-- Book Matrix（主线入口）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
-- Branch Matrix（关键分支入口）：
-  - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 
 文档入口：
 - 模块目录：见本 README 的「目录（唯一顺序来源）」
@@ -44,7 +59,7 @@
 - 了解 HTTP/JSON 的基本概念（状态码、请求体、响应体）
 - （可选）了解 Bean Validation 的基本注解（`@NotBlank`、`@Email`）
 
-## 关键命令
+## 可运行入口
 
 ### 运行
 
@@ -93,11 +108,21 @@ curl -H 'Accept: text/html' http://localhost:8081/pages/ping
 mvn -pl :spring-boot-web-mvc test
 ```
 
-## docs 阅读顺序
+## 症状驱动导航
+
+先把现象放回请求阶段，再进入对应章节或测试：
+
+| 现象 | 优先定位阶段 | 证据入口 |
+| --- | --- | --- |
+| 401 / 403 | FilterChain / Security | `BootWebMvcSecurityLabTest`，再读 [Security FilterChain 与 Web MVC](docs/filterchain-security-security-filterchain-and-mvc.md) |
+| 404 / 405 | HandlerMapping | `BootWebMvcSpringBootLabTest`，再读 [HandlerMapping：路由、404/405 与 mapping 约束](docs/handlermapping-routing.md) |
+| 400 字段错误 | Binder / Validation / ExceptionResolver | `BootWebMvcLabTest`，再读 [校验与错误响应形状](docs/binding-validation-validation-and-error-shaping.md) |
+| 406 / 415 | Content Negotiation / MessageConverter | `BootWebMvcErrorBranchMatrixLabTest`，再读 [Content Negotiation](docs/message-conversion-content-negotiation-406-415.md) |
+| HTML 与 JSON 错误响应不同 | ViewResolver / MessageConverter / Boot error fallback | `BootWebMvcErrorViewLabTest`，再读 [错误页与内容协商](docs/boot-error-error-pages-and-content-negotiation.md) |
+
+## 目录（唯一顺序来源）
 
 按 “总览（先把写法与排障串起来）→ 入口 → REST 主线 → 页面主线 → 常见坑/自测题” 的顺序学习：
-
-（目录：见本 README 的「目录（唯一顺序来源）」）
 
 0. [从注解到断点：用一条主线学会 Spring MVC](docs/guide-from-annotations-to-breakpoints.md)
 1. [校验与错误响应形状](docs/binding-validation-validation-and-error-shaping.md)
@@ -162,7 +187,7 @@ mvn -pl :spring-boot-web-mvc test
 - Spring MVC
 - Bean Validation (Jakarta Validation)
 
-## 目录（唯一顺序来源）
+## 源码主线目录（唯一顺序来源）
 
 > 本模块 `docs/` 目录保持扁平；阅读顺序只在本 `README.md` 维护。正文页不再提供“上一章/下一章”导航。
 > 原 `docs/README.md` 标题：Spring Web MVC 源码解析：主链路与关键分支（spring-webmvc 6.2.15）
