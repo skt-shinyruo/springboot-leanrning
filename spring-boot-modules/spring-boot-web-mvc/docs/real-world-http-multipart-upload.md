@@ -3,7 +3,7 @@
 ## 导读
 
 本章围绕「02：Multipart 上传（multipart/form-data：与 JSON 完全不同的边界）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -15,7 +15,7 @@
 
 ## 源码与断点
 
-建议断点：
+断点入口：
 - `org.springframework.web.multipart.support.StandardMultipartHttpServletRequest#parseRequest`
 - `org.springframework.web.method.annotation.RequestParamMethodArgumentResolver#resolveName`
 
@@ -33,9 +33,9 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcRealWorldHttpLabTest`
 
-上一章：[01. CORS 与预检（OPTIONS：浏览器为什么要先问一句）](real-world-http-cors-preflight.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 下载与 Header（Content-Disposition / Content-Type / bytes）](real-world-http-download-and-streaming.md)
+上一章：[01. CORS 与预检（OPTIONS：浏览器为什么要先问一句）](real-world-http-cors-preflight.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. 下载与 Header（Content-Disposition / Content-Type / bytes）](real-world-http-download-and-streaming.md)
 <!-- BOOKIFY:END -->

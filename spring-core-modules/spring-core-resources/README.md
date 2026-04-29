@@ -1,8 +1,17 @@
 # spring-core-resources
 
-本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”学习 Spring 的 **`Resource` 抽象**。
+本模块用“可运行的最小示例 + 可验证的测试实验（实验/练习）”学习 Spring 的 **`Resource` 抽象**。
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 docs/。
+
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -13,17 +22,17 @@
   - `mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - 统一抽象：classpath / file / URL 资源读取
 - classpath 位置写法（是否需要 `/`）
 - pattern 扫描：`classpath*:` + 通配符
 - `Resource` 的“句柄语义”：`getResource(...)` 返回 handle，`exists()` 才判断存在
-- jar vs filesystem 的差异（通过 Exercises 引导观察）
+- jar vs filesystem 的差异（通过 练习 引导观察）
 
 ## 前置知识
 
@@ -49,7 +58,7 @@ mvn -pl :spring-core-resources spring-boot:run
 mvn -pl :spring-core-resources test
 ```
 
-## 推荐 docs 阅读顺序（从现象到机制）
+## docs 阅读顺序（从现象到机制）
 
 1. [`Resource` 抽象：为什么 Spring 不直接使用 `File`？](docs/resource-abstraction.md)
 2. [classpath 路径：`classpath:data/x` vs `classpath:/data/x`](docs/resource-abstraction-classpath-locations.md)
@@ -57,13 +66,13 @@ mvn -pl :spring-core-resources test
 4. [`getResource(...)` 的返回值：为什么它会返回不存在资源句柄？](docs/resource-abstraction-exists-and-handles.md)
 5. [读取资源：InputStream、编码与可观察性](docs/resource-abstraction-reading-and-encoding.md)
 6. [jar vs filesystem：为什么 IDE OK，打包后不行？](docs/resource-abstraction-jar-vs-filesystem.md)
-7. [常见坑清单（建议反复对照）](docs/appendix-common-pitfalls.md)
+7. [常见坑清单（排查时对照）](docs/appendix-common-pitfalls.md)
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。Exercises 默认 `@Disabled`。
+> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。练习默认 `@Disabled`。
 
-| 类型 | 入口 | 知识点 | 难度 | 推荐阅读 |
+| 类型 | 入口 | 知识点 | 难度 | 延伸阅读 |
 | --- | --- | --- | --- | --- |
 | Lab | `src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesLabTest.java` | classpath/file 读取、pattern 扫描、缺失资源错误 | ⭐⭐ | `docs/01` → `docs/03` |
 | Lab | `src/test/java/com/learning/springboot/springcoreresources/part01_resource_abstraction/SpringCoreResourcesMechanicsLabTest.java` | handle/exists、description、`classpath*:` 细节 | ⭐⭐ | `docs/04`、`docs/05` |
@@ -82,13 +91,13 @@ mvn -pl :spring-core-resources test
 ## 常见 Debug 路径
 
 - 优先用 `Resource#getDescription()` 做 debug（比猜测 path 更可靠）
-- pattern 扫描结果建议排序后断言，避免“顺序不稳定”学歪
+- pattern 扫描结果排序后断言，避免“顺序不稳定”学歪
 - 遇到问题先问：是“资源不存在”（`exists=false`）还是“存在但读不了”（IO 错误）
 
 ## 常见坑
 
 - 把 classpath 资源当 File：IDE 里 OK，打包后崩
-- 以为 `getResource(...)` 不存在会返回 null（其实返回 handle）
+- 以为 `getResource(...)` 不存在会返回 null（本质上返回 handle）
 - 忽略编码导致读取内容乱码
 
 ## 参考
@@ -109,7 +118,7 @@ mvn -pl :spring-core-resources test
 
 运行后应能回答：Resource 抽象背后到底是哪一种实现（classpath/jar/file）；`classpath*:` 与 pattern 扫描在何处展开；为何在 IDE 与打包后运行时表现不同。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 
@@ -132,7 +141,7 @@ mvn -pl :spring-core-resources test
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBookMatrixLabTest test`
 - Branch Matrix：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-resources -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-core-resources -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（PathMatchingResourcePatternResolver 并发解析）：`mvn -q -pl :spring-core-resources -Dtest=SpringCoreResourcesPatternResolverConcurrencyLabTest test`
 
 ---

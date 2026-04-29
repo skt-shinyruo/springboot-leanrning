@@ -1,19 +1,27 @@
-# 术语表（Glossary）
+# 术语表
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+!!! summary "章节入口"
+    - 使用方式：先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
 
-    本章围绕91. 术语表（Glossary）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：91. 术语表。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansContainerLabTest`。需要下探源码时，可以从 `@Value("#{...}")` / `DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#getSingleton` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
+## 本页路线图
 
-## 导读
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
+
+## 起点：术语表
 
 - 这页是工具页：当读者在正文里遇到某个术语，但一时说不清“它落到代码里是什么”（哪个类/哪个方法/哪个数据结构）时，可以直接来这里查。
-- 每个术语都尽量绑定到一个章节入口与一个可验证的观察点；读者不需要背完整列表，但应该能用它把“名词”翻译成“可断点证明的事实”。
+- 每个术语都尽量绑定到一个章节入口与一个可验证的观察点；不需要背完整列表，但应该能用它把“名词”翻译成“可断点证明的事实”。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -22,14 +30,7 @@
 
     - Lab：`SpringCoreBeansContainerLabTest`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansContainerLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：术语表减少抽象解释，补“落到代码里是什么”：每个术语给出关键类/方法/数据结构，并回链到首次出现的章节。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -42,10 +43,10 @@
 
 遇到术语时，按下面 4 步快速落地：
 
-1) **现象**：它通常对应哪类问题/异常？
-2) **证据链**：它在源码主线上出现在哪个方法？
-3) **修复**：应能够做的最小动作是什么？
-4) **验证**：哪个 Lab/Test 能复现并验证？
+1. **现象**：它通常对应哪类问题/异常？
+2. **证据链**：它在源码主线上出现在哪个方法？
+3. **修复**：需要能做的最小动作是什么？
+4. **验证**：哪个实验/测试 能复现并验证？
 
 ---
 
@@ -117,7 +118,7 @@
   章节：[`34`](wiring-value-placeholder-resolution-strict-vs-non-strict.md)
 - **BeanWrapper**：属性读写与类型转换触发器（写入属性时触发 convertIfNecessary）。
   章节：[`36`](wiring-type-conversion-and-beanwrapper.md)
-- **ConversionService**：现代转换体系（建议优先理解与使用）。
+- **ConversionService**：现代转换体系（优先理解与使用）。
   章节：[`36`](wiring-type-conversion-and-beanwrapper.md)
 
 ---
@@ -139,9 +140,9 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（优先运行它们）：
+本章引用的实验入口：
 - Lab：`SpringCoreBeansContainerLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
+- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -150,15 +151,15 @@
 ## 复现入口（可运行）
 
 - 本章为索引/术语类内容，不直接提供单一 Lab 入口。
-- 建议做法：从本页跳转到对应章节后，按章节中的“复现入口（可运行）”运行对应 Test。
+- 做法：从本页跳转到对应章节后，按章节中的“复现入口（可运行）”运行对应 Test。
 
-1) 读文档/看断点时遇到名词能快速定位“它到底是什么、在哪个阶段出现、影响什么”
-2) 把同一类名词放在一起对比，避免“记得名字但不知道边界”
+1. 读文档/看断点时遇到名词能快速定位“它到底是什么、在哪个阶段出现、影响什么”
+2. 把同一类名词放在一起对比，避免“记得名字但不知道边界”
 
-> 使用建议：遇到不熟悉的术语，可先在此处快速检索，再回到对应章节运行 Lab。
+> 使用处理：遇到不熟悉的术语，可先在此处快速检索，再回到对应章节运行 Lab。
 > Part 05（AOT/XML/SpEL/容器外对象）相关术语请优先参阅上方“**AOT 与真实世界补齐**”小节。
 
-## 常见误区与边界
+## 边界分流：术语表
 
 - **DependencyDescriptor**：注入点的“描述符”（需要什么类型/是否 required/是否带泛型/有哪些注解/名称等）。
   章节：[`03`](ioc-dependency-injection-resolution.md)
@@ -179,10 +180,10 @@
 
 若在真实项目里看到异常/现象，先不必急于“猜机制”，先把术语落到阶段与断点：
 
-1) 看到 **BeanDefinition / registry / reader**：优先认为是“定义层”，先去断点 `DefaultListableBeanFactory#registerBeanDefinition` / 对应 Reader 的 `loadBeanDefinitions`。
-2) 看到 **populate / convert / @Value**：优先认为是“注入/值解析/类型转换”阶段，去断点 `populateBean` / `resolveEmbeddedValue` / `convertIfNecessary`。
-3) 看到 **post-processor / proxy / advisor**：优先认为是“BPP 链导致的包装/替换”，去断点 `registerBeanPostProcessors` / `applyBeanPostProcessorsAfterInitialization`。
-4) 看到 **early reference / in creation**：优先认为是“循环依赖窗口期”，去断点 `DefaultSingletonBeanRegistry#getSingleton` / `addSingletonFactory`。
+1. 看到 **BeanDefinition / registry / reader**：优先认为是“定义层”，先去断点 `DefaultListableBeanFactory#registerBeanDefinition` / 对应 Reader 的 `loadBeanDefinitions`。
+2. 看到 **populate / convert / @Value**：优先认为是“注入/值解析/类型转换”阶段，去断点 `populateBean` / `resolveEmbeddedValue` / `convertIfNecessary`。
+3. 看到 **post-processor / proxy / advisor**：优先认为是“BPP 链导致的包装/替换”，去断点 `registerBeanPostProcessors` / `applyBeanPostProcessorsAfterInitialization`。
+4. 看到 **early reference / in creation**：优先认为是“循环依赖窗口期”，去断点 `DefaultSingletonBeanRegistry#getSingleton` / `addSingletonFactory`。
 
 更系统的分流表：`appendix-production-troubleshooting-checklist.md`
 
@@ -196,17 +197,17 @@
 
 答题模板入口：`appendix-interview-playbook.md`
 
-## 自检要点
-- 应能够把下面 5 个名词分别放到 refresh 主线的哪个阶段吗：`BeanDefinition` / BFPP/BDRPP / BPP / `doGetBean` / `doCreateBean`？
-- 应能够解释清楚：为什么同一个名词（例如 “processor”）在定义阶段与创建阶段的职责完全不同吗？
-- 是否能够用术语表把“看到名词 → 关联章节 → 运行 Lab → 设置断点验证”的链路完成验证？
+## 验证标准：术语表
+- 需要把下面 5 个名词分别放到 refresh 主线的哪个阶段吗：`BeanDefinition` / BFPP/BDRPP / BPP / `doGetBean` / `doCreateBean`？
+- 需要解释清楚：为什么同一个名词（例如 “processor”）在定义阶段与创建阶段的职责完全不同吗？
+- 能否用术语表把“看到名词 → 关联章节 → 运行 Lab → 设置断点验证”的链路完成验证？
 
-## 小结
+## 收束：术语表
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansContainerLabTest`
 

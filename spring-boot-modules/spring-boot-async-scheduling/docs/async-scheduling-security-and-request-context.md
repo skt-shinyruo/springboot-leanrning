@@ -1,8 +1,8 @@
 # 07. SecurityContext / RequestContext：默认丢失、传播与泄漏
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（上下文丢失的真相）"
+!!! summary "章节入口（上下文丢失的真相）"
 
-    如果在异步线程里拿不到“当前用户”或“当前请求”，先不必急于怀疑 Spring Security 或 MVC：它们大概率只是 ThreadLocal 的受害者。
+    如果在异步线程里拿不到“当前用户”或“当前请求”，先不需要急于怀疑 Spring Security 或 MVC：它们大概率只是 ThreadLocal 的受害者。
 
     - 默认行为：线程一换，上下文就断（拿到 `null` 是正常的）
     - 更危险的情况：线程池复用 + 没清理 → 偶发串号（上一次任务的上下文残留）
@@ -10,12 +10,12 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[06. `@Async` × `@Transactional`：事务边界与执行线程](async-scheduling-async-and-transactions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08. Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](async-scheduling-boot-spring-task-autoconfig.md)
+上一章：[06. `@Async` × `@Transactional`：事务边界与执行线程](async-scheduling-async-and-transactions.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[08. Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](async-scheduling-boot-spring-task-autoconfig.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingSecurityContextPropagationLabTest#delegatingSecurityContextExecutorCanPropagate_andCleansUpToAvoidThreadReuseLeaks`（见文末“对应 Lab/Test”），再对照 RequestContext/ThreadLocal 的 decorator 用例把“清理”变成肌肉记忆。
+优先运行 `BootAsyncSchedulingSecurityContextPropagationLabTest#delegatingSecurityContextExecutorCanPropagate_andCleansUpToAvoidThreadReuseLeaks`（见文末“对应实验/测试”），再对照 RequestContext/ThreadLocal 的 decorator 用例把“清理”变成肌肉记忆。
 
 
 ## 先把危险说在前面：这不是“日志问题”
@@ -130,12 +130,12 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingContextPropagationLabTest`
 - Lab：`BootAsyncSchedulingSecurityContextPropagationLabTest`
 - Lab：`BootAsyncSchedulingRequestContextPropagationLabTest`
 
-上一章：[part-01-async-scheduling/06-async-and-transactions.md](async-scheduling-async-and-transactions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-async-scheduling/08-boot-spring-task-autoconfig.md](async-scheduling-boot-spring-task-autoconfig.md)
+上一章：[async-scheduling-async-and-transactions.md](async-scheduling-async-and-transactions.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[async-scheduling-boot-spring-task-autoconfig.md](async-scheduling-boot-spring-task-autoconfig.md)
 
 <!-- BOOKIFY:END -->

@@ -1,23 +1,23 @@
 # 01. HTTP metrics（`http.server.requests` 从哪里来）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：HTTP metrics（`http.server.requests` 从哪里来）展开，主线可以概括为：HTTP server metrics 是对请求链路的度量：耗时/状态码/URI 等信号被聚合进 meter。
 
-    先跑 `BootObservabilityLabTest`，再按本文把“timer 出现”映射到链路节点与标签来源。
+    先跑 `BootObservabilityLabTest`，再按本章把“timer 出现”映射到链路节点与标签来源。
 
     需要下探源码时，可以从 `MeterRegistry` / `Timer` / `DispatcherServlet#doDispatch` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[05. 关键分支矩阵（Observability）](guide-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 90 - Common Pitfalls（springboot-observability）](appendix-common-pitfalls.md)
+上一章：[05. 关键分支矩阵（Observability）](guide-branch-decision-matrix.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[常见坑清单](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootObservabilityLabTest`，以获得可回归的现象与断言入口。
+优先运行 `BootObservabilityLabTest`，以获得可回归的现象与断言入口。
 
-读完这一章，你应该能把这件事讲清楚：HTTP server metrics 是对请求链路的度量：耗时/状态码/URI 等信号被聚合进 meter。需要下探源码时，可以从 `MeterRegistry` / `Timer` / `DispatcherServlet#doDispatch` 这些入口切入。
+本章完成后，应能复述：HTTP server metrics 是对请求链路的度量：耗时/状态码/URI 等信号被聚合进 meter。需要下探源码时，可以从 `MeterRegistry` / `Timer` / `DispatcherServlet#doDispatch` 这些入口切入。
 
 
 ## 1. 先把“存在性”证明出来
@@ -46,15 +46,15 @@
 
 HTTP server metrics 是对请求链路的度量：耗时/状态码/URI 等信号被聚合进 meter。
 
-下一章见：[第 207 章：90 - Common Pitfalls（springboot-observability）](appendix-common-pitfalls.md)
+下一章见：[常见坑清单](appendix-common-pitfalls.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootObservabilityLabTest`
 
-上一章：[part-00-guide/04-branch-decision-matrix.md](guide-branch-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md)
+上一章：[guide-branch-decision-matrix.md](guide-branch-decision-matrix.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

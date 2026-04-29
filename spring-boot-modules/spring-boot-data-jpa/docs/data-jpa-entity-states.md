@@ -1,6 +1,6 @@
 # 01. Entity 状态机：transient / managed / detached / removed
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕Entity 状态机：transient / managed / detached / removed展开，主线可以概括为：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
 
     阅读时可以先跑 `BootDataJpaLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 00 - Deep Dive Guide（springboot-data-jpa）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. Persistence Context：JPA 的“一级缓存”与事务绑定](data-jpa-persistence-context.md)
+上一章：[深挖导读：Spring Boot Data JPA](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. Persistence Context：JPA 的“一级缓存”与事务绑定](data-jpa-persistence-context.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -22,7 +22,7 @@
 
 ## 机制主线
 
-学 JPA 最容易“学成玄学”的原因是：只看到了 `repository.save()`，没看清楚背后有一套明确的状态机。
+学 JPA 最容易“学成不可解释”的原因是：只看到了 `repository.save()`，没看清楚背后有一套明确的状态机。
 
 这一章只讲一个问题：
 
@@ -58,7 +58,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootDataJpaLabTest`
-- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 
 ## 在本模块如何验证
@@ -83,10 +83,10 @@ dirty checking 的前提是 entity 必须处于 managed 状态；detach/clear �
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootDataJpaLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-data-jpa/02-persistence-context.md](data-jpa-persistence-context.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[data-jpa-persistence-context.md](data-jpa-persistence-context.md)
 
 <!-- BOOKIFY:END -->

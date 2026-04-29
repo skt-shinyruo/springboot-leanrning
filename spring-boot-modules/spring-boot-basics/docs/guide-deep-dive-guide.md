@@ -1,6 +1,6 @@
-# 02. 00 - Deep Dive Guide（springboot-basics）
+# 深挖导读：Spring Boot Basics
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（怎么用这模块）"
+!!! summary "章节入口（怎么用这模块）"
 
     这份模块不想让人背“配置优先级表”。它只做一件更实用的事：把“配置从哪来、谁覆盖谁、Profile 到底影响什么”变成可以回归的结论——跑完几组 Lab，就能在项目里用同一套顺序排“配置没生效”的问题。
 
@@ -9,25 +9,33 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Boot Basics（已迁移）](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 配置来源（PropertySources）与 Profile 覆盖](boot-basics-property-sources-and-profiles.md)
+上一章：[01. 主线时间线：Spring Boot Basics](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 配置来源（PropertySources）与 Profile 覆盖](boot-basics-property-sources-and-profiles.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-建议优先运行 `BootBasicsBookMatrixLabTest`（见文末“对应 Lab/Test”），先把“最终值来自哪里”跑成事实，再按章节把排障顺序补齐。
+优先运行 `BootBasicsBookMatrixLabTest`（见文末“对应实验/测试”），先把“最终值来自哪里”跑成事实，再按章节把排障顺序补齐。
 
 
 ## 在这里要解决的“真实问题”
 
 在项目里，配置相关的坑通常长这样：
 
-- 我明明改了 `application.properties`，为什么没生效？
+- `application.properties` 已经修改，为什么没有生效？
 - dev 环境和本地行为不一致，究竟是哪份配置在生效？
-- 测试里为什么又变了？我是不是被 `@SpringBootTest(properties = ...)` 覆盖了？
+- 测试里的行为为什么变化？是否被 `@SpringBootTest(properties = ...)` 覆盖？
 
-如果能把上面三句抱怨翻译成三句事实（active profiles 是什么、最终属性值是什么、Bean 实现是哪一个），这类问题基本就结束了。
+如果能把上面三类现象翻译成三句事实（active profiles 是什么、最终属性值是什么、Bean 实现是哪一个），这类问题基本可以收敛。
 
-## 两条阅读路线（按心情来）
+## 两条阅读路线（按目标选择）
 
 ### 路线 A：顺读主线（更接近读一篇短书）
 
@@ -47,12 +55,12 @@
 
 写的 `application.properties`、dev profile 的配置、测试覆盖……最后都会汇总成同一个事实来源：`Environment`。
 
-如果只做一件事：请在断点或断言里直接看它：
+最短验证路径是在断点或断言里直接观察它：
 
 - `environment.getActiveProfiles()`
 - `environment.getProperty("app.greeting")`
 
-### 2) “覆盖”不是魔法，而是优先级
+### 2) “覆盖”不是隐式机制，而是优先级
 
 同一个 key 的最终值来自哪个来源，本质是 `PropertySources` 的优先级竞赛。无需记住全表，只需要用测试把关心的那几条覆盖关系钉住。
 
@@ -69,17 +77,17 @@ Profile 很容易被误解成“只影响配置文件”。实际上它同时影
 
 当配置开始变多，散落的 `@Value` 会让人很难判断“最终值是什么”。`@ConfigurationProperties` 把配置集中到一个对象上，让能在测试里直接断言它。
 
-## 本模块能稳定复现的 3 条分支（建议先跑一遍）
+## 本模块能稳定复现的 3 条分支（先运行一遍）
 
 - 默认 profile（没有 dev）：`BootBasicsDefaultLabTest`
 - dev profile：`BootBasicsDevLabTest`
 - 测试覆盖优先级：`BootBasicsOverrideLabTest`
 
-推荐入口（少而全）：
+入口（少而全）：
 
 - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`
 
-## 断点建议（够用版）
+## 断点入口（够用版）
 
 - 确认 profile：`org.springframework.core.env.AbstractEnvironment#getActiveProfiles`
 - 确认最终取值：`org.springframework.core.env.PropertySourcesPropertyResolver#getProperty`
@@ -91,11 +99,11 @@ Profile 很容易被误解成“只影响配置文件”。实际上它同时影
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootBasicsDefaultLabTest` / `BootBasicsDevLabTest` / `BootBasicsOverrideLabTest`
 - Exercise：`BootBasicsExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-boot-basics/01-property-sources-and-profiles.md](boot-basics-property-sources-and-profiles.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[boot-basics-property-sources-and-profiles.md](boot-basics-property-sources-and-profiles.md)
 
 <!-- BOOKIFY:END -->

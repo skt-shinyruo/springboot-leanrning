@@ -1,14 +1,14 @@
-# 91 Glossary：术语与边界（用于复盘与排障分型）
+# 91 术语表：术语与边界（用于复盘与排障分型）
 
-## 学习目标
+## 本章要回答的问题
 
 - 能用一致的术语描述问题，减少“同词不同义”导致的误判。
 - 能把术语落到可验证入口：对应章节 + 对应模块的 Book Matrix。
 - 能在排障时快速区分相近概念（例如 flush vs commit、401 vs 403、Advice vs Aspect）。
 
-## 概念框架
+## 主线框架
 
-术语按“问题分型”分组（建议结合 [90 Troubleshooting Index](90-troubleshooting-index.md) 使用）：
+术语按“问题分型”分组（可结合 [90 排障索引](90-troubleshooting-index.md) 使用）：
 
 - 配置与启动：Environment、PropertySource、Profile、Binding
 - 容器与装配：BeanDefinition、BFPP/BPP、生命周期、依赖解析、代理替换窗口
@@ -33,7 +33,7 @@
 - 把“看到的结果”当成“数据库事实”或“线程事实”。应先确认上下文边界（持久化上下文/线程池/代理）。
 - 混淆 401 与 403，导致在错误层面排查配置。应先分型：认证 vs 授权 vs CSRF。
 
-## 练习
+## 验证练习
 
 - 练习 1（术语对齐）：
   - 从下方术语表任取 10 个词，为每个词写一句“可验证定义”（避免引用外部百科式表述）。
@@ -47,7 +47,7 @@
 
 ## 延伸阅读
 
-- Troubleshooting Index：[`90-troubleshooting-index.md`](90-troubleshooting-index.md)
+- 排障索引：[`90-troubleshooting-index.md`](90-troubleshooting-index.md)
 - 全书目录：[`README.md`](README.md)
 - 参考资料：[`92-references.md`](92-references.md)
 
@@ -112,4 +112,3 @@
 ---
 
 [← 上一章](90-troubleshooting-index.md) | [目录](README.md) | [下一章 →](92-references.md)
-

@@ -1,6 +1,6 @@
 # 01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
     先运行 `SpringCoreEventsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖指南（Spring Core Events）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 多监听器与顺序：为什么 `@Order` 值得认真对待？](event-basics-multiple-listeners-and-order.md)
+上一章：[02. 深挖指南（Spring Core Events）](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 多监听器与顺序：为什么 `@Order` 值得认真对待？](event-basics-multiple-listeners-and-order.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -37,19 +37,19 @@ Spring 的 Application Events 解决的是一个非常具体的问题：
 
 ## 需要记住的 3 件事
 
-1) **事件默认是同步的**
+1. **事件默认是同步的**
 
 - `publishEvent(...)` 会在当前线程里依次调用监听器
 - 监听器执行完毕，发布方法才会返回
 
-2) **事件类型匹配，决定谁会被调用**
+2. **事件类型匹配，决定谁会被调用**
 
 - 监听方法的参数类型决定它能接收什么事件
 - 可以发布任何对象（不仅仅是 `ApplicationEvent` 子类）
 
-3) **事件对象建议做成“不可变”**
+3. **事件对象应做成“不可变”**
 
-- 学习阶段特别建议把事件建模为不可变（例如 record）
+- 学习阶段尤其需要把事件建模为不可变（例如 record）
 - 否则多个监听器共享同一个事件对象时，很容易出现“互相污染”的副作用
 
 本模块的 `UserRegisteredEvent` 就是 `record`，非常适合学习。
@@ -62,7 +62,7 @@ Spring 的 Application Events 解决的是一个非常具体的问题：
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreEventsLabTest`
-- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -93,10 +93,10 @@ Spring Application Events 默认同步执行，监听器在发布方调用栈里
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreEventsLabTest`
 
-上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-multiple-listeners-and-order](event-basics-multiple-listeners-and-order.md)
+上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02-multiple-listeners-and-order](event-basics-multiple-listeners-and-order.md)
 
 <!-- BOOKIFY:END -->

@@ -1,6 +1,6 @@
 # 02. 深挖指南（Spring Core Profiles）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕深挖指南（Spring Core Profiles）展开，主线可以概括为：激活 profiles → 条件评估（shouldSkip）→ Bean 是否注册；profiles 同时影响配置参与与装配选择。
 
     先运行 `SpringCoreProfilesLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Profile`/`@ConditionalOnProperty` 在不同环境选择 Bean 实现；排障时先确认 profiles 激活方式与条件匹配结果。
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Profiles](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Profile 激活与 Bean 选择](profiles-profile-activation-and-bean-selection.md)
+上一章：[01. 主线时间线：Spring Profiles](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. Profile 激活与 Bean 选择](profiles-profile-activation-and-bean-selection.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
@@ -22,7 +30,7 @@
 
 ## 机制主线
 
-Profiles 的“深挖主线”是把“我以为激活了 dev”为何没生效拆成可断言问题：
+Profiles 的“深挖主线”是把“预期激活了 dev”为何没生效拆成可断言问题：
 
 1. **profile 从哪里来**：active/default 的来源与优先级
 2. **profile 影响什么**：不仅影响配置文件，更影响 Bean/Configuration 是否参与注册
@@ -58,7 +66,7 @@ Profiles 的“深挖主线”是把“我以为激活了 dev”为何没生效�
 ## 源码与断点
 
 
-建议断点（排障最短路径）：
+断点入口（排障最短路径）：
 
 - 先锁定 profile 的“事实”：
   - 在 `ApplicationContextRunner` 运行块里断言 `Environment#getActiveProfiles` / `#getDefaultProfiles`
@@ -68,33 +76,33 @@ Profiles 的“深挖主线”是把“我以为激活了 dev”为何没生效�
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreProfilesLabTest`
-- 建议命令：`mvn -pl :spring-core-profiles test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-profiles test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
 > 验证入口（可跑）：`SpringCoreProfilesLabTest`
 
-建议阅读顺序：
+阅读顺序：
 1. 先看 Profile 的激活来源与优先级（Part 01）
 2. 再用测试验证“同一接口的多实现如何被选择”（Part 01）
 3. 最后对照常见坑（Appendix）
 
 配套验证入口：
-- Labs/Exercises：见 `src/test/java/com/learning/springboot/springcoreprofiles/**`
+- 实验/练习：见 `src/test/java/com/learning/springboot/springcoreprofiles/**`
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreProfilesLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-profile-activation-and-bean-selection](profiles-profile-activation-and-bean-selection.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01-profile-activation-and-bean-selection](profiles-profile-activation-and-bean-selection.md)
 
 <!-- BOOKIFY:END -->

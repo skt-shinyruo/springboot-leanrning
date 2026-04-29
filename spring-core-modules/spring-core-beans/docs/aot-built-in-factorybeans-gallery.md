@@ -1,18 +1,19 @@
 # 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把输入层解析或 AOT 契约变成可验证结果；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
 
-    本章围绕49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀展开，主线可以概括为：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+    观察对象：49. 内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀。
+    主线位置：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
 
     对照入口：`SpringCoreBeansBuiltInFactoryBeansLabTest`。需要下探源码时，可以从 `BeanFactory#getBean(...)` / `FactoryBean#isSingleton` / `AbstractBeanFactory#getObjectForBeanInstance` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：内置 FactoryBean 图鉴
 
-- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -22,21 +23,14 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBuiltInFactoryBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansServiceLoaderFactoryBeansLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBuiltInFactoryBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansServiceLoaderFactoryBeansLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansBuiltInFactoryBeansLabTest`，再用 `SpringCoreBeansServiceLoaderFactoryBeansLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`AbstractBeanFactory#getObjectForBeanInstance`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-这一章补齐一个“读者不一定会手写，但排障/读源码时必遇到”的知识点：
+这一章补齐一个“项目里不一定会手写，但排障/读源码时必遇到”的知识点：
 
 > **Spring 自带那么多 `*FactoryBean` 到底是干嘛的？`&beanName` 为什么能获取到另一个对象？**
 
@@ -58,7 +52,7 @@
 **条件**：`getBean` 命中的是 FactoryBean
 **分支**：默认返回 product；`&` 前缀返回 factory 本体
 **结果**：product 的缓存语义取决于 `FactoryBean#isSingleton`
-**断点建议**：`AbstractBeanFactory#getObjectForBeanInstance`
+**断点入口**：`AbstractBeanFactory#getObjectForBeanInstance`
 
 入口测试：
 
@@ -66,10 +60,10 @@
 - `SpringCoreBeansServiceLoaderFactoryBeansLabTest#serviceListFactoryBean_loadsProviders_fromMetaInfServices`（SPI providers → List）
 - `SpringCoreBeansServiceLoaderFactoryBeansLabTest#serviceLoaderFactoryBean_exposesRawServiceLoader`（SPI loader → ServiceLoader）
 
-1) `getBean("uuidSingleton")` 多次返回同一个 `UUID`（product 被缓存）
-2) `getBean("uuidPrototype")` 多次返回不同 `UUID`（product 不缓存）
-3) `getBean("&uuidPrototype")` 返回的是 `MethodInvokingFactoryBean` 本体
-4) `ServiceLocator` 每次方法调用都会回到容器查找：prototype 每次都是新实例
+1. `getBean("uuidSingleton")` 多次返回同一个 `UUID`（product 被缓存）
+2. `getBean("uuidPrototype")` 多次返回不同 `UUID`（product 不缓存）
+3. `getBean("&uuidPrototype")` 返回的是 `MethodInvokingFactoryBean` 本体
+4. `ServiceLocator` 每次方法调用都会回到容器查找：prototype 每次都是新实例
 
 ---
 
@@ -77,8 +71,8 @@
 
 在 Spring 里读者经常想做两件事：
 
-1) **把“配置/元数据”变成一个对象**（product）
-2) 把“对象的创建逻辑”放到容器可管理的位置（可复用、可缓存、可替换）
+1. **把“配置/元数据”变成一个对象**（product）
+2. 把“对象的创建逻辑”放到容器可管理的位置（可复用、可缓存、可替换）
 
 这两件事用 `FactoryBean` 都能表达：
 
@@ -130,13 +124,13 @@
 
 ## 原理：把 `&beanName` 与 product 缓存放回容器主线
 
-读者只要抓住这条主线，就能解释清楚大多数 “FactoryBean 相关的隐式行为”：
+只要抓住这条主线，就能解释清楚大多数 “FactoryBean 相关的隐式行为”：
 
-1) 容器先按 beanName 找到一个实例（可能是普通 bean，也可能是 FactoryBean）
-2) 如果它是 FactoryBean：
+1. 容器先按 beanName 找到一个实例（可能是普通 bean，也可能是 FactoryBean）
+2. 如果它是 FactoryBean：
    - `getBean("x")` 默认返回 **product**
    - `getBean("&x")` 返回 **factory 本体**
-3) product 是否缓存，取决于：
+3. product 是否缓存，取决于：
    - FactoryBean 的 `isSingleton()`（它声明 product 是否单例）
    - 以及容器对 FactoryBean product 的缓存策略（FactoryBeanRegistry）
 
@@ -163,8 +157,8 @@
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-1) `AbstractBeanFactory#doGetBean`
-2) `AbstractBeanFactory#getObjectForBeanInstance`
+1. `AbstractBeanFactory#doGetBean`
+2. `AbstractBeanFactory#getObjectForBeanInstance`
 
 观察点：
 
@@ -206,9 +200,9 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（优先运行它们）：
+本章引用的实验入口：
 - Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
+- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -217,7 +211,7 @@
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBuiltInFactoryBeansLabTest.java`
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansServiceLoaderFactoryBeansLabTest.java`
 
-推荐运行命令：
+运行命令：
 
 ```bash
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,SpringCoreBeansServiceLoaderFactoryBeansLabTest test
@@ -230,32 +224,32 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 
 ## 怎么实现的：关键类/方法 + 断点入口 + 观察点
 
-推荐断点（按需要回答的问题分组）：
+断点入口（按需要回答的问题分组）：
 
-1) **`&beanName` / product vs factory 分支**
+1. **`&beanName` / product vs factory 分支**
    - `AbstractBeanFactory#doGetBean`
-   - `AbstractBeanFactory#getObjectForBeanInstance`
+  - `AbstractBeanFactory#getObjectForBeanInstance`
    - `BeanFactoryUtils#isFactoryDereference`
-2) **FactoryBean product 缓存语义**
-   - `FactoryBeanRegistrySupport#getObjectFromFactoryBean`
+2. **FactoryBean product 缓存语义**
+  - `FactoryBeanRegistrySupport#getObjectFromFactoryBean`
    - 观察：`factory.isSingleton()` / `factoryBeanObjectCache`
-3) **MethodInvokingFactoryBean**
+3. **MethodInvokingFactoryBean**
    - `MethodInvokingFactoryBean#afterPropertiesSet`
    - `MethodInvokingFactoryBean#getObject`
-4) **ServiceLocatorFactoryBean**
+4. **ServiceLocatorFactoryBean**
    - `ServiceLocatorFactoryBean#afterPropertiesSet`
    - `ServiceLocatorFactoryBean$ServiceLocatorInvocationHandler#invoke`
-5) **ServiceLoader*FactoryBean（SPI）**
+5. **ServiceLoader*FactoryBean（SPI）**
    - `ServiceListFactoryBean#getObject` / `ServiceLoaderFactoryBean#getObject`（视具体类型略有差异）
 
-1) **误区：`getBean("x")` 就是获取到名为 x 的 bean 本体**
+1. **误区：`getBean("x")` 就是获取到名为 x 的 bean 本体**
    - 对 FactoryBean 来说，`getBean("x")` 默认获取到的是 product，不是 factory。
-2) **误区：`MethodInvokingFactoryBean` 用来“生成随机值/时间戳”**
+2. **误区：`MethodInvokingFactoryBean` 用来“生成随机值/时间戳”**
    - 默认 `singleton=true`，结果会被缓存；容易误以为每次都会变化，但实际上不会。
-3) **误区：ServiceLocator 只是“语法糖”**
+3. **误区：ServiceLocator 只是“语法糖”**
    - 它改变了依赖关系表达方式：从注入时确定 → 运行时决定；排障更难，慎用。
 
-## 常见误区与边界
+## 边界分流：内置 FactoryBean 图鉴
 
 需要注意：这是一种 **service locator 模式**，会把依赖关系从“注入点”迁移到“调用点”，可读性更差，应谨慎采用。
 
@@ -282,19 +276,19 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 - 标准答案（可复述）：
   - `getObjectType()` 不准确/返回 null 会影响 type-based 发现与条件装配；`isSingleton()` 决定的是 product 缓存语义，不是工厂本体是否单例。
 
-## 自检要点
-- 应能够解释清楚：FactoryBean 的 product/factory 分流规则吗？什么时候必须用 `&name`？
-- 应能够说出：MethodInvoking/ServiceLocator/ServiceLoader 这几类 FactoryBean 各自把“依赖关系”放在了哪里吗？
+## 验证标准：内置 FactoryBean 图鉴
+- 需要解释清楚：FactoryBean 的 product/factory 分流规则吗？什么时候必须用 `&name`？
+- 需要说出：MethodInvoking/ServiceLocator/ServiceLoader 这几类 FactoryBean 各自把“依赖关系”放在了哪里吗？
 - 遇到“获取到的对象类型不对/每次返回都一样/调用时才失败”时，第一反应会去哪个章节/哪个断点入口？
 
-## 小结
+## 收束：内置 FactoryBean 图鉴
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBuiltInFactoryBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansServiceLoaderFactoryBeansLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBuiltInFactoryBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansServiceLoaderFactoryBeansLabTest.java`
 
 <!-- BOOKIFY:END -->

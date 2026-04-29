@@ -1,7 +1,7 @@
 # 03. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕 `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
+!!! summary "章节入口（五问闭环）"
+    本章围绕`@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
     先运行 `SpringCoreEventsTransactionalEventLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
 
@@ -10,28 +10,28 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 异步广播：让事件“默认异步”而不是靠 `@Async`](async-and-transactional-async-multicaster.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（建议反复对照）](appendix-common-pitfalls.md)
+上一章：[02. 异步广播：让事件“默认异步”而不是靠 `@Async`](async-and-transactional-async-multicaster.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（排查时对照）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「07. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreEventsTransactionalEventLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreEventsTransactionalEventLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreEventsTransactionalEventLabTest`
-    - Test file：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
 
 ## 机制主线
 
 很多学习者在事件与事务结合时会遇到一个困惑：
 
-> “我事务都回滚了，为什么监听器还执行了？”
+> “事务已经回滚，为什么监听器仍然执行？”
 
 看到的不是“事务没回滚”，而是**副作用发生在事务之外**。
 
-原因很朴素：`@EventListener` 默认就是同步回调——事件发布的那一刻，监听器就已经在同一条调用链里执行过了。事务随后回滚，只会撤销数据库提交，不会“自动撤销”监听器里已经执行过的事情（发消息、写审计、调用外部 API）。
+原因在于：`@EventListener` 默认就是同步回调——事件发布的那一刻，监听器就已经在同一条调用链里执行过了。事务随后回滚，只会撤销数据库提交，不会“自动撤销”监听器里已经执行过的事情（发消息、写审计、调用外部 API）。
 
 所以这类问题的关键从来不是“要不要用事件”，而是：
 
@@ -44,12 +44,12 @@
 
 ## 需要记住的 2 种监听器
 
-1) `@EventListener`（默认同步）
+1. `@EventListener`（默认同步）
 
 - 事件发布后立刻执行（在同一调用链里）
 - 即使外层事务最终回滚，监听器也已经执行过了
 
-2) `@TransactionalEventListener(phase = AFTER_COMMIT)`
+2. `@TransactionalEventListener(phase = AFTER_COMMIT)`
 
 - 事件先“挂起”，等事务提交后再触发
 - 如果事务回滚，AFTER_COMMIT 监听器不会执行
@@ -60,12 +60,12 @@
 
 本仓库提供两条可以直接跑的入口（先运行其一，再带着断言回看源码/断点）：
 
-- **纯机制入口（推荐先跑）**：`SpringCoreEventsTransactionalEventLabTest`
+- **纯机制入口（先运行）**：`SpringCoreEventsTransactionalEventLabTest`
   - 对比：`@EventListener`（立刻执行） vs `@TransactionalEventListener(AFTER_COMMIT)`（提交后执行）
 - **更接近真实业务入口**：`spring-boot-business-case` 的 `BootBusinessCaseLabTest`
   - 对比：事务回滚时 `sync` listener 仍执行，但 `afterCommit` 不会执行
 
-推荐命令（任选其一）：
+运行命令（任选其一）：
 
 ```bash
 mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsTransactionalEventLabTest test
@@ -76,7 +76,7 @@ mvn -q -pl :spring-boot-business-case -Dtest=BootBusinessCaseLabTest test
 ## 最小可运行实验（Lab）
 
 - Lab：`BootBusinessCaseLabTest` / `SpringCoreEventsTransactionalEventLabTest`
-- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -92,7 +92,7 @@ mvn -pl :spring-boot-business-case test
 - `BootBusinessCaseLabTest#syncListenerRunsEvenWhenTransactionRollsBack_butAfterCommitDoesNot`
 - `BootBusinessCaseLabTest#afterCommitListenerRunsOnSuccess`
 
-## 对应 Lab/Test（可运行）
+## 对应实验/测试（可运行）
 
 - 入口测试：
   - `spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
@@ -112,7 +112,7 @@ mvn -pl :spring-boot-business-case test
 
 `TransactionalApplicationListenerMethodAdapter#onApplicationEvent`、`TransactionSynchronizationManager#isSynchronizationActive`
 
-确保事件发布发生在事务边界内，并根据语义选对 phase（需要回滚补偿就用 `AFTER_ROLLBACK` / `AFTER_COMPLETION`）；把“提交/回滚 → 哪些 listener 触发”的结论写进 Lab/Test，避免只靠经验判断。
+确保事件发布发生在事务边界内，并根据语义选对 phase（需要回滚补偿就用 `AFTER_ROLLBACK` / `AFTER_COMPLETION`）；把“提交/回滚 → 哪些 listener 触发”的结论写进 实验/测试，避免只靠经验判断。
 
 - `@EventListener` 默认是“同步回调”，它不理解事务边界
 - 事务回滚只影响数据库提交，不会自动撤销已经执行过的监听器逻辑
@@ -126,11 +126,11 @@ mvn -pl :spring-boot-business-case test
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreEventsTransactionalEventLabTest`
-- Test file：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-events/src/test/java/com/learning/springboot/springcoreevents/part02_async_and_transactional/SpringCoreEventsTransactionalEventLabTest.java`
 
-上一章：[06-async-multicaster](async-and-transactional-async-multicaster.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
+上一章：[06-async-multicaster](async-and-transactional-async-multicaster.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

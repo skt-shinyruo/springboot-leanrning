@@ -1,24 +1,24 @@
 # 03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）展开，主线可以概括为：一次 MVC 请求通常经历：FilterChain（含 Security/Observability）→ `DispatcherServlet#doDispatch`（选路）→ `HandlerAdapter#handle`（调用）→ 参数解析/绑定/校验 → 返回值处理/消息转换 → `HandlerExceptionResolver`（异常翻译）→ 写回响应。
 
-    把它当作“打断点前的路线图”。先跑一条最小请求（推荐 Lab），用断言固定现象；再按本文的“阶段 → 入口 → 分支”把断点打在分支发生处；最后去 Part 03 的详版调用链把细节读透。
+    把它当作“打断点前的路线图”。先跑一条最小请求（Lab），用断言固定现象；再按本章的“阶段 → 入口 → 分支”把断点打在分支发生处；最后去 Part 03 的详版调用链把细节读透。
 
     对照入口：`BootWebMvcInternalsLabTest` / `BootWebMvcTraceLabTest`。需要下探源码时，可以从 `org.springframework.web.servlet.DispatcherServlet#doDispatch` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getHandlerInternal` / `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#handleInternal` / `org.springframework.web.servlet.HandlerExceptionResolver` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](filterchain-security-security-filterchain-and-mvc.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](dispatcherservlet-call-chain.md)
+上一章：[01. Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](filterchain-security-security-filterchain-and-mvc.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](dispatcherservlet-call-chain.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「01：请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcInternalsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcInternalsLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
-- 目标：把“Web MVC 是 DispatcherServlet”升级为“我能按阶段定位：在哪一段决定了 404/405/400/406/415/500，以及 async 为什么会二次 dispatch”。
+- 目标：把“Web MVC 是 DispatcherServlet”升级为“能够按阶段定位：在哪一段决定了 404/405/400/406/415/500，以及 async 为什么会二次 dispatch”。
 - 备注：本章是“速览与定位”，详版调用链请读：
   - [DispatcherServlet 主链路（详）](dispatcherservlet-call-chain.md)
   - [异常收敛与错误流（详）](exception-resolvers-and-error-flow.md)
@@ -77,14 +77,14 @@
 7. **async（请求像是“跑了两遍”）**
    - 关键：`asyncStarted` → `asyncDispatch` 的二阶段流程；Interceptor 回调也会出现“两次 dispatch”行为
 
-> 这些分支的“可跑证据链”与“断点建议”请对照：
+> 这些分支的“可跑证据链”与“断点入口”请对照：
 >
 > - 断点地图：`14-testing-observability/06-breakpoint-map.md`
 > - 错误分支矩阵（可回归）：`BootWebMvcErrorBranchMatrixLabTest`
 
 ## 4. 最小可运行证据链（先把现象固化为断言）
 
-推荐先跑一个最小请求，把“路由 → handler → 返回值”跑通：
+先运行一个最小请求，把“路由 → handler → 返回值”跑通：
 
 ```bash
 mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#pingEndpointReturnsPong test
@@ -108,12 +108,12 @@ mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest test
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
 - Lab：`BootWebMvcInternalsLabTest`
 - Lab：`BootWebMvcTraceLabTest`
 - Lab：`BootWebMvcErrorBranchMatrixLabTest`
 
-上一章：[01. Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](filterchain-security-security-filterchain-and-mvc.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](dispatcherservlet-call-chain.md)
+上一章：[01. Security FilterChain 与 Web MVC（401/403/CSRF 在哪发生）](filterchain-security-security-filterchain-and-mvc.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](dispatcherservlet-call-chain.md)
 <!-- BOOKIFY:END -->

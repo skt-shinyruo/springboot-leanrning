@@ -1,6 +1,6 @@
 # 05. 读取资源：InputStream、编码与“可观察性”
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕读取资源：InputStream、编码与“可观察性”展开，主线可以概括为：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
 
     先运行 `SpringCoreResourcesMechanicsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](resource-abstraction-exists-and-handles.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](resource-abstraction-jar-vs-filesystem.md)
+上一章：[04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？](resource-abstraction-exists-and-handles.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06. jar vs filesystem：为什么在 IDE 里 OK，打包后就不行？](resource-abstraction-jar-vs-filesystem.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「05. 读取资源：InputStream、编码与“可观察性”」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreResourcesMechanicsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreResourcesMechanicsLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -24,10 +24,10 @@
 
 ## 机制主线
 
-资源读取看起来简单，但学习阶段可以建立两个习惯：
+资源读取表面上简单，但学习阶段可以建立两个习惯：
 
-1) 始终明确编码（尤其文本）
-2) 把错误转换成“更好理解的异常/提示”
+1. 始终明确编码（尤其文本）
+2. 把错误转换成“更好理解的异常/提示”
 
 - `resource.getInputStream()`
 - 读 bytes
@@ -43,7 +43,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreResourcesMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -53,7 +53,7 @@
 
 - 把 `IOException` 包成 `UncheckedIOException`（学习阶段更容易写 tests）
 
-## Debug/观察建议
+## Debug/观察入口
 
 验证入口：`SpringCoreResourcesMechanicsLabTest#resourceDescriptionsHelpWithDebugging`
 
@@ -74,10 +74,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreResourcesMechanicsLabTest`
 
-上一章：[04-exists-and-handles](resource-abstraction-exists-and-handles.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06-jar-vs-filesystem](resource-abstraction-jar-vs-filesystem.md)
+上一章：[04-exists-and-handles](resource-abstraction-exists-and-handles.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06-jar-vs-filesystem](resource-abstraction-jar-vs-filesystem.md)
 
 <!-- BOOKIFY:END -->

@@ -1,22 +1,30 @@
 # 03. 事务拦截器调用链（从 `@Transactional` 到 commit/rollback）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）展开，主线可以概括为：声明式事务本质是 AOP：容器用 Advisor + TransactionInterceptor 包装 bean；运行时 `invokeWithinTransaction` 根据传播与回滚规则建立/加入事务，执行目标方法，再 commit/rollback 收尾。
 
-    先运行 `SpringCoreTxLabTest`，把“commit/rollback/传播/回滚规则”固化为断言，再按本文把调用链串起来：容器阶段如何把 `@Transactional` 变成 Advisor → 运行阶段如何进入 `TransactionInterceptor` → 如何决定提交/回滚。
+    先运行 `SpringCoreTxLabTest`，把“commit/rollback/传播/回滚规则”固化为断言，再按本章把调用链串起来：容器阶段如何把 `@Transactional` 变成 Advisor → 运行阶段如何进入 `TransactionInterceptor` → 如何决定提交/回滚。
 
     需要下探源码时，可以从 `org.springframework.transaction.interceptor.TransactionInterceptor#invoke` / `org.springframework.transaction.interceptor.TransactionAspectSupport#invokeWithinTransaction` / `org.springframework.transaction.PlatformTransactionManager` / `org.springframework.transaction.support.TransactionSynchronizationManager` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖指南（Spring Core Tx）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. 断点地图（Spring Tx Debugger Pack）](guide-breakpoint-map.md)
+上一章：[02. 深挖指南（Spring Core Tx）](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. 断点地图（Spring Tx）](guide-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
 本章围绕「01：事务拦截器调用链（从 `@Transactional` 到 commit/rollback）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreTxLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreTxLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -24,7 +32,7 @@
 
 ## 1. 代理生成链：`@Transactional` 为什么会变成拦截器？
 
-从工程视角看，`@Transactional` 不会“魔法般”改变方法本身；它需要在容器里变成：
+从工程视角看，`@Transactional` 不会“隐式机制般”改变方法本身；它需要在容器里变成：
 
 - 一个 Advisor（决定哪些方法要被拦截）
 - 一个拦截器（`TransactionInterceptor`，负责在调用前后开/关事务）
@@ -67,7 +75,7 @@
    - 可能原因：自调用绕过代理、bean 不是 Spring 管理、方法不是 public 等
 2. **进了拦截器但没回滚（异常类型/捕获）**
    - 可能原因：checked exception 默认不回滚；异常被 catch 并吞掉；或显式 noRollbackFor
-3. **传播导致“看起来很怪”的提交/回滚**
+3. **传播导致“表面上很怪”的提交/回滚**
    - 可能原因：`REQUIRES_NEW` 独立边界、外层回滚不影响内层提交，或内层异常只标记外层 rollback-only
 
 这些分支在本模块的“关键分支矩阵”里都有对应最小复现入口：
@@ -80,13 +88,13 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreTxLabTest`
 - Lab：`SpringCoreTxRollbackRulesLabTest`
 - Lab：`SpringCoreTxPropagationMatrixLabTest`
 - Lab：`SpringCoreTxSelfInvocationPitfallLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](guide-breakpoint-map.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[guide-breakpoint-map.md](guide-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

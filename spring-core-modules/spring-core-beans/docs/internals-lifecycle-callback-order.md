@@ -1,25 +1,26 @@
 # 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansLifecycleCallbackOrderLabTest`。需要下探源码时，可以从 `BeanPostProcessor#postProcessBeforeInitialization` / `InitializingBean#afterPropertiesSet` / `BeanPostProcessor#postProcessAfterInitialization` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 回调顺序：`initializeBean` 前后发生了什么
 
-生命周期顺序是解释很多“看起来不按直觉发生”的容器行为的钥匙：注入为什么发生在回调之前？代理到底在哪一步出现？为什么 `@PreDestroy` 有时永远不会触发？
+生命周期顺序是解释很多“表面上不按预期发生”的容器行为的钥匙：注入为什么发生在回调之前？代理到底在哪一步出现？为什么 `@PreDestroy` 有时永远不会触发？
 
 这一章聚焦两个高频问题：
 
-1) 一个 singleton bean 从创建到初始化，会按什么顺序触发 Aware、BPP、`@PostConstruct/afterPropertiesSet/initMethod`？
-2) 为什么 prototype 默认不会在容器关闭时触发 `@PreDestroy/destroyMethod`？
+1. 一个 singleton bean 从创建到初始化，会按什么顺序触发 Aware、BPP、`@PostConstruct/afterPropertiesSet/initMethod`？
+2. 为什么 prototype 默认不会在容器关闭时触发 `@PreDestroy/destroyMethod`？
 
-建议先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest`，把回调顺序与 prototype 边界跑成断言；再回正文对照 `initializeBean` 与 `DisposableBeanAdapter#destroy` 两个“串联点”，读者就能把“触发/不触发”定位回源码分支。
+先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest`，把回调顺序与 prototype 边界跑成断言；再回正文对照 `initializeBean` 与 `DisposableBeanAdapter#destroy` 两个“串联点”，读者就能把“触发/不触发”定位回源码分支。
 
 - 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleCallbackOrderLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -30,16 +31,9 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansLifecycleCallbackOrderLabTest`，再用 `SpringCoreBeansLifecycleCallbackOrderLabTest.singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization()` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -58,7 +52,7 @@
 
 ## 一个可断言的顺序（比看日志更可靠）
 
-读者 C 的目标不是“背顺序”，而是：**当读者看到一个对象行为不对时，能判断它到底处在生命周期的哪一段、被哪些扩展点改过**。
+读者 C 的目标不是“背顺序”，而是：**当看到一个对象行为不对时，能判断它到底处在生命周期的哪一段、被哪些扩展点改过**。
 
 下面给一个“够读者排障”的顺序表（把它当成 `initializeBean` 周边的时间线）：
 
@@ -126,13 +120,13 @@ prototype 的语义是：
 - `SpringCoreBeansLifecycleCallbackOrderLabTest.singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization()`
 - `SpringCoreBeansLifecycleCallbackOrderLabTest.prototypeBeans_areNotDestroyedByContainerByDefault()`
 
-推荐断点（闭环版）：
+断点入口（闭环版）：
 
-1) `AbstractAutowireCapableBeanFactory#doCreateBean`：创建主线（串起实例化/注入/初始化）
-2) `AbstractAutowireCapableBeanFactory#populateBean`：注入发生点（验证：注入早于 init callbacks）
-3) `AbstractAutowireCapableBeanFactory#initializeBean`：初始化串联点（aware → before-init → init callbacks → after-init）
-4) `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`：`@PostConstruct` 触发点
-5) `DisposableBeanAdapter#destroy`：销毁链路统一入口（close context 时命中）
+1. `AbstractAutowireCapableBeanFactory#doCreateBean`：创建主线（串起实例化/注入/初始化）
+2. `AbstractAutowireCapableBeanFactory#populateBean`：注入发生点（验证：注入早于 init callbacks）
+3. `AbstractAutowireCapableBeanFactory#initializeBean`：初始化串联点（aware → before-init → init callbacks → after-init）
+4. `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`：`@PostConstruct` 触发点
+5. `DisposableBeanAdapter#destroy`：销毁链路统一入口（close context 时命中）
 
 应当看到：
 
@@ -141,15 +135,15 @@ prototype 的语义是：
 
 ## 可复现闭环（基于 `SpringCoreBeansBootstrapInternalsLabTest`）
 
-完成该组用例后，至少应能够复述 3 条结论：
+完成该组用例后，至少需要复述 3 条结论：
 
-1) **注解回调依赖基础设施处理器**
+1. **注解回调依赖基础设施处理器**
    - 断点：`registerAnnotationConfigProcessors`
    - 断言：不注册 → `@PostConstruct` 不触发
-2) **回调顺序可被稳定断言**
+2. **回调顺序可被稳定断言**
    - 断点：`initializeBean`
    - 断言：Aware → before-init → init → after-init
-3) **prototype 默认不进入销毁链路**
+3. **prototype 默认不进入销毁链路**
    - 断点：`destroySingletons`
    - 断言：prototype 不在 `disposableBeans`
 
@@ -171,9 +165,9 @@ prototype 的语义是：
 
 初始化（init）最短链路（方法级）：
 
-1) `AbstractAutowireCapableBeanFactory#doCreateBean`
-2) `AbstractAutowireCapableBeanFactory#populateBean`（注入发生点：早于 init callbacks）
-3) `AbstractAutowireCapableBeanFactory#initializeBean`
+1. `AbstractAutowireCapableBeanFactory#doCreateBean`
+2. `AbstractAutowireCapableBeanFactory#populateBean`（注入发生点：早于 init callbacks）
+3. `AbstractAutowireCapableBeanFactory#initializeBean`
    - `invokeAwareMethods`（Aware 系列）
    - `applyBeanPostProcessorsBeforeInitialization`（before-init BPP；`@PostConstruct` 常在这里附近触发）
    - `invokeInitMethods`（`afterPropertiesSet` / initMethod）
@@ -181,9 +175,9 @@ prototype 的语义是：
 
 销毁（destroy）最短链路（方法级）：
 
-1) `AbstractApplicationContext#doClose`
-2) `DefaultSingletonBeanRegistry#destroySingletons`（默认只管 singleton）
-3) `DisposableBeanAdapter#destroy`
+1. `AbstractApplicationContext#doClose`
+2. `DefaultSingletonBeanRegistry#destroySingletons`（默认只管 singleton）
+3. `DisposableBeanAdapter#destroy`
    - `DestructionAwareBeanPostProcessor#postProcessBeforeDestruction`
    - `@PreDestroy`
    - `DisposableBean#destroy` / destroyMethod
@@ -226,15 +220,15 @@ prototype 的语义是：
 - 证据链（方法级）：
   - `AbstractAutowireCapableBeanFactory#initializeBean`
 
-## 自检要点
+## 验证标准：能把回调映射到 `initializeBean`
 
-应能够回答：
+需要能回答：
 
-1) init callbacks 为什么夹在 before/after-init BPP 之间？
-2) prototype 默认为什么不会触发销毁回调？
-3) 当读者怀疑“回调未执行/执行顺序异常”，可优先关注哪两个断点？（提示：`initializeBean` 与 `destroySingletons`）
+1. init callbacks 为什么夹在 before/after-init BPP 之间？
+2. prototype 默认为什么不会触发销毁回调？
+3. 当读者怀疑“回调未执行/执行顺序异常”，可优先关注哪两个断点？（提示：`initializeBean` 与 `destroySingletons`）
 
-## 常见误区与边界
+## 边界分流：prototype 与 singleton 的销毁语义不同
 
 > 注意：顺序表的意义是“能定位”，不是“每次都一模一样”。当 BPP 数量与排序变化时（见 [顺序（Ordering）：PriorityOrdered / Ordered / 无序](internals-post-processor-ordering.md)、[手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](wiring-programmatic-bpp-registration.md)），观察到的实际调用栈会变化，但大方向依然稳定。
 
@@ -245,7 +239,7 @@ prototype 的语义是：
 - **误区 3：BPP 本身也是特殊 bean**
   - BPP 会很早被实例化、很早被注册；在 BPP 构造器里依赖复杂 bean，容易触发“过早创建”与“错过后续处理器”。
 
-## 小结
+## 收束：生命周期顺序要用断言固定
 
 - `AbstractAutowireCapableBeanFactory#doCreateBean`：单个 bean 创建主流程（实例化 → 注入 → 初始化）
 - `AbstractAutowireCapableBeanFactory#populateBean`：属性填充阶段（`@Autowired/@Resource` 等注入发生在这一段）
@@ -255,9 +249,9 @@ prototype 的语义是：
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansLifecycleCallbackOrderLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
 
 <!-- BOOKIFY:END -->

@@ -16,7 +16,7 @@
 
 ## 源码与断点
 
-建议断点：
+断点入口：
 - `MappingJackson2HttpMessageConverter#readInternal`
 - `com.fasterxml.jackson.databind.ObjectMapper#readValue`
 
@@ -34,9 +34,9 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcContractJacksonLabTest`
 
-上一章：[01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](message-conversion-content-negotiation-406-415.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Controller：边界、异常与契约的位置](controller-boundary.md)
+上一章：[01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](message-conversion-content-negotiation-406-415.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. Controller：边界、异常与契约的位置](controller-boundary.md)
 <!-- BOOKIFY:END -->

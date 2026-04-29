@@ -1,28 +1,28 @@
 # 04. `@Aspect` 实例模型：singleton vs perthis/pertarget/pertypewithin（Spring AOP 语境）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕 `@Aspect` 实例模型：singleton vs perthis/pertarget/pertypewithin（Spring AOP 语境）展开，主线可以概括为：Spring AOP（proxy-based）支持 AspectJ 的部分实例模型语法，但语义与“真正的 weaving”不同；最关键的工程结论是：非 singleton per-clause 要求 aspect bean 是 prototype，否则会被忽略/不生效。
+!!! summary "章节入口（五问闭环）"
+    本章围绕`@Aspect` 实例模型：singleton vs perthis/pertarget/pertypewithin（Spring AOP 语境）展开，主线可以概括为：Spring AOP（proxy-based）支持 AspectJ 的部分实例模型语法，但语义与“真正的 weaving”不同；最关键的工程结论是：非 singleton per-clause 要求 aspect bean 是 prototype，否则会被忽略/不生效。
 
-    先运行 `SpringCoreAopAspectInstantiationModelLabTest`，用一正一反两套配置把“为什么 pertarget/perthis 看起来不生效”固化成断言：singleton aspect + 非 singleton per-clause → 不代理；prototype aspect → 生效且按需实例化。
+    先运行 `SpringCoreAopAspectInstantiationModelLabTest`，用一正一反两套配置把“为什么 pertarget/perthis 表面上不生效”固化成断言：singleton aspect + 非 singleton per-clause → 不代理；prototype aspect → 生效且按需实例化。
 
     需要下探源码时，可以从 `org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder` / `org.springframework.aop.aspectj.annotation.AspectMetadata` / `org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory` 这些入口切入。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. 除 `@EnableAspectJAutoProxy` 之外：BeanNameAutoProxyCreator / ProxyFactoryBean / XML](autoproxy-and-pointcuts-other-configuration-entries.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）](perf-concurrency-proxy-concurrency-perf.md)
+上一章：[03. 除 `@EnableAspectJAutoProxy` 之外：BeanNameAutoProxyCreator / ProxyFactoryBean / XML](autoproxy-and-pointcuts-other-configuration-entries.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）](perf-concurrency-proxy-concurrency-perf.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章解决一个“高级但很实用”的问题：
 
-> 我在 `@Aspect` 上写了 `@Aspect(\"pertarget(...)\" )`（或 perthis/pertypewithin），为什么在 Spring 里看起来没效果？
+> 在 `@Aspect` 上写了 `@Aspect(\"pertarget(...)\" )`（或 perthis/pertypewithin），为什么在 Spring 里表面上没效果？
 
 结论先行（本章会用 Lab 验证）：
 
 - Spring AOP 支持 `singleton / perthis / pertarget / pertypewithin`（不支持 `percflow/percflowbelow`）
 - **非 singleton per-clause 要求 aspect bean 是 prototype**
-  - 如果你把它当成普通 singleton bean，Spring 会认为配置不一致，并忽略该 aspect（表现为：目标 bean 没有被代理）
+  - 如果把它当成普通 singleton bean，Spring 会认为配置不一致，并忽略该 aspect（表现为：目标 bean 没有被代理）
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -66,11 +66,10 @@ Spring AOP 是 proxy-based：
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopAspectInstantiationModelLabTest`
 
-上一章：[03-other-config-entries](autoproxy-and-pointcuts-other-configuration-entries.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[11-proxy-concurrency-perf](perf-concurrency-proxy-concurrency-perf.md)
+上一章：[03-other-config-entries](autoproxy-and-pointcuts-other-configuration-entries.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[11-proxy-concurrency-perf](perf-concurrency-proxy-concurrency-perf.md)
 
 <!-- BOOKIFY:END -->
-

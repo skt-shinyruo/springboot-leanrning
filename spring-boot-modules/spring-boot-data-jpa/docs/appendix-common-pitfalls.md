@@ -1,26 +1,34 @@
-# 01. 常见坑清单（建议反复对照）
+# 01. 常见坑清单（排查时对照）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
 
-    这一页的坑大多来自一个错觉：读者以为自己在看数据库，其实在看 persistence context（一级缓存与实体状态）。一旦把“可见性”与“提交”混在一起，flush/commit、懒加载、N+1、merge/detach 这些行为都会显得像魔法。
+    这一页的坑大多来自一个错觉：读者以为自己在看数据库，本质上在看 persistence context（一级缓存与实体状态）。一旦把“可见性”与“提交”混在一起，flush/commit、懒加载、N+1、merge/detach 这些行为都会显得像隐式机制。
 
-    建议先跑 `BootDataJpaDebugSqlLabTest`（把 SQL 看清楚）与 `BootDataJpaLabTest`（把实体状态/可见性跑成断言），再回到本章逐条对照。需要下探源码时，入口通常从 `SimpleJpaRepository`、`EntityManager` 与 `JpaTransactionManager` 三条线展开。
+    先运行 `BootDataJpaDebugSqlLabTest`（把 SQL 看清楚）与 `BootDataJpaLabTest`（把实体状态/可见性跑成断言），再回到本章逐条对照。需要下探源码时，入口通常从 `SimpleJpaRepository`、`EntityManager` 与 `JpaTransactionManager` 三条线展开。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](data-jpa-debug-sql.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-data-jpa）](appendix-self-check.md)
+上一章：[07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](data-jpa-debug-sql.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[自检题](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 先把“看见的是一级缓存还是数据库”跑成证据
 
 Data JPA 的坑很多时候不是 SQL 本身，而是视角不对：同一行 `findById`，有时读到的是 persistence context，有时读到的才是数据库。排障时如果先把这一点做成可重复的断言，后面讨论 flush、事务可见性、fetching 策略会更收敛。
 
-建议先跑两组矩阵测试：Book Matrix 把主线跑通，Branch Matrix 把 flush/merge/fetching 这些高频分支跑全。跑完后再回到断点地图与分支矩阵页逐条对照，读起来会更像“对照答案”，而不是堆概念。
+先运行两组矩阵测试：Book Matrix 把主线跑通，Branch Matrix 把 flush/merge/fetching 这些高频分支跑全。跑完后再回到断点地图与分支矩阵页逐条对照，读起来会更像“对照答案”，而不是堆概念。
 
 - `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBookMatrixLabTest test`
 - `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
 
-需要下探时，建议从本模块的断点地图与关键分支矩阵切入：它们把 `SimpleJpaRepository`、flush 与事务边界的落点标得很清楚：[04-breakpoint-map.md](guide-breakpoint-map.md) / [05-branch-decision-matrix.md](guide-branch-decision-matrix.md)。
+需要下探时，从本模块的断点地图与关键分支矩阵切入：它们把 `SimpleJpaRepository`、flush 与事务边界的落点标得很清楚：[guide-breakpoint-map.md](guide-breakpoint-map.md) / [guide-branch-decision-matrix.md](guide-branch-decision-matrix.md)。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -30,11 +38,11 @@ Data JPA 的坑很多时候不是 SQL 本身，而是视角不对：同一行 `f
 ## 最小可运行实验（Lab）
 
 - Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest`
-- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
-> 这一模块的坑大多来自“以为自己在看数据库，其实在看 persistence context”。需要时用 `flush()+clear()` 把视角切回数据库。
+> 这一模块的坑大多来自“以为自己在看数据库，本质上在看 persistence context”。需要时用 `flush()+clear()` 把视角切回数据库。
 
 ## 坑 1：把 persistence context 当成数据库
 
@@ -65,13 +73,13 @@ Data JPA 的坑很多时候不是 SQL 本身，而是视角不对：同一行 `f
 
 ## 坑 6：以为 `merge()` 会“把原对象重新托管”，结果改了半天没生效
 
-在 `detach()/clear()` 之后继续改对象，觉得“脏检查会帮我 UPDATE”，但数据库里啥都没变；或者调用了 `merge()`，但后续仍然在 **原对象** 上继续改，结果再次不生效。
+在 `detach()/clear()` 之后继续改对象，预期“脏检查会自动 UPDATE”，但数据库没有变化；或者调用了 `merge()`，但后续仍然在 **原对象** 上继续改，结果再次不生效。
 
 JPA 的 `merge()` 语义是 **复制状态到一个新的 managed 实例**，并返回这个 managed 实例；传入的那个对象本身仍然是 detached，后续修改不会被脏检查追踪。
 
 这个误判可以用 `BootDataJpaMergeAndDetachLabTest#detached_changesWithoutMerge_shouldNotBePersisted` 与 `BootDataJpaMergeAndDetachLabTest#merge_shouldPersistDetachedChangesIntoManagedCopy` 直接对照；如果要看更底层的落点，入口通常在 `org.hibernate.internal.SessionImpl#merge` 与 `org.hibernate.event.internal.DefaultMergeEventListener#onMerge`。
 
-后续操作一律使用 `merge()` 的返回值，或重新 `find()` 获取 managed；把“对象状态（managed/detached）→ 预期 SQL”用 Lab/Test 固化。
+后续操作一律使用 `merge()` 的返回值，或重新 `find()` 获取 managed；把“对象状态（managed/detached）→ 预期 SQL”用实验/测试 固化。
 
 ## 对应 Lab（可运行）
 
@@ -83,10 +91,10 @@ JPA 的 `merge()` 语义是 **复制状态到一个新的 managed 实例**，并
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest`
 
-上一章：[part-01-data-jpa/07-debug-sql.md](data-jpa-debug-sql.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](appendix-self-check.md)
+上一章：[data-jpa-debug-sql.md](data-jpa-debug-sql.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-self-check.md](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

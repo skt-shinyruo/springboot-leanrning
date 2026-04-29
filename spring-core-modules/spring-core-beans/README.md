@@ -16,6 +16,15 @@
 
 ---
 
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
+
 ## 10 分钟入口：先跑通一个容器闭环
 
 如果只选择一个入口作为起跑线，可以先运行：
@@ -45,8 +54,8 @@
 
 - **主线阅读（建立心智模型）**：先用 Guide 确认 `refresh()` 主线位置，再顺读 IoC Container，最后进入 Internals 与 Wiring & Boundaries。
   - Guide 入口：`docs/guide-deep-dive-guide.md` / `docs/guide-quickstart-30min.md`
-- **断点阅读（以可观察为中心）**：每章至少跑一次 Lab，按章节提供的 breakpoints/watch list 观察关键数据结构。
-  - 断点地图：`docs/guide-breakpoint-map.md` / Debugger Pack：`docs/appendix-debugger-pack.md`
+- **断点阅读（以可观察为中心）**：每章至少跑一次 Lab，按章节提供的 breakpoints/观察清单 观察关键数据结构。
+  - 断点地图：`docs/guide-breakpoint-map.md` / 断点包：`docs/appendix-debugger-pack.md`
 - **排障阅读（从现象回到最短证据链）**：先用下文的“症状驱动导航”定位章节，再回到对应 Lab 固化现象与边界。
   - 知识地图：`docs/appendix-knowledge-map.md` / 生产排障清单：`docs/appendix-production-troubleshooting-checklist.md`
 
@@ -71,7 +80,7 @@
 
 ## 症状驱动导航（快速定位）
 
-> 更系统的“症状 → 章节 → 断点 → Lab”导航见：`docs/guide-deep-dive-guide.md`。定位到章节后，下一步建议直接用 [知识地图](docs/appendix-knowledge-map.md) 选“断点组 + 推荐 Lab”，或用 [断点地图](docs/guide-breakpoint-map.md) 直接命中 C 组（避免把 README 扩写成另一份知识地图）。
+> 更系统的“症状 → 章节 → 断点 → Lab”导航见：`docs/guide-deep-dive-guide.md`。定位到章节后，下一步直接用 [知识地图](docs/appendix-knowledge-map.md) 选“断点组 + 对应 Lab”，或用 [断点地图](docs/guide-breakpoint-map.md) 直接命中 C 组（避免把 README 扩写成另一份知识地图）。
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 > 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 
@@ -99,7 +108,7 @@
 - [30 分钟快速闭环：先快后深（3 个最小实验入口）](docs/guide-quickstart-30min.md)
 - [深入分析指南：将“Bean 三层模型”落实到源码与断点](docs/guide-deep-dive-guide.md)
 - [主线时间线：IoC 容器从 refresh 到创建 Bean](docs/guide-mainline-timeline.md)
-- [关键分支矩阵（Branch Decision Matrix）](docs/guide-branch-decision-matrix.md)
+- [关键分支矩阵](docs/guide-branch-decision-matrix.md)
 - [`refresh()` 调用链（容器从“定义”到“实例”的主线）](docs/guide-applicationcontext-refresh-call-chain.md)
 - [断点地图（容器主线：可复用断点/观察点清单）](docs/guide-breakpoint-map.md)
 
@@ -172,40 +181,32 @@
 
 ### Appendix（术语表 / 速查 / 排障清单 / 索引）
 
-- [常见误区清单（建议反复对照）](docs/appendix-common-pitfalls.md)
-- [术语表（Glossary）](docs/appendix-glossary.md)
+- [常见误区清单（按现象对照）](docs/appendix-common-pitfalls.md)
+- [术语表](docs/appendix-glossary.md)
 - [知识地图（Knowledge Map）：从现象直达章节/断点/Lab](docs/appendix-knowledge-map.md)
 - [面试复述模板（Interview Playbook）：用“证据链”回答 Spring IoC](docs/appendix-interview-playbook.md)
 - [生产排障清单（Troubleshooting Checklist）：从症状到证据链](docs/appendix-production-troubleshooting-checklist.md)
 - [spring-beans Public API Index](docs/appendix-spring-beans-public-api-index.md)
 - [spring-beans Public API Gap 清单（按包/机制域分批深化；含“缺口清单→最小 Labs”）](docs/appendix-spring-beans-public-api-gap.md)
 - [Explore/Debug 用例（可选启用，不影响默认回归）](docs/appendix-explore-debug-tests.md)
-- [Debugger Pack（断点包总入口）](docs/appendix-debugger-pack.md)
+- [断点包（断点包总入口）](docs/appendix-debugger-pack.md)
 - [团队内训讲义（Training Kit）：可直接用于授课的课时脚本](docs/appendix-team-training-kit.md)
 - [自检：spring-core-beans 文档导航](docs/appendix-self-check.md)
 
 ### 深化策略（可选）
 
 - [spring-core-beans：内容级再加深策略（按章节）](docs/deepening-strategies.md)
-- [逐章内容级再加深建议（Docs TOC / 目录页）](docs/deepening-docs-root.md)
-- [逐章内容级再加深建议（模块 README）](docs/deepening-module-readme.md)
-- [逐章内容级再加深建议（Guide）](docs/deepening-guide.md)
-- [逐章内容级再加深建议（IoC Container）](docs/deepening-ioc-container.md)
-- [逐章内容级再加深建议（Boot Auto-Config）](docs/deepening-boot-autoconfig.md)
-- [逐章内容级再加深建议（Internals）](docs/deepening-container-internals.md)
-- [逐章内容级再加深建议（Wiring & Boundaries）](docs/deepening-wiring-and-boundaries.md)
-- [逐章内容级再加深建议（AOT & Real World）](docs/deepening-aot-and-real-world.md)
-- [逐章内容级再加深建议（Appendix 工具章节）](docs/deepening-appendix.md)
+- [章节深化路线（模块目录与目录页）](docs/deepening-docs-root.md)
+- [章节深化路线（模块 README）](docs/deepening-module-readme.md)
+- [章节深化路线（Guide）](docs/deepening-guide.md)
+- [章节深化路线（IoC Container）](docs/deepening-ioc-container.md)
+- [章节深化路线（Boot Auto-Config）](docs/deepening-boot-autoconfig.md)
+- [章节深化路线（Internals）](docs/deepening-container-internals.md)
+- [章节深化路线（Wiring & Boundaries）](docs/deepening-wiring-and-boundaries.md)
+- [章节深化路线（AOT & Real World）](docs/deepening-aot-and-real-world.md)
+- [章节深化路线（Appendix 工具章节）](docs/deepening-appendix.md)
 
-## 自检要点
-- 是否能够按“主线 → 分支 → 证据链”的方式学习：先运行 Lab，再结合断点阅读章节？
-- 是否能够能把一个现象先分层：定义阶段（BeanDefinition/processor） vs 创建阶段（getBean/doCreateBean/BPP）？
-- 是否能够在 1 分钟内从目录定位到：对应章节 + 对应 LabTest + 断点入口？
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
-
-    建议 先回到本章/本 Part 已给出的 Lab/Test，把现象跑出来；再按正文的调用链/断点去验证结论。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：将目录页的价值从“列链接”提升为“给路径”：为关键节点补一句“为什么现在读它”，并在 proxy/事务/自调用等处给出 Beans→AOP 的最短跳转与目的说明。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](docs/appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](docs/guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
+## 入口页验收：能否在 1 分钟内找到证据链
+- 是否能按“主线 → 分支 → 证据链”的方式学习：先运行 Lab，再结合断点阅读章节？
+- 是否能把一个现象先分层：定义阶段（BeanDefinition/processor） vs 创建阶段（getBean/doCreateBean/BPP）？
+- 是否能在 1 分钟内从目录定位到：对应章节 + 对应 LabTest + 断点入口？

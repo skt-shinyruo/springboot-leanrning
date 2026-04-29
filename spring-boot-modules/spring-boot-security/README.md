@@ -2,7 +2,16 @@
 
 本模块用于学习 Spring Security 的高频入门与常见机制坑（从 AuthN → AuthZ → CSRF → Method Security → JWT/Stateless）。
 
-本模块的定位是：**用可运行的最小 HTTP 边界 + 可断言的实验测试（Labs/Exercises）**，把“为什么是 401/403、为什么 POST 会被 CSRF 拦、为什么方法注解有时不生效”等现象讲清楚。
+本模块的定位是：**用可运行的最小 HTTP 边界 + 可断言的实验测试（实验/练习）**，把“为什么是 401/403、为什么 POST 会被 CSRF 拦、为什么方法注解有时不生效”等现象讲清楚。
+
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -13,11 +22,11 @@
   - `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - 认证（Authentication） vs 授权（Authorization）的区别：**401 vs 403**
 - `httpBasic()` 的最小闭环（用户名/密码、角色/权限）
@@ -28,7 +37,7 @@
 
 ## 前置知识
 
-- 建议先完成 `spring-boot-web-mvc`（更容易理解“边界校验/错误响应/MockMvc”）
+- 先完成 `spring-boot-web-mvc`（更容易理解“边界校验/错误响应/MockMvc”）
 - 基本 HTTP 概念（状态码、header、请求/响应体）
 
 ## 关键命令
@@ -73,7 +82,7 @@ curl -u user:password http://localhost:8085/api/admin/ping
 curl -u admin:password http://localhost:8085/api/admin/ping
 ```
 
-> CSRF 与 JWT 的细节更建议通过 tests 学（更可控、可断言），见下方 Labs。
+> CSRF 与 JWT 的细节更通过 tests 学（更可控、可断言），见下方实验。
 
 ### 测试
 
@@ -81,7 +90,7 @@ curl -u admin:password http://localhost:8085/api/admin/ping
 mvn -pl :spring-boot-security test
 ```
 
-## 推荐 docs 阅读顺序（从现象到机制）
+## docs 阅读顺序（从现象到机制）
 
 （目录：见本 README 的「目录（唯一顺序来源）」）
 
@@ -92,9 +101,9 @@ mvn -pl :spring-boot-security test
 5. [JWT/Stateless：Bearer token + scope](docs/security-jwt-stateless.md)
 6. [常见坑清单](docs/appendix-common-pitfalls.md)
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。Exercises 默认 `@Disabled`。
+> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。练习默认 `@Disabled`。
 
 | 类型 | 入口 | 知识点 | 难度 | 下一步 |
 | --- | --- | --- | --- | --- |
@@ -127,7 +136,7 @@ mvn -pl :spring-boot-security test
 
 运行后应能回答：请求在 FilterChain 中被哪个过滤器拦下；为何同样“未通过认证/授权”会落到不同的响应形状；匹配顺序改变时行为为何会变化。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 
@@ -143,17 +152,17 @@ mvn -pl :spring-boot-security test
 - AOP 代理边界：`spring-core-aop`
 
 ### 进阶入口（排障/关键分支）
-- 断点地图（排障优先）：[04-breakpoint-map.md](docs/guide-breakpoint-map.md)
-- 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
-- 排障 playbook：[01-common-pitfalls.md](docs/appendix-common-pitfalls.md)
-- 自检清单：[02-self-check.md](docs/appendix-self-check.md)
+- 断点地图（排障优先）：[guide-breakpoint-map.md](docs/guide-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[guide-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
+- 排障 playbook：[appendix-common-pitfalls.md](docs/appendix-common-pitfalls.md)
+- 自检清单：[appendix-self-check.md](docs/appendix-self-check.md)
 
 ---
 
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
 - Branch Matrix：`mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-security -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-boot-security -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（SecurityContext 并发隔离）：`mvn -q -pl :spring-boot-security -Dtest=BootSecuritySecurityContextIsolationLabTest test`
 
 ---

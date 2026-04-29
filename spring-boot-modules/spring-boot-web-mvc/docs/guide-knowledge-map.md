@@ -1,6 +1,6 @@
-# 05. 知识地图（Web MVC Deep Dive Map）
+# 05. 知识地图（Web MVC 深挖地图）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（源码入口 + 分支地图）"
+!!! summary "章节入口（源码入口 + 分支地图）"
     - 基线版本：Spring Framework `6.2.15`（`org.springframework:spring-webmvc:6.2.15`）
     - 这一页要解决：把 404/405/400/406/415/500/ASYNC/ERROR 映射回“主线阶段 → 源码入口”，从而决定断点应该打在哪一步
     - 证据链：`BootWebMvcBookMatrixLabTest`（全景）/ `BootWebMvcInternalsLabTest`（主线骨架）/ `BootWebMvcErrorBranchMatrixLabTest`（400/406/415）
@@ -9,13 +9,21 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 00 - Deep Dive Guide（springboot-web-mvc）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. 断点地图（Part 01 Debugger Pack）](testing-observability-breakpoint-map.md)
+上一章：[深挖导读：Spring Boot Web MVC](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06. 断点地图（Part 01）](testing-observability-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-本章围绕「01：知识地图（Web MVC Deep Dive Map）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+本章围绕「01：知识地图（Web MVC 深挖地图）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
+优先运行 `BootWebMvcLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -23,7 +31,7 @@
 
 ## 机制主线（从请求到响应）
 
-> 下面按“主轴顺序”列出关键阶段 + 对应章节入口（建议按顺序阅读）。
+> 下面按“主轴顺序”列出关键阶段 + 对应章节入口（按顺序阅读）。
 
 1. **进入 Servlet 容器（最外层）**
    - Filter（包含 Spring Security FilterChain）
@@ -72,7 +80,7 @@
     - Interceptor 计时 vs 指标（`http.server.requests`）
     - `resolvedException`/handler/断点清单：把排障变成流程
 
-## 源码与断点（建议从测试反推）
+## 源码与断点（从测试反推）
 
 常用断点入口（按主轴顺序）：
 - `org.springframework.web.filter.DelegatingFilterProxy#doFilter`（有 Security 时）
@@ -89,7 +97,7 @@
 
 ## 最小可运行实验（Lab）
 
-建议按“先主线，再分叉”的顺序跑：
+按“先主线，再分叉”的顺序跑：
 
 ### 主线（REST/页面/端到端）
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
@@ -115,7 +123,7 @@
 
 ## 常见坑与边界
 
-- 建议配合阅读：[01-common-pitfalls.md](appendix-common-pitfalls.md)（把“坑”变成可复现 + 可定位）
+- 配合阅读：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)（把“坑”变成可复现 + 可定位）
 
 ## 小结与下一章
 
@@ -123,7 +131,7 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
 - Lab：`BootWebMvcInternalsLabTest`
@@ -139,5 +147,5 @@
 - Lab：`BootWebMvcSecurityLabTest`
 - Lab：`BootWebMvcObservabilityLabTest`
 
-上一章：[02. 00 - Deep Dive Guide（springboot-web-mvc）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. 断点地图（Part 01 Debugger Pack）](testing-observability-breakpoint-map.md)
+上一章：[深挖导读：Spring Boot Web MVC](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06. 断点地图（Part 01）](testing-observability-breakpoint-map.md)
 <!-- BOOKIFY:END -->

@@ -1,12 +1,12 @@
 # 12 Spring Boot Cache：命中/回源/回写、并发击穿与过期语义
 
-## 学习目标
+## 本章要回答的问题
 
 - 能跑通缓存读写主线：`@Cacheable` 命中/回源、`@CachePut/@CacheEvict` 写路径与失效。
 - 能把 key/condition/unless 的边界跑成可回归规则，避免“线上才发现 key 算错”。
 - 能理解并验证并发击穿（stampede）与 `sync=true` 的语义，以及过期与可测试性的关系。
 
-## 概念框架
+## 主线框架
 
 - **缓存抽象**：
   - 注解 → `CacheInterceptor` → `CacheManager` → `Cache` 实现。
@@ -28,9 +28,9 @@
 - 模块目录页（顺读主线）：
   - [`spring-boot-cache/README.md`](../../spring-boot-modules/spring-boot-cache/README.md)
 - 导航型文档（用于定位“拦截器链路/击穿分支”）：
-  - Cache 调用链：[`part-00-guide/03-cache-interceptor-call-chain.md`](../../spring-boot-modules/spring-boot-cache/docs/guide-cache-interceptor-call-chain.md)
-  - `sync` 与击穿：[`part-01-cache/04-sync-stampede.md`](../../spring-boot-modules/spring-boot-cache/docs/cache-sync-stampede.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-cache/docs/appendix-common-pitfalls.md)
+  - Cache 调用链：[`guide-cache-interceptor-call-chain.md`](../../spring-boot-modules/spring-boot-cache/docs/guide-cache-interceptor-call-chain.md)
+  - `sync` 与击穿：[`cache-sync-stampede.md`](../../spring-boot-modules/spring-boot-cache/docs/cache-sync-stampede.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-boot-modules/spring-boot-cache/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
@@ -38,7 +38,7 @@
 - key 计算与条件表达式未经测试。结果：命中率异常、错误共享、或缓存污染。
 - 误用 `sync=true`：它保护的是“同 key 的并发回源”，不是通用并发控制。
 
-## 练习
+## 验证练习
 
 - 练习 1（读写主线闭环）：
   - 运行 `BootCacheBookMatrixLabTest`；
@@ -50,7 +50,7 @@
 
 ## 小结
 
-- Cache 的学习目标是：把性能边界变成可验证边界，而不是“经验调参”。
+- Cache 的本章收束点是：把性能边界变成可验证边界，而不是“经验调参”。
 - 下一章进入 Observability & Actuator，把“如何看见系统”的入口补齐，便于验证缓存、Web、数据与线程边界的真实行为。
 
 ## 延伸阅读
@@ -62,4 +62,3 @@
 ---
 
 [← 上一章](11-spring-boot-async-scheduling.md) | [目录](README.md) | [下一章 →](13-observability-and-actuator.md)
-

@@ -1,19 +1,19 @@
 # 02. `@CachePut/@CacheEvict`：更新与失效
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（写路径）"
+!!! summary "章节入口（写路径）"
 
-    如果 `@Cacheable` 是“读缓存”，那 `@CachePut/@CacheEvict` 就是“写缓存”：前者强制执行方法并更新缓存，后者删除缓存 entry（让下一次读取回源）。这章把它们的语义差异写成断言，避免线上靠直觉吵架。
+    如果 `@Cacheable` 是“读缓存”，那 `@CachePut/@CacheEvict` 就是“写缓存”：前者强制执行方法并更新缓存，后者删除缓存 entry（让下一次读取回源）。这章把它们的语义差异写成断言，避免线上只凭预期争论。
 
     - 最小证据入口：`BootCacheLabTest#cachePutUpdatesCacheValue` / `BootCacheLabTest#cacheEvictRemovesEntry`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. `@Cacheable` 最小闭环](cache-cacheable-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. key / condition / unless：缓存边界](cache-key-condition-unless.md)
+上一章：[01. `@Cacheable` 最小闭环](cache-cacheable-basics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. key / condition / unless：缓存边界](cache-key-condition-unless.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootCacheLabTest#cachePutUpdatesCacheValue`（见文末“对应 Lab/Test”），先把“put 不短路、evict 让下一次回源”的语义写成断言。
+优先运行 `BootCacheLabTest#cachePutUpdatesCacheValue`（见文末“对应实验/测试”），先把“put 不短路、evict 让下一次回源”的语义写成断言。
 
 
 ## 两句人话先说清楚
@@ -64,10 +64,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootCacheLabTest`
 
-上一章：[part-01-cache/01-cacheable-basics.md](cache-cacheable-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-cache/03-key-condition-unless.md](cache-key-condition-unless.md)
+上一章：[cache-cacheable-basics.md](cache-cacheable-basics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[cache-key-condition-unless.md](cache-key-condition-unless.md)
 
 <!-- BOOKIFY:END -->

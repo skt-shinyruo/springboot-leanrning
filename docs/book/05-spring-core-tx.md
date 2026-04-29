@@ -1,12 +1,12 @@
 # 05 Spring Core Tx：事务边界、传播、回滚与常见坑
 
-## 学习目标
+## 本章要回答的问题
 
 - 能解释 `@Transactional` 的核心事实：它是通过代理拦截实现的边界控制，而不是“语法糖”。
 - 能区分三类常见问题：事务没开 / 事务开了但回滚规则不符合预期 / 传播行为导致边界被拆分。
 - 能读懂事务拦截器的调用链，并用断点验证 commit/rollback 的真实发生点。
 
-## 概念框架
+## 主线框架
 
 - **事务边界**：在什么入口开启/提交/回滚（常由拦截器在方法调用前后织入）。
 - **回滚规则**：异常类型、`rollbackFor/noRollbackFor`、以及“异常是否被吞掉”共同决定结果。
@@ -24,17 +24,17 @@
 - 模块目录页（顺读主线）：
   - [`spring-core-tx/README.md`](../../spring-core-modules/spring-core-tx/README.md)
 - 导航型文档（用于快速定位 commit/rollback 发生点）：
-  - 事务拦截器调用链：[`part-00-guide/03-transaction-interceptor-call-chain.md`](../../spring-core-modules/spring-core-tx/docs/guide-transaction-interceptor-call-chain.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-tx/docs/appendix-common-pitfalls.md)
+  - 事务拦截器调用链：[`guide-transaction-interceptor-call-chain.md`](../../spring-core-modules/spring-core-tx/docs/guide-transaction-interceptor-call-chain.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-core-modules/spring-core-tx/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
 - 以为 `@Transactional` 作用于 private 方法也有效。代理通常无法拦截 private 方法调用（边界进不去）。
 - 以为“抛异常就一定回滚”。异常类型与回滚规则、以及异常是否被捕获/吞掉同样关键。
 - 以为传播行为是“性能优化选项”。传播行为是边界语义的一部分，选错会直接改变一致性与可见性。
-- 只在数据库层面观察结果，不回到事务拦截器链路验证边界。建议先证明“事务是否真的开启”。
+- 只在数据库层面观察结果，不回到事务拦截器链路验证边界。先证明“事务是否真的开启”。
 
-## 练习
+## 验证练习
 
 - 练习 1（把事务边界跑成事实）：
   - 运行 `SpringCoreTxBookMatrixLabTest`；
@@ -58,4 +58,3 @@
 ---
 
 [← 上一章](04-spring-core-aop.md) | [目录](README.md) | [下一章 →](06-spring-boot-web-mvc.md)
-

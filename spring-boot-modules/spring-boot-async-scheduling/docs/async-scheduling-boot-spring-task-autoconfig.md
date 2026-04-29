@@ -1,32 +1,32 @@
 # 08. Spring Boot `spring.task.*`：默认线程池/调度器与属性映射
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（别和“默认”较劲）"
+!!! summary "章节入口（不要靠默认行为猜测）"
 
-    这一章解决的其实是一个很具体的痛点：改了 `spring.task.*`，但线程名没变；以为自己在用 Boot 的默认线程池，但实际跑的是另一个 executor/scheduler。
+    这一章解决的本质上是一个很具体的痛点：改了 `spring.task.*`，但线程名没变；以为自己在用 Boot 的默认线程池，但实际跑的是另一个 executor/scheduler。
 
-    - 更稳妥的做法：把线程名前缀写成断言（别靠猜）
+    - 更稳妥的做法：把线程名前缀写成断言（不要靠猜测）
     - 进一步验证：`BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[07. SecurityContext / RequestContext：默认丢失、传播与泄漏](async-scheduling-security-and-request-context.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（Async & Scheduling）](appendix-common-pitfalls.md)
+上一章：[07. SecurityContext / RequestContext：默认丢失、传播与泄漏](async-scheduling-security-and-request-context.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（Async & Scheduling）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`（见文末“对应 Lab/Test”），用线程名前缀把“配置到底影响了谁”写成断言。
+优先运行 `BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`（见文末“对应实验/测试”），用线程名前缀把“配置到底影响了谁”写成断言。
 
 
-## “我明明改了配置，为什么没生效？”
+## 配置已经修改，为什么没有生效？
 
-这句抱怨在排异步/调度问题时特别常见。改了：
+这个现象在排查异步/调度问题时很常见。配置已经改动：
 
 - `spring.task.execution.thread-name-prefix`
 - `spring.task.scheduling.thread-name-prefix`
 
 结果线程名没变，于是开始怀疑是不是配置文件没加载、是不是 profile 没激活、是不是 Boot 有 bug……但很多时候真实原因更直接：**根本没用到 Boot 给那个默认 executor/scheduler**。
 
-这一章的目标很简单：不用背 bean 名，也不用背自动装配类的细节，只需能回答三件事就够了：
+本章不要求背 bean 名或自动装配类细节，只要求回答三个可验证问题：
 
 - 这次 `@Async` 实际用的是哪个 executor？
 - 这次 `@Scheduled` 实际用的是哪个 scheduler？
@@ -43,7 +43,7 @@ Spring Boot 会根据 `spring.task.execution.*` 的配置创建默认执行器�
 
 - `BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`
 
-当遇到“我明明改了 thread-name-prefix，但线程名没变”时，常见原因只有两类：
+当遇到“thread-name-prefix 已修改，但线程名没变”时，常见原因只有两类：
 
 1. 没启用 `@EnableAsync`（基础设施未建立，`@Async` 等价于不存在）
 2. 提供了自己的 executor（按名称/按类型被选中），覆盖了 Boot 的默认
@@ -101,7 +101,7 @@ Spring Boot 会根据 `spring.task.execution.*` 的配置创建默认执行器�
 - Boot 属性映射 → `@Async` 线程名：`BootAsyncSchedulingSpringTaskAutoConfigurationLabTest#springTaskExecutionPropertiesConfigureDefaultExecutor_andAsyncUsesIt`
 - executor 选择优先级：`BootAsyncSchedulingExecutorSelectionLabTest#whenMultipleExecutorsExist_namedTaskExecutorWinsAsDefault`
 
-修法也很朴素：先用线程名前缀把“实际使用的是谁”写成断言，再去找覆盖来源（别从配置文件开始猜）。
+修法也很直接：先用线程名前缀把“实际使用的是谁”写成断言，再去找覆盖来源（不要从配置文件开始猜测）。
 
 ## 小结与下一章
 
@@ -109,10 +109,10 @@ Spring Boot 会根据 `spring.task.execution.*` 的配置创建默认执行器�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingSpringTaskAutoConfigurationLabTest`
 
-上一章：[part-01-async-scheduling/07-security-and-request-context.md](async-scheduling-security-and-request-context.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md)
+上一章：[async-scheduling-security-and-request-context.md](async-scheduling-security-and-request-context.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

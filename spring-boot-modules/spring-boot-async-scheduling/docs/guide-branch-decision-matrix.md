@@ -1,26 +1,34 @@
-# 05. 关键分支矩阵（Branch Decision Matrix）
+# 05. 关键分支矩阵
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（If/Then 表）"
+!!! summary "章节入口（If/Then 表）"
 
     这张表是给“排障时不想靠猜”的：把最常见的分支写成 If/Then，并给出最小复现入口与观察点。
 
-    用法也很简单：先找到当前的触发条件（Trigger），跑一次 Repro，把 Watchpoints 看一眼，结论就基本收敛了。
+    使用方式是：先找到当前的触发条件（Trigger），跑一次 Repro，查看观察点，结论即可收敛。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. 断点地图（Async & Scheduling Debugger Pack）](guide-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. `@Async` 心智模型：代理与线程切换](async-scheduling-async-proxy-mental-model.md)
+上一章：[04. 断点地图（Async & Scheduling）](guide-breakpoint-map.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. `@Async` 心智模型：代理与线程切换](async-scheduling-async-proxy-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），从当前的触发条件入手，跑一次 Repro，再对照本表的 Watchpoints 收敛结论。
+优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应实验/测试”），从当前的触发条件入手，跑一次 Repro，再对照本表的 观察点 收敛结论。
 
 
 ## 关键分支矩阵（最小集合）
 
 这张矩阵刻意只收“最小集合”：不是把所有可能性都列出来，而是把最常见、最容易误判、且能被本模块 tests 稳定复现的分支先钉住。
 
-| 分支（Branch） | 触发条件（Trigger） | 期望行为（Expected） | 最小复现入口（Repro） | 观察点（Watchpoints） |
+| 分支（Branch） | 触发条件（Trigger） | 期望行为（Expected） | 最小复现入口（Repro） | 观察点 |
 |---|---|---|---|---|
 | 未启用 async | 没有 `@EnableAsync` | 不会生成代理，不会切线程 | `BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync` | `AopUtils.isAopProxy==false` / 线程名不变 |
 | 启用 async | 有 `@EnableAsync` | 走代理并切到线程池 | `BootAsyncSchedulingLabTest#asyncRunsOnExecutorThreadWhenEnableAsyncPresent` | 线程名前缀 `async-` |
@@ -53,27 +61,27 @@
 | 组合注解 | `@Scheduled + @Async` | 触发线程与执行线程分离 | `BootAsyncSchedulingScheduledAsyncCombinationLabTest#scheduledRunsOnSchedulerThread_butScheduledPlusAsyncRunsOnExecutorThread` | `sched-` vs `async-` |
 | 线程池饱和 | pool=1 queue=0 | 第二个任务被拒绝 | `BootAsyncSchedulingExecutorSaturationLabTest#executorSaturationRejectsSecondTaskDeterministically` | `TaskRejectedException` 或未开始 |
 
-## 推荐运行命令
+## 运行命令
 
 - `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
 
 ## 排障 Playbook（对应模块）
 
-- 常见坑：[`../appendix/01-common-pitfalls.md`](appendix-common-pitfalls.md)
-- 自检：[`../appendix/02-self-check.md`](appendix-self-check.md)
+- 常见坑：[`appendix-common-pitfalls.md`](appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](appendix-self-check.md)
 
 ## 小结与下一章
 
-下一章见：[第 119 章：01：@Async 的心智模型：代理、线程池与返回值](async-scheduling-async-proxy-mental-model.md)
+下一章见：[01：@Async 的心智模型：代理、线程池与返回值](async-scheduling-async-proxy-mental-model.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Matrix：`BootAsyncSchedulingBranchMatrixLabTest`
 - Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
 
-上一章：[part-00-guide/02-breakpoint-map.md](guide-breakpoint-map.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-async-scheduling/01-async-proxy-mental-model.md](async-scheduling-async-proxy-mental-model.md)
+上一章：[guide-breakpoint-map.md](guide-breakpoint-map.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[async-scheduling-async-proxy-mental-model.md](async-scheduling-async-proxy-mental-model.md)
 
 <!-- BOOKIFY:END -->

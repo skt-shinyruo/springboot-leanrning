@@ -1,6 +1,6 @@
 # 06. Debug / 观察：如何“看见”代理与切点
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕Debug / 观察：如何“看见”代理与切点展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](proxy-fundamentals-expose-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07. Advice 全家桶：@Before/@After/@AfterReturning/@AfterThrowing（语义与绑定）](proxy-fundamentals-advice-types-and-binding.md)
+上一章：[05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](proxy-fundamentals-expose-proxy.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[07. Advice 全家桶：@Before/@After/@AfterReturning/@AfterThrowing（语义与绑定）](proxy-fundamentals-advice-types-and-binding.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「06. Debug / 观察：如何“看见”代理与切点」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreAopLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -24,7 +24,7 @@
 
 ## 机制主线
 
-学习 AOP 时，最怕的不是概念难，而是“感觉它在工作，但我看不见”。这一章给出一套可复用的观察方法。
+学习 AOP 时，最怕的不是概念难，而是“感觉它在工作，但无法看见”。这一章给出一套可复用的观察方法。
 
 ## 1) 先判断 bean 是否为代理
 
@@ -41,7 +41,7 @@
 - `AopUtils.getTargetClass(bean)`：获取目标类型（对 proxy 友好）
 - `AopProxyUtils.ultimateTargetClass(bean)`：追到最终目标类型（对多层代理更友好）
 
-## 2) 不要只靠日志：用“可断言的观察点”
+## 2) 不要只凭日志：用“可断言的观察点”
 
 `TracingAspect` 里除了 `System.out.println(...)`，更关键的是：
 
@@ -59,13 +59,13 @@
 
 这对于排查“为什么这个 bean 没被增强”特别有用：能直观看到 advisor 列表是空还是非空。
 
-### 2.2 再往前一步：区分“单 proxy 多 advisor”还是“多层 proxy（套娃）”
+### 2.2 再往前一步：区分“单 proxy 多 advisor”还是“多层 proxy（嵌套代理）”
 
-真实项目里经常会把“叠加”理解成“很多层 proxy”，但 Spring 的主流形态其实是：
+真实项目里经常会把“叠加”理解成“很多层 proxy”，但 Spring 的主流形态本质上是：
 
 - **一个 proxy 上挂多个 advisors**（事务/缓存/安全/自定义切面本质都在 advisors 列表里）
 
-只有在下面场景才更容易出现套娃：
+只有在下面场景才更容易出现嵌套代理：
 
 - 显式用 `ProxyFactory` 再包一层
 - 存在多个会返回替身对象的 BPP，且顺序导致互相包裹（scoped proxy 等基础设施也可能参与）
@@ -77,7 +77,7 @@
 
 配套章节：见 [09. multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md)。
 
-建议学习路径：
+学习路径：
 
 1. 先用最小切点（例如 `@annotation(Traced)`）确保“能拦截”
 2. 再尝试把切点换成更通用表达式（例如 `execution(...)`），对照命中范围变化
@@ -105,7 +105,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -117,7 +117,7 @@
 
 练习入口：`SpringCoreAopExerciseTest#exercise_changePointcutStyle`
 
-如果经常误判（尤其是 this vs target），建议直接做这个 Lab：
+如果经常误判（尤其是 this vs target），直接做这个 Lab：
 
 - `SpringCoreAopPointcutExpressionsLabTest`（JDK/CGLIB 下命中差异可断言）
 
@@ -128,15 +128,15 @@
 5. 代理类型是否与注入/获取方式匹配（JDK vs CGLIB）
 6. 是否存在多层 proxy（拿到的是 outer 还是 inner？）
 
-## 5) 源码断点建议（够用版）
+## 5) 源码断点入口（够用版）
 
-当需要把问题定位到源码层面，建议从两条主线各打一组断点：
+当需要把问题定位到源码层面，从两条主线各打一组断点：
 
-如果要进一步看清“advisor 是怎么筛出来的”，加这两个断点（命中频繁，建议加条件）：
+如果要进一步看清“advisor 是怎么筛出来的”，加这两个断点（命中频繁，加条件）：
 
 ### 5.2 “advice 链是怎么跑的”（调用阶段）
 
-> 读者 C/D 目标（看懂嵌套关系）：建议配合 `SpringCoreAopProceedNestingLabTest` 或 `SpringCoreAopMultiProxyStackingLabTest`，在 `proceed()` 里观察：
+> 读者 C/D 目标（看懂嵌套关系）：配合 `SpringCoreAopProceedNestingLabTest` 或 `SpringCoreAopMultiProxyStackingLabTest`，在 `proceed()` 里观察：
 >
 > - `interceptorsAndDynamicMethodMatchers`（链条顺序）
 > - `currentInterceptorIndex`（执行到哪一层）
@@ -163,11 +163,11 @@ proxy 的运行时类型与目标类型不同；要用 AOP 工具类/Advised 来
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProceedNestingLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[05-expose-proxy](proxy-fundamentals-expose-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07-advice-types](proxy-fundamentals-advice-types-and-binding.md)
+上一章：[05-expose-proxy](proxy-fundamentals-expose-proxy.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[07-advice-types](proxy-fundamentals-advice-types-and-binding.md)
 
 <!-- BOOKIFY:END -->

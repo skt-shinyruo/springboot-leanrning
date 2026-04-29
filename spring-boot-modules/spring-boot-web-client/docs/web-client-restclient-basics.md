@@ -1,6 +1,6 @@
 # 01. RestClient（同步）最小闭环
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：RestClient（同步）最小闭环展开，主线可以概括为：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
 
     阅读时可以先跑 `BootWebClientRestClientLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 00 - Deep Dive Guide（springboot-web-client）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. WebClient（响应式）最小闭环](web-client-webclient-basics.md)
+上一章：[深挖导读：Spring Boot Web Client](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. WebClient（响应式）最小闭环](web-client-webclient-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,7 +19,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebClientRestClientLabTest`
-    - Test file：`spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientRestClientLabTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientRestClientLabTest.java`
 
 ## 机制主线
 
@@ -33,7 +33,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebClientRestClientLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
 
 
 ## 常见坑与边界
@@ -53,11 +53,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebClientRestClientLabTest`
-- Test file：`spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientRestClientLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-web-client/src/test/java/com/learning/springboot/bootwebclient/part01_web_client/BootWebClientRestClientLabTest.java`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-client/02-webclient-basics.md](web-client-webclient-basics.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[web-client-webclient-basics.md](web-client-webclient-basics.md)
 
 <!-- BOOKIFY:END -->

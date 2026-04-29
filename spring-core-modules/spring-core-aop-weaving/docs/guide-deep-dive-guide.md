@@ -1,6 +1,6 @@
 # 02. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通展开，主线可以概括为：代理 vs 织入：选择 LTW/CTW → 定义切点（execution/call/...）→ weaving 生效取决于 classloader/agent/时机 → 用测试/断点验证。
 
     先运行 `AspectjCtwLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
@@ -10,13 +10,21 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：AOP Weaving（织入：LTW/CTW）](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 心智模型：Proxy vs Weaving](mental-model-proxy-vs-weaving.md)
+上一章：[01. 主线时间线：AOP Weaving（织入：LTW/CTW）](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 心智模型：Proxy vs Weaving](mental-model-proxy-vs-weaving.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-本章是「00. 深挖指南：把 weaving 的“结论 → 实验 → 排障路径”跑通」的深挖导读：说明如何阅读、如何验证、以及遇到分支时从哪里下断点更省时间。
-建议先运行 `AspectjCtwLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
+本章用于说明本模块如何阅读、如何验证，以及遇到分支时从哪里下断点。
+先运行 `AspectjCtwLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -83,7 +91,7 @@
 ## 源码与断点
 
 
-建议断点（从“织入没发生”快速分流）：
+断点入口（从“织入没发生”快速分流）：
 
 - 先确认运行的是 LTW 还是 CTW：
   - LTW：确认 JVM 是否带 `-javaagent`（看 `AspectjLtwLabTest#ltw_testJvmIsStartedWithJavaAgent`）
@@ -96,7 +104,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
-- 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -128,7 +136,7 @@ LTW 是否生效，最常见的判断点不是“有没有写 @Aspect”，而�
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
@@ -136,10 +144,10 @@ LTW 是否生效，最常见的判断点不是“有没有写 @Aspect”，而�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`AspectjCtwLabTest` / `AspectjLtwLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-proxy-vs-weaving](mental-model-proxy-vs-weaving.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01-proxy-vs-weaving](mental-model-proxy-vs-weaving.md)
 
 <!-- BOOKIFY:END -->

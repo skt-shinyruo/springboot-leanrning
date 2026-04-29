@@ -1,18 +1,19 @@
 # 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansTypeConversionLabTest`。需要下探源码时，可以从 `TypeConverterDelegate#convertIfNecessary` / `BeanDefinition#getPropertyValues()` / `AbstractAutowireCapableBeanFactory#populateBean` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：类型转换
 
-- 阅读方式建议：先运行一遍本章 Lab，把“字符串 → 目标类型”的现象固定成断言；再带着断点把它放回 `populateBean(...)` / `@Value` 的真实调用链里看清楚。
+- 阅读路径：先运行一遍本章 Lab，把“字符串 → 目标类型”的现象固定成断言；再带着断点把它放回 `populateBean(...)` / `@Value` 的真实调用链里看清楚。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -20,7 +21,7 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansTypeConversionLabTest` / `SpringCoreBeansBeansSupportUtilitiesLabTest`
-    - Test file：
+    - 测试文件：
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
 
@@ -36,9 +37,9 @@
 
 先将常见的“转换问题”分成三类（这是本章最重要的分流）：
 
-1) **占位符/SpEL 解析问题**：`${...}` 没解析出来，值还是 `"${...}"` 或表达式异常
-2) **类型转换问题**：字符串解析出来了，但 `String -> TargetType` 失败（或走错转换器）
-3) **归因错误**：容易误以为是 Spring 的注入转换，但实际为 Boot Binder（`@ConfigurationProperties`）或其他绑定系统
+1. **占位符/SpEL 解析问题**：`${...}` 没解析出来，值还是 `"${...}"` 或表达式异常
+2. **类型转换问题**：字符串解析出来了，但 `String -> TargetType` 失败（或走错转换器）
+3. **归因错误**：容易误以为是 Spring 的注入转换，但实际为 Boot Binder（`@ConfigurationProperties`）或其他绑定系统
 
 本章只讲第 2 类，并且把第 1/3 类的“怎么快速排除”也给读者。
 
@@ -49,7 +50,7 @@
 **条件**：属性填充或 `@Value` 注入需要把 String 转成目标类型
 **分支**：`TypeConverterDelegate#convertIfNecessary` 判断：ConversionService → PropertyEditor → 失败
 **结果**：转换成功则写入属性；失败则抛 `TypeMismatchException` / `ConversionNotSupportedException`
-**断点建议**：`TypeConverterDelegate#convertIfNecessary`
+**断点入口**：`TypeConverterDelegate#convertIfNecessary`
 
 ## 两条必须区分的链路：property values vs `@Value`
 
@@ -78,9 +79,9 @@
 
 其定位更接近：
 
-1) BPP 识别到 `@Value`（通常是 `AutowiredAnnotationBeanPostProcessor`）
-2) 先把 `"${...}"` / `"#{...}"` 交给 BeanFactory 做解析：`AbstractBeanFactory#resolveEmbeddedValue`
-3) 再把解析后的字符串交给类型转换：`convertIfNecessary(...)`
+1. BPP 识别到 `@Value`（通常是 `AutowiredAnnotationBeanPostProcessor`）
+2. 先把 `"${...}"` / `"#{...}"` 交给 BeanFactory 做解析：`AbstractBeanFactory#resolveEmbeddedValue`
+3. 再把解析后的字符串交给类型转换：`convertIfNecessary(...)`
 
 这也是为什么占位符章节（[34](wiring-value-placeholder-resolution-strict-vs-non-strict.md)）和本章经常一起出现：
 
@@ -88,7 +89,7 @@
 
 ### 1.3 属性路径解析与 auto-grow：BeanWrapper 处理“复杂属性”的方式
 
-当读者看到类似 `order.items[0].price` 或 `props["k"]` 的属性路径时：
+当看到类似 `order.items[0].price` 或 `props["k"]` 的属性路径时：
 
 - 解析与写入主要发生在 `BeanWrapperImpl` / `AbstractPropertyAccessor`
 - `autoGrowNestedPaths` 决定“中间对象是否自动创建”
@@ -107,7 +108,7 @@
 
 ## 一个核心决策点：`TypeConverterDelegate#convertIfNecessary`
 
-无论读者走 property values 还是 `@Value`，当读者怀疑“转换不对/没生效”时，最值得盯住的点通常是：
+无论走 property values 还是 `@Value`，当读者怀疑“转换不对/没生效”时，最值得盯住的点通常是：
 
 - `TypeConverterDelegate#convertIfNecessary`
 
@@ -124,7 +125,7 @@
 
 ## 最小可运行实验（让“转换发生在哪”可断言）
 
-建议读者先运行（方法级更快）：
+先运行（方法级更快）：
 
 - `SpringCoreBeansTypeConversionLabTest#stringPropertyValue_canBeConvertedToIntDuringPopulateBean`
 
@@ -140,19 +141,19 @@
 
 ## Debug 断点闭环：把“转换”从黑盒变成白盒
 
-> 目标：用 1–2 个断点，把“哪个值在什么时候被转换、用什么规则转换”看清楚。
+> 落点：用 1–2 个断点，把“哪个值在什么时候被转换、用什么规则转换”看清楚。
 
-### 4.1 推荐断点（按收益排序）
+### 4.1 断点入口（按收益排序）
 
-1) `AbstractAutowireCapableBeanFactory#applyPropertyValues`（定义层 property values → 写入属性的入口）
-2) `BeanWrapperImpl#setPropertyValue`（写属性的入口，能获取到 propertyName）
-3) `TypeConverterDelegate#convertIfNecessary`（转换决策点）
-4) `AbstractBeanFactory#resolveEmbeddedValue`（只在 `@Value` 场景需要：先确认字符串解析结果）
-5) `GenericConversionService#convert`（只在读者确认走 ConversionService 分支时再下）
+1. `AbstractAutowireCapableBeanFactory#applyPropertyValues`（定义层 property values → 写入属性的入口）
+2. `BeanWrapperImpl#setPropertyValue`（写属性的入口，能获取到 propertyName）
+3. `TypeConverterDelegate#convertIfNecessary`（转换决策点）
+4. `AbstractBeanFactory#resolveEmbeddedValue`（只在 `@Value` 场景需要：先确认字符串解析结果）
+5. `GenericConversionService#convert`（只在读者确认走 ConversionService 分支时再下）
 
 ### 4.2 条件断点模板（降低噪声）
 
-在 `applyPropertyValues` 或 `setPropertyValue` 处建议用条件断点（按相应的 Lab 里的 beanName/propertyName 调整）：
+在 `applyPropertyValues` 或 `setPropertyValue` 处用条件断点（按相应的 Lab 里的 beanName/propertyName 调整）：
 
 - `"serverPortHolder".equals(beanName)`
 - `"userIdConsumer".equals(beanName)`
@@ -163,14 +164,14 @@
 
 - `value instanceof String`
 
-### 4.3 固定观察点（watch list）
+### 4.3 固定观察点（观察清单）
 
-在转换相关断点里，建议固定盯这些变量/结构：
+在转换相关断点里，固定盯这些变量/结构：
 
 - `beanName`：当前装配的 bean
 - `propertyName`：当前写入的属性（若在 BeanWrapper 层）
 - `newValue` / `originalValue`：转换前原始值（通常是 String）
-- `requiredType` / `TypeDescriptor`：目标类型（非常关键）
+- `requiredType` / `TypeDescriptor`：目标类型（会直接影响后续判断）
 - `conversionService`：当前 BeanFactory 是否安装了 ConversionService
 - `editor` / `customEditor`：是否命中 PropertyEditor 分支
 
@@ -180,7 +181,7 @@
 > 官方参考（Spring Framework 6.2.x，类型转换（ConversionService））：https://docs.spring.io/spring-framework/reference/core/validation/convert.html
 
 
-把常见问题按“现象 → 诊断 → 入口断点”压缩成一张分流表（建议收藏，排障时直接用）：
+把常见问题按“现象 → 诊断 → 入口断点”压缩成一张分流表（排障分流，排障时直接用）：
 
 | 现象 | 最可能根因 | 优先入口 |
 | --- | --- | --- |
@@ -212,7 +213,7 @@
 - Spring 内部为历史兼容注册了一批 editor（例如资源类的 editor）
 - 某些 legacy 路径仍会尝试 `findCustomEditor(...)`
 
-因此这类问题的处理建议是：
+因此这类问题的处理是：
 
 - **理解它的存在与优先级**（避免看到 editor 分支就慌）
 - **工程上尽量别再新增自定义 PropertyEditor**（除非读者维护的是历史系统）
@@ -225,7 +226,7 @@
 
 > BeanWrapper/TypeConverter/ConversionService 不是“只在注入时用”，它是 Spring 内部大量工具类的通用能力底座。
 
-当在真实项目里看到这些 support 工具类（或类似设计）时，应能够把它们和本章的“转换决策点”联系起来：
+当在真实项目里看到这些 support 工具类（或类似设计）时，需要把它们和本章的“转换决策点”联系起来：
 
 - “输入为 String，但目标 API 需要某个强类型”
 - “Spring 是否会将 String 转成目标类型？如果会，走哪条链？”
@@ -249,7 +250,7 @@
 - 标准答案（可复述）：
   - ConversionService 是现代主力；PropertyEditor 更多是历史兼容分支。排障时不靠“猜优先级”，而是在 `convertIfNecessary` 里看 `conversionService` 是否为 null、是否命中 editor 分支。
 - 最小复现：
-  - `SpringCoreBeansTypeConversionLabTest`（结合本章 4 的 watch list）
+  - `SpringCoreBeansTypeConversionLabTest`（结合本章 4 的观察清单）
 
 ### Q3：为什么 `@ConfigurationProperties` 能转，不代表 `@Value` 一定能转？
 
@@ -259,32 +260,25 @@
   - 注入系统：`resolveEmbeddedValue` / `populateBean` / `convertIfNecessary`
   - Binder 系统：走的是 Boot 的 binder 链路（不在本章主线）
 
-## 自检要点
-- 应能够解释清楚：`@Value` 的“值注入”大致经历哪三步吗？（提示：占位符/SpEL → 类型转换）
-- 应能够指出：类型转换的关键决策点在哪个方法里吗？（提示：`convertIfNecessary`）
-- 应能够说明：ConversionService 与 PropertyEditor 的职责边界是什么，以及为什么 Boot Binder 的转换不等于注入转换吗？
+## 验证标准：类型转换
+- 需要解释清楚：`@Value` 的“值注入”大致经历哪三步吗？（提示：占位符/SpEL → 类型转换）
+- 需要指出：类型转换的关键决策点在哪个方法里吗？（提示：`convertIfNecessary`）
+- 需要说明：ConversionService 与 PropertyEditor 的职责边界是什么，以及为什么 Boot Binder 的转换不等于注入转换吗？
 
-## 小结
+## 收束：类型转换
 
-这一章读者只要记住三件事就够了：
+这一章只要记住三件事即可：
 
-1) 两条链路：property values（`populateBean/applyPropertyValues`） vs `@Value`（`resolveEmbeddedValue` → `convertIfNecessary`）
-2) 一个决策点：`TypeConverterDelegate#convertIfNecessary`（在这里看清到底走 ConversionService 还是 PropertyEditor）
-3) 一个高频误区：别把 Boot Binder 的转换当成注入转换
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
+1. 两条链路：property values（`populateBean/applyPropertyValues`） vs `@Value`（`resolveEmbeddedValue` → `convertIfNecessary`）
+2. 一个决策点：`TypeConverterDelegate#convertIfNecessary`（在这里看清到底走 ConversionService 还是 PropertyEditor）
+3. 一个高频误区：别把 Boot Binder 的转换当成注入转换
 
-    建议 先跑 `SpringCoreBeansTypeConversionLabTest`，再用 `SpringCoreBeansBeansSupportUtilitiesLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`TypeConverterDelegate#convertIfNecessary`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“机制主线：两条链路 + 一个决策点”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansBeansSupportUtilitiesLabTest` / `SpringCoreBeansTypeConversionLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansTypeConversionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeansSupportUtilitiesLabTest.java`
 
 <!-- BOOKIFY:END -->

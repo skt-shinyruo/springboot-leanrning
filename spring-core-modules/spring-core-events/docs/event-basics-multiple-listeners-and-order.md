@@ -1,6 +1,6 @@
 # 02. 多监听器与顺序：为什么 `@Order` 值得认真对待？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕多监听器与顺序：为什么 `@Order` 值得认真对待？展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
     先运行 `SpringCoreEventsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？](event-basics-event-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？](event-basics-condition-and-payload.md)
+上一章：[01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？](event-basics-event-mental-model.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. condition 与 payload：监听器为什么能“按条件触发”甚至接收普通对象？](event-basics-condition-and-payload.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -31,8 +31,8 @@
 
 本章关注两个问题：
 
-1) 多个监听器会不会都收到同一个事件？
-2) 多个监听器的执行顺序能不能依赖？
+1. 多个监听器会不会都收到同一个事件？
+2. 多个监听器的执行顺序能不能依赖？
 
 ## 1) 多监听器：同一个事件会被“广播”
 
@@ -45,7 +45,7 @@
 
 如果没有显式指定顺序：
 
-- 监听器的执行顺序可能与直觉不一致
+- 监听器的执行顺序可能与预期不一致
 - 甚至在不同 JVM / 不同构建方式下表现不同
 
 当确实需要顺序（学习阶段很常见，因为需要做确定性断言），就用 `@Order`：
@@ -58,7 +58,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreEventsLabTest`
-- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -83,10 +83,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreEventsLabTest`
 
-上一章：[01-event-mental-model](event-basics-event-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03-condition-and-payload](event-basics-condition-and-payload.md)
+上一章：[01-event-mental-model](event-basics-event-mental-model.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03-condition-and-payload](event-basics-condition-and-payload.md)
 
 <!-- BOOKIFY:END -->

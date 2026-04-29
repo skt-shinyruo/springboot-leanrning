@@ -1,26 +1,34 @@
-# 01. 90 - Common Pitfalls（springboot-testing）
+# 常见坑清单
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
 
-    这页的坑大多不是“断言写错”，而是“启动了什么上下文，因此哪些 bean 本来就不会出现”。一旦把 slice 当成全量上下文，或者把 mock 当成真实实现，测试就会变成“看起来全绿但线上照样炸”的错觉制造机。
+    这页的坑大多不是“断言写错”，而是“启动了什么上下文，因此哪些 bean 本来就不会出现”。一旦把 slice 当成全量上下文，或者把 mock 当成真实实现，测试就会变成“表面上全绿但线上照样炸”的错觉制造机。
 
-    建议先跑 `BootTestingMockBeanLabTest`，再对照 `GreetingControllerWebMvcLabTest` 与 `GreetingControllerSpringBootLabTest` 的差异，把“边界选择”跑成事实。需要下探时，入口通常落在 `@WebMvcTest/@SpringBootTest` 的装配范围与 TestContext 缓存复用上。
+    先运行 `BootTestingMockBeanLabTest`，再对照 `GreetingControllerWebMvcLabTest` 与 `GreetingControllerSpringBootLabTest` 的差异，把“边界选择”跑成事实。需要下探时，入口通常落在 `@WebMvcTest/@SpringBootTest` 的装配范围与 TestContext 缓存复用上。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 01 - Slice 与 Mock（Testing）](testing-slice-and-mocking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-testing）](appendix-self-check.md)
+上一章：[01. 01 - Slice 与 Mock（Testing）](testing-slice-and-mocking.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[自检题](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 先确认“边界是什么”，再改代码（测试排障的常见逆序）
 
-在测试里，最省时间的排障顺序往往和生产代码相反：先确认测试边界（slice/full context、是否启用 filters、哪些 bean 会被自动装配），再谈业务逻辑。否则会出现“在测试里修了半天，实际上只是选错了注解”的空转。
+在测试里，更快收敛的排障顺序往往和生产代码相反：先确认测试边界（slice/full context、是否启用 filters、哪些 bean 会被自动装配），再谈业务逻辑。否则会出现“在测试里修了半天，实际上只是选错了注解”的空转。
 
-如果想把这种边界选择跑成事实，建议先跑两组矩阵测试，把常见分支固化为断言：
+如果想把这种边界选择跑成事实，先运行两组矩阵测试，把常见分支固化为断言：
 
 - `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
 - `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
 
-需要进一步解释“为什么这个 bean 没装配/为什么上下文被复用”时，再对照本模块的断点地图与关键分支矩阵去下探，会比单纯看日志更收敛：[04-breakpoint-map.md](guide-breakpoint-map.md) / [05-branch-decision-matrix.md](guide-branch-decision-matrix.md)。
+需要进一步解释“为什么这个 bean 没装配/为什么上下文被复用”时，再对照本模块的断点地图与关键分支矩阵去下探，会比单纯看日志更收敛：[guide-breakpoint-map.md](guide-breakpoint-map.md) / [guide-branch-decision-matrix.md](guide-branch-decision-matrix.md)。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -30,7 +38,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest` / `GreetingControllerWebMvcLabTest`
-- 建议命令：`mvn -pl :spring-boot-testing test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-testing test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
@@ -66,10 +74,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest` / `GreetingControllerWebMvcLabTest`
 
-上一章：[part-01-testing/01-slice-and-mocking.md](testing-slice-and-mocking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](appendix-self-check.md)
+上一章：[testing-slice-and-mocking.md](testing-slice-and-mocking.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-self-check.md](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

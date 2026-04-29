@@ -1,19 +1,20 @@
 # Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；真实项目里常见路径是：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
 
-    本章围绕Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansContainerLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## Scope 的第一分支：容器缓存还是每次创建
 
 - 这一章解决一个最常见的 scope 误判：把 “prototype” 理解成“每次方法调用都会 new”。
-- 建议读者先运行 `SpringCoreBeansLabTest#demonstratesPrototypeScopeBehavior`，把“prototype 注入 singleton 为什么像单例”“ObjectProvider 为什么能修”跑成断言，再回到正文对照 `doGetBean` 的 singleton/prototype 分支。
+- 先运行 `SpringCoreBeansLabTest#demonstratesPrototypeScopeBehavior`，把“prototype 注入 singleton 为什么像单例”“ObjectProvider 为什么能修”跑成断言，再回到正文对照 `doGetBean` 的 singleton/prototype 分支。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Scopes，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
@@ -22,16 +23,9 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`AbstractBeanFactory#doGetBean`（观察 `mbd.isPrototype()` 与 `isPrototypeCurrentlyInCreation`）（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“9. 排障决策表（scope/prototype：从“像单例”到“证据链”）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，Scopes 与 scope 语义）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
@@ -56,9 +50,9 @@
 - **结果**：
   - singleton 可以被循环依赖“部分救回”（有 early reference）
   - prototype 循环依赖直接 fail-fast（不会进单例缓存）
-- **断点建议**：`AbstractBeanFactory#doGetBean`（观察 `mbd.isPrototype()` 与 `isPrototypeCurrentlyInCreation`）
+- **断点入口**：`AbstractBeanFactory#doGetBean`（观察 `mbd.isPrototype()` 与 `isPrototypeCurrentlyInCreation`）
 
-## 本模块里应能够直接观察到的现象
+## 本模块里能直接观察到的现象
 
 代码对应：
 
@@ -75,22 +69,22 @@
 - **循环依赖不可救**：prototype 没有 early reference 缓冲区，触发 `BeanCurrentlyInCreationException`
 - **缓存差异本质**：singleton 是“容器托管 + 缓存复用”，prototype 是“一次性交付”
 
-## 为什么“prototype 注入 singleton”会看起来像单例？
+## 为什么“prototype 注入 singleton”会表面上像单例？
 
 容器创建 singleton 的时候，会把它的依赖也解析出来并注入进去。
 
 若将 prototype 当作一个普通依赖注入到 singleton 里，发生的是：
 
-1) 创建 singleton A
-2) 解析到它需要 prototype P
-3) **创建一个 P 并注入到 A**
-4) A 从此持有这个 P 的引用（A 自己是单例）
+1. 创建 singleton A
+2. 解析到它需要 prototype P
+3. **创建一个 P 并注入到 A**
+4. A 从此持有这个 P 的引用（A 自己是单例）
 
 之后读者再调用 A 的方法，当然一直是同一个 P 引用 —— 这不是 prototype “失效”，而是读者**只向容器要过一次 P**。
 
-## 解决方案 1：`ObjectProvider`（推荐，简单有效）
+## 解决方案 1：`ObjectProvider`（直接可用）
 
-`ObjectProvider<T>` 让读者把“获取对象的动作”推迟到方法调用时：
+`ObjectProvider<T>` 让阅读者把“获取对象的动作”推迟到方法调用时：
 
 - 注入的是 provider（可以理解为“容器句柄”）
 - 每次 `getObject()` 才真正向容器要一个实例
@@ -118,7 +112,7 @@
 常见边界（必知）：
 
 - 依赖运行时子类化：final 类/方法无法被覆盖（因此无法被 `@Lookup` 替换）
-- 调试成本更高：调用栈会进入容器与增强逻辑，建议配合本章的断点建议与对照用例
+- 调试成本更高：调用栈会进入容器与增强逻辑，配合本章的断点入口与对照用例
 
 ## 解决方案 3：scoped proxy（谨慎使用）
 
@@ -127,7 +121,7 @@
 - singleton 持有的是“代理”
 - 代理在每次方法调用时去当前 scope 找真实对象
 
-学习阶段建议把它当作“了解存在即可”的方案。
+学习阶段把它当作“了解存在即可”的方案。
 
 ### 6.1 三种方案对照（ObjectProvider / @Lookup / scoped proxy）
 
@@ -161,11 +155,11 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 
 > 类型边界提示：`INTERFACES` 走 JDK proxy 时，按具体类类型 `getBean(ConcreteClass)` 往往会失败；这不是“scope 不生效”，而是代理实现方式决定的类型可见性边界（见前述证据入口）。
 
-> 建议：把 scoped proxy 看成一种“边界工具”。当它被用于 prototype 注入 singleton 时，务必配合本章的证据链去证明它是否真的符合预期（尤其是 equals/hashCode、toString、序列化等边界）。
+> scoped proxy 是一种“边界工具”。当它被用于 prototype 注入 singleton 时，务必配合本章的证据链去证明它是否真的符合预期（尤其是 equals/hashCode、toString、序列化等边界）。
 
 ### 6.3 Debug 证据链：如何快速辨识注入的是 proxy 还是 target？
 
-当怀疑 scoped proxy 造成“看起来像单例/像未生效”的问题时，可固定按三步进行（5 分钟闭环）：
+当怀疑 scoped proxy 造成“表面上像单例/像未生效”的问题时，可固定按三步进行（5 分钟闭环）：
 
 1. `applicationContext.getBean("beanName")` 看类型：是否是代理类（JDK/CGLIB）
 2. `applicationContext.getBean("scopedTarget.beanName")` 看类型：是否是原始类
@@ -173,7 +167,7 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 
 ## prototype 的销毁语义（容器默认不托管）
 
-这一点在真实工程里非常关键，因为它决定了“资源释放责任在谁”：
+这一点会直接决定“资源释放责任在谁”：
 
 - prototype 更接近是：**容器负责创建并一次性交付**
 - 而不是：**容器全程托管（创建 + 使用 + 销毁）**
@@ -201,7 +195,7 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 
 关键点（容易被忽略）：**容器负责“注册销毁回调”，但回调的“触发执行”由 scope 实现负责**。
 
-- 也就是说：如果 scope 实现从不在 scope end/remove 时执行这些 callback，那么 `@PreDestroy/DisposableBean` 就会“看起来不生效”
+- 也就是说：如果 scope 实现从不在 scope end/remove 时执行这些 callback，那么 `@PreDestroy/DisposableBean` 就会“表面上不生效”
 - 证据入口：`SpringCoreBeansCustomScopeLabTest#customScope_canTriggerDestructionCallbacks_whenScopeEnds`（演示：Scope end 时执行 callbacks）
 
 ### 7.2 排障提示：什么时候应该怀疑是 prototype 销毁语义问题？
@@ -213,15 +207,15 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 
 ## 可复现闭环（基于 `SpringCoreBeansContainerLabTest`）
 
-至少应能够用 3 个断言讲清楚本章主线：
+至少需要用 3 个断言讲清楚本章主线：
 
-1) **prototype 注入 singleton 会“冻结为同一个实例”**
+1. **prototype 注入 singleton 会“冻结为同一个实例”**
    - 断点：`doResolveDependency` → `doGetBean("prototypeBean")`
    - 断言：`DirectPrototypeConsumer.currentId()` 两次相同
-2) **`ObjectProvider` 能做到“每次调用新实例”**
+2. **`ObjectProvider` 能做到“每次调用新实例”**
    - 断点：`ObjectProvider#getObject`
    - 断言：`ProviderPrototypeConsumer.newId()` 两次不同
-3) **prototype destroy 不会自动触发**
+3. **prototype destroy 不会自动触发**
    - 断点：`DefaultSingletonBeanRegistry#destroySingletons`
    - 断言：`@PreDestroy` 不执行，除非显式 `destroyBean`
 
@@ -233,19 +227,19 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 
 ### 8.1 直接注入 prototype 到 singleton：为什么会冻结成同一个实例？
 
-1) 创建 singleton A：`AbstractAutowireCapableBeanFactory#doCreateBean("a")`
-2) 依赖解析：`DefaultListableBeanFactory#doResolveDependency`
-3) 解析到 prototype P：`AbstractBeanFactory#doGetBean("p")` → `createBean("p")`
-4) **把这个 P 注入到 A 的字段/构造器参数里**（发生在 `populateBean`/构造器解析阶段）
-5) A 从此持有 P 的引用（A 是单例 ⇒ 引用不会变）
+1. 创建 singleton A：`AbstractAutowireCapableBeanFactory#doCreateBean("a")`
+2. 依赖解析：`DefaultListableBeanFactory#doResolveDependency`
+3. 解析到 prototype P：`AbstractBeanFactory#doGetBean("p")` → `createBean("p")`
+4. **把这个 P 注入到 A 的字段/构造器参数里**（发生在 `populateBean`/构造器解析阶段）
+5. A 从此持有 P 的引用（A 是单例 ⇒ 引用不会变）
 
 ### 8.2 `ObjectProvider`：为什么能做到“每次调用拿一个新的 prototype”？
 
 关键差异：注入的不再是 P，而是 provider（容器句柄）。
 
-1) 注入阶段只注入 provider：`ObjectProvider<T>`
-2) 每次业务方法调用时：`provider.getObject()`
-3) 才触发：`AbstractBeanFactory#doGetBean("p")`（于是每次都是新实例）
+1. 注入阶段只注入 provider：`ObjectProvider<T>`
+2. 每次业务方法调用时：`provider.getObject()`
+3. 才触发：`AbstractBeanFactory#doGetBean("p")`（于是每次都是新实例）
 
 ### 8.3 `@Lookup`：方法注入为什么也能“每次调用都新”？
 
@@ -299,24 +293,24 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 - 最小复现：
   - `SpringCoreBeansPrototypeDestroySemanticsLabTest`
 
-## 自检要点
+## 验证标准：prototype 是否真的每次重新获取
 
-读完这一章应能够回答：
+读完这一章需要能回答：
 
-1) prototype 的第一性语义是什么？（每次 resolve/getBean 都新建）
-2) 为什么“prototype 注入 singleton”会冻结？（获取动作只发生一次）
-3) 可以用哪条证据链证明 provider/lookup 把获取动作推迟到了“使用时”？
+1. prototype 的第一性语义是什么？（每次 resolve/getBean 都新建）
+2. 为什么“prototype 注入 singleton”会冻结？（获取动作只发生一次）
+3. 可以用哪条证据链证明 provider/lookup 把获取动作推迟到了“使用时”？
 
-## 小结
+## 收束：prototype 的关键不是方法调用，而是容器获取
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansPrototypeDestroySemanticsLabTest`
 - Exercise：`SpringCoreBeansExerciseTest`
 - Solution：`SpringCoreBeansExerciseSolutionTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
 
 <!-- BOOKIFY:END -->

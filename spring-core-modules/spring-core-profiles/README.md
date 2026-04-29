@@ -8,6 +8,15 @@
 - 使用 `@ConditionalOnProperty` 进行基于配置项的装配（Spring Boot 自动配置中很常见）
 - 保证每个场景都不会注入歧义（每个场景只存在一个 `GreetingProvider`）
 
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
+
 ## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
@@ -17,19 +26,19 @@
   - `mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - `@Profile("dev")` 的 Bean 在什么时候会生效
 - 使用配置项开关（例如 `app.mode=fancy`）切换行为
-- 在测试中验证当前到底注入了哪个 Bean（以及为什么建议用 `ApplicationContextRunner`）
+- 在测试中验证当前到底注入了哪个 Bean（以及为什么用 `ApplicationContextRunner`）
 
 ## 前置知识
 
-- 建议先完成 `springboot-basics`（profile/配置加载的直觉）
+- 先完成 `springboot-basics`（profile/配置加载的预期）
 - （可选）了解 Spring Boot 的条件注解常见用法（`@ConditionalOnProperty`）
 
 ## 关键命令
@@ -66,17 +75,17 @@ mvn -pl :spring-core-profiles spring-boot:run -Dspring-boot.run.arguments=--app.
 mvn -pl :spring-core-profiles test
 ```
 
-## 推荐 docs 阅读顺序
+## docs 阅读顺序
 
-> 本模块已补齐 `docs/`，建议按“先理解激活与选择 → 再用 runner 证明”的顺序：
+> 本模块已补齐 `docs/`，按“先理解激活与选择 → 再用 runner 证明”的顺序：
 
 1. [深挖指南](docs/guide-deep-dive-guide.md)
 2. [Profile 激活与 Bean 选择](docs/profiles-profile-activation-and-bean-selection.md)
 3. [常见坑清单](docs/appendix-common-pitfalls.md) + [自测题](docs/appendix-self-check.md)
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶。Exercises 默认 `@Disabled`。
+> 说明：⭐=入门，⭐⭐=进阶。练习默认 `@Disabled`。
 
 | 类型 | 入口 | 知识点 | 难度 | 下一步 |
 | --- | --- | --- | --- | --- |
@@ -87,7 +96,7 @@ mvn -pl :spring-core-profiles test
 
 - 条件不生效：先看 profile/属性是否真的传进来了（`Environment`）
 - 注入歧义：同一场景下出现多个候选 Bean，优先让条件互斥而不是用 `@Primary` 兜底
-- 测试建议：用 `ApplicationContextRunner` 把“场景”做小、做快（比起全量 `@SpringBootTest` 更适合学机制）
+- 测试动作：用 `ApplicationContextRunner` 把“场景”做小、做快（比起全量 `@SpringBootTest` 更适合学机制）
 
 ## 扩展练习（可选）
 
@@ -114,7 +123,7 @@ Profile 的核心语义不是“加载哪个配置文件”，而是决定哪些
 
 运行后应能回答：active profiles 的最终值是什么；哪些 Bean 因 profile 条件进入或退出容器；同一配置在不同启动参数下为何会产生不同的 bean graph。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 
@@ -132,7 +141,7 @@ Profile 的核心语义不是“加载哪个配置文件”，而是决定哪些
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBookMatrixLabTest test`
 - Branch Matrix：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-profiles -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-core-profiles -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（Environment 并发读取边界）：`mvn -q -pl :spring-core-profiles -Dtest=SpringCoreProfilesEnvironmentConcurrencyLabTest test`
 
 ---

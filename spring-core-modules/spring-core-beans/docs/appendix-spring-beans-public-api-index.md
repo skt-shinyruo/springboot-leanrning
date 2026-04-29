@@ -1,5 +1,5 @@
 # <!--
-⚠️ SNAPSHOT FILE - 历史上由脚本生成（当前仓库已移除 `scripts/`，因此本文件按快照保留）。
+⚠️ SNAPSHOT FILE - 历史上由脚本生成（当前仓库已移除 `scripts/`，因此本章件按快照保留）。
 - Generator: (removed)
 - Source: /home/feng/.m2/repository/org/springframework/spring-beans/6.2.15/spring-beans-6.2.15-sources.jar
 - Generated at: 2026-01-20 14:30:48
@@ -7,29 +7,38 @@
 
 # spring-beans Public API 索引（Spring Framework 6.2.15）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口"
     - 使用方式：先按本索引把 API 定位到包/机制域，再回到对应章节用断点与 Lab 把行为证明出来；遇到排障场景优先用索引反查“入口方法/关键数据结构”。
 
-    本章围绕spring-beans Public API Index（索引）展开，主线可以概括为：Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。
+    观察对象：spring-beans Public API Index（索引）。
+    主线位置：Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。
 
     对照入口：`SpringCoreBeansBreakpointPackLabTest`。需要下探源码时，可以从 `org.springframework.beans.factory.BeanFactory` / `org.springframework.beans.factory.support.DefaultListableBeanFactory#getBean` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：spring-beans Public API 索引
 
-- 阅读方式建议：这是一份“查阅型文档”。当遇到某个 API/类名但不确定它属于哪类机制时，先在本章定位，再回到对应章节/测试完成闭环。
+- 阅读路径：这是一份“查阅型文档”。当遇到某个 API/类名但不确定它属于哪类机制时，先在本章定位，再回到对应章节/测试完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
 !!! example "本章配套实验（先运行再读）"
 
-    - 索引本身不对应单一 Lab；建议用 Debugger Pack/Branch Matrix 作为总入口：
+    - 索引本身不对应单一 Lab；用 断点包/Branch Matrix 作为总入口：
       - `SpringCoreBeansBreakpointPackLabTest`
       - `SpringCoreBeansIocBranchMatrixLabTest`
       - `SpringCoreBeansInternalsBranchMatrixLabTest`
+
+## 本页路线图
+
+这是一份查阅型快照，不顺读路径：
+
+1. 先用包索引定位类名或 API 所在机制域。
+2. 再看表格中的 Chapter/Lab，把 API 映射回正文和最小实验。
+3. 若发现 API 有索引但缺少可运行闭环，回到 [Gap 清单](appendix-spring-beans-public-api-gap.md) 记录补齐入口。
 
 ## 机制主线：索引如何服务学习与排障
 
@@ -37,24 +46,24 @@
 
 可以把本章当成“反向导航”：
 
-1) 在源码/异常栈里看到一个类（例如 `BeanWrapperImpl` / `DefaultListableBeanFactory`）
-2) 来本章定位它属于哪一类能力（注入解析/类型转换/占位符/FactoryBean/后处理器…）
-3) 回到对应章节：运行 Lab + 设置断点 + 看 watch list，把它变成可复现证据链
+1. 在源码/异常栈里看到一个类（例如 `BeanWrapperImpl` / `DefaultListableBeanFactory`）
+2. 来本章定位它属于哪一类能力（注入解析/类型转换/占位符/FactoryBean/后处理器…）
+3. 回到对应章节：运行 Lab + 设置断点 + 看观察清单，把它变成可复现证据链
 
 关联阅读：
 
 - 知识地图（现象→章节→断点）：`appendix-knowledge-map.md`
-- Debugger Pack（断点入口总索引）：`appendix-debugger-pack.md`
+- 断点包（断点入口总索引）：`appendix-debugger-pack.md`
 - Gap 清单（覆盖看板）：`appendix-spring-beans-public-api-gap.md`
 
 ### 使用方式（从 API 到可复现闭环）
 
 当在代码/异常栈里看到某个类型：
 
-1) **现象**：它对应的异常/行为是什么？
-2) **证据链**：表里找到 “Chapter/Lab”，回到章节找最短断点入口
-3) **修复**：按章节给出的分流与修复策略
-4) **验证**：运行对应 Lab/Test（方法级更佳）
+1. **现象**：它对应的异常/行为是什么？
+2. **证据链**：表里找到 “Chapter/Lab”，回到章节找最短断点入口
+3. **修复**：按章节给出的分流与修复策略
+4. **验证**：运行对应实验/测试（方法级更佳）
 
 
 本索引用于把 `spring-beans` 的 public 类型做成“可检索/可审计”的入口，并为每个类型给出：
@@ -233,7 +242,7 @@
 | `org.springframework.beans.factory.aot.DefaultBeanRegistrationCodeFragments` | `unknown` | AOT（spring-beans） | [appendix-aot-and-native-overview.md](aot-aot-and-native-overview.md) | [`SpringCoreBeansAotFactoriesLabTest.java`](../src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotFactoriesLabTest.java)<br/>[`SpringCoreBeansAotRuntimeHintsLabTest.java`](../src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java) | ✅ core |
 | `org.springframework.beans.factory.aot.InstanceSupplierCodeGenerator` | `class` | AOT（spring-beans） | [appendix-aot-and-native-overview.md](aot-aot-and-native-overview.md) | [`SpringCoreBeansAotFactoriesLabTest.java`](../src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotFactoriesLabTest.java)<br/>[`SpringCoreBeansAotRuntimeHintsLabTest.java`](../src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansAotRuntimeHintsLabTest.java) | ✅ core |
 
-> 备注：AOT 包的 API 面很大：本项目以“可断点理解主线”为目标，建议先从 aot.factories/AotServices 入手，再逐步深入代码生成链路。
+> 备注：AOT 包的 API 面很大：本项目以“可断点理解主线”为目标，从 aot.factories/AotServices 入手，再逐步深入代码生成链路。
 
 ## org.springframework.beans.factory.config
 <a id="orgspringframeworkbeansfactoryconfig"></a>
@@ -485,7 +494,7 @@
 
 ---
 
-## 如何用它（建议）
+## 如何用它
 
 - 遇到某个类/接口名时：先在本索引里搜 `FQCN`，找到“主入口章节”。
 - 进入章节后：按章节的“断点入口/观察点”运行一次对应 Lab，让概念落到可证明的主线上。
@@ -495,7 +504,7 @@
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-- **索引不是学习路线**：Index/GAP 的价值是“定位”，不是“背诵清单”。推荐先按模块目录页（[`README.md`](../README.md)）的 Start Here 运行最小 Lab，再回索引做反查定位。
+- **索引不是学习路线**：Index/GAP 的价值是“定位”，不是“背诵清单”。先按模块目录页（[`README.md`](../README.md)）的 本模块读法 运行最小 Lab，再回索引做反查定位。
 - **BeanFactory vs ApplicationContext 差异**：很多“注解不生效/生命周期不触发”的现象，根因是没有安装 `AnnotationConfigProcessors`（仅 `BeanFactory` 不会自动做这件事）。
 - **FactoryBean 的双重身份**：`getBean("foo")` 获取到的是“产品对象”，`getBean("&foo")` 才是 `FactoryBean` 本身；排查类型不匹配/注入歧义时先确认读者获取到的到底是谁。
 - **代理导致的类型错觉**：JDK Proxy 只实现接口，无法赋值给具体类；当 BPP 提前暴露早期引用/创建代理时，“按具体类注入”可能失败，优先按接口注入或切换到 class-based proxy。
@@ -506,31 +515,22 @@
 面试/述职时，读者经常会遇到这种问法：
 
 > “读者提到过 `DefaultListableBeanFactory` / `BeanPostProcessor` / `FactoryBean`，
-> 应能够说清楚它们在 refresh 的哪一段起作用、以及最关键的方法入口吗？”
+> 需要能说清楚它们在 refresh 的哪一段起作用、以及最关键的方法入口吗？”
 
 这张索引页可以反向帮读者组织答案：
 
-1) 先用本页定位一个 **FQCN** 属于哪个机制域（定义层/依赖解析/创建/后处理/值解析）。
-2) 跳转到对应章节，把“名词”落到 **方法级证据链**（通常是 1 个入口 + 2 个关键分支）。
-3) 最后回指到对应 LabTest（可以在 IDE 中运行以证明读者的结论并非仅凭记忆）。
+1. 先用本页定位一个 **FQCN** 属于哪个机制域（定义层/依赖解析/创建/后处理/值解析）。
+2. 跳转到对应章节，把“名词”落到 **方法级证据链**（通常是 1 个入口 + 2 个关键分支）。
+3. 最后回指到对应实验/测试（可以在 IDE 中运行以证明读者的结论并非仅凭记忆）。
 
 答题模板：`appendix-interview-playbook.md`
 
-## 自检要点
-- 遇到一个 Spring 类型名（FQCN）时，是否能在 30 秒内用本索引定位到：对应章节 + 对应 LabTest + 断点入口？
-- 是否能够能区分：这是“Public API（应当用/理解）”，还是“内部实现细节（版本波动大）”？
-- 是否能够把“查到一个类型”进一步落到“可运行、可证伪”的证据链，而不是停留在概念解释？
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
+## 验证标准：spring-beans Public API 索引
+- 遇到一个 Spring 类型名（FQCN）时，是否能在 30 秒内用本索引定位到：对应章节 + 对应实验/测试 + 断点入口？
+- 是否能区分：这是“Public API（应当用/理解）”，还是“内部实现细节（版本波动大）”？
+- 能否把“查到一个类型”进一步落到“可运行、可证伪”的证据链，而不是停留在概念解释？
 
-    建议 先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：把该页从“信息堆”变成“可用入口”：每个条目尽量落到“去哪里验证/怎么验证”，避免只列名词。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 
-## 小结
+## 收束：spring-beans Public API 索引
 
 Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。
-
-

@@ -1,19 +1,19 @@
 # 03. Async/Scheduling 调用链（@Async / @Scheduled 的生效时机）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（最短调用链）"
+!!! summary "章节入口（最短调用链）"
 
-    这页只做一件事：把 `@Async` / `@Scheduled` 的“最短调用链”写出来，便于在看 tests 或打断点时不迷路。
+    本页的职责是：把 `@Async` / `@Scheduled` 的“最短调用链”写出来，便于在看 tests 或打断点时不迷路。
 
     可以把它当成一张速记卡：不需要背，排障时翻一眼就够。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 00 - Deep Dive Guide（springboot-async-scheduling）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. 断点地图（Async & Scheduling Debugger Pack）](guide-breakpoint-map.md)
+上一章：[深挖导读：Spring Boot Async & Scheduling](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. 断点地图（Async & Scheduling）](guide-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`（见文末“对应 Lab/Test”），对照断言与调用栈，定位“代理建立/任务注册”发生点。
+优先运行 `BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`（见文末“对应实验/测试”），对照断言与调用栈，定位“代理建立/任务注册”发生点。
 
 
 ## 最短调用链
@@ -37,16 +37,16 @@
 
 ## 小结与下一章
 
-下一章见：[第 118 章：02：断点地图](guide-breakpoint-map.md)
+下一章见：[02：断点地图](guide-breakpoint-map.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingLabTest`
 - Lab：`BootAsyncSchedulingSchedulingLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](guide-breakpoint-map.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[guide-breakpoint-map.md](guide-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

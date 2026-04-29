@@ -1,6 +1,6 @@
 # 01. 常见坑清单（Cache）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（排障短文）"
+!!! summary "章节入口（排障短文）"
 
     缓存的坑很少是“注解写错”，更多是语义误解：把缓存当数据库、把 key 当默认、把 `sync=true` 当万能锁、用 sleep 测 TTL。这里把最常见的坑写成可复现的入口，便于把争论变成断言。
 
@@ -9,17 +9,25 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[05. 过期与可测性：用 Ticker 控制时间](cache-expiry-with-ticker.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-cache）](appendix-self-check.md)
+上一章：[05. 过期与可测性：用 Ticker 控制时间](cache-expiry-with-ticker.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[自检题](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 导读
 
-建议优先运行 `BootCacheBranchMatrixLabTest`（见文末“对应 Lab/Test”），把“命中/写入/不缓存/并发/过期”这些分支先跑出来，再回到本文逐条对照误区。
+优先运行 `BootCacheBranchMatrixLabTest`（见文末“对应实验/测试”），把“命中/写入/不缓存/并发/过期”这些分支先跑出来，再回到本章逐条对照误区。
 
 
-## 我通常怎么排缓存问题
+## 缓存问题的排查路径
 
-缓存排障最省时间的三步是：
+缓存排障更快收敛的三步是：
 
 1. **先确认方法有没有执行**（命中短路是最常见的“少了一次调用”）
 2. **再确认 key/分支**（到底算了什么 key？condition/unless 把挡在哪？）
@@ -77,14 +85,14 @@
 
 ## 小结与下一章
 
-- 如果能把本页每个坑对应到一个可复现入口，并且能用一两句人话解释原因，缓存这条线就不会再像玄学。
+- 如果能把本页每个坑对应到一个可复现入口，并且能用一两句人话解释原因，缓存这条线就不会再像不可解释。
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootCacheLabTest` / `BootCacheSpelKeyLabTest`
 
-上一章：[part-01-cache/05-expiry-with-ticker.md](cache-expiry-with-ticker.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](appendix-self-check.md)
+上一章：[cache-expiry-with-ticker.md](cache-expiry-with-ticker.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-self-check.md](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

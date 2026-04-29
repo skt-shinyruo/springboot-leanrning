@@ -1,15 +1,15 @@
 # 01. 配置来源（PropertySources）与 Profile 覆盖
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（谁覆盖谁）"
+!!! summary "章节入口（谁覆盖谁）"
 
-    这章解决的不是“怎么写配置”，而是“为什么我写了配置却没生效”。在 Spring Boot 里，同一个 key 的最终值取决于 `PropertySources` 的优先级；Profile 则同时影响“哪些配置文件参与”与“哪些 Bean 会被注册”。
+    这章解决的不是“怎么写配置”，而是“为什么配置写入后没有生效”。在 Spring Boot 里，同一个 key 的最终值取决于 `PropertySources` 的优先级；Profile 则同时影响“哪些配置文件参与”与“哪些 Bean 会被注册”。
 
     - 最小证据入口：`BootBasicsDefaultLabTest` / `BootBasicsDevLabTest` / `BootBasicsOverrideLabTest`
     - 一眼观察点：`Environment#getActiveProfiles()`、`Environment#getProperty("app.greeting")`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 00 - Deep Dive Guide（springboot-basics）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. `@ConfigurationProperties` 绑定与类型转换](boot-basics-configuration-properties-binding.md)
+上一章：[深挖导读：Spring Boot Basics](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. `@ConfigurationProperties` 绑定与类型转换](boot-basics-configuration-properties-binding.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 问题：为什么改了配置却没有生效
@@ -98,11 +98,11 @@ Profile 容易被理解为“配置文件开关”，但在工程里它经常同
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootBasicsDefaultLabTest` / `BootBasicsDevLabTest` / `BootBasicsOverrideLabTest`
-- Test file：`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java` / `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java` / `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDefaultLabTest.java` / `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsDevLabTest.java` / `spring-boot-modules/spring-boot-basics/src/test/java/com/learning/springboot/bootbasics/part01_boot_basics/BootBasicsOverrideLabTest.java`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-boot-basics/02-configuration-properties-binding.md](boot-basics-configuration-properties-binding.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[boot-basics-configuration-properties-binding.md](boot-basics-configuration-properties-binding.md)
 
 <!-- BOOKIFY:END -->

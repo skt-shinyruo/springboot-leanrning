@@ -1,6 +1,6 @@
 # 02. 异步广播：让事件“默认异步”而不是靠 `@Async`
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕异步广播：让事件“默认异步”而不是靠 `@Async` 展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
     先运行 `SpringCoreEventsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 异步监听器：`@Async` 生效需要什么？线程会怎么变？](async-and-transactional-async-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](async-and-transactional-transactional-event-listener.md)
+上一章：[01. 异步监听器：`@Async` 生效需要什么？线程会怎么变？](async-and-transactional-async-listener.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](async-and-transactional-transactional-event-listener.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -41,19 +41,19 @@
 
 需要在 Spring 容器里提供一个自定义的 multicaster，并为它设置 `TaskExecutor`。
 
-学习建议：
+验证路径：
 
 - 先让 thread name 可控（线程池 prefix），再写断言
-- 再回头对照 `@Async` 方案：它们解决的“异步点”其实不同
+- 再回头对照 `@Async` 方案：它们解决的“异步点”本质上不同
 
 - `@Async`：让“某个监听器方法”异步
 - multicaster async：让“事件分发过程”默认异步
 
 ## 最小可运行实验（Lab）
 
-- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
+- 本章主要作为补充说明/索引页使用：直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -84,11 +84,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
 - Exercise：`SpringCoreEventsExerciseTest`
 
-上一章：[05-async-listener](async-and-transactional-async-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07-transactional-event-listener](async-and-transactional-transactional-event-listener.md)
+上一章：[05-async-listener](async-and-transactional-async-listener.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[07-transactional-event-listener](async-and-transactional-transactional-event-listener.md)
 
 <!-- BOOKIFY:END -->

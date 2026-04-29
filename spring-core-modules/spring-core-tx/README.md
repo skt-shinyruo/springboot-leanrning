@@ -1,8 +1,17 @@
 # spring-core-tx
 
-本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”讲透 **Spring 事务管理**。
+本模块用“可运行的最小示例 + 可验证的测试实验（实验/练习）”讲透 **Spring 事务管理**。
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 docs/。
+
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -14,11 +23,11 @@
   - `mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - `@Transactional` 的声明式事务（本质是 AOP 拦截器）
 - 提交（commit）与回滚（rollback）行为
@@ -28,8 +37,8 @@
 
 ## 前置知识
 
-- 建议先完成 `spring-core-aop`（知道“事务也是代理”更容易理解）
-- 了解 commit/rollback 的基本直觉
+- 先完成 `spring-core-aop`（知道“事务也是代理”更容易理解）
+- 了解 commit/rollback 的基本预期
 
 ## 关键命令
 
@@ -50,7 +59,7 @@ mvn -pl :spring-core-tx spring-boot:run
 mvn -pl :spring-core-tx test
 ```
 
-## 推荐 docs 阅读顺序（从现象到机制）
+## docs 阅读顺序（从现象到机制）
 
 1. [事务边界：到底在“保护”哪一段代码？](docs/transaction-basics-transaction-boundary.md)
 2. [`@Transactional` 如何生效：它也是 AOP（也是代理）](docs/transaction-basics-transactional-proxy.md)
@@ -58,13 +67,13 @@ mvn -pl :spring-core-tx test
 4. [传播行为：`REQUIRED` vs `REQUIRES_NEW`](docs/transaction-basics-propagation.md)
 5. [程序化事务：`TransactionTemplate` 的价值](docs/template-and-debugging-transaction-template.md)
 6. [Debug / 观察：如何判断“当前是否真的有事务”？](docs/template-and-debugging-debugging.md)
-7. [常见坑清单（建议反复对照）](docs/appendix-common-pitfalls.md)
+7. [常见坑清单（排查时对照）](docs/appendix-common-pitfalls.md)
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。Exercises 默认 `@Disabled`。
+> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。练习默认 `@Disabled`。
 
-| 类型 | 入口 | 知识点 | 难度 | 推荐阅读 |
+| 类型 | 入口 | 知识点 | 难度 | 延伸阅读 |
 | --- | --- | --- | --- | --- |
 | Lab | `src/test/java/com/learning/springboot/springcoretx/part01_transaction_basics/SpringCoreTxLabTest.java` | commit/rollback、回滚规则、传播、模板事务 | ⭐⭐ | `docs/01` → `docs/05` |
 | Lab | `src/test/java/com/learning/springboot/springcoretx/appendix/SpringCoreTxSelfInvocationPitfallLabTest.java` | 自调用绕过事务（最小复现）+ 拆分 Bean 修复对比 | ⭐⭐ | `docs/02`、`docs/90` |
@@ -114,7 +123,7 @@ mvn -pl :spring-core-tx test
 
 运行后应能回答：事务在何处开始/提交/回滚；拦截器链条在哪个入口触发；自调用等场景为何会绕过代理边界。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 3. [事务拦截器调用链（从 @Transactional 到 commit/rollback）](docs/guide-transaction-interceptor-call-chain.md)
@@ -140,7 +149,7 @@ mvn -pl :spring-core-tx test
 - Book Matrix：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
 - Branch Matrix（事务主分支）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
 - Branch Matrix（常见坑聚合）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-tx -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-core-tx -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（ThreadLocal 边界证据链）：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxThreadLocalBoundaryLabTest test`
 
 ---

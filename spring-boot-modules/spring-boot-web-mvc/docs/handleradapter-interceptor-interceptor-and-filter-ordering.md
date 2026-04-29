@@ -1,6 +1,6 @@
 # 04. Interceptor 与 Filter：入口在哪里、顺序怎么理解
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕04：Interceptor 与 Filter：入口在哪里、顺序怎么理解展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcErrorViewLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. HandlerMapping：路由、404/405 与 mapping 约束](handlermapping-routing.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. ArgumentResolver 与 Binder（参数从哪来、校验在哪触发）](argument-resolver-and-binder.md)
+上一章：[01. HandlerMapping：路由、404/405 与 mapping 约束](handlermapping-routing.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. ArgumentResolver 与 Binder（参数从哪来、校验在哪触发）](argument-resolver-and-binder.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,7 +19,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
-    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 ## 机制主线
 
@@ -54,15 +54,15 @@
 
 - 本章用“事件序列”把顺序变成可断言证据：
 - Lab：`BootWebMvcTraceLabTest`（Filter vs Interceptor 的相对位置 + async lifecycle 对照）
-- 建议命令（方法级入口）：
+- 运行命令（方法级入口）：
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#syncTraceRecordsFilterAndInterceptorOrder test`
 
 
-## Debug 建议
+## Debug 路径
 
 - 写测试优先选 `MockMvc`：它能稳定复现 handler 链路并断言结果（比手工 curl 更可控）。
 
-建议断点（按“顺序时间线”）：
+断点入口（按“顺序时间线”）：
 
 - Filter 层（最外层）：`OncePerRequestFilter#doFilter`
 - MVC 层入口：`DispatcherServlet#doDispatch`
@@ -90,12 +90,12 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
 - Lab：`BootWebMvcTraceLabTest`
 - Exercise：`BootWebMvcExerciseTest`
-- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
-上一章：[01. HandlerMapping：路由、404/405 与 mapping 约束](handlermapping-routing.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. ArgumentResolver 与 Binder（参数从哪来、校验在哪触发）](argument-resolver-and-binder.md)
+上一章：[01. HandlerMapping：路由、404/405 与 mapping 约束](handlermapping-routing.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. ArgumentResolver 与 Binder（参数从哪来、校验在哪触发）](argument-resolver-and-binder.md)
 <!-- BOOKIFY:END -->

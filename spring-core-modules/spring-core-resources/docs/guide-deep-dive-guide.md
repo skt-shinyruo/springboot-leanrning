@@ -1,6 +1,6 @@
 # 02. 深挖指南（Spring Core Resources）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕深挖指南（Spring Core Resources）展开，主线可以概括为：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
 
     先运行 `SpringCoreResourcesLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Resources](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. `Resource` 抽象：为什么 Spring 不直接使用 `File`？](resource-abstraction.md)
+上一章：[01. 主线时间线：Spring Resources](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. `Resource` 抽象：为什么 Spring 不直接使用 `File`？](resource-abstraction.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
@@ -59,7 +67,7 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 ## 源码与断点
 
 
-建议断点（先把“定位失败”与“读取失败”分开）：
+断点入口（先把“定位失败”与“读取失败”分开）：
 
 - 定位阶段：
   - `org.springframework.core.io.support.PathMatchingResourcePatternResolver#getResources`
@@ -72,7 +80,7 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -81,13 +89,13 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 > - `SpringCoreResourcesMechanicsLabTest`
 
 配套验证入口：
-- Labs/Exercises：见 `src/test/java/com/learning/springboot/springcoreresources/**`
+- 实验/练习：见 `src/test/java/com/learning/springboot/springcoreresources/**`
 
 ## 常见坑与边界
 
-建议阅读顺序：
+阅读顺序：
 1. Resource 抽象是什么、为何存在（Part 01）
-2. classpath 定位规则（含 `classpath:`、`classpath*:`、pattern）与“以为找到了，其实没找到”（Part 01）
+2. classpath 定位规则（含 `classpath:`、`classpath*:`、pattern）与“以为找到了，本质上没找到”（Part 01）
 3. 再进入编码、Jar/文件系统差异与常见坑（Part 01 + Appendix）
 
 ## 小结与下一章
@@ -95,10 +103,10 @@ Resources 的“深挖主线”是把“路径字符串”变成可解释的资�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-resource-abstraction](resource-abstraction.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01-resource-abstraction](resource-abstraction.md)
 
 <!-- BOOKIFY:END -->

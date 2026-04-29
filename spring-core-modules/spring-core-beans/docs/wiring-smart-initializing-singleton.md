@@ -1,19 +1,19 @@
 # SmartInitializingSingleton：所有单例都创建完之后再做事
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕26. SmartInitializingSingleton：所有单例都创建完之后再做事展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：26. SmartInitializingSingleton：所有单例都创建完之后再做事。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansSmartInitializingSingletonLabTest`。需要下探源码时，可以从 `SmartInitializingSingleton#afterSingletonsInstantiated` / `AbstractApplicationContext#finishBeanFactoryInitialization` / `DefaultListableBeanFactory#preInstantiateSingletons` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：SmartInitializingSingleton：所有单例都创建完之后再做事
 
-本章围绕「26. SmartInitializingSingleton：所有单例都创建完之后再做事」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansSmartInitializingSingletonLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+先运行 `SpringCoreBeansSmartInitializingSingletonLabTest` 固定「26. SmartInitializingSingleton：所有单例都创建完之后再做事」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -21,16 +21,9 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansSmartInitializingSingletonLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansSmartInitializingSingletonLabTest`，再用 `SpringCoreBeansSmartInitializingSingletonLabTest#afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`DefaultListableBeanFactory#preInstantiateSingletons`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -40,7 +33,7 @@
 - 想扫描容器里所有某类 bean，并建立索引
 - 想做一次性校验（例如检查某些 bean 组合是否合法）
 
-Spring 提供了一个非常明确的回调：
+Spring 提供了一个明确的回调：
 
 - `SmartInitializingSingleton#afterSingletonsInstantiated`
 
@@ -67,7 +60,7 @@ Spring 提供了一个非常明确的回调：
 
 - `AbstractApplicationContext#finishBeanFactoryInitialization`：refresh 中“创建单例”阶段的入口（会调用 preInstantiateSingletons）
 - `DefaultListableBeanFactory#preInstantiateSingletons`：批量创建非 lazy 单例，并在末尾触发 SmartInitializingSingleton 回调
-- `SmartInitializingSingleton#afterSingletonsInstantiated`：应能够获取到的“单例都创建完了”的明确时机点
+- `SmartInitializingSingleton#afterSingletonsInstantiated`：能拿到的“单例都创建完了”的明确时机点
 - `DefaultSingletonBeanRegistry#getSingleton`：观察某个 bean 是否已经进入 singleton cache（解释 lazy bean 尚未创建）
 - `AbstractBeanFactory#doGetBean`：后续第一次 `getBean(lazy)` 才会触发真正创建
 
@@ -76,17 +69,17 @@ Spring 提供了一个非常明确的回调：
 **条件**：bean 是 **非 lazy 的 singleton**，并实现了 `SmartInitializingSingleton`
 **分支**：`preInstantiateSingletons` 先创建全部非 lazy 单例 → 再统一回调
 **结果**：回调发生在“已创建单例集合稳定”之后，但 **不会包含 lazy 单例**
-**断点建议**：`DefaultListableBeanFactory#preInstantiateSingletons`
+**断点入口**：`DefaultListableBeanFactory#preInstantiateSingletons`
 
 ## 回调来源分型：SmartInitializingSingleton 在生命周期里处于哪一层？
 
 把“回调”分两层看：
 
-1) **单个 bean 级别的初始化回调**
+1. **单个 bean 级别的初始化回调**
    - `@PostConstruct` / `InitializingBean#afterPropertiesSet` / `init-method`
    - 发生在 **bean 自己的创建流程** 中（`populateBean` → `initializeBean`）
-2) **容器级别的“全量就绪回调”**
-   - `SmartInitializingSingleton#afterSingletonsInstantiated`
+2. **容器级别的“全量就绪回调”**
+  - `SmartInitializingSingleton#afterSingletonsInstantiated`
    - 发生在 **所有非 lazy 单例创建完成之后**
 
 因此它与 `ApplicationRunner`/`CommandLineRunner` 的关系是：
@@ -101,7 +94,7 @@ Spring 提供了一个非常明确的回调：
 - 如果 BPP 在初始化后把 bean **替换为 proxy**，这里获取到的通常就是 **proxy**
 - 如果没有替换，回调就在 **目标对象** 上执行
 
-排障建议：
+排障处理：
 
 - 断点 `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`：确认是否发生了“对象替换”
 - 断点 `DefaultListableBeanFactory#preInstantiateSingletons`：确认回调时获取到的是哪种类型
@@ -109,7 +102,7 @@ Spring 提供了一个非常明确的回调：
 入口：
 
 - 入口测试（方法级）：`SpringCoreBeansSmartInitializingSingletonLabTest#afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans`
-- 推荐运行方式：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSmartInitializingSingletonLabTest#afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans test`
+- 运行方式：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSmartInitializingSingletonLabTest#afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans test`
 
 ## 排障分流：这是定义层问题还是实例层问题？
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -122,21 +115,21 @@ Spring 提供了一个非常明确的回调：
 
 ## 面试常问（SmartInitializingSingleton）
 
-1) `SmartInitializingSingleton#afterSingletonsInstantiated` 触发于 refresh 的哪个阶段？为什么它早于 lazy bean 的创建？
-2) 为什么它不等价于 `ApplicationRunner`？（提示：它挂在 BeanFactory 的 preInstantiateSingletons 尾部）
-3) 在回调里调用 `getBean(lazy)` 会带来什么后果？如何判断是否能够“提前把 lazy 全部创建了”？
+1. `SmartInitializingSingleton#afterSingletonsInstantiated` 触发于 refresh 的哪个阶段？为什么它早于 lazy bean 的创建？
+2. 为什么它不等价于 `ApplicationRunner`？（提示：它挂在 BeanFactory 的 preInstantiateSingletons 尾部）
+3. 在回调里调用 `getBean(lazy)` 会带来什么后果？如何判断能否“提前把 lazy 全部创建了”？
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（优先运行它们）：
+本章引用的实验入口：
 - Lab：`SpringCoreBeansSmartInitializingSingletonLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
+- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 验证补充（从实验现象出发）
 
 ## 复现入口（可运行）
 
-- 入口测试（推荐先运行通再设置断点）：
+- 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSmartInitializingSingletonLabTest test`
 
@@ -148,32 +141,32 @@ Spring 提供了一个非常明确的回调：
 
 实验里：
 
-## 源码锚点（建议从这里设置断点）
+## 源码锚点：从这里设置断点
 
 - `DefaultListableBeanFactory#preInstantiateSingletons`：单例预实例化入口（SmartInitializingSingleton 回调发生在这段之后）
 - `SmartInitializingSingleton#afterSingletonsInstantiated`：容器“基本就绪”的回调点（所有非 lazy 单例创建完成后）
 - `AbstractApplicationContext#finishBeanFactoryInitialization`：refresh 主线里触发 preInstantiateSingletons 的阶段
 - `DefaultSingletonBeanRegistry#getSingleton`：回调里再取 bean 的语义与边界（是否会触发额外创建）
 
-## 断点闭环（用本仓库 Lab/Test 运行一次）
+## 断点闭环（用本仓库实验/测试运行一次）
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
   - `afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans()`
 
-建议断点：
+断点入口：
 
-1) `DefaultListableBeanFactory#preInstantiateSingletons`：观察非 lazy 单例创建结束后的“收尾回调”位置
-2) `SmartInitializingSingleton#afterSingletonsInstantiated`（在 Lab 里的实现）：观察回调触发时机与可见的单例集合
-3) `DefaultSingletonBeanRegistry#getSingleton`：在回调里或断言点查看 lazy bean 是否已在缓存中
-4) `AbstractBeanFactory#doGetBean`：在测试后半段第一次 `getBean(lazy)` 时观察真正创建发生在哪里
+1. `DefaultListableBeanFactory#preInstantiateSingletons`：观察非 lazy 单例创建结束后的“收尾回调”位置
+2. `SmartInitializingSingleton#afterSingletonsInstantiated`（在 Lab 里的实现）：观察回调触发时机与可见的单例集合
+3. `DefaultSingletonBeanRegistry#getSingleton`：在回调里或断言点查看 lazy bean 是否已在缓存中
+4. `AbstractBeanFactory#doGetBean`：在测试后半段第一次 `getBean(lazy)` 时观察真正创建发生在哪里
 
-- 应能够解释清楚：为什么 `afterSingletonsInstantiated` 触发时 lazy bean 可能还没创建吗？
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
-推荐断点：`DefaultListableBeanFactory#preInstantiateSingletons`、`SmartInitializingSingleton#afterSingletonsInstantiated`、`AbstractAutowireCapableBeanFactory#doCreateBean`
+- 需要解释清楚：为什么 `afterSingletonsInstantiated` 触发时 lazy bean 可能还没创建吗？
+对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
+断点入口：`DefaultListableBeanFactory#preInstantiateSingletons`、`SmartInitializingSingleton#afterSingletonsInstantiated`、`AbstractAutowireCapableBeanFactory#doCreateBean`
 
-## 常见误区与边界
+## 边界分流：SmartInitializingSingleton：所有单例都创建完之后再做事
 
-### 常见误区
+### 误判点：不要把外层现象当成根因
 
 - **误区 1：误以为它能看到 lazy bean 实例**
   - 它看到的是“已创建的单例”。lazy bean 可能还没创建。
@@ -181,18 +174,18 @@ Spring 提供了一个非常明确的回调：
 - **误区 2：在回调里触发大量 `getBean`**
   - 会把 lazy bean 全部提前创建，可能导致启动变慢。
 
-## 自检要点
-应能够解释清楚：
+## 验证标准：SmartInitializingSingleton：所有单例都创建完之后再做事
+需要解释清楚：
 
-1) **`afterSingletonsInstantiated` 发生在 refresh 的哪个窗口？它与 `preInstantiateSingletons` 的关系是什么？**
-2) **为什么 lazy 单例通常不在这个回调覆盖范围内？**（lazy-init 与按需创建语义）
-3) **SmartInitializingSingleton 与 ContextRefreshedEvent 各适合做什么？如何选择并证明？**
+1. **`afterSingletonsInstantiated` 发生在 refresh 的哪个窗口？它与 `preInstantiateSingletons` 的关系是什么？**
+2. **为什么 lazy 单例通常不在这个回调覆盖范围内？**（lazy-init 与按需创建语义）
+3. **SmartInitializingSingleton 与 ContextRefreshedEvent 各适合做什么？如何选择并证明？**
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansSmartInitializingSingletonLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartInitializingSingletonLabTest.java`
 
 <!-- BOOKIFY:END -->

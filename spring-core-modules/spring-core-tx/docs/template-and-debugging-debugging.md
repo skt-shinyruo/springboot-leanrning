@@ -1,6 +1,6 @@
 # 02. Debug / 观察：如何判断“当前是否真的有事务”？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕Debug / 观察：如何判断“当前是否真的有事务”？展开，主线可以概括为：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
 
     先运行 `SpringCoreTxLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？](template-and-debugging-transaction-template.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（建议反复对照）](appendix-common-pitfalls.md)
+上一章：[01. 程序化事务：为什么 `TransactionTemplate` 在学习阶段很有价值？](template-and-debugging-transaction-template.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（排查时对照）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -22,7 +22,7 @@
 
 ## 机制主线
 
-事务相关的学习痛点通常是：以为有事务，但其实没有；或者以为回滚了，但其实提交了。
+事务相关的学习痛点通常是：以为有事务，但本质上没有；或者以为回滚了，但本质上提交了。
 
 这一章给出几个“可落地的观察手段”。
 
@@ -53,7 +53,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreTxLabTest`
-- 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -80,10 +80,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreTxLabTest`
 
-上一章：[05-transaction-template](template-and-debugging-transaction-template.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
+上一章：[05-transaction-template](template-and-debugging-transaction-template.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

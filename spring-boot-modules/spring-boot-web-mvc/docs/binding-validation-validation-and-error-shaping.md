@@ -1,6 +1,6 @@
 # 01. 校验（Validation）与错误响应形状（Error Shape）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：校验（Validation）与错误响应形状（Error Shape）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. 请求绑定（Binding）与 Converter/Formatter](binding-validation-binding-and-converters.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](message-conversion-content-negotiation-406-415.md)
+上一章：[03. 请求绑定（Binding）与 Converter/Formatter](binding-validation-binding-and-converters.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](message-conversion-content-negotiation-406-415.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,7 +19,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
 
 ## 机制主线
 
@@ -31,9 +31,9 @@
 
 在本模块里可以按 3 段主线理解（也是调试顺序）：
 
-1) **输入 → 对象**（message conversion / data binding）
-2) **对象 → 约束检查**（validation：`@Valid` / `@Validated` 决定是否触发）
-3) **异常 → 错误体**（ExceptionResolvers 命中 `GlobalExceptionHandler`，返回统一 `ApiError`）
+1. **输入 → 对象**（message conversion / data binding）
+2. **对象 → 约束检查**（validation：`@Valid` / `@Validated` 决定是否触发）
+3. **异常 → 错误体**（ExceptionResolvers 命中 `GlobalExceptionHandler`，返回统一 `ApiError`）
 
 关键分支（看到的异常类型与 `message` 不同）：
 
@@ -43,7 +43,7 @@
 
 ## 应当观察到的现象（What to observe）
 
-把现象先钉在可断言入口上（推荐直接跑这些方法级用例）：
+把现象先钉在可断言入口上（直接运行这些方法级用例）：
 
 - `BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid`（`POST /api/users`）：
   - 400
@@ -74,7 +74,7 @@
 - DTO/表单校验失败 → `validation_failed`
 - 方法参数校验失败 → `method_validation_failed`
 
-所以学习目标应该是：遇到 400 时，先用测试/断点把异常类型固定下来，再谈“响应体怎么设计”，避免把不同根因揉成同一个错误体。
+所以目标应落在：遇到 400 时，先用测试/断点把异常类型固定下来，再谈“响应体怎么设计”，避免把不同根因揉成同一个错误体。
 
 ## 方法级校验（Method Validation）在 Controller 边界
 
@@ -84,7 +84,7 @@
 - 失败时常见异常（随 Spring 版本不同）：`HandlerMethodValidationException` 或 `ConstraintViolationException`
 - 本模块把该分支也塑形成统一错误体：`ApiError(message = "method_validation_failed")`
 
-可运行证据链（推荐先跑再断点）：
+可运行证据链（先运行再断点）：
 
 - endpoint：`GET /api/advanced/binding/age-validated?age=-1`
 - Lab：`BootWebMvcBindingDeepDiveLabTest#returnsMethodValidationFailedWhenRequestParamViolatesConstraint`
@@ -104,7 +104,7 @@
 9. 校验失败抛出 `MethodArgumentNotValidException`
 10. `DispatcherServlet#processHandlerException` → `ExceptionHandlerExceptionResolver` 命中 `GlobalExceptionHandler`
 
-对应的机制内核解释见（建议按顺序）：
+对应的机制内核解释见（按顺序）：
 - [DispatcherServlet 主链路（把选路/参数解析/异常串起来）](dispatcherservlet-call-chain.md)
 - [ArgumentResolver 与 Binder（解析参数/绑定/校验触发点）](argument-resolver-and-binder.md)
 - [ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](exception-resolvers-and-error-flow.md)
@@ -112,33 +112,33 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-- 建议命令（方法级入口）：
+- 运行命令（方法级入口）：
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
 
 
-## Debug 建议
+## Debug 路径
 
 把本章当作 3 个“可验证的分支”来调试，会更快：
 
-1) **校验是否触发（@Valid 分支）**
+1. **校验是否触发（@Valid 分支）**
 - 入口测试：`BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid`
-- 建议命令：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
+- 运行命令：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest#returnsValidationErrorWhenRequestIsInvalid test`
 - 对照用例（故意省略 `@Valid`，证明“写了注解但没触发”）：`BootWebMvcLabTest#createUserSucceedsWhenControllerOmitsValidAnnotation`
   - `RequestResponseBodyMethodProcessor#resolveArgument`
   - `SpringValidatorAdapter#validate`
   - DTO 上是否有约束注解（`CreateUserRequest`）
   - controller 入参是否带 `@Valid`
 - 决定性分支：
-  - **没有 `@Valid`**：约束注解不会自动生效（这是最常见的“我写了注解但没校验”的原因）
+  - **没有 `@Valid`**：约束注解不会自动生效（这是最常见的“注解已写但没有触发校验”的原因）
 
-2) **异常如何被塑形成 ApiError（错误体分支）**
+2. **异常如何被塑形成 ApiError（错误体分支）**
   - `ExceptionHandlerExceptionResolver#doResolveHandlerMethodException`
   - `GlobalExceptionHandler#handleValidation`
   - `ex.getBindingResult().getFieldErrors()`（字段错误列表）
   - 最终响应体的 `message/fieldErrors`
 
-3) **同样是 400：到底是校验失败还是 JSON 解析失败（根因分支）**
-- 建议配套跑：`BootWebMvcExceptionResolverChainLabTest`（用 `resolvedException` 固定根因）
+3. **同样是 400：到底是校验失败还是 JSON 解析失败（根因分支）**
+- 配套跑：`BootWebMvcExceptionResolverChainLabTest`（用 `resolvedException` 固定根因）
 
 进一步阅读（只做必要连接，不扩散篇幅）：
 
@@ -149,15 +149,15 @@
 
 本章聚焦 Web MVC 的“边界校验”：请求从 HTTP/JSON 进入 Controller 时，校验在哪里触发、失败后如何形成可控的错误响应。
 
-1) **数据绑定（binding）**：JSON → DTO（例如 `CreateUserRequest`）
-2) **边界校验（validation）**：`@Valid` 触发 Bean Validation，对 DTO 执行约束检查
-3) **错误映射（error mapping）**：异常被 `@RestControllerAdvice` 捕获，转换成 `ApiError` 形状
+1. **数据绑定（binding）**：JSON → DTO（例如 `CreateUserRequest`）
+2. **边界校验（validation）**：`@Valid` 触发 Bean Validation，对 DTO 执行约束检查
+3. **错误映射（error mapping）**：异常被 `@RestControllerAdvice` 捕获，转换成 `ApiError` 形状
 
 最常见的三类误判：
 
 - DTO 上有约束注解，但 controller 参数缺 `@Valid`：不会触发校验（见对照用例 `BootWebMvcLabTest#createUserSucceedsWhenControllerOmitsValidAnnotation`）。
 - 只处理 `MethodArgumentNotValidException`：会漏掉 binder 路径的 `BindException`（表单 / `@ModelAttribute`）。
-- 把方法级校验当成 DTO 校验：建议区分 `validation_failed` 与 `method_validation_failed`，否则客户端只能靠猜根因。
+- 把方法级校验当成 DTO 校验：区分 `validation_failed` 与 `method_validation_failed`，否则客户端只能靠猜根因。
 
 ## 小结与下一章
 
@@ -171,10 +171,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
-- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcSpringBootLabTest.java`
 
-上一章：[03. 请求绑定（Binding）与 Converter/Formatter](binding-validation-binding-and-converters.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](message-conversion-content-negotiation-406-415.md)
+上一章：[03. 请求绑定（Binding）与 Converter/Formatter](binding-validation-binding-and-converters.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. Content Negotiation（406/415：Accept/Content-Type/produces/consumes）](message-conversion-content-negotiation-406-415.md)
 <!-- BOOKIFY:END -->

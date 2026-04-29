@@ -1,6 +1,6 @@
 # 05. JWT/Stateless：Bearer token + scope（最小闭环）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕05：JWT/Stateless：Bearer token + scope（最小闭环）展开，主线可以概括为：HTTP 请求 → `FilterChainProxy` 选择 SecurityFilterChain → 认证（Authentication）→ 授权（Authorization）→ 异常处理（401/403）→ 继续进入 MVC。
 
     阅读时可以先跑 `BootSecurityLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：将认证/授权配置为 FilterChain；区分 401/403 与 CSRF 场景；方法级安全依赖代理与拦截器链。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. FilterChain：多链路 + 顺序 + 自定义 Filter](security-filter-chain-and-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（Security）](appendix-common-pitfalls.md)
+上一章：[04. FilterChain：多链路 + 顺序 + 自定义 Filter](security-filter-chain-and-order.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（Security）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,7 +19,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityLabTest`
-    - Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 ## 机制主线
 
@@ -60,15 +60,15 @@ Spring Security 默认会把 JWT 的 `scope`（空格分隔）映射成 `SCOPE_x
 
 默认 `spring-boot:run` 只演示 Basic Auth；如果想手动拿 token 体验 JWT 链路：
 
-1) 启动 dev profile（启用 token 发行端点）：
+1. 启动 dev profile（启用 token 发行端点）：
 
-2) 获取 token（scope=admin）：
+2. 获取 token（scope=admin）：
 
 ```bash
 curl 'http://localhost:8085/api/jwt/dev/token?subject=alice&scope=admin'
 ```
 
-3) 访问 admin endpoint：
+3. 访问 admin endpoint：
 
 ```bash
 curl -H "Authorization: Bearer <token>" http://localhost:8085/api/jwt/admin/ping
@@ -77,7 +77,7 @@ curl -H "Authorization: Bearer <token>" http://localhost:8085/api/jwt/admin/ping
 ## 最小可运行实验（Lab）
 
 - Lab：`BootSecurityLabTest`
-- 建议命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
 
 
 本章的目标是：在不依赖外部 IdP 的情况下，用最小示例理解 JWT/Stateless 的工作方式，并通过 tests 固化结论。
@@ -128,11 +128,11 @@ Spring Security 对 scope 的默认映射通常会带 `SCOPE_` 前缀；如果�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootSecurityLabTest`
-- Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
-上一章：[part-01-security/04-filter-chain-and-order.md](security-filter-chain-and-order.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md)
+上一章：[security-filter-chain-and-order.md](security-filter-chain-and-order.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

@@ -1,6 +1,6 @@
 # 02. 深挖指南（Spring Core Validation）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕深挖指南（Spring Core Validation）展开，主线可以概括为：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
 
     先运行 `SpringCoreValidationLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
@@ -10,13 +10,21 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Validation](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 约束（Constraint）心智模型：校验对象与校验结果](validation-core-constraint-mental-model.md)
+上一章：[01. 主线时间线：Spring Validation](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 约束（Constraint）心智模型：校验对象与校验结果](validation-core-constraint-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-本章是「深挖指南（Spring Core Validation）」的深挖导读：说明如何阅读、如何验证、以及遇到分支时从哪里下断点更省时间。
-建议先运行 `SpringCoreValidationLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
+本章用于说明本模块如何阅读、如何验证，以及遇到分支时从哪里下断点。
+先运行 `SpringCoreValidationLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -69,7 +77,7 @@ Validation 的“深挖主线”不是记注解，而是把三件事分清：
 ## 源码与断点
 
 
-建议断点（把“为什么没校验”快速分流）：
+断点入口（把“为什么没校验”快速分流）：
 
 - method validation 是否真的走代理：
   - 先在 `SpringCoreValidationLabTest#methodValidatedServiceIsAnAopProxy` 的断言处确认代理存在性
@@ -79,7 +87,7 @@ Validation 的“深挖主线”不是记注解，而是把三件事分清：
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -88,21 +96,21 @@ Validation 的“深挖主线”不是记注解，而是把三件事分清：
 > - `SpringCoreValidationMechanicsLabTest`
 
 配套验证入口：
-- Labs/Exercises：见 `src/test/java/com/learning/springboot/springcorevalidation/**`
+- 实验/练习：见 `src/test/java/com/learning/springboot/springcorevalidation/**`
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-constraint-mental-model](validation-core-constraint-mental-model.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01-constraint-mental-model](validation-core-constraint-mental-model.md)
 
 <!-- BOOKIFY:END -->

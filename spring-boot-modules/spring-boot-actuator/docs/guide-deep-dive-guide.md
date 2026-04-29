@@ -1,7 +1,7 @@
-# 02. 00 - Deep Dive Guide（springboot-actuator）
+# 深挖导读：Spring Boot Actuator
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕Deep Dive Guide（springboot-actuator）展开，主线可以概括为：引入 Actuator → 端点注册与 discover → exposure 决定暴露 → Web 层映射为 HTTP 端点 → 结合安全策略与可观测信号使用。
+!!! summary "章节入口（五问闭环）"
+    本章用于把模块主线、源码入口与断点路径串起来，主线可以概括为：引入 Actuator → 端点注册与 discover → exposure 决定暴露 → Web 层映射为 HTTP 端点 → 结合安全策略与可观测信号使用。
 
     阅读时可以先跑 `BootActuatorExposureOverrideLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 Actuator endpoints 暴露健康检查/信息/指标；用 exposure 控制可见范围，并在生产环境结合鉴权与安全边界。
 
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Boot Actuator](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 01 - Actuator 基础与暴露](actuator-basics.md)
+上一章：[01. 主线时间线：Spring Boot Actuator](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 01 - Actuator 基础与暴露](actuator-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
@@ -22,13 +30,13 @@
 
 ## 机制主线
 
-这一模块建议用“三段式分流”建立稳定心智模型：
+这一模块用“三段式分流”建立稳定心智模型：
 
 1. **端点是否存在（Registered）**：端点有没有被注册出来（通常对应一个 endpoint bean）
 2. **端点是否暴露（Exposed）**：端点有没有被映射到 HTTP（取决于 base-path、include/exclude、web/management 配置）
 3. **端点是否可访问（Accessible）**：端点有没有被安全策略/网络边界允许访问（401/403/404 的分流）
 
-只要把这三段分清楚，就能把“看起来像 Actuator 坏了”的问题拆成可验证的子问题，而不是靠猜配置。
+只要把这三段分清楚，就能把“表面上像 Actuator 坏了”的问题拆成可验证的子问题，而不是靠猜配置。
 
 ### 1) 时间线：从启动到可访问
 
@@ -72,7 +80,7 @@
 ## 源码与断点
 
 
-建议断点（从“现象”到“原因”的最短路径）：
+断点入口（从“现象”到“原因”的最短路径）：
 
 - 暴露集合的计算与映射建立：
   - `org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping#initHandlerMethods`（看哪些 endpoint 被注册成 handler）
@@ -85,10 +93,10 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
-- 建议命令：`mvn -pl :spring-boot-actuator test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-actuator test`（或在 IDE 直接运行上面的测试类）
 
 
-## 推荐学习目标
+## 验证目标
 1. 能描述“端点是否存在”与“端点是否暴露”是两件事
 2. 能用最小配置复现 exposure 覆盖/退让，并用测试锁定行为
 3. 能定位 Actuator 相关排障的第一现场：`/actuator`、条件报告、日志与配置来源
@@ -104,18 +112,18 @@
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
 - Exercise：`BootActuatorExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-actuator/01-actuator-basics.md](actuator-basics.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[actuator-basics.md](actuator-basics.md)
 
 <!-- BOOKIFY:END -->

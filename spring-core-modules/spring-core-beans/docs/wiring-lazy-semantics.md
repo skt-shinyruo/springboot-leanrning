@@ -1,18 +1,19 @@
 # Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；真实项目里常见路径是：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
 
-    本章围绕Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansLazyLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
-- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -20,16 +21,9 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansLazyLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansLazyLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansLazyLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansLazyLabTest`，再用 `SpringCoreBeansLazyLabTest#lazyInjectionPoint_canDeferCreationOfLazyBeanUntilFirstUse` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`DefaultListableBeanFactory#preInstantiateSingletons`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“4. 代理类型边界：接口注入点 vs 类注入点（必须会排障）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -61,9 +55,9 @@
 **结果**：
 - lazy-init：启动期跳过，首次 `getBean` 才创建
 - 非 lazy：启动期即创建
-**断点建议**：`DefaultListableBeanFactory#preInstantiateSingletons`
+**断点入口**：`DefaultListableBeanFactory#preInstantiateSingletons`
 
-## 关键反直觉点：lazy-init 也挡不住“被别人依赖”
+## 关键反预期点：lazy-init 也挡不住“被别人依赖”
 
 对应测试：
 
@@ -94,7 +88,7 @@
 - proxy 在第一次真正调用时，再去容器里解析目标 bean
 
 - 没有“外部因素”提前创建目标 bean
-- 应能够清晰观测到：目标 bean 的构造器是在“第一次调用”时才执行
+- 需要清晰观测到：目标 bean 的构造器是在“第一次调用”时才执行
 
 ---
 
@@ -102,7 +96,7 @@
 
 注入点 `@Lazy` 最容易被误判为“等同于 lazy-init”，但它的本质是：**在依赖解析阶段直接返回一个 proxy，把解析/创建目标对象推迟到首次调用**。
 
-源码层面，它通常落在这样一条链路上（读者不要求背，但要能在断点里观察到）：
+源码层面，它通常落在这样一条链路上（不要求背，但要能在断点里观察到）：
 
 - `DefaultListableBeanFactory#doResolveDependency(...)` 解析注入点
 - `AutowireCandidateResolver` 判断注入点是否带 `@Lazy`
@@ -110,7 +104,7 @@
   - 创建 `ProxyFactory`
   - 绑定 `LazyDependencyTargetSource`（内部通过 `ObjectFactory` 在首次调用时获取到真实 target）
 
-**为什么这很重要？**
+**为什么这需要明确？**
 
 - 它解释了：为什么注入结果可能是 proxy，以及为何 `@PostConstruct`/初始化回调会延后到“首次使用”才触发；
 - 也解释了：为什么在未配置 lazy-init 的情况下，仍可能观察到“对象没有在启动期创建”。
@@ -123,15 +117,15 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansLazyLabTest`）
 
-运行完成该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少需要复述 3 条结论：
 
-1) **lazy-init 只影响预实例化**
+1. **lazy-init 只影响预实例化**
    - 断点：`preInstantiateSingletons`
    - 断言：lazy bean 在 refresh 时不创建
-2) **eager 依赖会提前触发创建**
+2. **eager 依赖会提前触发创建**
    - 断点：`doResolveDependency`
    - 断言：非 lazy consumer 会触发 lazy bean 创建
-3) **注入点 `@Lazy` 只是 proxy**
+3. **注入点 `@Lazy` 只是 proxy**
    - 断点：`getLazyResolutionProxyIfNecessary`
    - 断言：首次调用才触发真实 bean 创建
 
@@ -143,25 +137,25 @@
 
 在本仓库的 Lab 中可以直接对照：
 
-1) **接口注入点（JDK proxy）**
+1. **接口注入点（JDK proxy）**
    - 对应实验：`SpringCoreBeansLazyLabTest#lazyInjectionPoint_canDeferCreationOfLazyBeanUntilFirstUse`
    - 现象：注入对象满足接口类型，但**不是具体实现类**（按实现类查找/强转会易错点）
-2) **类注入点（CGLIB proxy）**
+2. **类注入点（CGLIB proxy）**
    - 对应实验：`SpringCoreBeansLazyLabTest#lazyInjectionPoint_onConcreteClass_usesClassBasedProxy_andDefersCreationUntilFirstUse`
    - 现象：注入对象是目标类的子类代理，通常仍可按具体类类型工作，但调试时类名会带 `$$` 等 proxy 痕迹
 
-排障分流建议（先问自己这 2 个问题）：
+排障分流（先问自己这 2 个问题）：
 
 - 读者是“按接口”注入/查找，还是“按实现类”注入/查找？
 - 读者获取到的是 JDK proxy 还是 CGLIB proxy？（决定“类型边界”与“能不能强转”）
 
 入口：
 
-1) lazy 目标 bean 的构造器：作为“到底什么时候创建”的最直观观察点
-2) `DefaultListableBeanFactory#preInstantiateSingletons`：在 refresh 期间观察 lazy-init bean 是否被跳过
-3) `AbstractBeanFactory#doGetBean`：第一次按 name/type 取 bean 时触发创建的路径
-4) `ContextAnnotationAutowireCandidateResolver#getLazyResolutionProxyIfNecessary`：观察注入点 `@Lazy` 是如何变成 proxy 的
-5) `DefaultListableBeanFactory#doResolveDependency`：在“consumer 依赖 lazy bean”的测试里观察为什么会提前创建
+1. lazy 目标 bean 的构造器：作为“到底什么时候创建”的最直观观察点
+2. `DefaultListableBeanFactory#preInstantiateSingletons`：在 refresh 期间观察 lazy-init bean 是否被跳过
+3. `AbstractBeanFactory#doGetBean`：第一次按 name/type 取 bean 时触发创建的路径
+4. `ContextAnnotationAutowireCandidateResolver#getLazyResolutionProxyIfNecessary`：观察注入点 `@Lazy` 是如何变成 proxy 的
+5. `DefaultListableBeanFactory#doResolveDependency`：在“consumer 依赖 lazy bean”的测试里观察为什么会提前创建
 
 ## 排障分流：这是定义层问题还是实例层问题？
 
@@ -170,7 +164,7 @@
 - “误认为 `@Lazy` 会影响 beanDefinition 的 lazy-init” → **优先定义层澄清**：注入点 `@Lazy` 与 beanDefinition `lazy-init` 是两种语义（本章第 3 节）
 - “看到的是 proxy 类型而不是目标类” → **实例层（代理语义）**：这是注入点 `@Lazy` 的本质（对照 [31](wiring-proxying-phase-bpp-wraps-bean.md)）
 
-## 自检要点
+## 验证标准：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
 - 常问：`lazy-init` 与注入点 `@Lazy` 有什么本质差别？
   - 答题要点：`lazy-init` 是定义层“延迟创建策略”；注入点 `@Lazy` 是“注入延迟解析 proxy”，把解析推迟到首次使用。
@@ -205,10 +199,10 @@
 
 > 结论：lazy-init 控制“容器是否主动创建”；注入点 `@Lazy` 控制“注入的是不是一个延迟解析的代理”。
 
-## 常见误区与边界
+## 边界分流：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
 
-### 常见误区
+### 误判点：不要把外层现象当成根因
 
 - **误区 1：以为 `@Lazy` 能让所有依赖都不创建**
   - 如果目标 bean 不是 lazy-init，它仍可能在 refresh 阶段被 pre-instantiate。
@@ -216,7 +210,7 @@
 - **误区 2：在 proxy 上调用 `toString()` / `equals()` 触发真实创建**
   - 学习阶段尽量不要依赖日志；用断言固定“构造器是否被调用”。
 
-## 小结
+## 收束：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
 - `DefaultListableBeanFactory#preInstantiateSingletons`：refresh 时批量创建非 lazy 单例（lazy-init bean 会被跳过）
 - `AbstractBeanFactory#doGetBean`：第一次 `getBean(...)` 触发真正创建（lazy-init 的典型入口）
@@ -226,9 +220,9 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansLazyLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansLazyLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansLazyLabTest.java`
 
 <!-- BOOKIFY:END -->

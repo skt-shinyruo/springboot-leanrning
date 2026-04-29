@@ -1,12 +1,21 @@
 # spring-boot-logging
 
-本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”讲透 **Spring Boot 日志（Logging）**在工程里的落点：
+本模块用“可运行的最小示例 + 可验证的测试实验（实验/练习）”讲透 **Spring Boot 日志（Logging）**在工程里的落点：
 
 - 日志级别如何由配置驱动（`logging.level.*`）
 - 为什么“日志要可断言”（避免只靠肉眼看控制台）
 - MDC/traceId 等上下文如何影响排障效率（本模块以最小示范为主）
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 docs/。
+
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -17,9 +26,9 @@
   - `mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix-self-check.md`](docs/appendix-self-check.md)
 
 完成标准（应能解释清楚）：
 
@@ -40,9 +49,9 @@ mvn -pl :spring-boot-logging spring-boot:run
 mvn -pl :spring-boot-logging test
 ```
 
-## Labs / Exercises 索引
+## 实验/练习索引
 
-> Exercises 默认 `@Disabled`。
+> 练习默认 `@Disabled`。
 
 | 类型 | 入口 | 知识点 | 难度 |
 | --- | --- | --- | --- |
@@ -62,9 +71,9 @@ mvn -pl :spring-boot-logging test
 ### 10 分钟入口：先确认“最终级别”如何决策
 - `mvn -q -pl :spring-boot-logging -Dtest=BootLoggingBookMatrixLabTest test`
 
-运行后应能回答：LoggingSystem 在启动期何时初始化；某个 logger 的最终级别来自哪个配置来源；为何同一份配置在不同环境下看起来“时灵时不灵”。
+运行后应能回答：LoggingSystem 在启动期何时初始化；某个 logger 的最终级别来自哪个配置来源；为何同一份配置在不同环境下表面上“时灵时不灵”。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 3. [Logging 调用链（LoggingSystem 初始化与级别决策）](docs/guide-logging-call-chain.md)

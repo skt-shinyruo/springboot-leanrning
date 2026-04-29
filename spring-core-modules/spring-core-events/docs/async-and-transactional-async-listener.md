@@ -1,6 +1,6 @@
 # 01. 异步监听器：`@Async` 生效需要什么？线程会怎么变？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕异步监听器：`@Async` 生效需要什么？线程会怎么变？展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
     先运行 `SpringCoreEventsMechanicsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](event-basics-sync-and-exceptions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 异步广播：让事件“默认异步”而不是靠 `@Async`](async-and-transactional-async-multicaster.md)
+上一章：[04. 同步与异常传播：为什么监听器抛异常会“炸到发布方”？](event-basics-sync-and-exceptions.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 异步广播：让事件“默认异步”而不是靠 `@Async`](async-and-transactional-async-multicaster.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -46,13 +46,13 @@
 
 ## 应当得到的结论
 
-- “我用了 `@Async`，为什么还是同步？”
+- “使用 `@Async` 后为什么仍然同步？”
   - 多半是没启用 async（或线程池没配置）
 
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreEventsMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -73,7 +73,7 @@
 
 `AsyncAnnotationBeanPostProcessor#postProcessAfterInitialization`、`AnnotationAsyncExecutionInterceptor#invoke`
 
-开启 `@EnableAsync`（并确保 listener 是容器管理的 bean 且不自调用）；用 Lab/Test 把“线程是否变化”的事实固定下来，避免只靠肉眼看日志。
+开启 `@EnableAsync`（并确保 listener 是容器管理的 bean 且不自调用）；用实验/测试 把“线程是否变化”的事实固定下来，避免只靠肉眼看日志。
 
 ## 常见误区
 
@@ -83,10 +83,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreEventsMechanicsLabTest`
 
-上一章：[04-sync-and-exceptions](event-basics-sync-and-exceptions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06-async-multicaster](async-and-transactional-async-multicaster.md)
+上一章：[04-sync-and-exceptions](event-basics-sync-and-exceptions.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06-async-multicaster](async-and-transactional-async-multicaster.md)
 
 <!-- BOOKIFY:END -->

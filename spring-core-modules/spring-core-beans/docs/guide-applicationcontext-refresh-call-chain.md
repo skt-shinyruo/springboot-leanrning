@@ -1,18 +1,26 @@
 # `refresh()` 调用链（容器从“定义”到“实例”的主线）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把“容器阶段”固化为可观察现象，再按本文的调用链从 `refresh()` 走到 `doCreateBean()`；最后回到断点地图把断点收敛成“可复用清单”。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把“容器阶段”固化为可观察现象，再按本章的调用链从 `refresh()` 走到 `doCreateBean()`；最后回到断点地图把断点收敛成“可复用清单”。
 
-    本章围绕01：`refresh()` 调用链（容器从“定义”到“实例”的主线）展开，主线可以概括为：`AbstractApplicationContext#refresh` 按阶段推进：准备环境 → 生成 BeanFactory → 注册/执行 BFPP/BDRPP（改定义）→ 注册 BPP（改实例/可换成 proxy）→ 单例预实例化 → 容器就绪。
+    观察对象：01：`refresh()` 调用链（容器从“定义”到“实例”的主线）。
+    主线位置：`AbstractApplicationContext#refresh` 按阶段推进：准备环境 → 生成 BeanFactory → 注册/执行 BFPP/BDRPP（改定义）→ 注册 BPP（改实例/可换成 proxy）→ 单例预实例化 → 容器就绪。
 
     对照入口：`SpringCoreBeansContainerLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.context.support.PostProcessorRegistrationDelegate` / `org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
+## 本页路线图
 
-## 导读
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
 
-- 目标：将“知道 refresh 很重要”提升为“能够解释 refresh 的阶段，并能将断点设置在正确的阶段入口”。
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
+
+## `refresh()` 主线：先定位阶段，再进入分支
+
+- 落点：将“知道 refresh 是主线入口”推进到“能解释 refresh 的阶段，并能将断点设置在正确的阶段入口”。
 - 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。本章提到的方法名以该版本为准。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -24,7 +32,7 @@
 
 ## 章节验收口径（10/30/3：refresh 主线）
 
-本章的定位是“容器主线总览”，验收标准建议更偏方法论而不是背诵：
+本章的定位是“容器主线总览”，验收标准偏向方法论而不是背诵：
 
 - **10 分钟**：能把 refresh 分成“定义层扩张 → 规则装载 → 对象创建”三幕，并能说清楚每幕最常见的故障类型。
 - **30 分钟**：能用 3 个锚点断点（BFPP/BDRPP、BPP、预实例化）把一次启动过程串起来，且能解释一次真实异常属于哪一幕。
@@ -61,7 +69,7 @@
 
 ## 阶段内关键对象变化（断点可验证）
 
-这一段是为了让读者“看得见阶段变化”，不是为了背概念：
+这一段是为了让阅读者“看得见阶段变化”，不是为了背概念：
 
 | 阶段 | 关键对象/数据结构变化 | 断点与观察点（最小够用） |
 | --- | --- | --- |
@@ -70,7 +78,7 @@
 | `registerBeanPostProcessors` | `beanPostProcessors` 列表按顺序最终定型 | `PostProcessorRegistrationDelegate#registerBeanPostProcessors`；观察 `beanFactory.getBeanPostProcessors().size()` |
 | `finishBeanFactoryInitialization` | 单例缓存开始被填充（`singletonObjects` / `earlySingletonObjects` / `singletonFactories`） | `DefaultListableBeanFactory#preInstantiateSingletons` / `DefaultSingletonBeanRegistry#getSingleton` |
 
-## 把调用链落到“应能够设置断点的锚点”
+## 把调用链落到“能设置断点的锚点”
 
 ### 锚点 1：BFPP/BDRPP（改定义）——“注解为什么能生效？”
 
@@ -88,7 +96,7 @@
 
 ### 锚点 2：BPP（改实例/换代理）——“为什么最终暴露的是 proxy？”
 
-当读者看到：
+当看到：
 
 - 注入进来的 bean 不是容易误以为的类型（`AopUtils.isAopProxy(bean)` 为 true）
 - AOP/Tx/Cache/Security “不生效”或“自调用绕过”
@@ -102,7 +110,7 @@
 
 ### 锚点 3：单例预实例化（批量创建）——“为什么启动即暴露问题？”
 
-当读者看到：
+当看到：
 
 - 应用启动阶段就异常（而不是第一次 `getBean` 才异常）
 - 循环依赖/类型转换/依赖注入歧义在启动期集中暴露
@@ -119,19 +127,19 @@
 
 `refresh()` 的主线整体并不复杂，复杂之处在于分支。下面给出最“高频且决定走向”的最小分支集合：
 
-1) **singleton vs prototype**
+1. **singleton vs prototype**
    - 入口：`AbstractBeanFactory#doGetBean`
    - 关键变量：`mbd.isSingleton()` / `mbd.isPrototype()`
-2) **dependsOn 强制依赖顺序**
+2. **dependsOn 强制依赖顺序**
    - 入口：`AbstractBeanFactory#getBean` → `dependsOn`
    - 关键变量：`mbd.getDependsOn()` / `isDependent(beanName, dep)`
-3) **parent BeanFactory 回退**
+3. **parent BeanFactory 回退**
    - 入口：`AbstractBeanFactory#doGetBean`
    - 关键变量：`containsBeanDefinition(beanName)` / `parentBeanFactory != null`
-4) **FactoryBean vs 产品对象**
+4. **FactoryBean vs 产品对象**
    - 入口：`AbstractBeanFactory#getObjectForBeanInstance`
    - 关键变量：`BeanFactoryUtils.isFactoryDereference(beanName)` / `isFactoryBean`
-5) **类型匹配（含泛型/FactoryBean 预测）**
+5. **类型匹配（含泛型/FactoryBean 预测）**
    - 入口：`AbstractBeanFactory#isTypeMatch` / `predictBeanType`
    - 关键变量：`typeToMatch` / `resolvedType` / `factoryBeanObjectType`
 
@@ -139,11 +147,11 @@
 
 > 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-当遇到“注入失败/代理不生效/循环依赖”等现象时，避免从异常栈顶开始无目的追溯；建议以 refresh 主线为框架对问题进行归位：
+当遇到“注入失败/代理不生效/循环依赖”等现象时，避免从异常栈顶开始无目的追溯；应以 refresh 主线为框架对问题进行归位：
 
-1) **定义层（BFPP/BDRPP）**：`invokeBeanFactoryPostProcessors`
-2) **注册 BPP 链**：`registerBeanPostProcessors`
-3) **创建单例**：`finishBeanFactoryInitialization` → `doCreateBean`
+1. **定义层（BFPP/BDRPP）**：`invokeBeanFactoryPostProcessors`
+2. **注册 BPP 链**：`registerBeanPostProcessors`
+3. **创建单例**：`finishBeanFactoryInitialization` → `doCreateBean`
 
 进一步入口：`appendix-production-troubleshooting-checklist.md`（总分流表）/ `appendix-debugger-pack.md`（断点包）。
 
@@ -158,25 +166,25 @@
 
 ## 面试常问（refresh 调用链）
 
-1) refresh 的主线阶段如何讲清楚？（每段至少能点名 1 个方法名）
-2) 为什么“过早 getBean”会导致代理/注解不生效？如何证明一次？
-3) 如何把一个启动失败快速归到 definition vs creation（各给 1 个断点）？
+1. refresh 的主线阶段如何讲清楚？（每段至少能点名 1 个方法名）
+2. 为什么“过早 getBean”会导致代理/注解不生效？如何证明一次？
+3. 如何把一个启动失败快速归到 definition vs creation（各给 1 个断点）？
 
-推荐复习入口：`appendix-interview-playbook.md`（Q1/Q5 等）。
+复习入口：`appendix-interview-playbook.md`（Q1/Q5 等）。
 
-## 自检要点（应能够回答）
+## 验证标准：能把异常归到 refresh 阶段
 
 1. BFPP 与 BPP 的差别是什么？它们分别“改什么”，分别在 refresh 的哪段执行？
 2. 为什么 `@Autowired/@PostConstruct` 在读者自己 new 出来的 `DefaultListableBeanFactory` 里可能不生效？
 3. 为什么有些问题“启动即暴露”，有些问题“第一次调用才暴露”？可以把断点打在哪里区分两者？
 
-## 小结
+## 收束：`refresh()` 是后续章节的时间轴
 
 - 本章把 `refresh()` 变成可复述的时间线与可设置断点的锚点；下一章把锚点收敛成一份可复用断点清单。
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansContainerLabTest`
 - Lab：`SpringCoreBeansBootstrapInternalsLabTest`
@@ -185,24 +193,17 @@
 
 <!-- BOOKIFY:END -->
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansContainerLabTest`，再用 `SpringCoreBeansBootstrapInternalsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“排障分流（refresh 入口版）”时，建议将“跑完用例”与“证明结论”绑定：明确跑完哪个测试方法后，应去哪个入口方法断点验证哪一个结论，避免“跑了但不知道证明了什么”。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-这章的核心不是“列出调用链”，而是让读者把所有机制放回同一条时间线：
+这章的核心不是“列出调用链”，而是让阅读者把所有机制放回同一条时间线：
 
 - refresh 前半段：定义层（BeanDefinition 注册 + BFPP/BDRPP）
 - refresh 中段：注册 BPP 链（注解/AOP/回调能力的来源）
 - refresh 后半段：创建单例（doCreateBean：实例化→注入→初始化→入缓存）
 
-在读调用链时，建议带着一个问题：
+在读调用链时，带着一个问题：
 
-> 这个步骤是在“改定义”还是“造实例”？它决定了是否能够通过断点观察到某类行为。
+> 这个步骤是在“改定义”还是“造实例”？它决定了能否通过断点观察到某类行为。

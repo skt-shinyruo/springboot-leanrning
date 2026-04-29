@@ -1,6 +1,6 @@
 # 01. 约束（Constraint）心智模型：校验对象与校验结果
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕约束（Constraint）心智模型：校验对象与校验结果展开，主线可以概括为：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
 
     先运行 `SpringCoreValidationLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖指南（Spring Core Validation）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 程序化校验：为什么直接用 `Validator` 仍然很重要？](validation-core-programmatic-validator.md)
+上一章：[02. 深挖指南（Spring Core Validation）](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 程序化校验：为什么直接用 `Validator` 仍然很重要？](validation-core-programmatic-validator.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「01. 约束（Constraint）心智模型：校验对象与校验结果」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreValidationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreValidationLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -30,7 +30,7 @@ Bean Validation（Jakarta Validation）解决的是一个核心问题：
 
 ## 需要记住的 3 个对象
 
-1) **Constraint（约束）**
+1. **Constraint（约束）**
 
 例如：
 
@@ -40,14 +40,14 @@ Bean Validation（Jakarta Validation）解决的是一个核心问题：
 
 本模块的 `CreateUserCommand` 是最小示例。
 
-2) **Validator**
+2. **Validator**
 
 `Validator` 是执行校验的入口：
 
 - 可以在代码里直接调用它（程序化校验）
 - Spring Boot 会把它作为 bean 放进容器
 
-3) **ConstraintViolation**
+3. **ConstraintViolation**
 
 一次校验可能产生多个 violations，它们携带关键信息：
 
@@ -64,7 +64,7 @@ Bean Validation 的价值在于：
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreValidationLabTest`
-- 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -86,7 +86,7 @@ Bean Validation 的价值在于：
 
 ### 坑点 1：只看“校验失败/成功”，忽略 violations 的证据字段，导致排障效率很低
 
-知道失败了，但不知道“失败在哪个字段、因为什么规则”，只能靠日志/猜测
+知道失败了，但不知道“失败在哪个字段、因为什么规则”，只能依赖日志与猜测
 
 Bean Validation 的输出不是 boolean，而是 `ConstraintViolation` 集合（propertyPath/message 是第一现场）
 
@@ -104,10 +104,10 @@ Bean Validation 的输出不是 boolean，而是 `ConstraintViolation` 集合（
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreValidationLabTest`
 
-上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-programmatic-validator](validation-core-programmatic-validator.md)
+上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02-programmatic-validator](validation-core-programmatic-validator.md)
 
 <!-- BOOKIFY:END -->

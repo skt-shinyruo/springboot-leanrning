@@ -1,6 +1,6 @@
 # 04. FilterChain：多链路 + 顺序 + 自定义 Filter
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕04：FilterChain：多链路 + 顺序 + 自定义 Filter展开，主线可以概括为：HTTP 请求 → `FilterChainProxy` 选择 SecurityFilterChain → 认证（Authentication）→ 授权（Authorization）→ 异常处理（401/403）→ 继续进入 MVC。
 
     阅读时可以先跑 `BootSecurityLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：将认证/授权配置为 FilterChain；区分 401/403 与 CSRF 场景；方法级安全依赖代理与拦截器链。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. Method Security 与代理：self-invocation 陷阱](security-method-security-and-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. JWT/Stateless：Bearer token + scope（最小闭环）](security-jwt-stateless.md)
+上一章：[03. Method Security 与代理：self-invocation 陷阱](security-method-security-and-proxy.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. JWT/Stateless：Bearer token + scope（最小闭环）](security-jwt-stateless.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,14 +19,14 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootSecurityLabTest`
-    - Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
 ## 机制主线
 
 本章关注两个问题：
 
-1) 为什么一个应用里可以有多个 `SecurityFilterChain`？
-2) 自定义 Filter 应该插在哪、如何用测试证明它真的执行了？
+1. 为什么一个应用里可以有多个 `SecurityFilterChain`？
+2. 自定义 Filter 应该插在哪、如何用测试证明它真的执行了？
 
 ## 应当观察到的现象
 
@@ -46,10 +46,10 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootSecurityLabTest`
-- 建议命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
 
 
-## Debug 建议
+## Debug 路径
 
 - 用断点观察：请求进来时到底命中了哪个 chain（尤其是多个 matcher 的场景）。
 
@@ -70,7 +70,7 @@
 
 为不同路径建立清晰 matcher，并用 `@Order` 固定优先级；用测试断言把链路行为锁定（避免“改配置后悄悄命中错链”）
 
-### 坑点 2：只靠“响应码/行为”判断命中哪条链路，容易误判（推荐用 Filter 列表做证据链）
+### 坑点 2：只靠“响应码/行为”判断命中哪条链路，容易误判（用 Filter 列表做证据链更稳）
 
 看到某个路径返回 401/403/CSRF，就主观判断“它一定命中了某条链”，结果排障方向全错
 
@@ -88,11 +88,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootSecurityLabTest`
-- Test file：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-security/src/test/java/com/learning/springboot/bootsecurity/part01_security/BootSecurityLabTest.java`
 
-上一章：[part-01-security/03-method-security-and-proxy.md](security-method-security-and-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-security/05-jwt-stateless.md](security-jwt-stateless.md)
+上一章：[security-method-security-and-proxy.md](security-method-security-and-proxy.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[security-jwt-stateless.md](security-jwt-stateless.md)
 
 <!-- BOOKIFY:END -->

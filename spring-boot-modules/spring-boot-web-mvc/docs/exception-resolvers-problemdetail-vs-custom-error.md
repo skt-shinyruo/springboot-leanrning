@@ -3,7 +3,7 @@
 ## 导读
 
 本章围绕「04：ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcContractJacksonLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcContractJacksonLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -44,7 +44,7 @@
 ## 常见坑与边界
 
 - 如果在同一模块里同时存在两套错误体，一定要写清楚“各自负责哪些端点/哪些场景”，否则调用方会被迫做大量兼容分支。
-- `Content-Type` 建议显式使用 `application/problem+json`（ProblemDetail）以避免误解为普通 JSON。
+- `Content-Type` 显式使用 `application/problem+json`（ProblemDetail）以避免误解为普通 JSON。
 
 ## 小结与下一章
 
@@ -52,11 +52,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcContractJacksonLabTest`
 - Lab：`BootWebMvcProblemDetailLabTest`
 
-上一章：[04. ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](exception-resolvers-and-error-flow.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](exception-resolvers-controlleradvice-matching-and-ordering.md)
+上一章：[04. ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）](exception-resolvers-and-error-flow.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](exception-resolvers-controlleradvice-matching-and-ordering.md)
 <!-- BOOKIFY:END -->
 

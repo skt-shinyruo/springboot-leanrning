@@ -1,19 +1,27 @@
-# 04. 断点地图（Async & Scheduling Debugger Pack）
+# 04. 断点地图（Async & Scheduling）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（断点地图）"
+!!! summary "章节入口（断点地图）"
 
-    我把异步/调度最常用的断点按“从外到内”的顺序整理在这里：先确认有没有走代理、再看提交到了哪个 executor/scheduler、最后才下探异常与上下文传播。
+    本页把异步/调度最常用的断点按“从外到内”的顺序整理在这里：先确认有没有走代理、再看提交到了哪个 executor/scheduler、最后才下探异常与上下文传播。
 
     本页定位更接近备忘录：可以不按顺序读，但真排障时往往能省不少时间。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 00 - Deep Dive Guide（springboot-async-scheduling）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. 关键分支矩阵（Branch Decision Matrix）](guide-branch-decision-matrix.md)
+上一章：[深挖导读：Spring Boot Async & Scheduling](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. 关键分支矩阵](guide-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），在断言处下断点，再按本页清单逐步把分支与观察点对齐。
+优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应实验/测试”），在断言处下断点，再按本页清单逐步把分支与观察点对齐。
 
 
 ## 这页怎么用
@@ -48,18 +56,18 @@
 
 ## `@Transactional` 断点（`@Async` × 事务边界）
 
-当怀疑“我以为在事务里执行，但实际不在”时，建议把观察点拆成两条线程：
+当怀疑“预期在事务里执行，但实际不在”时，把观察点拆成两条线程：
 
 - 调用方线程：事务是否 active？
 - 异步线程：事务是否 active？
 
-推荐断点：
+断点入口：
 
 - `org.springframework.aop.interceptor.AsyncExecutionInterceptor#invoke`：切线程与提交点
 - `org.springframework.transaction.interceptor.TransactionInterceptor#invoke`：事务拦截入口（判断事务是否真正开启）
 - `org.springframework.transaction.support.AbstractPlatformTransactionManager#getTransaction`：事务创建/加入点（更底层）
 
-稳定 Watchpoints：
+稳定 观察点：
 
 - `TransactionSynchronizationManager.isActualTransactionActive()`：事务是否 active
 - `TransactionSynchronizationManager.isSynchronizationActive()`：同步是否 active（是否绑定了同步）
@@ -71,7 +79,7 @@
 - 是否使用了 delegating wrapper（例如 `DelegatingSecurityContextAsyncTaskExecutor`）
 - wrapper 是否在 finally 做了清理
 
-推荐断点：
+断点入口：
 
 - `org.springframework.security.concurrent.DelegatingSecurityContextRunnable#run`
 - `org.springframework.security.concurrent.DelegatingSecurityContextCallable#call`
@@ -79,12 +87,12 @@
 
 ## Spring Boot `spring.task.*` 自动装配断点（默认 executor/scheduler 从哪来）
 
-当遇到“我以为用的是 Boot 默认线程池，但行为不对”时，建议先回答两件事：
+当遇到“预期使用 Boot 默认线程池，但行为不对”时，先回答两件事：
 
 1. Boot 是否真的装配了默认 `TaskExecutor/TaskScheduler`？
 2. `@Async/@Scheduled` 最终选择的是哪个 bean？
 
-推荐断点：
+断点入口：
 
 - Boot 自动装配（属性 → bean）：
   - `org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration`
@@ -103,7 +111,7 @@
 - `org.springframework.scheduling.support.DelegatingErrorHandlingRunnable#run`（异常包装点）
 - `org.springframework.util.ErrorHandler#handleError`（异常最终处理点：可用自定义 handler 观测）
 
-## Watchpoints（建议）
+## 观察点
 
 - 当前线程名：`Thread.currentThread().getName()`
 - 是否代理：`AopUtils.isAopProxy(bean)`
@@ -115,21 +123,21 @@
 
 ## 排障入口（Playbook）
 
-- 常见坑：[`../appendix/01-common-pitfalls.md`](appendix-common-pitfalls.md)
-- 自检：[`../appendix/02-self-check.md`](appendix-self-check.md)
+- 常见坑：[`appendix-common-pitfalls.md`](appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](appendix-self-check.md)
 
 ## 小结与下一章
 
-下一章见：[第 118 章：04：关键分支矩阵（Branch Decision Matrix）](guide-branch-decision-matrix.md)
+下一章见：[04：关键分支矩阵](guide-branch-decision-matrix.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Matrix：`BootAsyncSchedulingBranchMatrixLabTest`
 - Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](guide-branch-decision-matrix.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[guide-branch-decision-matrix.md](guide-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->

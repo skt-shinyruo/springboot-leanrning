@@ -1,7 +1,7 @@
-# 01. 常见坑清单（建议反复对照）
+# 01. 常见坑清单（排查时对照）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕常见坑清单（建议反复对照）展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
+!!! summary "章节入口（五问闭环）"
+    本章围绕常见坑清单（排查时对照）展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
     先运行 `SpringCoreEventsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
 
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](async-and-transactional-transactional-event-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 自测题（Spring Core Events）](appendix-self-check.md)
+上一章：[03. `@TransactionalEventListener`：为什么 after-commit 事件能“等事务提交后再执行”？](async-and-transactional-transactional-event-listener.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 自测题（Spring Core Events）](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ### 排障骨架（统一结构）
 
@@ -22,12 +30,12 @@
    - Book Matrix：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBookMatrixLabTest test`
    - Branch Matrix - 基础事件：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
    - Branch Matrix - 异步/事务事件：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
-3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[04-breakpoint-map.md](guide-breakpoint-map.md)
+3. 证据（Evidence）：对照断点地图，把断点/观察点/关键日志收齐：[04-breakpoint-map.md](guide-breakpoint-map.md)
 4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[05-branch-decision-matrix.md](guide-branch-decision-matrix.md)
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
 6. 验证（Verify）：复跑入口 + 对照自检清单：[02-self-check.md](appendix-self-check.md)
 
-这页不是教材，更接近“排障备忘录”。建议的使用方式是：**先跑最小复现入口，再回来看坑位对照表**，而不是读完概念再猜配置。
+这页不是教材，更接近“排障备忘录”。使用方式是：**先跑最小复现入口，再回来看坑位对照表**，而不是读完概念再猜配置。
 
 !!! summary "这页主要帮助排除的误判"
 
@@ -43,11 +51,10 @@
     - 过滤（类型/condition）：`SpringCoreEventsListenerFilteringLabTest`
     - 事务阶段：`SpringCoreEventsTransactionalEventLabTest`
     - 异步 multicaster：`SpringCoreEventsAsyncMulticasterLabTest`
-
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
@@ -86,7 +93,7 @@
 
 学习阶段最简单的修法是把“可变事件”当成代码味道：把事件建模为不可变对象（例如 `record`），让事件只承载事实而不承载过程状态；如果需要派生信息，在 listener 内部创建新对象（不要回写 event）。
 
-## 坑 6：监听器“没触发”其实是被过滤掉了（参数类型/条件不匹配）
+## 坑 6：监听器“没触发”本质上是被过滤掉了（参数类型/条件不匹配）
 
 `publishEvent(...)` 了，但某个 `@EventListener` 方法完全没进入；甚至怀疑 multicaster/线程/事务有问题。
 
@@ -103,10 +110,10 @@ Spring 的监听器分发有“筛选”阶段：最常见的是 **按监听器�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest`
 
-上一章：[07-transactional-event-listener](async-and-transactional-transactional-event-listener.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](appendix-self-check.md)
+上一章：[07-transactional-event-listener](async-and-transactional-transactional-event-listener.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[99-self-check](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

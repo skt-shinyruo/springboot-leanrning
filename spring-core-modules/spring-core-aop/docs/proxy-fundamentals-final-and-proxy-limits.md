@@ -1,7 +1,7 @@
 # 04. `final` 与代理限制：为什么 final method 拦截不到？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕 `final` 与代理限制：为什么 final method 拦截不到？展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
+!!! summary "章节入口（五问闭环）"
+    本章围绕`final` 与代理限制：为什么 final method 拦截不到？展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopProxyMechanicsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
 
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？](proxy-fundamentals-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](proxy-fundamentals-expose-proxy.md)
+上一章：[03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？](proxy-fundamentals-self-invocation.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）](proxy-fundamentals-expose-proxy.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「04. `final` 与代理限制：为什么 final method 拦截不到？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreAopProxyMechanicsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopProxyMechanicsLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -38,12 +38,12 @@ CGLIB 代理的核心是：**生成目标类的子类**，然后覆盖（overrid
 
 ## 不止 final：还需要认识的 4 类“天然拦不住”
 
-把下面这几条记住，会少掉一半“我以为 AOP 失效了”的误判：
+把下面这几条记住，会少掉一半“预期 AOP 失效了”的误判：
 
 1. **private 方法**
    - 无法 override（CGLIB）/不在接口上（JDK）
 2. **static 方法**
-   - 本质是“类方法”，不属于对象的虚方法分派，AOP 代理很难接管（也不建议这样设计）
+   - 本质是“类方法”，不属于对象的虚方法分派，AOP 代理很难接管（也不宜这样设计）
 3. **构造器与构造期内部调用**
    - bean 还没被 BPP 换成 proxy 前，构造器里发生的调用不可能被 AOP 拦截
    - 同理，很多初始化阶段（尤其是对象内部 `this.xxx()`）也容易造成误判
@@ -55,24 +55,24 @@ CGLIB 代理的核心是：**生成目标类的子类**，然后覆盖（overrid
 - 调用 `nonFinal(...)` 会记录一次（被拦截）
 - 再调用 `finalMethod(...)` 记录次数仍然不变（final method 没被拦截）
 
-如果想同时理解“代理类型与限制”，建议顺序跑：
+如果想同时理解“代理类型与限制”，按顺序运行：
 
 ## 学习仓库里应当怎么用这个结论？
 
-1) 不要把“需要被 AOP/Tx/Validation 拦截的方法”写成 final
-2) 如果更喜欢使用 `final`（例如偏函数式/不可变风格），那就更推荐：
+1. 不要把“需要被 AOP/Tx/Validation 拦截的方法”写成 final
+2. 如果更喜欢使用 `final`（例如偏函数式/不可变风格），那就更稳妥的做法：
    - 通过接口 + JDK 代理（拦截接口方法），或
    - 避免依赖基于代理的拦截（在学习仓库里先理解机制，再谈取舍）
 
 会发现这样设计以后：
 
-- “我给方法加了注解，但为什么完全没效果？”
+- “方法已加注解，为什么完全没有效果？”
   很多时候不是注解没生效，而是 **这个方法从代理角度根本拦不住**（final/private/self-invocation）。
 
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopProxyMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -86,7 +86,7 @@ CGLIB 代理的核心是：**生成目标类的子类**，然后覆盖（overrid
 
 ## 常见坑与边界
 
-### 一个更实用的工程建议：把“可被拦截”的逻辑放在 public 的边界方法上
+### 一个更实用的工程动作：把“可被拦截”的逻辑放在 public 的边界方法上
 
 在真实项目里，最需要被拦截的通常是“业务边界方法”（service public 方法）：
 
@@ -104,10 +104,10 @@ CGLIB 代理的核心是：**生成目标类的子类**，然后覆盖（overrid
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopProxyMechanicsLabTest`
 
-上一章：[03-self-invocation](proxy-fundamentals-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05-expose-proxy](proxy-fundamentals-expose-proxy.md)
+上一章：[03-self-invocation](proxy-fundamentals-self-invocation.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05-expose-proxy](proxy-fundamentals-expose-proxy.md)
 
 <!-- BOOKIFY:END -->

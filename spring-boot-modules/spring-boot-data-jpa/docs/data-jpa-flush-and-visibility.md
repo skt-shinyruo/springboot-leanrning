@@ -1,6 +1,6 @@
 # 03. flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕flush：SQL 什么时候发出去？为什么 flush 后 JDBC 能查到？展开，主线可以概括为：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
 
     阅读时可以先跑 `BootDataJpaLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. Persistence Context：JPA 的“一级缓存”与事务绑定](data-jpa-persistence-context.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. Dirty Checking（脏检查）：为什么改字段不用 save 也能落库？](data-jpa-dirty-checking.md)
+上一章：[02. Persistence Context：JPA 的“一级缓存”与事务绑定](data-jpa-persistence-context.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. Dirty Checking（脏检查）：为什么改字段不需要 save 也能落库？](data-jpa-dirty-checking.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -24,7 +24,7 @@
 
 新手最常见的误解是：
 
-> “我调用了 `save()`，所以数据已经进数据库了。”
+> “调用了 `save()`，所以数据已经进入数据库。”
 
 实际上，在很多情况下：
 
@@ -53,10 +53,10 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootDataJpaLabTest`
-- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 
-## 在本模块如何验证（强烈建议断点）
+## 在本模块如何验证（断点优先）
 
 看 `BootDataJpaLabTest#flushMakesRowsVisibleToJdbcTemplateWithinSameTransaction`：
 
@@ -77,10 +77,10 @@ flush 只是把 SQL 发出去并执行在当前事务里；是否对其它事务
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootDataJpaLabTest`
 
-上一章：[part-01-data-jpa/02-persistence-context.md](data-jpa-persistence-context.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-data-jpa/04-dirty-checking.md](data-jpa-dirty-checking.md)
+上一章：[data-jpa-persistence-context.md](data-jpa-persistence-context.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[data-jpa-dirty-checking.md](data-jpa-dirty-checking.md)
 
 <!-- BOOKIFY:END -->

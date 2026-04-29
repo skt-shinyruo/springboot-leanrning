@@ -2,7 +2,7 @@
 
 本目录是一条“可顺读的教材主线”。它不尝试把 Spring 的机制讲完，而是把本仓库里分散在各模块中的**可运行证据链**按章节串成路线：每章先给出一个可以运行的实验入口，再把读者送到对应的模块正文与断点地图。
 
-这本“书”的基本假设很简单：只有当现象能被复现、结论能被断言、边界能被反例验证时，理解才算落地。否则再漂亮的解释也容易在真实排障里失效。
+这条主线的基本假设是：只有当现象能被复现、结论能被断言、边界能被反例验证时，理解才算落地。否则抽象解释很容易在真实排障里失效。
 
 ---
 
@@ -30,11 +30,11 @@
 
 ## 当遇到问题时，如何快速回到“最短证据链”
 
-顺读是一种方式；另一种更常见的阅读姿势是“问题驱动”。当出现具体症状时，不必从第 1 章重读，可以直接进入索引：
+顺读是一种方式；另一种更常见的阅读姿势是“问题驱动”。当出现具体症状时，不必从第一章重读，可以直接进入索引：
 
-- 现象分型与入口选择：[`90 Troubleshooting Index`](90-troubleshooting-index.md)
-- 术语对照（避免同词异义）：[`91 Glossary`](91-glossary.md)
-- 参考资料与延伸阅读：[`92 References`](92-references.md)
+- 现象分型与入口选择：[`90 排障索引`](90-troubleshooting-index.md)
+- 术语对照（避免同词异义）：[`91 术语表`](91-glossary.md)
+- 参考资料与延伸阅读：[`92 参考资料`](92-references.md)
 
 ---
 
@@ -52,7 +52,7 @@
 
 ## 两条阅读路径
 
-### 路径 A：主线顺读（推荐）
+### 路径 A：主线顺读（默认路径）
 
 按 01 → 14 顺序阅读，每章先跑本章的 Book Matrix，再进入该模块的目录页顺读主线章节。
 
@@ -69,7 +69,7 @@
 
 ## 全书目录（主线章节）
 
-- [01 Getting Started](01-getting-started.md)
+- [01 入门](01-getting-started.md)
 - [02 Spring Boot Basics](02-spring-boot-basics.md)
 - [03 Spring Core Beans](03-spring-core-beans.md)
 - [04 Spring Core AOP](04-spring-core-aop.md)
@@ -88,9 +88,9 @@
 
 ## 索引与附录
 
-- [90 Troubleshooting Index](90-troubleshooting-index.md)
-- [91 Glossary](91-glossary.md)
-- [92 References](92-references.md)
+- [90 排障索引](90-troubleshooting-index.md)
+- [91 术语表](91-glossary.md)
+- [92 参考资料](92-references.md)
 
 ---
 

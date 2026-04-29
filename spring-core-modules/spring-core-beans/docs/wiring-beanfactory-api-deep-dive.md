@@ -1,18 +1,19 @@
 # BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：39. BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansBeanFactoryApiLabTest`。需要下探源码时，可以从 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` / `DefaultListableBeanFactory#doResolveDependency` / `AbstractBeanFactory#doGetBean` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界
 
-- 阅读建议：建议先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -20,16 +21,9 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanFactoryApiLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanFactoryApiLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansBeanFactoryApiLabTest`，再用 `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -37,7 +31,7 @@
 这一章解决一个常见“源码阅读/排障”卡点：
 
 > 明明使用的是 Spring（注解都已声明），为什么在某些启动方式/某些测试里注解不生效？
-> 为什么 `DefaultListableBeanFactory` 看起来“很强”，但很多能力又像是缺失的？
+> 为什么 `DefaultListableBeanFactory` 表面上“很强”，但很多能力又像是缺失的？
 > BeanFactory 到底是一套什么 API？哪些能力是它自带的，哪些是靠 post-processors “装上去”的？
 
 一句话先讲清楚：
@@ -53,7 +47,7 @@
 - `BeanFactory`：不会自动执行 BFPP/BPP
 - `ApplicationContext`：refresh 时自动 bootstrap 全套处理器
 **结果**：前者“注解不生效/能力缺失”，后者“开箱即用”
-**断点建议**：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`
+**断点入口**：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`
 
 ---
 
@@ -61,8 +55,8 @@
 
 可以把 Spring 的容器能力拆成两层：
 
-1) **容器内核（BeanFactory API）**：负责定义→实例化→依赖解析→生命周期基本骨架
-2) **容器增强（post-processors + 上层设施）**：负责注解处理、AOP 代理、条件装配、占位符解析、事件/资源等
+1. **容器内核（BeanFactory API）**：负责定义→实例化→依赖解析→生命周期基本骨架
+2. **容器增强（post-processors + 上层设施）**：负责注解处理、AOP 代理、条件装配、占位符解析、事件/资源等
 
 其中 BeanFactory 是第一层的核心接口，它解决的是：
 
@@ -81,7 +75,7 @@
 
 无需背每个方法，但需要能把“遇到的 API”归类到下面这些角色：
 
-一个非常关键的事实：
+一个会直接影响后续判断的事实：
 
 ---
 
@@ -96,8 +90,8 @@
 
 所以需要么：
 
-1) 用 `ApplicationContext`（默认推荐）
-2) 或者读者明确知道自己在干什么：手动 bootstrap 必要的 post-processors
+1. 用 `ApplicationContext`（默认路径）
+2. 或者读者明确知道自己在干什么：手动 bootstrap 必要的 post-processors
 
 - plain BeanFactory：注解不生效
 - 手动 addBeanPostProcessor：注解生效
@@ -119,19 +113,19 @@
 
 ## 3.1 容器外对象三段能力：autowire / initialize / destroy
 
-当读者手里有“非容器管理对象”时，`AutowireCapableBeanFactory` 提供三段能力：
+当手里有“非容器管理对象”时，`AutowireCapableBeanFactory` 提供三段能力：
 
-1) `autowireBean`：只做依赖注入
-2) `initializeBean`：触发初始化回调/BPP
-3) `destroyBean`：触发销毁回调
+1. `autowireBean`：只做依赖注入
+2. `initializeBean`：触发初始化回调/BPP
+3. `destroyBean`：触发销毁回调
 
-**结论**：这三段能力彼此独立，调用顺序决定应能够获取到什么语义。
+**结论**：这三段能力彼此独立，调用顺序决定能拿到什么语义。
 
 ## 使用方式：在真实项目里会如何接触 BeanFactory？
 
 ### 4.1 作为框架/中间件作者（更常见）
 
-读者可能会：
+可能会：
 
 - 写一个 `BeanFactoryPostProcessor` / `BeanPostProcessor`
 - 在其中获取到 `ConfigurableListableBeanFactory`
@@ -161,7 +155,7 @@
 
 ### 5.2 “注解生效”的关键入口（BPP 视角）
 
-最关键的观察点（建议 watch）：
+最关键的观察点（watch）：
 
 - `beanFactory.getBeanPostProcessors()`（或等价字段）：plain vs 手动 bootstrap 的差异
 - 当前 bean 的注入元数据（是否解析到了 @Autowired 字段/方法）
@@ -179,19 +173,19 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（优先运行它们）：
+本章引用的实验入口：
 - Lab：`SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
+- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 验证补充（从实验现象出发）
 
 ## 复现入口（可运行）
 
-本章新增 Lab（推荐先运行通再设置断点）：
+本章新增 Lab（先运行通过，再设置断点）：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanFactoryApiLabTest.java`
 
-推荐运行命令：
+运行命令：
 
 ```bash
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
@@ -218,32 +212,32 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
 
 ## Debug / 断点入口与观察点（把“注解为什么不生效”变成可证明结论）
 
-推荐断点（按“先装规则、再创建对象”的顺序运行一次）：
+断点入口（按“先装规则、再创建对象”的顺序运行一次）：
 
-1) `AnnotationConfigUtils#registerAnnotationConfigProcessors`
+1. `AnnotationConfigUtils#registerAnnotationConfigProcessors`
    - 观察：它只是把处理器注册成 BeanDefinition（registry 里有了），并不会自动让注解生效
-2) `DefaultListableBeanFactory#addBeanPostProcessor`
+2. `DefaultListableBeanFactory#addBeanPostProcessor`
    - 观察：BPP 真正进入 `beanFactory.getBeanPostProcessors()` 的时机（这一步才是“注解能力被激活”的关键）
-3) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`
+3. `AutowiredAnnotationBeanPostProcessor#postProcessProperties`
    - 观察：字段/参数注入是否发生（plain BeanFactory 未安装 BPP 时不会命中）
-4) `CommonAnnotationBeanPostProcessor#postProcessProperties` / `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`
+4. `CommonAnnotationBeanPostProcessor#postProcessProperties` / `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`
    - 观察：`@Resource/@PostConstruct` 等行为是否触发
-5) `AbstractAutowireCapableBeanFactory#populateBean` / `#initializeBean`
+5. `AbstractAutowireCapableBeanFactory#populateBean` / `#initializeBean`
    - 观察：创建链路是否走到注入/初始化阶段，以及 BPP 链路是否生效
 
-## 常见误区与边界
+## 边界分流：BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界
 
 ### 关键边界：plain BeanFactory 不会“自动让注解生效”
 
 很多人第一次直接 new 一个 `DefaultListableBeanFactory` 会易错点：
 
-### 常见误区
+### 误判点：不要把外层现象当成根因
 
-1) **误区：BeanFactory = “更轻量更推荐”**
-   - 轻量不等于稳妥。除非读者非常明确自己要控制哪些 post-processors，否则默认用 ApplicationContext。
-2) **误区：注册了 `ConfigurationClassPostProcessor` 这个 bean，就等于注解能工作**
+1. **误区：BeanFactory = “更轻量，所以应该优先用”**
+  - 轻量不等于稳妥。除非读者明确自己要控制哪些 post-processors，否则默认用 ApplicationContext。
+2. **误区：注册了 `ConfigurationClassPostProcessor` 这个 bean，就等于注解能工作**
    - 不够：读者还需要“执行/注册”整套基础设施链路（ApplicationContext refresh 会做，plain BeanFactory 不会自动做）。
-3) **误区：只要加了 BPP，就能让以前创建过的 bean 也被处理**
+3. **误区：只要加了 BPP，就能让以前创建过的 bean 也被处理**
    - BPP 通常不 retroactive。顺序与时机是排障关键点。
 
 ## 面试常问（BeanFactory vs ApplicationContext：差异与边界）
@@ -267,12 +261,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（ApplicationContext 场景）
   - `DefaultListableBeanFactory#addBeanPostProcessor`（plain BeanFactory 手动激活）
 
-## 自检要点
-- 应能够解释清楚：为什么 `AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory)` “看起来装了处理器”，但注解仍然不生效吗？
-- 应能够指出：在 plain BeanFactory 场景里，“让注解生效”的最小动作是什么？（提示：不是 refresh，而是把处理器实例加进 BPP 列表）
-- 应能够用断点证明：`@Autowired` 的发生点在 `populateBean` 的哪个钩子里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
+## 验证标准：BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界
+- 需要解释清楚：为什么 `AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory)` “表面上装了处理器”，但注解仍然不生效吗？
+- 需要指出：在 plain BeanFactory 场景里，“让注解生效”的最小动作是什么？（提示：不是 refresh，而是把处理器实例加进 BPP 列表）
+- 需要用断点证明：`@Autowired` 的发生点在 `populateBean` 的哪个钩子里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
 
-## 小结
+## 收束：BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界
 
 - `AbstractBeanFactory#doGetBean`（拿 bean 的主入口）
 - `AbstractAutowireCapableBeanFactory#doCreateBean`（实例化/填充/初始化）
@@ -284,9 +278,9 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanFactoryApiLabTest test
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansBeanFactoryApiLabTest` / `SpringCoreBeansBeanFactoryVsApplicationContextLabTest` / `SpringCoreBeansBootstrapInternalsLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanFactoryApiLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanFactoryApiLabTest.java`
 
 <!-- BOOKIFY:END -->

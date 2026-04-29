@@ -1,6 +1,6 @@
 # 02. 程序化校验：为什么直接用 `Validator` 仍然很重要？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕程序化校验：为什么直接用 `Validator` 仍然很重要？展开，主线可以概括为：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
 
     先运行 `SpringCoreValidationLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 约束（Constraint）心智模型：校验对象与校验结果](validation-core-constraint-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 方法参数校验：为什么它必须依赖 Spring 代理？](validation-core-method-validation-proxy.md)
+上一章：[01. 约束（Constraint）心智模型：校验对象与校验结果](validation-core-constraint-mental-model.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. 方法参数校验：为什么它必须依赖 Spring 代理？](validation-core-method-validation-proxy.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「02. 程序化校验：为什么直接用 `Validator` 仍然很重要？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreValidationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreValidationLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -24,7 +24,7 @@
 
 ## 机制主线
 
-即使最终在 Web 层用 `@Valid`，学习阶段仍然建议掌握程序化校验：
+即使最终在 Web 层用 `@Valid`，学习阶段仍然需要掌握程序化校验：
 
 ## 本模块的最小示例
 
@@ -42,7 +42,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -53,7 +53,7 @@
 - `SpringCoreValidationLabTest#programmaticValidationFindsViolations`
 - `SpringCoreValidationLabTest#programmaticValidationReturnsNoViolationsForValidInput`
 
-## Debug / 观察建议
+## Debug / 观察入口
 
 机制实验入口：`SpringCoreValidationMechanicsLabTest#constraintViolationIncludesMessageAndPropertyPath`
 
@@ -75,10 +75,10 @@ programmatic validation 的触发点是 `Validator#validate(...)`（不调用就
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
 
-上一章：[01-constraint-mental-model](validation-core-constraint-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03-method-validation-proxy](validation-core-method-validation-proxy.md)
+上一章：[01-constraint-mental-model](validation-core-constraint-mental-model.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03-method-validation-proxy](validation-core-method-validation-proxy.md)
 
 <!-- BOOKIFY:END -->

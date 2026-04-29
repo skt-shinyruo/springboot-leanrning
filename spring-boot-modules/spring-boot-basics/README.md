@@ -2,6 +2,15 @@
 
 本模块用于学习 Spring Boot 的“最小闭环”：**应用启动**、**配置属性绑定（`@ConfigurationProperties`）**、**Profile（`dev`）切换**。
 
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
+
 ## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
@@ -11,11 +20,11 @@
   - `mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - 理解一个最小的 Spring Boot 应用如何启动（从 `main` 到容器）
 - 学会用 `@ConfigurationProperties` 绑定 `application.properties` 配置
@@ -56,9 +65,9 @@ mvn -pl :spring-boot-basics spring-boot:run -Dspring-boot.run.profiles=dev
 mvn -pl :spring-boot-basics test
 ```
 
-## 推荐 docs 阅读顺序
+## docs 阅读顺序
 
-建议按 “现象 → 覆盖规则 → 绑定机制 → 常见坑” 的顺序学习：
+按 “现象 → 覆盖规则 → 绑定机制 → 常见坑” 的顺序学习：
 
 （目录：见本 README 的「目录（唯一顺序来源）」）
 
@@ -75,14 +84,14 @@ mvn -pl :spring-boot-basics test
 
 | 要理解的概念 | 去读哪一章 | 去看哪个测试/代码 | 应能解释清楚 |
 | --- | --- | --- | --- |
-| 默认配置加载 | [docs/part-01/01](docs/boot-basics-property-sources-and-profiles.md) | `BootBasicsDefaultLabTest` + `application.properties` | 默认 profile 与配置值来自哪里 |
-| Profile 覆盖 | [docs/part-01/01](docs/boot-basics-property-sources-and-profiles.md) | `BootBasicsDevLabTest` + `application-dev.properties` | 为什么 dev 能覆盖默认配置 |
-| 测试级覆盖优先级 | [docs/part-01/01](docs/boot-basics-property-sources-and-profiles.md) | `BootBasicsOverrideLabTest` | 为什么测试 properties 能覆盖文件配置 |
-| 绑定与类型转换 | [docs/part-01/02](docs/boot-basics-configuration-properties-binding.md) | `AppProperties` + `BootBasicsDefaultLabTest` | string 配置如何变成 boolean/其他类型 |
+| 默认配置加载 | [boot-basics-property-sources-and-profiles.md](docs/boot-basics-property-sources-and-profiles.md) | `BootBasicsDefaultLabTest` + `application.properties` | 默认 profile 与配置值来自哪里 |
+| Profile 覆盖 | [boot-basics-property-sources-and-profiles.md](docs/boot-basics-property-sources-and-profiles.md) | `BootBasicsDevLabTest` + `application-dev.properties` | 为什么 dev 能覆盖默认配置 |
+| 测试级覆盖优先级 | [boot-basics-property-sources-and-profiles.md](docs/boot-basics-property-sources-and-profiles.md) | `BootBasicsOverrideLabTest` | 为什么测试 properties 能覆盖文件配置 |
+| 绑定与类型转换 | [boot-basics-configuration-properties-binding.md](docs/boot-basics-configuration-properties-binding.md) | `AppProperties` + `BootBasicsDefaultLabTest` | string 配置如何变成 boolean/其他类型 |
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶。Exercises 默认 `@Disabled`，建议逐个开启。
+> 说明：⭐=入门，⭐⭐=进阶。练习默认 `@Disabled`，逐个开启。
 
 | 类型 | 入口 | 知识点 | 难度 | 下一步 |
 | --- | --- | --- | --- | --- |
@@ -152,7 +161,7 @@ mvn -pl :spring-boot-basics test
 ### 按问题查入口（从症状回到最短路径）
 | 现象（读者视角） | 先看哪里 | 下一跳 |
 | --- | --- | --- |
-| “我改了配置但没生效” | [配置来源与 Profile 覆盖](docs/boot-basics-property-sources-and-profiles.md) | 断点地图：`Environment#getProperty(...)` 取值点 |
+| “配置已修改但没有生效” | [配置来源与 Profile 覆盖](docs/boot-basics-property-sources-and-profiles.md) | 断点地图：`Environment#getProperty(...)` 取值点 |
 | “profile 切换了但实现类没变” | [配置来源与 Profile 覆盖](docs/boot-basics-property-sources-and-profiles.md) | 分支矩阵：profile/条件装配分支 |
 | “绑定对象里字段是 null/转换失败” | [`@ConfigurationProperties` 绑定与类型转换](docs/boot-basics-configuration-properties-binding.md) | 常见坑：绑定失败的典型边界 |
 
@@ -161,7 +170,7 @@ mvn -pl :spring-boot-basics test
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBookMatrixLabTest test`
 - Branch Matrix：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-basics -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-boot-basics -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（Environment 并发读取一致性）：`mvn -q -pl :spring-boot-basics -Dtest=BootBasicsEnvironmentConcurrencyLabTest test`
 
 ---

@@ -6,7 +6,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcViewLabTest`
-    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
 
 ## 源码入口（表单 binder + 回显/PRG）
 
@@ -28,16 +28,16 @@
 
 ## 应当观察到的现象（What to observe）
 
-1) GET `/pages/users/new` 返回表单页
+1. GET `/pages/users/new` 返回表单页
 - HTML 中存在表单
 - model 中存在 `form`
 
-2) POST `/pages/users`（非法输入）不会 redirect
+2. POST `/pages/users`（非法输入）不会 redirect
 - 仍然返回 `pages/user-form`
 - 页面中出现字段错误信息
 - 已输入的值会回显（避免用户重填）
 
-3) POST `/pages/users`（合法输入）走 PRG
+3. POST `/pages/users`（合法输入）走 PRG
 - 响应是 3xx redirect
 - Location 指向 `/pages/users/{id}`
 - redirect 后页面可展示用户信息与 flash message
@@ -74,14 +74,14 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebMvcViewLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 
 目标是把一个完整闭环跑通并可测试验证：
 
 ## 实验入口（先跑再看）
 
-- MockMvc（建议先看这个）：
+- MockMvc（先看这个）：
   - `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
   - `rendersUserFormPage`
   - `reRendersFormWhenPostIsInvalid`
@@ -122,25 +122,25 @@
 
 表单闭环一旦不写测试，很容易在重构 controller/template 时悄悄断掉（尤其是错误回显与 redirect）。
 
-建议：以 MockMvc 断言“viewName + model attribute + redirect location”为主，把 UI 行为固化。
+动作：以 MockMvc 断言“viewName + model attribute + redirect location”为主，把 UI 行为固化。
 
 ### 5) 表单 PUT/DELETE：两个 Filter（FormContentFilter / HiddenHttpMethodFilter）
 
-HTML 表单原生只支持 `GET/POST`。如果你在页面里想“用表单提交调用 `@PutMapping/@DeleteMapping`”，常见做法是 method override：
+HTML 表单原生只支持 `GET/POST`。如果在页面里想“用表单提交调用 `@PutMapping/@DeleteMapping`”，常见做法是 method override：
 
 - 表单仍然 `method="post"`
 - 增加隐藏字段（默认参数名是 `_method`），值为 `PUT/DELETE/PATCH`
 
 这件事发生在 **DispatcherServlet 之前的 FilterChain**，所以经常表现为“路由不命中/405”，而不是 binder/校验问题。
 
-Spring Boot `3.5.9` 相关开关（建议先记住默认值）：
+Spring Boot `3.5.9` 相关开关（先记住默认值）：
 
 - `spring.mvc.formcontent.filter.enabled`：是否启用 `FormContentFilter`（默认 `true`）
   - 作用：让 `PUT/PATCH/DELETE` 的 `application/x-www-form-urlencoded` 也能被解析为 request parameters
 - `spring.mvc.hiddenmethod.filter.enabled`：是否启用 `HiddenHttpMethodFilter`（默认 `false`）
   - 作用：读取 `_method` 并把请求方法从 POST “改写”为 PUT/DELETE/PATCH，以便命中对应的 mapping
 
-排障断点建议：
+排障断点：
 
 - `org.springframework.web.filter.HiddenHttpMethodFilter#doFilterInternal`
 - `org.springframework.web.filter.FormContentFilter#doFilterInternal`
@@ -150,10 +150,10 @@ Spring Boot `3.5.9` 相关开关（建议先记住默认值）：
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcViewLabTest`
-- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java`
 
-上一章：[01. 传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](return-value-view-thymeleaf-and-view-resolver.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. HttpMessageConverter 与返回值处理（序列化发生在哪里）](return-value-view-message-converters-and-return-values.md)
+上一章：[01. 传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](return-value-view-thymeleaf-and-view-resolver.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. HttpMessageConverter 与返回值处理（序列化发生在哪里）](return-value-view-message-converters-and-return-values.md)
 <!-- BOOKIFY:END -->

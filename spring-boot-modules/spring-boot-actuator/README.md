@@ -2,6 +2,15 @@
 
 本模块用于学习 Spring Boot Actuator 的基础用法：暴露常用端点（例如 `/actuator/health`），以及编写一个自定义 `HealthIndicator`。
 
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
+
 ## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
@@ -11,11 +20,11 @@
   - `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - Actuator 是什么、默认有哪些端点
 - 通过配置暴露端点与显示 health 详情
@@ -23,7 +32,7 @@
 
 ## 前置知识
 
-- 建议先完成 `spring-boot-basics`（理解配置加载与 profile 切换）
+- 先完成 `spring-boot-basics`（理解配置加载与 profile 切换）
 - 了解 HTTP/JSON 的基本概念
 
 ## 关键命令
@@ -50,20 +59,20 @@ curl http://localhost:8082/actuator/health
 mvn -pl :spring-boot-actuator test
 ```
 
-## 推荐 docs 阅读顺序
+## docs 阅读顺序
 
 （目录：见本 README 的「目录（唯一顺序来源）」）
 
-建议按“端点现象 → 配置开关 → 自定义指标 → 测试验证”的顺序学习：
+按“端点现象 → 配置开关 → 自定义指标 → 测试验证”的顺序学习：
 
 1. [导读](docs/guide-deep-dive-guide.md)
 2. [Actuator 基础](docs/actuator-basics.md)
 3. [常见坑清单](docs/appendix-common-pitfalls.md)
 4. [自测题](docs/appendix-self-check.md)
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶。Exercises 默认 `@Disabled`，建议逐个开启。
+> 说明：⭐=入门，⭐⭐=进阶。练习默认 `@Disabled`，逐个开启。
 
 | 类型 | 入口 | 知识点 | 难度 | 下一步 |
 | --- | --- | --- | --- | --- |
@@ -81,7 +90,7 @@ mvn -pl :spring-boot-actuator test
 ## 扩展练习（可选）
 
 - 把自定义健康检查改成：当某个配置项关闭时返回 `DOWN`
-- 只在 `dev` profile 下显示 health details（提示：生产环境不建议默认暴露 details）
+- 只在 `dev` profile 下显示 health details（提示：生产环境不应默认暴露 details）
 
 ## 参考
 
@@ -119,7 +128,7 @@ mvn -pl :spring-boot-actuator test
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
 - Branch Matrix：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-actuator -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-boot-actuator -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（并发请求驱动 metrics 增量）：`mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorMetricsConcurrencyLabTest test`
 
 ---

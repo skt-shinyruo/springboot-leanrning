@@ -1,16 +1,17 @@
 # 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`。需要下探源码时，可以从 `AutowiredAnnotationBeanPostProcessor#postProcessProperties` / `DefaultListableBeanFactory#doResolveDependency` / `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：候选选择 vs 顺序
 
 - 这章解决一个高频误判：把“集合排序”当成“单依赖选择”。
 
@@ -22,7 +23,7 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansProgrammaticResolveDependencyLabTest` / `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticResolveDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionMetadataFlagsLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticResolveDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionMetadataFlagsLabTest.java`
 
 ## 机制主线：先问“注入的是一个，还是一组？”
 
@@ -41,10 +42,10 @@
 
 绝大多数按类型注入，最终都会汇入同一条链路：
 
-1) `AutowiredAnnotationBeanPostProcessor#postProcessProperties`（属性填充阶段的注入触发点）
-2) `DefaultListableBeanFactory#doResolveDependency`（依赖解析总入口）
-3) `findAutowireCandidates`（按类型收集候选：`Map<String,Object>`）
-4) `determineAutowireCandidate`（从候选里挑胜者：Primary/Qualifier/name/Priority…）
+1. `AutowiredAnnotationBeanPostProcessor#postProcessProperties`（属性填充阶段的注入触发点）
+2. `DefaultListableBeanFactory#doResolveDependency`（依赖解析总入口）
+3. `findAutowireCandidates`（按类型收集候选：`Map<String,Object>`）
+4. `determineAutowireCandidate`（从候选里挑胜者：Primary/Qualifier/name/Priority…）
 
 `@Qualifier` 的过滤与匹配常见落点：
 
@@ -63,21 +64,21 @@
 
 ### 依赖解析分支树（简化版）
 
-1) **快捷路径**：`@Value` / `ObjectProvider` / `@Lazy`
-2) **候选收集**：`findAutowireCandidates`
-3) **候选收敛**：Qualifier → Primary → by-name → Priority
-4) **集合排序**（仅集合注入）：`AnnotationAwareOrderComparator#sort`
-5) **失败**：仍无法唯一 → `NoUniqueBeanDefinitionException`
+1. **快捷路径**：`@Value` / `ObjectProvider` / `@Lazy`
+2. **候选收集**：`findAutowireCandidates`
+3. **候选收敛**：Qualifier → Primary → by-name → Priority
+4. **集合排序**（仅集合注入）：`AnnotationAwareOrderComparator#sort`
+5. **失败**：仍无法唯一 → `NoUniqueBeanDefinitionException`
 
 ## 单依赖注入：胜者是怎么选出来的？
 
-把规则压缩成应能够复述的版本（学习阶段不用背全分支）：
+把规则压缩成需要复述的版本（学习阶段不需要背全分支）：
 
-1) **Qualifier（最强）**：注入点显式指定 ⇒ 先过滤/匹配
-2) **Primary（默认胜者）**：多个候选时优先选 primary
-3) **by-name fallback（隐式，别依赖）**：依赖名/参数名与 beanName 匹配时可能收敛
-4) **Priority（tie-break）**：在没有更强信号时打破平局（数值越小优先级越高）
-5) 仍无法唯一 ⇒ fail-fast（NoUnique）
+1. **Qualifier（最强）**：注入点显式指定 ⇒ 先过滤/匹配
+2. **Primary（默认胜者）**：多个候选时优先选 primary
+3. **by-name fallback（隐式，别依赖）**：依赖名/参数名与 beanName 匹配时可能收敛
+4. **Priority（tie-break）**：在没有更强信号时打破平局（数值越小优先级越高）
+5. 仍无法唯一 ⇒ fail-fast（NoUnique）
 
 > 注意：`@Order` 不在这条链路里解决“唯一胜者”问题。
 
@@ -122,17 +123,17 @@
 | 注入到了“不是预期的那个” | by-name fallback 或 Primary/Priority 规则与读者预期不同 | 看 `dependencyName` 与 beanName 是否匹配；看 primaryCandidate | 显式 `@Qualifier`；减少隐式 by-name 依赖 | `SpringCoreBeansAutowireCandidateSelectionLabTest`（by-name 用例） |
 | 集合顺序不稳定/不符合预期 | 没有明确 order 信息；或排序入口没走 orderedStream | 看是否走 `AnnotationAwareOrderComparator#sort`；List/Map 注入路径 | 给候选加 `@Order`/实现 `Ordered`；使用 `orderedStream()` | `SpringCoreBeansAutowireCandidateSelectionLabTest`（集合排序用例） |
 
-## 断点闭环（建议照做一次）
+## 断点闭环（照着走一次）
 
-### 5.1 推荐断点（按收益排序）
+### 5.1 断点入口（按收益排序）
 
-1) `DefaultListableBeanFactory#doResolveDependency`（依赖解析总入口）
-2) `DefaultListableBeanFactory#findAutowireCandidates`（候选集合在哪里收集）
-3) `DefaultListableBeanFactory#determineAutowireCandidate`（胜者在哪里确定）
-4) `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`（Qualifier 如何过滤/匹配）
-5) `AnnotationAwareOrderComparator#sort`（集合排序入口）
+1. `DefaultListableBeanFactory#doResolveDependency`（依赖解析总入口）
+2. `DefaultListableBeanFactory#findAutowireCandidates`（候选集合在哪里收集）
+3. `DefaultListableBeanFactory#determineAutowireCandidate`（胜者在哪里确定）
+4. `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`（Qualifier 如何过滤/匹配）
+5. `AnnotationAwareOrderComparator#sort`（集合排序入口）
 
-### 5.2 固定观察点（watch list）
+### 5.2 固定观察点（观察清单）
 
 - `descriptor.getDependencyType()`（注入点要什么类型）
 - `dependencyName`（by-name fallback 的关键输入）
@@ -162,31 +163,24 @@
 - 标准答案（可复述）：
   - `@Priority` 常在没有更强信号时作为单依赖 tie-break，也会影响集合排序；`@Order` 更偏集合排序信号，不负责单依赖选胜者。
 
-## 自检要点
-应能够用 3 句回答：
+## 验证标准：候选选择 vs 顺序
+需要用 3 句回答：
 
-1) 单依赖注入与集合注入的根本差异是什么？
-2) `@Order/@Priority/@Primary/@Qualifier` 分别解决什么问题？
-3) 如何用断点证明“by-name fallback 真的发生了”？（提示：dependencyName 与 beanName）
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
+1. 单依赖注入与集合注入的根本差异是什么？
+2. `@Order/@Priority/@Primary/@Qualifier` 分别解决什么问题？
+3. 如何用断点证明“by-name fallback 真的发生了”？（提示：dependencyName 与 beanName）
 
-    建议 先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“4. 排障决策表（候选选择/排序：从异常到证据链）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 
-## 小结
+## 收束：候选选择 vs 顺序
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`
 
 <!-- BOOKIFY:END -->

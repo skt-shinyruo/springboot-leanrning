@@ -1,18 +1,26 @@
-# 关键分支矩阵（Branch Decision Matrix）
+# 关键分支矩阵
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：建议先运行本章推荐 Lab，完成主线与断点闭环验证；再回到正文按“时间线/分支矩阵/证据链”定位机制窗口；最后用自检题将表达固化为可复述答案。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，完成主线与断点闭环验证；再回到正文按“时间线/分支矩阵/证据链”定位机制窗口；最后用自检题将表达固化为可复述答案。
 
-    本章围绕关键分支矩阵（Branch Decision Matrix）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：关键分支矩阵。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`LabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#doResolveDependency` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
+## 本页路线图
 
-## 导读
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
 
-- 这页的用法很“工具化”：先运行 Branch Matrix 的聚合入口测试，把关键分支跑成断言；再用本页表格把异常/现象翻译成“阶段 → 第一断点 → watch list → 对应 Lab”。
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
+
+## 分支矩阵怎么读：把症状压成 if/then
+
+- 这页的用法很“工具化”：先运行 Branch Matrix 的聚合入口测试，把关键分支跑成断言；再用本页表格把异常/现象翻译成“阶段 → 第一断点 → 观察清单 → 对应 Lab”。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -22,7 +30,7 @@
     - Lab（关键分支矩阵入口）：
       - `SpringCoreBeansIocBranchMatrixLabTest`
       - `SpringCoreBeansInternalsBranchMatrixLabTest`
-    - Test file：
+    - 测试文件：
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansIocBranchMatrixLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansInternalsBranchMatrixLabTest.java`
 
@@ -32,16 +40,16 @@
 
 排障最怕两件事：
 
-1) 现象很像，但根因不在同一阶段
-2) 读者下了很多断点，却没有一套“判断规则”
+1. 现象很像，但根因不在同一阶段
+2. 读者下了很多断点，却没有一套“判断规则”
 
-Branch Decision Matrix 的目的就是把“判断规则”显式写出来：读者只要回答几个 if/then，就能定位到该设置断点的位置。
+关键分支矩阵的目的就是把“判断规则”显式写出来：只要回答几个 if/then，就能定位到该设置断点的位置。
 
 ---
 
 ## 先学会读异常 cause chain（别被外层异常骗了）
 
-Spring 容器的“外层异常”非常容易误导读者，因为它们经常只是包装（wrap）：
+Spring 容器的“外层异常”容易误导读者，因为它们经常只是包装（wrap）：
 
 - `BeanCreationException`：只是说“创建 bean 失败”，但失败点可能在 instantiate / populate / initialize / BPP / destroy 的任何一步。
 - `UnsatisfiedDependencyException`：只是说“依赖没满足”，但 root cause 通常是：
@@ -52,17 +60,17 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 
 因此读者排障的固定第一步是：
 
-1) 先打开异常的 **root cause**（最底层 `cause`）
-2) 再把 root cause 映射到“阶段 + 关键方法 + watch list”
-3) 最后再选 Lab 复现（用断言把分支固化）
+1. 先打开异常的 **root cause**（最底层 `cause`）
+2. 再把 root cause 映射到“阶段 + 关键方法 + 观察清单”
+3. 最后再选 Lab 复现（用断言把分支固化）
 
-> 可以发现：很多“看起来像 DI 的问题”，往往由 `@Value`/类型转换/FactoryBean 类型推断导致。
+> 可以发现：很多“表面上像 DI 的问题”，往往由 `@Value`/类型转换/FactoryBean 类型推断导致。
 
 ## 分支矩阵（现象 → 阶段 → 方法 → 观察点 → Lab）
 
 > 提示：这张表不是为了“覆盖所有情况”，而是覆盖最常见、最能决定走向的分支点。
 
-| 现象（Symptoms） | 分流问题（Decision） | 阶段（Phase） | 关键方法（Entry） | 必看变量（Watch List） | 对应 Lab |
+| 现象（Symptoms） | 分流问题（Decision） | 阶段（Phase） | 关键方法（Entry） | 必看变量（观察清单） | 对应 Lab |
 | --- | --- | --- | --- | --- | --- |
 | `NoSuchBeanDefinitionException` | 是真的没注册？还是没命中候选？ | 依赖解析 | `DefaultListableBeanFactory#doResolveDependency` | `descriptor/requiredType`、`matchingBeans.keySet()` | `SpringCoreBeansContainerLabTest` / `SpringCoreBeansProgrammaticResolveDependencyLabTest` / 候选相关 Lab |
 | `NoUniqueBeanDefinitionException` | 多候选如何收敛？有没有 @Primary/@Qualifier/by-name fallback？ | 依赖解析 | `determineAutowireCandidate` | `candidates`、`primaryCandidate`、`dependencyName` | `SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest` |
@@ -81,44 +89,37 @@ Spring 容器的“外层异常”非常容易误导读者，因为它们经常�
 
 ---
 
-## 如何使用这张表（推荐流程）
+## 如何使用这张表：root cause 先于外层异常
 
-当读者获取到一个异常/现象时，建议按以下顺序进行：
+当读者获取到一个异常/现象时，按以下顺序进行：
 
-1) **定位现象行**：它属于注入/占位符/代理/循环依赖哪一类？
-2) **回答分流问题**：把“可能原因”缩成 1–2 个分支
-3) **直接跳到关键方法设置断点**：只看 watch list，避免在调用栈中无目的追踪
-4) **用对应 Lab 复现**：确认读者理解的是机制，而不是项目偶然
+1. **定位现象行**：它属于注入/占位符/代理/循环依赖哪一类？
+2. **回答分流问题**：把“可能原因”缩成 1–2 个分支
+3. **直接跳到关键方法设置断点**：只看观察清单，避免在调用栈中无目的追踪
+4. **用对应 Lab 复现**：确认读者理解的是机制，而不是项目偶然
 
 ---
 
-## 面试使用方式这张表（将排障流程复用为答题流程）
+## 面试复述：把排障流程复用为答题流程
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-面试中的很多题目本质上是“给读者一个现象，让读者解释机制”。可将答题过程复用为：
+面试中的很多题目本质上是“给读者一个现象，让阅读者解释机制”。可将答题过程复用为：
 
-1) 先把现象放回阶段：definition / creation / after-init（对应 refresh 时间线）
-2) 再用 1 个关键断点给出证据（避免以主观判断代替证据）
-3) 最后给出工程建议（如何避免/如何验证）
+1. 先把现象放回阶段：definition / creation / after-init（对应 refresh 时间线）
+2. 再用 1 个关键断点给出证据（避免以主观判断代替证据）
+3. 最后给出工程处理路径（如何避免/如何验证）
 
-推荐复习入口：`appendix-interview-playbook.md`（每题都对应“阶段 + 关键方法 + 可运行 Lab”）。
+复习入口：`appendix-interview-playbook.md`（每题都对应“阶段 + 关键方法 + 可运行 Lab”）。
 
-## 自检要点
-应能够做到：
+## 验证标准：能从异常行走到断点
+读完后应能做到：
 
-1) 看到 `NoUniqueBeanDefinitionException`，能立刻说出“下哪个断点、看哪三个变量”。
-2) 看到 `@Value("${missing}")` 原样字符串，能立刻判断 strict/non-strict 并给出修复路径。
-3) 看到“代理不生效”，能把问题分成“顺序问题 vs 时机问题”两类并给出证据链入口。
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
+1. 看到 `NoUniqueBeanDefinitionException`，能立刻说出“下哪个断点、看哪三个变量”。
+2. 看到 `@Value("${missing}")` 原样字符串，能立刻判断 strict/non-strict 并给出修复路径。
+3. 看到“代理不生效”，能把问题分成“顺序问题 vs 时机问题”两类并给出证据链入口。
 
-    建议 先跑 `SpringCoreBeansIocBranchMatrixLabTest`，再用 `SpringCoreBeansInternalsBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“机制主线：把“排障经验”压缩成决策表”时，建议将关键入口串成更清晰的主线（例如：ApplicationContext#refresh → DefaultListableBeanFactory#doResolveDependency），并在关键分支处点明触发条件与结果形态。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 
-## 小结
+## 收束：矩阵的终点是 `refresh()` 阶段定位
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。

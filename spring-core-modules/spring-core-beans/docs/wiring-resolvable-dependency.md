@@ -1,29 +1,29 @@
 # registerResolvableDependency：能注入，但它不是 Bean
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕registerResolvableDependency：能注入，但它不是 Bean展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：registerResolvableDependency：能注入，但它不是 Bean。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansResolvableDependencyLabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#resolvableDependencies` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultListableBeanFactory#resolveDependency` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：registerResolvableDependency：能注入，但它不是 Bean
 
-本章围绕「registerResolvableDependency：能注入，但它不是 Bean」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansResolvableDependencyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+先运行 `SpringCoreBeansResolvableDependencyLabTest` 固定「registerResolvableDependency：能注入，但它不是 Bean」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
-  应能够 `@Autowired` 进来一个东西，但它**不是 BeanDefinition**、`getBean(类型)` 也找不到它。
+ 需要能 `@Autowired` 进来一个东西，但它**不是 BeanDefinition**、`getBean(类型)` 也找不到它。
 
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansResolvableDependencyLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
 
 ## 机制主线：它是“可解析依赖”，不是“可获取 Bean”
 
@@ -41,7 +41,7 @@
 **结果**：
 - 可注入但不可 `getBean`
 - 不走 BPP/生命周期链
-**断点建议**：`DefaultListableBeanFactory#doResolveDependency`
+**断点入口**：`DefaultListableBeanFactory#doResolveDependency`
 
 因此它适用的典型对象是“容器基础设施对象”，例如：
 
@@ -57,11 +57,11 @@
 
 常见上游触发：
 
-1) 属性注入（字段/Setter）
+1. 属性注入（字段/Setter）
    `AutowiredAnnotationBeanPostProcessor#postProcessProperties` → `beanFactory.resolveDependency(...)`
-2) 构造器注入（`@Autowired` 构造器/单构造器）
+2. 构造器注入（`@Autowired` 构造器/单构造器）
    `ConstructorResolver#autowireConstructor` → `resolveDependency(...)`
-3) `@Resource`（按名优先）
+3. `@Resource`（按名优先）
    `CommonAnnotationBeanPostProcessor` 最终也会走 `resolveDependency` 或 `getBean(name)`（见 [`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](wiring-resource-injection-name-first.md)）
 
 ### 1.1 DependencyDescriptor 深入分析（决定“能不能命中”）
@@ -72,8 +72,8 @@
 - `dependencyName`：字段名/参数名（影响 by-name fallback）
 
 **两个对照注入点**：
-1) 字段注入（有名字）：`@Autowired private Environment env;`
-2) 构造器注入（名字来自参数）：`Consumer(Environment environment)`
+1. 字段注入（有名字）：`@Autowired private Environment env;`
+2. 构造器注入（名字来自参数）：`Consumer(Environment environment)`
 
 **本章的关键点**：在 `doResolveDependency` 内部，Spring 会在“查找候选 bean”之前先检查 `resolvableDependencies`。
 
@@ -100,10 +100,10 @@
 
 在断点里通常会看到类似流程（表达的是顺序，不是源码逐行复刻）：
 
-1) 处理快捷路径（`Optional` / `ObjectProvider` / `@Lazy` 等）
-2) 处理 `@Value`（字符串/表达式）
-3) **尝试匹配 `resolvableDependencies`**
-4) 再去 `findAutowireCandidates`（按类型收集候选 bean）并做候选收敛（见 [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)）
+1. 处理快捷路径（`Optional` / `ObjectProvider` / `@Lazy` 等）
+2. 处理 `@Value`（字符串/表达式）
+3. **尝试匹配 `resolvableDependencies`**
+4. 再去 `findAutowireCandidates`（按类型收集候选 bean）并做候选收敛（见 [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)）
 
 ### 2.2.1 依赖解析分支树（简化版）
 
@@ -134,7 +134,7 @@
 - 不进入 singletonObjects
 - 不经过完整生命周期（BPP/BFPP/Aware/init/destroy…）
 
-所以现象就变得非常“稳定”：**能注入 ≠ 能 getBean**。
+所以现象就变得“稳定”：**能注入 ≠ 能 getBean**。
 
 ## 容器默认会注册哪些 ResolvableDependency？（以及怎么确认）
 
@@ -160,7 +160,7 @@
 
 适用场景：
 
-- 需要注入一个“**按线程/按请求动态变化**”的上下文对象（例如 requestId），但它不是 Spring Bean（或者读者不想把它做成 Bean + Scope）
+- 需要注入一个“**按线程/按请求动态变化**”的上下文对象（例如 requestId），但它不是 Spring Bean（或者不想把它做成 Bean + Scope）
 - 需要把“获取动作”延迟到注入发生时（而不是注册时就固定一个实例）
 
 反例与警告：
@@ -183,15 +183,15 @@
 
 ## 可复现闭环（基于 `SpringCoreBeansResolvableDependencyLabTest`）
 
-运行完成该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少需要复述 3 条结论：
 
-1) **能注入但不可 getBean**
+1. **能注入但不可 getBean**
    - 断点：`doResolveDependency`
    - 断言：命中 `resolvableDependencies` 分支
-2) **注册发生在 prepareBeanFactory**
+2. **注册发生在 prepareBeanFactory**
    - 断点：`prepareBeanFactory`
    - 断言：默认基础设施对象被注册
-3) **ObjectFactory 会延迟解析**
+3. **ObjectFactory 会延迟解析**
    - 断点：`AutowireUtils#resolveAutowiringValue`
    - 断言：注入时才解包 value
 
@@ -199,23 +199,23 @@
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-| 现象/异常 | 最可能原因 | 证据链（方法级） | 推荐修复 |
+| 现象/异常 | 最可能原因 | 证据链（方法级） | 修复策略 |
 | --- | --- | --- | --- |
 | `@Autowired` 成功，但 `getBean(类型)` 失败 | 这是 resolvable dependency，不是 bean | `doResolveDependency` 命中 `resolvableDependencies`；`getBean` 查不到对应 BeanDefinition | 接受它的定位；如果需要 bean 语义，就改成注册 BeanDefinition（`registerBeanDefinition`/`registerSingleton`） |
 | 读者自己注册了 `registerResolvableDependency`，但注入点还是报 `NoSuchBeanDefinitionException`/`UnsatisfiedDependencyException` | 注册到了**另一个** `BeanFactory`（父子容器/测试 context 变化） | `prepareBeanFactory`/自定义注册处断点看目标工厂；`doResolveDependency` 里 map 是否包含该 key | 确认注册发生在“注入发生的那个 context”的 `BeanFactory` 上 |
 | 容易误以为 `@Qualifier` 能约束它，但没有效果 | resolvableDependencies 按 type 命中，不走候选选择 | 命中发生在 `doResolveDependency` 的 resolvableDependencies 分支，未进入 `findAutowireCandidates` | 若需要 Qualifier 语义，则不宜使用 resolvableDependency；应改为注册多个 bean，并通过 Qualifier 进行选择 |
-| 读者把一个对象塞进 resolvableDependencies，期望它被 AOP/后置处理器增强，但没有 | 它不是 bean，不会走 BPP 链 | 不经过 `createBean` / `initializeBean` / `applyBeanPostProcessors...` | 需要增强就让它成为 bean，或把增强逻辑放在读者自己的 factory/provider 里 |
+| 读者把一个对象塞进 resolvableDependencies，期望它被 AOP/后置处理器增强，但没有 | 它不是 bean，不会走 BPP 链 | 不经过 `createBean` / `initializeBean` / `applyBeanPostProcessors...` | 需要增强就让它成为 bean，或把增强逻辑放在自己的 factory/provider 里 |
 
-## 断点闭环（建议照做一次）
+## 断点闭环（照着走一次）
 
-### 7.1 推荐断点（按收益排序）
+### 7.1 断点入口（按收益排序）
 
-1) `AbstractApplicationContext#prepareBeanFactory`：看默认注册了哪些 resolvable dependencies
-2) `DefaultListableBeanFactory#registerResolvableDependency`：看相应的 type/value 如何进入 map
-3) `DefaultListableBeanFactory#doResolveDependency`：看注入点命中的是 resolvableDependencies 还是候选 bean
-4) `AutowireUtils#resolveAutowiringValue`：value 是 `ObjectFactory` 时，看它何时解包
+1. `AbstractApplicationContext#prepareBeanFactory`：看默认注册了哪些 resolvable dependencies
+2. `DefaultListableBeanFactory#registerResolvableDependency`：看相应的 type/value 如何进入 map
+3. `DefaultListableBeanFactory#doResolveDependency`：看注入点命中的是 resolvableDependencies 还是候选 bean
+4. `AutowireUtils#resolveAutowiringValue`：value 是 `ObjectFactory` 时，看它何时解包
 
-### 7.2 固定观察点（watch list）
+### 7.2 固定观察点（观察清单）
 
 - `DependencyDescriptor#getDependencyType()` / `descriptor.getResolvableType()`
 - `this.resolvableDependencies`
@@ -239,26 +239,19 @@
 - 标准答案：不适合。ResolvableDependency 按 type 直接命中，跳过候选收敛逻辑；要 Qualifier 就应该走候选选择（注册多个 bean）。
 - 方法级证据链：命中在 `doResolveDependency` 的 resolvableDependencies 分支，没有进入 `determineAutowireCandidate`（见 [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)）。
 
-## 自检要点
+## 验证标准：registerResolvableDependency：能注入，但它不是 Bean
 ResolvableDependency = **注入时可解析的 type→value 映射**；命中在 `doResolveDependency`；它不是 bean，因此没有 BeanDefinition/生命周期/BPP/AOP 增强。
 
-## 小结
+## 收束：registerResolvableDependency：能注入，但它不是 Bean
 
 - 本章完成后：需要把三件事分清楚：**能注入**、**能 getBean**、**会不会走生命周期/代理**。
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansResolvableDependencyLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
-    - 第一断点：`DefaultListableBeanFactory#doResolveDependency`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“6. 排障决策表（能注入/不能 getBean/命中不了 → 证据链）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansResolvableDependencyLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResolvableDependencyLabTest.java`
 
 <!-- BOOKIFY:END -->

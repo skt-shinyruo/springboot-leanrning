@@ -1,6 +1,6 @@
 # 04. self-invocation：为什么异步有时不生效
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（AOP 的经典边界）"
+!!! summary "章节入口（AOP 的经典边界）"
 
     这一章讲的不是 `@Async` 的“特殊规则”，而是 Spring AOP 的一个老坑：**self-invocation 会绕开代理。**
 
@@ -10,12 +10,12 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. 异常传播：Future vs void](async-scheduling-exceptions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. `@Scheduled` 基础与可测试性](async-scheduling-scheduling-basics.md)
+上一章：[03. 异常传播：Future vs void](async-scheduling-exceptions.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. `@Scheduled` 基础与可测试性](async-scheduling-scheduling-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall`（见文末“对应 Lab/Test”），再跑一次“跨 bean 边界”的对照用例，差异会非常直观。
+优先运行 `BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall`（见文末“对应实验/测试”），再跑一次“跨 bean 边界”的对照用例，差异会非常直观。
 
 
 ## 这个坑为什么这么“顽固”
@@ -62,14 +62,14 @@
 
 ## 小结
 
-self-invocation 不是 `@Async` 的专属坑，`@Transactional`、校验、权限等所有基于 AOP 的能力都共享这条边界。弄明白它，会少掉很多“看起来像玄学”的排障时间。
+self-invocation 不是 `@Async` 的专属坑，`@Transactional`、校验、权限等所有基于 AOP 的能力都共享这条边界。弄明白它，会少掉很多“表面上像不可解释”的排障时间。
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingLabTest`
 
-上一章：[part-01-async-scheduling/03-exceptions.md](async-scheduling-exceptions.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-async-scheduling/05-scheduling-basics.md](async-scheduling-scheduling-basics.md)
+上一章：[async-scheduling-exceptions.md](async-scheduling-exceptions.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[async-scheduling-scheduling-basics.md](async-scheduling-scheduling-basics.md)
 
 <!-- BOOKIFY:END -->

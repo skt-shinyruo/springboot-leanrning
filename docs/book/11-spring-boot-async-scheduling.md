@@ -1,12 +1,12 @@
 # 11 Spring Boot Async & Scheduling：线程池、异常传播与上下文边界
 
-## 学习目标
+## 本章要回答的问题
 
 - 能解释 `@Async` / `@Scheduled` 的生效机制：代理边界、线程切换与默认线程池来源。
 - 能区分三类常见问题：异步不生效 / 异步异常“消失” / 上下文（Security/MDC/Request）丢失或泄漏。
 - 能把异步与事务、日志、观测串联起来（跨线程时语义会变化）。
 
-## 概念框架
+## 主线框架
 
 - **代理与生效条件**：
   - `@Async`/方法安全/事务等共享一个事实：必须经过代理，self-invocation 会绕过。
@@ -27,17 +27,17 @@
 - 模块目录页（顺读主线）：
   - [`spring-boot-async-scheduling/README.md`](../../spring-boot-modules/spring-boot-async-scheduling/README.md)
 - 导航型文档（用于定位 self-invocation/线程池/事务叠加）：
-  - `@Async` 心智模型：[`part-01-async-scheduling/01-async-proxy-mental-model.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-async-proxy-mental-model.md)
-  - self-invocation：[`part-01-async-scheduling/04-self-invocation.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-self-invocation.md)
-  - `@Async` × `@Transactional`：[`part-01-async-scheduling/06-async-and-transactions.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-async-and-transactions.md)
+  - `@Async` 心智模型：[`async-scheduling-async-proxy-mental-model.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-async-proxy-mental-model.md)
+  - self-invocation：[`async-scheduling-self-invocation.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-self-invocation.md)
+  - `@Async` × `@Transactional`：[`async-scheduling-async-and-transactions.md`](../../spring-boot-modules/spring-boot-async-scheduling/docs/async-scheduling-async-and-transactions.md)
 
 ## 常见误区
 
-- 以为 `@Async` 让方法“自动变快”。异步是边界与并发模型，不是性能魔法；错误的线程池/队列会让系统更慢。
+- 以为 `@Async` 让方法“自动变快”。异步是边界与并发模型，不是自动性能能力；错误的线程池/队列会让系统更慢。
 - 以为异步异常会像同步异常一样返回给调用方。需要按返回类型（Future vs void）分型。
 - 以为上下文会自动传播。SecurityContext/MDC/RequestContext 需要显式策略，否则就是“默认丢失/偶发串线”。
 
-## 练习
+## 验证练习
 
 - 练习 1（异步是否生效的证据链）：
   - 运行 `BootAsyncSchedulingBookMatrixLabTest`；
@@ -52,7 +52,7 @@
 ## 小结
 
 - 异步与调度的难点不在语法，而在边界：代理、线程池、异常、上下文传播。
-- 下一章进入 Cache，把“缓存作为性能边界”放到可验证主线里，避免只靠直觉调参。
+- 下一章进入 Cache，把“缓存作为性能边界”放到可验证主线里，避免只凭经验调参。
 
 ## 延伸阅读
 
@@ -63,4 +63,3 @@
 ---
 
 [← 上一章](10-spring-boot-web-client.md) | [目录](README.md) | [下一章 →](12-spring-boot-cache.md)
-

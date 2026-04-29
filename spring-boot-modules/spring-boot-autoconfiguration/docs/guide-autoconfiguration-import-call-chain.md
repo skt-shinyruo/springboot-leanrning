@@ -1,23 +1,31 @@
 # 03. AutoConfiguration 调用链（imports → 条件决策 → 产出 bean）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：AutoConfiguration 调用链（imports → 条件决策 → 产出 bean）展开，主线可以概括为：imports 决定“候选集合”，Condition 决定“是否注册”，backoff 决定“是否让位给用户配置”。
 
-    先跑 `BootAutoConfigurationLabTest`，再按本文从 `AutoConfigurationImportSelector` 走到 `ConditionEvaluator`，最后回到断点地图把入口固化。
+    先跑 `BootAutoConfigurationLabTest`，再按本章从 `AutoConfigurationImportSelector` 走到 `ConditionEvaluator`，最后回到断点地图把入口固化。
 
     需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConditionEvaluator#shouldSkip` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖导读：把“自动配置导入 + 条件决策”落到源码与断点](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. 断点地图（AutoConfiguration Debugger Pack）](guide-breakpoint-map.md)
+上一章：[02. 深挖导读：把“自动配置导入 + 条件决策”落到源码与断点](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. 断点地图（AutoConfiguration）](guide-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-建议优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
+优先运行 `BootAutoConfigurationLabTest`，以获得可回归的现象与断言入口。
 
-读完这一章，你应该能把这件事讲清楚：imports 决定“候选集合”，Condition 决定“是否注册”，backoff 决定“是否让位给用户配置”。需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConditionEvaluator#shouldSkip` 这些入口切入。
+本章完成后，应能复述：imports 决定“候选集合”，Condition 决定“是否注册”，backoff 决定“是否让位给用户配置”。需要下探源码时，可以从 `AutoConfigurationImportSelector#selectImports` / `ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConditionEvaluator#shouldSkip` 这些入口切入。
 
 
 ## 应能复述的“最短调用链”
@@ -47,7 +55,7 @@ auto-config 最终会进入 Spring 的“配置类解析与注册”主线（可
 
 - `ConditionEvaluator#shouldSkip`
 
-当看到 `@ConditionalOnProperty/@ConditionalOnClass/@ConditionalOnBean/@ConditionalOnMissingBean` 时，不要把它当成“注解魔法”，把它当成：
+当看到 `@ConditionalOnProperty/@ConditionalOnClass/@ConditionalOnBean/@ConditionalOnMissingBean` 时，不要把它当成“注解隐式机制”，把它当成：
 
 > 配置类/`@Bean` 方法在注册前的一次 if 判断。
 
@@ -71,10 +79,10 @@ auto-config 最终会进入 Spring 的“配置类解析与注册”主线（可
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAutoConfigurationLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](guide-breakpoint-map.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[guide-breakpoint-map.md](guide-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

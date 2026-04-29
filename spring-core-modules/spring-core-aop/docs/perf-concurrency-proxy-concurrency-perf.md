@@ -1,6 +1,6 @@
 # 01. 并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）展开，主线可以概括为：AOP proxy 通常是单例复用；每次方法调用会创建独立的 `MethodInvocation` 并执行拦截器链；如果 advice 需要携带“调用上下文”，应使用 ThreadLocal（并在 finally 清理）或显式上下文传递机制。
 
     先跑本章 Lab，把“proxy 可并发调用 + advice 的 ThreadLocal 状态不跨线程串线”固化成断言；再回到正文理解为什么 proxy 是共享对象、invocation 是每次调用独立对象，以及什么状态是安全的、什么是危险的。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. `@Aspect` 实例模型：singleton vs perthis/pertarget/pertypewithin（Spring AOP 语境）](autoproxy-and-pointcuts-aspect-instantiation-models.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](proxy-stacking-multi-proxy-stacking.md)
+上一章：[04. `@Aspect` 实例模型：singleton vs perthis/pertarget/pertypewithin（Spring AOP 语境）](autoproxy-and-pointcuts-aspect-instantiation-models.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](proxy-stacking-multi-proxy-stacking.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「并发 / 性能：同一 proxy 并发调用边界（ThreadLocal 不串线）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreAopProxyConcurrencyLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopProxyConcurrencyLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -62,15 +62,15 @@
 
 - **线程安全边界**：proxy 可共享；advice 要么无状态，要么状态是线程隔离/线程安全的。
 - **线程池风险**：ThreadLocal 如果不清理，会在复用线程时泄露上一次请求的上下文。
-- **链条长度成本**：拦截器链越长，单位调用的开销越大；建议先用最小切点建立基线，再逐步叠加增强验证成本。
+- **链条长度成本**：拦截器链越长，单位调用的开销越大；先用最小切点建立基线，再逐步叠加增强验证成本。
 
-## 在本模块如何验证（建议跑一次）
+## 在本模块如何验证（跑一次即可）
 
 跑这一个测试方法即可：
 
 - `SpringCoreAopProxyConcurrencyLabTest#proxyInvocation_isThreadIsolated_underConcurrentCalls`
 
-建议命令（可选）：
+运行命令（可选）：
 
 - `mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyConcurrencyLabTest test`
 
@@ -78,7 +78,7 @@
 
 - 多线程并发调用同一 proxy，最终断言全部通过（不串线）
 
-## 推荐断点（可选）
+## 断点入口（可选）
 
 如果想把“线程隔离”在断点里看见：
 
@@ -104,10 +104,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopProxyConcurrencyLabTest`
 
-上一章：[10-aspect-instantiation-models](autoproxy-and-pointcuts-aspect-instantiation-models.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[09-multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md)
+上一章：[10-aspect-instantiation-models](autoproxy-and-pointcuts-aspect-instantiation-models.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[09-multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md)
 
 <!-- BOOKIFY:END -->

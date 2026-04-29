@@ -1,19 +1,20 @@
-# 常见误区清单（建议反复对照）
+# 误判清单：从现象回到定义层和实例层
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；真实项目里常见路径是：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
 
-    本章围绕常见误区清单（建议反复对照）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：常见误区清单（按现象对照）。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 误判清单的用法：从现象回到证据链
 
-本章整理「90. 常见误区清单（建议反复对照）」相关的常见误判与排障入口。阅读时建议按“现象 → 分支 → 复现 → 修法”的顺序对照，而不是只背结论。
-推荐先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，用断言把分支固定下来，再回到本文逐条核对根因。
+本章整理 `spring-core-beans` 里最容易误判的现象与排障入口。阅读时按“现象 → 分支 → 复现 → 修法”的顺序对照，而不是只背结论。
+先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，用断言把分支固定下来，再回到本章逐条核对根因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -26,46 +27,47 @@
    - Book Matrix：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBookMatrixLabTest test`
    - Branch Matrix - IoC 分支：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansIocBranchMatrixLabTest test`
    - Branch Matrix - 内部机制分支：`mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInternalsBranchMatrixLabTest test`
-3. 证据（Evidence）：对照 [断点地图](guide-breakpoint-map.md)，把断点/Watchpoints/关键日志收齐
+3. 证据（Evidence）：对照 [断点地图](guide-breakpoint-map.md)，把断点/观察点/关键日志收齐
 4. 决策（Decision）：对照 [关键分支矩阵](guide-branch-decision-matrix.md)，把 If/Then 选路写清楚
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
 6. 验证（Verify）：重新运行入口 + 对照 [自检清单](appendix-self-check.md)
 
-3/4/6 三个入口分别对应“看证据/做分流/做复述”，建议读者把它们当成固定工具页反复使用，而不是只读一遍。
+3/4/6 三个入口分别对应“看证据/做分流/做复述”，可把它们当成固定工具页反复使用，而不是只读一遍。
 
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansTypeConversionLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansAutowireCandidateSelectionLabTest`，再用 `SpringCoreBeansContainerLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：将坑点从“现象清单”收敛为“最短诊断路线”：每类现象给出第一入口断点与第一条排除项，并回链到对应章节/用例。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
+## 本页路线图
+
+这页不适合顺读背诵。遇到问题时按下面顺序定位：
+
+1. 先在误判条目里匹配现象，看它更接近定义层、实例层、代理替换还是依赖解析。
+2. 再运行条目给出的 Lab，把猜测变成可复现事实。
+3. 最后回到对应正文页补机制细节，避免在清单页里停留在结论层。
+
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 本章把“常见误区”统一归因到 4 类主线：
 
-1) **定义层**：BeanDefinition 注册/覆盖/条件装配
-2) **实例层**：createBean → populateBean → initializeBean
-3) **代理替换**：BPP 可能替换最终暴露对象
-4) **依赖解析**：候选收集 → 收敛 → by-name/Qualifier/Primary
+1. **定义层**：BeanDefinition 注册/覆盖/条件装配
+2. **实例层**：createBean → populateBean → initializeBean
+3. **代理替换**：BPP 可能替换最终暴露对象
+4. **依赖解析**：候选收集 → 收敛 → by-name/Qualifier/Primary
 
 排障时先判层，再设置断点，效率最高。
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（优先运行它们）：
+本章引用的实验入口：
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
+- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-## 常见误区与边界
+## 边界分流：误判通常来自层次混淆
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
@@ -98,7 +100,7 @@
 
 见：[Scope 与 prototype 注入陷阱](ioc-scope-and-prototype.md)
 
-- 现象：prototype 注入 singleton 后“看起来像单例”
+- 现象：prototype 注入 singleton 后“表面上像单例”
 - 证据链：`AbstractBeanFactory#doGetBean` → `AbstractAutowireCapableBeanFactory#populateBean`
 - 修复：`ObjectProvider` / `@Lookup` / scoped proxy
 - 验证：`SpringCoreBeansCustomScopeLabTest` / `SpringCoreBeansContainerLabTest`
@@ -133,7 +135,7 @@
 
 - 明明是单例，却出现多个实例（或者行为像多例）
 
-推荐写法：
+稳妥写法：
 
 - 用 `@Bean` 方法参数声明依赖
 
@@ -169,7 +171,7 @@
 
 - setter 循环能成功不代表设计合理
 - 半初始化对象、代理、生命周期都会让问题变复杂
-- Boot 环境里可能默认更严格，直接不让读者启动
+- Boot 环境里可能默认更严格，直接不让阅读者启动
 
 见：[循环依赖](ioc-circular-dependencies.md)
 
@@ -185,7 +187,7 @@
 - 自动装配主要是在启动时“导入配置并注册 BeanDefinition”
 - 依赖注入解析仍遵循 Spring 容器规则
 
-建议：
+处理：
 
 - 学会看条件报告（`--debug` / `debug=true`）
 
@@ -202,12 +204,12 @@
 
 - 这是 service locator 风格，会隐藏依赖关系，降低可测试性
 
-建议：
+处理：
 
 - 默认用构造器注入
 - 只有在确实需要“延迟/可选/按需获取”时才用 `ObjectProvider`
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
-推荐断点：`DefaultListableBeanFactory#doResolveDependency`、`AbstractAutowireCapableBeanFactory#populateBean`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
+断点入口：`DefaultListableBeanFactory#doResolveDependency`、`AbstractAutowireCapableBeanFactory#populateBean`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
 - 现象：服务定位导致依赖关系隐式化、测试困难
 - 证据链：`DefaultListableBeanFactory#doResolveDependency`
@@ -219,21 +221,21 @@
 典型症状：
 
 - 明明写了 `@Qualifier("xxx")`，还是注入失败
-- 或者注入到了“看起来不对的那个实现”
+- 或者注入到了“表面上不对的那个实现”
 
 事实：
 
-- `@Qualifier` 的作用是 **缩小候选集合**，它不是“让容器更聪明”，而是“让读者把依赖关系写清楚”
+- `@Qualifier` 的作用是 **缩小候选集合**，它不是“让容器更聪明”，而是“让阅读者把依赖关系写清楚”
 - `@Qualifier` 匹配规则取决于 `AutowireCandidateResolver`（一般是 qualifier 元数据/beanName 等）
 
-建议：
+处理：
 
 - 多实现时优先使用：**`@Qualifier`（精确）** 或 **`@Primary`（默认实现）**
 - 不要指望 `@Order` 解决单依赖歧义（见误区 2）
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansAutowireCandidateSelectionLabTest#primaryOverridesPriority_forSingleInjection`
+- 对应实验/测试：`SpringCoreBeansAutowireCandidateSelectionLabTest#primaryOverridesPriority_forSingleInjection`
 
 见：[依赖注入解析](ioc-dependency-injection-resolution.md)
 
@@ -246,7 +248,7 @@
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansAutowireCandidateSelectionLabTest`（优先级/primary 的对比）
+- 对应实验/测试：`SpringCoreBeansAutowireCandidateSelectionLabTest`（优先级/primary 的对比）
 
 见：[依赖注入解析](ioc-dependency-injection-resolution.md) 与 [`@Resource` 注入](wiring-resource-injection-name-first.md)
 
@@ -268,7 +270,7 @@
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansAutowireCandidateSelectionLabTest#orderAnnotation_affectsCollectionInjectionOrder`
+- 对应实验/测试：`SpringCoreBeansAutowireCandidateSelectionLabTest#orderAnnotation_affectsCollectionInjectionOrder`
 
 见：[依赖注入解析](ioc-dependency-injection-resolution.md)
 
@@ -281,7 +283,7 @@
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansLifecycleCallbackOrderLabTest#singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization`
+- 对应实验/测试：`SpringCoreBeansLifecycleCallbackOrderLabTest#singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization`
 
 见：[生命周期：初始化、销毁与回调](ioc-lifecycle-and-callbacks.md) 与 [容器启动与基础设施处理器](internals-container-bootstrap-and-infrastructure.md)
 
@@ -299,7 +301,7 @@
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansProxyingPhaseLabTest#beanPostProcessorCanReturnAProxyAsTheFinalExposedBean_andSelfInvocationStillBypassesTheProxy`
+- 对应实验/测试：`SpringCoreBeansProxyingPhaseLabTest#beanPostProcessorCanReturnAProxyAsTheFinalExposedBean_andSelfInvocationStillBypassesTheProxy`
 
 见：[代理/替换阶段：BPP 如何把 Bean 换成 Proxy](wiring-proxying-phase-bpp-wraps-bean.md)
 
@@ -312,12 +314,12 @@
 
 事实：
 
-- setter 循环能救，靠的是“提前暴露引用”（early singleton exposure），这意味着读者可能获取到半初始化对象
+- setter 循环能救，靠的是“提前暴露引用”（early singleton exposure），这意味着可能获取到半初始化对象
 - 一旦代理介入，early 与 final 不一致会让问题更隐蔽（见 [early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](internals-early-reference-and-circular.md)）
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansEarlyReferenceLabTest#getEarlyBeanReference_canProvideEarlyProxyDuringCircularDependencyResolution`
+- 对应实验/测试：`SpringCoreBeansEarlyReferenceLabTest#getEarlyBeanReference_canProvideEarlyProxyDuringCircularDependencyResolution`
 
 见：[循环依赖](ioc-circular-dependencies.md) 与 [early reference 与循环依赖](internals-early-reference-and-circular.md)
 
@@ -335,7 +337,7 @@
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName`
+- 对应实验/测试：`SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName`
 
 见：[FactoryBean](ioc-factorybean.md)、[FactoryBean 深潜](wiring-factorybean-deep-dive.md)、[FactoryBean 边界](wiring-factorybean-edge-cases.md)
 
@@ -349,11 +351,11 @@
 事实：
 
 - `proxyBeanMethods=false` 会让配置类内部的 `@Bean` 方法互调变成普通 Java 调用，可能 new 出额外对象
-- 推荐写法是用 `@Bean` 方法参数声明依赖（两种模式都正确）
+- 稳妥写法是用 `@Bean` 方法参数声明依赖（两种模式都正确）
 
 如何验证：
 
-- 对应 Lab/Test：
+- 对应实验/测试：
   - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsTruePreservesSingletonSemanticsForBeanMethodCalls`
   - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalseAllowsDirectMethodCallToCreateExtraInstance`
 
@@ -378,7 +380,7 @@
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenCandidateLosesGenericInformation_likeJdkProxySingleton`
+- 对应实验/测试：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenCandidateLosesGenericInformation_likeJdkProxySingleton`
 
 见：[泛型匹配与注入误区](wiring-generic-type-matching-pitfalls.md)
 
@@ -401,7 +403,7 @@
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansTypeConversionLabTest`
+- 对应实验/测试：`SpringCoreBeansTypeConversionLabTest`
 
 见：[类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](wiring-type-conversion-and-beanwrapper.md)
 
@@ -424,16 +426,16 @@
 
 如何验证：
 
-- 对应 Lab/Test：
+- 对应实验/测试：
   - `SpringCoreBeansAutowireCandidateSelectionLabTest#byNameFallback_canResolveSingleInjectionAmbiguity_forAutowiredFieldInjection`
   - `SpringCoreBeansAutowireCandidateSelectionLabTest#primaryOverridesByNameFallback_forSingleInjection`
 
-推荐断点：
+断点入口：
 
 - `DefaultListableBeanFactory#determineAutowireCandidate`
 - `DefaultListableBeanFactory#doResolveDependency`
 
-建议：
+处理：
 
 - 生产代码里不要“依赖 by-name fallback 的侥幸收敛”，优先显式表达依赖关系：`@Qualifier` / `@Primary`
 
@@ -452,13 +454,13 @@
 事实：
 
 - `getIfUnique()` 的核心语义是：**只有唯一候选时才返回，否则返回 null**
-- `ObjectProvider` 的意义不是“让容器更聪明”，而是让读者把“可选/延迟/多候选”这些语义写清楚
+- `ObjectProvider` 的意义不是“让容器更聪明”，而是让阅读者把“可选/延迟/多候选”这些语义写清楚
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansAutowireCandidateSelectionLabTest#objectProvider_getIfUnique_returnsNull_whenMultipleCandidatesExist`
+- 对应实验/测试：`SpringCoreBeansAutowireCandidateSelectionLabTest#objectProvider_getIfUnique_returnsNull_whenMultipleCandidatesExist`
 
-推荐断点：
+断点入口：
 
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#resolveDependency`
@@ -484,9 +486,9 @@
 
 如何验证：
 
-- 对应 Lab/Test：`SpringCoreBeansAutowireCandidateSelectionLabTest#qualifierOverridesPrimary_forSingleInjection`
+- 对应实验/测试：`SpringCoreBeansAutowireCandidateSelectionLabTest#qualifierOverridesPrimary_forSingleInjection`
 
-推荐断点：
+断点入口：
 
 - `DefaultListableBeanFactory#doResolveDependency`
 - `DefaultListableBeanFactory#determineAutowireCandidate`
@@ -504,12 +506,12 @@
 - `beanName`：proxy
 - `scopedTarget.beanName`：真实目标
 
-因此在排障时，应首先判定当前获取的是 proxy 还是 target；同时将 `ScopedProxyMode.INTERFACES` / `TARGET_CLASS` 的差异（JDK vs CGLIB）纳入修复建议。
+因此在排障时，应首先判定当前获取的是 proxy 还是 target；同时将 `ScopedProxyMode.INTERFACES` / `TARGET_CLASS` 的差异（JDK vs CGLIB）纳入修复方式。
 
 ## 面试常问（把“误区”说成标准答案）
 
-> 目标：读者不是背“误区列表”，而是能把“现象 → 结论 → 证据链（方法级）→ 修复”说成一段可复述答案。
-> 建议配合：`appendix-interview-playbook.md`（答题模板）与 `appendix-production-troubleshooting-checklist.md`（排障分流）。
+> 落点：不是背“误区列表”，而是能把“现象 → 结论 → 证据链（方法级）→ 修复”说成一段可复述答案。
+> 配合：`appendix-interview-playbook.md`（答题模板）与 `appendix-production-troubleshooting-checklist.md`（排障分流）。
 
 ### Q1：`@Order` / `Ordered` 能解决单依赖注入的多候选歧义吗？
 
@@ -556,29 +558,29 @@
   - `SpringCoreBeansCircularDependencyBoundaryLabTest`
   - `SpringCoreBeansEarlyReferenceLabTest`
 
-### Q5：为什么“代理导致类型不匹配”在面试里经常出现？如何给出修复建议？
+### Q5：为什么“代理导致类型不匹配”在面试里经常出现？如何给出修复方式？
 
 - 标准答案（可复述）：
-  - JDK 动态代理只实现接口，不是目标类的子类；若按具体类类型注入/强转，会失败。修复建议通常是：按接口注入、或改用 class-based proxy（CGLIB）、或在设计层避免在容器早期阶段触发代理相关时序问题。
+  - JDK 动态代理只实现接口，不是目标类的子类；若按具体类类型注入/强转，会失败。修复方式通常是：按接口注入、或改用 class-based proxy（CGLIB）、或在设计层避免在容器早期阶段触发代理相关时序问题。
 - 证据链（方法级）：
   - 代理替换发生点：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
   - 代理/增强触发者：具体 BPP（如 AOP 相关 post-processor）
 - 最小复现：
   - `SpringCoreBeansProxyingPhaseLabTest`
 
-## 自检要点
-- 应能够否做到：获取到一个现象（注入失败/获取到 proxy/占位符没解析/启动阶段异常）就能先分层（定义层 vs 实例层），并跳到对应章节与 Lab？
-- 应能够否明确区分三件事：**候选选择（谁赢）**、**集合排序（谁先谁后）**、**初始化顺序（谁先创建）**？
-- 应能够否把“猜测”变成“证据链”：用一个 LabTest + 断点 + watch list 把结论固定为可复现事实？
+## 验证标准：能否把误判压回证据链
+- 是否能做到：获取到一个现象（注入失败/获取到 proxy/占位符没解析/启动阶段异常）就先分层（定义层 vs 实例层），并跳到对应章节与 Lab？
+- 是否能明确区分三件事：**候选选择（谁赢）**、**集合排序（谁先谁后）**、**初始化顺序（谁先创建）**？
+- 是否能把“猜测”变成“证据链”：用一个实验/测试 + 断点 + 观察清单 把结论固定为可复现事实？
 
-## 小结
+## 收束：误判清单只解决入口，不替代断点
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest` / `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest` / `SpringCoreBeansTypeConversionLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 
 <!-- BOOKIFY:END -->

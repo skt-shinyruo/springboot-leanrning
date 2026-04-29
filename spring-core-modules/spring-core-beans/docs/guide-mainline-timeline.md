@@ -1,16 +1,24 @@
 # 主线时间线：IoC 容器从 refresh 到创建 Bean
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把主线/断点闭环完成验证，再回到正文按“时间线/分支矩阵/证据链”定位机制窗口；最后用自检题把表达固化成可复述答案。
+!!! summary "章节入口"
+    - 使用方式：可先运行章首 Lab，把主线/断点闭环完成验证，再回到正文按“时间线/分支矩阵/证据链”定位机制窗口；最后用自检题把表达固化成可复述答案。
 
-    本章围绕主线时间线：IoC 容器从 refresh 到创建 Bean展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：主线时间线：IoC 容器从 refresh 到创建 Bean。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansMainlineCallChainLabTest`。需要下探源码时，可以从 `AbstractApplicationContext#refresh` / `AbstractApplicationContext#prepareBeanFactory` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
+## 本页路线图
 
-## 导读
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
+
+## `refresh()` 时间线：定义、处理器、单例创建
 
 - 这章是一张时间线地图：读者先运行一个主线 Lab，把 refresh 走一遍；再用本页把每个现象定位到“它发生在哪一段、第一断点该下在哪里”。
 
@@ -20,7 +28,7 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansMainlineCallChainLabTest` / `SpringCoreBeansBreakpointPackLabTest`
-    - Test file：
+    - 测试文件：
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansMainlineCallChainLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansBreakpointPackLabTest.java`
 
@@ -30,8 +38,8 @@
 
 当读者学习 Spring IoC 时，最容易迷失的不是“方法太多”，而是：
 
-- 读者不知道某个机制发生在 refresh 的哪一步
-- 读者不知道“修改定义/添加处理器/触发 getBean”会影响哪一段
+- 不知道某个机制发生在 refresh 的哪一步
+- 不知道“修改定义/添加处理器/触发 getBean”会影响哪一段
 
 因此先用一张时间线，把 IoC 的主线粗粒度切成几段（每段对应一类问题/一类断点入口）。
 
@@ -39,7 +47,7 @@
 
 ## refresh 主线时间线（粗粒度分段）
 
-> 目标：遇到任何现象，先回答：它属于哪一段？
+> 落点：遇到任何现象，先回答：它属于哪一段？
 
 ### 1.1 段 A：准备阶段（容器骨架搭好，但还没处理相应的 bean）
 
@@ -126,11 +134,11 @@
 
 ### 1.6 段内关键对象变化（在 debugger 里应该观察到什么）
 
-这一小节只做一件事：把“阶段”变成“可观察对象”。
+这一小节只承担一个职责：把“阶段”变成“可观察对象”。
 
-无需记住全部字段，但应能够在断点里回答：**当前处于哪个阶段？该阶段改变了什么？**
+无需记住全部字段，但应能在断点里回答：**当前处于哪个阶段？该阶段改变了什么？**
 
-| 段 | 在断点里看什么 | 关键对象/变量（建议优先） | 可以得到的判断 |
+| 段 | 在断点里看什么 | 关键对象/变量（优先） | 可以得到的判断 |
 | --- | --- | --- | --- |
 | A 准备 | 容器是否已经具备“解析属性/注入容器对象”的基础能力 | `AbstractApplicationContext#prepareBeanFactory` 内：`beanFactory.resolvableDependencies`、embedded value resolvers、`beanFactory.getBeanClassLoader()` | 还没处理相应的 bean，但容器的“基础设施”已就绪（后续注解能否工作取决于下一段） |
 | B 定义层 | BeanDefinition 是否已经齐全、是否被改写过 | `beanFactory.getBeanDefinitionCount()`、`getBeanDefinitionNames()`、`BeanDefinition#getSource()`、`BeanDefinition#getRole()` | 问题属于“没注册/注册错/被覆盖/被改写”时，这一段就能定位根因 |
@@ -146,43 +154,35 @@
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-1) **注入失败（NoSuchBeanDefinition / NoUniqueBeanDefinition）**
+1. **注入失败（NoSuchBeanDefinition / NoUniqueBeanDefinition）**
    - 优先看段 D：`doResolveDependency/findAutowireCandidates/determineAutowireCandidate`
-2) **代理/增强不生效**
+2. **代理/增强不生效**
    - 先分清是段 C（BPP 没注册/顺序不对）还是段 D（bean 创建过早错过 BPP）
-3) **循环依赖/提前引用相关异常**
+3. **循环依赖/提前引用相关异常**
    - 段 D：`getSingleton` 的三层缓存分支 + `doCreateBean` 的 early exposure 窗口
 
 ---
 
 ## 面试常问（refresh 时间线）
 
-1) **refresh 的关键阶段如何讲（且能落到方法名）？**
+1. **refresh 的关键阶段如何讲（且能落到方法名）？**
    - 要点：prepare → 定义层（BFPP/BDRPP）→ 注册 BPP 链 → 创建单例（doCreateBean）→ finishRefresh 回调。
    - 证据链：`AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors` / `finishBeanFactoryInitialization`。
 
-2) **为什么说“时机决定能力”（尤其是代理/注解/回调）？**
+2. **为什么说“时机决定能力”（尤其是代理/注解/回调）？**
    - 要点：BPP 链注册完成前创建的 bean，可能错过后续 BPP（代理/注解注入），表现为“有时生效有时不生效”。
    - 证据链：对照 `registerBeanPostProcessors` 与目标 bean 的创建时机，结合条件断点过滤 beanName。
 
-推荐复习入口：`appendix-interview-playbook.md`（Q1/Q5 等题型都以时间线为骨架）。
+复习入口：`appendix-interview-playbook.md`（Q1/Q5 等题型都以时间线为骨架）。
 
-## 自检要点
-应能够用 3 句复述：
+## 验证标准：三句话复述 refresh 时间线
+读完后应能用 3 句复述：
 
-1) BFPP/BDRPP 发生在 refresh 的哪一段？它改的是“定义”还是“实例”？
-2) BPP 链是在什么时候注册的？为什么它决定了“注解/AOP/回调”是否生效？
-3) 单例创建主线从哪开始（哪一步触发预实例化）？循环依赖窗口在 `doCreateBean` 的哪里？
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
+1. BFPP/BDRPP 发生在 refresh 的哪一段？它改的是“定义”还是“实例”？
+2. BPP 链是在什么时候注册的？为什么它决定了“注解/AOP/回调”是否生效？
+3. 单例创建主线从哪开始（哪一步触发预实例化）？循环依赖窗口在 `doCreateBean` 的哪里？
 
-    建议 先跑 `SpringCoreBeansMainlineCallChainLabTest`，再用 `SpringCoreBeansBreakpointPackLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“2. 这条时间线使用方式来排障（3 个经典分流）”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 
-## 小结
+## 收束：时间线让分支有位置
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-

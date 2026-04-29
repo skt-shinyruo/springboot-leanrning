@@ -1,7 +1,7 @@
-# 04. 断点地图（Data JPA Debugger Pack）
+# 04. 断点地图（Data JPA）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕02：断点地图（Data JPA Debugger Pack）展开，主线可以概括为：Repository 代理 → `EntityManager`（Persistence Context）→ flush/dirty checking → 事务提交/回滚 → fetching 决定 SQL 数量与边界。
+!!! summary "章节入口（五问闭环）"
+    本章围绕02：断点地图（Data JPA）展开，主线可以概括为：Repository 代理 → `EntityManager`（Persistence Context）→ flush/dirty checking → 事务提交/回滚 → fetching 决定 SQL 数量与边界。
 
     先跑 `BootDataJpaBranchMatrixLabTest` 固化“实体状态/flush/merge-detach”的断言，再用断点把每次 SQL 的产生点与 persistence context 的状态变化对齐。
 
@@ -10,20 +10,28 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 00 - Deep Dive Guide（springboot-data-jpa）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. 关键分支矩阵（Branch Decision Matrix）](guide-branch-decision-matrix.md)
+上一章：[深挖导读：Spring Boot Data JPA](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. 关键分支矩阵](guide-branch-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-- 本章目标：把 JPA 的“看不见的状态机”变成可观察：**实体状态（managed/detached）**、**flush 时机**、**SQL 证据链**。
-- 推荐方法：把断点当作“证据采集器”，先证明分支发生点，再写结论（避免“我觉得 Hibernate 会…”）。
+- 本章收束点：把 JPA 的“看不见的状态机”变成可观察：**实体状态（managed/detached）**、**flush 时机**、**SQL 证据链**。
+- 证据链方法：把断点当作“证据采集器”，先证明分支发生点，再写结论（避免“凭印象判断 Hibernate 会…”）。
 
-## 运行入口（建议先跑）
+## 运行入口（先运行）
 
 - Book Matrix：`BootDataJpaBookMatrixLabTest`
 - Branch Matrix：`BootDataJpaBranchMatrixLabTest`
 
-推荐命令：
+运行命令：
 
 - `mvn -q -pl :spring-boot-data-jpa -Dtest=BootDataJpaBranchMatrixLabTest test`
 
@@ -39,7 +47,7 @@
 - `org.springframework.data.jpa.repository.support.SimpleJpaRepository#save`
 - `org.springframework.data.jpa.repository.support.SimpleJpaRepository#findById`
 
-## Watchpoints（最常用的 4 个）
+## 观察点（最常用的 4 个）
 
 - `entityManager.contains(entity)`：是否 managed（状态机证据）
 - `TransactionSynchronizationManager.isActualTransactionActive()`：是否在事务内
@@ -53,24 +61,24 @@
 
 ## 排障入口（Playbook）
 
-- 常见坑：[`../appendix/01-common-pitfalls.md`](appendix-common-pitfalls.md)
-- 自检：[`../appendix/02-self-check.md`](appendix-self-check.md)
+- 常见坑：[`appendix-common-pitfalls.md`](appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](appendix-self-check.md)
 
 ## 小结与下一章
 
 Repository 代理 → `EntityManager`（Persistence Context）→ flush/dirty checking → 事务提交/回滚 → fetching 决定 SQL 数量与边界。
 
-下一章见：[第 96 章：04：关键分支矩阵（Branch Decision Matrix）](guide-branch-decision-matrix.md)
+下一章见：[04：关键分支矩阵](guide-branch-decision-matrix.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Matrix：`BootDataJpaBranchMatrixLabTest`
 - Lab：`BootDataJpaMergeAndDetachLabTest` / `BootDataJpaDebugSqlLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/04-branch-decision-matrix.md](guide-branch-decision-matrix.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[guide-branch-decision-matrix.md](guide-branch-decision-matrix.md)
 
 <!-- BOOKIFY:END -->
 

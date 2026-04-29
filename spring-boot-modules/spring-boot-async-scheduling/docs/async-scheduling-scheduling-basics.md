@@ -1,8 +1,8 @@
 # 05. `@Scheduled` 基础与可测试性
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（调度别靠“等它触发”）"
+!!! summary "章节入口（调度别靠“等它触发”）"
 
-    `@Scheduled` 最容易把人带沟里的一点是：以为它是“方法调用时拦截”，但它其实是**启动期注册任务，运行期按时间触发**。
+    `@Scheduled` 最容易把人带沟里的一点是：以为它是“方法调用时拦截”，但它本质上是**启动期注册任务，运行期按时间触发**。
 
     - 排障三步：开关（EnableScheduling）→ 注册（任务是否进了注册表）→ 触发（线程与异常语义）
     - 测试写法：优先断言“注册结果”，只在必要时做最小触发验证
@@ -10,19 +10,19 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. self-invocation：为什么异步有时不生效](async-scheduling-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. `@Async` × `@Transactional`：事务边界与执行线程](async-scheduling-async-and-transactions.md)
+上一章：[04. self-invocation：为什么异步有时不生效](async-scheduling-self-invocation.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06. `@Async` × `@Transactional`：事务边界与执行线程](async-scheduling-async-and-transactions.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingSchedulingRegistrationLabTest#scheduledTasksAreRegisteredAsDifferentTaskTypes`（见文末“对应 Lab/Test”），先把“注册语义”钉住，再做最小触发验证。
+优先运行 `BootAsyncSchedulingSchedulingRegistrationLabTest#scheduledTasksAreRegisteredAsDifferentTaskTypes`（见文末“对应实验/测试”），先把“注册语义”钉住，再做最小触发验证。
 
 
 ## 把 `@Scheduled` 当成“系统级开关”，排障会简单很多
 
 `@Scheduled` 最烦人的地方往往不是 cron 表达式，而是它的生效过程和 `@Async` 完全不同：它不是“调用期拦截”，而是**启动期注册 + 运行期触发**。
 
-所以我更喜欢把它拆成三个问题来问（排障也沿这三步走）：
+因此本章把它拆成三个问题；排障也沿这三步走：
 
 1. scheduling 开关是否打开（`@EnableScheduling`）
 2. 任务有没有被注册（注册断言）
@@ -103,10 +103,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingLabTest`
 
-上一章：[part-01-async-scheduling/04-self-invocation.md](async-scheduling-self-invocation.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-async-scheduling/06-async-and-transactions.md](async-scheduling-async-and-transactions.md)
+上一章：[async-scheduling-self-invocation.md](async-scheduling-self-invocation.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[async-scheduling-async-and-transactions.md](async-scheduling-async-and-transactions.md)
 
 <!-- BOOKIFY:END -->

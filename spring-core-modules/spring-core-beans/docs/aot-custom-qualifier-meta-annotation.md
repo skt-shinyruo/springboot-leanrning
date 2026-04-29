@@ -1,19 +1,19 @@
 # 自定义 Qualifier：meta-annotation 与候选收敛
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把输入层解析或 AOT 契约完成验证；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把输入层解析或 AOT 契约变成可验证结果；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
 
-    本章围绕45. 自定义 Qualifier：meta-annotation 与候选收敛展开，主线可以概括为：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+    观察对象：45. 自定义 Qualifier：meta-annotation 与候选收敛。
+    主线位置：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
 
     对照入口：`SpringCoreBeansCustomQualifierLabTest`。需要下探源码时，可以从 `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` / `DefaultListableBeanFactory#findAutowireCandidates` / `DefaultListableBeanFactory#determineAutowireCandidate` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：自定义 Qualifier：meta-annotation 与候选收敛
 
-本章围绕「45. 自定义 Qualifier：meta-annotation 与候选收敛」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansCustomQualifierLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+先运行 `SpringCoreBeansCustomQualifierLabTest` 固定「45. 自定义 Qualifier：meta-annotation 与候选收敛」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
@@ -23,16 +23,9 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansCustomQualifierLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansCustomQualifierLabTest` 把现象跑出来；跑完后回到正文，把“现象 → 调用链/分支 → 结论”对齐到源码。
-    - 第一断点：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
@@ -51,18 +44,18 @@
 **条件**：注入点与候选 bean 同时标注自定义 Qualifier
 **分支**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` 做匹配过滤
 **结果**：候选集合被缩小 → winner 选择更稳定
-**断点建议**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
+**断点入口**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
 
 ## 结论先行：自定义 Qualifier 的本质
 
 自定义 Qualifier 的做法通常是：
 
-1) 定义一个注解（例如 `@Cn`）
-2) 用 `@Qualifier` 做 meta-annotation
-3) 在候选 bean 上标注 `@Cn`（作为候选元数据）
-4) 在注入点也标注 `@Cn`（作为收敛条件）
+1. 定义一个注解（例如 `@Cn`）
+2. 用 `@Qualifier` 做 meta-annotation
+3. 在候选 bean 上标注 `@Cn`（作为候选元数据）
+4. 在注入点也标注 `@Cn`（作为收敛条件）
 
-因此应能够把它放回依赖解析主线：
+因此需要把它放回依赖解析主线：
 
 - 候选收集：`findAutowireCandidates`
 - 候选收敛：`determineAutowireCandidate`
@@ -85,11 +78,11 @@
 
 ## 依赖解析分支树（简化版）
 
-1) **快捷路径**：Optional/Provider/@Lazy/@Value
-2) **候选收集**：`findAutowireCandidates`
-3) **Qualifier 过滤**：`isAutowireCandidate`
-4) **winner 收敛**：Primary → by-name → Priority
-5) **失败**：无法唯一 → `NoUniqueBeanDefinitionException`
+1. **快捷路径**：Optional/Provider/@Lazy/@Value
+2. **候选收集**：`findAutowireCandidates`
+3. **Qualifier 过滤**：`isAutowireCandidate`
+4. **winner 收敛**：Primary → by-name → Priority
+5. **失败**：无法唯一 → `NoUniqueBeanDefinitionException`
 
 ## 关键变量（断点里只看这些）
 
@@ -118,7 +111,7 @@
 
 ---
 
-应能够回答：
+需要能回答：
 
 - 自定义 Qualifier（meta-annotation）如何参与候选收敛？它影响的是“候选收集”还是“候选收敛”阶段？
 - 当候选有多个实现时，如何用 2 个断点证明“哪些候选被过滤/为什么被过滤”？
@@ -128,9 +121,9 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（优先运行它们）：
+本章引用的实验入口：
 - Lab：`SpringCoreBeansCustomQualifierLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
+- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -140,31 +133,31 @@
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
 
-推荐运行命令：
+运行命令：
 
 ```bash
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 ```
 
-## 源码 / 断点建议（把“为什么注入的是它”讲成可复述算法）
+## 源码 / 断点入口（把“为什么注入的是它”讲成可复述算法）
 
 只需要 2 个断点，即可在真实项目里解释“为什么注入的是它”：
 
-建议观察点（设置断点时应该盯住这些变量）：
+观察点（设置断点时应该盯住这些变量）：
 
 - 自定义 Qualifier 是如何参与候选收敛的？
 - 可以在哪两个方法设置断点证明“候选集合如何被过滤”？
 
-## 常见误区与边界
+## 边界分流：自定义 Qualifier：meta-annotation 与候选收敛
 
 - [依赖注入解析：类型/名称/@Qualifier/@Primary](ioc-dependency-injection-resolution.md)
 - [候选选择与优先级：@Primary/@Priority/@Order 的边界](wiring-autowire-candidate-selection-primary-priority-order.md)
 
-## 常见误区
+## 误判点：自定义 Qualifier：meta-annotation 与候选收敛
 
-1) **误区：自定义 Qualifier = 更好的 @Primary**
+1. **误区：自定义 Qualifier = 更好的 @Primary**
    - `@Primary` 是“默认胜出者”，自定义 Qualifier 是“按语义显式选择”，适用场景不同。
-2) **误区：把 Qualifier 当作 beanName**
+2. **误区：把 Qualifier 当作 beanName**
    - Qualifier 是过滤条件，beanName 只是可能参与收敛的一种信号。
 
 ## 排障决策表（Qualifier：为什么注入的不是所期望的那个）
@@ -197,19 +190,19 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 - 证据链（方法级）：
   - `QualifierAnnotationAutowireCandidateResolver`（或同类 resolver）的 `isAutowireCandidate` 分支
 
-## 自检要点
-- 应能够解释清楚：自定义 Qualifier 解决的是“候选收敛”的哪一类问题吗？它和 `@Primary` 的边界是什么？
-- 应能够说出：候选集合是在依赖解析的哪个方法里被过滤/收敛的吗？（提示：`doResolveDependency` / candidate resolver）
-- 应能够给出：如何用一个最小 LabTest + 两个断点把“为什么注入的是它”讲成可复述算法？
+## 验证标准：自定义 Qualifier：meta-annotation 与候选收敛
+- 需要解释清楚：自定义 Qualifier 解决的是“候选收敛”的哪一类问题吗？它和 `@Primary` 的边界是什么？
+- 需要说出：候选集合是在依赖解析的哪个方法里被过滤/收敛的吗？（提示：`doResolveDependency` / candidate resolver）
+- 需要能给出：如何用一个最小 LabTest + 两个断点把“为什么注入的是它”讲成可复述算法？
 
-## 小结
+## 收束：自定义 Qualifier：meta-annotation 与候选收敛
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansCustomQualifierLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
 
 <!-- BOOKIFY:END -->

@@ -1,18 +1,19 @@
 # `@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕 `@Resource` 注入：为什么其定位更接近“按名称找 Bean”？展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansResourceInjectionLabTest`。需要下探源码时，可以从 `CommonAnnotationBeanPostProcessor#autowireResource` / `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored` / `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
 
-- 阅读方式建议：先运行本章 Lab 得到两个对照结论（没装处理器 → 注解无效；装了处理器 → name-first 稳定注入），再回到源码把“是谁在什么时候把字段赋值”的证据链走通。
+- 阅读路径：先运行本章 Lab 得到两个对照结论（没装处理器 → 注解无效；装了处理器 → name-first 稳定注入），再回到源码把“是谁在什么时候把字段赋值”的证据链走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Resources，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/resources.html
@@ -21,17 +22,17 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansResourceInjectionLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
 ## 机制主线：`@Resource` 的三个关键事实
 
 > 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
-当在项目里看到 `@Resource`，先把它压缩成三句话（排障时非常省命）：
+当在项目里看到 `@Resource`，先把它压缩成三句话（排障时省命）：
 
-1) 它由 `CommonAnnotationBeanPostProcessor` 处理（不是 `AutowiredAnnotationBeanPostProcessor`）。
-2) 默认 name-first：不写 name 时，用 **字段名** 当 beanName。
-3) 它发生在属性填充阶段（`populateBean`），本质是“把字段赋值”。
+1. 它由 `CommonAnnotationBeanPostProcessor` 处理（不是 `AutowiredAnnotationBeanPostProcessor`）。
+2. 默认 name-first：不写 name 时，用 **字段名** 当 beanName。
+3. 它发生在属性填充阶段（`populateBean`），本质是“把字段赋值”。
 
 ---
 
@@ -40,7 +41,7 @@
 **条件**：注入点标注 `@Resource`，且容器已注册 `CommonAnnotationBeanPostProcessor`
 **分支**：`autowireResource` 先按 **name** 查找，找不到再 fallback 按 **type**
 **结果**：命名稳定时注入可预测；命名失配时容易退化为“按类型歧义”
-**断点建议**：`CommonAnnotationBeanPostProcessor#autowireResource`
+**断点入口**：`CommonAnnotationBeanPostProcessor#autowireResource`
 
 ## DependencyDescriptor 深入分析：`@Resource` 的注入点语义从哪来？
 
@@ -50,13 +51,13 @@
 - 字段类型/泛型 → `requiredType` / `ResolvableType`
 - 该注入点是否为可选 → 决定 fallback 失败时是否抛错
 
-所以当读者看到“注入错了/注入不到”，第一步是确认 **name 与 type 的一致性**。
+所以当看到“注入错了/注入不到”，第一步是确认 **name 与 type 的一致性**。
 
 ## 依赖解析分支树（`@Resource` 专用简化版）
 
-1) **name-first**：`containsBean(resourceName)` 命中 → 直接注入
-2) **fallback type**：name 未命中 → 按类型解析（可能触发多候选歧义）
-3) **失败处理**：不可选依赖 → 抛异常；可选依赖 → 注入 `null`
+1. **name-first**：`containsBean(resourceName)` 命中 → 直接注入
+2. **fallback type**：name 未命中 → 按类型解析（可能触发多候选歧义）
+3. **失败处理**：不可选依赖 → 抛异常；可选依赖 → 注入 `null`
 
 ## 先运行实验：没有处理器时，`@Resource` 会“完全失效”
 
@@ -90,8 +91,8 @@
 
 之后可以观察到两个更关键的结论：
 
-1) `@Resource` 注入生效（字段有值）
-2) 即使容器里有多个同类型候选，默认 `@Resource` 仍然“稳定且可预测” —— 因为它先按字段名锁定 beanName
+1. `@Resource` 注入生效（字段有值）
+2. 即使容器里有多个同类型候选，默认 `@Resource` 仍然“稳定且可预测” —— 因为它先按字段名锁定 beanName
 
 本章 Lab 用最小代码把默认规则写死：
 
@@ -102,28 +103,28 @@
 
 ## 源码最短路径：是谁在什么时候把字段赋值的？
 
-> 目标：不要把 “@Resource 注入”想象成某个神秘行为，而是把它放回“属性填充阶段”里观察到真实赋值点。
+> 落点：不要把 “@Resource 注入”想象成某个神秘行为，而是把它放回“属性填充阶段”里观察到真实赋值点。
 
 一条足够实用的最短链路是：
 
-1) `AbstractAutowireCapableBeanFactory#populateBean`（属性填充阶段入口）
-2) `CommonAnnotationBeanPostProcessor#postProcessProperties`（扫描并执行 `@Resource` 注入）
-3) `CommonAnnotationBeanPostProcessor#autowireResource`（name-first 的分流入口：按 name 找不到时才考虑 fallback）
+1. `AbstractAutowireCapableBeanFactory#populateBean`（属性填充阶段入口）
+2. `CommonAnnotationBeanPostProcessor#postProcessProperties`（扫描并执行 `@Resource` 注入）
+3. `CommonAnnotationBeanPostProcessor#autowireResource`（name-first 的分流入口：按 name 找不到时才考虑 fallback）
 
 只要在这条链上走通一次，后面遇到 “@Resource 为什么没注入/注入错了” 都能快速定位。
 
 ---
 
-## Debug 断点闭环（推荐照做一次）
+## Debug 断点闭环（照做一次）
 
-### 4.1 推荐断点（按收益排序）
+### 4.1 断点入口（按收益排序）
 
-1) `AnnotationConfigUtils#registerAnnotationConfigProcessors`：确认处理器是否被注册（关键是 `CommonAnnotationBeanPostProcessor`）
-2) `CommonAnnotationBeanPostProcessor#postProcessProperties`：`@Resource` 注入介入点（发生在属性填充阶段）
-3) `CommonAnnotationBeanPostProcessor#autowireResource`：观察 name-first 的具体分支（字段名/显式 name）
-4) `AbstractAutowireCapableBeanFactory#populateBean`：把“注入”放回 bean 创建主线
+1. `AnnotationConfigUtils#registerAnnotationConfigProcessors`：确认处理器是否被注册（关键是 `CommonAnnotationBeanPostProcessor`）
+2. `CommonAnnotationBeanPostProcessor#postProcessProperties`：`@Resource` 注入介入点（发生在属性填充阶段）
+3. `CommonAnnotationBeanPostProcessor#autowireResource`：观察 name-first 的具体分支（字段名/显式 name）
+4. `AbstractAutowireCapableBeanFactory#populateBean`：把“注入”放回 bean 创建主线
 
-### 4.2 固定观察点（watch list）
+### 4.2 固定观察点（观察清单）
 
 - `field.getName()`：默认 resourceName（不写 name 时）
 - `resourceName`（若在 `autowireResource` 里）：最终用于查找的 beanName
@@ -161,11 +162,11 @@
 
 `@Resource` 的关键不是“注解长什么样”，而是它进入了哪条创建期调用链：
 
-1) bean 创建主线：`AbstractAutowireCapableBeanFactory#doCreateBean`
-2) 注入阶段入口：`AbstractAutowireCapableBeanFactory#populateBean`
-3) 注解处理器介入：`CommonAnnotationBeanPostProcessor#postProcessProperties`
-4) name-first 查找：内部 `autowireResource(...)` / `beanFactory.containsBean(resourceName)`
-5) fallback 到 type：当 name 未命中时，才会走“按类型解析”（因此可能出现多候选）
+1. bean 创建主线：`AbstractAutowireCapableBeanFactory#doCreateBean`
+2. 注入阶段入口：`AbstractAutowireCapableBeanFactory#populateBean`
+3. 注解处理器介入：`CommonAnnotationBeanPostProcessor#postProcessProperties`
+4. name-first 查找：内部 `autowireResource(...)` / `beanFactory.containsBean(resourceName)`
+5. fallback 到 type：当 name 未命中时，才会走“按类型解析”（因此可能出现多候选）
 
 在断点里盯住 `resourceName` 与 `containsBean(resourceName)`，就能立刻判断自己处于 name-first 还是 fallback。
 
@@ -187,34 +188,27 @@
   - 因为没有注册 annotation processors（没有对应的 BPP），注解无人处理；plain BeanFactory 并不会自动装这些基础设施。
 - 证据链（方法级）：
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（是否注册了 CABPP）
-  
-  调试时建议重点盯：`beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`。
-  
 
-## 自检要点
-应能够用 2 句答题：
+ 调试时重点盯：`beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`。
 
-1) `@Resource` 为什么更接近 name-first？（默认用字段名当 beanName；由 CommonAnnotationBeanPostProcessor 处理）
-2) 为什么在某些容器里它完全不生效？（没注册 annotation processors，注解无人处理）
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored`，再用 `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`CommonAnnotationBeanPostProcessor#autowireResource`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“5. 排障分流：三类问题，三条路”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
+## 验证标准：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
+需要用 2 句答题：
 
-## 小结
+1. `@Resource` 为什么更接近 name-first？（默认用字段名当 beanName；由 CommonAnnotationBeanPostProcessor 处理）
+2. 为什么在某些容器里它完全不生效？（没注册 annotation processors，注解无人处理）
+
+
+## 收束：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansResourceInjectionLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
 <!-- BOOKIFY:END -->

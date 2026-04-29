@@ -1,6 +1,6 @@
 # 07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？展开，主线可以概括为：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
 
     阅读时可以先跑 `BootDataJpaDebugSqlLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）](data-jpa-datajpatest-slice.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（建议反复对照）](appendix-common-pitfalls.md)
+上一章：[06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）](data-jpa-datajpatest-slice.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（排查时对照）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -36,13 +36,13 @@
 
 如果希望看到更详细的 SQL 与参数（学习用即可），可以考虑在本模块的 `application.properties` 里增加：
 
-## 建议的学习方式
+## 学习方式
 
 
 ## 最小可运行实验（Lab）
 
 - Lab：`BootDataJpaDebugSqlLabTest`
-- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 
 - `logging.level.org.hibernate.SQL=DEBUG`
@@ -69,17 +69,17 @@ JPA/Hibernate 的写入通常是 **flush 时机驱动**（提交事务、显式 
 
 在“需要观察 SQL 的关键点”显式 `flush()`（并结合 `clear()`/重新查询），把“状态变化 → SQL 输出”锁定成可复现的最小闭环。
 
-（注意：这些配置不适合生产环境，学习完建议删除/降级）
+（注意：这些配置不适合生产环境，学习完删除/降级）
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootDataJpaDebugSqlLabTest`
 
-上一章：[part-01-data-jpa/06-datajpatest-slice.md](data-jpa-datajpatest-slice.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md)
+上一章：[data-jpa-datajpatest-slice.md](data-jpa-datajpatest-slice.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

@@ -1,15 +1,23 @@
 # 99 自检：Spring Boot Security
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘出口）"
+!!! summary "章节入口（复盘出口）"
 
     - 主线入口：`BootSecurityBookMatrixLabTest`
     - 分支入口：`BootSecurityBranchMatrixLabTest`
-    - 推荐先跑：`BootSecurityLabTest`
+    - 入口：`BootSecurityLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（Security）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[01. 常见坑清单（Security）](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 先跑入口（把现象跑成事实）
 
@@ -20,9 +28,9 @@
 
 - [断点地图](guide-breakpoint-map.md)
 - [关键分支矩阵](guide-branch-decision-matrix.md)
-- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](appendix-common-pitfalls.md)
+- 常见坑清单（索引页，不在本页重复）：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
-## 自检题（每题都能落到 tests）
+## 自检题
 
 1. 401 与 403 的分界线是什么？如何用两条用例把它固定为事实（而不是靠口述）？
    - 证据入口：`BootSecurityLabTest#secureEndpointReturns401WhenAnonymous` + `BootSecurityLabTest#adminEndpointReturns403ForNonAdminUser`
@@ -30,7 +38,7 @@
    - 证据入口：`BootSecurityLabTest#secureEndpointIsAccessibleWithBasicAuth`
 3. admin 端点对 admin 用户放行的条件是什么？如何证明“不是所有带用户名的人都能进”？
    - 证据入口：`BootSecurityLabTest#adminEndpointIsAccessibleForAdminUser` + `BootSecurityLabTest#adminEndpointReturns403ForNonAdminUser`
-4. `roles` 与 `authorities` 的差异为什么会造成“看起来有 ADMIN 但仍 403”的坑？如何用一个用例稳定复现它？
+4. `roles` 与 `authorities` 的差异为什么会造成“表面上有 ADMIN 但仍 403”的坑？如何用一个用例稳定复现它？
    - 证据入口：`BootSecurityLabTest#adminEndpointReturns403WhenAuthorityAdminButMissingRolePrefix_asPitfall`
 5. 为什么 POST 在已认证情况下仍可能被 CSRF 拦截？如何用一对用例证明“加 token 前后差异”？
    - 证据入口：`BootSecurityLabTest#csrfBlocksPostEvenWhenAuthenticated` + `BootSecurityLabTest#csrfTokenAllowsPostWhenAuthenticated`
@@ -52,11 +60,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootSecurityDevProfileLabTest` / `BootSecurityLabTest` / `BootSecurityMultiFilterChainOrderLabTest`
 - Exercise：`BootSecurityExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 
 <!-- BOOKIFY:END -->

@@ -1,15 +1,23 @@
 # 99 自检：Business Case（综合案例）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘出口）"
+!!! summary "章节入口（复盘出口）"
 
     - 主线入口：`BootBusinessCaseBookMatrixLabTest`
     - 分支入口：`BootBusinessCaseBranchMatrixLabTest`
-    - 推荐先跑：`BootBusinessCaseLabTest`
+    - 入口：`BootBusinessCaseLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 90 - Common Pitfalls（springboot-business-case）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑清单](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 先跑入口（把现象跑成事实）
 
@@ -20,9 +28,9 @@
 
 - [断点地图](guide-breakpoint-map.md)
 - [关键分支矩阵](guide-branch-decision-matrix.md)
-- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](appendix-common-pitfalls.md)
+- 常见坑清单（索引页，不在本页重复）：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
-## 自检题（每题都能落到 tests）
+## 自检题
 
 1. 输入校验失败时，哪些东西应该发生、哪些不该发生？如何用一条用例证明“不会落库、不会产生副作用事件”？
    - 证据入口：`BootBusinessCaseLabTest#returnsValidationErrorWhenRequestIsInvalid`
@@ -50,11 +58,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
 - Exercise：`BootBusinessCaseExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 
 <!-- BOOKIFY:END -->

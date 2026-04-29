@@ -1,6 +1,6 @@
 # 99 自检：Spring Boot Cache
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘题）"
+!!! summary "章节入口（复盘题）"
 
     这章不加新概念，只帮助复盘主线：读路径、写路径、边界分支、并发收敛与过期可测。每题都能落到 tests；答不上来就去跑对应入口，把结论变成事实。
 
@@ -9,12 +9,20 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（Cache）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[01. 常见坑清单（Cache）](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-建议优先运行 `BootCacheBookMatrixLabTest`（见文末“对应 Lab/Test”），先跑一遍主线最小集合，再按题目回到对应证据入口逐一验证。
+优先运行 `BootCacheBookMatrixLabTest`（见文末“对应实验/测试”），先跑一遍主线最小集合，再按题目回到对应证据入口逐一验证。
 
 
 ## 先跑入口（比做纸面题更快）
@@ -45,20 +53,20 @@
    - 入口：`BootCacheLabTest#syncTrueAvoidsDuplicateComputationsForSameKey`
 8. 为什么用 sleep 测 TTL 容易 flaky？用什么方式把“时间推进”变成可控输入？
    - 入口：`BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`
-9. 如果线上出现“偶发慢/偶发打 DB”，最推荐的排障顺序是什么？（三步即可）
+9. 如果线上出现“偶发慢/偶发打 DB”，优先采用的排障顺序是什么？（三步即可）
    - 对照：`01-common-pitfalls.md`
 
 ## 小结
 
-- 这模块的核心心智模型就一句话：缓存是分支系统。越早把分支写成断言，越少靠直觉和日志猜。
+- 这模块的核心心智模型就一句话：缓存是分支系统。越早把分支写成断言，越少依赖预期和日志猜测。
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootCacheLabTest` / `BootCacheSpelKeyLabTest`
 - Exercise：`BootCacheExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 
 <!-- BOOKIFY:END -->

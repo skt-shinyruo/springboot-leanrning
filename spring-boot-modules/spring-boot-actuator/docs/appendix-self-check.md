@@ -1,6 +1,6 @@
 # 99 自检：Spring Boot Actuator
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘出口）"
+!!! summary "章节入口（复盘出口）"
 
     这页不新增概念，只负责把 Actuator 的关键分流“跑成事实 → 对照机制 → 自检复盘”。
 
@@ -8,7 +8,15 @@
     - 分支入口：`BootActuatorBranchMatrixLabTest`
 <!-- CHAPTER-CARD:END -->
 
-## 这页怎么用（建议 15–30 分钟完成一次闭环）
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
+
+## 这页怎么用（15–30 分钟完成一次闭环）
 
 - 先跑入口：用 Book/Branch Matrix 把现象固定为断言（不要只背结论）。
 - 再走证据链：对照断点地图/分支矩阵，把“404/401/403”拆成可验证的子问题。
@@ -21,12 +29,12 @@
 
 ## 证据链导航（排障加速）
 
-- 模块目录（Docs TOC）：[`../README.md`](../README.md)
-- 断点地图：[`../part-00-guide/04-breakpoint-map.md`](guide-breakpoint-map.md)
-- 关键分支矩阵：[`../part-00-guide/05-branch-decision-matrix.md`](guide-branch-decision-matrix.md)
+- 模块目录：[`../README.md`](../README.md)
+- 断点地图：[`guide-breakpoint-map.md`](guide-breakpoint-map.md)
+- 关键分支矩阵：[`guide-branch-decision-matrix.md`](guide-branch-decision-matrix.md)
 - 常见坑清单（只做索引，不在本页重复）：[`01-common-pitfalls.md`](appendix-common-pitfalls.md)
 
-## 自检题（每题都能落到 tests）
+## 自检题
 
 1. `/actuator/env` 默认返回 404：这意味着“端点未注册”还是“端点未暴露”？用哪两条证据把它说清楚？
    - 证据入口：`BootActuatorLabTest#envEndpointIsNotExposedByDefault` + `BootActuatorLabTest#actuatorRootListsExposedEndpoints`
@@ -48,11 +56,11 @@
 ## 退出条件（完成标准）
 
 - 能在不看文档的情况下复述：Registered / Exposed / Accessible 三段式分流，并用 1–2 个测试把它固定下来。
-- 能用 `_links` + exposure 配置解释“为什么有些端点看起来不存在”（其实是不暴露）。
+- 能用 `_links` + exposure 配置解释“为什么有些端点表面上不存在”（本质上是不暴露）。
 - 能把“端点暴露”与“安全边界”分开讨论：先决定暴露集合，再决定鉴权策略。
 
 ## 下一步（回到主线）
 
-- 推荐顺读：[`../part-00-guide/02-deep-dive-guide.md`](guide-deep-dive-guide.md)
+- 顺读路径：[`guide-deep-dive-guide.md`](guide-deep-dive-guide.md)
 - 看完后回到这页再做一遍：[`01-common-pitfalls.md`](appendix-common-pitfalls.md)
 

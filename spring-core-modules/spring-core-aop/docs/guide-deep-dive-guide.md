@@ -1,6 +1,6 @@
 # 02. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopAutoProxyCreatorInternalsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
@@ -10,13 +10,21 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Core AOP](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](proxy-fundamentals-aop-proxy-mental-model.md)
+上一章：[01. 主线时间线：Spring Core AOP](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](proxy-fundamentals-aop-proxy-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-本章是「00. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点」的深挖导读：说明如何阅读、如何验证、以及遇到分支时从哪里下断点更省时间。
-建议先运行 `SpringCoreAopAutoProxyCreatorInternalsLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
+本章用于说明本模块如何阅读、如何验证，以及遇到分支时从哪里下断点。
+先运行 `SpringCoreAopAutoProxyCreatorInternalsLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -24,7 +32,7 @@
 
 ## 机制主线
 
-这章的目标很明确：**把 AOP 从“我会写 @Aspect”升级为“我能在源码里看见它、并能定位问题”**。
+这章的目标很明确：**把 AOP 从“会写 @Aspect”升级为“能在源码里看见它、并能定位问题”**。
 
 > 无需背源码，但需要一张“不会迷路的导航图”。
 
@@ -38,7 +46,7 @@
 > 会发现：只要这三条主线抓稳，AOP 的“细节”会自动归位。
 > 想把 AOP 放回容器视角（AutoProxyCreator/Advisor 主线）：见 [07. autoproxy-creator-mainline](autoproxy-and-pointcuts-autoproxy-creator-mainline.md)。
 
-## 2. 一张“最小源码导航图”（建议贴在脑子里）
+## 2. 一张“最小源码导航图”（可作为源码导航底图）
 
 ### 2.1 容器阶段：proxy 在哪里被创建？
 
@@ -73,7 +81,7 @@
 - `AbstractAutoProxyCreator#createProxy`
 - `DefaultAopProxyFactory#createAopProxy`（选择 JDK vs CGLIB）
 
-推荐观察点（watch list）：
+观察点（观察清单）：
 
 - `beanName`
 - `beanClass` / `AopProxyUtils.ultimateTargetClass(bean)`
@@ -84,7 +92,7 @@
 - `DefaultAdvisorChainFactory#getInterceptorsAndDynamicInterceptionAdvice`
 - `ReflectiveMethodInvocation#proceed`
 
-推荐观察点：
+观察点：
 
 - `interceptorsAndDynamicMethodMatchers`（拦截器链条的实际顺序）
 - `currentInterceptorIndex`（链条执行到哪里了）
@@ -102,18 +110,18 @@
 
 - pointcut 表达式系统：见 [08. pointcut-expression-system](autoproxy-and-pointcuts-pointcut-expression-system.md)
 
-### 3.5 看清“多 advisor vs 多层 proxy（套娃）”
+### 3.5 看清“多 advisor vs 多层 proxy（嵌套代理）”
 
-观察建议：
+观察动作：
 
 - `bean instanceof Advised`：能否拿到 advisors
 - `((Advised) bean).getAdvisors()`：同一个 proxy 上挂了哪些增强（AOP/Tx/Cache/Security 的本质入口）
-- `((Advised) bean).getTargetSource().getTarget()`：target 是否还是 proxy（判断是否套娃）
+- `((Advised) bean).getTargetSource().getTarget()`：target 是否还是 proxy（判断是否嵌套代理）
 - `AopProxyUtils.ultimateTargetClass(bean)`：追最终目标类型
 
 配套章节：
 
-## 4. 推荐的“深挖练习”（每个练习都能在 30 分钟内闭环）
+## 4. 深挖练习（每个练习都能在 30 分钟内闭环）
 
 ### 练习 A：看一次“proxy 是怎么被包出来的”
 
@@ -140,11 +148,11 @@
 - 能用断言证明：JDK proxy 下 `this(实现类)` 不命中但 `target(实现类)` 命中
 - 能解释：为什么 “代理类型” 会直接改变 pointcut 的命中结果
 
-### 练习 E：看一次“多 advisor vs 多层 proxy（套娃）”
+### 练习 E：看一次“多 advisor vs 多层 proxy（嵌套代理）”
 
 目标：
 
-- 能区分：同一个 proxy 上挂多个 advisors（主流形态） vs 多层 proxy 套娃（特殊但要能识别）
+- 能区分：同一个 proxy 上挂多个 advisors（主流形态） vs 多层 proxy 嵌套代理（特殊但要能识别）
 - 能解释：顺序问题到底属于 BPP 顺序还是 advisor 顺序（不要混）
 
 ### 练习 F：看一次“真实基础设施叠加”（Tx/Cache/Security 同链路）
@@ -157,13 +165,13 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
-## 0. 准备工作：把深挖做成可重复的实验
+## 准备工作：把深挖做成可重复的实验
 
-### 0.1 推荐运行方式（精确到方法）
+### 运行方式（精确到方法）
 
 ```bash
 # 跑整个 aop 模块测试
@@ -172,23 +180,23 @@ mvn -pl :spring-core-aop test
 # 只跑一个测试类（断点更舒服）
 mvn -pl :spring-core-aop -Dtest=SpringCoreAopProxyMechanicsLabTest test
 
-# 只跑一个测试方法（最推荐）
+# 只跑一个测试方法
 mvn -pl :spring-core-aop -Dtest=SpringCoreAopProxyMechanicsLabTest#jdkDynamicProxyIsUsedForInterfaceBasedBeans_whenProxyTargetClassIsFalse test
 ```
 
 > 提示：如果需要“启动后挂起等待 IDE attach”，可以加 `-Dmaven.surefire.debug`（默认监听 5005）。
 
-### 0.2 一个高收益习惯：断点先加“降噪条件”
+### 一个高收益习惯：断点先加“降噪条件”
 
-Spring AOP 相关断点会被非常频繁地命中（尤其是 BPP 与匹配逻辑），建议一开始就加过滤条件：
+Spring AOP 相关断点会被非常频繁地命中（尤其是 BPP 与匹配逻辑），一开始就加过滤条件：
 
-如果想把“候选 Advisor 如何筛选、为什么这个 bean 会/不会被代理”也看清楚，继续补齐这两个抓手（命中频繁，建议加条件断点只看目标 beanName）：
+如果想把“候选 Advisor 如何筛选、为什么这个 bean 会/不会被代理”也看清楚，继续补齐这两个抓手（命中频繁，加条件断点只看目标 beanName）：
 
 ### 2.2 调用阶段：advice 链是怎么跑起来的？
 
 ## 3. 断点清单：想“看见什么”，就选择哪一类断点
 
-推荐断点（从外到内）：
+断点入口（从外到内）：
 
 对应 Lab：
 
@@ -197,7 +205,7 @@ Spring AOP 相关断点会被非常频繁地命中（尤其是 BPP 与匹配逻�
 - `SpringCoreAopProxyMechanicsLabTest#cglibProxyIsUsedForClassBasedBeans_whenProxyTargetClassIsTrue`
 - `SpringCoreAopAutoProxyCreatorInternalsLabTest`（看 BPP 主线：AutoProxyCreator 何时注册、如何产生 proxy）
 
-推荐断点：
+断点入口：
 
 对应 Lab：
 
@@ -205,14 +213,14 @@ Spring AOP 相关断点会被非常频繁地命中（尤其是 BPP 与匹配逻�
 - `SpringCoreAopProxyMechanicsLabTest#adviceOrderingCanBeControlledWithOrderAnnotation`
 - `SpringCoreAopProceedNestingLabTest`（看 `proceed()` 的 before/after 嵌套结构）
 
-推荐断点：
+断点入口：
 
 对应 Lab：
 
 - `SpringCoreAopLabTest#selfInvocationDoesNotTriggerAdviceForInnerMethod`
 - `SpringCoreAopExerciseTest#exercise_makeSelfInvocationTriggerAdvice`（开启 exposeProxy 后对比）
 
-推荐断点：
+断点入口：
 
 对应 Lab：
 
@@ -246,7 +254,7 @@ Spring AOP 相关断点会被非常频繁地命中（尤其是 BPP 与匹配逻�
 - 能指出 proxy 在容器的哪个阶段产生（BPP after-init）
 - 能指出 advice 链执行的入口与关键断点
 - 能把“不拦截”的问题分流成：call path / 匹配 / 代理限制 三大类
-- 能进一步识别：单 proxy 多 advisors vs 多层 proxy（套娃），并知道该去哪组断点验证
+- 能进一步识别：单 proxy 多 advisors vs 多层 proxy（嵌套代理），并知道该去哪组断点验证
 
 ## 常见坑与边界
 
@@ -254,7 +262,7 @@ Spring AOP 相关断点会被非常频繁地命中（尤其是 BPP 与匹配逻�
    - AOP 不是“改所写的类”，而是在创建 bean 时由 `BeanPostProcessor` 把它包装成 proxy。
 2. **advice 链是怎么执行的？（调用阶段）**
    - 代理对象接管方法调用 → 组装拦截器链 → `proceed()` 一层层执行。
-3. **为什么我以为会拦截，结果没拦截？（匹配与边界）**
+3. **为什么预期会拦截，结果没拦截？（匹配与边界）**
    - call path 是否走 proxy
    - pointcut 是否命中
    - 代理类型与语言限制（JDK/CGLIB、final/private/self-invocation）
@@ -270,11 +278,11 @@ Spring AOP 相关断点会被非常频繁地命中（尤其是 BPP 与匹配逻�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopProxyMechanicsLabTest` / `SpringCoreAopProceedNestingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopRealWorldStackingLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-aop-proxy-mental-model](proxy-fundamentals-aop-proxy-mental-model.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01-aop-proxy-mental-model](proxy-fundamentals-aop-proxy-mental-model.md)
 
 <!-- BOOKIFY:END -->

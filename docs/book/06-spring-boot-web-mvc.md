@@ -1,12 +1,12 @@
 # 06 Spring Boot Web MVC：从请求到响应的主链路
 
-## 学习目标
+## 本章要回答的问题
 
 - 能按请求主线描述 Web MVC 的关键阶段：选路、参数解析/绑定、消息转换、异常收敛、响应输出。
 - 能解释并复现常见 HTTP 分支：400/404/406/415，以及它们分别发生在链路的哪一段。
 - 能把校验、异常处理、过滤器/拦截器顺序等“工程问题”落到可调试的证据链入口。
 
-## 概念框架
+## 主线框架
 
 - **请求主线（概览）**：
   - `FilterChain` → `DispatcherServlet` → `HandlerMapping`/`HandlerAdapter` → 参数解析与绑定 → 返回值处理与消息转换。
@@ -27,9 +27,9 @@
 - 模块目录页（顺读主线）：
   - [`spring-boot-web-mvc/README.md`](../../spring-boot-modules/spring-boot-web-mvc/README.md)
 - 导航型文档（用于快速定位链路与断点）：
-  - 请求调用链速览：[`02-dispatcherservlet/03-webmvc-request-call-chain.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/dispatcherservlet-webmvc-request-call-chain.md)
-  - 断点图：[`14-testing-observability/06-breakpoint-map.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/testing-observability-breakpoint-map.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/appendix-common-pitfalls.md)
+  - 请求调用链速览：[`dispatcherservlet-webmvc-request-call-chain.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/dispatcherservlet-webmvc-request-call-chain.md)
+  - 断点图：[`testing-observability-breakpoint-map.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/testing-observability-breakpoint-map.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-boot-modules/spring-boot-web-mvc/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
@@ -37,7 +37,7 @@
 - 认为 `@ControllerAdvice` 一定全局生效。实际存在匹配范围与顺序问题，需用断点/分支矩阵验证。
 - 只用日志猜测绑定/转换问题。消息转换与参数解析的分支多，断点通常比日志更快收敛。
 
-## 练习
+## 验证练习
 
 - 练习 1（分支分型）：
   - 运行 `BootWebMvcBookMatrixLabTest`；
@@ -51,7 +51,7 @@
 
 ## 小结
 
-- Web MVC 的学习目标是“把请求主线跑通”，并能把常见错误分支定位到最短链路段。
+- Web MVC 的目标是把请求主线跑通，并能把常见错误分支定位到最短链路段。
 - 下一章进入 Validation，把“约束模型 → 触发 → 违规结果”从 Web 到方法层串起来。
 
 ## 延伸阅读

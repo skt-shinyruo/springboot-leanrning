@@ -1,6 +1,6 @@
 # 04. `sync=true`：防缓存击穿（stampede）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（并发收敛）"
+!!! summary "章节入口（并发收敛）"
 
     `sync=true` 解决的是很具体的问题：并发请求同一个 key 时，让底层计算只发生一次；其他线程等待同一个结果。它能避免 stampede，但也会把并发变串行——这章把“收敛发生了”写成断言，同时把代价说清楚。
 
@@ -8,12 +8,12 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. key / condition / unless：缓存边界](cache-key-condition-unless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. 过期与可测性：用 Ticker 控制时间](cache-expiry-with-ticker.md)
+上一章：[03. key / condition / unless：缓存边界](cache-key-condition-unless.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. 过期与可测性：用 Ticker 控制时间](cache-expiry-with-ticker.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootCacheLabTest#syncTrueAvoidsDuplicateComputationsForSameKey`（见文末“对应 Lab/Test”），先把“同 key 只算一次”钉住，再评估等待成本是否可接受。
+优先运行 `BootCacheLabTest#syncTrueAvoidsDuplicateComputationsForSameKey`（见文末“对应实验/测试”），先把“同 key 只算一次”钉住，再评估等待成本是否可接受。
 
 
 ## 这类问题一定见过：并发一上来，下游就被打爆
@@ -58,10 +58,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootCacheLabTest`
 
-上一章：[part-01-cache/03-key-condition-unless.md](cache-key-condition-unless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-cache/05-expiry-with-ticker.md](cache-expiry-with-ticker.md)
+上一章：[cache-key-condition-unless.md](cache-key-condition-unless.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[cache-expiry-with-ticker.md](cache-expiry-with-ticker.md)
 
 <!-- BOOKIFY:END -->

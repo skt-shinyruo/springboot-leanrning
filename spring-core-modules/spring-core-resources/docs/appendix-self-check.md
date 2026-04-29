@@ -1,15 +1,23 @@
 # 99 自检：Spring Resources
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘出口）"
+!!! summary "章节入口（复盘出口）"
 
     - 主线入口：`SpringCoreResourcesBookMatrixLabTest`
     - 分支入口：`SpringCoreResourcesBranchMatrixLabTest`
-    - 推荐先跑：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
+    - 入口：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（建议反复对照）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[01. 常见坑清单（排查时对照）](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 先跑入口（把现象跑成事实）
 
@@ -22,7 +30,7 @@
 - [关键分支矩阵](guide-branch-decision-matrix.md)
 - 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](appendix-common-pitfalls.md)
 
-## 自检题（每题都能落到 tests）
+## 自检题
 
 1. `getResource(...)` 返回的是“句柄”还是“存在的资源”？如何用断言证明“拿到句柄≠资源存在”？
    - 证据入口：`SpringCoreResourcesMechanicsLabTest#getResourceReturnsAHandle_evenIfTheResourceDoesNotExist`
@@ -46,14 +54,14 @@
 ## 退出条件（完成标准）
 
 - 能用三段式分流排障：定位（location/pattern）→ 存在性（exists/readable）→ 读取（InputStream/encoding）。
-- 能用 description 把“我以为读的是 A”变成“我确定读的是 A”（可回归证据）。
+- 能用 description 把“预期读的是 A”变成“已经确定读的是 A”（可回归证据）。
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreResourcesLabTest` / `SpringCoreResourcesMechanicsLabTest`
 
-上一章：[90-common-pitfalls](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[90-common-pitfalls](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 
 <!-- BOOKIFY:END -->

@@ -1,8 +1,17 @@
 # spring-core-validation
 
-本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”学习 **Bean Validation（Jakarta Validation）**，以及它在 Spring 应用中的常见用法。
+本模块用“可运行的最小示例 + 可验证的测试实验（实验/练习）”学习 **Bean Validation（Jakarta Validation）**，以及它在 Spring 应用中的常见用法。
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 docs/。
+
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -13,11 +22,11 @@
   - `mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - 在命令对象上声明约束（`@NotBlank`、`@Email`、`@Min` 等）
 - 程序化校验：直接使用 `jakarta.validation.Validator`
@@ -28,8 +37,8 @@
 ## 前置知识
 
 - 了解基本的校验注解（不要求深入）
-- 想理解“method validation 为什么依赖代理”：建议先了解 `spring-core-aop` 的代理心智模型
-- 在 Web 场景学习校验时：建议配合 `springboot-web-mvc`
+- 想理解“method validation 为什么依赖代理”：先了解 `spring-core-aop` 的代理心智模型
+- 在 Web 场景学习校验时：配合 `springboot-web-mvc`
 
 ## 关键命令
 
@@ -50,7 +59,7 @@ mvn -pl :spring-core-validation spring-boot:run
 mvn -pl :spring-core-validation test
 ```
 
-## 推荐 docs 阅读顺序（从现象到机制）
+## docs 阅读顺序（从现象到机制）
 
 1. [约束心智模型：在校验什么？校验结果是什么？](docs/validation-core-constraint-mental-model.md)
 2. [程序化校验：为什么直接用 `Validator` 仍然很重要？](docs/validation-core-programmatic-validator.md)
@@ -58,13 +67,13 @@ mvn -pl :spring-core-validation test
 4. [Groups：按场景启用不同规则](docs/validation-core-groups.md)
 5. [自定义约束：写一个最小可用的 `@Constraint`](docs/validation-core-custom-constraint.md)
 6. [Debug / 观察：如何排查“校验为什么没生效？”](docs/validation-core-debugging.md)
-7. [常见坑清单（建议反复对照）](docs/appendix-common-pitfalls.md)
+7. [常见坑清单（排查时对照）](docs/appendix-common-pitfalls.md)
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。Exercises 默认 `@Disabled`。
+> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。练习默认 `@Disabled`。
 
-| 类型 | 入口 | 知识点 | 难度 | 推荐阅读 |
+| 类型 | 入口 | 知识点 | 难度 | 延伸阅读 |
 | --- | --- | --- | --- | --- |
 | Lab | `src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationLabTest.java` | 程序化校验 + Spring 集成（验证异常类型/violation） | ⭐⭐ | `docs/01`、`docs/02` |
 | Lab | `src/test/java/com/learning/springboot/springcorevalidation/part01_validation_core/SpringCoreValidationMechanicsLabTest.java` | 无代理不会触发 method validation、groups、自定义约束 | ⭐⭐ | `docs/03` → `docs/05` |
@@ -102,7 +111,7 @@ mvn -pl :spring-core-validation test
 > 本模块 `docs/` 目录保持扁平；阅读顺序只在本 `README.md` 维护。正文页不再提供“上一章/下一章”导航。
 > 原 `docs/README.md` 标题：Spring Validation：约束模型、触发时机与代理边界
 
-本模块以“约束模型 → 触发 → 违规结果（Violation）”为主线，把校验行为拆成可运行的事实：什么时候会触发校验、违规结果如何汇总、groups 如何影响匹配，以及方法校验在代理边界下为何会出现“看起来没生效”的反直觉现象。很多校验问题需要与 AOP（代理/自调用）和 Web MVC（入参绑定与错误映射）串联理解。
+本模块以“约束模型 → 触发 → 违规结果（Violation）”为主线，把校验行为拆成可运行的事实：什么时候会触发校验、违规结果如何汇总、groups 如何影响匹配，以及方法校验在代理边界下为何会出现“表面上没生效”的反预期现象。很多校验问题需要与 AOP（代理/自调用）和 Web MVC（入参绑定与错误映射）串联理解。
 
 ---
 
@@ -111,7 +120,7 @@ mvn -pl :spring-core-validation test
 
 运行后应能回答：一次校验触发发生在什么位置；`ConstraintViolation` 的集合如何形成；方法校验在代理/自调用场景下为何会表现不同。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 
@@ -138,7 +147,7 @@ mvn -pl :spring-core-validation test
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBookMatrixLabTest test`
 - Branch Matrix：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-validation -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-core-validation -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（Validator 并发使用边界）：`mvn -q -pl :spring-core-validation -Dtest=SpringCoreValidationValidatorConcurrencyLabTest test`
 
 ---

@@ -1,6 +1,6 @@
 # 03. 异常传播：Future vs void
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（失败到底谁能看见）"
+!!! summary "章节入口（失败到底谁能看见）"
 
     异步异常最容易把人坑到的点是：**它常常不是“丢了”，而是“看错了地方”。**
 
@@ -10,17 +10,17 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. Executor 与线程命名/并发边界](async-scheduling-executor-and-threading.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. self-invocation：为什么异步有时不生效](async-scheduling-self-invocation.md)
+上一章：[02. Executor 与线程命名/并发边界](async-scheduling-executor-and-threading.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. self-invocation：为什么异步有时不生效](async-scheduling-self-invocation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`（见文末“对应 Lab/Test”），先明确“异常不是丢了”，再对照 void 的 handler 语义补齐边界。
+优先运行 `BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`（见文末“对应实验/测试”），先明确“异常不是丢了”，再对照 void 的 handler 语义补齐边界。
 
 
 ## 先从一个线上味道很重的场景开始
 
-把某个操作改成 `@Async`，希望它不阻塞调用方。上线后，偶尔有人反馈“没生效”，但调用链上没异常、监控也没报警。翻日志，发现后台线程里其实早就炸了。
+把某个操作改成 `@Async`，希望它不阻塞调用方。上线后，偶尔有人反馈“没生效”，但调用链上没异常、监控也没报警。翻日志，发现后台线程里本质上早就炸了。
 
 异步异常之所以容易被忽略，不是因为它“消失”了，而是因为它有两种完全不同的语义：
 
@@ -44,7 +44,7 @@
 
 - `BootAsyncSchedulingLabTest#asyncExceptionsPropagateThroughFuture`
 
-### ListenableFuture：回调式 Future（仍能见到，但更推荐 CompletableFuture）
+### ListenableFuture：回调式 Future（仍能见到，但更常用 CompletableFuture）
 
 在一些历史代码里，`@Async` 也会返回 `ListenableFuture`：它仍然是 Future，只是多了一层 callback API，让调用方可以用“回调 + 超时”的方式完成断言，而不是在调用线程里阻塞 `get()`。
 
@@ -86,10 +86,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingLabTest`
 
-上一章：[part-01-async-scheduling/02-executor-and-threading.md](async-scheduling-executor-and-threading.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-async-scheduling/04-self-invocation.md](async-scheduling-self-invocation.md)
+上一章：[async-scheduling-executor-and-threading.md](async-scheduling-executor-and-threading.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[async-scheduling-self-invocation.md](async-scheduling-self-invocation.md)
 
 <!-- BOOKIFY:END -->

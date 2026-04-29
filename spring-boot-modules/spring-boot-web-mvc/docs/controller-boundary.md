@@ -1,13 +1,13 @@
 # 01. Controller：边界、异常与契约的位置
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕「Controller 的边界与职责」展开，目标是回答一个工程上最常见的误判：**controller 并不是“所有问题的发生点”，它只是 MVC 主线里“业务方法执行”的那一段**。在它之前有选路、参数解析、绑定/校验与消息体读取；在它之后有返回值处理、内容协商与异常收敛。
 
     因此排障时更重要的是：把现象（status/响应体）映射回主线阶段，再决定应该改 controller、还是改 binder/converter/advice。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. Jackson ObjectMapper 可控（严格模式、未知字段、时间）](message-conversion-jackson-objectmapper-controls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](return-value-view-thymeleaf-and-view-resolver.md)
+上一章：[02. Jackson ObjectMapper 可控（严格模式、未知字段、时间）](message-conversion-jackson-objectmapper-controls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）](return-value-view-thymeleaf-and-view-resolver.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -80,7 +80,7 @@ controller 本身的“扩展”不等于写更多方法，更常见的是这些
 
 ## 证据链（断点 / 测试）
 
-### 推荐断点
+### 断点入口
 
 - `org.springframework.web.servlet.DispatcherServlet#doDispatch`（证明“是否进入 MVC”）
 - `org.springframework.web.method.support.HandlerMethodArgumentResolverComposite#resolveArgument`（参数从哪来）

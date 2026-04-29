@@ -1,6 +1,6 @@
 # 03. 请求绑定（Binding）与 Converter/Formatter
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕03：请求绑定（Binding）与 Converter/Formatter展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. ArgumentResolver 与 Binder（参数从哪来、校验在哪触发）](argument-resolver-and-binder.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 校验（Validation）与错误响应形状（Error Shape）](binding-validation-validation-and-error-shaping.md)
+上一章：[02. ArgumentResolver 与 Binder（参数从哪来、校验在哪触发）](argument-resolver-and-binder.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 校验（Validation）与错误响应形状（Error Shape）](binding-validation-validation-and-error-shaping.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,7 +19,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcLabTest`
-    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
 ## 机制主线
 
@@ -39,8 +39,8 @@
 
 可以把“请求绑定”理解为两条路径（这也是排障时最重要的第一步：**先判断走哪条路**）：
 
-1) **请求体（body）**：由 message converter 完成（JSON → Java）
-2) **路径/查询参数（path/query）**：由 conversion service 完成（String → Java）
+1. **请求体（body）**：由 message converter 完成（JSON → Java）
+2. **路径/查询参数（path/query）**：由 conversion service 完成（String → Java）
 
 Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字符串转换成领域类型。
 
@@ -76,13 +76,13 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 
 本章最重要的不是背类名，而是把“两个通道”区分清楚：
 
-1) body 通道（`@RequestBody`）：
+1. body 通道（`@RequestBody`）：
 - `DispatcherServlet#doDispatch`
 - `RequestResponseBodyMethodProcessor#resolveArgument`
 - `AbstractMessageConverterMethodArgumentResolver#readWithMessageConverters`
 - 校验失败：`MethodArgumentNotValidException`
 
-2) binder 通道（`@ModelAttribute/@RequestParam`）：
+2. binder 通道（`@ModelAttribute/@RequestParam`）：
 - `HandlerMethodArgumentResolverComposite#resolveArgument`
 - `ServletModelAttributeMethodProcessor#resolveArgument`
 - `WebDataBinder#bind` → `DataBinder#validate`
@@ -91,7 +91,7 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 机制内核解释见：
 - `docs/web-mvc/spring-boot-web-mvc/05-argument-resolver/02-argument-resolver-and-binder.md`
 
-推荐断点（按路径）：
+断点入口（按路径）：
 
 - body 路径（`@RequestBody`）：
   - `RequestResponseBodyMethodProcessor#resolveArgument`
@@ -107,7 +107,7 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 
 - Lab：`BootWebMvcLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
-- 建议命令（方法级入口）：
+- 运行命令（方法级入口）：
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest#returnsTypeMismatchWhenRequestParamCannotConvert test`
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest#returnsValidationFailedWhenModelAttributeIsInvalid test`
 
@@ -126,18 +126,18 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 - 默认情况下，JSON 多余字段不会导致失败（本模块当前实验断言“unknown 字段被忽略”）
 - 当 controller 的入参不是 String/Long 等简单类型时，需要通过 Converter/Formatter 扩展绑定能力
 
-## Debug 建议
+## Debug 路径
 
 - 绑定失败时先确认“走的是哪条路径”（body 还是 binder），不要在错误的地方加断点。
-- 建议优先用测试把分支固化出来：400 并不等于校验失败，也可能是解析失败或类型不匹配。
+- 优先用测试把分支固化出来：400 并不等于校验失败，也可能是解析失败或类型不匹配。
 
-建议从本模块的“对照用例”入手（同一测试类内对比更直观）：
+从本模块的“对照用例”入手（同一测试类内对比更直观）：
 
 - type mismatch（String → int 失败）：`BootWebMvcBindingDeepDiveLabTest#returnsTypeMismatchWhenRequestParamCannotConvert`
 - 方法级校验（`@Validated` + 参数约束）：`BootWebMvcBindingDeepDiveLabTest#returnsMethodValidationFailedWhenRequestParamViolatesConstraint`
 - BindingResult 改变错误流（不抛异常，controller 手动塑形）：`BootWebMvcBindingDeepDiveLabTest#bindingResultCanShortCircuitExceptionFlowWhenHandledManually`
 
-配合断点地图一起用更省时间：[06-breakpoint-map.md](testing-observability-breakpoint-map.md)
+配合断点地图一起用更快收敛：[06-breakpoint-map.md](testing-observability-breakpoint-map.md)
 
 进一步阅读（只做必要连接）：
 
@@ -148,19 +148,19 @@ Converter/Formatter 属于第二条路径：它让 Spring MVC 知道怎么把字
 
 - DTO 上写了约束注解，但 controller 入参没加 `@Valid`：校验不会触发。
 - `@ModelAttribute` 的校验失败常见是 `BindException`，不要只处理 `MethodArgumentNotValidException`。
-- 400 不是一个原因：建议把 **解析失败 / 类型不匹配 / 校验失败** 三类错误响应区分开（至少 message 不同）。
+- 400 不是一个原因：把 **解析失败 / 类型不匹配 / 校验失败** 三类错误响应区分开（至少 message 不同）。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
 - Exercise：`BootWebMvcExerciseTest`
-- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part01_web_mvc/BootWebMvcBindingDeepDiveLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part00_guide/BootWebMvcExerciseTest.java`
 
-上一章：[02. ArgumentResolver 与 Binder（参数从哪来、校验在哪触发）](argument-resolver-and-binder.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 校验（Validation）与错误响应形状（Error Shape）](binding-validation-validation-and-error-shaping.md)
+上一章：[02. ArgumentResolver 与 Binder（参数从哪来、校验在哪触发）](argument-resolver-and-binder.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 校验（Validation）与错误响应形状（Error Shape）](binding-validation-validation-and-error-shaping.md)
 <!-- BOOKIFY:END -->

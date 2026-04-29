@@ -1,27 +1,35 @@
 # 01. 常见坑清单（Web MVC）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
 
     Web MVC 的坑往往不是“写不出 Controller”，而是“把现象映射回主线时走错了分支”：401/403 发生在 FilterChain 里，还是发生在 `DispatcherServlet` 内？400 是 JSON 解析失败、类型绑定失败，还是校验失败？406/415 又是 read 还是 write 的内容协商问题？
 
-    本章把这些高频误判整理成一张“分流地图”，并给出可以直接运行的 Lab/Test 入口。建议先跑 `BootWebMvcLabTest` 把主线跑通，再回到本章逐条对照；需要下探时，从 `DispatcherServlet#doDispatch` 与 `RequestMappingHandlerAdapter#invokeHandlerMethod` 两个入口切入最省时间。
+    本章把这些高频误判整理成一张“分流地图”，并给出可以直接运行的实验/测试入口。先运行 `BootWebMvcLabTest` 把主线跑通，再回到本章逐条对照；需要下探时，从 `DispatcherServlet#doDispatch` 与 `RequestMappingHandlerAdapter#invokeHandlerMethod` 两个入口切入更快收敛。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. Observability（Interceptor 计时 vs Actuator 指标）](testing-observability-observability-and-metrics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99 自检：Spring Boot Web MVC](appendix-self-check.md)
+上一章：[02. Observability（Interceptor 计时 vs Actuator 指标）](testing-observability-observability-and-metrics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[99 自检：Spring Boot Web MVC](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 导读
 
-本章整理「90：常见坑清单（Web MVC）」相关的常见误判与排障入口。阅读时建议按“现象 → 分支 → 复现 → 修法”的顺序对照，而不是只背结论。
-推荐先跑 `BootWebMvcLabTest`，用断言把分支固定下来，再回到本文逐条核对根因。
+本章整理「90：常见坑清单（Web MVC）」相关的常见误判与排障入口。阅读时按“现象 → 分支 → 复现 → 修法”的顺序对照，而不是只背结论。
+先运行 `BootWebMvcLabTest`，用断言把分支固定下来，再回到本章逐条核对根因。
 
 为了让“现象 → 边界”变成可重复证据，本章默认依赖两组入口：一组跑主线，一组专门把 400/406/415 这些错误分支跑全。跑完之后再回到断点地图/分支矩阵看调用栈，会更容易判断问题发生在 FilterChain 还是 `DispatcherServlet` 里。
 
 - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
 - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 
-断点地图见：[06-breakpoint-map.md](testing-observability-breakpoint-map.md)，关键分支矩阵见：[04-branch-decision-matrix.md](testing-observability-branch-decision-matrix.md)。当本章的坑都能被这些入口覆盖时，可以再用自检清单做一次回归：[02-self-check.md](appendix-self-check.md)。
+断点地图见：[06-breakpoint-map.md](testing-observability-breakpoint-map.md)，关键分支矩阵见：[04-branch-decision-matrix.md](testing-observability-branch-decision-matrix.md)。当本章的坑都能被这些入口覆盖时，可以再用自检清单做一次回归：[appendix-self-check.md](appendix-self-check.md)。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -30,7 +38,7 @@
 
 ## 机制主线
 
-把“现象（状态码/响应体）”映射回 MVC 主线，是排障的最快路径。本章建议按下面顺序收敛：
+把“现象（状态码/响应体）”映射回 MVC 主线，是排障的最快路径。本章按下面顺序收敛：
 
 1. **先判断发生在 Filter 还是 DispatcherServlet 内**
    - 典型现象：401/403 往往发生在 FilterChain（Security）里，而不是 controller。
@@ -59,7 +67,7 @@
 - Lab：`BootWebMvcRealWorldHttpLabTest` / `BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
 - Lab：`BootWebMvcAsyncSseLabTest`（含 DeferredResult）
 - Lab：`BootWebMvcTraceLabTest`（Filter/Interceptor 顺序 + async lifecycle）
-- 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
@@ -67,7 +75,7 @@
 ## 400/校验相关
 
 - DTO 上写了约束注解，但 controller 入参没加 `@Valid`：校验不会触发。
-- 400 不等于校验失败：建议先把“坏输入”分成三类（对应不同异常/断点）：
+- 400 不等于校验失败：先把“坏输入”分成三类（对应不同异常/断点）：
   - JSON 解析失败：`HttpMessageNotReadableException`（body 路径）
   - 绑定/类型不匹配：`MethodArgumentTypeMismatchException`（binder 路径）
   - 校验失败：`MethodArgumentNotValidException`（@RequestBody）或 `BindException`（@ModelAttribute）
@@ -82,13 +90,13 @@
 - 引入 `spring-boot-starter-security` 后，很多 401/403 发生在 MVC 之前：优先从 FilterChainProxy 入手，不要先改 controller。
 - **坑：试图用 `@ControllerAdvice/@ExceptionHandler` 统一处理 401/403**
   - 这类分支通常发生在 DispatcherServlet 之前，MVC 的异常解析链路根本没机会运行
-  - 证据链建议：断言 `handler == null && resolvedException == null`（说明没进入 HandlerMethod/ExceptionResolvers）
+  - 证据链动作：断言 `handler == null && resolvedException == null`（说明没进入 HandlerMethod/ExceptionResolvers）
   - 对照证据：`BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`
 - 403 很多时候不是“没权限”，而是 **CSRF 缺失**（尤其是 POST/PUT/DELETE）。
   - 对照证据：`BootWebMvcSecurityLabTest`（401/403/CSRF）
   - 对照证据（边界）：`BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`（403 时 `handler/resolvedException` 为空）
 
-推荐断点（401/403/CSRF）：
+断点入口（401/403/CSRF）：
 
 - `org.springframework.web.filter.DelegatingFilterProxy#doFilter`
 - `org.springframework.security.web.FilterChainProxy#doFilterInternal`
@@ -137,7 +145,7 @@
 - `@WebMvcTest` 的“更快”来自加载范围更小：如果把太多东西 `@Import` 进来，它就不再快了。
 - **坑：`@WebMvcTest` 下突然出现 401/403**
   - slice 测试默认也会走 filters；当 Security 在 classpath 且 filter chain 生效时，可能“还没进 controller 就被拦了”
-  - 建议：显式导入想演示的 `SecurityFilterChain`（教学端点隔离），不要全局禁用 filters（否则会学到错误结论）
+  - 动作：显式导入想演示的 `SecurityFilterChain`（教学端点隔离），不要全局禁用 filters（否则会学到错误结论）
   - 对照证据：`BootWebMvcSecurityVsMvcExceptionBoundaryLabTest`（401/403 时 `handler/resolvedException` 为 `null`）
 
 ## 404/路由相关
@@ -148,9 +156,9 @@
 ## 500/异常相关
 
 - 先确认异常来自哪个阶段：resolver/binder/converter/controller，不要一上来就 try/catch。
-- 建议先用 `resolvedException` 或日志把异常类型固定，再决定是加 `@ExceptionHandler` 还是修输入约束。
+- 先用 `resolvedException` 或日志把异常类型固定，再决定是加 `@ExceptionHandler` 还是修输入约束。
 
-## 建议的排查顺序
+## 排查顺序
 
 1. 先用测试把“现象”固化（状态码 + 响应形状）
 2. 再回到 controller / handler / advice 看“为什么”
@@ -169,7 +177,7 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcLabTest` / `BootWebMvcSpringBootLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
@@ -183,5 +191,5 @@
 - Lab：`BootWebMvcSecurityLabTest`
 - Lab：`BootWebMvcObservabilityLabTest`
 
-上一章：[02. Observability（Interceptor 计时 vs Actuator 指标）](testing-observability-observability-and-metrics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99 自检：Spring Boot Web MVC](appendix-self-check.md)
+上一章：[02. Observability（Interceptor 计时 vs Actuator 指标）](testing-observability-observability-and-metrics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[99 自检：Spring Boot Web MVC](appendix-self-check.md)
 <!-- BOOKIFY:END -->

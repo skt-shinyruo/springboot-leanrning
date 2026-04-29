@@ -1,17 +1,25 @@
 # 99 自检：Spring Core AOP
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘出口）"
+!!! summary "章节入口（复盘出口）"
 
     - 主线入口：`SpringCoreAopBookMatrixLabTest`
     - 分支入口：`SpringCoreAopProxyBranchMatrixLabTest`（代理基础）/ `SpringCoreAopAutoProxyBranchMatrixLabTest`（AutoProxy）/ `SpringCoreAopStackingBranchMatrixLabTest`（叠加与顺序）
-    - 推荐先跑：`SpringCoreAopLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
+    - 入口：`SpringCoreAopLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
     - 专题补齐（本仓库新增覆盖）：`SpringCoreAopAdviceTypesAndBindingLabTest` / `SpringCoreAopIntroductionDeclareParentsLabTest` / `SpringCoreAopTargetSourceLabTest` / `SpringCoreAopProxyObjectSemanticsLabTest`
     - 遗留入口/成本模型：`SpringCoreAopBeanNameAutoProxyCreatorLabTest` / `SpringCoreAopXmlAopConfigLabTest` / `SpringCoreAopRuntimePointcutCostLabTest` / `SpringCoreAopAspectInstantiationModelLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（建议反复对照）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[01. 常见坑清单（排查时对照）](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 先跑入口（把现象跑成事实）
 
@@ -20,7 +28,7 @@
 - Branch Matrix（AutoProxy）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
 - Branch Matrix（叠加与顺序）：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
 
-补齐专题（建议按需挑选）：
+补齐专题（按需挑选）：
 
 - Advice 全家桶语义/绑定：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAdviceTypesAndBindingLabTest test`
 - Introduction / Mixin：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopIntroductionDeclareParentsLabTest test`
@@ -36,7 +44,7 @@
 - [关键分支矩阵](guide-branch-decision-matrix.md)
 - 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](appendix-common-pitfalls.md)
 
-## 自检题（每题都能落到 tests）
+## 自检题
 
 1. Spring AOP 的“增强”发生在容器的哪个阶段？如何在断点里看到 proxy 替换目标对象？
    - 证据入口：`SpringCoreAopAutoProxyCreatorInternalsLabTest#autoProxyCreator_isRegisteredAsBeanPostProcessor_whenEnableAspectJAutoProxyIsUsed`
@@ -52,7 +60,7 @@
    - 证据入口：`SpringCoreAopIntroductionDeclareParentsLabTest`
 7. TargetSource 是什么？如何用最小事实证明 “proxy 不变，但 target 可切换/延迟创建”？
    - 证据入口：`SpringCoreAopTargetSourceLabTest`
-8. proxy 的对象语义有哪些坑（getClass/instanceof/Map key）？如何在断点里最短自证“我拿到的是 proxy 还是 target”？
+8. proxy 的对象语义有哪些坑（getClass/instanceof/Map key）？如何在断点里最短自证“当前拿到的是 proxy 还是 target”？
    - 证据入口：`SpringCoreAopProxyObjectSemanticsLabTest`
 9. pointcut 的核心语义是什么？如何避免“表达式写对了，但入口没走到代理”的误判？
    - 证据入口：`SpringCoreAopPointcutExpressionsLabTest#this_vs_target_differs_between_JdkProxy_and_CglibProxy`
@@ -60,13 +68,13 @@
     - 证据入口：`SpringCoreAopRuntimePointcutCostLabTest`
 11. 没有 `@EnableAspectJAutoProxy` / `@Aspect` 时，AOP 还能从哪来？如何快速识别 BeanNameAutoProxyCreator / XML `<aop:config>`？
     - 证据入口：`SpringCoreAopBeanNameAutoProxyCreatorLabTest` / `SpringCoreAopXmlAopConfigLabTest`
-12. 为什么写了 `@Aspect("pertarget(...)")` 但看起来“不生效”？prototype gate 是什么？
+12. 为什么写了 `@Aspect("pertarget(...)")` 但表面上“不生效”？prototype gate 是什么？
     - 证据入口：`SpringCoreAopAspectInstantiationModelLabTest`
 13. proxy 为什么可以并发调用？哪些状态会在并发下串线？如何把 ThreadLocal 边界写成可回归用例？
     - 证据入口：`SpringCoreAopProxyConcurrencyLabTest#proxyInvocation_isThreadIsolated_underConcurrentCalls`
 14. 多切面时，顺序影响的到底是“advisor/interceptor 链”，还是“容器阶段的 BPP 顺序”？两类顺序分别去哪里观察？
     - 证据入口：`SpringCoreAopMultiProxyStackingLabTest`
-15. Weaving vs Proxy：哪些问题 proxy 永远解决不了？遇到这些问题你会怎么决策/排障？
+15. Weaving vs Proxy：哪些问题 proxy 永远解决不了？遇到这些问题会怎么决策/排障？
     - 证据入口：`appendix-weaving-vs-proxy-decision-matrix.md`
 16. 当遇到“不拦截”的问题，稳定的排查顺序是什么？（至少覆盖：入口是否为容器 bean / 是否为 AOP proxy / advisor 是否存在 / 拦截器链是否包含目标 advice）
     - 证据入口：`SpringCoreAopRealWorldStackingLabTest`
@@ -76,7 +84,7 @@
 - 能把 AOP 描述为两段事实链：容器阶段（为何生成 proxy）与调用阶段（为何进入拦截器链）。
 - 能用断点与断言回答：“有没有 proxy、有哪些 advisors、这次调用挂了哪些拦截器、顺序如何”，而不是依赖日志猜测。
 
-## 动手题（建议直接做 Exercises）
+## 动手题（直接做 练习）
 
 - 让自调用也触发 advice：启用 exposeProxy，并完成 `SpringCoreAopExerciseTest#exercise_makeSelfInvocationTriggerAdvice`
 - 新增一个 `@Order(0)` 的切面，并证明它会在现有切面之前执行：`SpringCoreAopExerciseTest#exercise_addOrderedAspect`
@@ -84,20 +92,20 @@
 
 ## 常见坑索引（本页不重复坑正文）
 
-- 建议对照：[`01-common-pitfalls.md`](appendix-common-pitfalls.md)
+- 对照：[`01-common-pitfalls.md`](appendix-common-pitfalls.md)
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopProxyMechanicsLabTest` / `SpringCoreAopAdviceTypesAndBindingLabTest` / `SpringCoreAopIntroductionDeclareParentsLabTest` / `SpringCoreAopTargetSourceLabTest` / `SpringCoreAopProxyObjectSemanticsLabTest`
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopRuntimePointcutCostLabTest` / `SpringCoreAopBeanNameAutoProxyCreatorLabTest` / `SpringCoreAopXmlAopConfigLabTest` / `SpringCoreAopAspectInstantiationModelLabTest`
 - Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopRealWorldStackingLabTest` / `SpringCoreAopProxyConcurrencyLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[90-common-pitfalls](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[90-common-pitfalls](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 
 <!-- BOOKIFY:END -->

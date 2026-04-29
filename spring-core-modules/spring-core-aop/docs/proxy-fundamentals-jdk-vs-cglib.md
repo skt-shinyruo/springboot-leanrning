@@ -1,6 +1,6 @@
 # 02. JDK vs CGLIB：代理类型与“可注入类型”差异
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕JDK vs CGLIB：代理类型与“可注入类型”差异展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopProxyMechanicsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](proxy-fundamentals-aop-proxy-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？](proxy-fundamentals-self-invocation.md)
+上一章：[01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）](proxy-fundamentals-aop-proxy-mental-model.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. 自调用（self-invocation）：为什么 `this.inner()` 不会被拦截？](proxy-fundamentals-self-invocation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「02. JDK vs CGLIB：代理类型与“可注入类型”差异」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreAopProxyMechanicsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopProxyMechanicsLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -75,20 +75,20 @@ Spring AOP 最容易让人困惑的一点是：**代理类型不同，会直接�
 - `JdkDynamicAopProxy`
 - `CglibAopProxy`
 
-### 推荐观察点（watch list）
+### 观察点（观察清单）
 
 - `advisedSupport.isOptimize()` / `advisedSupport.isProxyTargetClass()`（是否强制 class-based）
 - `AopProxyUtils.completeProxiedInterfaces(...)`（JDK proxy 代理了哪些接口）
 - `AopUtils.isJdkDynamicProxy(bean)` / `AopUtils.isCglibProxy(bean)`（最终结果）
 
-## 实战建议（学习仓库里也适用）
+## 实战处理（学习仓库里也适用）
 
 - **想要最稳定的注入方式**：定义接口，用接口注入（能直观看到“JDK 代理”的语义）
 - **想要最少样板代码**：没有接口也可以，但要理解更可能得到 CGLIB 代理（以及它的限制）
 
 当看到 `com.sun.proxy.$ProxyXX` 或 `$$SpringCGLIB$$` 时：
 
-- 这不是“Spring 魔法把目标类改坏了”，而是 proxy 的正常形态
+- 这不是“Spring 隐式机制把目标类改坏了”，而是 proxy 的正常形态
 - 想看真实目标类型，优先用：
   - `AopProxyUtils.ultimateTargetClass(bean)`
   - 或 `AopUtils.getTargetClass(bean)`
@@ -96,7 +96,7 @@ Spring AOP 最容易让人困惑的一点是：**代理类型不同，会直接�
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopProxyMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -104,9 +104,9 @@ Spring AOP 最容易让人困惑的一点是：**代理类型不同，会直接�
 
 重点看 `SpringCoreAopProxyMechanicsLabTest` 里的两段配置：
 
-对应断言（建议逐个断点跟进）：
+对应断言（逐个断点跟进）：
 
-如果想在断点里亲眼看到“它是怎么选的”，建议打在：
+如果想在断点里亲眼看到“它是怎么选的”，断点打在：
 
 ### 额外提醒：调试时“看 class”不要看花眼
 
@@ -119,10 +119,10 @@ Spring AOP 最容易让人困惑的一点是：**代理类型不同，会直接�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopProxyMechanicsLabTest`
 
-上一章：[01-aop-proxy-mental-model](proxy-fundamentals-aop-proxy-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03-self-invocation](proxy-fundamentals-self-invocation.md)
+上一章：[01-aop-proxy-mental-model](proxy-fundamentals-aop-proxy-mental-model.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03-self-invocation](proxy-fundamentals-self-invocation.md)
 
 <!-- BOOKIFY:END -->

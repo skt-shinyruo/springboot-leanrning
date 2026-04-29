@@ -1,15 +1,23 @@
 # 99 自检：Spring Boot Auto-Configuration
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘出口）"
+!!! summary "章节入口（复盘出口）"
 
     - 主线入口：`BootAutoConfigurationBookMatrixLabTest`
     - 分支入口：`BootAutoConfigurationBranchMatrixLabTest`
-    - 推荐先跑：`BootAutoConfigurationLabTest`
+    - 入口：`BootAutoConfigurationLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 90 - Common Pitfalls（springboot-autoconfiguration）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[常见坑清单](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 先跑入口（把现象跑成事实）
 
@@ -20,9 +28,9 @@
 
 - [断点地图](guide-breakpoint-map.md)
 - [关键分支矩阵](guide-branch-decision-matrix.md)
-- 常见坑清单（索引页，不在本页重复）：[01-common-pitfalls.md](appendix-common-pitfalls.md)
+- 常见坑清单（索引页，不在本页重复）：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
-## 自检题（每题都能落到 tests/断点）
+## 自检题
 
 1. auto-config 在什么条件下会创建“默认实现”？如何用一个断言证明它真的被注册并可用？
    - 证据入口：`BootAutoConfigurationLabTest#autoConfigCreatesDefaultBeanWhenEnabled`
@@ -33,14 +41,14 @@
 4. 如何解释 `@Primary` 的作用边界：它解决的是“候选选择”，还是“禁止注册”？
    - 对照：`BootAutoConfigurationLabTest#decoratorCreatesPrimaryBeanWhenEnabled` vs `BootAutoConfigurationLabTest#userBeanOverridesAutoConfig_backoffOccurs`
 5. 如果怀疑某个条件没命中，会把断点下在什么位置来观察“为什么 shouldSkip”？（写出至少 1 个入口方法名）
-   - 证据导航：[`../part-00-guide/04-breakpoint-map.md`](guide-breakpoint-map.md)
+   - 证据导航：[`guide-breakpoint-map.md`](guide-breakpoint-map.md)
 6. “装配顺序”在这个模块里如何体现？如何从测试断言反推：哪些 bean 先出现、哪些后出现？
    - 证据入口：`BootAutoConfigurationLabTest#decoratorCreatesPrimaryBeanWhenEnabled`
 7. 并发条件下，多线程反复 `getBean(GreetingService.class)` 是否会拿到不同实例？用什么证据把它写成可回归结论？
    - 证据入口：`BootAutoConfigurationConcurrencyLabTest#retrievingPrimaryBeanAndCallingService_isConsistent_underConcurrency`
 8. 能用 2–3 句话给出这个模块的“最短排障路径”吗？（从 imports → condition → backoff）
    - 对照：[`01-common-pitfalls.md`](appendix-common-pitfalls.md)
-9. 练习：新增一个条件分支并把 backoff 固化成断言（不要靠日志）。
+9. 练习：新增一个条件分支并把 backoff 固化成断言（不要只凭日志）。
    - 入口：`BootAutoConfigurationExerciseTest#exercise_addAConditionalBeanAndVerifyBackoff`
 
 ## 退出条件（完成标准）

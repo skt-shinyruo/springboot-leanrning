@@ -1,6 +1,6 @@
 # 03. HttpMessageConverter 与返回值处理（序列化发生在哪里）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕03：HttpMessageConverter 与返回值处理（序列化发生在哪里）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcContractJacksonLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](return-value-view-form-binding-validation-prg.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 统一异常处理（ControllerAdvice）与“坏输入”](exception-resolvers-exception-handling.md)
+上一章：[02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](return-value-view-form-binding-validation-prg.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 统一异常处理（ControllerAdvice）与“坏输入”](exception-resolvers-exception-handling.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「03：HttpMessageConverter 与返回值处理（序列化发生在哪里）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcContractJacksonLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcContractJacksonLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -30,7 +30,7 @@
 
 ## 源码与断点
 
-建议断点：
+断点入口：
 - `AbstractMessageConverterMethodProcessor#writeWithMessageConverters`
 - `RequestResponseBodyMethodProcessor#resolveArgument`
 - `org.springframework.web.accept.ContentNegotiationManager#resolveMediaTypes`
@@ -66,7 +66,7 @@
 - `Content-Type`：请求体实际格式（read）
 - `produces/consumes`：在 mapping 上写的约束（会直接影响匹配与异常类型）
 
-排障建议：当 406/415 出现时，优先把下面三件事写进证据链：
+排障动作：当 406/415 出现时，优先把下面三件事写进证据链：
 1. 请求头（Accept/Content-Type）
 2. handler mapping 约束（produces/consumes）
 3. resolvedException（异常类型就是分支位置）
@@ -88,7 +88,7 @@ Spring MVC 在 `ResponseBodyAdvice#beforeBodyWrite(...)` 提供了两个非常�
 本模块把它落成了可运行实验：
 - `MessageConverterTraceAdvice`：仅对 `/api/advanced/message-converters/**` 写入响应头
 - endpoints：String/JSON/bytes/strict media type 四种返回值对照
-- Lab：`BootWebMvcMessageConverterTraceLabTest` 固定断言（不用猜、可回归）
+- Lab：`BootWebMvcMessageConverterTraceLabTest` 固定断言（不需要猜、可回归）
 
 ## 常见坑与边界
 
@@ -100,11 +100,11 @@ Spring MVC 在 `ResponseBodyAdvice#beforeBodyWrite(...)` 提供了两个非常�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcContractJacksonLabTest`
 - Lab：`BootWebMvcTestingDebuggingLabTest`
 - Lab：`BootWebMvcMessageConverterTraceLabTest`
 
-上一章：[02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](return-value-view-form-binding-validation-prg.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 统一异常处理（ControllerAdvice）与“坏输入”](exception-resolvers-exception-handling.md)
+上一章：[02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](return-value-view-form-binding-validation-prg.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 统一异常处理（ControllerAdvice）与“坏输入”](exception-resolvers-exception-handling.md)
 <!-- BOOKIFY:END -->

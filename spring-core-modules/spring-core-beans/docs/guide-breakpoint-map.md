@@ -1,31 +1,39 @@
 # 断点地图（容器主线：可复用断点/观察点清单）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；真实项目里常见路径是：通过配置类/扫描/导入注册 Bean；用注入机制（类型/名称/限定符）组装依赖；需要增强时依赖 Post-Processor 体系。
 
-    本章围绕断点地图（容器主线：可复用断点/观察点清单）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：断点地图（容器主线：可复用断点/观察点清单）。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` / `org.springframework.context.support.PostProcessorRegistrationDelegate` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
+## 本页路线图
 
-## 导读
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
+
+## 断点地图的用法：先定位阶段，再缩小 `beanName`
 
 这页的定位很明确：它不试图解释所有概念，而是把 `spring-core-beans` 里最常用的断点与观察点整理成“一页纸”。
 
 读者在真实项目里遇到异常时，往往并不缺“名词”，而是缺两样东西：
 
-1) 这个现象属于 refresh 的哪一段（定义层 / 注册处理器 / 创建单例 / 注入 / 初始化 / 代理替换）？
-2) 第一断点应该下在哪个方法，才能最快看到决定性变量？
+1. 这个现象属于 refresh 的哪一段（定义层 / 注册处理器 / 创建单例 / 注入 / 初始化 / 代理替换）？
+2. 第一断点应该下在哪个方法，才能最快看到决定性变量？
 
 本页就是为这两个问题服务的。
 
-建议用法（3 步即可）：
+使用路径只需要 3 步：
 
-1) 先运行一个最小 Lab，确认入口与断言可复现（例如 `SpringCoreBeansLabTest`）。
-2) 再按本页的 C1–C7 断点组观察关键数据结构的变化。
-3) 最后回到 [知识地图](appendix-knowledge-map.md) 或 [关键分支矩阵](guide-branch-decision-matrix.md)，把观察到的变化收敛成“结论 + 方法级证据链”。
+1. 先运行一个最小 Lab，确认入口与断言可复现（例如 `SpringCoreBeansLabTest`）。
+2. 再按本页的 C1–C7 断点组观察关键数据结构的变化。
+3. 最后回到 [知识地图](appendix-knowledge-map.md) 或 [关键分支矩阵](guide-branch-decision-matrix.md)，把观察到的变化收敛成“结论 + 方法级证据链”。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -38,7 +46,7 @@
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-> 快速入口：若不确定该从哪组断点开始，可先用“现象 → 断点组”选一个起点，再回到 [知识地图](appendix-knowledge-map.md) 补齐“章节 + 推荐 Lab”。
+> 快速入口：若不确定该从哪组断点开始，可先用“现象 → 断点组”选一个起点，再回到 [知识地图](appendix-knowledge-map.md) 补齐“章节 + 对应 Lab”。
 
 | 现象（Symptoms） | 首选断点组 | 说明 |
 | --- | --- | --- |
@@ -54,7 +62,7 @@
 
 - 入口断点：
   - `AbstractApplicationContext#refresh`
-- 观察点（Watch List）：
+- 观察点（观察清单）：
   - 当前阶段（看调用栈即可）
   - `beanFactory`（通常是 `DefaultListableBeanFactory`）
 
@@ -127,7 +135,7 @@
 
 为了让“阶段感”更可见，这里把关键对象变化再压缩成 1 张表：
 
-| 阶段 | 主要变化 | 推荐观察点（最小够用） |
+| 阶段 | 主要变化 | 观察点（最小够用） |
 | --- | --- | --- |
 | 定义注册 | `beanDefinitionMap` 增长，`BeanDefinition` 来源被标记 | `registry.getBeanDefinitionCount()` / `beanDefinition.getSource()` |
 | BFPP/BDRPP | 定义被改写/补齐（占位符、配置类、属性覆盖） | `postProcessBeanFactory` / `processedBeans` |
@@ -138,22 +146,22 @@
 
 无需记住所有分支，但必须能“观察到”这 5 个最常见的分支触发点：
 
-1) **singleton vs prototype**：`AbstractBeanFactory#doGetBean` → `mbd.isPrototype()`
-2) **dependsOn 强制顺序**：`AbstractBeanFactory#getBean` → `mbd.getDependsOn()`
-3) **parent BeanFactory 回退**：`containsBeanDefinition(beanName)` 为 false → `parentBeanFactory.getBean`
-4) **FactoryBean vs 产品对象**：`AbstractBeanFactory#getObjectForBeanInstance`
-5) **类型匹配（含泛型）**：`AbstractBeanFactory#isTypeMatch` / `ResolvableType` 判定
+1. **singleton vs prototype**：`AbstractBeanFactory#doGetBean` → `mbd.isPrototype()`
+2. **dependsOn 强制顺序**：`AbstractBeanFactory#getBean` → `mbd.getDependsOn()`
+3. **parent BeanFactory 回退**：`containsBeanDefinition(beanName)` 为 false → `parentBeanFactory.getBean`
+4. **FactoryBean vs 产品对象**：`AbstractBeanFactory#getObjectForBeanInstance`
+5. **类型匹配（含泛型）**：`AbstractBeanFactory#isTypeMatch` / `ResolvableType` 判定
 
-## 源码调用链与断点（建议从 Lab 反推）
+## 源码调用链与断点（从 Lab 反推）
 
-更完整的“入口测试 → 断点调用链”建议，优先看：
+更完整的“入口测试 → 断点调用链”见：
 
 - 30 分钟快启：`guide-quickstart-30min.md`
 - 深入分析指南：`guide-deep-dive-guide.md`
 
 ## 最小可运行实验（Lab）
 
-可先运行这些入口再设置断点：
+先运行这些入口，再设置断点：
 
 - refresh 主线：`SpringCoreBeansBootstrapInternalsLabTest`
 - 依赖解析（候选收敛）：`SpringCoreBeansLabTest#usesQualifierToResolveMultipleBeans`
@@ -172,7 +180,7 @@
 
 ## 条件断点模板（降噪）：让断点“只为目标 bean 服务”
 
-断点地图如果不配“降噪条件”，体验会非常差（一次 refresh 会进同一个方法上千次）。建议把条件断点当成默认习惯：
+断点地图如果不配“降噪条件”，一次 `refresh()` 可能进入同一个方法上千次。条件断点应当成为默认动作：
 
 1. **按 beanName 过滤（最常用）**
    - `beanName.equals("xxx")`
@@ -182,31 +190,24 @@
 3. **按“候选收敛”过滤**
    - 只在 `candidates.size() > 1` 或出现 `@Qualifier/@Primary` 决策点时停住
 
-> 目标：把“能看到”升级成“只看到需要看的”。这也是为什么本模块大量章节都强调 watch list：观察点比断点位置更决定效率。
+> 落点：把“能看到”升级成“只看到需要看的”。这也是为什么本模块大量章节都强调 观察清单：观察点比断点位置更决定效率。
 
-## 常见误区与边界
+## 断点误判：只看到调用栈还不等于看到分支
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-- 只盯某个注解：建议先把“发生在 refresh 的哪一段”确定下来（C1-C7）。
-- 把 proxy 当成原始对象：建议在 `applyBeanPostProcessorsAfterInitialization` 处观察 `wrappedBean` 替换点。
-- 循环依赖只看三层缓存：建议结合“代理介入”与“raw 注入/早期引用”的边界用例一起看。
+- 只盯某个注解：先把“发生在 refresh 的哪一段”确定下来（C1-C7）。
+- 把 proxy 当成原始对象：在 `applyBeanPostProcessorsAfterInitialization` 处观察 `wrappedBean` 替换点。
+- 循环依赖只看三层缓存：要结合“代理介入”与“raw 注入/早期引用”的边界用例一起看。
 
-## 小结
+## 收束：断点索引必须配合章节和 Lab
 
-- 本页作为断点索引页，建议与各章的“源码锚点/入口测试/排障分流”配合使用。
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
+- 本页作为断点索引页，应与各章的“源码锚点/入口测试/排障分流”配合使用。
 
-    建议 先跑 `SpringCoreBeansLabTest`，再用 `SpringCoreBeansBootstrapInternalsLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“常见误区与边界”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：遇到具体现象时，回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；需要固化排障流程时，回到 [生产排障清单](appendix-production-troubleshooting-checklist.md)。
-<!-- AE-DEEPENING:END -->
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansLabTest`
 - Lab：`SpringCoreBeansBootstrapInternalsLabTest`
@@ -219,15 +220,15 @@
 
 面试里无需“背源码”，但需要能说清：
 
-1) 应在哪个阶段设置断点（refresh 哪一段）
-2) 在断点中观察哪 3 个变量即可下结论
-3) 用哪个 Lab 复现并证明它
+1. 应在哪个阶段设置断点（refresh 哪一段）
+2. 在断点中观察哪 3 个变量即可下结论
+3. 用哪个 Lab 复现并证明它
 
-推荐复习入口：`appendix-interview-playbook.md` / `appendix-debugger-pack.md`
+复习入口：`appendix-interview-playbook.md` / `appendix-debugger-pack.md`
 
-## 自检要点
-应能够做到：
+## 验证标准：断点地图要能复用
+读完后应能做到：
 
-1) 说出 refresh 主线、依赖解析、bean 创建、单例缓存、BPP 代理这五类问题各自的“第一断点”。
-2) 解释为什么“断点 + watch list”比“全局搜栈”更高效。
-3) 用本模块任意一个 Lab，把断点地图完成验证一次并能复述观察到的关键变化。
+1. 说出 refresh 主线、依赖解析、bean 创建、单例缓存、BPP 代理这五类问题各自的“第一断点”。
+2. 解释为什么“断点 + 观察清单”比“全局搜栈”更高效。
+3. 用本模块任意一个 Lab，把断点地图完成验证一次并能复述观察到的关键变化。

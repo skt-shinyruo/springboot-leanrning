@@ -1,7 +1,7 @@
-# 01. 常见坑清单（建议反复对照）
+# 01. 常见坑清单（排查时对照）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕常见坑清单（建议反复对照）展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
+!!! summary "章节入口（五问闭环）"
+    本章围绕常见坑清单（排查时对照）展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
 
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. Weaving vs Proxy：能力边界决策表（跳转 aop-weaving）](appendix-weaving-vs-proxy-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 自测题：是否真正理解了 AOP？](appendix-self-check.md)
+上一章：[02. Weaving vs Proxy：能力边界决策表（跳转 aop-weaving）](appendix-weaving-vs-proxy-decision-matrix.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 自测题：是否真正理解了 AOP？](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ### 排障骨架（统一结构）
 
@@ -23,7 +31,7 @@
    - Branch Matrix - Proxy 基础：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopProxyBranchMatrixLabTest test`
    - Branch Matrix - AutoProxy：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyBranchMatrixLabTest test`
    - Branch Matrix - 多代理叠加：`mvn -q -pl :spring-core-aop -Dtest=SpringCoreAopStackingBranchMatrixLabTest test`
-3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[04-breakpoint-map.md](guide-breakpoint-map.md)
+3. 证据（Evidence）：对照断点地图，把断点/观察点/关键日志收齐：[04-breakpoint-map.md](guide-breakpoint-map.md)
 4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[05-branch-decision-matrix.md](guide-branch-decision-matrix.md)
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
 6. 验证（Verify）：复跑入口 + 对照自检清单：[02-self-check.md](appendix-self-check.md)
@@ -32,7 +40,6 @@
 !!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProxyMechanicsLabTest`
-
 ## 机制主线
 
 本章不是“再讲一遍机制”，而是把 Spring AOP 最常见的误判收敛成一份 **可复现、可对照、可验证** 的排障手册。
@@ -42,18 +49,18 @@
 1. **先确认 call path**：调用有没有走进 proxy？（自调用/绕过 Spring bean 是最高频根因）
 2. **再确认 proxy 事实**：有没有 proxy？是什么 proxy？（JDK/CGLIB 会影响类型边界与 this/target 命中）
 3. **再确认 advisor/chain**：proxy 上有没有期望的 advisor？这次调用的拦截器链里有没有它？
-4. **最后再谈边界与叠加**：final/private/static/构造期调用、多 advisor 顺序、多层 proxy（套娃）、以及并发下的上下文隔离
+4. **最后再谈边界与叠加**：final/private/static/构造期调用、多 advisor 顺序、多层 proxy（嵌套代理）、以及并发下的上下文隔离
 
 本章的每个坑条目都尽量给出：
 
-- 可复现入口（优先用本仓库的 Lab/Test）
-- 推荐断点 / 观察点（来自断点地图）
-- 推荐回读章节（从“排障”回到“理解”的闭环）
+- 可复现入口（优先用本仓库的实验/测试）
+- 断点入口 / 观察点（来自断点地图）
+- 回读章节（从“排障”回到“理解”的闭环）
 
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
@@ -65,7 +72,7 @@
 - 解决：抽到另一个 bean；或 self 注入/`ObjectProvider`；或 exposeProxy（进阶，见 [05. expose-proxy](proxy-fundamentals-expose-proxy.md)）
 - 对应 Lab：`SpringCoreAopLabTest#selfInvocationDoesNotTriggerAdviceForInnerMethod`
 - 对应 Lab（exposeProxy 对照）：`SpringCoreAopExposeProxyLabTest#exposeProxyAllowsSelfInvocationToTriggerAdvice`
-- 推荐断点：`JdkDynamicAopProxy#invoke` / `CglibAopProxy.DynamicAdvisedInterceptor#intercept`
+- 断点入口：`JdkDynamicAopProxy#invoke` / `CglibAopProxy.DynamicAdvisedInterceptor#intercept`
 
 ## 坑 2：JDK 代理导致“按实现类拿不到 bean”
 
@@ -73,7 +80,7 @@
 - 章节：见 [02. jdk-vs-cglib](proxy-fundamentals-jdk-vs-cglib.md)
 - 解决：用接口注入；或强制 CGLIB（理解取舍后再决定）
 - 对应 Lab：`SpringCoreAopProxyMechanicsLabTest#jdkDynamicProxyIsUsedForInterfaceBasedBeans_whenProxyTargetClassIsFalse`
-- 推荐断点：`DefaultAopProxyFactory#createAopProxy`
+- 断点入口：`DefaultAopProxyFactory#createAopProxy`
 
 ## 坑 3：`final` 方法/类拦截不到
 
@@ -88,9 +95,9 @@
 - 原因：代理只发生在容器创建 bean 的阶段
 - 排查要点：确认调用入口拿到的是“容器里的 bean”，而不是手动 new 的对象
 
-## 坑 5：切点写错导致“以为学到了机制，其实是误命中”
+## 坑 5：切点写错导致“以为学到了机制，本质上是误命中”
 
-- 建议：从最小切点起步（`@annotation`），再逐步扩大范围（`execution`）
+- 动作：从最小切点起步（`@annotation`），再逐步扩大范围（`execution`）
 - 章节：见 [06. debugging](proxy-fundamentals-debugging.md)
 - 对应 Exercise：`SpringCoreAopExerciseTest#exercise_changePointcutStyle`
 
@@ -98,7 +105,7 @@
 
 典型误判：
 
-- “我都加了注解/切面了，为什么初始化阶段就是不进 advice？”
+- “已经添加注解/切面，为什么初始化阶段仍不进入 advice？”
 
 事实：
 
@@ -106,7 +113,7 @@
 - 构造器与 `@PostConstruct` 发生时，bean 还没有被替换成最终 proxy
 - 并且这类调用经常还是 `this.xxx()`（自调用），会再次绕过 proxy
 
-建议：
+动作：
 
 - 不要依赖 AOP 去拦截构造期/初始化期内部调用
 - 把需要被拦截的逻辑放到真正的业务入口（例如 service public 方法），并确保调用链走 bean proxy
@@ -119,14 +126,14 @@
 
 - `AopContext.currentProxy()` 基于 thread-local，上下文不自动跨线程传播
 
-建议：
+动作：
 
 - exposeProxy 主要用于“理解机制/偶发修复”，不要作为常规架构方案
-- 工程上更推荐：重构拆分 bean 或自注入/`ObjectProvider`（见 [03. self-invocation](proxy-fundamentals-self-invocation.md)、[05. expose-proxy](proxy-fundamentals-expose-proxy.md)）
+- 工程上更稳妥的做法：重构拆分 bean 或自注入/`ObjectProvider`（见 [03. self-invocation](proxy-fundamentals-self-invocation.md)、[05. expose-proxy](proxy-fundamentals-expose-proxy.md)）
 
 ## 坑 8：多个切面顺序搞反，以为 `@Order` “越大越先执行”
 
-事实（建议用测试验证结论，不要靠记忆）：
+事实（用测试验证结论，不要靠记忆）：
 
 - `@Order` 值越小，优先级通常越高（更靠外层/更早进入）
 
@@ -134,7 +141,7 @@
 
 - `SpringCoreAopProxyMechanicsLabTest#adviceOrderingCanBeControlledWithOrderAnnotation`
 
-推荐观察点：
+观察点：
 
 - 断点进 `DefaultAdvisorChainFactory#getInterceptorsAndDynamicInterceptionAdvice` 看拦截器链顺序
 
@@ -161,12 +168,12 @@
 事实：
 
 - 真实项目主流形态是：**一个 proxy 上挂多个 advisors**（事务/缓存/安全/切面都在 advisors 列表里）
-- 多层 proxy（套娃）并非默认，但在某些场景会出现（手工 ProxyFactory、多个包装型 BPP、scoped proxy 等）
+- 多层 proxy（嵌套代理）并非默认，但在某些场景会出现（手工 ProxyFactory、多个包装型 BPP、scoped proxy 等）
 
 解决：
 
 - 用 `Advised#getAdvisors()` 直接把“叠加实体”看见
-- 再判断 target 是否还是 proxy，确认是否存在套娃
+- 再判断 target 是否还是 proxy，确认是否存在嵌套代理
 
 章节与 Lab：
 
@@ -178,11 +185,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopProxyMechanicsLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[92-weaving-vs-proxy](appendix-weaving-vs-proxy-decision-matrix.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](appendix-self-check.md)
+上一章：[92-weaving-vs-proxy](appendix-weaving-vs-proxy-decision-matrix.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[99-self-check](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

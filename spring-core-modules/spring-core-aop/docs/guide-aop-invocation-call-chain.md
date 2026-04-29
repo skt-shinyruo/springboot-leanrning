@@ -1,22 +1,30 @@
 # 03. AOP 调用链（从代理入口到 Advice 链执行）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：AOP 调用链（从代理入口到 Advice 链执行）展开，主线可以概括为：Spring AOP 以代理实现：容器阶段由 AutoProxyCreator 作为 BPP 创建代理；运行阶段由 JDK/CGLIB 代理把调用转发到 `ReflectiveMethodInvocation#proceed`，逐个执行拦截器（Advice）。
 
-    先运行 `SpringCoreAopProceedNestingLabTest`，把“proceed 嵌套顺序/拦截器链”固化成断言，再按本文把调用链串起来：代理如何生成（BPP 阶段）→ 调用如何进入代理 → 如何执行 `MethodInterceptor` 链。
+    先运行 `SpringCoreAopProceedNestingLabTest`，把“proceed 嵌套顺序/拦截器链”固化成断言，再按本章把调用链串起来：代理如何生成（BPP 阶段）→ 调用如何进入代理 → 如何执行 `MethodInterceptor` 链。
 
     需要下探源码时，可以从 `org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator` / `org.springframework.aop.framework.JdkDynamicAopProxy#invoke` / `org.springframework.aop.framework.CglibAopProxy.DynamicAdvisedInterceptor#intercept` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. 断点地图（Spring AOP Debugger Pack）](guide-breakpoint-map.md)
+上一章：[02. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. 断点地图（Spring AOP）](guide-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
 本章围绕「01：AOP 调用链（从代理入口到 Advice 链执行）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreAopProceedNestingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopProceedNestingLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -71,13 +79,13 @@ Spring AOP 默认不是“编译期织入”，而是“运行期代理”。因
 3. “后置逻辑”发生在 `invocation.proceed()` 之后
 4. 最底层会调用目标方法（reflection invoke）
 
-因此调试时应当形成这个直觉：
+因此调试时应当形成这个预期：
 
 - 多个 around advice 的执行顺序，本质是多次嵌套的 `proceed()`（像递归一样）
 
-对应证据链建议优先用：
+对应证据链优先用：
 
-- `SpringCoreAopProceedNestingLabTest`（把顺序固化成断言，不靠日志）
+- `SpringCoreAopProceedNestingLabTest`（把顺序固化成断言，不只凭日志）
 
 ## 3. 三个最常见的“为什么没走 AOP”的分叉点
 
@@ -93,22 +101,22 @@ Spring AOP 默认不是“编译期织入”，而是“运行期代理”。因
    - 现象：bean 有 proxy，但某个方法没有被拦截
    - 根因：表达式/注解匹配范围不对
 
-这些分叉点对应的“推荐断点清单”见下一章的断点地图：
+这些分叉点对应的“断点入口清单”见下一章的断点地图：
 
-- [02：断点地图（AOP Debugger Pack）](guide-breakpoint-map.md)
+- [02：断点地图（AOP）](guide-breakpoint-map.md)
 
 ## 小结与下一章
 
-- 本章把 AOP 的“生成链/执行链”串成了一条可复述叙事；下一章把这些入口收敛为 Debugger Pack。
+- 本章把 AOP 的“生成链/执行链”串成了一条可复述叙事；下一章把这些入口收敛为 断点包。
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopProceedNestingLabTest`
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
 - Lab：`SpringCoreAopProxyMechanicsLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](guide-breakpoint-map.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[guide-breakpoint-map.md](guide-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

@@ -1,6 +1,6 @@
 # 01. Profile 激活与 Bean 选择
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕Profile 激活与 Bean 选择展开，主线可以概括为：激活 profiles → 条件评估（shouldSkip）→ Bean 是否注册；profiles 同时影响配置参与与装配选择。
 
     先运行 `SpringCoreProfilesLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `@Profile`/`@ConditionalOnProperty` 在不同环境选择 Bean 实现；排障时先确认 profiles 激活方式与条件匹配结果。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖指南（Spring Core Profiles）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑（Spring Core Profiles）](appendix-common-pitfalls.md)
+上一章：[02. 深挖指南（Spring Core Profiles）](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑（Spring Core Profiles）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -22,7 +22,7 @@
 
 ## 机制主线
 
-本章目标：本章结束后应能回答下面三件事：
+本章收束点：本章结束后应能回答下面三件事：
 1. Profile 可以从哪里激活？（配置文件、环境变量、启动参数、测试注解）
 2. `@Profile` 的语义是什么？（“是否注册这个 bean 定义”）
 3. 当同一接口有多实现时，在不同 profile 下如何稳定选择到预期的实现？
@@ -30,7 +30,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreProfilesLabTest`
-- 建议命令：`mvn -pl :spring-core-profiles test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-profiles test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -41,7 +41,7 @@
 
 ## 常见坑与边界
 
-### 坑点 1：把 default profile 当成 active profile，导致“我以为激活了但其实没有”
+### 坑点 1：把 default profile 当成 active profile，导致“预期激活了但本质上没有”
 
 以为某个 profile（如 dev）已经生效，但实际 `Environment#getActiveProfiles()` 为空
 
@@ -57,10 +57,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreProfilesLabTest`
 
-上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
+上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

@@ -1,26 +1,34 @@
 # 01. 常见坑清单（Async & Scheduling）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（排障短文）"
+!!! summary "章节入口（排障短文）"
 
-    这章不想做“把坑列成清单”的那种目录页，我更希望它像在项目里记的排障随笔：每个坑都有复现入口、有根因、有修复方向。
+    本章不只罗列坑点，这里更适合作为项目排障笔记：每个坑都有复现入口、有根因、有修复方向。
 
-    如果已经跑过一次 `BootAsyncSchedulingBranchMatrixLabTest`，这章读起来会更接近“对照答案”：会发现很多坑其实都在重复问同一件事——有没有走代理、用了哪个执行器、异常落在哪、上下文有没有清理。
+    如果已经跑过一次 `BootAsyncSchedulingBranchMatrixLabTest`，这章读起来会更接近“对照答案”：会发现很多坑本质上都在重复问同一件事——有没有走代理、用了哪个执行器、异常落在哪、上下文有没有清理。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[08. Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](async-scheduling-boot-spring-task-autoconfig.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-async-scheduling）](appendix-self-check.md)
+上一章：[08. Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](async-scheduling-boot-spring-task-autoconfig.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[自检题](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应 Lab/Test”），先把关键分支跑出来，再回到本文逐条对照根因与修法。
+优先运行 `BootAsyncSchedulingBranchMatrixLabTest`（见文末“对应实验/测试”），先把关键分支跑出来，再回到本章逐条对照根因与修法。
 
 
-## 我通常怎么排这种问题
+## 这类问题的排查路径
 
-异步与调度的坑看起来很散：一会儿像是配置问题，一会儿像是线程池问题，一会儿又像是异常被吞。但真正在项目里排起来，我一般会先把它“笨”一点做确定：
+异步与调度的坑表面上很散：一会儿像是配置问题，一会儿像是线程池问题，一会儿又像是异常被吞。但真正在项目里排起来，排查时可以先把现象固定成确定事实：
 
-1. 先找一个**可重复的入口**把现象复现出来（优先 tests，别先靠日志猜）
+1. 先找一个**可重复的入口**把现象复现出来（优先 tests，别先只凭日志猜测）
 2. 确认几件最关键的事实：有没有代理、线程名有没有变、异常落在哪里
 3. 再去看原因：分支矩阵先收敛，断点地图再下探
 4. 修完以后，把结论写成断言（否则过两周还会复发）
@@ -36,7 +44,7 @@
 
 ### 坑点 1：写了 `@Async`，但忘了 `@EnableAsync`
 
-会看到线程名始终不变：代码看起来“异步”，实际上仍在调用线程里同步执行。原因也很直白——没启用 async，就不会建立 `@Async` 的拦截基础设施。
+会看到线程名始终不变：代码表面上“异步”，实际上仍在调用线程里同步执行。原因也很直白——没启用 async，就不会建立 `@Async` 的拦截基础设施。
 
 可以用 `BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync` 把现象复现出来：同样的调用，线程名始终不变，bean 也不是代理。修复时只需要显式启用 `@EnableAsync`，再用线程名前缀与断言把“确实切线程”写死。
 
@@ -50,7 +58,7 @@
 
 会看到 bean 明明是代理，但某个 `final @Async` 方法就是不切线程。原因是 CGLIB 需要覆写方法才能织入拦截器，`final` 方法没法覆写。
 
-如果想把这个分支跑成事实，可以直接看 `BootAsyncSchedulingProxyTypeLabTest#cglibCannotInterceptFinalMethods_asyncIsBypassed`：bean 明明是代理，但 `final @Async` 方法无法被覆写，拦截器也就无从织入。修复原则很简单：不要在需要 AOP 能力的方法上使用 `final`（或改为接口 + JDK proxy 的方式）。
+如果想把这个分支跑成事实，可以直接看 `BootAsyncSchedulingProxyTypeLabTest#cglibCannotInterceptFinalMethods_asyncIsBypassed`：bean 明明是代理，但 `final @Async` 方法无法被覆写，拦截器也就无从织入。修复原则是：不要在需要 AOP 能力的方法上使用 `final`（或改为接口 + JDK proxy 的方式）。
 
 ### 坑点 4：多线程池共存时，默认选错 executor
 
@@ -82,7 +90,7 @@
 
 “上下文丢失”通常是最先看到的现象：异步线程里拿不到 traceId/userId/tenantId（MDC/ThreadLocal），拿不到当前用户（SecurityContext），拿不到请求属性（RequestContext）。但更危险的是另一类：偶发串号——异步线程读到了上一次任务的残留值。
 
-根因其实就两句话：
+根因本质上就两句话：
 
 - ThreadLocal 本来就只属于线程，切线程当然不带过去
 - 线程池会复用线程，不清理就一定有残留风险
@@ -97,7 +105,7 @@
 - RequestContext 默认不传播：`BootAsyncSchedulingRequestContextPropagationLabTest#requestContextIsNotPropagatedByDefaultAcrossAsyncThreadBoundary`
 - RequestContext 错误写法泄漏：`BootAsyncSchedulingRequestContextPropagationLabTest#buggyTaskDecoratorThatSkipsNullCanLeakPreviousRequestAttributesAcrossTasks`
 
-修复时可以把上下文传播当作一段严谨的“捕获 → 设置 → finally 清理/恢复”流程来实现：对 `ThreadPoolTaskExecutor` 用 `TaskDecorator`；关键细节是**即使 captured 为 null，也要在工作线程里清理**（否则线程复用会残留上一任务的上下文）。对 SecurityContext 更推荐直接使用 Spring Security 的 Delegating* executor，因为它已经把这套流程做成了可靠的基础设施。
+修复时可以把上下文传播当作一段严谨的“捕获 → 设置 → finally 清理/恢复”流程来实现：对 `ThreadPoolTaskExecutor` 用 `TaskDecorator`；关键细节是**即使 captured 为 null，也要在工作线程里清理**（否则线程复用会残留上一任务的上下文）。对 SecurityContext 更稳妥的做法是直接使用 Spring Security 的 Delegating* executor，因为它已经把这套流程做成了可靠的基础设施。
 
 ## 异常看不到
 
@@ -135,7 +143,7 @@ void 异步抛异常时，调用方没有任何感知（不会在调用点拿到
 
 这个问题很容易在“线上偶发”时变成吵架：有人说“异常会让任务停掉”，有人说“不会”。实际上语义取决于异常是否被包装并交给 `ErrorHandler` 处理。
 
-这个分支可以用 `BootAsyncSchedulingSchedulingExceptionSemanticsLabTest#scheduledExceptionsAreHandledByErrorHandler_andTaskContinues` 固化下来。修复时建议明确提供 `TaskScheduler` 并设置 `ErrorHandler`（至少能观测异常），再用测试把语义钉住。
+这个分支可以用 `BootAsyncSchedulingSchedulingExceptionSemanticsLabTest#scheduledExceptionsAreHandledByErrorHandler_andTaskContinues` 固化下来。修复时明确提供 `TaskScheduler` 并设置 `ErrorHandler`（至少能观测异常），再用测试把语义钉住。
 
 ### 坑点 11：scheduler 线程被耗时逻辑拖死，导致触发延迟/堆积
 
@@ -153,10 +161,10 @@ void 异步抛异常时，调用方没有任何感知（不会在调用点拿到
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingLabTest` / `BootAsyncSchedulingSchedulingLabTest`
 
-上一章：[part-01-async-scheduling/08-boot-spring-task-autoconfig.md](async-scheduling-boot-spring-task-autoconfig.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](appendix-self-check.md)
+上一章：[async-scheduling-boot-spring-task-autoconfig.md](async-scheduling-boot-spring-task-autoconfig.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-self-check.md](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

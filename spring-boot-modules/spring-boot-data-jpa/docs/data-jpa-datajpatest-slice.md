@@ -1,7 +1,7 @@
 # 06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕 `@DataJpaTest`：为什么它适合学 JPA（切片测试）展开，主线可以概括为：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
+!!! summary "章节入口（五问闭环）"
+    本章围绕`@DataJpaTest`：为什么它适合学 JPA（切片测试）展开，主线可以概括为：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
 
     阅读时可以先跑 `BootDataJpaLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
 
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[05. Fetching 与 N+1：为什么查一次会变成查很多次？](data-jpa-fetching-and-n-plus-one.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](data-jpa-debug-sql.md)
+上一章：[05. Fetching 与 N+1：为什么查一次会变成查很多次？](data-jpa-fetching-and-n-plus-one.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[07. Debug/观察：怎么把 Hibernate 的 SQL“看清楚”？](data-jpa-debug-sql.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「06. `@DataJpaTest`：为什么它适合学 JPA（切片测试）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootDataJpaLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootDataJpaLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -35,13 +35,13 @@
 ## 练习入口：回滚行为
 
 
-## 学习建议
+## 验证路径
 
 
 ## 最小可运行实验（Lab）
 
 - Lab：`BootDataJpaLabTest`
-- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 
 `@DataJpaTest` 是学习 JPA 的绝佳工具，因为它提供了：
@@ -78,11 +78,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootDataJpaLabTest`
 - Exercise：`BootDataJpaExerciseTest`
 
-上一章：[part-01-data-jpa/05-fetching-and-n-plus-one.md](data-jpa-fetching-and-n-plus-one.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-data-jpa/07-debug-sql.md](data-jpa-debug-sql.md)
+上一章：[data-jpa-fetching-and-n-plus-one.md](data-jpa-fetching-and-n-plus-one.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[data-jpa-debug-sql.md](data-jpa-debug-sql.md)
 
 <!-- BOOKIFY:END -->

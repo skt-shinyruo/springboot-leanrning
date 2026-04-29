@@ -1,6 +1,6 @@
 # 04. ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcTestingDebuggingLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. 错误契约加固（解析失败 vs 校验失败 vs 类型不匹配）](exception-resolvers-error-contract-hardening.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](exception-resolvers-problemdetail-vs-custom-error.md)
+上一章：[03. 错误契约加固（解析失败 vs 校验失败 vs 类型不匹配）](exception-resolvers-error-contract-hardening.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](exception-resolvers-problemdetail-vs-custom-error.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「04：ExceptionResolvers（异常从哪来、又被谁“翻译”成状态码）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcTestingDebuggingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcTestingDebuggingLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -56,12 +56,12 @@
 
 - **安全链路（Security FilterChain）**
   - 典型现象：401/403（常发生在 DispatcherServlet 之前）
-  - 排障建议：先证明“是否进入了 DispatcherServlet”（`handler/resolvedException` 证据链）再谈 resolver
+  - 排障动作：先证明“是否进入了 DispatcherServlet”（`handler/resolvedException` 证据链）再谈 resolver
   - 参考：Security 与 MVC 相对位置（含边界 Lab）：[01-filterchain-security/01-security-filterchain-and-mvc.md](filterchain-security-security-filterchain-and-mvc.md)
 
 ## 源码与断点（把“谁翻译的”看清）
 
-建议断点（从外到内）：
+断点入口（从外到内）：
 - `org.springframework.web.servlet.DispatcherServlet#doDispatch`
 - `org.springframework.web.servlet.DispatcherServlet#processHandlerException`
 - `org.springframework.web.servlet.handler.HandlerExceptionResolverComposite#resolveException`
@@ -71,7 +71,7 @@
 
 ## 最小可运行实验（Lab）
 
-建议按“先能定位，再谈优化契约”的顺序跑：
+按“先能定位，再谈优化契约”的顺序跑：
 
 - 406/415 的 resolver 证据链：`BootWebMvcTestingDebuggingLabTest`
 - binder/校验分支证据链：`BootWebMvcBindingDeepDiveLabTest`
@@ -83,7 +83,7 @@
 
 - **坑 1：把 400 全当成校验失败**
   - 400 可能来自：JSON 解析失败 / type mismatch / validation failed
-  - 排障建议：先用 `resolvedException` 固定异常类型，再决定是补 `@ExceptionHandler` 还是修输入契约
+  - 排障动作：先用 `resolvedException` 固定异常类型，再决定是补 `@ExceptionHandler` 还是修输入契约
 
 - **坑 2：@WebMvcTest 忘了导入 ControllerAdvice**
   - slice 测试里，若没有 `@Import(GlobalExceptionHandler/AdvancedApiExceptionHandler)`，看到的错误体可能是默认行为而不是契约
@@ -97,7 +97,7 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcTestingDebuggingLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
@@ -107,5 +107,5 @@
 - Lab：`BootWebMvcAdviceOrderLabTest`
 - Lab：`BootWebMvcSecurityLabTest`
 
-上一章：[03. 错误契约加固（解析失败 vs 校验失败 vs 类型不匹配）](exception-resolvers-error-contract-hardening.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](exception-resolvers-problemdetail-vs-custom-error.md)
+上一章：[03. 错误契约加固（解析失败 vs 校验失败 vs 类型不匹配）](exception-resolvers-error-contract-hardening.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](exception-resolvers-problemdetail-vs-custom-error.md)
 <!-- BOOKIFY:END -->

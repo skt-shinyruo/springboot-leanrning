@@ -21,7 +21,7 @@
 
 ## 源码与断点
 
-建议断点（按主线）：
+断点入口（按主线）：
 - `org.springframework.web.context.request.async.WebAsyncManager#startDeferredResultProcessing`
 - `org.springframework.web.context.request.async.DeferredResult#setResultInternal`
 - `org.springframework.web.servlet.DispatcherServlet#doDispatch`（二次 dispatch）
@@ -32,7 +32,7 @@
   - `deferredResultPingUsesAsyncDispatch`（正常完成）
   - `deferredResultTimeoutFallsBackToDefaultValue`（timeout/fallback 分支）
 
-建议联动理解：
+联动理解：
 - lifecycle 对照：`BootWebMvcTraceLabTest`（解释 async 两次 dispatch）
 
 ## 常见坑与边界
@@ -53,10 +53,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcAsyncSseLabTest`
 - Lab：`BootWebMvcTraceLabTest`
 
-上一章：[02. SSE（SseEmitter：text/event-stream 最小闭环）](async-sse-sse-emitter.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](async-sse-interceptor-async-lifecycle.md)
+上一章：[02. SSE（SseEmitter：text/event-stream 最小闭环）](async-sse-sse-emitter.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）](async-sse-interceptor-async-lifecycle.md)
 <!-- BOOKIFY:END -->

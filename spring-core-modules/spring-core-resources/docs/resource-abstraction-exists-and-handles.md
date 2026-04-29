@@ -1,7 +1,7 @@
 # 04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕 `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？展开，主线可以概括为：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
+!!! summary "章节入口（五问闭环）"
+    本章围绕`getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？展开，主线可以概括为：定位（路径/模式）→ 解析为 `Resource`（file/classpath/jar/url）→ 校验（exists/readable）→ 读取（流/编码）；jar 场景下 `getFile()` 不可靠。
 
     先运行 `SpringCoreResourcesMechanicsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ResourceLoader`/`ApplicationContext` 获取 `Resource`；读取优先走 `getInputStream()`；pattern 扫描使用 `PathMatchingResourcePatternResolver`。
 
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？](resource-abstraction-classpath-star-and-pattern.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. 读取资源：InputStream、编码与“可观察性”](resource-abstraction-reading-and-encoding.md)
+上一章：[03. `classpath*:` 与 pattern：为什么它能“扫到多个资源”？](resource-abstraction-classpath-star-and-pattern.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. 读取资源：InputStream、编码与“可观察性”](resource-abstraction-reading-and-encoding.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「04. `getResource(...)` 的返回值：为什么它会“返回一个不存在的资源句柄”？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreResourcesMechanicsLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreResourcesMechanicsLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -37,14 +37,14 @@
 
 因为 Resource 的目标是统一抽象：
 
-## 学习建议
+## 验证路径
 
 当需要更友好的错误处理时：
 
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreResourcesMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-resources test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -78,10 +78,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreResourcesMechanicsLabTest`
 
-上一章：[03-classpath-star-and-pattern](resource-abstraction-classpath-star-and-pattern.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05-reading-and-encoding](resource-abstraction-reading-and-encoding.md)
+上一章：[03-classpath-star-and-pattern](resource-abstraction-classpath-star-and-pattern.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05-reading-and-encoding](resource-abstraction-reading-and-encoding.md)
 
 <!-- BOOKIFY:END -->

@@ -1,7 +1,7 @@
-# 02. 00 - Deep Dive Guide（springboot-data-jpa）
+# 深挖导读：Spring Boot Data JPA
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕Deep Dive Guide（springboot-data-jpa）展开，主线可以概括为：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
+!!! summary "章节入口（五问闭环）"
+    本章用于把模块主线、源码入口与断点路径串起来，主线可以概括为：Repository 代理 → `EntityManager`/Persistence Context（一级缓存、实体状态）→ flush/dirty checking → 事务提交/回滚 → fetching 策略决定性能与边界。
 
     阅读时可以先跑 `BootDataJpaDebugSqlLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `JpaRepository` 声明 CRUD/查询；在事务内修改 managed entity 依赖脏检查落库；用 fetch join/EntityGraph 控制 fetching，避免 N+1。
 
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Boot Data JPA](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Entity 状态机：transient / managed / detached / removed](data-jpa-entity-states.md)
+上一章：[01. 主线时间线：Spring Boot Data JPA](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. Entity 状态机：transient / managed / detached / removed](data-jpa-entity-states.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
@@ -63,25 +71,25 @@
 ## 源码与断点
 
 
-建议断点（从“现象”快速回到“机制”）：
+断点入口（从“现象”快速回到“机制”）：
 
 - `EntityManager#flush`：观察何时真正发 SQL
 - `EntityManager#clear`：观察 managed/detached 的边界
 - `BootDataJpaDebugSqlLabTest#showSqlHelpsExplainPersistenceBehavior_whenRunningTests` 的执行路径：
-  - 用 show-sql 把“我以为没 SQL”变成可见证据（避免凭感觉）
+  - 用 show-sql 把“预期没有 SQL”变成可见证据（避免凭感觉）
 
 ## 最小可运行实验（Lab）
 
 - Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest` / `BootDataJpaMergeAndDetachLabTest`
-- 建议命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-data-jpa test`（或在 IDE 直接运行上面的测试类）
 
 
-## 推荐学习目标
+## 验证目标
 1. 用“实体状态机 + Persistence Context”解释大多数诡异行为
 2. 能用最小测试复现 flush/脏检查/N+1，并能定位到 SQL 层的证据
 3. 能把 `@DataJpaTest` 的 slice 边界与真实 Boot 启动边界区分开
 
-## 推荐阅读顺序
+## 阅读顺序
 1. [01-entity-states](data-jpa-entity-states.md)
 2. [02-persistence-context](data-jpa-persistence-context.md)
 3. [03-flush-and-visibility](data-jpa-flush-and-visibility.md)
@@ -104,18 +112,18 @@
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootDataJpaDebugSqlLabTest` / `BootDataJpaLabTest` / `BootDataJpaMergeAndDetachLabTest`
 - Exercise：`BootDataJpaExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-data-jpa/01-entity-states.md](data-jpa-entity-states.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[data-jpa-entity-states.md](data-jpa-entity-states.md)
 
 <!-- BOOKIFY:END -->

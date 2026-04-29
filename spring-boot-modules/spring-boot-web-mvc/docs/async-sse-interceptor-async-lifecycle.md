@@ -1,6 +1,6 @@
 # 05. Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcTraceLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. DeferredResult（回调式异步）与 timeout/fallback（可控分支）](async-sse-deferredresult-and-timeout.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. CORS 与预检（OPTIONS：浏览器为什么要先问一句）](real-world-http-cors-preflight.md)
+上一章：[03. DeferredResult（回调式异步）与 timeout/fallback（可控分支）](async-sse-deferredresult-and-timeout.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. CORS 与预检（OPTIONS：浏览器为什么要先问一句）](real-world-http-cors-preflight.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「05：Interceptor 的生命周期（sync vs async：为什么会“回调少了一截”）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcTraceLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcTraceLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -37,9 +37,9 @@
    - DispatcherServlet 再跑一遍处理流程（但 handler 通常不会再执行）
    - Interceptor 这一次会完整触发 `preHandle/postHandle/afterCompletion`
 
-## 源码与断点（建议从 Lab 反推）
+## 源码与断点（从 Lab 反推）
 
-建议断点（配合本章 Lab）：
+断点入口（配合本章 Lab）：
 - `org.springframework.web.servlet.DispatcherServlet#doDispatch`
 - `org.springframework.web.servlet.HandlerExecutionChain#applyPreHandle`
 - `org.springframework.web.servlet.HandlerExecutionChain#applyPostHandle`
@@ -61,7 +61,7 @@
   - sync：`GET /api/advanced/trace/sync`
   - async：`GET /api/advanced/trace/async`
 
-建议命令（方法级入口）：
+运行命令（方法级入口）：
 
 ```bash
 mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#asyncTraceRecordsAfterConcurrentHandlingStartedAndAsyncDispatchCallbacks test
@@ -86,13 +86,13 @@ mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcTraceLabTest#asyncTraceRecordsA
 
 ## 小结与下一章
 
-- 本章完成后：建议回到 Part 06 对照 Callable/DeferredResult/SSE 的实现与测试方式，形成“生命周期解释 → 可跑证据链”的闭环。
+- 本章完成后：回到 Part 06 对照 Callable/DeferredResult/SSE 的实现与测试方式，形成“生命周期解释 → 可跑证据链”的闭环。
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcTraceLabTest`
 
-上一章：[03. DeferredResult（回调式异步）与 timeout/fallback（可控分支）](async-sse-deferredresult-and-timeout.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. CORS 与预检（OPTIONS：浏览器为什么要先问一句）](real-world-http-cors-preflight.md)
+上一章：[03. DeferredResult（回调式异步）与 timeout/fallback（可控分支）](async-sse-deferredresult-and-timeout.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. CORS 与预检（OPTIONS：浏览器为什么要先问一句）](real-world-http-cors-preflight.md)
 <!-- BOOKIFY:END -->

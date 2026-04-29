@@ -1,12 +1,12 @@
 # 03 Spring Core Beans：IoC 容器、Bean 生命周期与扩展点
 
-## 学习目标
+## 本章要回答的问题
 
 - 能用“定义阶段 → 创建阶段 → 代理替换阶段”的语言描述容器主线，而不仅是背注解。
 - 能区分并解释常见扩展点：`BeanFactoryPostProcessor` / `BeanPostProcessor` / `Aware` / 生命周期回调。
 - 能在调试器里找到容器关键锚点：`refresh`、依赖解析、实例化、初始化、代理包裹。
 
-## 概念框架
+## 主线框架
 
 - **两层对象模型**：
   - `BeanDefinition`：定义层（元数据、依赖、作用域、工厂方法等）。
@@ -32,10 +32,10 @@
 - 模块目录页（顺读主线）：
   - [`spring-core-beans/README.md`](../../spring-core-modules/spring-core-beans/README.md)
 - 导航型文档（优先用来定位断点）：
-- Why Index（从“为什么”进入）：[`guide-why-index.md`](../../spring-core-modules/spring-core-beans/docs/guide-why-index.md)
-- 30 分钟快启：[`guide-quickstart-30min.md`](../../spring-core-modules/spring-core-beans/docs/guide-quickstart-30min.md)
-- 代理替换阶段（AOP/事务前置）：[`wiring-proxying-phase-bpp-wraps-bean.md`](../../spring-core-modules/spring-core-beans/docs/wiring-proxying-phase-bpp-wraps-bean.md)
-- 常见坑：[`appendix-common-pitfalls.md`](../../spring-core-modules/spring-core-beans/docs/appendix-common-pitfalls.md)
+  - Why Index（从“为什么”进入）：[`guide-why-index.md`](../../spring-core-modules/spring-core-beans/docs/guide-why-index.md)
+  - 30 分钟快启：[`guide-quickstart-30min.md`](../../spring-core-modules/spring-core-beans/docs/guide-quickstart-30min.md)
+  - 代理替换阶段（AOP/事务前置）：[`wiring-proxying-phase-bpp-wraps-bean.md`](../../spring-core-modules/spring-core-beans/docs/wiring-proxying-phase-bpp-wraps-bean.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-core-modules/spring-core-beans/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
@@ -43,7 +43,7 @@
 - 以为循环依赖都能自动解决。constructor 注入与 setter/字段注入的边界不同，且代理会引入额外复杂度。
 - 把 AOP/事务不生效当成“注解没写对”。很多时候根因在 Bean 创建阶段（未被代理/被 early reference 绕过/顺序问题）。
 
-## 练习
+## 验证练习
 
 - 练习 1（把主线跑成可调试证据链）：
   - 运行 `SpringCoreBeansBookMatrixLabTest`；

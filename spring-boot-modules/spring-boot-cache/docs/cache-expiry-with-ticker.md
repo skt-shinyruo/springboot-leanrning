@@ -1,6 +1,6 @@
 # 05. 过期与可测性：用 Ticker 控制时间
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（别用 sleep 试运气）"
+!!! summary "章节入口（用可控时间替代 sleep）"
 
     TTL/过期是缓存里最容易写出 flaky 测试的地方：用真实时间 + `Thread.sleep`，在 CI 上迟早会崩。这个章节的核心是把“时间推进”变成可控输入：用 Caffeine `Ticker`（如 `ManualTicker`）写出确定性断言。
 
@@ -8,15 +8,15 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. `sync=true`：防缓存击穿（stampede）](cache-sync-stampede.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（Cache）](appendix-common-pitfalls.md)
+上一章：[04. `sync=true`：防缓存击穿（stampede）](cache-sync-stampede.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（Cache）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`（见文末“对应 Lab/Test”），把“时间推进”变成可控输入，再写确定性断言。
+优先运行 `BootCacheLabTest#expiryCanBeTestedDeterministicallyWithManualTicker`（见文末“对应实验/测试”），把“时间推进”变成可控输入，再写确定性断言。
 
 
-## 想验证的其实不是“等 5 秒”，而是“过期发生了”
+## 想验证的本质上不是“等 5 秒”，而是“过期发生了”
 
 在这模块里，缓存配置（Caffeine）有过期策略（`expireAfterWrite`）。真实项目里当然可以靠时间等它过期，但在测试里，靠 sleep 等是最不稳定的方式。
 
@@ -55,10 +55,10 @@ Ticker 的核心价值是：把“现在是什么时间”变成一个可注入�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootCacheLabTest`
 
-上一章：[part-01-cache/04-sync-stampede.md](cache-sync-stampede.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md)
+上一章：[cache-sync-stampede.md](cache-sync-stampede.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

@@ -5,6 +5,15 @@
 - **REST API（JSON）主线**：`@RestController`、参数校验（Validation）、统一错误响应（`@RestControllerAdvice`）
 - **传统 MVC（HTML）主线**：`@Controller`、Thymeleaf 页面渲染、表单提交（绑定/校验/回显/PRG）、错误页与内容协商（Accept：HTML vs JSON）
 
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
+
 ## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
@@ -14,12 +23,12 @@
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
 - 总览（先把写法与排障串起来）：[`docs/00-guide/00-from-annotations-to-breakpoints.md`](docs/guide-from-annotations-to-breakpoints.md)
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 常见坑：[`docs/appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - 用 `@RestController` 编写 JSON API
 - 用 `@Valid` + `jakarta.validation` 做请求参数校验
@@ -31,7 +40,7 @@
 
 ## 前置知识
 
-- 建议先完成 `spring-boot-basics`（至少理解配置加载与启动过程）
+- 先完成 `spring-boot-basics`（至少理解配置加载与启动过程）
 - 了解 HTTP/JSON 的基本概念（状态码、请求体、响应体）
 - （可选）了解 Bean Validation 的基本注解（`@NotBlank`、`@Email`）
 
@@ -75,7 +84,7 @@ curl -X POST http://localhost:8081/api/users \
 curl -H 'Accept: text/html' http://localhost:8081/pages/ping
 ```
 
-- 表单页（建议用浏览器打开）：
+- 表单页（用浏览器打开）：
   - `http://localhost:8081/pages/users/new`
 
 ### 测试
@@ -84,9 +93,9 @@ curl -H 'Accept: text/html' http://localhost:8081/pages/ping
 mvn -pl :spring-boot-web-mvc test
 ```
 
-## 推荐 docs 阅读顺序
+## docs 阅读顺序
 
-建议按 “总览（先把写法与排障串起来）→ 入口 → REST 主线 → 页面主线 → 常见坑/自测题” 的顺序学习：
+按 “总览（先把写法与排障串起来）→ 入口 → REST 主线 → 页面主线 → 常见坑/自测题” 的顺序学习：
 
 （目录：见本 README 的「目录（唯一顺序来源）」）
 
@@ -122,9 +131,9 @@ mvn -pl :spring-boot-web-mvc test
 
 > 想从机制层理解“校验为什么有时不生效”，可进一步阅读 `spring-core-modules/spring-core-validation/docs/validation-core-method-validation-proxy.md`（方法参数校验与代理）。
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶。Exercises 默认 `@Disabled`，建议逐个开启。
+> 说明：⭐=入门，⭐⭐=进阶。练习默认 `@Disabled`，逐个开启。
 
 | 类型 | 入口 | 知识点 | 难度 | 下一步 |
 | --- | --- | --- | --- | --- |
@@ -183,7 +192,7 @@ mvn -pl :spring-boot-web-mvc test
 
 ---
 
-### 源码入口（按调用顺序：你在栈上应该看到的“骨架”）
+### 源码入口（按调用顺序：在栈上应该看到的“骨架”）
 1. Servlet 入口：`org.springframework.web.servlet.FrameworkServlet#processRequest`
 2. MVC 总入口：`org.springframework.web.servlet.DispatcherServlet#doDispatch`
 3. 选路：`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getHandlerInternal`
@@ -315,8 +324,8 @@ mvn -pl :spring-boot-web-mvc test
 - 证据（断点/测试）：`BootWebMvcTestingDebuggingLabTest` / `BootWebMvcObservabilityLabTest`；工具页：[分支矩阵](docs/testing-observability-branch-decision-matrix.md) / [断点图](docs/testing-observability-breakpoint-map.md)
 - [WebMvc 测试与排障（resolvedException / handler / 断点清单）](docs/testing-observability-webmvc-testing-and-troubleshooting.md)
 - [Observability（Interceptor 计时 vs Actuator 指标）](docs/testing-observability-observability-and-metrics.md)
-- [关键分支矩阵（Web MVC Branch Decision Matrix）](docs/testing-observability-branch-decision-matrix.md)
-- [断点地图（Part 01 Debugger Pack）](docs/testing-observability-breakpoint-map.md)
+- [关键分支矩阵（Web MVC）](docs/testing-observability-branch-decision-matrix.md)
+- [断点地图（Part 01）](docs/testing-observability-breakpoint-map.md)
 
 ---
 
@@ -324,15 +333,15 @@ mvn -pl :spring-boot-web-mvc test
 - 断点地图（排障优先）：[06-breakpoint-map.md](docs/testing-observability-breakpoint-map.md)
 - 请求调用链速览（快速定位）：[03-webmvc-request-call-chain.md](docs/dispatcherservlet-webmvc-request-call-chain.md)
 - 关键分支矩阵（If/Then 收敛）：[04-branch-decision-matrix.md](docs/testing-observability-branch-decision-matrix.md)
-- 排障 playbook：[01-common-pitfalls.md](docs/appendix-common-pitfalls.md)
-- 自检清单：[02-self-check.md](docs/appendix-self-check.md)
+- 排障 playbook：[appendix-common-pitfalls.md](docs/appendix-common-pitfalls.md)
+- 自检清单：[appendix-self-check.md](docs/appendix-self-check.md)
 
 ---
 
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBookMatrixLabTest test`
 - Branch Matrix（错误分支矩阵 400/406/415）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcErrorBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-web-mvc -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-boot-web-mvc -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（RequestScope 隔离 / 并发请求边界）：`mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcRequestScopeIsolationLabTest test`
 
 ---

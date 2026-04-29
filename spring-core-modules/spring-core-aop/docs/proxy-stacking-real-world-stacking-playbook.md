@@ -1,22 +1,22 @@
 # 02. 真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
-    直接跑本章配套集成 Lab，把“鉴权阻断 / 缓存短路 / 事务激活 / 链条可观察”固化成断言；再按本文的断点 Playbook 逐层把 proxy/advisors/chain 看清楚，最后能在真实项目里复用同一套排障路径。
+    直接跑本章配套集成 Lab，把“鉴权阻断 / 缓存短路 / 事务激活 / 链条可观察”固化成断言；再按本章的断点 Playbook 逐层把 proxy/advisors/chain 看清楚，最后能在真实项目里复用同一套排障路径。
 
     对照入口：`SpringCoreAopRealWorldStackingLabTest`。需要下探源码时，可以从 `org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#postProcessAfterInitialization` / `org.springframework.aop.framework.ProxyFactory` / `org.springframework.aop.framework.ReflectiveMethodInvocation#proceed` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](proxy-stacking-multi-proxy-stacking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. Weaving vs Proxy：能力边界决策表（跳转 aop-weaving）](appendix-weaving-vs-proxy-decision-matrix.md)
+上一章：[01. 多切面/多代理叠加与顺序：AOP/Tx/Cache/Security 代理链如何叠、如何看](proxy-stacking-multi-proxy-stacking.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. Weaving vs Proxy：能力边界决策表（跳转 aop-weaving）](appendix-weaving-vs-proxy-decision-matrix.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「10. 真实项目叠加 Debug Playbook：AOP/Tx/Cache/Security 如何叠、如何断点验证」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreAopRealWorldStackingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopRealWorldStackingLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -24,10 +24,10 @@
 
 ## 机制主线
 
-上一章（[09. multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md)）我们用“模拟 Tx/Cache/Security 的 Advisors”把两种叠加形态讲清楚了：
+上一章（[09. multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md)）本章用“模拟 Tx/Cache/Security 的 Advisors”把两种叠加形态讲清楚了：
 
 - **主流形态：单 proxy + 多 advisors**（同一个代理上挂很多增强）
-- **少见但要能识别：多层 proxy（套娃）**
+- **少见但要能识别：多层 proxy（嵌套代理）**
 
 但真实项目里最终要面对的是 **真实基础设施**：
 
@@ -57,22 +57,22 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 因此真实项目里遇到的所有“增强不生效 / 顺序怪 / 被绕过”问题，本质上都能回到下面 **4 个可断言结论（真实语义）**：
 
-> 这个分流框架建议背下来。它能在真实项目里减少猜测、加快定位。
+> 这个分流框架背下来。它能在真实项目里减少猜测、加快定位。
 
 ---
 
-1) **鉴权阻断（AccessDenied）**
+1. **鉴权阻断（AccessDenied）**
    - 未授权调用会在增强链上被阻断，目标方法不执行，缓存不写入。
-2) **事务激活（transaction active）**
+2. **事务激活（transaction active）**
    - 授权 + 缓存未命中时，目标方法执行，且在方法体内能断言事务处于激活状态。
-3) **缓存短路（cache short-circuit）**
+3. **缓存短路（cache short-circuit）**
    - 同参二次调用直接命中缓存，目标方法不再执行（返回第一次结果）。
-4) **安全不会被缓存绕过（security before cache）**
+4. **安全不会被缓存绕过（security before cache）**
    - 即使缓存里已经有值，未授权调用也必须抛出 `AccessDenied`，不能“偷到缓存结果”。
 
 这些结论都对应真实项目里最常见的“疑难杂症”：
 
-- “我打了 `@Transactional`，怎么没进事务？”
+- “已经添加 `@Transactional`，为什么没有进入事务？”
 - “`@Cacheable` 好像没生效/命中缓存了但还是执行了方法？”
 - “`@PreAuthorize` 不生效/被绕过了？”
 - “到底是谁在外层？为什么顺序变了行为就变了？”
@@ -106,7 +106,7 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 - `method` / `targetClass`：这次到底在调用哪个方法、目标类是谁
 - 返回的拦截器列表：**这一次调用实际挂了哪些 interceptor，顺序是什么**
 
-> 这一步极其关键：很多“我以为应该生效”其实是“这次压根没把它组装进链条”。
+> 这一步极其关键：很多“预期应该生效”本质上是“这次根本没把它组装进链条”。
 
 ### 2.3 第三步：看清“链条执行”（proceed 嵌套关系）
 
@@ -152,56 +152,56 @@ mvn -pl :spring-core-aop -Dmaven.surefire.debug -Dtest=SpringCoreAopRealWorldSta
 
 当遇到“AOP/Tx/Cache/Security 不生效/顺序怪”，按这个顺序做，基本不会走弯路：
 
-1) **call path**：入口是否走 Spring bean？是否 self-invocation？是否从 `new` 出来的对象调用？
-2) **proxy 存在性**：`AopUtils.isAopProxy(bean)` 是否为 true？代理类型（JDK/CGLIB）是否符合预期？
-3) **advisors 存在性**：`bean instanceof Advised` 后看 `getAdvisors()`，期望的增强是否存在？
-4) **本次调用是否命中**：在链条组装断点里看，这次方法调用是否把期望的 interceptor 加入链条？
-5) **短路与顺序**：缓存命中是否直接返回？鉴权是否在结果返回前发生？事务边界是否包住目标执行？
+1. **call path**：入口是否走 Spring bean？是否 self-invocation？是否从 `new` 出来的对象调用？
+2. **proxy 存在性**：`AopUtils.isAopProxy(bean)` 是否为 true？代理类型（JDK/CGLIB）是否符合预期？
+3. **advisors 存在性**：`bean instanceof Advised` 后看 `getAdvisors()`，期望的增强是否存在？
+4. **本次调用是否命中**：在链条组装断点里看，这次方法调用是否把期望的 interceptor 加入链条？
+5. **短路与顺序**：缓存命中是否直接返回？鉴权是否在结果返回前发生？事务边界是否包住目标执行？
 
 如果能把这 5 步跑通，基本就具备了在真实项目里独立定位 AOP/Tx/Cache/Security 问题的能力。
 
 ---
 
-1) 跑：`unauthorized_call_is_denied_and_does_not_invoke_target_or_cache`
+1. 跑：`unauthorized_call_is_denied_and_does_not_invoke_target_or_cache`
    - 能指出：是谁抛出了 `AccessDeniedException`？目标方法有没有执行？
-2) 跑：`authorized_call_invokes_target_with_transaction_and_populates_cache`
+2. 跑：`authorized_call_invokes_target_with_transaction_and_populates_cache`
    - 能指出：事务是在链条的哪一层开始的？目标方法里为什么能断言事务 active？
-3) 跑：`cache_hit_short_circuits_target_but_security_still_applies`
+3. 跑：`cache_hit_short_circuits_target_but_security_still_applies`
    - 能指出：缓存命中时是谁提前返回的？为什么未授权也不能拿到缓存结果？
 
-如果能把这三条复述清楚，会发现：真实项目里大多数 AOP “玄学问题”，已经不再玄学了。
+如果能把这三条复述清楚，会发现：真实项目里大多数 AOP “不可解释问题”，已经不再不可解释了。
 
 ---
 
-## 5. 练习：把“机制”复述成一条可运行的主线（建议 30 分钟）
+## 5. 练习：把“机制”复述成一条可运行的主线（30 分钟）
 
 可以按顺序做三次 Debug，每次只完成一个“可复述结论”：
 
 - 想把“叠加形态”与“顺序归属（BPP vs Advisor）”彻底讲透：回看 [09. multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md) + `SpringCoreAopMultiProxyStackingLabTest`
 - 想把“容器视角（AutoProxyCreator/BPP）”拉通：读 [07. autoproxy-creator-mainline](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) + 跑 `SpringCoreAopAutoProxyCreatorInternalsLabTest`
 - 想把“pointcut 误判”系统补齐：读 [08. pointcut-expression-system](autoproxy-and-pointcuts-pointcut-expression-system.md) + 跑 `SpringCoreAopPointcutExpressionsLabTest`
-- 想补齐并发边界直觉：读 [11. proxy-concurrency-perf](perf-concurrency-proxy-concurrency-perf.md) + 跑 `SpringCoreAopProxyConcurrencyLabTest`
+- 想补齐并发边界预期：读 [11. proxy-concurrency-perf](perf-concurrency-proxy-concurrency-perf.md) + 跑 `SpringCoreAopProxyConcurrencyLabTest`
 
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopRealWorldStackingLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopProceedNestingLabTest` / `SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopPointcutExpressionsLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
-1) **入口没走 proxy（call path 问题）**：自调用/`new` 出来的对象/绕过 Spring 管理
-2) **这次调用没命中（pointcut/matcher 问题）**：表达式误判、方法不可代理、可见性限制
-3) **顺序/短路改变了语义（ordering/short-circuit 问题）**：缓存命中直接返回、鉴权提前抛错、事务边界位置不同
+1. **入口没走 proxy（call path 问题）**：自调用/`new` 出来的对象/绕过 Spring 管理
+2. **这次调用没命中（pointcut/matcher 问题）**：表达式误判、方法不可代理、可见性限制
+3. **顺序/短路改变了语义（ordering/short-circuit 问题）**：缓存命中直接返回、鉴权提前抛错、事务边界位置不同
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest` / `SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreAopPointcutExpressionsLabTest` / `SpringCoreAopRealWorldStackingLabTest` / `SpringCoreAopProceedNestingLabTest`
 
-上一章：[09-multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[92-weaving-vs-proxy](appendix-weaving-vs-proxy-decision-matrix.md)
+上一章：[09-multi-proxy-stacking](proxy-stacking-multi-proxy-stacking.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[92-weaving-vs-proxy](appendix-weaving-vs-proxy-decision-matrix.md)
 
 <!-- BOOKIFY:END -->

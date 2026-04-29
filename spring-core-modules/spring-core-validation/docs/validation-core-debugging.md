@@ -1,6 +1,6 @@
 # 06. Debug / 观察：如何排查“校验为什么没生效？”
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕Debug / 观察：如何排查“校验为什么没生效？”展开，主线可以概括为：约束声明 → 触发校验（绑定后或方法拦截）→ 产出 violation/errors → 映射到响应；方法校验的关键边界是代理与 self-invocation。
 
     先运行 `SpringCoreValidationLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在 Web 入参或方法边界声明约束（`@NotNull/@Size/...`）；方法级校验通常需要 `@Validated` 触发代理；用统一错误模型返回给调用方。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[05. 自定义约束：如何写一个最小可用的 `@Constraint`？](validation-core-custom-constraint.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（建议反复对照）](appendix-common-pitfalls.md)
+上一章：[05. 自定义约束：如何写一个最小可用的 `@Constraint`？](validation-core-custom-constraint.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（排查时对照）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「06. Debug / 观察：如何排查“校验为什么没生效？”」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreValidationLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreValidationLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -30,18 +30,18 @@
 
 先问自己：
 
-- 我是不是调用了 `validator.validate(...)`？
-- 我是不是在校验同一个对象实例？
+- 是否调用了 `validator.validate(...)`？
+- 是否在校验同一个对象实例？
 
 本模块的 `ProgrammaticValidationService` 是最透明、最好排查的入口。
 
 ## 2) 方法参数校验不生效？
 
-排查顺序建议是：
+排查顺序是：
 
 1. 这个对象是不是 Spring 管理的 bean？
 2. 它是不是代理？（`AopUtils.isAopProxy(bean)`）
-3. 我是不是“走代理调用”？（有没有自调用绕过代理）
+3. 是否走代理调用？（有没有自调用绕过代理）
 4. 类上是否有 `@Validated`（触发 method validation 的关键标记）
 
 对照测试：
@@ -56,7 +56,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
-- 建议命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-validation test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -83,10 +83,10 @@ violations 是结构化证据；groups 决定“哪些约束参与本次校验�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreValidationLabTest` / `SpringCoreValidationMechanicsLabTest`
 
-上一章：[05-custom-constraint](validation-core-custom-constraint.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
+上一章：[05-custom-constraint](validation-core-custom-constraint.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[90-common-pitfalls](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

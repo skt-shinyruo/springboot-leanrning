@@ -1,8 +1,17 @@
 # spring-core-events
 
-本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”学习 **Spring Application Events（应用事件）**。
+本模块用“可运行的最小示例 + 可验证的测试实验（实验/练习）”学习 **Spring Application Events（应用事件）**。
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 docs/。
+
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -14,11 +23,11 @@
   - `mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - 使用 `ApplicationEventPublisher` 发布事件
 - 使用 `@EventListener` 处理事件（多监听器、`@Order`、condition）
@@ -30,8 +39,8 @@
 
 ## 前置知识
 
-- 建议先完成 `spring-core-beans`（理解 Bean/容器即可）
-- 如果要理解 after-commit：建议同时完成 `spring-core-tx`
+- 先完成 `spring-core-beans`（理解 Bean/容器即可）
+- 如果要理解 after-commit：同时完成 `spring-core-tx`
 - 了解多线程的最小概念（异步 = 可能换线程）
 
 ## 关键命令
@@ -54,7 +63,7 @@ mvn -pl :spring-core-events spring-boot:run
 mvn -pl :spring-core-events test
 ```
 
-## 推荐 docs 阅读顺序（从现象到机制）
+## docs 阅读顺序（从现象到机制）
 
 1. [事件心智模型：发布与订阅在解耦什么？](docs/event-basics-event-mental-model.md)
 2. [多监听器与顺序：为什么 `@Order` 值得认真对待？](docs/event-basics-multiple-listeners-and-order.md)
@@ -63,13 +72,13 @@ mvn -pl :spring-core-events test
 5. [异步监听器：`@Async` 生效需要什么？](docs/async-and-transactional-async-listener.md)
 6. [异步广播：让事件“默认异步”（multicaster）](docs/async-and-transactional-async-multicaster.md)
 7. [`@TransactionalEventListener`：after-commit 监听器与事务边界](docs/async-and-transactional-transactional-event-listener.md)
-8. [常见坑清单（建议反复对照）](docs/appendix-common-pitfalls.md)
+8. [常见坑清单（排查时对照）](docs/appendix-common-pitfalls.md)
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。Exercises 默认 `@Disabled`。
+> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。练习默认 `@Disabled`。
 
-| 类型 | 入口 | 知识点 | 难度 | 推荐阅读 |
+| 类型 | 入口 | 知识点 | 难度 | 延伸阅读 |
 | --- | --- | --- | --- | --- |
 | Lab | `src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsLabTest.java` | 多监听器、`@Order`、condition、payload、默认同步 | ⭐⭐ | `docs/01` → `docs/03` |
 | Lab | `src/test/java/com/learning/springboot/springcoreevents/part01_event_basics/SpringCoreEventsMechanicsLabTest.java` | 异常传播、`@Async`（启用/不启用）的线程差异 | ⭐⭐ | `docs/04`、`docs/05` |
@@ -93,7 +102,7 @@ mvn -pl :spring-core-events test
 ## 常见 Debug 路径
 
 - 不要只靠控制台输出判断机制：优先写“可断言的观察点”（例如内存 log）
-- 验证异步最稳定的方式是“断言线程名 + CountDownLatch 等待”，而不是靠日志时序
+- 验证异步最稳定的方式是“断言线程名 + CountDownLatch 等待”，而不是只凭日志时序
 - 顺序相关断言务必显式 `@Order`，否则很容易学到错误结论
 
 ## 常见坑
@@ -121,7 +130,7 @@ mvn -pl :spring-core-events test
 
 运行后应能回答：同一事件在多个监听器之间的顺序如何决定；异常会如何影响发布方；切换到异步后，这些语义在哪些地方发生变化。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 
@@ -147,7 +156,7 @@ mvn -pl :spring-core-events test
 - Branch Matrix（基础事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsBasicsBranchMatrixLabTest test`
 - Branch Matrix（异步/事务事件）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsAsyncTransactionalBranchMatrixLabTest test`
 - 并发/性能：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsConcurrencyLabTest test`
-- Solutions（Exercises 对应回归：异步 multicaster 边界）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsExerciseSolutionTest test`
+- Solutions（练习 对应回归：异步 multicaster 边界）：`mvn -q -pl :spring-core-events -Dtest=SpringCoreEventsExerciseSolutionTest test`
 
 ### 排坑与自检
 - [常见坑](docs/appendix-common-pitfalls.md)

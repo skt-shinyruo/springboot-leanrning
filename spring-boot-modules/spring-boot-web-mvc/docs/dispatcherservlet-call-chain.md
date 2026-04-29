@@ -1,6 +1,6 @@
 # 01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcInternalsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）](dispatcherservlet-webmvc-request-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. HandlerMapping：路由、404/405 与 mapping 约束](handlermapping-routing.md)
+上一章：[03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）](dispatcherservlet-webmvc-request-call-chain.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. HandlerMapping：路由、404/405 与 mapping 约束](handlermapping-routing.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -65,7 +65,7 @@
 2. **`HttpRequestHandler`**（更底层的 handler 接口）：对应 `HttpRequestHandlerAdapter`
 3. **旧式 `Controller`**（历史兼容）：对应 `SimpleControllerHandlerAdapter`
 
-这一步的价值在于：当看到“我明明是个请求，但怎么跟 `RequestMappingHandlerAdapter` 没关系”，很可能是 handler 根本不是 `HandlerMethod`。
+这一步的价值在于：当看到“请求为什么与 `RequestMappingHandlerAdapter` 没关系”，很可能是 handler 根本不是 `HandlerMethod`。
 
 本模块的主线默认都落在 `RequestMappingHandlerAdapter` 上，对应证据链：
 
@@ -119,7 +119,7 @@ processDispatchResult(..., mv, ex):
 
 先说结论：**MVC 的 resolver 链不是“全局兜底”**。它能处理的是“进入了 DispatcherServlet 之后、且发生在它能 catch 的窗口内”的异常；一旦异常越过了 `DispatcherServlet`（或根本没进入它），就会进入 Servlet 容器/Boot 的 error 机制。
 
-为了把这件事讲清楚，我们从容器视角把链路补成一条完整叙事：
+为了把这件事讲清楚，本章从容器视角把链路补成一条完整叙事：
 
 #### 第 0 段：Servlet 容器先跑 FilterChain（DispatcherServlet 只是 chain 里的一个 Servlet）
 
@@ -144,8 +144,8 @@ processDispatchResult(..., mv, ex):
 
 需要记住 resolver 的“处理语义”：
 
-- resolver **返回非空 `ModelAndView`**：表示“我处理了”，后续会按 view/render 路径收尾
-- resolver **返回 `null`**：表示“我不处理/交给后面继续”，链条继续往下走
+- resolver **返回非空 `ModelAndView`**：表示“已处理”，后续会按 view/render 路径收尾
+- resolver **返回 `null`**：表示“不处理，交给后续 resolver”，链条继续往下走
 - 如果 resolver 链跑完仍然没人处理：`DispatcherServlet` 会把异常 **重新抛出**（这就是“resolver 未处理”的关键落点）
 
 这里应当能把“异常有没有被 resolver 处理”落到一个可断言的事实：`MvcResult#getResolvedException()` 是否为 null（见 `BootWebMvcTestingDebuggingLabTest`）。
@@ -158,7 +158,7 @@ processDispatchResult(..., mv, ex):
 2. 容器触发一次 **ERROR dispatch**（`DispatcherType.ERROR`），并转发到“错误页入口”
 3. 在 Spring Boot 默认配置下，这个入口就是 `/error`，由 `BasicErrorController` 处理
 
-于是会看到一个“看起来像第二次进 MVC”的现象：**同一个请求会再次进入 DispatcherServlet**，但这次是 ERROR dispatch（不是 async 的 ASYNC dispatch）。
+于是会看到一个“表面上像第二次进 MVC”的现象：**同一个请求会再次进入 DispatcherServlet**，但这次是 ERROR dispatch（不是 async 的 ASYNC dispatch）。
 
 Boot error 侧的关键对象（看源码/排障时的抓手）是：
 
@@ -166,7 +166,7 @@ Boot error 侧的关键对象（看源码/排障时的抓手）是：
 - `org.springframework.boot.web.servlet.error.DefaultErrorAttributes`：提供错误信息（status/path/message 等），并从 request 的 error attributes 里取数据
 - `templates/error/*`：HTML 错误页模板（404/4xx/5xx），由 Boot 的 error view resolver 选择
 
-把“异常 → error”这条链路变成证据，推荐用两个“不同入口”的实验对照：
+把“异常 → error”这条链路变成证据，可用两个“不同入口”的实验对照：
 
 1. **未知路由（404）**：没有 handler，本质是“状态码错误”触发 error 机制
    - JSON（API）：`BootWebMvcSpringBootLabTest#unknownRouteFallsBackToSpringBootErrorEndpoint`
@@ -194,7 +194,7 @@ Boot error 侧的关键对象（看源码/排障时的抓手）是：
 - Interceptor 生命周期回调分两段出现（sync dispatch / async dispatch）
 - 某些断点会命中两次，但“不是重复执行业务”，而是两次 dispatch 阶段不同
 
-本模块对这条分支有专门的可复现证据链（建议配合断点阅读）：
+本模块对这条分支有专门的可复现证据链（配合断点阅读）：
 
 - `BootWebMvcTraceLabTest`
 - 章节：[05：Interceptor 的 async 生命周期（为什么会回调两次）](async-sse-interceptor-async-lifecycle.md)
@@ -214,7 +214,7 @@ T0: DispatcherType=REQUEST（第一次进入 doDispatch）
 T1: DispatcherType=ASYNC（异步结果就绪，第二次 dispatch）
   （很多 Filter 默认不会再跑：OncePerRequestFilter 默认跳过 async dispatch）
   Interceptor: preHandle[ASYNC]
-  （通常不会再次执行你的 controller 方法，而是处理“并发结果”并写回）
+  （通常不会再次执行当前 controller 方法，而是处理“并发结果”并写回）
   Interceptor: postHandle[ASYNC]
   Interceptor: afterCompletion[ASYNC]
 ```
@@ -293,14 +293,14 @@ T1: DispatcherType=ERROR（容器触发错误派发，进入 /error）
 
 把本章主线压缩成“可复用排障套路”，可以直接用下表反推断点与证据链：
 
-| 现象（看到的） | 所在阶段（大概率落点） | 关键方法（建议断点） | 可断言证据链（本仓库） |
+| 现象（看到的） | 所在阶段（大概率落点） | 关键方法（断点入口） | 可断言证据链（本仓库） |
 |---|---|---|---|
 | 异常发生在 FilterChain（比如安全/鉴权/自定义 Filter 抛错），MVC resolver 不生效 | FilterChain（还没到 DispatcherServlet） | `Filter#doFilter` / `OncePerRequestFilter#doFilterInternal` | `BootWebMvcTraceLabTest`（filter 事件在 interceptor 之前） |
 | handler 抛异常，但最终返回的不是预期的 JSON/状态码 | `processHandlerException`（resolver 链） | `DispatcherServlet#processHandlerException`<br>`HandlerExceptionResolverComposite#resolveException` | `BootWebMvcExceptionResolverChainLabTest`（固定 resolver 链）<br>`BootWebMvcTestingDebuggingLabTest`（resolvedException 断言） |
 | resolver 没处理（异常继续抛出）最终走到了 Boot `/error` | ERROR dispatch（`/error`） | `DispatcherServlet#doDispatch`（条件：ERROR）<br>`BasicErrorController` | `BootWebMvcSpringBootLabTest`（API 404 -> JSON）<br>`BootWebMvcViewSpringBootLabTest`（页面 404 -> error view） |
-| async 看起来“走了两次”，Interceptor 回调两段出现 | ASYNC dispatch（REQUEST → ASYNC） | `WebAsyncManager#isConcurrentHandlingStarted`<br>`AsyncHandlerInterceptor#afterConcurrentHandlingStarted` | `BootWebMvcTraceLabTest`（REQUEST/ASYNC 事件序列） |
+| async 表面上“走了两次”，Interceptor 回调两段出现 | ASYNC dispatch（REQUEST → ASYNC） | `WebAsyncManager#isConcurrentHandlingStarted`<br>`AsyncHandlerInterceptor#afterConcurrentHandlingStarted` | `BootWebMvcTraceLabTest`（REQUEST/ASYNC 事件序列） |
 
-## 参数解析/绑定/校验：把“进方法”拆成 3 段（合并自原第 02 章）
+## 参数解析/绑定/校验：把“进方法”拆成 3 段（合并自原对应章节）
 
 当在工程里遇到“参数进不来/类型转换不对/校验不生效”，先把问题拆成三段再定位：
 
@@ -326,14 +326,14 @@ T1: DispatcherType=ERROR（容器触发错误派发，进入 /error）
 
 ### 补充：suppressedFields（把“被禁止绑定字段”变成证据）
 
-当用 `@InitBinder#setAllowedFields` 或 `setDisallowedFields` 做“绑定边界”时，除了断言“值没进来”，还建议把“被阻止绑定的字段名”变成可观察证据：
+当用 `@InitBinder#setAllowedFields` 或 `setDisallowedFields` 做“绑定边界”时，除了断言“值没进来”，还把“被阻止绑定的字段名”变成可观察证据：
 
 - Spring 6.2+：`BindingResult#getSuppressedFields()`
 - 本模块提供证据链：`POST /api/advanced/binding/mass-assignment-debug` + `BootWebMvcBindingDeepDiveLabTest`
 
 ## 源码与断点
 
-建议断点（按优先级）：
+断点入口（按优先级）：
 
 - `org.springframework.web.servlet.DispatcherServlet#doDispatch`
 - `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getHandlerInternal`
@@ -350,12 +350,12 @@ T1: DispatcherType=ERROR（容器触发错误派发，进入 /error）
 - Lab：`BootWebMvcInternalsLabTest`
 - Lab：`BootWebMvcLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-mvc test`
+- 运行命令：`mvn -pl :spring-boot-web-mvc test`
 
 ## 常见坑与边界
 
 - 看到行为不一致时，先确认观察的是哪一层：Filter（Servlet 容器） vs Interceptor（MVC handler 链） vs ArgumentResolver（方法参数解析）。
-- “我加了注解但没生效”的第一排查点：是不是落在了错误的扩展点（应该写 resolver 但写成 converter，或反过来）。
+- “注解已添加但没有生效”的第一排查点：是不是落在了错误的扩展点（应该写 resolver 但写成 converter，或反过来）。
 
 ## 小结与下一章
 
@@ -363,9 +363,9 @@ T1: DispatcherType=ERROR（容器触发错误派发，进入 /error）
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcInternalsLabTest` / `BootWebMvcLabTest` / `BootWebMvcBindingDeepDiveLabTest`
 
-上一章：[03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）](dispatcherservlet-webmvc-request-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. HandlerMapping：路由、404/405 与 mapping 约束](handlermapping-routing.md)
+上一章：[03. 请求调用链速览（从 FilterChain 到 DispatcherServlet#doDispatch）](dispatcherservlet-webmvc-request-call-chain.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. HandlerMapping：路由、404/405 与 mapping 约束](handlermapping-routing.md)
 <!-- BOOKIFY:END -->

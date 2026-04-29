@@ -1,6 +1,6 @@
 # 03. 回滚规则：为什么 checked exception 默认不回滚？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕回滚规则：为什么 checked exception 默认不回滚？展开，主线可以概括为：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
 
     先运行 `SpringCoreTxLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. `@Transactional` 如何生效：它也是 AOP（也是代理）](transaction-basics-transactional-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？](transaction-basics-propagation.md)
+上一章：[02. `@Transactional` 如何生效：它也是 AOP（也是代理）](transaction-basics-transactional-proxy.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. 传播行为（Propagation）：`REQUIRED` vs `REQUIRES_NEW` 到底差在哪？](transaction-basics-propagation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -42,7 +42,7 @@ Spring 事务默认回滚规则经常让人困惑：
 
 - Lab：`SpringCoreTxLabTest`
 - Lab：`SpringCoreTxRollbackRulesLabTest`（Runtime vs Checked + rollbackFor/noRollbackFor）
-- 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -56,7 +56,7 @@ Spring 事务默认回滚规则经常让人困惑：
 - `insertThenThrowCheckedWithRollback()`：加了 `@Transactional(rollbackFor = ...)` 后 **会回滚**
   - 对应断言：`SpringCoreTxLabTest#rollbackForCheckedExceptionsCanBeConfigured`
 
-如果想把“规则矩阵”固化成更直观的对照（避免只看单个方法），建议再跑：
+如果想把“规则矩阵”固化成更直观的对照（避免只看单个方法），再运行：
 
 - `SpringCoreTxRollbackRulesLabTest`：
   - `runtimeExceptionRollsBackByDefault`：RuntimeException 默认回滚
@@ -82,11 +82,11 @@ Spring 默认回滚规则：RuntimeException/Error 回滚；checked exception �
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreTxLabTest`
 - Lab：`SpringCoreTxRollbackRulesLabTest`
 
-上一章：[02-transactional-proxy](transaction-basics-transactional-proxy.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04-propagation](transaction-basics-propagation.md)
+上一章：[02-transactional-proxy](transaction-basics-transactional-proxy.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04-propagation](transaction-basics-propagation.md)
 
 <!-- BOOKIFY:END -->

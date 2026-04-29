@@ -5,6 +5,15 @@
 - `@WebMvcTest`：只加载 Web 层（Controller），更快、更聚焦
 - `@SpringBootTest`：加载完整应用上下文，更接近集成测试
 
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
+
 ## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
@@ -14,11 +23,11 @@
   - `mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - 理解“测试切片（slice test）”的意义
 - 会写一个 `@WebMvcTest` + `@MockBean` 的 Controller 测试
@@ -27,7 +36,7 @@
 
 ## 前置知识
 
-- 建议先完成 `spring-boot-web-mvc`（更容易理解 Controller 测试）
+- 先完成 `spring-boot-web-mvc`（更容易理解 Controller 测试）
 - 了解 JUnit 的基本概念（断言、测试方法）
 
 ## 关键命令
@@ -52,7 +61,7 @@ curl 'http://localhost:8083/api/greeting?name=Bob'
 mvn -pl :spring-boot-testing test
 ```
 
-## 推荐 docs 阅读顺序
+## docs 阅读顺序
 
 （目录：见本 README 的「目录（唯一顺序来源）」）
 
@@ -66,9 +75,9 @@ mvn -pl :spring-boot-testing test
 - `src/test/java/com/learning/springboot/boottesting/part01_testing/GreetingControllerSpringBootLabTest.java`
 - `src/test/java/com/learning/springboot/boottesting/part01_testing/BootTestingMockBeanLabTest.java`
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶。Exercises 默认 `@Disabled`。
+> 说明：⭐=入门，⭐⭐=进阶。练习默认 `@Disabled`。
 
 | 类型 | 入口 | 知识点 | 难度 | 下一步 |
 | --- | --- | --- | --- | --- |
@@ -106,7 +115,7 @@ mvn -pl :spring-boot-testing test
 
 运行后应能回答：当前测试启动的上下文范围是什么（切片还是全量）；Mock 的覆盖点在哪里；为何相同代码在不同测试注解下表现不同。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 
@@ -114,17 +123,17 @@ mvn -pl :spring-boot-testing test
 - [slice 与 mocking](docs/testing-slice-and-mocking.md)
 
 ### 进阶入口（排障/关键分支）
-- 断点地图（排障优先）：[04-breakpoint-map.md](docs/guide-breakpoint-map.md)
-- 关键分支矩阵（If/Then 收敛）：[05-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
-- 排障 playbook：[01-common-pitfalls.md](docs/appendix-common-pitfalls.md)
-- 自检清单：[02-self-check.md](docs/appendix-self-check.md)
+- 断点地图（排障优先）：[guide-breakpoint-map.md](docs/guide-breakpoint-map.md)
+- 关键分支矩阵（If/Then 收敛）：[guide-branch-decision-matrix.md](docs/guide-branch-decision-matrix.md)
+- 排障 playbook：[appendix-common-pitfalls.md](docs/appendix-common-pitfalls.md)
+- 自检清单：[appendix-self-check.md](docs/appendix-self-check.md)
 
 ---
 
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBookMatrixLabTest test`
 - Branch Matrix：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-boot-testing -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-boot-testing -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（TestContextCache 复用边界证据链）：`mvn -q -pl :spring-boot-testing -Dtest=BootTestingTestContextCacheLabTest test`
 
 ---

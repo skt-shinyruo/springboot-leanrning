@@ -1,21 +1,21 @@
 # 02. Executor 与线程命名/并发边界
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（把 executor 这件事说透）"
+!!! summary "章节入口（把 executor 这件事说透）"
 
     如果说上一章回答的是“`@Async` 为什么能切线程”，这一章回答的就是更现实的问题：**切到哪一个线程池？**
 
     - 反复用到的尺子：线程名（前缀能直接写成断言）
-    - 最可能踩到的坑：项目里有多个 executor，但 `@Async` 选的不是直觉里的那个
+    - 最可能踩到的坑：项目里有多个 executor，但 `@Async` 选的不是预期中的那个
     - 进一步验证：`BootAsyncSchedulingExecutorSelectionLabTest#whenMultipleExecutorsExist_namedTaskExecutorWinsAsDefault`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. `@Async` 心智模型：代理与线程切换](async-scheduling-async-proxy-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 异常传播：Future vs void](async-scheduling-exceptions.md)
+上一章：[01. `@Async` 心智模型：代理与线程切换](async-scheduling-async-proxy-mental-model.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. 异常传播：Future vs void](async-scheduling-exceptions.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingExecutorSelectionLabTest#whenMultipleExecutorsExist_namedTaskExecutorWinsAsDefault`（见文末“对应 Lab/Test”），用线程名前缀把“到底选中了谁”写成断言。
+优先运行 `BootAsyncSchedulingExecutorSelectionLabTest#whenMultipleExecutorsExist_namedTaskExecutorWinsAsDefault`（见文末“对应实验/测试”），用线程名前缀把“到底选中了谁”写成断言。
 
 
 ## 这一章要解决的不是“怎么配线程池”，而是“怎么不再猜”
@@ -24,17 +24,17 @@
 
 > 提交到哪个 executor？
 
-在一个稍微复杂点的项目里，线程池往往不止一个：有 IO 池、CPU 池、批处理池，还有框架默认的那个。此时最容易出现的不是“配置写错”，而是“大家各写各的，最后没人能回答：到底是谁在跑”。
+在一个稍微复杂点的项目里，线程池往往不止一个：有 IO 池、CPU 池、批处理池，还有框架默认的那个。此时最容易出现的不是“配置写错”，而是“各处分别配置，最终无法回答：到底是谁在跑”。
 
-这一章我想把它收敛成三件事：
+本章把它收敛成三件事：
 
 1. 默认 executor 的选择规则（以及如何让它变得可控）
 2. 显式选择：`@Async("beanName")`
 3. 切线程之后的副作用：ThreadLocal/MDC 等上下文的丢失与泄漏
 
-## 默认 executor：直觉里的“默认”往往不默认
+## 默认 executor：预期中的“默认”往往不默认
 
-不写 `@Async("...")` 的时候，Spring 会帮助找一个“默认 executor”。问题是：当系统里 executor 多起来之后，人会开始凭印象说话——“我不是已经定义了线程池吗？”——但 Spring 选的不一定是预期的那个。
+不写 `@Async("...")` 的时候，Spring 会帮助找一个“默认 executor”。问题是：当系统里 executor 变多后，凭印象判断很容易误判；即使已经定义了线程池，Spring 选中的也不一定是预期对象。
 
 把选择规则记成三条就够用（它们都能在本模块里找到对应断言）：
 
@@ -89,10 +89,10 @@ executor 这件事，一旦在团队里变成“凭印象说话”，就会不�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingLabTest`
 
-上一章：[part-01-async-scheduling/01-async-proxy-mental-model.md](async-scheduling-async-proxy-mental-model.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-async-scheduling/03-exceptions.md](async-scheduling-exceptions.md)
+上一章：[async-scheduling-async-proxy-mental-model.md](async-scheduling-async-proxy-mental-model.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[async-scheduling-exceptions.md](async-scheduling-exceptions.md)
 
 <!-- BOOKIFY:END -->

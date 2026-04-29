@@ -1,6 +1,6 @@
 # 02. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopPointcutExpressionsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 除 `@EnableAspectJAutoProxy` 之外：BeanNameAutoProxyCreator / ProxyFactoryBean / XML](autoproxy-and-pointcuts-other-configuration-entries.md)
+上一章：[01. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. 除 `@EnableAspectJAutoProxy` 之外：BeanNameAutoProxyCreator / ProxyFactoryBean / XML](autoproxy-and-pointcuts-other-configuration-entries.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -23,9 +23,9 @@
 
 ## 机制主线
 
-pointcut 是 Spring AOP 里最容易“看起来懂了、其实误判”的部分。
+pointcut 是 Spring AOP 里最容易“表面上懂了、本质上误判”的部分。
 
-原因很简单：**pointcut 控制的是“哪些调用会进入 proxy 的拦截器链”**，而 proxy 的类型、调用入口、以及表达式语义都可能造成错觉。
+关键原因是：**pointcut 控制的是“哪些调用会进入 proxy 的拦截器链”**，而 proxy 的类型、调用入口、以及表达式语义都可能造成错觉。
 
 本章的目标是做到两件事：
 
@@ -34,7 +34,7 @@ pointcut 是 Spring AOP 里最容易“看起来懂了、其实误判”的部�
 
 ---
 
-## 0. 先把“匹配发生在哪里”说清楚
+## 先把“匹配发生在哪里”说清楚
 
 Spring AOP（proxy-based）里，匹配的大前提是：
 
@@ -78,7 +78,7 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 - 在接口/JDK proxy 场景下只看“注入的类型”，忽略了“真正声明方法的类型”
 - 误以为 within 能解决 call path 问题（不能；不走 proxy 还是没用）
 
-> 提醒：真正落地时，建议优先用 execution 建立稳定基线，再用 within 做范围收敛。
+> 提醒：真正落地时，优先用 execution 建立稳定基线，再用 within 做范围收敛。
 
 ---
 
@@ -97,13 +97,13 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 | 目标实现了接口，且 `proxyTargetClass=false` | JDK proxy | ❌（不命中） | ✅（命中） | ✅（命中） |
 | 强制 `proxyTargetClass=true` | CGLIB proxy | ✅（命中） | ✅（命中） | ✅（命中） |
 
-直觉解释：
+预期解释：
 
 - JDK proxy 不是 Impl 的子类，只实现接口 Api，所以 `this(Impl)` 永远不成立
 - CGLIB proxy 是 Impl 的子类，所以 `this(Impl)` 成立
 - target 指向真实目标对象 Impl，所以 `target(Impl)` 两种 proxy 都能成立
 
-### 2.2 为什么 this/target 会导致“我以为写对了，实际没生效”？
+### 2.2 为什么 this/target 会导致“预期写对了，实际没生效”？
 
 最典型场景：
 
@@ -127,7 +127,7 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 
 常见误判：
 
-> 学习路径建议：先用 `@annotation` 建立最小闭环（“我能拦截”），再逐步扩展到 execution/within/this/target 等通用表达式。
+> 学习路径动作：先用 `@annotation` 建立最小闭环（“能够拦截”），再逐步扩展到 execution/within/this/target 等通用表达式。
 
 ---
 
@@ -135,7 +135,7 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 
 当表达式开始变复杂时，最容易出错的不是 designator，而是组合逻辑：
 
-- 建议总是用括号显式表达意图（不要赌优先级）
+- 总是用括号显式表达意图（不要赌优先级）
 - 尽量把表达式拆小：先用一个最小表达式证明命中，再加一个条件收敛范围
 
 工程经验：
@@ -149,18 +149,18 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 
 当怀疑 pointcut 没命中时，不要靠猜，按下面步骤做闭环：
 
-如果能把这四步跑通，真实项目里 80% 的“我以为 AOP 不生效”都会被快速分流定位。
+如果能把这四步跑通，真实项目里 80% 的“预期 AOP 不生效”都会被快速分流定位。
 
 ---
 
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopPointcutExpressionsLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
-> 推荐配套 Labs：`SpringCoreAopPointcutExpressionsLabTest`（重点 this vs target）。
+> 配套 Labs：`SpringCoreAopPointcutExpressionsLabTest`（重点 this vs target）。
 
 1. **调用必须先进入 proxy**（否则没有机会匹配与执行链，见 [01. aop-proxy-mental-model](proxy-fundamentals-aop-proxy-mental-model.md)）
 2. **proxy 在收到方法调用时**，会根据目标方法与 advisors 组装拦截器链（见 [06. debugging](proxy-fundamentals-debugging.md)）
@@ -172,10 +172,10 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 
 ## 3. args(...)：按“运行时参数类型”匹配（常被误用）
 
-`args` 的直觉是“参数类型匹配”，但需要注意它更偏 **运行时**：
+`args` 的预期是“参数类型匹配”，但需要注意它更偏 **运行时**：
 
 - 以为 args(String) 匹配“声明是 String 的参数”，但实际可能是运行时传入的子类型/代理类型
-- 在泛型/集合参数下，args 往往不是预期语义（更建议把范围收敛到 execution + within）
+- 在泛型/集合参数下，args 往往不是预期语义（更把范围收敛到 execution + within）
 
 ### 3.1 runtime matcher（成本模型）：`MethodMatcher#isRuntime()`
 
@@ -184,10 +184,10 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 - **命中是否成立可能依赖本次调用的实参**（同一方法，不同实参，命中结果不同）
 - 这会引入 **per-invocation 的判断开销**（每次调用都要再判断一次）
 
-你不需要背实现，但要能自证两件事：
+不需要背实现，但要能自证两件事：
 
-1) 这个表达式是否是 runtime matcher（`MethodMatcher#isRuntime()`）  
-2) 命中是否确实受实参影响（字符串命中、整数不命中）
+1. 这个表达式是否是 runtime matcher（`MethodMatcher#isRuntime()`）
+2. 命中是否确实受实参影响（字符串命中、整数不命中）
 
 对应最小证据链入口：
 
@@ -210,7 +210,7 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 3. **确认这次调用的链条**：在 `DefaultAdvisorChainFactory#getInterceptorsAndDynamicInterceptionAdvice` 看拦截器链是否包含期望的 advice
 4. **从最小切点开始回退**：`@annotation` → `execution` → 加 within/args/this/target 收敛
 
-## 7. Labs 对应关系（建议按顺序跑）
+## 7. Labs 对应关系（按顺序运行）
 
 - this vs target（JDK/CGLIB 差异，可断言）：`SpringCoreAopPointcutExpressionsLabTest`
 - args runtime matcher（运行期匹配/成本模型）：`SpringCoreAopRuntimePointcutCostLabTest`
@@ -234,12 +234,12 @@ Spring AOP（proxy-based）里，匹配的大前提是：
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopPointcutExpressionsLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 - Lab：`SpringCoreAopRuntimePointcutCostLabTest`
 
-上一章：[07-autoproxy-creator-mainline](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[09-other-config-entries](autoproxy-and-pointcuts-other-configuration-entries.md)
+上一章：[07-autoproxy-creator-mainline](autoproxy-and-pointcuts-autoproxy-creator-mainline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[09-other-config-entries](autoproxy-and-pointcuts-other-configuration-entries.md)
 
 <!-- BOOKIFY:END -->

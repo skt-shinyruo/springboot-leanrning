@@ -1,6 +1,6 @@
 # 99 自检：Spring Boot Basics
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘题）"
+!!! summary "章节入口（复盘题）"
 
     这章没有新知识点，其定位更接近读完主线后的复盘纸：每个问题都对应一个可复现入口。能答出来，说明已经能在项目里独立排“配置没生效”。
 
@@ -9,12 +9,20 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（建议反复对照）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[01. 常见坑清单（排查时对照）](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-建议优先运行 `BootBasicsBookMatrixLabTest`（主线）或 `BootBasicsBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），再按题目回到对应复现入口逐一验证。
+优先运行 `BootBasicsBookMatrixLabTest`（主线）或 `BootBasicsBranchMatrixLabTest`（分支）（见文末“对应实验/测试”），再按题目回到对应复现入口逐一验证。
 
 
 ## 先跑入口（不要只做“纸面题”）
@@ -47,7 +55,7 @@
    - 练习：`BootBasicsExerciseTest#exercise_addNewPropertyField`
 9. 如果故意写一个类型错误（例如 `app.feature-enabled=not-a-boolean`），期望看到什么错误？如何写断言避免版本漂移？
    - 练习：`BootBasicsExerciseTest#exercise_invalidPropertyType`
-10. 遇到“配置没生效”，最推荐的排障顺序是什么？（用 3 步描述即可）
+10. 遇到“配置没生效”，优先采用的排障顺序是什么？（用 3 步描述即可）
     - 对照：`01-common-pitfalls.md`
 
 ## 如果卡住了
@@ -56,16 +64,16 @@
 
 ## 小结与下一章
 
-下一章见：[Docs TOC](../README.md)
+下一章见：[模块目录](../README.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootBasicsDefaultLabTest` / `BootBasicsDevLabTest`
 - Exercise：`BootBasicsExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 
 <!-- BOOKIFY:END -->

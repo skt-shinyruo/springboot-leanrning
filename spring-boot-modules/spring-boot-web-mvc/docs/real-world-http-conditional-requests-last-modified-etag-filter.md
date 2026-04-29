@@ -3,7 +3,7 @@
 ## 导读
 
 本章围绕「05：条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -40,7 +40,7 @@ Filter 会在响应写回时：
 
 ## 源码与断点
 
-建议断点：
+断点入口：
 - 静态资源：`org.springframework.web.servlet.resource.ResourceHttpRequestHandler#handleRequest`
 - 条件判断：`org.springframework.web.context.request.ServletWebRequest#checkNotModified`
 - ETag Filter：`org.springframework.web.filter.ShallowEtagHeaderFilter#doFilterInternal`（或其内部更新 ETag 的分支）
@@ -70,9 +70,9 @@ Filter 会在响应写回时：
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcRealWorldHttpLabTest`
 
-上一章：[04. 静态资源与缓存（Static Resources / Cache-Control）](real-world-http-static-resources-and-cache.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. 反向代理与 Forwarded Headers（X-Forwarded-*：scheme/host/prefix/ip 的真实边界）](real-world-http-forwarded-headers-and-proxy.md)
+上一章：[04. 静态资源与缓存（Static Resources / Cache-Control）](real-world-http-static-resources-and-cache.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06. 反向代理与 Forwarded Headers（X-Forwarded-*：scheme/host/prefix/ip 的真实边界）](real-world-http-forwarded-headers-and-proxy.md)
 <!-- BOOKIFY:END -->

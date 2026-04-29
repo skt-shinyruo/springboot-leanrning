@@ -1,7 +1,7 @@
-# 02. 00 - Deep Dive Guide（springboot-business-case）
+# 深挖导读：Spring Boot Business Case
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕Deep Dive Guide（springboot-business-case）展开，主线可以概括为：一次业务请求贯穿：MVC 入参→安全边界→事务边界→持久化上下文→事件时机→可观测信号；排障的关键是把问题归类到具体边界。
+!!! summary "章节入口（五问闭环）"
+    本章用于把模块主线、源码入口与断点路径串起来，主线可以概括为：一次业务请求贯穿：MVC 入参→安全边界→事务边界→持久化上下文→事件时机→可观测信号；排障的关键是把问题归类到具体边界。
 
     阅读时可以先跑 `BootBusinessCaseLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用端到端链路把 Web/Validation/Security/AOP/Tx/JPA/Events 串起来：遇到红测/异常时，先定位“哪个边界没生效”，再回到对应模块主线。
 
@@ -10,13 +10,21 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Business Case（综合案例）](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 01 - 架构与主流程（Business Case）](business-case-architecture-and-flow.md)
+上一章：[01. 主线时间线：Business Case（综合案例）](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 01 - 架构与主流程（Business Case）](business-case-architecture-and-flow.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-本章是「00 - Deep Dive Guide（springboot-business-case）」的深挖导读：说明如何阅读、如何验证、以及遇到分支时从哪里下断点更省时间。
-建议先运行 `BootBusinessCaseLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
+本章用于说明本模块如何阅读、如何验证，以及遇到分支时从哪里下断点。
+先运行 `BootBusinessCaseLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -78,7 +86,7 @@
 ## 源码与断点
 
 
-建议断点（从“请求现象”反推到“机制分支”）：
+断点入口（从“请求现象”反推到“机制分支”）：
 
 - 校验是否真的发生：
   - Controller 入参绑定点（DTO 生成处）与异常处理入口（400 返回点）
@@ -93,10 +101,10 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
-- 建议命令：`mvn -pl :spring-boot-business-case test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-business-case test`（或在 IDE 直接运行上面的测试类）
 
 
-## 推荐学习目标
+## 验证目标
 1. 通过“一个真实业务流”理解基础设施如何协作（controller → service → event → aspect）
 2. 学会用 tests 做端到端断言，避免只看日志“感觉对了”
 3. 学会定位：异常是在哪个边界被转换/传播/吞掉的
@@ -112,18 +120,18 @@
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootBusinessCaseLabTest` / `BootBusinessCaseServiceLabTest`
 - Exercise：`BootBusinessCaseExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-business-case/01-architecture-and-flow.md](business-case-architecture-and-flow.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[business-case-architecture-and-flow.md](business-case-architecture-and-flow.md)
 
 <!-- BOOKIFY:END -->

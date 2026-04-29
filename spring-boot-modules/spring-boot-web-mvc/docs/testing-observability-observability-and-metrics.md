@@ -3,7 +3,7 @@
 ## 导读
 
 本章围绕「02：Observability（Interceptor 计时 vs Actuator 指标）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcObservabilityLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcObservabilityLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -38,7 +38,7 @@
 ## 常见坑与边界
 
 - 没看到 `/actuator/metrics`：先看 `management.endpoints.web.exposure.include` 是否包含 `metrics`。
-- “我加了 interceptor，但没有 header”：确认 path pattern（本模块只对 `/api/advanced/**` 生效），以及请求是否真的走到了 MVC handler。
+- “已添加 interceptor，但没有 header”：确认 path pattern（本模块只对 `/api/advanced/**` 生效），以及请求是否真的走到了 MVC handler。
 - 指标数据为空：先触发几次请求再看 metrics（指标通常需要发生请求才会出现数据点）。
 
 ## 小结与下一章
@@ -47,10 +47,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcObservabilityLabTest`
 
-上一章：[01. WebMvc 测试与排障（resolvedException / handler / 断点清单）](testing-observability-webmvc-testing-and-troubleshooting.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（Web MVC）](appendix-common-pitfalls.md)
+上一章：[01. WebMvc 测试与排障（resolvedException / handler / 断点清单）](testing-observability-webmvc-testing-and-troubleshooting.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（Web MVC）](appendix-common-pitfalls.md)
 <!-- BOOKIFY:END -->
 

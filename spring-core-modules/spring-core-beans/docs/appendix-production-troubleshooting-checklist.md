@@ -1,16 +1,24 @@
 # 生产排障清单（Troubleshooting Checklist）：从症状到证据链
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+!!! summary "章节入口"
+    - 使用方式：先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
 
-    本章围绕生产排障清单：从症状到证据链展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：生产排障清单：从症状到证据链。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansBreakpointPackLabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#registerBeanDefinition` / `DefaultListableBeanFactory#doResolveDependency` / `DefaultSingletonBeanRegistry#getSingleton` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
+## 本页路线图
 
-## 导读
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
+
+## 生产排障入口：先分层，再下断点
 
 - 这页可以直接当成“排障 SOP”：遇到问题时先定位阶段，再找最短断点入口，最后用最小复现验证；尽量避免在业务项目里凭感觉改配置/改注入。
 
@@ -40,11 +48,11 @@
 
 ## 总分流表（先选最短入口）
 
-> 目标：不要上来就“改注入/改配置”。先用一张表把问题压缩到“阶段 + 最短断点 + 最短复现”。
+> 落点：不要上来就“改注入/改配置”。先用一张表把问题压缩到“阶段 + 最短断点 + 最短复现”。
 
-若需要更系统的“现象 → 章节 → 断点组 → Lab”（学习/复盘视角）索引，建议跳到：[知识地图](appendix-knowledge-map.md)。
+若需要更系统的“现象 → 章节 → 断点组 → Lab”（学习/复盘视角）索引，跳到：[知识地图](appendix-knowledge-map.md)。
 
-| 现象（Symptoms） | 首要阶段 | 第一断点（最短证据链） | 第一章（最短阅读） | 推荐 Lab |
+| 现象（Symptoms） | 首要阶段 | 第一断点（最短证据链） | 第一章（最短阅读） | 对应 Lab |
 | --- | --- | --- | --- | --- |
 | 扫不到/导不进（NoSuchBeanDefinition） | 定义层 | `DefaultListableBeanFactory#registerBeanDefinition` | `ioc-bean-registration.md` | `SpringCoreBeansComponentScanLabTest` / `SpringCoreBeansImportLabTest` |
 | 多候选歧义（NoUniqueBeanDefinition） | 注入解析 | `DefaultListableBeanFactory#doResolveDependency` | `ioc-dependency-injection-resolution.md` | `SpringCoreBeansAutowireCandidateSelectionLabTest` |
@@ -58,45 +66,45 @@
 
 ---
 
-## 0.1 三类高频事故：最短诊断路径（3–5 步）
+## 三类高频事故：最短诊断路径（3–5 步）
 
-> 目标：把“感觉上像是……”压成可验证步骤。每一步都能落到断点与可复现实验（Lab/Test），避免在业务项目里盲调。
+> 落点：把“感觉上像是……”压成可验证步骤。每一步都能落到断点与可复现实验（实验/测试），避免在业务项目里盲调。
 
-### 0.1.1 注入失败（NoSuch/NoUnique）：先把候选集合与收敛规则看清
+### 注入失败（NoSuch/NoUnique）：先把候选集合与收敛规则看清
 
-1) 先分型：是“找不到候选（NoSuch）”，还是“候选太多（NoUnique）”？
-2) 第一断点：`DefaultListableBeanFactory#doResolveDependency`（断点地图：[C6](guide-breakpoint-map.md#c6)）
-3) 三个观察点（最小够用）：
+1. 先分型：是“找不到候选（NoSuch）”，还是“候选太多（NoUnique）”？
+2. 第一断点：`DefaultListableBeanFactory#doResolveDependency`（断点地图：[C6](guide-breakpoint-map.md#c6)）
+3. 三个观察点（最小够用）：
    - 候选集合：`findAutowireCandidates` 的结果（候选数量/beanName 列表）
    - 收敛规则：`determineAutowireCandidate` 的选择过程（Qualifier/Primary/Priority 是否参与）
    - 注入点语义：`DependencyDescriptor`（是否 required / 是否 @Lazy / 是否带 Qualifier）
-4) 最短下一跳：
+4. 最短下一跳：
    - 章节：`ioc-dependency-injection-resolution.md`、`wiring-autowire-candidate-selection-primary-priority-order.md`
    - 对照入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
-### 0.1.2 代理不生效（像绕过 AOP）：先证“BPP 链是否完整”再证“替换是否发生”
+### 代理不生效（像绕过 AOP）：先证“BPP 链是否完整”再证“替换是否发生”
 
-1) 先分型：问题更接近“未注册/顺序不对”（BPP 链问题），还是“已注册但错过时机”（过早实例化）？
-2) 第一断点：
+1. 先分型：问题更接近“未注册/顺序不对”（BPP 链问题），还是“已注册但错过时机”（过早实例化）？
+2. 第一断点：
    - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（断点地图：[C4](guide-breakpoint-map.md#c4)）
    - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（断点地图：[C7](guide-breakpoint-map.md#c7)）
-3) 三个观察点（最小够用）：
+3. 三个观察点（最小够用）：
    - `beanFactory.getBeanPostProcessorCount()` 与关键 BPP 是否在列表中
    - 目标 bean 是否在 BPP 链完整前就被创建（过早实例化信号）
    - after-init 返回的对象是否发生替换（raw vs proxy）
-4) 最短下一跳：
+4. 最短下一跳：
    - 章节：`wiring-proxying-phase-bpp-wraps-bean.md`、`wiring-programmatic-bpp-registration.md`
    - 对照入口：`SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
 
-### 0.1.3 循环依赖/early reference：先区分 constructor vs setter，再看 early 与 final 是否一致
+### 循环依赖/early reference：先区分 constructor vs setter，再看 early 与 final 是否一致
 
-1) 先分型：constructor cycle（通常 fail-fast）还是 setter/field cycle（窗口期可能被 early reference 缓解）？
-2) 第一断点：`DefaultSingletonBeanRegistry#getSingleton`（断点地图：[C5](guide-breakpoint-map.md#c5)）
-3) 三个观察点（最小够用）：
+1. 先分型：constructor cycle（通常 fail-fast）还是 setter/field cycle（窗口期可能被 early reference 缓解）？
+2. 第一断点：`DefaultSingletonBeanRegistry#getSingleton`（断点地图：[C5](guide-breakpoint-map.md#c5)）
+3. 三个观察点（最小够用）：
    - `singletonObjects` / `earlySingletonObjects` / `singletonFactories` 的命中分支
    - `singletonsCurrentlyInCreation`（是否处于创建窗口期）
    - early reference 的形态（raw vs proxy）与最终暴露对象是否一致
-4) 最短下一跳：
+4. 最短下一跳：
    - 章节：`ioc-circular-dependencies.md`、`internals-early-reference-and-circular.md`
    - 对照入口：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 
@@ -117,7 +125,7 @@
 
 ### 1.3 证据链：断点 + 观察点
 
-- 选 1 个关键方法设置断点 + 3 个观察点（watch list）
+- 选 1 个关键方法设置断点 + 3 个观察点（观察清单）
 - 把“猜”变成“观察到”：候选集合是什么？BPP 链顺序是什么？三层缓存状态是什么？
 
 ### 1.4 分流：这是定义层、实例层还是时机问题？
@@ -251,42 +259,34 @@
 
 ---
 
-## Debugger Pack：排障时的“第一入口”
+## 断点包：排障时的“第一入口”
 
 若只记一个入口，记这个：
 
 - `appendix-debugger-pack.md`
 
-它把常见问题都压缩成“断点入口 + watch list + 对应 Lab”，适合作为生产排障的第一跳转页。
+它把常见问题都压缩成“断点入口 + 观察清单 + 对应 Lab”，适合作为生产排障的第一跳转页。
 
 ## 最短调用链（方法级）：把“证据链”写成可执行路线
 
 本页每个条目都给了“证据链入口”（方法名），但真正落地排障时，需要把它组装成 3 步的最短调用链：
 
-1) **定位阶段**：先在 `AbstractApplicationContext#refresh`（或启动异常栈顶）确认自己处在 refresh 的哪一段。
-2) **锁定入口**：选择该现象的第一入口方法（例如 `doResolveDependency` / `getSingleton` / `resolveEmbeddedValue`）。
-3) **观察到关键数据结构**：候选 Map / 三层缓存 / embedded value 解析前后值 / BPP 链顺序。
+1. **定位阶段**：先在 `AbstractApplicationContext#refresh`（或启动异常栈顶）确认自己处在 refresh 的哪一段。
+2. **锁定入口**：选择该现象的第一入口方法（例如 `doResolveDependency` / `getSingleton` / `resolveEmbeddedValue`）。
+3. **观察到关键数据结构**：候选 Map / 三层缓存 / embedded value 解析前后值 / BPP 链顺序。
 
 无需追完整条链，只要能用 2–3 个方法把“阶段→分支→结论”连起来即可。
 
 ---
 
-## 自检要点
-应能够做到：
+## 验证标准：能把事故压成阶段和第一断点
+读完后应能做到：
 
-1) 任意一个 IoC 相关异常，先定位它属于 definition 还是 bean creation，再决定下哪个断点。
-2) 解释“为什么这个断点能证明结论”（而不是碰巧）。
-3) 用本仓库的 Lab 复现同类机制边界，并把修复方案固化成可回归验证。
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
+1. 任意一个 IoC 相关异常，先定位它属于 definition 还是 bean creation，再决定下哪个断点。
+2. 解释“为什么这个断点能证明结论”（而不是碰巧）。
+3. 用本仓库的 Lab 复现同类机制边界，并把修复方案固化成可回归验证。
 
-    建议 先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansIocBranchMatrixLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：生产排障清单按症状给分流：注入失败/代理不生效/循环依赖/配置不生效等，每类给出第一入口断点与对应章节/用例。
-    - 下一跳：需要补齐“现象 → 章节 → 断点组 → Lab”时，回到 [知识地图](appendix-knowledge-map.md)；需要快速选断点组时，回到 [断点地图](guide-breakpoint-map.md)。
-<!-- AE-DEEPENING:END -->
 
-## 小结
+## 收束：生产排障不从猜测开始
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-

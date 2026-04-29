@@ -1,20 +1,28 @@
 # 99 自检：Spring Boot Web MVC
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（复盘出口）"
+!!! summary "章节入口（复盘出口）"
 
     - 主线入口：`BootWebMvcBookMatrixLabTest`
     - 分支入口：`BootWebMvcErrorBranchMatrixLabTest`（400/406/415）
-    - 推荐先跑：`BootWebMvcLabTest` / `BootWebMvcBindingDeepDiveLabTest`
+    - 入口：`BootWebMvcLabTest` / `BootWebMvcBindingDeepDiveLabTest`
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（Web MVC）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[01. 常见坑清单（Web MVC）](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 导读
 
-本章是「99 - Self Check（springboot-web-mvc）」的自检与复盘页：不引入新概念，而是把关键分支以问题的形式回放。
-建议先运行 `BootWebMvcErrorViewLabTest`（或本章列出的 Matrix/Lab 入口），再按题目逐一回到对应的证据链。
+本章是自检与复盘页：不引入新概念，而是把关键分支以问题的形式回放。
+先运行 `BootWebMvcErrorViewLabTest`（或本章列出的 Matrix/Lab 入口），再按题目逐一回到对应的证据链。
 
 ## 从 Book Matrix 进入（主线最小集合）
 
@@ -42,14 +50,14 @@
 
 ## 如何把自测题变成“可验证事实”（证据链指引）
 
-建议对每一题都做到“三段式”：
-1) **现象**：先跑 Lab 固定状态码/响应体/headers/asyncStarted
-2) **证据**：拿到 `resolvedException` / handler / event sequence
-3) **断点**：在关键入口打断点观察分支（不要先改业务代码）
+对每一题都做到“三段式”：
+1. **现象**：先跑 Lab 固定状态码/响应体/headers/asyncStarted
+2. **证据**：拿到 `resolvedException` / handler / event sequence
+3. **断点**：在关键入口打断点观察分支（不要先改业务代码）
 
-下面给出每题的最小证据链（Lab + 断点建议）：
+下面给出每题的最小证据链（Lab + 断点入口）：
 
-| 题号 | 最小可运行证据链（Lab/Test） | 建议断点（源码入口） | 观察点 |
+| 题号 | 最小可运行证据链（实验/测试） | 断点入口（源码入口） | 观察点 |
 | --- | --- | --- | --- |
 | 1 | `BootWebMvcLabTest` / `BootWebMvcBindingDeepDiveLabTest` | `DataBinder#validate` / `ExceptionHandlerExceptionResolver` | 400 + message/fieldErrors |
 | 2 | `BootWebMvcAdviceMatchingLabTest` / `BootWebMvcAdviceOrderLabTest` | `ControllerAdviceBean#isApplicableToBeanType` / `ExceptionHandlerExceptionResolver#doResolveHandlerMethodException` | 哪个 advice 生效（message）+ 为什么（selector/order） |
@@ -62,7 +70,7 @@
 
 ## 最小可运行实验（Lab）
 
-- 本章按“题目 → 证据链”的方式引用 Labs（建议优先跑它们）：
+- 本章按“题目 → 证据链”的方式引用 Labs（优先跑它们）：
 - Lab：`BootWebMvcLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
 - Lab：`BootWebMvcTestingDebuggingLabTest`
@@ -72,7 +80,7 @@
 - Lab：`BootWebMvcAdviceMatchingLabTest`
 - Lab：`BootWebMvcRealWorldHttpLabTest`
 - Lab：`BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 
 ## 对应 Exercise（可运行）
@@ -81,14 +89,14 @@
 
 ## 常见坑索引（本页不重复坑正文）
 
-- 建议对照：[`01-common-pitfalls.md`](appendix-common-pitfalls.md)
+- 对照：[`01-common-pitfalls.md`](appendix-common-pitfalls.md)
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcLabTest`
 - Lab：`BootWebMvcBindingDeepDiveLabTest`
@@ -101,5 +109,5 @@
 - Lab：`BootWebMvcSecurityLabTest` / `BootWebMvcObservabilityLabTest`
 - Exercise：`BootWebMvcExerciseTest`
 
-上一章：[01. 常见坑清单（Web MVC）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[01. 常见坑清单（Web MVC）](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- BOOKIFY:END -->

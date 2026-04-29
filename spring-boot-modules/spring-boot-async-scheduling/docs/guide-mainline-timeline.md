@@ -1,6 +1,6 @@
 # 01. 主线时间线：Spring Boot Async & Scheduling
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（路线图）"
+!!! summary "章节入口（路线图）"
 
     这一章不讲新 API，其定位更接近“路标”：告诉这模块要解决哪些边界问题，以及为什么章节按这个顺序组织。
 
@@ -10,12 +10,20 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[第 116 章：Async/Scheduling 主线](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 00 - Deep Dive Guide（springboot-async-scheduling）](guide-deep-dive-guide.md)
+上一章：[Async/Scheduling 主线](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[深挖导读：Spring Boot Async & Scheduling](guide-deep-dive-guide.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），先把结论跑成断言，再回到正文理解顺序与边界。
+优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（分支）（见文末“对应实验/测试”），先把结论跑成断言，再回到正文理解顺序与边界。
 
 
 <!-- BOOKLIKE-V2:SUMMARY:START -->
@@ -24,24 +32,24 @@
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKLIKE-V2:INTRO:START -->
-如果愿意按主线顺读，建议把注意力放在三个反复出现的问题上：有没有代理、用了哪个 executor/scheduler、异常最终落在哪。
+如果愿意按主线顺读，把注意力放在三个反复出现的问题上：有没有代理、用了哪个 executor/scheduler、异常最终落在哪。
 
 这不是“背结论”，而是为了让人在真实项目里遇到不确定行为时，能用一套稳定的判断方法收敛问题。
 <!-- BOOKLIKE-V2:INTRO:END -->
 
 ## 先把“这模块到底在讲什么”说清楚
 
-在业务代码里，`@Async` 和 `@Scheduled` 都像是“加个注解就行”。但在排过几次线上问题之后，会发现它们其实一直在问同一类问题：
+在业务代码里，`@Async` 和 `@Scheduled` 都像是“加个注解就行”。但在排过几次线上问题之后，会发现它们本质上一直在问同一类问题：
 
 - 这次调用到底有没有经过代理？（没经过就谈不上拦截、线程切换、事务等 AOP 能力）
-- 这次执行最终落在哪个线程池/调度器上？（直觉里的“默认”很可能不是默认）
+- 这次执行最终落在哪个线程池/调度器上？（预期中的“默认”很可能不是默认）
 - 异常到底去哪了？（是要“调用方必须知道”，还是“只要能观测到即可”）
 
 本模块的文档与测试基本都围绕这三件事展开：把不可见的边界变成可观察的事实。
 
 ## 为什么主线按这个顺序排
 
-很多讲 `@Async` 的文章会从“怎么配置线程池”开始，但我更倾向于先把“它靠什么生效”讲透：如果连代理链都没走到，线程池配置再漂亮也没意义。
+`@Async` 不应只从“怎么配置线程池”开始；更关键的是先确认“它靠什么生效”：如果连代理链都没走到，线程池配置再漂亮也没意义。
 
 下面这条顺序，刻意从“机制前提”一路走到“真实工程边界”。
 
@@ -51,7 +59,7 @@
 
 2. 再谈 executor：想让它跑在哪个线程池上
    - 阅读：[02：Executor 与线程命名/并发边界](async-scheduling-executor-and-threading.md)
-   - 为什么紧接着讲：线程名是最稳定的观测点；executor 选择规则不弄清楚，后面所有“我以为”都站不住。
+   - 为什么紧接着讲：线程名是最稳定的观测点；executor 选择规则不弄清楚，后面的预期判断都站不住。
 
 3. 然后处理异常：异步失败，到底是谁要负责知道
    - 阅读：[03：异常传播：Future vs void](async-scheduling-exceptions.md)
@@ -74,7 +82,7 @@
 ## 如果现在是在排障
 
 - 想确认“到底有没有走代理 / 有没有切线程 / 异常去哪了”：先看 [关键分支矩阵](guide-branch-decision-matrix.md)
-- 想从源码里搞清楚“为什么这次没生效”：用 [断点地图](guide-breakpoint-map.md) 省掉翻来覆去找入口的时间
+- 想从源码里确认“为什么这次没生效”：用 [断点地图](guide-breakpoint-map.md) 省掉翻来覆去找入口的时间
 - 想快速对照常见坑：看 [常见坑清单](appendix-common-pitfalls.md)，每个坑都有最小复现入口
 
 ## 进一步验证（可选）
@@ -82,12 +90,12 @@
 <!-- BOOKLIKE-V2:EVIDENCE:START -->
 - 主线最小集合：`BootAsyncSchedulingBookMatrixLabTest`
 - 关键分支最小集合：`BootAsyncSchedulingBranchMatrixLabTest`
-- 如果想从断点看一遍完整链路：从 `AsyncAnnotationBeanPostProcessor`（代理建立）→ `AsyncExecutionInterceptor`（提交）→ `ScheduledAnnotationBeanPostProcessor`（调度注册）这三个入口切入就够了。
+- 如果想从断点看一遍完整链路：从 `AsyncAnnotationBeanPostProcessor`（代理建立）→ `AsyncExecutionInterceptor`（提交）→ `ScheduledAnnotationBeanPostProcessor`（调度注册）这三个入口切入即可。
 <!-- BOOKLIKE-V2:EVIDENCE:END -->
 
 下一章：深挖导读（把阅读路线与验证入口放在一起说清楚）。
 
 ## 小结与下一章
 
-下一章见：[第 118 章：00 - Deep Dive Guide（springboot-async-scheduling）](guide-deep-dive-guide.md)
+下一章见：[深挖导读](guide-deep-dive-guide.md)
 

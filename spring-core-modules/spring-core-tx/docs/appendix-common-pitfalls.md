@@ -1,7 +1,7 @@
-# 01. 常见坑清单（建议反复对照）
+# 01. 常见坑清单（排查时对照）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕常见坑清单（建议反复对照）展开，主线可以概括为：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
+!!! summary "章节入口（五问闭环）"
+    本章围绕常见坑清单（排查时对照）展开，主线可以概括为：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
 
     先运行 `SpringCoreTxLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
 
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. Debug / 观察：如何判断“当前是否真的有事务”？](template-and-debugging-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 自测题（Spring Core Tx）](appendix-self-check.md)
+上一章：[02. Debug / 观察：如何判断“当前是否真的有事务”？](template-and-debugging-debugging.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 自测题（Spring Core Tx）](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ### 排障骨架（统一结构）
 
@@ -22,7 +30,7 @@
    - Book Matrix：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBookMatrixLabTest test`
    - Branch Matrix - 事务主分支：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxBranchMatrixLabTest test`
    - Branch Matrix - 常见坑聚合：`mvn -q -pl :spring-core-tx -Dtest=SpringCoreTxPitfallsBranchMatrixLabTest test`
-3. 证据（Evidence）：对照断点地图，把断点/Watchpoints/关键日志收齐：[04-breakpoint-map.md](guide-breakpoint-map.md)
+3. 证据（Evidence）：对照断点地图，把断点/观察点/关键日志收齐：[04-breakpoint-map.md](guide-breakpoint-map.md)
 4. 决策（Decision）：对照关键分支矩阵，把 If/Then 选路写清楚：[05-branch-decision-matrix.md](guide-branch-decision-matrix.md)
 5. 修复（Fix）：给出最小修复动作（配置/代码/调用方式）
 6. 验证（Verify）：复跑入口 + 对照自检清单：[02-self-check.md](appendix-self-check.md)
@@ -31,16 +39,15 @@
 !!! example "本章配套实验（先运行实验，再阅读）"
 
     - Lab：`SpringCoreTxLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
-
 ## 最小可运行实验（Lab）
 
-- 本章主要作为补充说明/索引页使用：推荐直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
+- 本章主要作为补充说明/索引页使用：直接从模块的 Matrix/Lab 入口进入，再回到这里对照。
 - Lab：`SpringCoreTxLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
-- 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
-> 事务排障的第一步永远是同一句话：**以为有事务，但事务真的存在吗？**（见上一章 Debug/观察，优先用断言而不是靠日志猜）
+> 事务排障的第一步永远是同一句话：**以为有事务，但事务真的存在吗？**（见上一章 Debug/观察，优先用断言而不是只凭日志猜测）
 
 ## 坑 1：同类自调用导致 `@Transactional` 不生效
 
@@ -54,7 +61,7 @@
 
 - 现象：以为“抛过异常”就会回滚，但实际提交了
 - 原因：事务是否回滚取决于异常是否逃逸出事务边界，或是否显式标记 rollback-only
-- 建议：学习阶段优先用“查表行数”做验证，不要只看异常
+- 动作：学习阶段优先用“查表行数”做验证，不要只看异常
 
 ## 坑 3：checked exception 默认不回滚
 
@@ -82,7 +89,7 @@
 
 ## 坑 7：把 `NESTED` 当成 `REQUIRES_NEW`，结果语义误判
 
-- 误判：以为 `NESTED` 会开新事务（其实更接近 savepoint）
+- 误判：以为 `NESTED` 会开新事务（本质上更接近 savepoint）
 - 正确理解：外层事务存在时，`NESTED` 在同一个物理事务里创建 savepoint
 - 对照：`SpringCoreTxPropagationMatrixLabTest#nestedRollsBackOnlyInnerWhenOuterCatchesException`
 
@@ -91,11 +98,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreTxLabTest` / `SpringCoreTxPropagationMatrixLabTest` / `SpringCoreTxRollbackRulesLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
 - Exercise：`SpringCoreTxExerciseTest`
 
-上一章：[06-debugging](template-and-debugging-debugging.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[99-self-check](appendix-self-check.md)
+上一章：[06-debugging](template-and-debugging-debugging.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[99-self-check](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

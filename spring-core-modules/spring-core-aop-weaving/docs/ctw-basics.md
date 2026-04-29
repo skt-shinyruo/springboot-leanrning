@@ -1,6 +1,6 @@
 # 01. CTW：Compile-Time Weaving（编译期织入）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕CTW：Compile-Time Weaving（编译期织入）展开，主线可以概括为：代理 vs 织入：选择 LTW/CTW → 定义切点（execution/call/...）→ weaving 生效取决于 classloader/agent/时机 → 用测试/断点验证。
 
     先运行 `AspectjCtwLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：当代理覆盖不了 join point（constructor/get/set/call）时，使用 AspectJ LTW/CTW 在类加载期/编译期织入；用可断言实验验证是否生效。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. LTW：Load-Time Weaving（-javaagent）](ltw-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Join Point & Pointcut Cookbook（速查）](join-points-join-point-cookbook.md)
+上一章：[01. LTW：Load-Time Weaving（-javaagent）](ltw-basics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. Join Point & Pointcut Cookbook（速查）](join-points-join-point-cookbook.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「03. CTW：Compile-Time Weaving（编译期织入）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `AspectjCtwLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `AspectjCtwLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -51,7 +51,7 @@ CTW 的代价主要在于：
 ## 最小可运行实验（Lab）
 
 - Lab：`AspectjCtwLabTest`
-- 建议命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop-weaving test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -88,10 +88,10 @@ CTW 的关键是“构建产物是否被织入”；IDE 的编译/运行配置�
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`AspectjCtwLabTest`
 
-上一章：[02-ltw-basics](ltw-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04-join-point-cookbook](join-points-join-point-cookbook.md)
+上一章：[02-ltw-basics](ltw-basics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04-join-point-cookbook](join-points-join-point-cookbook.md)
 
 <!-- BOOKIFY:END -->

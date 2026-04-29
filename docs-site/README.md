@@ -17,7 +17,7 @@
 
 依赖列表见：`docs-site/requirements.txt`。
 
-#### 方式 A（推荐）：使用 venv
+#### 方式 A（默认路径）：使用 venv
 
 > `docs-site/.venv/` 已加入 `.gitignore`，不会被提交。
 
@@ -26,11 +26,11 @@ python3 -m venv docs-site/.venv
 docs-site/.venv/bin/python -m pip install -r docs-site/requirements.txt
 ```
 
-> ⚠️ 如果你的系统缺少 venv 支持（例如 Debian/Ubuntu 报 `python3-venv` 缺失），请先安装对应包后再创建 venv。
+> 如果系统缺少 venv 支持（例如 Debian/Ubuntu 报 `python3-venv` 缺失），先安装对应包后再创建 venv。
 
-#### 方式 B：安装到用户目录（不推荐，但更“省事”）
+#### 方式 B：安装到用户目录（备用路径）
 
-> ⚠️ 仅建议在你理解 PEP 668/系统 Python 约束的前提下使用。
+> 该方式会绕过部分系统 Python 保护，只适合已经理解 PEP 668/系统 Python 约束的场景。
 
 ```bash
 python3 -m pip install --user --break-system-packages -r docs-site/requirements.txt
@@ -54,7 +54,7 @@ mkdocs build -f mkdocs.yml
 
 站点目录文件：`docs/SUMMARY.md`
 
-维护规则（建议）：
+维护规则：
 
 - 目录只放“索引级入口”（模块 README + Guide + Pitfalls/Self-check），深挖页通过站内搜索与文内链接进入
 - 链接一律使用相对 `docs/` 根目录的路径（例如 `book/06-spring-boot-web-mvc.md`）

@@ -1,6 +1,6 @@
 # 01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕AOP 心智模型：代理（Proxy）+ 入口（Call Path）展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
@@ -10,15 +10,15 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. JDK vs CGLIB：代理类型与“可注入类型”差异](proxy-fundamentals-jdk-vs-cglib.md)
+上一章：[02. 深挖指南：把“代理是怎么来的、advice 链怎么跑”落到源码与断点](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. JDK vs CGLIB：代理类型与“可注入类型”差异](proxy-fundamentals-jdk-vs-cglib.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「01. AOP 心智模型：代理（Proxy）+ 入口（Call Path）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreAopLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreAopLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
-!!! tip "前置：把“代理替换发生在哪个阶段”放回容器主线（建议只读一次）"
+!!! tip "前置：把“代理替换发生在哪个阶段”放回容器主线（只读一次即可）"
 
     很多读者在 AOP 里卡住的根因是：对 **Bean 创建阶段** 没有稳定心智模型（什么时候允许“换对象”、early reference 如何参与循环依赖）。
 
@@ -57,7 +57,7 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 
 这也是为什么：
 
-> 深挖入口：如果想在源码里“看见”这一段，建议先读 [00. 深挖指南](guide-deep-dive-guide.md)。
+> 深挖入口：如果想在源码里“看见”这一段，先读 [00. 深挖指南](guide-deep-dive-guide.md)。
 
 重点看这些断言：
 
@@ -68,7 +68,7 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
   - `JdkDynamicAopProxy#invoke` / `CglibAopProxy.DynamicAdvisedInterceptor#intercept`
   - `ReflectiveMethodInvocation#proceed`
 
-### 推荐观察点（watch list）
+### 观察点（观察清单）
 
 - `beanName`：当前观察哪个 bean 的代理决策
 - `AopUtils.isAopProxy(bean)` / `AopUtils.isJdkDynamicProxy(bean)` / `AopUtils.isCglibProxy(bean)`：最终形态
@@ -93,7 +93,7 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 
 ## 排障分流：这是调用路径问题，还是匹配/限制问题？
 
-当遇到 “AOP 没生效” 的问题，建议先用分流思路避免走弯路：
+当遇到 “AOP 没生效” 的问题，先用分流思路避免走弯路：
 
 把问题落到这三类里，就会发现排障会稳定很多。
 
@@ -106,7 +106,7 @@ Spring AOP 学习最关键的不是“会写一个 `@Aspect`”，而是建立�
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -133,11 +133,11 @@ mvn -pl :spring-core-aop test
 - `SpringCoreAopLabTest#tracedBusinessServiceIsAnAopProxy`：证明注入的 bean 是代理
 - `SpringCoreAopLabTest#adviceIsAppliedToTracedMethod`：证明 `@Traced` 方法被 `TracingAspect` 拦截
 
-## 源码锚点（建议从这里下断点）
+## 源码锚点（从这里下断点）
 
 如果只想抓主线，不想在 AOP 源码里迷路，这几个断点足够覆盖 80% 的理解与排障：
 
-## 断点闭环（用本仓库 Lab/Test 跑一遍）
+## 断点闭环（用本仓库实验/测试 跑一遍）
 
 1. `SpringCoreAopLabTest#tracedBusinessServiceIsAnAopProxy`：先确认“拿到的是 proxy”
 2. `SpringCoreAopLabTest#adviceIsAppliedToTracedMethod`：再确认“advice 确实包住了方法调用”
@@ -154,17 +154,17 @@ mvn -pl :spring-core-aop test
 
 ## 小结与下一章
 <!-- BOOKLIKE-V2:SUMMARY:START -->
-- 一句话总结：AOP 心智模型：代理（Proxy）+ 入口（Call Path） —— 先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
+- 一句话总结：AOP 心智模型：代理（Proxy）+ 入口（Call Path） —— 先运行本章 Lab，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
 - 回到主线：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 - 下一章：见页尾导航（顺读不迷路）。
 <!-- BOOKLIKE-V2:SUMMARY:END -->
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopLabTest`
 
-上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-jdk-vs-cglib](proxy-fundamentals-jdk-vs-cglib.md)
+上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02-jdk-vs-cglib](proxy-fundamentals-jdk-vs-cglib.md)
 
 <!-- BOOKIFY:END -->

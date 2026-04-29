@@ -3,7 +3,7 @@
 ## 导读
 
 本章围绕「04：静态资源与缓存（Static Resources / Cache-Control）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcRealWorldHttpLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -18,7 +18,7 @@
 
 ## 源码与断点
 
-建议断点：
+断点入口：
 - `org.springframework.web.servlet.resource.ResourceHttpRequestHandler#handleRequest`
 - 条件请求（ETag/304）的入口可从 `ServletWebRequest#checkNotModified` 的调用链反推（本模块示例为显式实现）。
 
@@ -36,9 +36,9 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcRealWorldHttpLabTest`
 
-上一章：[03. 下载与 Header（Content-Disposition / Content-Type / bytes）](real-world-http-download-and-streaming.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](real-world-http-conditional-requests-last-modified-etag-filter.md)
+上一章：[03. 下载与 Header（Content-Disposition / Content-Type / bytes）](real-world-http-download-and-streaming.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](real-world-http-conditional-requests-last-modified-etag-filter.md)
 <!-- BOOKIFY:END -->

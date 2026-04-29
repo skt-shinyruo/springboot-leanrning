@@ -1,12 +1,12 @@
 # 10 Spring Boot Web Client：HTTP 调用、错误处理与可测试性
 
-## 学习目标
+## 本章要回答的问题
 
 - 能跑通一个最小 HTTP 调用闭环（RestClient/WebClient），并能解释拦截器/过滤器在链路中的生效位置。
-- 能把错误处理与超时重试写成可回归验证（而不是只靠日志观察）。
+- 能把错误处理与超时重试写成可回归验证（而不是只凭日志观察）。
 - 能用 MockWebServer 等方式把外部依赖变成可控输入，固定边界与分支。
 
-## 概念框架
+## 主线框架
 
 - **两类客户端形态**：
   - RestClient：同步调用，适合大多数传统 MVC 项目边界。
@@ -26,9 +26,9 @@
 - 模块目录页（顺读主线）：
   - [`spring-boot-web-client/README.md`](../../spring-boot-modules/spring-boot-web-client/README.md)
 - 导航型文档（用于定位“拦截链/错误映射/测试入口”）：
-  - Web Client 调用链：[`part-00-guide/03-webclient-call-chain.md`](../../spring-boot-modules/spring-boot-web-client/docs/guide-webclient-call-chain.md)
-  - 错误处理：[`part-01-web-client/03-error-handling.md`](../../spring-boot-modules/spring-boot-web-client/docs/web-client-error-handling.md)
-  - MockWebServer 测试：[`part-01-web-client/05-testing-with-mockwebserver.md`](../../spring-boot-modules/spring-boot-web-client/docs/web-client-testing-with-mockwebserver.md)
+  - Web Client 调用链：[`guide-webclient-call-chain.md`](../../spring-boot-modules/spring-boot-web-client/docs/guide-webclient-call-chain.md)
+  - 错误处理：[`web-client-error-handling.md`](../../spring-boot-modules/spring-boot-web-client/docs/web-client-error-handling.md)
+  - MockWebServer 测试：[`web-client-testing-with-mockwebserver.md`](../../spring-boot-modules/spring-boot-web-client/docs/web-client-testing-with-mockwebserver.md)
 
 ## 常见误区
 
@@ -36,7 +36,7 @@
 - 没有设置超时/重试策略，导致生产故障表现为“线程堆积/请求悬挂”，且难以复现。
 - 在 WebClient 场景里随意阻塞（例如 `.block()`）而不验证线程模型与上下文传播，导致隐蔽死锁/性能问题。
 
-## 练习
+## 验证练习
 
 - 练习 1（错误映射固定）：
   - 运行 `BootWebClientBookMatrixLabTest`；
@@ -61,4 +61,3 @@
 ---
 
 [← 上一章](09-spring-boot-data-jpa.md) | [目录](README.md) | [下一章 →](11-spring-boot-async-scheduling.md)
-

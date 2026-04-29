@@ -1,7 +1,7 @@
-# 02. 00 - Deep Dive Guide（springboot-testing）
+# 深挖导读：Spring Boot Testing
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕Deep Dive Guide（springboot-testing）展开，主线可以概括为：测试注解决定上下文装配范围 → TestContext 缓存与复用 → slice/full context 的权衡 → 断言固化机制结论 → 快速定位失败。
+!!! summary "章节入口（五问闭环）"
+    本章用于把模块主线、源码入口与断点路径串起来，主线可以概括为：测试注解决定上下文装配范围 → TestContext 缓存与复用 → slice/full context 的权衡 → 断言固化机制结论 → 快速定位失败。
 
     阅读时可以先跑 `BootTestingMockBeanLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：按目标选择测试切片（如 `@WebMvcTest`）或全量上下文（`@SpringBootTest`）；用 mock/替身把外部依赖固定成可断言证据。
 
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Boot Testing](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 01 - Slice 与 Mock（Testing）](testing-slice-and-mocking.md)
+上一章：[01. 主线时间线：Spring Boot Testing](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 01 - Slice 与 Mock（Testing）](testing-slice-and-mocking.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
@@ -63,9 +71,9 @@
 ## 源码与断点
 
 
-建议断点（排障优先级从高到低）：
+断点入口（排障优先级从高到低）：
 
-- **先断言“我到底启动了什么”**
+- **先断言“当前到底启动了什么”**
   - 在测试类上确认使用 `@WebMvcTest` 还是 `@SpringBootTest`
 - **当遇到 BeanNotFound / 组件没加载**
   - slice：检查是否需要 `@MockBean` / `@Import` / `@AutoConfigureMockMvc`
@@ -77,7 +85,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest` / `GreetingControllerWebMvcLabTest`
-- 建议命令：`mvn -pl :spring-boot-testing test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-testing test`（或在 IDE 直接运行上面的测试类）
 
 
 ## 如何跑实验
@@ -92,18 +100,18 @@
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootTestingMockBeanLabTest` / `GreetingControllerSpringBootLabTest` / `GreetingControllerWebMvcLabTest`
 - Exercise：`BootTestingExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-testing/01-slice-and-mocking.md](testing-slice-and-mocking.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[testing-slice-and-mocking.md](testing-slice-and-mocking.md)
 
 <!-- BOOKIFY:END -->

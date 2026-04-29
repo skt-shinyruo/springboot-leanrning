@@ -1,6 +1,6 @@
 # 05. ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcAdviceMatchingLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](exception-resolvers-problemdetail-vs-custom-error.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 错误页（error/*.html）与内容协商（Accept：HTML vs JSON）](boot-error-error-pages-and-content-negotiation.md)
+上一章：[04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](exception-resolvers-problemdetail-vs-custom-error.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. 错误页（error/*.html）与内容协商（Accept：HTML vs JSON）](boot-error-error-pages-and-content-negotiation.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「05：ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebMvcAdviceMatchingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebMvcAdviceMatchingLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -49,9 +49,9 @@
 
 > 需要在脑子里把 “匹配集合” 与 “排序决策” 分开：先进入集合，再在集合内部比顺序。
 
-## 源码与断点（建议从 Lab 反推）
+## 源码与断点（从 Lab 反推）
 
-建议断点（按“选择逻辑”优先）：
+断点入口（按“选择逻辑”优先）：
 
 - `ExceptionHandlerExceptionResolver#doResolveHandlerMethodException`（异常处理主入口）
 - `ExceptionHandlerExceptionResolver#getExceptionHandlerMethod`（本地 handler vs advice 的选择）
@@ -59,7 +59,7 @@
 - `org.springframework.web.method.HandlerTypePredicate#test`（basePackages/annotations/assignableTypes 的谓词）
 - `org.springframework.core.annotation.AnnotationAwareOrderComparator#sort`（排序）
 
-观察点（调试时建议记录成证据链）：
+观察点（调试时记录成证据链）：
 - 最终命中的 `@ExceptionHandler` 来自哪个类（controller 本地 vs 哪个 advice）
 - 当前 controller 的实际类型（是否被代理、包名是否符合 selector）
 
@@ -80,14 +80,14 @@
 
 - **坑 2：把多个 selector 当成 AND（结果意外扩大作用域）**
   - 例如写了 `basePackages=...` + `annotations=...`，并不代表“只作用于该包内且带该注解的 controller”，而是“包内的 controller + 带该注解的 controller（并集）”。
-  - 如果期望更强的限定，建议用“更独特的 marker/annotation”来间接收敛范围（本模块的 Lab 即使用专用 `AdviceMatchingTagged/AdviceMatchingMarker` 做演示）。
+  - 如果期望更强的限定，用“更独特的 marker/annotation”来间接收敛范围（本模块的 Lab 即使用专用 `AdviceMatchingTagged/AdviceMatchingMarker` 做演示）。
 
 - **坑 3：@WebMvcTest 忘了把 advice 纳入上下文**
-  - slice 测试默认不会加载全量组件；建议用 `@Import(...)` 显式把目标 advice 纳入（本模块的 LabTest 都这么做）。
+  - slice 测试默认不会加载全量组件；用 `@Import(...)` 显式把目标 advice 纳入（本模块的 LabTest 都这么做）。
 
 - **坑 4：异常发生在 converter/binder 阶段，却只处理业务异常**
   - 406/415、解析失败、类型不匹配等并不会进入“以为会到的”异常类型。
-  - 建议：先用 `resolvedException` 固定异常类型，再决定由哪个 advice 处理。
+  - 动作：先用 `resolvedException` 固定异常类型，再决定由哪个 advice 处理。
 
 ## 小结与下一章
 
@@ -95,10 +95,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcAdviceMatchingLabTest`
 - Lab：`BootWebMvcAdviceOrderLabTest`
 
-上一章：[04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](exception-resolvers-problemdetail-vs-custom-error.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. 错误页（error/*.html）与内容协商（Accept：HTML vs JSON）](boot-error-error-pages-and-content-negotiation.md)
+上一章：[04. ProblemDetail vs 自定义错误体（ApiError：契约的两种路线）](exception-resolvers-problemdetail-vs-custom-error.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. 错误页（error/*.html）与内容协商（Accept：HTML vs JSON）](boot-error-error-pages-and-content-negotiation.md)
 <!-- BOOKIFY:END -->

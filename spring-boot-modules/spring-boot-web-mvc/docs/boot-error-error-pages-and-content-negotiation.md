@@ -6,7 +6,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 ## 机制主线
 
@@ -14,10 +14,10 @@
 
 ## 应当观察到的现象（What to observe）
 
-1) 当 Accept 偏向 `text/html`（浏览器）
+1. 当 Accept 偏向 `text/html`（浏览器）
 - 404/4xx/5xx 会返回 HTML 错误页（可读、可导航）
 
-2) 当 Accept 偏向 `application/json`（接口调用/脚本）
+2. 当 Accept 偏向 `application/json`（接口调用/脚本）
 - 错误会返回 JSON（便于程序处理与断言）
 
 ## 机制解释（Why）
@@ -38,7 +38,7 @@
 - 返回视图（HTML）
 - 或返回 JSON（错误体/ProblemDetail/自定义结构）
 
-在本模块里，我们用一个最小示例演示这种差异：
+在本模块里，本章用一个最小示例演示这种差异：
 
 - `/pages/error-demo` 主动抛出异常
 - `MvcExceptionHandler` 基于 Accept 做兜底：HTML → 错误页，JSON → ApiError
@@ -56,7 +56,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-mvc test`（或在 IDE 直接运行上面的测试类）
 
 
 ## 实验入口（先跑再看）
@@ -88,7 +88,7 @@
 - 浏览器访问却返回 JSON
 - 或 API 调用却被当成页面渲染
 
-建议做法：
+处理方式：
 - controller mapping 用 `produces` 明确约束（API vs 页面）
 - 错误处理尽量以“可解释的规则”实现，并用测试固化
 
@@ -102,7 +102,7 @@
 - slice：`BootWebMvcErrorViewLabTest`
 - 端到端：`BootWebMvcViewSpringBootLabTest`
 
-### 4) Security 介入后错误页“看起来不对”
+### 4) Security 介入后错误页“表面上不对”
 
 如果错误发生在 FilterChain（例如 401/403），它可能不会走到 MVC 的错误页渲染。
 排障顺序应优先从 FilterChainProxy/ExceptionTranslationFilter 入手（详见 Part 08）。
@@ -112,10 +112,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcErrorViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcErrorViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
-上一章：[05. ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](exception-resolvers-controlleradvice-matching-and-ordering.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. Servlet Async（Callable）与测试（asyncDispatch）](async-sse-servlet-async-and-testing.md)
+上一章：[05. ControllerAdvice 的匹配与优先级（为什么 advice 生效/不生效）](exception-resolvers-controlleradvice-matching-and-ordering.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. Servlet Async（Callable）与测试（asyncDispatch）](async-sse-servlet-async-and-testing.md)
 <!-- BOOKIFY:END -->

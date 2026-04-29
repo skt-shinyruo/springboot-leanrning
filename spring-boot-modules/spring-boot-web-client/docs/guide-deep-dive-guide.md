@@ -1,7 +1,7 @@
-# 02. 00 - Deep Dive Guide（springboot-web-client）
+# 深挖导读：Spring Boot Web Client
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕Deep Dive Guide（springboot-web-client）展开，主线可以概括为：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
+!!! summary "章节入口（五问闭环）"
+    本章用于把模块主线、源码入口与断点路径串起来，主线可以概括为：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
 
     阅读时可以先跑 `BootWebClientRestClientLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
 
@@ -10,13 +10,21 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Boot Web Client](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. RestClient（同步）最小闭环](web-client-restclient-basics.md)
+上一章：[01. 主线时间线：Spring Boot Web Client](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. RestClient（同步）最小闭环](web-client-restclient-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-本章是「00 - Deep Dive Guide（springboot-web-client）」的深挖导读：说明如何阅读、如何验证、以及遇到分支时从哪里下断点更省时间。
-建议先运行 `BootWebClientRestClientLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
+本章用于说明本模块如何阅读、如何验证，以及遇到分支时从哪里下断点。
+先运行 `BootWebClientRestClientLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -62,7 +70,7 @@
 ## 源码与断点
 
 
-建议断点（先从自己的 client 代码入手，再下探框架）：
+断点入口（先从自己的 client 代码入手，再下探框架）：
 
 - 请求构造点：确认 path/query/header 是否按预期拼出来
 - 错误映射点：确认“哪些异常/状态码”被映射为 `DownstreamServiceException`
@@ -72,10 +80,10 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
 
 
-## 推荐学习目标
+## 验证目标
 1. 能区分 RestClient 与 WebClient 的适用场景与线程模型
 2. 能写出可控的错误处理（不要让调用方被底层异常细节污染）
 3. 能把超时/重试与幂等性/雪崩风险关联起来思考
@@ -93,18 +101,18 @@
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest` / `BootWebClientWebClientFilterOrderLabTest`
 - Exercise：`BootWebClientExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-client/01-restclient-basics.md](web-client-restclient-basics.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[web-client-restclient-basics.md](web-client-restclient-basics.md)
 
 <!-- BOOKIFY:END -->

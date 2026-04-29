@@ -1,6 +1,6 @@
 # 05. 测试策略：为什么用 MockWebServer？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕05：测试策略：为什么用 MockWebServer？展开，主线可以概括为：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
 
     阅读时可以先跑 `BootWebClientRestClientLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. 超时与重试（确定性实验）](web-client-timeout-and-retry.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 常见坑清单（Web Client）](appendix-common-pitfalls.md)
+上一章：[04. 超时与重试（确定性实验）](web-client-timeout-and-retry.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 常见坑清单（Web Client）](appendix-common-pitfalls.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「05：测试策略：为什么用 MockWebServer？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-建议优先运行 `BootWebClientRestClientLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `BootWebClientRestClientLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先跑再读）"
 
@@ -40,7 +40,7 @@ MockWebServer 的优势：
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
 
 
 ## 对应实验入口
@@ -72,10 +72,10 @@ MockWebServer 本质上是一个真实的 HTTP server（socket + 线程 + I/O）
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
 
-上一章：[part-01-web-client/04-timeout-and-retry.md](web-client-timeout-and-retry.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md)
+上一章：[web-client-timeout-and-retry.md](web-client-timeout-and-retry.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md)
 
 <!-- BOOKIFY:END -->

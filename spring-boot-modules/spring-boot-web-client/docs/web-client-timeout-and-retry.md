@@ -1,6 +1,6 @@
 # 04. 超时与重试（确定性实验）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕04：超时与重试（确定性实验）展开，主线可以概括为：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
 
     阅读时可以先跑 `BootWebClientRestClientLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[03. 错误处理：4xx/5xx → 领域异常](web-client-error-handling.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[05. 测试策略：为什么用 MockWebServer？](web-client-testing-with-mockwebserver.md)
+上一章：[03. 错误处理：4xx/5xx → 领域异常](web-client-error-handling.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[05. 测试策略：为什么用 MockWebServer？](web-client-testing-with-mockwebserver.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -28,7 +28,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
 
 
 本章重点是：把 timeout/retry 做成 **可测** 的实验，避免“线上偶现、测试不稳定”。
@@ -67,10 +67,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
 
-上一章：[part-01-web-client/03-error-handling.md](web-client-error-handling.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-client/05-testing-with-mockwebserver.md](web-client-testing-with-mockwebserver.md)
+上一章：[web-client-error-handling.md](web-client-error-handling.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[web-client-testing-with-mockwebserver.md](web-client-testing-with-mockwebserver.md)
 
 <!-- BOOKIFY:END -->

@@ -1,6 +1,6 @@
 # 03. 错误处理：4xx/5xx → 领域异常
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕03：错误处理：4xx/5xx → 领域异常展开，主线可以概括为：构建请求 → exchange/过滤器链 → 处理状态码与异常 → 超时/取消/重试策略 → 测试验证保证可重复。
 
     阅读时可以先跑 `BootWebClientRestClientLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：用 `RestClient/WebClient` 发起对外 HTTP 调用；用 filter 链统一日志/鉴权/重试/超时；用 mock server 测试把外部依赖固定下来。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. WebClient（响应式）最小闭环](web-client-webclient-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. 超时与重试（确定性实验）](web-client-timeout-and-retry.md)
+上一章：[02. WebClient（响应式）最小闭环](web-client-webclient-basics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. 超时与重试（确定性实验）](web-client-timeout-and-retry.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -33,7 +33,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
-- 建议命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-web-client test`（或在 IDE 直接运行上面的测试类）
 
 
 ## 常见坑与边界
@@ -54,10 +54,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebClientRestClientLabTest` / `BootWebClientWebClientLabTest`
 
-上一章：[part-01-web-client/02-webclient-basics.md](web-client-webclient-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-web-client/04-timeout-and-retry.md](web-client-timeout-and-retry.md)
+上一章：[web-client-webclient-basics.md](web-client-webclient-basics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[web-client-timeout-and-retry.md](web-client-timeout-and-retry.md)
 
 <!-- BOOKIFY:END -->

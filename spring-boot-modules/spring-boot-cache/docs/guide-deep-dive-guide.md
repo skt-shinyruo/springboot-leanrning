@@ -1,6 +1,6 @@
-# 02. 00 - Deep Dive Guide（springboot-cache）
+# 深挖导读：Spring Boot Cache
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（怎么读缓存）"
+!!! summary "章节入口（怎么读缓存）"
 
     这模块想把缓存从“注解背诵题”变成可回归的机制结论：命中短路、写入/失效、key 维度、condition/unless 分支、并发收敛、以及过期的可测试性。跑完一组 Lab，就能把线上常见的争论变成断言（到底走没走方法、到底缓存了没、到底谁在等谁）。
 
@@ -9,17 +9,25 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Boot Cache](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. `@Cacheable` 最小闭环](cache-cacheable-basics.md)
+上一章：[01. 主线时间线：Spring Boot Cache](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. `@Cacheable` 最小闭环](cache-cacheable-basics.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-建议优先运行 `BootCacheBookMatrixLabTest`（见文末“对应 Lab/Test”），用最小集合把“命中/写入/边界/并发/过期”跑成事实，再回到正文系统化串起来。
+优先运行 `BootCacheBookMatrixLabTest`（见文末“对应实验/测试”），用最小集合把“命中/写入/边界/并发/过期”跑成事实，再回到正文系统化串起来。
 
 
-## 无需背 API，但要抓住“缓存其实是一套分支系统”
+## 无需背 API，但要抓住“缓存本质上是一套分支系统”
 
-缓存的难点往往不是“我不会写 `@Cacheable`”，而是不知道自己现在处于哪条分支：
+缓存的难点往往不是“不清楚 `@Cacheable` 怎么写”，而是不知道自己现在处于哪条分支：
 
 - 命中（方法不执行）还是未命中（方法执行 + 回写）？
 - 这次到底用的 key 是什么？是不是把不同请求挤进了同一个 entry？
@@ -47,9 +55,9 @@
 2. **`@Cacheable` 是读路径**：命中后方法体不会执行。
 3. **`@CachePut/@CacheEvict` 是写路径**：更新/失效是“显式表达的意图”，不是系统自动推导。
 4. **key/condition/unless 决定缓存边界**：key 决定“缓存维度”；condition/unless 决定“哪些请求/哪些结果不缓存”。
-5. **并发与过期要可测试**：并发用 latch 固定分支；过期用 `Ticker` 把时间推进变成可控输入（别用 sleep 试运气）。
+5. **并发与过期要可测试**：并发用 latch 固定分支；过期用 `Ticker` 把时间推进变成可控输入（用可控时间替代 sleep）。
 
-## 推荐先跑的入口（少而全）
+## 先运行的入口（少而全）
 
 - `mvn -q -pl :spring-boot-cache -Dtest=BootCacheBookMatrixLabTest test`
 
@@ -59,11 +67,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootCacheLabTest` / `BootCacheSpelKeyLabTest`
 - Exercise：`BootCacheExerciseTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-cache/01-cacheable-basics.md](cache-cacheable-basics.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[cache-cacheable-basics.md](cache-cacheable-basics.md)
 
 <!-- BOOKIFY:END -->

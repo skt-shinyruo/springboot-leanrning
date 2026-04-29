@@ -1,16 +1,24 @@
-# Debugger Pack（断点包总入口）
+# 断点包（断点包总入口）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：建议先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
+!!! summary "章节入口"
+    - 使用方式：先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
 
-    本章围绕Debugger Pack（断点包总入口）展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：断点包（断点包总入口）。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansBreakpointPackLabTest`。需要下探源码时，可以从 `AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
+## 本页路线图
 
-## 导读
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
+
+## 断点包的使用边界：减少命中噪音
 
 - 这页可以当成“进入本模块的调试入口索引”：先运行一条最小回归，再按本页断点清单观察关键数据结构变化，最后回到对应章节补齐解释与边界。
 
@@ -25,7 +33,7 @@
     - Lab（关键分支矩阵入口）：
       - `SpringCoreBeansIocBranchMatrixLabTest`
       - `SpringCoreBeansInternalsBranchMatrixLabTest`
-    - Test file：
+    - 测试文件：
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansBreakpointPackLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansMainlineCallChainLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansIocBranchMatrixLabTest.java`
@@ -37,44 +45,44 @@
 
 Spring IoC 的难点从来不是 API，而是：
 
-- 读者不知道某个“现象”发生在 refresh 的哪个阶段
-- 读者不知道某个“增强/代理/注入”到底由哪个处理器做的
-- 读者不知道“异常信息”应该回溯到哪个关键分支
+- 不知道某个“现象”发生在 refresh 的哪个阶段
+- 不知道某个“增强/代理/注入”到底由哪个处理器做的
+- 不知道“异常信息”应该回溯到哪个关键分支
 
-Debugger Pack 的做法是：把常见问题压缩成 **断点入口 + 观察点 + 对应 Lab**，让读者最快收敛到证据链。
+断点包的做法是：把常见问题压缩成 **断点入口 + 观察点 + 对应 Lab**，让阅读者最快收敛到证据链。
 
 ---
 
 ## 使用方式（3 步闭环）
 
-1) **运行一个可复现入口**（优先运行本章推荐 Lab，以避免在业务项目中丢失主线）
-2) **按本章断点清单设置断点**（必要时用条件断点过滤 beanName）
-3) **只盯 watch list**（避免在大型栈里被噪声淹没）
+1. **运行一个可复现入口**（先运行章首 Lab，以避免在业务项目中丢失主线）
+2. **按本章断点清单设置断点**（必要时用条件断点过滤 beanName）
+3. **只盯 观察清单**（避免在大型栈里被噪声淹没）
 
-推荐命令：
+运行命令：
 
 ```bash
 mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 ```
 
-## 1.2 教程化验收（10/30/3）：把 Debugger Pack 当“能力训练器”
+## 1.2 教程化验收（10/30/3）：把 断点包 当“能力训练器”
 
-可以用 Debugger Pack 给自己做一个非常明确的训练闭环（适用于源码进阶/团队内训/面试）：
+可以用 断点包 给自己做一个明确的训练闭环（适用于源码进阶/团队内训/面试）：
 
-1) **10 分钟（可运行）**：完成验证 `SpringCoreBeansBreakpointPackLabTest`，确保环境与入口 OK。
-2) **30 分钟（可观察到）**：只用本章 2.x 的断点 + 本章 3 的 watch list，把主线数据结构变化观察到。
-3) **3 分钟（可复述）**：把观察到的现象复述成“结论 → 证据链（方法名）→ 反例/误区”，对标：`appendix-interview-playbook.md`。
+1. **10 分钟（可运行）**：完成验证 `SpringCoreBeansBreakpointPackLabTest`，确保环境与入口 OK。
+2. **30 分钟（可观察到）**：只用本章 2.x 的断点 + 本章 3 的观察清单，把主线数据结构变化观察到。
+3. **3 分钟（可复述）**：把观察到的现象复述成“结论 → 证据链（方法名）→ 反例/误区”，对标：`appendix-interview-playbook.md`。
 
 ## 1.1 团队内训如何用（可选）
 
-若正在做团队分享/内训，不建议“从目录按章讲完”。更高效的方式是：
+若正在做团队分享/内训，不宜“从目录按章讲完”。更高效的方式是：
 
-1) 先用本章断点包把主线完成验证（建立共同的观察点与语言）
-2) 再按课时选择讲解深度（60/90/120 分钟脚本 + 互动题/作业）
+1. 先用本章断点包把主线完成验证（建立共同的观察点与语言）
+2. 再按课时选择讲解深度（60/90/120 分钟脚本 + 互动题/作业）
 
 内训讲义入口：[`appendix-team-training-kit.md`](appendix-team-training-kit.md)
 
-## 1.3 面试使用方式（建议读者形成固定话术）
+## 1.3 面试使用方式：形成固定证据链话术
 
 - 题库入口：`appendix-interview-playbook.md`（每题都绑定“关键方法 + 观察点 + 对应 Lab”）
 - 排障入口：`appendix-production-troubleshooting-checklist.md`（Symptoms → Repro → Evidence → Decision → Fix → Verify）
@@ -138,11 +146,11 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 
 ---
 
-## Watch List（最小够用版）
+## 观察清单（最小够用版）
 
-无需一次看 100 个变量，最小 watch list 够用即可：
+无需一次看 100 个变量，最小观察清单 够用即可：
 
-- `beanName`：当前处理的 bean（建议优先用条件断点过滤）
+- `beanName`：当前处理的 bean（优先用条件断点过滤）
 - `mbd` / `mergedBeanDefinition`：合并后的定义（见 35 章）
 - `exposedObject`：最终暴露对象（判断是否被代理/替换）
 - `singletonObjects / earlySingletonObjects / singletonFactories`：循环依赖/提前暴露相关
@@ -150,42 +158,34 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 
 ## 方法级调用链卡片（把断点观察变成可复述答案）
 
-Debugger Pack 的目的不是“列断点”，而是帮读者形成一种稳定输出：
+断点包的目的不是“列断点”，而是帮读者形成一种稳定输出：
 
-1) **阶段**：应先将问题放回 refresh 主线的哪一段？
-2) **调用链**：用哪 2–4 个方法名将链路串起来？（入口 → 分支 → 落点）
-3) **证据**：在断点中观察哪 3 个变量/集合以证明结论？
-4) **修复**：修改的是“定义层（BeanDefinition）”还是“实例层（对象/代理）”，如何验证？
+1. **阶段**：应先将问题放回 refresh 主线的哪一段？
+2. **调用链**：用哪 2–4 个方法名将链路串起来？（入口 → 分支 → 落点）
+3. **证据**：在断点中观察哪 3 个变量/集合以证明结论？
+4. **修复**：修改的是“定义层（BeanDefinition）”还是“实例层（对象/代理）”，如何验证？
 
-如果应能够在 3 分钟内按这个卡片说完一个问题，读者就具备“源码进阶/面试/排障”三合一的能力闭环。
+如果能在 3 分钟内按这个卡片说完一个问题，读者就具备“源码进阶/面试/排障”三合一的能力闭环。
 
 ---
 
-## 常见误区（Debugger Pack 的使用误区）
+## 断点包误用：下断点不等于有证据链
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-1) **只看异常，不看阶段**：同一个异常在不同阶段含义不同，必须先定位到 refresh 的哪一步。
-2) **下了断点但没有过滤**：不加 beanName 条件断点，大项目里可以被噪声淹没。
-3) **把“观察到”当成“理解”**：断点只能提供证据链，真正的边界/代价要回到对应章节阅读。
+1. **只看异常，不看阶段**：同一个异常在不同阶段含义不同，必须先定位到 refresh 的哪一步。
+2. **下了断点但没有过滤**：不加 beanName 条件断点，大项目里可以被噪声淹没。
+3. **把“观察到”当成“理解”**：断点只能提供证据链，真正的边界/代价要回到对应章节阅读。
 
 ---
 
-## 自检要点
-应能够用 2 句复述：
+## 验证标准：两句话说明第一断点
+读完后应能用 2 句复述：
 
-1) 遇到注入失败/代理不生效/循环依赖时，第一断点应设置在哪（各给 1 个方法名）。
-2) 在断点中只观察哪 3 个变量/结构，就能判断当前处在 refresh/创建/注入的哪一步。
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
+1. 遇到注入失败/代理不生效/循环依赖时，第一断点应设置在哪（各给 1 个方法名）。
+2. 在断点中只观察哪 3 个变量/结构，就能判断当前处在 refresh/创建/注入的哪一步。
 
-    建议 先跑 `SpringCoreBeansBreakpointPackLabTest`，再用 `SpringCoreBeansMainlineCallChainLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：将断点包写成“路线”：每条路线明确起点（测试方法）→ 关键断点 → 需要确认的变量/状态，读者可以按路线复刻结论。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 
-## 小结
+## 收束：断点包的输出是可复述证据
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-

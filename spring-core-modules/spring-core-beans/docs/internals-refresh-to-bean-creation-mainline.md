@@ -1,22 +1,23 @@
 # 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕把 `ApplicationContext#refresh` 的“定义阶段”与“创建阶段”连成一条可设置断点的主线展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：把 `ApplicationContext#refresh` 的“定义阶段”与“创建阶段”连成一条可设置断点的主线。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansBootstrapInternalsLabTest`。需要下探源码时，可以从 `ApplicationContext#refresh` / `AbstractApplicationContext#refresh` / `AbstractBeanFactory#doGetBean` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## `refresh()` 到 `doCreateBean`：先抓主线，再看分支
 
 这章是 “Container Internals” 的主线地图：把 `refresh()` 的十步骨架、以及 `doGetBean/doCreateBean` 的创建主线，串成一条能下断点的路线。
 
 读者在排障时经常卡在一句话：**问题到底发生在 refresh 的哪一段？是定义没生成，还是对象创建被短路/被代理替换？**
 
-建议先运行 `SpringCoreBeansBeanCreationTraceLabTest`（或本章任一 Lab），把一次完整的“refresh → getBean → doCreateBean”调用链跑通，再用本文的“十步走/两条流水线”对齐断点与关键变量。
+先运行 `SpringCoreBeansBeanCreationTraceLabTest`（或本章任一 Lab），把一次完整的“refresh → getBean → doCreateBean”调用链跑通，再用本章的“十步走/两条流水线”对齐断点与关键变量。
 
 - 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanCreationTraceLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -25,23 +26,24 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansBootstrapInternalsLabTest`，再用 `SpringCoreBeansRegistryPostProcessorLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`AbstractApplicationContext#finishBeanFactoryInitialization`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“排障分流：现象 → 阶段 → 关键方法 → 必看变量 → 对应 LabTest”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
+## 本页路线图
+
+这章很长，但读法只有三步：
+
+1. 先建立阶段感：`refresh()` 第 5 步稳定定义，第 6 步注册 BPP，第 9 步开始创建单例。
+2. 再进入单个 Bean：`doGetBean` 负责取对象，`doCreateBean` 负责实例化、注入、初始化和最终暴露。
+3. 最后看分支专题：预实例化、early reference、生命周期和 processor 顺序都要回到这条主线定位。
+
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 > 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。
 
-这一章只做一件事：**把容器启动与 Bean 创建的主线串起来**，并且落到“关键方法 + 关键分支”上。
+本章的职责是：**把容器启动与 Bean 创建的主线串起来**，并且落到“关键方法 + 关键分支”上。
 
 读者读完后，不需要背完 Spring 源码，但应该能做到：
 
@@ -50,7 +52,7 @@
 
 ## 先把“主线地图”记住：容器做两件事
 
-Spring 的容器启动（`ApplicationContext#refresh`）看起来很长，但逻辑上只有两条主线：
+Spring 的容器启动（`ApplicationContext#refresh`）表面上很长，但逻辑上只有两条主线：
 
 1. **形成“图”**：把“配置/注解/XML/Import/自动配置”等输入，最终变成一张 `BeanDefinition` 关系图（**定义阶段**）。
 2. **把图变成对象**：按需或预先把 `BeanDefinition` 实例化成真实对象，并完成注入、初始化、代理包装（**创建阶段**）。
@@ -62,19 +64,19 @@ Spring 的容器启动（`ApplicationContext#refresh`）看起来很长，但逻
 
 可以把它想成两条流水线：第一条生产“施工图纸”（BeanDefinition），第二条把图纸“开工落地”（创建对象并装配）。
 
-若希望把本章“读成故事”而不是“读成百科”，建议读者只盯两个问题推进阅读：
+若希望把本章“读成故事”而不是“读成百科”，只盯两个问题推进阅读：
 
 1. **现在是在扩张定义（BeanDefinition），还是在创建对象（bean instance）？**
 2. **此刻是谁在改规则：BDRPP/BFPP（改定义）还是 BPP（改对象）？**
 
-### 0.1 机制系统阐述：条件 → 分支 → 结果（主线版）
+### 主线分流：先判断定义阶段还是创建阶段
 
 **条件**：问题发生在定义阶段还是创建阶段
 **分支**：`invokeBeanFactoryPostProcessors`（定义层） vs `finishBeanFactoryInitialization`（创建层）
 **结果**：
 - 定义层：决定“有没有/谁注册的/配方是什么”
 - 创建层：决定“什么时候创建/是否代理/生命周期顺序”
-**断点建议**：`AbstractApplicationContext#finishBeanFactoryInitialization`
+**断点入口**：`AbstractApplicationContext#finishBeanFactoryInitialization`
 
 ---
 
@@ -103,14 +105,14 @@ refresh()
 - **图的扩张**主要发生在第 5 步：`invokeBeanFactoryPostProcessors`
 - **对象的落地**主要发生在第 9 步：`finishBeanFactoryInitialization`
 
-### 1.3 关键分支解释（为什么有些问题“启动即暴露”）
+### 1.1 第 5 步和第 9 步是最重要的分界线
 
 - **是否预实例化**：`mbd.isLazyInit()` 为 false 的 singleton 会在 `preInstantiateSingletons` 被创建
 - **是否 FactoryBean**：`getObjectForBeanInstance` 决定获取到工厂还是产品
 - **是否 prototype**：prototype 不进单例缓存，循环依赖更容易 fail-fast
 - **是否允许循环依赖**：`allowCircularReferences` 决定 early exposure 是否开启
 
-### 1.1 `obtainFreshBeanFactory()`：读者真正持有的是哪个 `BeanFactory`
+### 1.2 `obtainFreshBeanFactory()`：读者真正持有的是哪个 `BeanFactory`
 
 读者后面会反复看到 `DefaultListableBeanFactory`，因为它是 Spring 最常用的默认实现之一。
 
@@ -120,12 +122,12 @@ refresh()
 - 提供 `getBean()`（创建阶段）
 - 维护单例缓存与生命周期状态（创建阶段）
 
-**关键观察点**（调试时非常值钱）：
+**关键观察点**（调试时值钱）：
 
 - `ConfigurableListableBeanFactory` 的实际类型（常见是 `DefaultListableBeanFactory`）
 - 当前已经注册的 `BeanDefinition` 数量（是否在“图的扩张”阶段不断增长）
 
-### 1.2 `prepareBeanFactory()`：把“容器级基础设施”先塞进去
+### 1.3 `prepareBeanFactory()`：把“容器级基础设施”先塞进去
 
 这一步很容易被忽略，但它是后面很多“为什么能注入/为什么能解析”的根。
 
@@ -135,7 +137,7 @@ refresh()
 - 一些 `ResolvableDependency`（例如 `Environment`、`ResourceLoader` 等可直接注入的对象）
 - 对 `Aware` 系列接口的支持（影响 initialize 阶段）
 
-调试建议：
+调试入口：
 
 - 若怀疑是“容器基础设施缺失”导致的解析失败，优先回到这里看：它决定了很多“全局能力”的开关是否就位。
 
@@ -149,14 +151,14 @@ refresh()
 
 ### 2.1 关键分支：`BeanDefinitionRegistryPostProcessor`（BDRPP） vs `BeanFactoryPostProcessor`（BFPP）
 
-这两个名字非常像，但职责不同：
+这两个名字像，但职责不同：
 
 - `BeanDefinitionRegistryPostProcessor`：可以直接往 `BeanDefinitionRegistry` 里**新增/修改** BeanDefinition（它能让“图继续长大”）
 - `BeanFactoryPostProcessor`：主要是对 `BeanFactory`/已存在定义做“全局修饰”，但**原则上不负责无限制扩张图**
 
 真正关键的是：**BDRPP 必须先执行**，因为它可能注册更多 BeanDefinition；执行完后，容器才知道“图上到底有哪些节点”。
 
-这里有一个非常实用的“落地判断”：
+这里有一个实用的“落地判断”：
 
 - 遇到的问题如果是“某个 Bean 根本没注册/注册数量不对/某个 @Bean 没出现”，优先怀疑 **BDRPP/BFPP（定义阶段）**。
 - 遇到的问题如果是“Bean 已存在但注入不对/变成 proxy/生命周期回调顺序奇怪”，优先怀疑 **BPP（创建阶段）**。
@@ -176,7 +178,7 @@ refresh()
 
 ### 2.3 最容易忽略的关键机制：BDRPP 可能会“循环发现”
 
-这一段源码里有一个非常重要的策略：**执行 BDRPP 时，要考虑它执行过程中又注册了新的 BDRPP**。
+这一段源码里有一个关键的策略：**执行 BDRPP 时，要考虑它执行过程中又注册了新的 BDRPP**。
 
 所以它不是“一次遍历就结束”，而是倾向于：
 
@@ -205,7 +207,7 @@ while (还能发现新的 BDRPP) {
 - `ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry`：在 registry 上“扩张图”（新增 BeanDefinition）
 - `ConfigurationClassPostProcessor#processConfigBeanDefinitions`：真正解析配置类、处理 `@Import/@ComponentScan/@Bean`
 
-读者如果只记一个结论：
+如果只记一个结论：
 
 > **很多容易误以为是“注解直接生效”的机制，本质是在 refresh 的第 5 步被翻译成 BeanDefinition。**
 
@@ -218,9 +220,9 @@ while (还能发现新的 BDRPP) {
 
 而且 BDRPP 这段通常不是“一次遍历”，而是“循环发现直到收敛”。
 
-在调试时的价值是：当读者看到 BeanDefinition 数量在 refresh 期间跳增，应当自然想到——**不是“Spring 随机注册了一堆东西”，而是在 BDRPP 执行过程中又引入了新的定义。**
+在调试时的价值是：当看到 BeanDefinition 数量在 refresh 期间跳增，应当自然想到——**不是“Spring 随机注册了一堆东西”，而是在 BDRPP 执行过程中又引入了新的定义。**
 
-对应本仓库的验证入口（建议按顺序做）：
+对应本仓库的验证入口（按顺序做）：
 
 - `SpringCoreBeansRegistryPostProcessorLabTest`
 - `SpringCoreBeansPostProcessorOrderingLabTest`
@@ -256,7 +258,7 @@ while (还能发现新的 BDRPP) {
 - `SpringCoreBeansPostProcessorOrderingLabTest`
 - `SpringCoreBeansPreInstantiationLabTest`（关注“短路”）
 
-### 3.3 一个很“反直觉”的事实：BPP 不是“会自动生效的”
+### 3.3 一个很“反预期”的事实：BPP 不是“会自动生效的”
 
 很多人第一次读 Spring 容器会误以为：`@Autowired/@PostConstruct/@Resource` 是“注解自带隐式行为”。
 
@@ -298,18 +300,18 @@ while (还能发现新的 BDRPP) {
 
 ### 4.2 `finishBeanFactoryInitialization` 的两个“决定性动作”
 
-读者如果只想记住这里最关键的两句源码级结论：
+如果只想记住这里最关键的两句源码级结论：
 
 1. `beanFactory.freezeConfiguration()`：把“定义阶段”锁死（很多动态注册/覆盖行为到此会变得受限）
 2. `beanFactory.preInstantiateSingletons()`：开始批量创建非懒加载单例（触发整条 getBean → createBean 链）
 
 这两句把“图”推进成“对象”，并且让很多问题从“启动阶段”暴露出来。
 
-### 4.3 把 `preInstantiateSingletons()` 写成伪代码：应能够“顺着念出分支”
+### 4.3 把 `preInstantiateSingletons()` 写成伪代码：需要能“顺着念出分支”
 
-读者如果希望把“为什么启动时会创建某些 Bean”讲清楚，不能只停留在“非懒加载单例会被创建”这句话。
+如果希望把“为什么启动时会创建某些 Bean”讲清楚，不能只停留在“非懒加载单例会被创建”这句话。
 
-真正的价值在于：应能够指出**源码里是哪些判断把 Bean 分成了不同命运**。
+真正的价值在于：需要指出**源码里是哪些判断把 Bean 分成了不同命运**。
 
 下面是一份“只保留关键分支”的伪代码（方法名以 Spring Framework `6.2.15` 为准）：
 
@@ -340,7 +342,7 @@ preInstantiateSingletons():
     bean.afterSingletonsInstantiated()
 ```
 
-可以得到 3 个非常实用的“排障结论”：
+可以得到 3 个实用的“排障结论”：
 
 1. **“启动即创建”不是一个开关，而是一串 if 判断。**
    只要读者把 `abstract/lazy/singleton/FactoryBean/SmartFactoryBean` 这几类分支钉住，即可解释大多数“为什么它启动时就出问题”的案例。
@@ -402,7 +404,7 @@ preInstantiateSingletons():
 
 源码层面的关键点在于 `AbstractBeanFactory#getObjectForBeanInstance(...)` 这一步：
 
-- 如果它判断当前实例是 `FactoryBean`，且读者不是用 `&` 前缀来拿它本体，它会继续走“取产品对象”的路径。
+- 如果它判断当前实例是 `FactoryBean`，且不是用 `&` 前缀来拿它本体，它会继续走“取产品对象”的路径。
 
 这类问题的现象往往是：
 
@@ -419,7 +421,7 @@ preInstantiateSingletons():
 - 定义来源：`mbd.getDependsOn()`（`RootBeanDefinition`）
 - 行为语义：对每个 depends-on bean 先执行一次 `getBean(dep)`，确保它先完成创建
 
-这条分支的排障价值非常高，因为它能解释两类“看似反直觉”的现象：
+这条分支的排障价值高，因为它能解释两类“看似反预期”的现象：
 
 1. **“已将 bean 标注为 lazy-init，但它仍在启动时被创建。”**
    可能原因：它被别的 bean 声明为 `dependsOn`（或被别的 bean 依赖，依赖也会强制创建）。
@@ -434,7 +436,7 @@ preInstantiateSingletons():
 
 `ApplicationContext`（以及底层 `BeanFactory`）是可以形成层级的：child context 持有自己的 `BeanFactory`，同时有一个 parent。
 
-当 `doGetBean` 在当前工厂查不到目标 bean 时，会进入一个非常关键的回退分支：
+当 `doGetBean` 在当前工厂查不到目标 bean 时，会进入一个决定查找方向的回退分支：
 
 - `getParentBeanFactory() != null` ⇒ 把查找委托给 parent（本质是一个 fallback）
 
@@ -483,7 +485,7 @@ doCreateBean(beanName, mbd, args)
 
 下文将把每一段的“关键分支”点出来（这是读源码的价值）。
 
-### 6.0 先分清一个重要边界：`createBean` 里可能根本不进入 `doCreateBean`
+### 先分清一个重要边界：`createBean` 里可能根本不进入 `doCreateBean`
 
 很多“对象形态（proxy/短路）”的关键行为发生在 `createBean(...)` 的早期阶段：
 
@@ -544,12 +546,12 @@ doCreateBean(beanName, mbd, args)
 
 当读者开启 early exposure 时，容器可能先把一个“早期引用”交给依赖方；但后续初始化完成后，最终暴露对象可能被 BPP 替换成了另一个对象（例如代理）。
 
-这会出现一个非常危险的状态：
+这会出现一个危险的状态：
 
 - 依赖方获取到的是 raw instance（原始对象）
 - 容器最终暴露的是 wrapped instance（代理对象）
 
-Spring 默认会尽量避免这种“raw injection despite wrapping”，否则可以在系统里同时存在两个“看起来像同一个 bean 的对象”，很多 AOP/事务/缓存语义会变得不可预测。
+Spring 默认会尽量避免这种“raw injection despite wrapping”，否则可以在系统里同时存在两个“表面上像同一个 bean 的对象”，很多 AOP/事务/缓存语义会变得不可预测。
 
 对应本仓库验证入口：
 
@@ -588,23 +590,23 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 
 ## 可复现闭环（基于 `SpringCoreBeansBeanCreationTraceLabTest`）
 
-运行完成该 Lab，至少应能够复述 3 条结论：
+运行完成该 Lab，至少需要复述 3 条结论：
 
-1) **创建链路可被分段观测**
+1. **创建链路可被分段观测**
    - 断点：`doCreateBean` / `populateBean` / `initializeBean`
    - 断言：阶段顺序稳定
-2) **最终暴露对象可能被替换**
+2. **最终暴露对象可能被替换**
    - 断点：`applyBeanPostProcessorsAfterInitialization`
    - 断言：`result != bean`
-3) **启动期异常多发生在预实例化阶段**
+3. **启动期异常多发生在预实例化阶段**
    - 断点：`preInstantiateSingletons`
    - 断言：非 lazy 单例在此被创建
 
 ---
 
-## 把“关键分支”变成调试能力：建议的断点与观察变量
+## 把“关键分支”变成调试能力：断点入口与观察变量
 
-当需要定位 Bean 的异常行为，建议按“主线阶段”来设置断点：
+当需要定位 Bean 的异常行为，按“主线阶段”来设置断点：
 
 ### 7.1 容器阶段断点（定位“图”的问题）
 
@@ -612,7 +614,7 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
 - `ConfigurationClassPostProcessor#processConfigBeanDefinitions`（注解配置翻译入口之一）
 
-观察变量建议：
+观察变量：
 
 - 当前 `beanDefinitionNames` 的变化（图是否在扩张）
 - processor 的执行顺序（是否符合相应的优先级预期）
@@ -626,30 +628,30 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 - `AbstractAutowireCapableBeanFactory#initializeBean`
 - `DefaultSingletonBeanRegistry#addSingletonFactory` / `getSingleton`
 
-观察变量建议：
+观察变量：
 
 - `beanName` / `mbd`（RootBeanDefinition）
 - `singletonsCurrentlyInCreation`（是否在循环依赖窗口）
 - `earlySingletonExposure`（是否走了提前暴露）
 - `exposedObject`（最终返回对象是否已被包装/代理）
 
-## 排障分流：现象 → 阶段 → 关键方法 → 必看变量 → 对应 LabTest
+## 排障分流：现象 → 阶段 → 关键方法 → 必看变量 → 对应实验/测试
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
 下面这张表的目的不是“背诵”，而是把本章的主线叙事进一步压缩为一个**可复用的排障流程**：
 
-> 读者只要获取到“现象”，就能反推出它大概率发生在哪个阶段、该去哪一段源码设置断点、以及用哪个 Lab 把它变成可回归的证据链。
+> 只要获取到“现象”，就能反推出它大概率发生在哪个阶段、该去哪一段源码设置断点、以及用哪个 Lab 把它变成可回归的证据链。
 
-| 现象（观察到的） | 所在阶段（大概率落点） | 关键方法（建议断点） | 必看变量/结构（解释分支走向） | 对应 LabTest（可复现） |
+| 现象（观察到的） | 所在阶段（大概率落点） | 关键方法（断点入口） | 必看变量/结构（解释分支走向） | 对应实验/测试（可复现） |
 |---|---|---|---|---|
-| 某个 Bean “根本没注册出来”（`@Bean/@ComponentScan/@Import` 看起来没生效） | **定义阶段**：refresh 第 5 步（图还在扩张） | `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`<br>`ConfigurationClassPostProcessor#processConfigBeanDefinitions` | `beanDefinitionNames`（数量是否跳增）<br>BDRPP 执行顺序/是否循环发现新 BDRPP | `SpringCoreBeansRegistryPostProcessorLabTest`<br>`SpringCoreBeansBootstrapInternalsLabTest` |
+| 某个 Bean “根本没注册出来”（`@Bean/@ComponentScan/@Import` 表面上没生效） | **定义阶段**：refresh 第 5 步（图还在扩张） | `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`<br>`ConfigurationClassPostProcessor#processConfigBeanDefinitions` | `beanDefinitionNames`（数量是否跳增）<br>BDRPP 执行顺序/是否循环发现新 BDRPP | `SpringCoreBeansRegistryPostProcessorLabTest`<br>`SpringCoreBeansBootstrapInternalsLabTest` |
 | “已编写 BFPP/BDRPP，但未影响到某些定义”（时机/顺序不符合预期） | **定义阶段**：refresh 第 5 步（PriorityOrdered/Ordered 分批） | `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` | processor 分组（PriorityOrdered/Ordered/others）<br>“循环发现”是否还在继续 | `SpringCoreBeansPostProcessorOrderingLabTest` |
 | `@Autowired/@PostConstruct` 等行为在某些启动方式下“不生效”（特别是手动 new BeanFactory） | **规则装载阶段**：refresh 第 6 步（BPP 是否注册齐） | `PostProcessorRegistrationDelegate#registerBeanPostProcessors`<br>`AbstractAutowireCapableBeanFactory#populateBean`<br>`AbstractAutowireCapableBeanFactory#initializeBean` | `beanFactory.getBeanPostProcessors()` 是否包含关键 BPP（注入/生命周期相关） | `SpringCoreBeansBootstrapInternalsLabTest`<br>`SpringCoreBeansLifecycleCallbackOrderLabTest` |
 | 有的 Bean “启动时就异常”，有的“第一次 getBean 才异常” | **创建阶段入口**：refresh 第 9 步（预实例化） vs 首次 `getBean` | `DefaultListableBeanFactory#preInstantiateSingletons`<br>`AbstractBeanFactory#doGetBean` | `mbd.isLazyInit()`<br>`mbd.isAbstract()`<br>是否单例/是否 FactoryBean | `SpringCoreBeansPreInstantiationLabTest` |
 | `lazy-init` 似乎未生效：已配置延迟创建，但仍在启动时创建 | **创建阶段入口/创建顺序**：预实例化 + `dependsOn` | `DefaultListableBeanFactory#preInstantiateSingletons`<br>`AbstractBeanFactory#doGetBean`（dependsOn 检查） | `mbd.getDependsOn()`<br>初始化顺序边是否存在 | `SpringCoreBeansDependsOnLabTest` |
 | child context 能获取到 parent 的 bean，但 parent 拿不到 child；同名 bean 在 child 覆盖不影响 parent | **层级容器查找**：parent factory fallback | `AbstractBeanFactory#doGetBean`（fallback 到 parent）<br>`BeanFactory#getParentBeanFactory` | `parentBeanFactory` 是否存在<br>“当前工厂没定义时才会 fallback” | `SpringCoreBeansContextHierarchyLabTest` |
-| Bean “看起来没走构造器就有了”（被代理/替换了） | **创建短路**：`createBean` 早期（可能不进入 `doCreateBean`） | `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`<br>`InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation` | `bean` 是否在实例化前被替代（proxy）<br>是否直接跳过 `doCreateBean` | `SpringCoreBeansPreInstantiationLabTest` |
+| Bean “表面上没走构造器就有了”（被代理/替换了） | **创建短路**：`createBean` 早期（可能不进入 `doCreateBean`） | `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation`<br>`InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation` | `bean` 是否在实例化前被替代（proxy）<br>是否直接跳过 `doCreateBean` | `SpringCoreBeansPreInstantiationLabTest` |
 | `getBean("x")` 获取到的不是容易误以为的类型，`&x` 又变了 | **FactoryBean 分支**：同名两种语义（本体 vs 产品） | `AbstractBeanFactory#getObjectForBeanInstance` | beanName 是否带 `&` 前缀<br>instance 是否 `FactoryBean` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
 | 同一个 bean 在依赖注入与最终容器暴露对象之间“形态不一致”（raw vs proxy） | **循环依赖窗口 + 包装阶段**：early reference vs 最终对象 | `DefaultSingletonBeanRegistry#addSingletonFactory/getSingleton`<br>`SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference`<br>`AbstractAutowireCapableBeanFactory#initializeBean` | `singletonFactories/earlySingletonObjects/singletonObjects`<br>`exposedObject`（最终返回对象）<br>`allowRawInjectionDespiteWrapping` 边界 | `SpringCoreBeansEarlyReferenceLabTest`<br>`SpringCoreBeansRawInjectionDespiteWrappingLabTest` |
 | 循环依赖：setter 注入可能成功，而 constructor 注入失败；或添加 `@Lazy` 后现象消失 | **循环依赖边界**：依赖解析时机不同 | `AbstractBeanFactory#doGetBean`<br>`AbstractAutowireCapableBeanFactory#doCreateBean`（early exposure） | `singletonsCurrentlyInCreation`<br>依赖解析发生在构造器阶段还是属性填充阶段 | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
@@ -659,9 +661,9 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 
 ---
 
-## 推荐的“主线验证路径”（用本仓库把它走一遍）
+## 主线验证路径（用本仓库把它走一遍）
 
-若希望把这一章内容落到手上（而不是停留在文字），建议按这个顺序运行测试：
+若希望把这一章内容落到手上（而不是停留在文字），按这个顺序运行测试：
 
 1. `SpringCoreBeansBootstrapInternalsLabTest`：先把 refresh 走一遍，看到“十步走”在哪里发生。
 2. `SpringCoreBeansRegistryPostProcessorLabTest`：重点看 BDRPP 如何扩张 BeanDefinition 图。
@@ -675,7 +677,7 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 
 ## 读完这一章，下一步怎么学（把“主线”扩成“能力图”）
 
-读者已经把主线走通后，建议读者用“专题页”把每个关键分支补齐细节：
+主线走通后，用“专题页”把每个关键分支补齐细节：
 
 - 后处理器与顺序：[internals-post-processor-ordering.md](internals-post-processor-ordering.md)
 - BDRPP 注册与定义扩张：[internals-bdrpp-definition-registration.md](internals-bdrpp-definition-registration.md)
@@ -689,16 +691,16 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 
 这章无需背所有步骤，但必须能把主线串成“方法级调用链”（面试/排障都用得上）：
 
-1) `AbstractApplicationContext#refresh`（总入口）
-2) `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`（定义层：BDRPP/BFPP 稳定“配方”）
-3) `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（实例层：BPP 链准备）
-4) `AbstractApplicationContext#finishBeanFactoryInitialization` → `DefaultListableBeanFactory#preInstantiateSingletons`（大规模创建开始）
-5) `AbstractBeanFactory#doGetBean`（按需创建入口）
-6) `AbstractAutowireCapableBeanFactory#doCreateBean`（单 bean 五段式：instance→populate→initialize→expose）
+1. `AbstractApplicationContext#refresh`（总入口）
+2. `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`（定义层：BDRPP/BFPP 稳定“配方”）
+3. `PostProcessorRegistrationDelegate#registerBeanPostProcessors`（实例层：BPP 链准备）
+4. `AbstractApplicationContext#finishBeanFactoryInitialization` → `DefaultListableBeanFactory#preInstantiateSingletons`（大规模创建开始）
+5. `AbstractBeanFactory#doGetBean`（按需创建入口）
+6. `AbstractAutowireCapableBeanFactory#doCreateBean`（单 bean 五段式：instance→populate→initialize→expose）
 
-读者只要能在调试器里把这条链走一遍，并解释每一步“为什么在这里”，就能把 IoC 主线讲清楚。
+只要能在调试器里把这条链走一遍，并解释每一步“为什么在这里”，就能把 IoC 主线讲清楚。
 
-## 面试常问（refresh 主线：应能够讲“阶段”而不是“名词”）
+## 面试常问（refresh 主线：需要讲“阶段”而不是“名词”）
 
 ### Q1：refresh 为什么要“先定义层、再实例层”？顺序错了会怎样？
 
@@ -714,18 +716,18 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 ### Q2：为什么 BPP 是“创建时拦截链”，不是“创建后补丁”？
 
 - 标准答案（可复述）：
-  - BPP 只在 bean 创建流程的钩子点被调用；如果某个 bean 在 BPP 链完整之前就被创建，它不会 retroactively 被后来注册的 BPP 处理，导致增强缺失或顺序反直觉。
+  - BPP 只在 bean 创建流程的钩子点被调用；如果某个 bean 在 BPP 链完整之前就被创建，它不会 retroactively 被后来注册的 BPP 处理，导致增强缺失或顺序反预期。
 - 证据链（方法级）：
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
   - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
-## 自检要点
-- 应能够用一句话区分：**定义阶段** 与 **创建阶段**？
+## 验证标准：能区分定义阶段与创建阶段
+- 是否能用一句话区分：**定义阶段** 与 **创建阶段**？
   - 答题要点：定义阶段产物是 `BeanDefinition`（图在长）；创建阶段产物是“最终暴露对象”（可能被 BPP 代理/替换），入口是 `getBean`/`preInstantiateSingletons`。
 - 遇到“Bean 根本没注册/条件没生效”，第一反应应该去 refresh 的哪一步？
   - 答题要点：优先关注第 5 步（`invokeBeanFactoryPostProcessors`），尤其是 `ConfigurationClassPostProcessor`/条件装配相关后处理器是否执行、顺序是否正确。
 - 遇到“注入不对/代理不生效/生命周期回调顺序怪”，第一反应应该去哪条链路？
-  - 答题要点：应优先进入创建阶段：`AbstractBeanFactory#doGetBean` → `AbstractAutowireCapableBeanFactory#doCreateBean`（populate/initialize/BPP 链）。
+  - 答题要点：优先进入创建阶段：`AbstractBeanFactory#doGetBean` → `AbstractAutowireCapableBeanFactory#doCreateBean`（populate/initialize/BPP 链）。
 
 ## 源码与断点
 
@@ -737,7 +739,7 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 
 ## 最小可运行实验（Lab）
 
-- 建议按“先容器、后对象”的顺序开展验证：先建立 refresh 的阶段意识，再对照 doCreateBean 的五段式：
+- 按“先容器、后对象”的顺序开展验证：先建立 refresh 的阶段意识，再对照 doCreateBean 的五段式：
   - `SpringCoreBeansBootstrapInternalsLabTest`
   - `SpringCoreBeansRegistryPostProcessorLabTest`
   - `SpringCoreBeansPostProcessorOrderingLabTest`
@@ -749,16 +751,16 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 命令行可以用：`mvn -pl :spring-core-beans test`。
 
 
-## 小结
+## 收束：容器主线和 Bean 主线要一起看
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansBootstrapInternalsLabTest` / `SpringCoreBeansRegistryPostProcessorLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansPreInstantiationLabTest` / `SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansLifecycleCallbackOrderLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
 
 <!-- BOOKIFY:END -->

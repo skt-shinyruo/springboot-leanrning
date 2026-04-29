@@ -1,26 +1,34 @@
 # 01. 常见坑清单（Security）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
 
     Security 的坑很少是“注解写错了”，更多是“请求在 FilterChain 里走到了哪一步”。本章把高频误判（401/403/CSRF、method security 的代理边界、多条 FilterChain 的匹配顺序）整理成一份可对照的排障笔记。
 
-    建议先跑 `BootSecurityDevProfileLabTest` / `BootSecurityLabTest` 把状态码与错误体的分流跑成事实，再回到本章逐条对照；需要下探源码时，从 `FilterChainProxy` 选择链、`AuthorizationFilter` 的授权决策，以及异常翻译链路切入最省时间。
+    先运行 `BootSecurityDevProfileLabTest` / `BootSecurityLabTest` 把状态码与错误体的分流跑成事实，再回到本章逐条对照；需要下探源码时，从 `FilterChainProxy` 选择链、`AuthorizationFilter` 的授权决策，以及异常翻译链路切入更快收敛。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[05. JWT/Stateless：Bearer token + scope（最小闭环）](security-jwt-stateless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-security）](appendix-self-check.md)
+上一章：[05. JWT/Stateless：Bearer token + scope（最小闭环）](security-jwt-stateless.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[自检题](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 先把 FilterChain 的分流跑成断言（再谈 401/403/CSRF）
 
 安全行为的第一个事实是：请求是否进入了预期的 `SecurityFilterChain`。只有把这个事实跑出来，401/403/CSRF 这些分支才有讨论基础；否则很容易在“没走到那条链”的前提下讨论授权规则。
 
-建议先用两组矩阵测试把主线与分支固定下来：
+先用两组矩阵测试把主线与分支固定下来：
 
 - `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBookMatrixLabTest test`
 - `mvn -q -pl :spring-boot-security -Dtest=BootSecurityBranchMatrixLabTest test`
 
-需要沿源码追时，再对照本模块的断点地图与关键分支矩阵去命中入口，它们把“链选择点/异常翻译点/CSRF 拦截点”都标出来了：[04-breakpoint-map.md](guide-breakpoint-map.md) / [05-branch-decision-matrix.md](guide-branch-decision-matrix.md)。
+需要沿源码追时，再对照本模块的断点地图与关键分支矩阵去命中入口，它们把“链选择点/异常翻译点/CSRF 拦截点”都标出来了：[guide-breakpoint-map.md](guide-breakpoint-map.md) / [guide-branch-decision-matrix.md](guide-branch-decision-matrix.md)。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -30,7 +38,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootSecurityDevProfileLabTest` / `BootSecurityLabTest`
-- 建议命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-security test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 下面几个坑围绕的是同一条主线：HTTP 请求进入 `FilterChainProxy`，选择链之后完成认证（Authentication）与授权（Authorization），最后由异常翻译链路把结果变成 401/403/CSRF，再决定是否继续进入 MVC。
@@ -41,7 +49,7 @@
 
 本模块的示例会把错误响应的 `message` 固定成三类：`unauthorized`、`forbidden`、`csrf_failed`。当错误体能稳定落在这三类之一时，排障速度会明显提升，因为“分支结果”被写进了证据里，而不是留在脑补里。
 
-对应的最小对照（建议先跑一遍再读本节）：
+对应的最小对照（先运行一遍再读本节）：
 
 - 401（匿名访问 secure）：`BootSecurityLabTest#secureEndpointReturns401WhenAnonymous`
 - 403（已认证但无权限）：`BootSecurityLabTest#adminEndpointReturns403ForNonAdminUser`
@@ -67,15 +75,15 @@ JWT 的授权失败往往不是“token 不对”，而是 claim 的形状与授
 
 ## 多个 FilterChain 规则冲突
 
-### 坑点：更“宽”的 matcher 抢先匹配，导致直觉里的链路根本没进来
+### 坑点：更“宽”的 matcher 抢先匹配，导致预期中的链路根本没进来
 
-以为 `/jwt/**` 会走 JWT 的那条 `SecurityFilterChain`，结果却走了另一条（常见表现：401/403 与预期不一致，或者根本没有走到加的 Filter）。这类问题之所以“像玄学”，是因为链路在最开始就选错了分支，后面的所有判断都建立在错误前提上。
+以为 `/jwt/**` 会走 JWT 的那条 `SecurityFilterChain`，结果却走了另一条（常见表现：401/403 与预期不一致，或者根本没有走到加的 Filter）。这类问题之所以“像不可解释”，是因为链路在最开始就选错了分支，后面的所有判断都建立在错误前提上。
 
 `FilterChainProxy` 会按顺序遍历 `SecurityFilterChain`，**第一个 matches 的链就会被选中**；如果某条链的 matcher 过宽（例如 `/**`）且顺序更靠前，它会“吃掉”后续更具体的链。
 
 这件事可以直接用 `BootSecurityMultiFilterChainOrderLabTest#jwtPathMatchesJwtChain_andApiPathMatchesBasicChain` 复现：同一个 `FilterChainProxy`，对不同 path 会选择不同链。断点入口通常落在 `FilterChainProxy#doFilterInternal`、`FilterChainProxy#getFilters`、`DefaultSecurityFilterChain#matches`。
 
-修复思路也应当服务于“让分支变得确定”：把 matcher 写得更具体（优先写清路径/方法），并显式控制链顺序（例如 `@Order`）。同时，把“到底选了哪条链”用可断言的 Lab/Test 固化下来，避免把行为留在口头约定里。
+修复思路也应当服务于“让分支变得确定”：把 matcher 写得更具体（优先写清路径/方法），并显式控制链顺序（例如 `@Order`）。同时，把“到底选了哪条链”用可断言的实验/测试 固化下来，避免把行为留在口头约定里。
 
 - matcher 覆盖范围是否互斥？
 - `@Order` 是否符合预期？
@@ -90,10 +98,10 @@ JWT 的授权失败往往不是“token 不对”，而是 claim 的形状与授
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootSecurityDevProfileLabTest` / `BootSecurityLabTest`
 
-上一章：[part-01-security/05-jwt-stateless.md](security-jwt-stateless.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](appendix-self-check.md)
+上一章：[security-jwt-stateless.md](security-jwt-stateless.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-self-check.md](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

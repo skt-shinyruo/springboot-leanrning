@@ -7,10 +7,19 @@
 - 更丰富的 join point：`call/execution/constructor/get/set/...`
 - 更高级的 pointcut：`withincode/cflow/...`
 
-> 学习建议：先完成 `spring-core-aop` 再来本模块。
+> 验证路径：先完成 `spring-core-aop` 再来本模块。
 > 代理 AOP 的第一性原理是“改调用链（必须走 proxy）”；weaving 的第一性原理是“改字节码（不依赖 proxy）”。
 
 > ⚠️ 注意：由于 `aspectj-maven-plugin`（ajc）对 Java 版本的限制，本模块的编译目标设置为 `--release 16`；但运行时仍要求 JDK 17+（与父工程 enforcer 一致）。
+
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -22,11 +31,11 @@
   - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`appendix-self-check.md`](docs/appendix-self-check.md)
 
-## 本模块的学习产出
+## 本模块完成后应能解释的内容
 
 - 能解释清楚：**Spring AOP（代理） vs AspectJ（织入）** 的能力边界与代价
 - 能通过测试验证：LTW/CTW 都能命中“非代理 join point”
@@ -34,7 +43,7 @@
 
 ## 关键命令
 
-### 测试（推荐入口）
+### 测试（入口）
 
 ```bash
 mvn -pl :spring-core-aop-weaving test
@@ -53,21 +62,21 @@ mvn -pl :spring-core-aop-weaving spring-boot:run
 
 > 注意：运行应用本身不会自动附带 `-javaagent`。本模块的核心结论以 Labs 为准。
 
-## 推荐 docs 阅读顺序
+## docs 阅读顺序
 
 0. [深挖指南：如何跑通 LTW/CTW + 常见排障路径](docs/guide-deep-dive-guide.md)
 1. [心智模型：Proxy vs Weaving（为什么 weaving 不依赖 call path）](docs/mental-model-proxy-vs-weaving.md)
 2. [LTW：`-javaagent` + `META-INF/aop.xml`（最小闭环与边界）](docs/ltw-basics.md)
 3. [CTW：编译期织入（无 agent 也能拦截）](docs/ctw-basics.md)
 4. [Join Point & 表达式速查：call/execution/get/set/withincode/cflow](docs/join-points-join-point-cookbook.md)
-5. [常见坑清单（建议反复对照）](docs/appendix-common-pitfalls.md)
+5. [常见坑清单（排查时对照）](docs/appendix-common-pitfalls.md)
 6. [自测题：是否真正理解了 weaving？](docs/appendix-self-check.md)
 
-## Labs / Exercises 索引（按知识点 / 难度）
+## 实验/练习索引（按知识点 / 难度）
 
-> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。Exercises 默认 `@Disabled`。
+> 说明：⭐=入门，⭐⭐=进阶，⭐⭐⭐=挑战。练习默认 `@Disabled`。
 
-| 类型 | 入口 | 知识点 | 难度 | 推荐阅读 |
+| 类型 | 入口 | 知识点 | 难度 | 延伸阅读 |
 | --- | --- | --- | --- | --- |
 | Lab | `src/test/java/com/learning/springboot/springcoreaopweaving/part02_ltw_fundamentals/AspectjLtwLabTest.java` | LTW：agent + aop.xml；call/execution；self-invocation；get/set；withincode/cflow | ⭐⭐⭐ | docs/00、02、04 |
 | Lab | `src/test/java/com/learning/springboot/springcoreaopweaving/part03_ctw_fundamentals/AspectjCtwLabTest.java` | CTW：无 agent；同样覆盖 call/execution/get/set/withincode/cflow | ⭐⭐⭐ | docs/03、04 |
@@ -87,7 +96,7 @@ mvn -pl :spring-core-aop-weaving spring-boot:run
 
 运行后应能回答：织入在何处介入；哪些 join point 能命中、哪些不能；与代理方案相比，行为边界与可观测性有什么变化。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 
@@ -107,12 +116,12 @@ mvn -pl :spring-core-aop-weaving spring-boot:run
 
 ### 可运行入口（用于复现/回归）
 - Book Matrix：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjWeavingBookMatrixLabTest test`
-- Branch Matrix（LTW/CTW）：建议直接运行模块测试（让 Surefire 自动区分 execution）：
+- Branch Matrix（LTW/CTW）：直接运行模块测试（让 Surefire 自动区分 execution）：
   `mvn -q -pl :spring-core-aop-weaving test`
   或分别运行：
   - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwBranchMatrixLabTest test`
   - `mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjCtwBranchMatrixLabTest test`
-- Solutions（Exercises 答案回归）：`mvn -q -pl :spring-core-aop-weaving -Dtest=*ExerciseSolutionTest test`
+- Solutions（练习 答案回归）：`mvn -q -pl :spring-core-aop-weaving -Dtest=*ExerciseSolutionTest test`
 - 并发/性能（LTW 并发织入边界）：`mvn -q -pl :spring-core-aop-weaving -Dtest=AspectjLtwConcurrencyLabTest test`
 
 ### 排坑与自检

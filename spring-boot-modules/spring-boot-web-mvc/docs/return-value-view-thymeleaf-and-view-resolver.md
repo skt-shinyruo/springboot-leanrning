@@ -1,6 +1,6 @@
 # 01. 传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：传统 MVC 页面渲染入门（@Controller / ViewName / Thymeleaf）展开，主线可以概括为：HTTP 请求 → FilterChain → `DispatcherServlet#doDispatch` → HandlerMapping/HandlerAdapter → 参数解析与校验 → 视图/消息转换写回 → ExceptionResolvers 收敛错误。
 
     阅读时可以先跑 `BootWebMvcViewLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：编写 `@Controller/@RestController` 作为入口，配合参数绑定（`@RequestParam/@PathVariable/@RequestBody/@ModelAttribute`）、校验（Bean Validation）与统一异常处理（`@ControllerAdvice`）。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. Controller：边界、异常与契约的位置](controller-boundary.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](return-value-view-form-binding-validation-prg.md)
+上一章：[01. Controller：边界、异常与契约的位置](controller-boundary.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](return-value-view-form-binding-validation-prg.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,7 +19,7 @@
 !!! example "本章配套实验（先跑再读）"
 
     - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-    - Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+    - 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
 ## 机制主线
 
@@ -49,14 +49,14 @@
 - 返回 view name：`GET /pages/ping`
 - 返回 `ModelAndView`：`GET /pages/ping-mav`
 
-- 只写了 `@Controller`，但方法上又加了 `@ResponseBody`：会把 view name 当作字符串写回去（看起来像“模板不生效”）。
+- 只写了 `@Controller`，但方法上又加了 `@ResponseBody`：会把 view name 当作字符串写回去（表面上像“模板不生效”）。
 - 模板放错目录：Thymeleaf 默认从 `classpath:/templates/` 下找模板。
 - 静态资源放错目录：默认从 `classpath:/static/`（以及其它约定目录）下提供静态资源。
 
 ## 最小可运行实验（Lab）
 
 - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-- 建议命令（方法级入口）：
+- 运行命令（方法级入口）：
   - `mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcViewLabTest#rendersPingPage test`
 
 
@@ -115,10 +115,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcViewLabTest` / `BootWebMvcViewSpringBootLabTest`
-- Test file：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewLabTest.java` / `spring-boot-modules/spring-boot-web-mvc/src/test/java/com/learning/springboot/bootwebmvc/part02_view_mvc/BootWebMvcViewSpringBootLabTest.java`
 
-上一章：[01. Controller：边界、异常与契约的位置](controller-boundary.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](return-value-view-form-binding-validation-prg.md)
+上一章：[01. Controller：边界、异常与契约的位置](controller-boundary.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. 表单提交闭环（@ModelAttribute / BindingResult / 校验回显 / PRG）](return-value-view-form-binding-validation-prg.md)
 <!-- BOOKIFY:END -->

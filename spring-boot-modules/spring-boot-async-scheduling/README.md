@@ -4,6 +4,15 @@
 
 它默认不启动 Web 服务（`spring.main.web-application-type=none`），入口主要在 tests 和 `DemoRunner`。
 
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
+
 ## 从这里开始（5 分钟闭环）
 
 先把现象跑成事实，再回到 docs 顺读机制与边界：
@@ -13,9 +22,9 @@
   - `mvn -q -pl :spring-boot-async-scheduling -Dtest=BootAsyncSchedulingBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix-self-check.md`](docs/appendix-self-check.md)
 
 ## 关键命令
 
@@ -50,7 +59,7 @@ mvn -pl :spring-boot-async-scheduling spring-boot:run
 8. [Spring Boot `spring.task.*`：默认线程池/调度器与属性映射](docs/async-scheduling-boot-spring-task-autoconfig.md)
 9. [常见坑清单](docs/appendix-common-pitfalls.md)
 
-## Labs / Exercises（按用途）
+## 实验/练习（按用途）
 
 如果希望按用途挑选测试入口，可以从下面这些类开始（它们基本覆盖了 docs 主线）。
 
@@ -69,7 +78,7 @@ mvn -pl :spring-boot-async-scheduling spring-boot:run
 
 - 线程池饱和与拒绝策略：`src/test/java/com/learning/springboot/bootasyncscheduling/part02_perf_concurrency/BootAsyncSchedulingExecutorSaturationLabTest.java`
 
-Exercises（默认 `@Disabled`，更像练习题）：
+练习（默认 `@Disabled`，更像练习题）：
 
 - `src/test/java/com/learning/springboot/bootasyncscheduling/part00_guide/BootAsyncSchedulingExerciseTest.java`
 
@@ -84,7 +93,7 @@ Exercises（默认 `@Disabled`，更像练习题）：
 
 - `@Async` 标注存在，但方法仍同步执行；
 - 线程池配置已改动，但线程名/并发边界没有变化；
-- 异步线程抛异常，调用方看起来“什么也没发生”；
+- 异步线程抛异常，调用方表面上“什么也没发生”；
 - 定时任务发生异常后像是“消失”，难以复现与定位。
 
 本模块的组织方式是把这些现象拆成可运行实验，用断言与断点把分支固定下来。
@@ -114,7 +123,7 @@ Exercises（默认 `@Disabled`，更像练习题）：
 
 ---
 
-### 主线章节（建议顺读）
+### 主线章节（顺读路径）
 - [01：`@Async` 心智模型：代理与线程切换](docs/async-scheduling-async-proxy-mental-model.md)
 - [02：Executor 与线程命名/并发边界](docs/async-scheduling-executor-and-threading.md)
 - [03：异常传播：Future vs void](docs/async-scheduling-exceptions.md)

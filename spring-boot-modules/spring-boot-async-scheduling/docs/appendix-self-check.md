@@ -1,6 +1,6 @@
 # 99 自检：Spring Boot Async & Scheduling
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（当成习题册）"
+!!! summary "章节入口（当成习题册）"
 
     这页定位为练习册：把 Async/Scheduling 的关键分支按问题列出来。每题都对应一个可复现入口（tests/断点），用于复盘与回归。
 
@@ -9,12 +9,20 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 常见坑清单（Async & Scheduling）](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[01. 常见坑清单（Async & Scheduling）](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 导读
 
-建议优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（分支）（见文末“对应 Lab/Test”），再按题目回到对应复现入口。
+优先运行 `BootAsyncSchedulingBookMatrixLabTest`（主线）或 `BootAsyncSchedulingBranchMatrixLabTest`（分支）（见文末“对应实验/测试”），再按题目回到对应复现入口。
 
 
 ## 从 Book Matrix 进入（主线最小集合）
@@ -47,7 +55,7 @@
 15. SecurityContext / RequestContext 为什么默认不跨线程？如何分别用 Delegating* 与 TaskDecorator 修复并证明“不会泄漏”？
 16. `spring.task.execution.*` / `spring.task.scheduling.*` 的属性如何映射到默认 executor/scheduler？如何用断言证明 `@Async/@Scheduled` 真正在用它们？
 
-## 证据入口（推荐）
+## 证据入口
 
 - Q1：`BootAsyncSchedulingLabTest#asyncAnnotationDoesNothingWithoutEnableAsync`
 - Q2：`BootAsyncSchedulingExecutorSelectionLabTest#whenSingleTaskExecutorBeanExists_itIsUsedAsDefaultAsyncExecutor`
@@ -72,20 +80,20 @@
 
 ## 如果卡住了
 
-最常把人绊住的不是“没记住 API”，而是 AOP 的边界（self-invocation）。如果发现某个结论怎么都对不上，先不必急于怀疑自己：跑一次 `BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall`，把“有没有走代理”这件事确认掉，很多问题会立刻变简单。
+最常把人绊住的不是“没记住 API”，而是 AOP 的边界（self-invocation）。如果发现某个结论怎么都对不上，先不需要急于怀疑自己：跑一次 `BootAsyncSchedulingLabTest#selfInvocationBypassesAsyncAsAPitfall`，把“有没有走代理”这件事确认掉，很多问题会立刻变简单。
 
 ## 小结与下一章
 
-下一章见：[Docs TOC](../README.md)
+下一章见：[模块目录](../README.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootAsyncSchedulingBookMatrixLabTest` / `BootAsyncSchedulingBranchMatrixLabTest`
 - Exercise：`BootAsyncSchedulingExerciseTest`
 
-上一章：[appendix/90-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[Docs TOC](../README.md)
+上一章：[appendix-common-pitfalls.md](appendix-common-pitfalls.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[模块目录](../README.md)
 
 <!-- BOOKIFY:END -->

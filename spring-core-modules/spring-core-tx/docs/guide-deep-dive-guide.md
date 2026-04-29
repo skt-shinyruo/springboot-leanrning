@@ -1,6 +1,6 @@
 # 02. 深挖指南（Spring Core Tx）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕深挖指南（Spring Core Tx）展开，主线可以概括为：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
 
     先运行 `SpringCoreTxLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
@@ -10,13 +10,21 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Core Tx（事务）](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 事务边界（Transaction Boundary）：究竟在“保护”哪一段代码？](transaction-basics-transaction-boundary.md)
+上一章：[01. 主线时间线：Spring Core Tx（事务）](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 事务边界（Transaction Boundary）：究竟在“保护”哪一段代码？](transaction-basics-transaction-boundary.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
-本章是「深挖指南（Spring Core Tx）」的深挖导读：说明如何阅读、如何验证、以及遇到分支时从哪里下断点更省时间。
-建议先运行 `SpringCoreTxLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
+本章用于说明本模块如何阅读、如何验证，以及遇到分支时从哪里下断点。
+先运行 `SpringCoreTxLabTest` 获得可复现现象，再带着断言/观察点回到正文对照机制。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -62,7 +70,7 @@
 ## 源码与断点
 
 
-建议断点（排障最省时间的 4 个点）：
+断点入口（排障更快收敛的 4 个点）：
 
 - 代理入口：确认是否真的走到了事务拦截器
   - `org.springframework.transaction.interceptor.TransactionInterceptor#invoke`
@@ -75,7 +83,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreTxLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
-- 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -84,11 +92,11 @@
 > - `SpringCoreTxSelfInvocationPitfallLabTest`
 
 配套验证入口：
-- Labs/Exercises：见 `src/test/java/com/learning/springboot/springcoretx/**`
+- 实验/练习：见 `src/test/java/com/learning/springboot/springcoretx/**`
 
 ## 常见坑与边界
 
-建议阅读顺序：
+阅读顺序：
 1. 先把“事务边界”想清楚：哪里开、哪里关（Part 01）
 2. 再把“代理机制”想清楚：为什么 self-invocation 会绕过事务（Part 01 + Appendix）
 3. 最后进入回滚规则、传播与编程式事务（Part 01 + Part 02）
@@ -98,10 +106,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreTxLabTest` / `SpringCoreTxSelfInvocationPitfallLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-transaction-boundary](transaction-basics-transaction-boundary.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01-transaction-boundary](transaction-basics-transaction-boundary.md)
 
 <!-- BOOKIFY:END -->

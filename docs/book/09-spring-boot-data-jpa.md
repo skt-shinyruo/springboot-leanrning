@@ -1,12 +1,12 @@
 # 09 Spring Boot Data JPA：实体状态、持久化上下文与事务语义
 
-## 学习目标
+## 本章要回答的问题
 
 - 能解释实体状态与持久化上下文（Persistence Context）如何影响“看到的数据”和“写入的时机”。
 - 能理解并复现 flush/脏检查、N+1 等高频问题，并知道最短验证路径。
 - 能把 Data JPA 的行为与事务边界、测试切片联系起来（尤其是 `@DataJpaTest` 与事务默认语义）。
 
-## 概念框架
+## 主线框架
 
 - **实体状态**：Transient / Managed / Detached 等状态变化，决定了“是否受上下文追踪”。
 - **持久化上下文**：
@@ -27,10 +27,10 @@
 - 模块目录页（顺读主线）：
   - [`spring-boot-data-jpa/README.md`](../../spring-boot-modules/spring-boot-data-jpa/README.md)
 - 导航型文档（用于快速定位“状态/上下文/flush/N+1”）：
-  - 实体状态：[`part-01-data-jpa/01-entity-states.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-entity-states.md)
-  - 持久化上下文：[`part-01-data-jpa/02-persistence-context.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-persistence-context.md)
-  - flush 与可见性：[`part-01-data-jpa/03-flush-and-visibility.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-flush-and-visibility.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/appendix-common-pitfalls.md)
+  - 实体状态：[`data-jpa-entity-states.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-entity-states.md)
+  - 持久化上下文：[`data-jpa-persistence-context.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-persistence-context.md)
+  - flush 与可见性：[`data-jpa-flush-and-visibility.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/data-jpa-flush-and-visibility.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-boot-modules/spring-boot-data-jpa/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
@@ -38,7 +38,7 @@
 - 以为 flush = commit。flush 是 SQL 发送时机，commit 是事务边界的完成动作（两者经常需要分别验证）。
 - 把 N+1 只当成“SQL 太多”。需要用 fetching 策略与访问路径把触发条件复现出来，再谈优化。
 
-## 练习
+## 验证练习
 
 - 练习 1（上下文假象识别）：
   - 运行 `BootDataJpaBookMatrixLabTest`；
@@ -64,4 +64,3 @@
 ---
 
 [← 上一章](08-spring-boot-testing.md) | [目录](README.md) | [下一章 →](10-spring-boot-web-client.md)
-

@@ -1,12 +1,12 @@
 # 04 Spring Core AOP：代理、切点与“为什么没走切面”
 
-## 学习目标
+## 本章要回答的问题
 
 - 能建立可调试的代理心智模型：调用从哪里进、Advice 链如何组装、顺序如何决定。
 - 能解释并复现最常见的 AOP 失效场景：self-invocation、final 限制、匹配范围与顺序问题。
 - 能把 AOP 与后续主题串起来：事务、方法校验、方法安全、异步等都依赖类似的代理边界。
 
-## 概念框架
+## 主线框架
 
 - **AOP 的运行形态**：大多数 Spring AOP 是运行时代理（JDK 动态代理 / CGLIB），不是编译期织入。
 - **三件核心事**：
@@ -17,7 +17,7 @@
   - 代理只能拦截“通过代理对象发起”的调用；
   - self-invocation 绕过代理是多数“注解写了但不生效”的根因之一。
 
-前置关系（强烈建议）：
+前置关系：
 
 - AOP 的很多问题根因发生在 Bean 创建阶段（何时被替换为 proxy、early reference 如何参与）：
   - 先回看 [03 Beans](03-spring-core-beans.md) 的“代理替换阶段”入口。
@@ -30,9 +30,9 @@
 - 模块目录页（顺读主线）：
   - [`spring-core-aop/README.md`](../../spring-core-modules/spring-core-aop/README.md)
 - 导航型文档（用于快速定位“代理入口/Advice 链”）：
-  - AOP 调用链：[`part-00-guide/03-aop-invocation-call-chain.md`](../../spring-core-modules/spring-core-aop/docs/guide-aop-invocation-call-chain.md)
-  - self-invocation：[`part-01-proxy-fundamentals/03-self-invocation.md`](../../spring-core-modules/spring-core-aop/docs/proxy-fundamentals-self-invocation.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-aop/docs/appendix-common-pitfalls.md)
+  - AOP 调用链：[`guide-aop-invocation-call-chain.md`](../../spring-core-modules/spring-core-aop/docs/guide-aop-invocation-call-chain.md)
+  - self-invocation：[`proxy-fundamentals-self-invocation.md`](../../spring-core-modules/spring-core-aop/docs/proxy-fundamentals-self-invocation.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-core-modules/spring-core-aop/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
@@ -40,7 +40,7 @@
 - 以为 private/final 方法也能被代理一致拦截。JDK 代理只代理接口方法；CGLIB 也会受 final 限制。
 - 只看切面代码，不看“代理是怎么生成的、生成在哪个阶段”。排障时优先定位代理生成与链路顺序。
 
-## 练习
+## 验证练习
 
 - 练习 1（从现象到链路）：
   - 运行 `SpringCoreAopBookMatrixLabTest`；
@@ -67,4 +67,3 @@
 ---
 
 [← 上一章](03-spring-core-beans.md) | [目录](README.md) | [下一章 →](05-spring-core-tx.md)
-

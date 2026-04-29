@@ -1,13 +1,13 @@
 # 01. HandlerMapping：路由、404/405 与 mapping 约束
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（源码入口 + 分支定位）"
+!!! summary "章节入口（源码入口 + 分支定位）"
     本章围绕「HandlerMapping：路由、404/405 与 mapping 约束」展开，目标是把“路由为什么命中/为什么不命中”落成可回归的事实：**在 `DispatcherServlet#doDispatch` 内部，`HandlerMapping` 决定是否能找到 handler；找不到多半是 404，路径命中但方法不支持多半是 405**。
 
-    阅读时建议先用最小入口把现象固化成断言，再带着断点去看 `RequestMappingHandlerMapping#getHandlerInternal` 的分支。
+    阅读时先用最小入口把现象固化成断言，再带着断点去看 `RequestMappingHandlerMapping#getHandlerInternal` 的分支。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](dispatcherservlet-call-chain.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. Interceptor 与 Filter：入口在哪里、顺序怎么理解](handleradapter-interceptor-interceptor-and-filter-ordering.md)
+上一章：[01. DispatcherServlet 主链路（把选路/参数解析/返回值/异常串起来）](dispatcherservlet-call-chain.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. Interceptor 与 Filter：入口在哪里、顺序怎么理解](handleradapter-interceptor-interceptor-and-filter-ordering.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -48,9 +48,9 @@
 
 Spring Boot `3.5.9` 默认使用 **PathPatternParser** 来做路径匹配，这个“默认值”在升级/迁移时经常是 404/405 误判的根因之一。
 
-你可以用一个配置把它变成“可控事实”：
+可以用一个配置把它变成“可控事实”：
 
-- 默认（推荐）：`spring.mvc.pathmatch.matching-strategy=path-pattern-parser`
+- 默认：`spring.mvc.pathmatch.matching-strategy=path-pattern-parser`
 - 兼容回退：`spring.mvc.pathmatch.matching-strategy=ant-path-matcher`
 
 两种策略在源码层面的“可观察差异”：
@@ -63,8 +63,8 @@ Spring Boot `3.5.9` 默认使用 **PathPatternParser** 来做路径匹配，这�
 
 常见差异（排坑视角）：
 
-- PathPatternParser 对某些复杂 pattern 的规则更严格（例如 `**` 的位置约束），建议用 Spring 6 的“剩余路径捕获”语法 `/{*path}` 来替代部分 Ant 风格的写法。
-- 当你发现“路径看起来对，但就是不命中”时，不要只盯 `@RequestMapping`，先确认当前 matching strategy 与 pattern 语法是否匹配。
+- PathPatternParser 对某些复杂 pattern 的规则更严格（例如 `**` 的位置约束），用 Spring 6 的“剩余路径捕获”语法 `/{*path}` 来替代部分 Ant 风格的写法。
+- 发现“路径表面上对，但就是不命中”时，不要只盯 `@RequestMapping`，先确认当前 matching strategy 与 pattern 语法是否匹配。
 
 ## 常见分支（状态码 / 异常）
 
@@ -82,14 +82,14 @@ Spring Boot `3.5.9` 默认使用 **PathPatternParser** 来做路径匹配，这�
 - 路径匹配到某组 mappings，但 `request.getMethod()` 不满足要求
 - 最终通常由默认异常解析器把异常翻译成 405（本模块也演示了如何用 `@ExceptionHandler` 统一错误形状）
 
-### 3) “看起来像 converter 的问题”，但根因是 mapping 约束
+### 3) “表面上像 converter 的问题”，但根因是 mapping 约束
 
 `produces/consumes` 写在 mapping 上时，选路阶段就会考虑它们：
 
 - `consumes` 不满足时，可能直接走 415 分支
 - `produces` 不满足时，可能直接走 406 分支
 
-因此排障时建议先固定 3 个事实：
+因此排障时先固定 3 个事实：
 
 1. 请求头：`Accept` / `Content-Type`
 2. mapping 约束：`produces` / `consumes`
@@ -97,7 +97,7 @@ Spring Boot `3.5.9` 默认使用 **PathPatternParser** 来做路径匹配，这�
 
 ## 证据链（断点 / 测试）
 
-### 推荐断点（从“是否命中”开始）
+### 断点入口（从“是否命中”开始）
 
 - `org.springframework.web.servlet.DispatcherServlet#doDispatch`
   - 观察 `mappedHandler` 是否为 `null`

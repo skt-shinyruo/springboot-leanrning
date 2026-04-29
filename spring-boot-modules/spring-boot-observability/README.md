@@ -1,12 +1,21 @@
 # spring-boot-observability
 
-本模块用“可运行的最小示例 + 可验证的测试实验（Labs / Exercises）”讲透 **Spring Boot 可观测性（Observability）**在工程里的落点：
+本模块用“可运行的最小示例 + 可验证的测试实验（实验/练习）”讲透 **Spring Boot 可观测性（Observability）**在工程里的落点：
 
 - HTTP 请求 → 观测信号（metrics/observations）的产生
 - 观测对象在哪里生成、如何被聚合（`MeterRegistry`/`ObservationRegistry`）
 - 为什么“可观测性”经常需要和 Web MVC / Logging / Security 联动理解
 
 这份 `README.md` 只做索引与导航；更深入的解释请按章节阅读：见 docs/。
+
+
+## 本模块读法
+
+本模块入口页承担“定位路线”的职责：先把最小实验跑成事实，再沿主线章节解释机制，最后回到排障与自检材料确认边界。
+
+- **先跑入口**：优先使用本页给出的 Book Matrix、Branch Matrix 或最小 Lab，把现象固定成可重复断言。
+- **再读主线**：按“主线时间线 → 深挖导读 → 正文主题”的顺序阅读，避免只按文件名零散跳转。
+- **最后排障**：遇到问题先回到断点地图、关键分支矩阵、常见坑和自检清单，把问题收敛到章节、断点与测试入口。
 
 ## 从这里开始（5 分钟闭环）
 
@@ -17,9 +26,9 @@
   - `mvn -q -pl :spring-boot-observability -Dtest=BootObservabilityBranchMatrixLabTest test`
 
 文档入口：
-- 模块目录（Docs TOC）：见本 README 的「目录（唯一顺序来源）」
-- 常见坑：[`docs/appendix/01-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
-- 自检：[`docs/appendix/02-self-check.md`](docs/appendix-self-check.md)
+- 模块目录：见本 README 的「目录（唯一顺序来源）」
+- 常见坑：[`docs/appendix-common-pitfalls.md`](docs/appendix-common-pitfalls.md)
+- 自检：[`docs/appendix-self-check.md`](docs/appendix-self-check.md)
 
 完成标准（应能解释清楚）：
 
@@ -41,9 +50,9 @@ mvn -pl :spring-boot-observability spring-boot:run
 mvn -pl :spring-boot-observability test
 ```
 
-## Labs / Exercises 索引
+## 实验/练习索引
 
-> Exercises 默认 `@Disabled`。
+> 练习默认 `@Disabled`。
 
 | 类型 | 入口 | 知识点 | 难度 |
 | --- | --- | --- | --- |
@@ -65,7 +74,7 @@ mvn -pl :spring-boot-observability test
 
 运行后应能回答：一次请求会触发哪些 observation；meter 的创建与命名发生在何处；为何某些 tag 在某些场景下会缺失。
 
-### 从这里开始（建议顺序）
+### 从这里开始（顺读路径）
 1. [主线时间线](docs/guide-mainline-timeline.md)
 2. [深挖导读](docs/guide-deep-dive-guide.md)
 3. [Observability 调用链（请求 → observation → meter）](docs/guide-http-observation-call-chain.md)

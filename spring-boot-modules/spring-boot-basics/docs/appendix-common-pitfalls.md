@@ -1,6 +1,6 @@
-# 01. 常见坑清单（建议反复对照）
+# 01. 常见坑清单（排查时对照）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（排障短文）"
+!!! summary "章节入口（排障短文）"
 
     这页不是“把坑列完”的目录，而是更偏项目里的排障备忘录：每个坑尽量给一个最小复现入口、一个最常见根因，以及可以立刻验证的观察点。
 
@@ -9,15 +9,23 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. `@ConfigurationProperties` 绑定与类型转换](boot-basics-configuration-properties-binding.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-basics）](appendix-self-check.md)
+上一章：[02. `@ConfigurationProperties` 绑定与类型转换](boot-basics-configuration-properties-binding.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[自检题](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 导读
 
-建议优先运行 `BootBasicsBranchMatrixLabTest`（见文末“对应 Lab/Test”），从分支矩阵把“最终值/最终实现”先钉住，再回到本文逐条对照根因与修法。
+优先运行 `BootBasicsBranchMatrixLabTest`（见文末“对应实验/测试”），从分支矩阵把“最终值/最终实现”先钉住，再回到本章逐条对照根因与修法。
 
 
-## 我通常怎么排“配置没生效”
+## “配置没生效”的排查路径
 
 这模块的配置问题，大多可以用三步收敛：
 
@@ -27,7 +35,7 @@
 
 ## 配置没生效
 
-### 坑点 1：以为是 dev，其实根本没激活 profile
+### 坑点 1：以为是 dev，本质上根本没激活 profile
 
 现象：
 
@@ -62,14 +70,14 @@
 
 现象：
 
-- “看起来写了配置”，但绑定对象里一直是默认值
+- “表面上写了配置”，但绑定对象里一直是默认值
 
 这类问题优先检查两件事：
 
 - prefix 是否匹配（`@ConfigurationProperties(prefix = "app")`）
 - `featureEnabled` 对应 `feature-enabled`（kebab-case）
 
-练习入口（建议用它构造一个错误样例，形成肌肉记忆）：
+练习入口（用它构造一个错误样例，形成肌肉记忆）：
 
 - `BootBasicsExerciseTest#exercise_addNewPropertyField`
 
@@ -102,10 +110,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootBasicsDefaultLabTest` / `BootBasicsDevLabTest` / `BootBasicsOverrideLabTest`
 
-上一章：[part-01-boot-basics/02-configuration-properties-binding.md](boot-basics-configuration-properties-binding.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](appendix-self-check.md)
+上一章：[boot-basics-configuration-properties-binding.md](boot-basics-configuration-properties-binding.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-self-check.md](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

@@ -1,19 +1,19 @@
 # FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`。需要下探源码时，可以从 `FactoryBean#getObjectType()` / `FactoryBean#getObjectType()==null` / `DefaultListableBeanFactory#getBeanNamesForType` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：FactoryBean 边界
 
-本章围绕「29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansFactoryBeanEdgeCasesLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+先运行 `SpringCoreBeansFactoryBeanEdgeCasesLabTest` 固定「29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -21,21 +21,14 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansFactoryBeanEdgeCasesLabTest`，再用 `SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`DefaultListableBeanFactory#getBeanNamesForType` / `FactoryBeanRegistrySupport#getTypeForFactoryBean`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-`FactoryBean` 的核心机制读者已经在 [23 章](wiring-factorybean-deep-dive.md) 学过了。
+`FactoryBean` 的核心机制已经在 [23 章](wiring-factorybean-deep-dive.md) 学过了。
 
 - 如果 `FactoryBean#getObjectType()` 返回 `null`
 - 那么在“不允许 eager init”的按类型扫描里，它可能不会被当成候选
@@ -45,20 +38,20 @@
 **条件**：`allowEagerInit=false` 且 `FactoryBean#getObjectType()==null`
 **分支**：`getBeanNamesForType` 不能为了“推断类型”而实例化 FactoryBean
 **结果**：按类型扫描 **忽略该 FactoryBean 的 product**
-**断点建议**：`DefaultListableBeanFactory#getBeanNamesForType` / `FactoryBeanRegistrySupport#getTypeForFactoryBean`
+**断点入口**：`DefaultListableBeanFactory#getBeanNamesForType` / `FactoryBeanRegistrySupport#getTypeForFactoryBean`
 
 ## 与代理/循环依赖的交叉边界（只要记住一条）
 
 当 FactoryBean 本身或其 product 进入“提前暴露”路径时：
 
 - `getObjectType()` 的不稳定会放大问题：**类型推断不可靠 → 条件判断/候选匹配更容易误判**
-- 若在循环依赖里获取到了 early reference（proxy 或半成品），再叠加“类型不可判定”，排障会非常痛苦
+- 若在循环依赖里获取到了 early reference（proxy 或半成品），再叠加“类型不可判定”，排障会排查成本高
 
-实务建议：**FactoryBean 的 product 类型能稳定就稳定**，不要让它成为“隐形类型黑洞”。
+实务取舍：**FactoryBean 的 product 类型能稳定就稳定**，不要让它成为“隐形类型黑洞”。
 
 ## 现象：getBeanNamesForType(..., allowEagerInit=false) 找不到 unknownValue
 
-这类现象非常“反直觉”，但它背后是一个很合理的设计取舍：
+这类现象“反预期”，但它背后是一个很合理的设计取舍：
 
 - `allowEagerInit=false` 的含义是：**为了性能与避免副作用，不要为了“类型判断”去创建 bean**。
 - 对于 `FactoryBean` 来说，product 的类型往往只能在实例化 factory 后才能确定。
@@ -78,14 +71,14 @@
 - 因此它们经常走 `allowEagerInit=false` 的路径
 - 相应的 `FactoryBean` 如果不能提供稳定的 `getObjectType()`，就会出现“扫描不到”的情况
 
-### 1.2 解决策略（按推荐优先级）
+### 1.2 解决策略（按取舍顺序）
 
 1. **优先：让 `getObjectType()` 返回稳定、明确的类型**
    - 这是最符合 Spring 预期的做法
 2. **次选：减少按类型发现对它的依赖**
    - 能按名字注入/获取的场景，显式按名字处理（但要权衡可维护性）
 3. **了解即可：通过更激进的 eager init 策略换取可发现性**
-   - 在一些场景可以通过允许提前初始化来推断类型，但要非常谨慎：这会把“类型判断”变成“可能触发实例化”，引入副作用与性能风险
+  - 在一些场景可以通过允许提前初始化来推断类型，但要谨慎：这会把“类型判断”变成“可能触发实例化”，引入副作用与性能风险
 
 对应测试：
 
@@ -117,10 +110,10 @@
 
 入口：
 
-1) 测试里 `getBeanNamesForType(..., allowEagerInit=false)` 的调用行：对照返回数组为什么缺少 `unknownValue`
-2) `DefaultListableBeanFactory#getBeanNamesForType`：观察 allowEagerInit 参数如何影响后续类型推断策略
-3) `FactoryBeanRegistrySupport#getTypeForFactoryBean`：观察 `getObjectType()==null` 时容器为什么不能“猜类型”
-4) 对照测试后半段 `getBean("unknownValue", Value.class)`：观察按名字取 bean 走的是另一条链路，仍然能获取到产品
+1. 测试里 `getBeanNamesForType(..., allowEagerInit=false)` 的调用行：对照返回数组为什么缺少 `unknownValue`
+2. `DefaultListableBeanFactory#getBeanNamesForType`：观察 allowEagerInit 参数如何影响后续类型推断策略
+3. `FactoryBeanRegistrySupport#getTypeForFactoryBean`：观察 `getObjectType()==null` 时容器为什么不能“猜类型”
+4. 对照测试后半段 `getBean("unknownValue", Value.class)`：观察按名字取 bean 走的是另一条链路，仍然能获取到产品
 
 ## 排障分流：这是定义层问题还是实例层问题？
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -128,26 +121,26 @@
 
 - “按类型发现不到某个 FactoryBean 的 product（尤其在 allowEagerInit=false）” → **定义层（类型元数据不足）**：检查 `getObjectType()` 是否返回 null（本章结论）
 - “按名字能获取到，但按类型扫描/条件判断不稳定” → **定义层（类型匹配路径）**：type matching 与 name-based retrieval 是两条路径（本章第 2 节）
-- “在 Boot 条件装配里出现诡异匹配结果” → **定义层 + 条件机制**：FactoryBean 的类型声明不可靠会影响条件判断，建议优先修正 `getObjectType()`（并回看 [10](boot-spring-boot-auto-configuration.md)）
+- “在 Boot 条件装配里出现诡异匹配结果” → **定义层 + 条件机制**：FactoryBean 的类型声明不可靠会影响条件判断，优先修正 `getObjectType()`（并回看 [10](boot-spring-boot-auto-configuration.md)）
 - “把它当成缓存/创建 bug 去排查” → **先确认类型信息**：这类问题往往不是实例缓存，而是类型推断与 allowEagerInit 的限制
 
 ## 面试常问（FactoryBean 边界）
 
-- 应能够解释：为什么 `getBeanNamesForType(..., allowEagerInit=false)` 可能“按类型发现不到 FactoryBean 的 product”？入口：`SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName`
-- 应能够解释：为什么 `getBean("sequence")` 获取到的是 product，但 `getBean("&sequence")` 获取到的是 FactoryBean 本体？入口：`SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory`
-- 应能够解释：`FactoryBean#isSingleton()` 会如何影响 product 的缓存语义？入口：`SpringCoreBeansFactoryBeanDeepDiveLabTest#singletonFactoryBeanProduct_isCached_byTheContainer` / `SpringCoreBeansFactoryBeanDeepDiveLabTest#nonSingletonFactoryBeanProduct_isNotCached_byTheContainer`
+- 需要解释：为什么 `getBeanNamesForType(..., allowEagerInit=false)` 可能“按类型发现不到 FactoryBean 的 product”？入口：`SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName`
+- 需要解释：为什么 `getBean("sequence")` 获取到的是 product，但 `getBean("&sequence")` 获取到的是 FactoryBean 本体？入口：`SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory`
+- 需要解释：`FactoryBean#isSingleton()` 会如何影响 product 的缓存语义？入口：`SpringCoreBeansFactoryBeanDeepDiveLabTest#singletonFactoryBeanProduct_isCached_byTheContainer` / `SpringCoreBeansFactoryBeanDeepDiveLabTest#nonSingletonFactoryBeanProduct_isNotCached_byTheContainer`
 
 ## 最小可运行实验（Lab）
 
-- 本章已在正文中引用以下 LabTest（优先运行它们）：
+本章引用的实验入口：
 - Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
-- 建议命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
+- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
 ### 验证补充（从实验现象出发）
 
 ## 复现入口（可运行）
 
-- 入口测试（推荐先运行通再设置断点）：
+- 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
   - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansFactoryBeanEdgeCasesLabTest test`
 
@@ -161,7 +154,7 @@
 
 同一个测试里也验证了：
 
-## 源码锚点（建议从这里设置断点）
+## 源码锚点：从这里设置断点
 
 - `AbstractBeanFactory#isTypeMatch`：FactoryBean 的 type matching 入口（`getObjectType()` 是否为 null 是关键分支）
 - `DefaultListableBeanFactory#getBeanNamesForType`：按类型发现入口（对照 `allowEagerInit=false` 的边界）
@@ -169,41 +162,41 @@
 - `AbstractBeanFactory#getObjectForBeanInstance`：`&name` / product 分流（排障时确认“读者获取到的是谁”）
 - `ResolvableType` 相关路径（IDE 跳转定位）：泛型推断/代理导致的类型信息丢失常见在这里暴露
 
-## 断点闭环（用本仓库 Lab/Test 运行一次）
+## 断点闭环（用本仓库实验/测试运行一次）
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
   - `factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName()`
 
-建议断点：
+断点入口：
 
-- 应能够解释清楚：为什么 allowEagerInit=false 时容器不能“猜”出 unknownValue 的类型吗？
-对应 Lab/Test：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
-推荐断点：`AbstractBeanFactory#getType`、`DefaultListableBeanFactory#getBeanNamesForType`、`FactoryBeanRegistrySupport#getTypeForFactoryBean`
+- 需要解释清楚：为什么 allowEagerInit=false 时容器不能“猜”出 unknownValue 的类型吗？
+对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
+断点入口：`AbstractBeanFactory#getType`、`DefaultListableBeanFactory#getBeanNamesForType`、`FactoryBeanRegistrySupport#getTypeForFactoryBean`
 
-## 常见误区与边界
+## 边界分流：FactoryBean 边界
 
-这一章补一个非常实用的边界：
+这一章补一个实用的边界：
 
-## 常见误区
+## 误判点：FactoryBean 边界
 
 - **误区 1：以为 FactoryBean 一定能被按类型发现**
   - 取决于 `getObjectType()` 是否可靠。
 
 - **误区 2：类型判断导致条件注解误判**
-  - Boot 的条件装配经常依赖 type matching；FactoryBean 的 object type 不准会产生非常诡异的条件匹配结果。
+  - Boot 的条件装配经常依赖 type matching；FactoryBean 的 object type 不准会产生反预期的条件匹配结果。
 
-## 自检要点
-应能够解释清楚：
+## 验证标准：FactoryBean 边界
+需要解释清楚：
 
-1) **`getObjectType()` 返回 null 会导致哪几类能力失效？**（按类型发现/条件装配/候选收集）
-2) **为什么 `allowEagerInit=false` 时更容易“看不到”某些 FactoryBean product？**
-3) **如何用断点证明“失败来自 type matching 分支，而不是 bean 根本没注册”？**
+1. **`getObjectType()` 返回 null 会导致哪几类能力失效？**（按类型发现/条件装配/候选收集）
+2. **为什么 `allowEagerInit=false` 时更容易“看不到”某些 FactoryBean product？**
+3. **如何用断点证明“失败来自 type matching 分支，而不是 bean 根本没注册”？**
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
 
 <!-- BOOKIFY:END -->

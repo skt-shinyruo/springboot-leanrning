@@ -1,6 +1,6 @@
 # 01. AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕AOP 的容器主线：AutoProxyCreator 作为 BPP（Advisor / Advice / Pointcut 三层模型）展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopAutoProxyCreatorInternalsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[10. Proxy 的对象语义：equals/hashCode/toString/Map key（以及如何自证）](proxy-fundamentals-proxy-object-semantics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](autoproxy-and-pointcuts-pointcut-expression-system.md)
+上一章：[10. Proxy 的对象语义：equals/hashCode/toString/Map key（以及如何自证）](proxy-fundamentals-proxy-object-semantics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. Pointcut 表达式系统：execution/within/this/target/args/@annotation/...（以及常见误判）](autoproxy-and-pointcuts-pointcut-expression-system.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -52,7 +52,7 @@ AutoProxyCreator 之所以“强”，不是因为它“会代理”，而是因
   - `BeanPostProcessor#postProcessAfterInitialization`
 
 > 对应 beans 深挖章节：
-> 对应 beans 深挖章节（建议按“主线 → 分支”顺序，只要读 1 次就能在两边自由切换）：
+> 对应 beans 深挖章节（按“主线 → 分支”顺序，只要读 1 次就能在两边自由切换）：
 > - [18. refresh 主线：`refresh()` → `doCreateBean()`](../../spring-core-beans/docs/internals-refresh-to-bean-creation-mainline.md)
 > - [15. 实例化前短路（pre-instantiation short-circuit）](../../spring-core-beans/docs/internals-pre-instantiation-short-circuit.md)
 > - [16. early reference 与循环依赖：`getEarlyBeanReference`](../../spring-core-beans/docs/internals-early-reference-and-circular.md)
@@ -92,7 +92,7 @@ AutoProxyCreator 之所以“强”，不是因为它“会代理”，而是因
 > **这个 bean 是否需要被代理？如果要，挂哪些 Advisors？**
 
 1. **跳过基础设施 bean**
-   - AOP/容器内部的基础设施类通常不应被代理（否则会自我增强、风险很高）
+   - AOP/容器内部的基础设施类通常不应被代理（否则会自身增强、风险很高）
 2. **拿到候选 Advisors**
    - 来源包括：`@Aspect` 解析出来的 Advisors、以及显式声明的 `Advisor` beans（Tx/Cache/Security 本质也在这里）
 3. **筛选“对当前 bean 适用”的 Advisors**
@@ -123,7 +123,7 @@ AutoProxyCreator 之所以“强”，不是因为它“会代理”，而是因
 - `AbstractAdvisorAutoProxyCreator#findEligibleAdvisors`（如果需要更细）
 - `AopUtils#canApply`（pointcut 适用性判断的常见落点）
 
-### 4.4 推荐观察点（watch list）
+### 4.4 观察点（观察清单）
 
 - `beanName`
 - `bean.getClass()` vs `AopUtils.getTargetClass(bean)` vs `AopProxyUtils.ultimateTargetClass(bean)`
@@ -140,7 +140,7 @@ AutoProxyCreator 之所以“强”，不是因为它“会代理”，而是因
 
 ## 6. 常见误判（与排障分流）
 
-### 6.1 “我加了 @Aspect，为什么这个 bean 没被代理？”
+### 6.1 “已经添加 @Aspect，为什么这个 bean 没被代理？”
 
 先按顺序排查：
 
@@ -161,17 +161,17 @@ AutoProxyCreator 之所以“强”，不是因为它“会代理”，而是因
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
 这一章的目标是把 Spring AOP 从“会写 @Aspect”提升到“能在源码断点里复述主线”。
 
-1. **AutoProxyCreator 不是魔法**：它就是一个 `BeanPostProcessor`（更准确地说：`SmartInstantiationAwareBeanPostProcessor`）。
+1. **AutoProxyCreator 不是隐式机制**：它就是一个 `BeanPostProcessor`（更准确地说：`SmartInstantiationAwareBeanPostProcessor`）。
 2. **Advisor / Advice / Pointcut 是三层模型**：Advisor=（Pointcut + Advice），最后会被组装为拦截器链。
 3. **proxy 的产生时机是容器阶段**：proxy 是 bean 创建流程中的“替身对象”，不是运行时“动态改类”。
 
-> 推荐配套 Labs：`SpringCoreAopAutoProxyCreatorInternalsLabTest`（可断点闭环）。
+> 配套 Labs：`SpringCoreAopAutoProxyCreatorInternalsLabTest`（可断点闭环）。
 
 因此在源码断点里应当关注的对象是：
 
@@ -179,13 +179,13 @@ AutoProxyCreator 之所以“强”，不是因为它“会代理”，而是因
 
 不需要记住每一个方法名，但需要能在断点里看懂“决策步骤”：
 
-## 4. 断点清单：主线够用版（建议跟着 Labs 跑）
+## 4. 断点清单：主线够用版（跟着 Labs 跑）
 
-这类断点的命中会比较频繁，建议加条件（只看目标 beanName）。
+这类断点的命中会比较频繁，加条件（只看目标 beanName）。
 
 ## 5. Labs：把主线做成“可断言”的闭环
 
-建议从这个 Lab 开始跑（只跑方法更适合打断点）：
+从这个 Lab 开始跑（只跑方法更适合打断点）：
 
 ```bash
 mvn -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyCreatorInternalsLabTest test
@@ -214,10 +214,10 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopAutoProxyCreatorInternalsLabTest te
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopAutoProxyCreatorInternalsLabTest`
 
-上一章：[10-proxy-semantics](proxy-fundamentals-proxy-object-semantics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[08-pointcut-expression-system](autoproxy-and-pointcuts-pointcut-expression-system.md)
+上一章：[10-proxy-semantics](proxy-fundamentals-proxy-object-semantics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[08-pointcut-expression-system](autoproxy-and-pointcuts-pointcut-expression-system.md)
 
 <!-- BOOKIFY:END -->

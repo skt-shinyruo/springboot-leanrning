@@ -1,19 +1,19 @@
 # BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，把现象固化为断言，再对照正文理解机制；真实项目里优先按“定义层/实例层/最终暴露对象”分层，再用断点与 watch list 收敛原因。
+!!! summary "章节入口"
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
 
-    本章围绕24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansBeanDefinitionOverridingLabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(...)` / `DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` / `DefaultListableBeanFactory#registerBeanDefinition` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 起点：BeanDefinition 覆盖（overriding）
 
-本章围绕「24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreBeansBeanDefinitionOverridingLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+先运行 `SpringCoreBeansBeanDefinitionOverridingLabTest` 固定「24. BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -21,16 +21,9 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
-    - Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
+    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
 
-    建议 先跑 `SpringCoreBeansBeanDefinitionOverridingLabTest`，再用 `SpringCoreBeansBeanDefinitionOriginLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`DefaultListableBeanFactory#registerBeanDefinition`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：读到“6. 排障分流：这是定义层问题还是实例层问题？”时，建议将“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，读者可以按步骤自证。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
 ## 机制主线
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -61,7 +54,7 @@
 **条件**：`DefaultListableBeanFactory#isAllowBeanDefinitionOverriding()` 为 `true`
 **分支**：`registerBeanDefinition` 检测到同名时进入“覆盖”分支
 **结果**：registry 中 **BeanDefinition 被替换**（但已创建的单例不会回滚）
-**断点建议**：`DefaultListableBeanFactory#registerBeanDefinition`
+**断点入口**：`DefaultListableBeanFactory#registerBeanDefinition`
 
 ## allowBeanDefinitionOverriding=false：同名注册 fail-fast
 
@@ -96,8 +89,8 @@
 
 因此要区分两个阶段：
 
-1) **注册阶段**：`registerBeanDefinition` 决定“覆盖或失败”
-2) **实例阶段**：`getBean` 先检查 `singletonObjects`，若已存在则直接返回
+1. **注册阶段**：`registerBeanDefinition` 决定“覆盖或失败”
+2. **实例阶段**：`getBean` 先检查 `singletonObjects`，若已存在则直接返回
 
 排障时需要同时看两处：
 
@@ -117,19 +110,19 @@
 可观测性补充（本仓库提供的排障小工具）：
 
 - `BeanDefinitionOriginDumper.dump(beanFactory, beanName)`：把 beanDefinition 的 resourceDescription/source/factoryMethod 等“来源线索”打印出来
-  - 对应 Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`（允许覆盖场景会输出 dump，应能够直接看到最终保留下来的来源标记）
+  - 对应 Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`（允许覆盖场景会输出 dump，可以直接看到最终保留下来的来源标记）
 
 入口：
 
-1) `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding`：确认本次测试里开关的取值
-2) `DefaultListableBeanFactory#registerBeanDefinition`：观察第二次注册同名 beanName 时走“覆盖”还是“抛异常”分支
-3) `DefaultListableBeanFactory#getBeanDefinition`：在允许覆盖的场景下，确认最终 registry 里保存的是哪一个定义
+1. `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding`：确认本次测试里开关的取值
+2. `DefaultListableBeanFactory#registerBeanDefinition`：观察第二次注册同名 beanName 时走“覆盖”还是“抛异常”分支
+3. `DefaultListableBeanFactory#getBeanDefinition`：在允许覆盖的场景下，确认最终 registry 里保存的是哪一个定义
 
 ## 排障分流：这是定义层问题还是实例层问题？
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-这章非常适合用“异常类型”快速分流：
+这章适合用“异常类型”快速分流：
 
 - **定义层（本章）**：`BeanDefinitionOverrideException` / “注册同名 beanName 失败”
   - 关键入口：`DefaultListableBeanFactory#registerBeanDefinition`
@@ -139,20 +132,20 @@
   - 关键入口：`DefaultListableBeanFactory#doResolveDependency`
   - 修复方向：`@Primary/@Qualifier` 或让自动配置 back-off（见 [03](ioc-dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)、[10](boot-spring-boot-auto-configuration.md)）
 
-## 可复现闭环（用本仓库 Lab/Test 运行一次）
+## 可复现闭环（用本仓库实验/测试运行一次）
 
-至少应能够得到并复述三条结论：
+至少需要得到并复述三条结论：
 
-1) **允许覆盖：后注册 wins**
+1. **允许覆盖：后注册 wins**
    - 断点：`registerBeanDefinition`
    - 断言：最终 `getBeanDefinition(beanName)` 指向第二次注册来源
-2) **禁止覆盖：注册阶段 fail-fast**
+2. **禁止覆盖：注册阶段 fail-fast**
    - 断点：`registerBeanDefinition`
    - 断言：抛 `BeanDefinitionOverrideException`，无需进入 refresh
-3) **覆盖不影响已创建单例**
+3. **覆盖不影响已创建单例**
    - 断点：`AbstractBeanFactory#doGetBean`
    - 断言：已有 `singletonObjects` 时直接返回旧对象
-## 自检要点
+## 验证标准：BeanDefinition 覆盖（overriding）
 
 - 常问：BeanDefinition overriding 解决的是什么问题？
   - 答题要点：解决“同名 BeanDefinition 冲突”的定义层问题；开关决定是 last-wins 还是 fail-fast。
@@ -176,9 +169,9 @@
 | 启动正常但行为“像被悄悄改了” | 允许 overriding（last-wins），后注册覆盖前注册 | `getBeanDefinition(beanName)` 对照 source/resource/factoryMethod；看第二次注册发生点 | 优先禁止 overriding；或完善来源追踪与命名规范 | `SpringCoreBeansBeanDefinitionOriginLabTest` + overriding Lab |
 | 若希望用 overriding 解决注入歧义 | 概念误用：这是 type-based 的候选收敛问题 | `doResolveDependency`→`findAutowireCandidates` | 使用 `@Qualifier/@Primary/@Priority` 收敛，或让 auto-config back-off | [03](ioc-dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md) |
 
-## 常见误区与边界
+## 边界分流：BeanDefinition 覆盖（overriding）
 
-### 常见误区
+### 误判点：不要把外层现象当成根因
 
 - **误区 1：把覆盖当成“解决歧义”的手段**
   - 覆盖解决的是“同名冲突”，不是“同类型多实现注入”的歧义。
@@ -186,14 +179,14 @@
 - **误区 2：不同环境默认值不同**
   - Boot 环境与纯 Spring 容器的默认行为可能不同；不要靠猜。
 
-## 小结
+## 收束：BeanDefinition 覆盖（overriding）
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreBeansBeanDefinitionOverridingLabTest`
-- Test file：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
+- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionOverridingLabTest.java`
 
 <!-- BOOKIFY:END -->

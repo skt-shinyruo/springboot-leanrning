@@ -1,6 +1,6 @@
 # 05. exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕exposeProxy：用 `AopContext.currentProxy()` 绕过自调用（进阶）展开，主线可以概括为：目标 Bean → `AbstractAutoProxyCreator` 判断 → 生成代理（JDK/CGLIB）→ advisor/interceptor 链 → `proceed()` 形成嵌套调用。
 
     先运行 `SpringCoreAopExposeProxyLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过切点表达式与通知声明横切意图；在 Spring 中多数能力（Tx/Cache/Validation/Method Security）都以代理方式织入。
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[04. `final` 与代理限制：为什么 final method 拦截不到？](proxy-fundamentals-final-and-proxy-limits.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06. Debug / 观察：如何“看见”代理与切点](proxy-fundamentals-debugging.md)
+上一章：[04. `final` 与代理限制：为什么 final method 拦截不到？](proxy-fundamentals-final-and-proxy-limits.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06. Debug / 观察：如何“看见”代理与切点](proxy-fundamentals-debugging.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -66,13 +66,13 @@
 - 可读性：`AopContext` 会把代码和 AOP 强绑定，不如“抽出到另一个 bean”清晰
 - 线程绑定：`currentProxy()` 基于当前线程上下文（更容易产生隐式依赖）
 
-所以在真实项目里更推荐：
+所以在真实项目里更稳妥的做法：
 
 > 把需要被拦截的逻辑抽到另一个 Spring Bean，通过注入调用。
 
 ### 一个更工程化的替代方案：自注入（或 ObjectProvider）
 
-如果确实需要“在同一个类里触发 AOP”，更推荐的写法通常是：
+如果确实需要“在同一个类里触发 AOP”，更稳妥的写法通常是：
 
 - 让类依赖自己（注入自己这个 bean），必要时配合 `@Lazy` 来避免循环依赖
 - 或注入 `ObjectProvider<SelfInvocationExampleService>`，在需要时再获取 proxy 并调用
@@ -85,7 +85,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreAopExposeProxyLabTest` / `SpringCoreAopLabTest`
-- 建议命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-aop test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -111,11 +111,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreAopExposeProxyLabTest` / `SpringCoreAopLabTest`
 - Exercise：`SpringCoreAopExerciseTest`
 
-上一章：[04-final-and-proxy-limits](proxy-fundamentals-final-and-proxy-limits.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[06-debugging](proxy-fundamentals-debugging.md)
+上一章：[04-final-and-proxy-limits](proxy-fundamentals-final-and-proxy-limits.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[06-debugging](proxy-fundamentals-debugging.md)
 
 <!-- BOOKIFY:END -->

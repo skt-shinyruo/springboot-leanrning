@@ -1,26 +1,34 @@
-# 01. 90 - Common Pitfalls（springboot-actuator）
+# 常见坑清单
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
 
-    Actuator 的排障最容易被一句“访问不到端点”带偏：端点是否存在、是否暴露到 Web、暴露后是否允许访问，其实是三段不同的分流。本章把这些分支写成可对照的排障笔记，让 404/401/403 不再混在一起讨论。
+    Actuator 的排障最容易被一句“访问不到端点”带偏：端点是否存在、是否暴露到 Web、暴露后是否允许访问，本质上是三段不同的分流。本章把这些分支写成可对照的排障笔记，让 404/401/403 不再混在一起讨论。
 
-    建议先运行 `BootActuatorExposureOverrideLabTest` 与 `BootActuatorLabTest`，把默认行为与覆盖行为跑成断言，再回到本章逐条对照。需要下探源码时，优先从 `WebEndpointAutoConfiguration` 与 `WebEndpointProperties`（exposure/base-path）这条线切入。
+    先运行 `BootActuatorExposureOverrideLabTest` 与 `BootActuatorLabTest`，把默认行为与覆盖行为跑成断言，再回到本章逐条对照。需要下探源码时，优先从 `WebEndpointAutoConfiguration` 与 `WebEndpointProperties`（exposure/base-path）这条线切入。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 01 - Actuator 基础与暴露](actuator-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. 99 - Self Check（springboot-actuator）](appendix-self-check.md)
+上一章：[01. 01 - Actuator 基础与暴露](actuator-basics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[自检题](appendix-self-check.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
+
+1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
+2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
+3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
 ## 先把三段分流跑成事实（别从“端点是不是没注册”开始猜）
 
-本章后面的每个坑点，最终都会落到三件事之一：端点有没有注册、端点有没有暴露到 HTTP、暴露之后有没有权限访问。把它们先拆开，很多“看起来很玄学”的现象会立刻变得可解释。
+本章后面的每个坑点，最终都会落到三件事之一：端点有没有注册、端点有没有暴露到 HTTP、暴露之后有没有权限访问。把它们先拆开，很多“表面上很不可解释”的现象会立刻变得可解释。
 
-最省心的做法是先把主线与分支跑成断言：Book Matrix 只回答“默认行为是什么”，Branch Matrix 则把 exposure/base-path/security 这些常见分支跑全。
+更稳妥的做法是先把主线与分支跑成断言：Book Matrix 只回答“默认行为是什么”，Branch Matrix 则把 exposure/base-path/security 这些常见分支跑全。
 
 - `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBookMatrixLabTest test`
 - `mvn -q -pl :spring-boot-actuator -Dtest=BootActuatorBranchMatrixLabTest test`
 
-需要下探调用链时，再对照本模块的断点地图与关键分支矩阵去命中入口，避免在日志里猜测行为：[04-breakpoint-map.md](guide-breakpoint-map.md) / [05-branch-decision-matrix.md](guide-branch-decision-matrix.md)。
+需要下探调用链时，再对照本模块的断点地图与关键分支矩阵去命中入口，避免在日志里猜测行为：[guide-breakpoint-map.md](guide-breakpoint-map.md) / [guide-branch-decision-matrix.md](guide-branch-decision-matrix.md)。
 
 
 !!! example "本章配套实验（先跑再读）"
@@ -30,11 +38,11 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
-- 建议命令：`mvn -pl :spring-boot-actuator test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-boot-actuator test`（或在 IDE 直接运行上面的测试类）
 
 ## 常见坑与边界
 
-这一模块的排障最怕把现象混在一起：**端点存在 / 端点暴露 / 端点可访问** 是三件不同的事（见 Deep Dive Guide 的“三段式分流”）。
+这一模块的排障最怕把现象混在一起：**端点存在 / 端点暴露 / 端点可访问** 是三件不同的事（见 深挖导读 的“三段式分流”）。
 
 ## 坑 1：把 404 当成“端点不存在”，忽略 exposure 的分流
 
@@ -51,7 +59,7 @@
 
 ## 坑 2：环境差异把带偏（profile/配置来源）
 
-本地可以、线上不行；或者 IDE 里 OK、命令行不行——这类问题看上去像“端点不稳定”，但更常见的原因是：真正生效的配置来源与直觉不一致。Actuator 的行为高度依赖配置覆盖顺序（profile/环境变量/外部配置）。
+本地可以、线上不行；或者 IDE 里 OK、命令行不行——这类问题表面上像“端点不稳定”，但更常见的原因是：真正生效的配置来源与预期不一致。Actuator 的行为高度依赖配置覆盖顺序（profile/环境变量/外部配置）。
 
 先确认“当前生效的配置值是什么、来自哪个 PropertySource”，再讨论“配置写没写对”。
 
@@ -71,10 +79,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootActuatorExposureOverrideLabTest` / `BootActuatorLabTest`
 
-上一章：[part-01-actuator/01-actuator-basics.md](actuator-basics.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[appendix/99-self-check.md](appendix-self-check.md)
+上一章：[actuator-basics.md](actuator-basics.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[appendix-self-check.md](appendix-self-check.md)
 
 <!-- BOOKIFY:END -->

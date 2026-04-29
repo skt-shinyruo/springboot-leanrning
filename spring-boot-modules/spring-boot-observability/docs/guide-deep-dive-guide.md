@@ -1,7 +1,7 @@
 # 02. 深挖导读：把“HTTP → metrics/observations”落到源码与断点
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    本章围绕深挖导读：把“HTTP → metrics/observations”落到源码与断点展开，主线可以概括为：观测信号的价值在于“可解释与可聚合”。从最小闭环开始：先证明 `http.server.requests` 存在，再理解它的来源与标签。
+!!! summary "章节入口（五问闭环）"
+    本章围绕把“HTTP → metrics/observations”落到源码与断点展开，主线可以概括为：观测信号的价值在于“可解释与可聚合”。从最小闭环开始：先证明 `http.server.requests` 存在，再理解它的来源与标签。
 
     先跑 `BootObservabilityLabTest`，确认请求后 timer count 增长；再用断点回答：这个指标是谁记录的？在哪一层记录的？
 
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：springboot-observability](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[03. Observability 调用链（请求 → observation → meter）](guide-http-observation-call-chain.md)
+上一章：[01. 主线时间线：springboot-observability](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[03. Observability 调用链（请求 → observation → meter）](guide-http-observation-call-chain.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -25,15 +25,15 @@
 
 观测信号的价值在于“可解释与可聚合”。从最小闭环开始：先证明 `http.server.requests` 存在，再理解它的来源与标签。
 
-下一章见：[第 205 章：01：调用链](guide-http-observation-call-chain.md)
+下一章见：[01：调用链](guide-http-observation-call-chain.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootObservabilityLabTest`
 
-上一章：[part-00-guide/03-mainline-timeline.md](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/01-call-chain.md](guide-http-observation-call-chain.md)
+上一章：[guide-mainline-timeline.md](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[guide-http-observation-call-chain.md](guide-http-observation-call-chain.md)
 
 <!-- BOOKIFY:END -->

@@ -1,6 +1,6 @@
 # 02. 深挖指南（Spring Core Events）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕深挖指南（Spring Core Events）展开，主线可以概括为：publish → `ApplicationEventMulticaster` 分发 → listener 执行（同步/异步）→ 事务事件在 AFTER_COMMIT 等时机触发，异常与顺序决定可见性。
 
     先运行 `SpringCoreEventsLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：通过 `ApplicationEventPublisher` 发布事件，监听器用 `@EventListener` 订阅；需要事务时机用 `@TransactionalEventListener`。
@@ -10,8 +10,16 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[01. 主线时间线：Spring Events](guide-mainline-timeline.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？](event-basics-event-mental-model.md)
+上一章：[01. 主线时间线：Spring Events](guide-mainline-timeline.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. 事件心智模型：发布（publish）与订阅（listen）到底在解耦什么？](event-basics-event-mental-model.md)
 <!-- GLOBAL-BOOK-NAV:END -->
+
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 导读
 
@@ -26,7 +34,7 @@
 
 > **publishEvent 只是入口；真正的行为由“监听器选择 + 调用时机 + 线程模型 + 异常策略 + 事务阶段”共同决定。**
 
-建议用“同步 → 顺序/条件 → 异步 → 事务事件”四段式把主线跑通。
+用“同步 → 顺序/条件 → 异步 → 事务事件”四段式把主线跑通。
 
 ### 1) 时间线：一次 publishEvent 从发布到监听器执行
 
@@ -64,7 +72,7 @@
 ## 源码与断点
 
 
-建议断点（从“事件不生效/顺序不对/线程不对”快速分流）：
+断点入口（从“事件不生效/顺序不对/线程不对”快速分流）：
 
 - 事件分发入口：`org.springframework.context.event.SimpleApplicationEventMulticaster#multicastEvent`
 - 注解监听器调用：`org.springframework.context.event.ApplicationListenerMethodAdapter#doInvoke`
@@ -74,7 +82,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest`
-- 建议命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-events test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -83,24 +91,24 @@
 > - `SpringCoreEventsMechanicsLabTest`
 > - `SpringCoreEventsListenerFilteringLabTest`
 
-本模块建议按以下节奏阅读与验证：
+本模块按以下节奏阅读与验证：
 
 配套验证入口：
-- Labs/Exercises：见 `src/test/java/com/learning/springboot/springcoreevents/**`
+- 实验/练习：见 `src/test/java/com/learning/springboot/springcoreevents/**`
 
 ## 常见坑与边界
 
-如果是带着线上问题来的，建议先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
+如果是带着线上问题来的，先对照本模块 Appendix（common pitfalls/self-check），再回到主线章节逐一核对。
 
 ## 小结与下一章
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreEventsLabTest` / `SpringCoreEventsMechanicsLabTest` / `SpringCoreEventsListenerFilteringLabTest`
 
-上一章：[Docs TOC](../README.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01-event-mental-model](event-basics-event-mental-model.md)
+上一章：[模块目录](../README.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01-event-mental-model](event-basics-event-mental-model.md)
 
 <!-- BOOKIFY:END -->

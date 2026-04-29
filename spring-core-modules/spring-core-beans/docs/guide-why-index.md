@@ -1,5 +1,12 @@
 # 基础问题索引（Why Index）：把高频“为什么”做成可验证闭环
 
+## 本页路线图
+
+本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+
+1. 先看导读和机制主线，确认本页要解释的现象。
+2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
+3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
 
 ## 官方文档对照（版本语境）
 
@@ -10,38 +17,39 @@
 - Spring Framework Reference（容器扩展点）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
-    - 使用方式：可先运行本章推荐 Lab，建立主线/断点闭环；随后回到正文，按“时间线/分支矩阵/证据链”定位机制窗口；最后通过自检题将表述固化为可复述答案。
+!!! summary "章节入口"
+    - 使用方式：可先运行章首 Lab，建立主线/断点闭环；随后回到正文，按“时间线/分支矩阵/证据链”定位机制窗口；最后通过自检题将表述固化为可复述答案。
 
-    本章围绕009-00-why-index展开，主线可以概括为：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    观察对象：009-00-why-index。
+    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
     对照入口：`SpringCoreBeansCircularDependencyBoundaryLabTest`。需要下探源码时，可以从 `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton` / `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 
-## 导读
+## 高频 Why 的读法：先把问题变成可验证分支
 
 这页是一个“高频为什么”的索引页：每个 Why 都试图把一个常见困惑压缩成三样东西：
 
-1) 一句话结论（能复述）
-2) 10 分钟证据链（能验证：Lab + 断点 + watch list）
-3) 常见误区对照（能避免误归因）
+1. 一句话结论（能复述）
+2. 10 分钟证据链（能验证：Lab + 断点 + 观察清单）
+3. 常见误区对照（能避免误归因）
 
-建议读者先跑 `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`，把“三级缓存/early reference”这类高频现象跑成事实，再回到本页逐条对照。
+先运行 `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`，把“三级缓存/early reference”这类高频现象跑成事实，再回到本页逐条对照。
 
 
 ## 这页解决什么问题
 
-很多“基础问题”（例如：**为什么 Spring 要用三级缓存**）之所以让读者读完仍然困惑，通常不是因为正文里没有提到名词，而是因为：
+很多“基础问题”（例如：**为什么 Spring 要用三级缓存**）之所以让阅读者读完仍然困惑，通常不是因为正文里没有提到名词，而是因为：
 
 - 读者缺少稳定的前置结论：**容器对外返回的是最终暴露对象（exposed object），它可能被 proxy/wrapper 替换**；
 - 论证链分散在多个章节（循环依赖 / early reference / 代理替换 / AOP call path），需要读者自行整合；
 - 缺少“最短证据链”（对应 Lab、断点入口与关键变量）导致无法将概念转化为可验证事实。
 
-因此本页采取“答案先行”的结构：**一句话结论 → 为什么重要 → 10 分钟证据链 → 误区对照 → 下一步去哪读**。
+因此本页采取“答案先行”的结构：**一句话结论 → 影响范围 → 10 分钟证据链 → 误判对照 → 下一步去哪读**。
 
-> 设计意图：本页不宜视为“知识点章节”，而应作为“索引 + 最短闭环入口（SSOT）”使用。
+> 设计意图：本页不宜视为“知识点章节”，而应作为“索引 + 最短闭环入口”使用。
 
 ## 使用方式（30 秒定位）
 
@@ -62,7 +70,7 @@
 
 Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，而是为了在 **singleton 创建窗口期** 支持 **按需提前暴露引用（early reference）**，并把“早期引用的形态（raw 还是 proxy）”的决定权交给 `getEarlyBeanReference`（BPP/AOP 可介入），从而尽量保证 **early == final（最终暴露形态一致）**。
 
-### 为什么重要（Why it matters）
+### 影响范围（Why it matters）
 
 这个问题一旦没讲清，会直接导致读者在以下场景里误判：
 
@@ -83,7 +91,7 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 2. `org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory`
 3. `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
 
-**3) watch list（仅关注以下变量）**
+**3) 观察清单（仅关注以下变量）**
 
 - `singletonObjects` / `earlySingletonObjects` / `singletonFactories`（三层命中情况）
 - `allowEarlyReference`（决定是否允许走 early 分支）
@@ -95,15 +103,15 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 - `getSingleton(..., allowEarlyReference=true)` 命中顺序是 **final → early → factory**
 - 只有当确实需要 early 引用时（出现依赖注入“需要获取对方引用”），`singletonFactories.get(beanName).getObject()` 才会被调用，从而触发 early reference 的创建
 
-### 常见误区对照（Misconceptions）
+### 误判对照（Misconceptions）
 
-1) “三级缓存 = Spring 解决循环依赖”
+1. “三级缓存 = Spring 解决循环依赖”
 更准确：三级缓存只为 **特定窗口期** 提供机制支撑，工程上仍应优先消环。
 
-2) “constructor 循环依赖也是靠三级缓存救”
+2. “constructor 循环依赖也是靠三级缓存救”
 更准确：constructor 依赖发生在实例化前，通常没有 early exposure 窗口；能“救”的通常是通过改变时机（`@Lazy`/`ObjectProvider`）而不是缓存本身。
 
-3) “earlySingletonObjects 里放的就是原始对象”
+3. “earlySingletonObjects 里放的就是原始对象”
 更准确：early 引用可能是 raw，也可能已经是 proxy；关键取决于 `getEarlyBeanReference`（见 Why-03）。
 
 ### 下一步去哪读（Next reading）
@@ -111,7 +119,7 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 - Beans：[`09. 循环依赖（constructor vs setter）`](ioc-circular-dependencies.md)
 - Beans：[`16. early reference 与循环依赖：getEarlyBeanReference`](internals-early-reference-and-circular.md)
 - Beans：[`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](wiring-proxying-phase-bpp-wraps-bean.md)
-- AOP（前置理解）：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../spring-core-aop/docs/proxy-fundamentals-aop-proxy-mental-model.md)（为什么要跳：本章的“early 形态 = raw/proxy”离不开对“代理是什么、调用从哪进”的直觉；验证什么：在 AOP 章先跑通一个最小 proxy 用例，确认“调用路径经过代理”才会触发增强）
+- AOP（前置理解）：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../spring-core-aop/docs/proxy-fundamentals-aop-proxy-mental-model.md)（为什么要跳：本章的“early 形态 = raw/proxy”离不开对“代理是什么、调用从哪进”的预期；验证什么：在 AOP 章先跑通一个最小 proxy 用例，确认“调用路径经过代理”才会触发增强）
 
 ---
 
@@ -122,17 +130,17 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 **二级缓存只能缓存“对象”，而三级缓存额外缓存了“按需创建 early reference 的能力（ObjectFactory）”。**
-这让容器能同时满足两个目标：
+这让容器能同时满足两个落点：
 
-1) **只在真的需要 early reference 时才创建它**（避免为所有 bean 都提前生成 early proxy/early wrapper）
-2) **让 BPP/AOP 有机会决定 early 的形态，并且只创建一次**（尽量保证 early == final，避免 raw 注入绕过代理）
+1. **只在真的需要 early reference 时才创建它**（避免为所有 bean 都提前生成 early proxy/early wrapper）
+2. **让 BPP/AOP 有机会决定 early 的形态，并且只创建一次**（尽量保证 early == final，避免 raw 注入绕过代理）
 
 ### 10 分钟证据链（Proof in 10 minutes）
 
 - 断点：`addSingletonFactory` → `getSingleton(..., allowEarlyReference=true)`
   观察：factory 先被注册，但并不会立刻 `getObject()`；只有出现循环注入“确实需要 A 的引用”时才会调用。
 
-### 常见误区对照（Misconceptions）
+### 误判对照（Misconceptions）
 
 - “多一层缓存只是历史包袱/拍脑袋设计”
 更准确：第三层解决的是“**延迟决策 + 延迟创建**”，并且把代理介入点固定在可控窗口内。
@@ -159,9 +167,9 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 - 运行实验：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabTest test`
 - 设置断点：
-  1) `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
-  2) `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
-  3) `AbstractAutowireCapableBeanFactory#doCreateBean`（尾部一致性检查附近）
+  1. `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
+  2. `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
+  3. `AbstractAutowireCapableBeanFactory#doCreateBean`（尾部一致性检查附近）
 
 ### 下一步去哪读（Next reading）
 
@@ -209,13 +217,13 @@ Spring AOP 默认基于代理实现：只有“通过代理对象发起的调用
 
 可通过 2 个断言完成“代理存在 + 自调用绕过”的闭环验证：
 
-1) 首先验证“获取到的对象为 proxy”：
+1. 首先验证“获取到的对象为 proxy”：
 
 ```bash
 mvn -pl :spring-core-aop -Dtest=SpringCoreAopLabTest#tracedBusinessServiceIsAnAopProxy test
 ```
 
-2) 再证明“call path 决定是否生效（self-invocation 绕过 proxy）”：
+2. 再证明“call path 决定是否生效（self-invocation 绕过 proxy）”：
 
 ```bash
 mvn -pl :spring-core-aop -Dtest=SpringCoreAopLabTest#selfInvocationDoesNotTriggerAdviceForInnerMethod test
@@ -234,36 +242,26 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopExposeProxyLabTest#exposeProxyAllow
 
 ## 面试常问（Why Index）
 
-1) **为什么说“三级缓存不是为了让所有循环依赖都能启动”？它真正解决的是什么？**
+1. **为什么说“三级缓存不是为了让所有循环依赖都能启动”？它真正解决的是什么？**
    - 结论：三级缓存解决的是“singleton 创建窗口期的 early reference 交付能力”，并把 early 形态的决定权交给 `getEarlyBeanReference`，尽量保证 early == final。
    - 证据链（方法级）：`DefaultSingletonBeanRegistry#addSingletonFactory` → `#getSingleton(allowEarlyReference=true)` → `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`。
 
-2) **为什么 `getEarlyBeanReference` 是“形态一致性”的关键？raw vs wrapped 的风险是什么？**
+2. **为什么 `getEarlyBeanReference` 是“形态一致性”的关键？raw vs wrapped 的风险是什么？**
    - 结论：若 dependent bean 获取到 raw，而最终对外暴露为 wrapped/proxy，则可能出现拦截失效（事务/安全/缓存）或被 fail-fast。
    - 证据链：`getEarlyBeanReference`（early window） vs `applyBeanPostProcessorsAfterInitialization`（after-init window）的对照。
 
-3) **为什么 self-invocation 会绕过 AOP？如何用证据链证明“绕过的是 call path”而不是“没有代理”？**
+3. **为什么 self-invocation 会绕过 AOP？如何用证据链证明“绕过的是 call path”而不是“没有代理”？**
    - 结论：代理只拦截“通过代理对象发起的调用”；`this.inner()` 不经 proxy，自然无拦截器链。
    - 证据链：先验证 `getBean()` 获取到的是 proxy（isAopProxy），再验证内部调用走的是 `this`（调用栈/断点）。
 
-## 自检要点
-应能够做到：
+## 验证标准：能把 Why 还原成方法级证据
+读完后应能做到：
 
-1) 用 3 句复述 Why-01/03：结论是什么、证据链入口方法是什么、最常见误区是什么。
-2) 在 IDE 中设置 3 个稳定锚点断点，并用 watch list 解释“何时命中 final/early/factory”“何时触发 early reference”。
-3) 遇到真实问题时，能把症状先分层（定义/创建/代理/值解析），再回到本页选择最短闭环入口（章节 + Lab + 断点）。
+1. 用 3 句复述 Why-01/03：结论是什么、证据链入口方法是什么、最常见误区是什么。
+2. 在 IDE 中设置 3 个稳定锚点断点，并用观察清单 解释“何时命中 final/early/factory”“何时触发 early reference”。
+3. 遇到真实问题时，能把症状先分层（定义/创建/代理/值解析），再回到本页选择最短闭环入口（章节 + Lab + 断点）。
 
 
-<!-- AE-DEEPENING:START -->
-!!! tip "继续加深：把本章跑成可验证路线"
-
-    建议 先跑 `SpringCoreBeansCircularDependencyBoundaryLabTest`，再用 `SpringCoreBeansEarlyReferenceLabTest` 做对照；把两次差异对齐到正文的关键分支解释。
-    - 第一断点：`ApplicationContext#refresh`（以本章正文“断点建议/证据链”处为准；若本章提供固定观察点，优先按观察点收敛结论）。
-    - 本章加深重点：对跨模块链接补“跳转目的”：在链接附近用 1–2 句说明为什么此处需要 AOP/TX 视角，以及跳过去应验证的关键点（例如代理创建点/自调用行为/拦截器链顺序）。
-    - 下一跳：若是从现象进入，优先回到 [知识地图](appendix-knowledge-map.md) 选“章节 + 断点组 + Lab”；若是从断点进入，回到 [断点地图](guide-breakpoint-map.md) 选 C 组。
-<!-- AE-DEEPENING:END -->
-
-## 小结
+## 收束：Why 的答案必须能跑成事实
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-

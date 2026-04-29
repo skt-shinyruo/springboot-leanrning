@@ -1,23 +1,23 @@
 # 03. Logging 调用链（LoggingSystem 初始化与级别决策）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕01：Logging 调用链（LoggingSystem 初始化与级别决策）展开，主线可以概括为：启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。
 
-    先跑 `BootLoggingLabTest`，再用本文把“配置 → effective level → 输出”串成一条链。
+    先跑 `BootLoggingLabTest`，再用本章把“配置 → effective level → 输出”串成一条链。
 
     需要下探源码时，可以从 `LoggingSystem` / `LoggerFactory` /（logback）`Logger#isDebugEnabled` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖导读：把“日志级别生效”落到源码与断点](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[04. 断点地图（Logging Debugger Pack）](guide-breakpoint-map.md)
+上一章：[02. 深挖导读：把“日志级别生效”落到源码与断点](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[04. 断点地图（Logging）](guide-breakpoint-map.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
+优先运行 `BootLoggingLabTest`，以获得可回归的现象与断言入口。
 
-读完这一章，你应该能把这件事讲清楚：启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。需要下探源码时，可以从 `LoggingSystem` / `LoggerFactory` /（logback）`Logger#isDebugEnabled` 这些入口切入。
+本章完成后，应能复述：启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。需要下探源码时，可以从 `LoggingSystem` / `LoggerFactory` /（logback）`Logger#isDebugEnabled` 这些入口切入。
 
 
 ## 1. 启动期：LoggingSystem 什么时候初始化？
@@ -36,9 +36,9 @@
 
 因此“debug 没输出”的排障路径应当是：
 
-1) category 是什么？（通常是类名）
-2) effective level 是什么？
-3) 输出端（appender/console）有没有被禁用/过滤？
+1. category 是什么？（通常是类名）
+2. effective level 是什么？
+3. 输出端（appender/console）有没有被禁用/过滤？
 
 ## 3. 把日志变成证据链
 
@@ -49,15 +49,15 @@
 
 启动期由 Boot 初始化 logging system；运行期每条日志的输出由 `logger.isXEnabled()` 决策。
 
-下一章见：[第 200 章：02：断点地图](guide-breakpoint-map.md)
+下一章见：[02：断点地图](guide-breakpoint-map.md)
 
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootLoggingLabTest`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-00-guide/02-breakpoint-map.md](guide-breakpoint-map.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[guide-breakpoint-map.md](guide-breakpoint-map.md)
 
 <!-- BOOKIFY:END -->

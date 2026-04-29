@@ -1,6 +1,6 @@
 # 01. 事务边界（Transaction Boundary）：究竟在“保护”哪一段代码？
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（五问闭环）"
+!!! summary "章节入口（五问闭环）"
     本章围绕事务边界（Transaction Boundary）：究竟在“保护”哪一段代码？展开，主线可以概括为：方法调用 → 事务拦截器 → 获取/创建事务（TransactionManager）→ 绑定资源到线程 → 正常提交/异常回滚；传播决定“加入还是新开”。
 
     先运行 `SpringCoreTxLabTest`，把现象固化为断言，再对照正文理解机制；真实项目里常用方式：在方法边界使用 `@Transactional` 声明事务；理解传播/回滚规则；排障时先确认是否真的走到代理与事务拦截器。
@@ -10,13 +10,13 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 深挖指南（Spring Core Tx）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. `@Transactional` 如何生效：它也是 AOP（也是代理）](transaction-basics-transactional-proxy.md)
+上一章：[02. 深挖指南（Spring Core Tx）](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. `@Transactional` 如何生效：它也是 AOP（也是代理）](transaction-basics-transactional-proxy.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
 本章围绕「01. 事务边界（Transaction Boundary）：究竟在“保护”哪一段代码？」展开，目标是把机制边界写成可回归的事实（可运行入口与关键观察点会在文中给出）。
-优先运行 `SpringCoreTxLabTest`（或文末“对应 Lab/Test”中的最小入口），再回到正文逐段对照分支与原因。
+优先运行 `SpringCoreTxLabTest`（或文末“对应实验/测试”中的最小入口），再回到正文逐段对照分支与原因。
 
 !!! example "本章配套实验（先运行实验，再阅读）"
 
@@ -46,7 +46,7 @@
 - `SpringCoreTxLabTest#commitsOnSuccess`
 - `SpringCoreTxLabTest#rollsBackOnRuntimeException`
 
-建议用“数据事实”而不是日志来判断边界是否成立：以行数变化为断言，用例会更稳定。
+用“数据事实”而不是日志来判断边界是否成立：以行数变化为断言，用例会更稳定。
 
 ## 需要记住的 3 件事
 
@@ -57,7 +57,7 @@
 ## 最小可运行实验（Lab）
 
 - Lab：`SpringCoreTxLabTest`
-- 建议命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
+- 运行命令：`mvn -pl :spring-core-tx test`（或在 IDE 直接运行上面的测试类）
 
 ### 验证补充（从实验现象出发）
 
@@ -89,10 +89,10 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`SpringCoreTxLabTest`
 
-上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02-transactional-proxy](transaction-basics-transactional-proxy.md)
+上一章：[00-deep-dive-guide](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02-transactional-proxy](transaction-basics-transactional-proxy.md)
 
 <!-- BOOKIFY:END -->

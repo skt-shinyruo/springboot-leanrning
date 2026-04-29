@@ -1,6 +1,6 @@
 # 06. 反向代理与 Forwarded Headers（X-Forwarded-*：scheme/host/prefix/ip 的真实边界）
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（转发头 → request 语义 → 排障断点）"
+!!! summary "章节入口（转发头 → request 语义 → 排障断点）"
     - 适用场景：应用部署在反向代理/LB 后（TLS 终止、域名/端口/前缀改写），但应用看到的 `HttpServletRequest` 仍是“代理到容器的那一跳”
     - Boot 开关：`server.forward-headers-strategy`（`NATIVE` / `FRAMEWORK` / `NONE`，默认 `NONE`）
     - 框架入口（FRAMEWORK）：`org.springframework.web.filter.ForwardedHeaderFilter#doFilterInternal`
@@ -10,7 +10,7 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](real-world-http-conditional-requests-last-modified-etag-filter.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. WebMvc 测试与排障（resolvedException / handler / 断点清单）](testing-observability-webmvc-testing-and-troubleshooting.md)
+上一章：[05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](real-world-http-conditional-requests-last-modified-etag-filter.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. WebMvc 测试与排障（resolvedException / handler / 断点清单）](testing-observability-webmvc-testing-and-troubleshooting.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
@@ -19,10 +19,10 @@
 
 典型现象包括：
 
-- 你在代码里拼的绝对 URL（回调地址、重定向、下载链接）突然从 `https://` 变成 `http://`
+- 在代码里拼的绝对 URL（回调地址、重定向、下载链接）突然从 `https://` 变成 `http://`
 - 生成的 host/port 不对（例如变成内部域名/内网端口）
 - 前缀丢失：实际部署在 `https://example.com/app/**`，但应用把自己当成 `/**`（导致 404、静态资源路径错、跳转路径错）
-- 你用 `X-Forwarded-For` 取 client IP，但忘了“信任边界”，导致外网可伪造 IP
+- 使用 `X-Forwarded-For` 取 client IP，但忘了“信任边界”，导致外网可伪造 IP
 
 这类问题的本质不是“Spring MVC 选路/参数解析有 bug”，而是 **反向代理把“真实访问语义”放进了转发头（Forwarded/X-Forwarded-*），而应用没有（或不应该）信任它们**。
 
@@ -49,7 +49,7 @@ Spring MVC 的很多行为（绝对 URL、重定向、`ServletUriComponentsBuild
 
 ### 3) 信任边界：这些头 **不是** “谁都能随便发”
 
-如果应用直接暴露在公网，而你又开启了对转发头的处理，那么攻击者可以伪造：
+如果应用直接暴露在公网，同时又开启了对转发头的处理，攻击者就可以伪造：
 
 - client IP（风控/日志/限流误判）
 - scheme/host（生成的回调链接可被污染）
@@ -67,19 +67,19 @@ Spring Boot `3.5.9` 提供统一开关：
   - `FRAMEWORK`：使用 Spring 的 `ForwardedHeaderFilter` 处理转发头
   - `NATIVE`：使用容器原生能力（例如 Tomcat 的 RemoteIpValve）
 
-历史属性 `server.use-forward-headers` 已被替代为 `server.forward-headers-strategy`（新项目不建议再用旧属性）。
+历史属性 `server.use-forward-headers` 已被替代为 `server.forward-headers-strategy`（新项目不宜再使用旧属性）。
 
 ---
 
-## Spring MVC 侧：你该打哪些断点（把“语义变更”看成事实）
+## Spring MVC 侧：应当打哪些断点（把“语义变更”看成事实）
 
-当你怀疑“scheme/host/prefix 不对”时，优先把断点放在“语义被改写”的位置，而不是 controller：
+怀疑“scheme/host/prefix 不对”时，优先把断点放在“语义被改写”的位置，而不是 controller：
 
 - 入口：`org.springframework.web.filter.ForwardedHeaderFilter#doFilterInternal`
   - 观察：它如何基于 `Forwarded`/`X-Forwarded-*` 包装 request
 - 使用点：业务/框架在取地址信息时的断点
   - `jakarta.servlet.http.HttpServletRequest#getScheme/getServerName/getServerPort/getContextPath`
-  - （如果你在业务里生成链接）`org.springframework.web.servlet.view.RedirectView#renderMergedOutputModel`
+  - （如果在业务里生成链接）`org.springframework.web.servlet.view.RedirectView#renderMergedOutputModel`
 
 核心目标是固定一个事实：**进入 MVC 前后，`request` 的 scheme/host/port/contextPath 到底是什么**。
 
@@ -100,7 +100,7 @@ Spring Boot `3.5.9` 提供统一开关：
 - 参数注解：`@ClientIp`
 - resolver：`ClientIpArgumentResolver`（优先 `X-Forwarded-For`，否则回退 `request.getRemoteAddr()`）
 
-### 2) scheme/host/prefix 的证据链建议（带断点/日志跑一遍）
+### 2) scheme/host/prefix 的证据链（带断点/日志跑一遍）
 
 本仓库提供了一个“可回归”的最小证据链，把 `X-Forwarded-Proto/Host/Port/Prefix/For` 对 `HttpServletRequest` 语义的影响固定成断言：
 
@@ -109,13 +109,13 @@ Spring Boot `3.5.9` 提供统一开关：
   - 请求头：`X-Forwarded-Proto/Host/Port/Prefix/For`
   - 断言：`scheme/serverName/serverPort/contextPath/requestUri/requestUrl/remoteAddr`
 
-建议运行命令（先跑再断点）：
+运行命令（先跑再断点）：
 
 ```bash
 mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcForwardedHeadersSpringBootLabTest test
 ```
 
-此外，在排障/学习时也建议用“断点 + curl”把语义变化看成事实：
+此外，在排障/学习时也用“断点 + curl”把语义变化看成事实：
 
 1. 开启 `server.forward-headers-strategy=FRAMEWORK`（或在容器层启用 `NATIVE`）
 2. 在 `ForwardedHeaderFilter#doFilterInternal` 打断点
@@ -139,7 +139,7 @@ curl -i http://localhost:8081/api/ping \
 
 - **坑 2：只处理 `X-Forwarded-For`，忽略 scheme/host/prefix**
   - 结果：日志里 IP 看着对，但生成的回调/重定向仍然错
-  - 处理：需要明确你在业务里是否生成绝对链接；如果生成，就需要处理 scheme/host/port/prefix 的一致性
+  - 处理：需要明确在业务里是否生成绝对链接；如果生成，就需要处理 scheme/host/port/prefix 的一致性
 
 - **坑 3：把 `X-Forwarded-For` 当成“永远可信”**
   - 结果：风控/审计误判
@@ -154,10 +154,10 @@ curl -i http://localhost:8081/api/ping \
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootWebMvcInternalsLabTest`
 - Lab：`BootWebMvcForwardedHeadersSpringBootLabTest`
 
-上一章：[05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](real-world-http-conditional-requests-last-modified-etag-filter.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[01. WebMvc 测试与排障（resolvedException / handler / 断点清单）](testing-observability-webmvc-testing-and-troubleshooting.md)
+上一章：[05. 条件请求（Last-Modified / If-Modified-Since / ETag / ShallowEtagHeaderFilter）](real-world-http-conditional-requests-last-modified-etag-filter.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[01. WebMvc 测试与排障（resolvedException / handler / 断点清单）](testing-observability-webmvc-testing-and-troubleshooting.md)
 <!-- BOOKIFY:END -->

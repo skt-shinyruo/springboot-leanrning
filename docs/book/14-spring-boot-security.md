@@ -1,12 +1,12 @@
 # 14 Spring Boot Security：FilterChain、401/403 分支与方法安全代理
 
-## 学习目标
+## 本章要回答的问题
 
 - 能解释安全主线：请求进入后如何匹配到 `SecurityFilterChain`，以及认证/授权在链路中的位置。
 - 能把 401/403/CSRF 等常见分支跑成事实，并能说明它们发生在链路哪一段、由什么条件触发。
 - 能理解方法安全为何依赖代理边界，并能用 AOP 心智模型排障“注解不生效”类问题。
 
-## 概念框架
+## 主线框架
 
 - **两层模型**：
   - Web 层（FilterChain）：请求级别的认证与授权。
@@ -26,17 +26,17 @@
 - 模块目录页（顺读主线）：
   - [`spring-boot-security/README.md`](../../spring-boot-modules/spring-boot-security/README.md)
 - 导航型文档（用于定位链路与顺序）：
-  - FilterChain 与顺序：[`part-01-security/04-filter-chain-and-order.md`](../../spring-boot-modules/spring-boot-security/docs/security-filter-chain-and-order.md)
-  - 方法安全与代理：[`part-01-security/03-method-security-and-proxy.md`](../../spring-boot-modules/spring-boot-security/docs/security-method-security-and-proxy.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-security/docs/appendix-common-pitfalls.md)
+  - FilterChain 与顺序：[`security-filter-chain-and-order.md`](../../spring-boot-modules/spring-boot-security/docs/security-filter-chain-and-order.md)
+  - 方法安全与代理：[`security-method-security-and-proxy.md`](../../spring-boot-modules/spring-boot-security/docs/security-method-security-and-proxy.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-boot-modules/spring-boot-security/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
 - 把 401 与 403 混为一谈。应先分型：是否已认证、是否有权限、是否被 CSRF 等策略拒绝。
-- 规则写得很复杂但不验证匹配范围与顺序。建议优先用“分支矩阵 + 断点”把链路压到最短。
+- 规则写得很复杂但不验证匹配范围与顺序。优先用“分支矩阵 + 断点”把链路压到最短。
 - 方法安全注解不生效时只改注解参数。先确认是否经过代理（参见 [04 AOP](04-spring-core-aop.md)）。
 
-## 练习
+## 验证练习
 
 - 练习 1（401/403 分支证据链）：
   - 运行 `BootSecurityBookMatrixLabTest`；
@@ -58,9 +58,8 @@
 - Web 请求主线（与安全链路叠加）：[`06-spring-boot-web-mvc.md`](06-spring-boot-web-mvc.md)
 - AOP 代理边界（方法安全前置）：[`04-spring-core-aop.md`](04-spring-core-aop.md)
 - 观测端点与访问控制：[`13-observability-and-actuator.md`](13-observability-and-actuator.md)
-- Troubleshooting Index：[`90-troubleshooting-index.md`](90-troubleshooting-index.md)
+- 排障索引：[`90-troubleshooting-index.md`](90-troubleshooting-index.md)
 
 ---
 
 [← 上一章](13-observability-and-actuator.md) | [目录](README.md) | [下一章 →](90-troubleshooting-index.md)
-

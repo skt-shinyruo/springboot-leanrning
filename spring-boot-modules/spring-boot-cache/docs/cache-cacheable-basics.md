@@ -1,6 +1,6 @@
 # 01. `@Cacheable` 最小闭环
 <!-- CHAPTER-CARD:START -->
-!!! summary "章节学习卡片（命中就短路）"
+!!! summary "章节入口（命中就短路）"
 
     这章只把一件事讲清楚：`@Cacheable` 命中后会 **直接返回缓存值**，方法体不会执行。很多线上“少了一次调用/少了一次日志”的争论，都从这里开始。
 
@@ -9,19 +9,19 @@
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
-上一章：[02. 00 - Deep Dive Guide（springboot-cache）](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[02. `@CachePut/@CacheEvict`：更新与失效](cache-cacheput-and-evict.md)
+上一章：[深挖导读：Spring Boot Cache](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[02. `@CachePut/@CacheEvict`：更新与失效](cache-cacheput-and-evict.md)
 <!-- GLOBAL-BOOK-NAV:END -->
 
 ## 导读
 
-建议优先运行 `BootCacheLabTest#cacheableCachesResultForSameKey`（见文末“对应 Lab/Test”），先把“命中后方法体不执行”的现象跑出来，再回到正文对照机制。
+优先运行 `BootCacheLabTest#cacheableCachesResultForSameKey`（见文末“对应实验/测试”），先把“命中后方法体不执行”的现象跑出来，再回到正文对照机制。
 
 
 ## 先从最常见的误会开始：以为它每次都会执行
 
 很多人第一次用缓存，会在方法里写日志/计数/副作用，以为“每次调用都会发生”。然后会在某一天发现：日志怎么只打印了一次？
 
-原因很简单：**命中后短路**。
+关键原因是：**命中后短路**。
 
 ## 机制主线（读路径）
 
@@ -40,7 +40,7 @@
 - 同一个 key 只计算一次：`BootCacheLabTest#cacheableCachesResultForSameKey`
 - 不同 key 命中不同 entry：`BootCacheLabTest#cacheableUsesDifferentEntriesForDifferentKeys`
 
-推荐命令：
+运行命令：
 
 - `mvn -q -pl :spring-boot-cache -Dtest=BootCacheLabTest test`
 
@@ -68,11 +68,11 @@
 
 <!-- BOOKIFY:START -->
 
-### 对应 Lab/Test
+### 对应实验/测试
 
 - Lab：`BootCacheLabTest`
-- Test file：`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
+- 测试文件：`spring-boot-modules/spring-boot-cache/src/test/java/com/learning/springboot/bootcache/part01_cache/BootCacheLabTest.java`
 
-上一章：[part-00-guide/00-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[Docs TOC](../README.md) ｜ 下一章：[part-01-cache/02-cacheput-and-evict.md](cache-cacheput-and-evict.md)
+上一章：[guide-deep-dive-guide.md](guide-deep-dive-guide.md) ｜ 目录：[模块目录](../README.md) ｜ 下一章：[cache-cacheput-and-evict.md](cache-cacheput-and-evict.md)
 
 <!-- BOOKIFY:END -->

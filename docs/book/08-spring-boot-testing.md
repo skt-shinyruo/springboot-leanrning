@@ -1,12 +1,12 @@
 # 08 Spring Boot Testing：切片选择、边界控制与可回归验证
 
-## 学习目标
+## 本章要回答的问题
 
 - 能为一个需求选择合适的测试切片（slice），并说明为什么它足够、为什么它更快/更稳定。
 - 能理解并验证 TestContext 缓存、`@MockBean` 覆盖与真实 Bean 的边界。
 - 能把“测试失败”分解为：上下文装配问题 / Web 链路问题 / 数据与事务边界问题。
 
-## 概念框架
+## 主线框架
 
 - **切片（slice）**：只加载与目标相关的部分上下文，用更小代价固定行为。
   - Web 层：关注请求主线与序列化/错误形状（对应 [06 Web MVC](06-spring-boot-web-mvc.md)）。
@@ -25,9 +25,9 @@
 - 模块目录页（顺读主线）：
   - [`spring-boot-testing/README.md`](../../spring-boot-modules/spring-boot-testing/README.md)
 - 导航型文档（用于选择 slice 与定位覆盖边界）：
-  - 主线时间线：[`part-00-guide/01-mainline-timeline.md`](../../spring-boot-modules/spring-boot-testing/docs/guide-mainline-timeline.md)
-  - 断点地图：[`part-00-guide/04-breakpoint-map.md`](../../spring-boot-modules/spring-boot-testing/docs/guide-breakpoint-map.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-boot-modules/spring-boot-testing/docs/appendix-common-pitfalls.md)
+  - 主线时间线：[`guide-mainline-timeline.md`](../../spring-boot-modules/spring-boot-testing/docs/guide-mainline-timeline.md)
+  - 断点地图：[`guide-breakpoint-map.md`](../../spring-boot-modules/spring-boot-testing/docs/guide-breakpoint-map.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-boot-modules/spring-boot-testing/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
@@ -35,7 +35,7 @@
 - 过度依赖 `@MockBean`，导致测试通过但真实系统行为失真。应先用 slice 固定边界，再用少量全量测试兜底。
 - 忽视 TestContext cache 的影响：同一 JVM 进程里，不同测试之间可能共享上下文，导致“偶发”问题。
 
-## 练习
+## 验证练习
 
 - 练习 1（切片选择复盘）：
   - 运行 `BootTestingBookMatrixLabTest`；
@@ -59,4 +59,3 @@
 ---
 
 [← 上一章](07-spring-core-validation.md) | [目录](README.md) | [下一章 →](09-spring-boot-data-jpa.md)
-

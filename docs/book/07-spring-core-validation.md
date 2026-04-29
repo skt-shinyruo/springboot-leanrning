@@ -1,12 +1,12 @@
 # 07 Spring Core Validation：约束模型、触发机制与方法校验边界
 
-## 学习目标
+## 本章要回答的问题
 
 - 能解释 Bean Validation 的三段式模型：约束（constraint）→ 触发（trigger）→ 违规（violation）。
 - 能区分 Web 入参校验与方法校验，并能解释方法校验为何依赖代理边界。
 - 能把 groups、自定义约束、调试入口等关键分支跑成可回归的断言。
 
-## 概念框架
+## 主线框架
 
 - **约束模型**：
   - 约束注解 + `ConstraintValidator` 实现；
@@ -33,8 +33,8 @@
 - 模块目录页（顺读主线）：
   - [`spring-core-validation/README.md`](../../spring-core-modules/spring-core-validation/README.md)
 - 导航型文档（用于快速定位“方法校验与代理”）：
-  - 方法校验与代理：[`part-01-validation-core/03-method-validation-proxy.md`](../../spring-core-modules/spring-core-validation/docs/validation-core-method-validation-proxy.md)
-  - 常见坑：[`appendix/01-common-pitfalls.md`](../../spring-core-modules/spring-core-validation/docs/appendix-common-pitfalls.md)
+  - 方法校验与代理：[`validation-core-method-validation-proxy.md`](../../spring-core-modules/spring-core-validation/docs/validation-core-method-validation-proxy.md)
+  - 常见坑：[`appendix-common-pitfalls.md`](../../spring-core-modules/spring-core-validation/docs/appendix-common-pitfalls.md)
 
 ## 常见误区
 
@@ -42,7 +42,7 @@
 - 以为方法校验“只要注解写了就会执行”。若调用未经过代理，方法校验可能不会触发（与 AOP/事务同类问题）。
 - 把校验失败当成“异常处理问题”。需要先确认：约束是否生效、触发点是否命中、违规结果是否符合预期。
 
-## 练习
+## 验证练习
 
 - 练习 1（把三段式模型跑成事实）：
   - 运行 `SpringCoreValidationBookMatrixLabTest`；
@@ -67,4 +67,3 @@
 ---
 
 [← 上一章](06-spring-boot-web-mvc.md) | [目录](README.md) | [下一章 →](08-spring-boot-testing.md)
-
