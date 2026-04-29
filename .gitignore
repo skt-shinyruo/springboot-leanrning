@@ -34,3 +34,4 @@ docs-site/.venv/
 # Local agent artifacts
 .helloagents/
 .codex
+.worktrees/
