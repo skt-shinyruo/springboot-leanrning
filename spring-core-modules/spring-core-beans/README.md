@@ -1,10 +1,12 @@
 # spring-core-beans：IoC 容器与 Bean（模块导论）
 
-本模块聚焦 Spring Framework 的 IoC 容器与 Bean 机制。它不以“会用某个注解”为终点，而把能力落在三个可验证的层面：
+本模块聚焦 Spring Framework 的 IoC 容器与 Bean 机制。它不以“会用某个注解”为终点，而是训练读者把一个 Bean 问题先分到三层：
 
-1. **能解释**：把“注册/注入/生命周期/后处理器/代理/循环依赖”等机制放回 `refresh()` 主线，解释清楚它发生在什么时候、为什么会这样。
-2. **能调试**：知道关键断点落在“定义层还是创建层”，并能在调试器里观察到决定性变量变化。
-3. **能排障**：面对异常与现象，能先分层（定义/创建/最终暴露对象），再用最短证据链收敛到原因。
+1. **定义层**：有没有 `BeanDefinition`、是谁注册的、条件是否满足。
+2. **创建层**：何时实例化、如何注入、哪些后处理器参与。
+3. **最终暴露对象**：`getBean()` 或注入点拿到的对象是否已经被代理或包装。
+
+这三层是本模块的排障坐标。`NoSuchBeanDefinitionException` 首先回到定义层，注入歧义首先回到依赖解析，代理、自调用和循环依赖则必须同时看创建窗口与最终暴露对象。
 
 官方参考（适用 Spring Framework 6.2.x；本仓库基线 6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -92,6 +94,8 @@
 > 目录页的职责是“给路线与入口”，机制细节在正文中展开。
 
 ## 症状驱动导航（快速定位）
+
+症状表不是第二份目录。它只用于把异常或现象先分层，再跳到最短章节和断点入口。
 
 > 更系统的“症状 → 章节 → 断点 → Lab”导航见：`docs/guide-deep-dive-guide.md`。定位到章节后，下一步直接用 [知识地图](docs/appendix-knowledge-map.md) 选“断点组 + 对应 Lab”，或用 [断点地图](docs/guide-breakpoint-map.md) 直接命中 C 组（避免把 README 扩写成另一份知识地图）。
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html

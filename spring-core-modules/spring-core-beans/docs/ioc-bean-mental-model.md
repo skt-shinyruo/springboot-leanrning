@@ -1,12 +1,13 @@
 # Bean 运行机制：从 BeanDefinition 到最终暴露对象
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：可先运行章首 Lab，将“定义不等于实例、最终暴露对象不一定等于原始实例”固化为断言；随后回到正文，结合主线与断点完成证据链验证。
+    问题：为什么同一个 bean 会在调试器里出现 BeanDefinition、merged RootBeanDefinition、raw instance、proxy 等多种形态？
 
-    观察对象：Bean 运行机制：从 BeanDefinition 到最终暴露对象。
-    主线位置：`ApplicationContext#refresh` 主线：注册定义（BeanDefinition）→ 定义层处理（BFPP/BDRPP）→ 注册 BPP 链 → 创建/注入/初始化（doCreateBean）→ 最终暴露对象（可能是 proxy）。
+    最短入口：`SpringCoreBeansContainerLabTest`。
 
-    对照入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBeanCreationTraceLabTest`。需要下探源码时，可以从 `org.springframework.context.support.AbstractApplicationContext#refresh` / `org.springframework.beans.factory.support.DefaultListableBeanFactory` / `org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean` 这些入口切入。
+    深入入口：`SpringCoreBeansBeanCreationTraceLabTest` 与 `SpringCoreBeansProxyingPhaseLabTest`。
+
+    断点：`AbstractApplicationContext#refresh`、`AbstractAutowireCapableBeanFactory#doCreateBean`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`。
 
 <!-- CHAPTER-CARD:END -->
 
@@ -21,16 +22,28 @@
 
 官方参考（Spring Framework 6.2.x；本仓库基线 6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-!!! example "本章配套实验（先运行，后阅读）"
+## 实验：把“定义、实例、最终暴露对象”分开观察
 
-    - Lab：
-      - `SpringCoreBeansContainerLabTest`
-      - `SpringCoreBeansBeanCreationTraceLabTest`
-      - `SpringCoreBeansProxyingPhaseLabTest`
-    - 测试文件：
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+Lab 与测试文件：
+
+- `SpringCoreBeansContainerLabTest`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+- `SpringCoreBeansBeanCreationTraceLabTest`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+- `SpringCoreBeansProxyingPhaseLabTest`
+  - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
+
+运行：
+
+- `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`
+- `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansBeanCreationTraceLabTest test`
+- `mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test`
+
+观察：
+
+- `BeanDefinition` 与真实对象不是同一层东西。
+- `populateBean` 负责把依赖填入 raw instance。
+- `applyBeanPostProcessorsAfterInitialization` 可能把最终暴露对象换成 proxy。
 
 ## 解释：三层模型 + 最终暴露对象
 
@@ -58,7 +71,9 @@
   - 进入 early reference → 最终对象可能不是 raw instance
 - **断点入口**：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
-## 四类对象对照表：调试对象与语义
+## 四类对象：每一层回答一个诊断问题
+
+调试器里看到的对象越多，越需要先问“它回答的是哪一类问题”。四类对象可以直接对应四个诊断入口：定义是否存在、最终配方是什么、对象是否已经创建并注入、对外暴露的身份是否已经变化。
 
 | 在调试器里看到的对象 | 它代表什么 | 最直接 API/入口 | 读者通常用它回答什么问题 |
 | --- | --- | --- | --- |
