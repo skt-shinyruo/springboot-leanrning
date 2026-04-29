@@ -1,9 +1,9 @@
 # 01. Controller：边界、异常与契约的位置
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口（五问闭环）"
-    本章围绕「Controller 的边界与职责」展开，目标是回答一个工程上最常见的误判：**controller 并不是“所有问题的发生点”，它只是 MVC 主线里“业务方法执行”的那一段**。在它之前有选路、参数解析、绑定/校验与消息体读取；在它之后有返回值处理、内容协商与异常收敛。
+    Controller 是 MVC 主线里的“业务方法执行段”。如果请求在选路、参数解析、绑定、校验、消息转换或异常解析阶段失败，现象会表现为 controller 没执行、执行前失败、或执行后响应形状不符合预期。
 
-    因此排障时更重要的是：把现象（status/响应体）映射回主线阶段，再决定应该改 controller、还是改 binder/converter/advice。
+    本章的任务不是扩展 controller 写法，而是把 controller 放回请求主线，判断一个问题应当改 controller、binder/converter，还是 advice/resolver。
 <!-- CHAPTER-CARD:END -->
 
 <!-- GLOBAL-BOOK-NAV:START -->
@@ -25,7 +25,7 @@
     - Lab：`BootWebMvcViewLabTest`（最小页面渲染/表单闭环）
     - Lab：`BootWebMvcBindingDeepDiveLabTest`（方法级校验与 binder 证据链）
 
-## 关键对象（Key Objects）
+## Controller 在请求主线中的位置
 
 - `@RestController` / `@Controller`
   - `@RestController`：返回值默认走 body（`@ResponseBody` 语义）
@@ -35,7 +35,7 @@
 - `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter`
   - 将 `HandlerMethod` 变成一次可执行调用（串起 ArgumentResolver/Binder/ReturnValueHandler）
 
-## 扩展点（Extension Points）
+## Controller 能声明哪些契约
 
 controller 本身的“扩展”不等于写更多方法，更常见的是这些边界手段：
 
@@ -88,9 +88,13 @@ controller 本身的“扩展”不等于写更多方法，更常见的是这些
 
 ### 最小可运行入口（把边界变成断言）
 
-- JSON API：`BootWebMvcLabTest`
-- 页面渲染：`BootWebMvcViewLabTest`
-- 方法级校验（`@Validated`）：`BootWebMvcBindingDeepDiveLabTest`（请求 `/api/advanced/binding/age-validated`）
+```bash
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcLabTest test
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcViewLabTest test
+mvn -q -pl :spring-boot-web-mvc -Dtest=BootWebMvcBindingDeepDiveLabTest test
+```
+
+这三个入口分别覆盖 JSON API、页面渲染、方法级校验与 binder 证据链。
 
 延伸阅读（把 controller 放回主线）：
 
@@ -101,4 +105,3 @@ controller 本身的“扩展”不等于写更多方法，更常见的是这些
 
 - controller 是主线里的“业务方法执行段”，它前后还有一大段机制链路；排障不应只盯 controller。
 - controller 的核心价值是声明契约：输入来源、校验触发点、返回形态与错误形状。
-
