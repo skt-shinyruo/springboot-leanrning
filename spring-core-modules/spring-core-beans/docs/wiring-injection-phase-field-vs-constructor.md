@@ -1,7 +1,7 @@
 # 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：注入阶段
+## 问题：注入阶段
 
-先运行 `SpringCoreBeansInjectionPhaseLabTest` 固定「30. 注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansInjectionPhaseLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -135,15 +135,15 @@
 
 - `AutowiredAnnotationBeanPostProcessor#determineCandidateConstructors` / `AbstractAutowireCapableBeanFactory#autowireConstructor`（constructor injection）
 - `AbstractAutowireCapableBeanFactory#populateBean` / `AutowiredAnnotationBeanPostProcessor#postProcessProperties`（field/property injection）
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansInjectionPhaseLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
@@ -186,7 +186,7 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 
 断点入口（把“阶段感”走一遍即可）：
 
-## 边界分流：注入阶段
+## 边界：注入阶段
 
 > 注意：**多个 BPP 的顺序会影响在 `postProcessProperties(...)` 里看到的 bean 状态**。
 > 需要把重点放在“注入发生在属性填充阶段”这个结论上，而不是纠结某一个 BPP 是先还是后（顺序规则见第 14/25 章）。
@@ -216,12 +216,12 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansInjectionPhaseLabTest test
 - 工程取舍：
   - 必填依赖优先构造器注入（更早失败、可测试、不可变）；可选/延迟语义用 `ObjectProvider` 明确表达。
 
-## 验证标准：注入阶段
+## 验收口径：注入阶段
 - 需要解释清楚：为什么 field injection 在构造器里一定是 `null` 吗？（提示：注入发生在 `populateBean` 阶段，不会倒流到构造器）
 - 需要解释清楚：constructor injection 为什么更适合“必填依赖”吗？（提示：更早失败 + 可测试 + 不可变）
 - 需要指出：`@Autowired` 的源码触发点在哪里吗？（提示：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`）
 
-## 收束：注入阶段
+## 小结：注入阶段
 
 1. `FieldInjectedTarget` 构造器：观察此时 `@Autowired` 字段必然还是 `null`
 2. `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：观察容器在属性填充阶段为字段赋值

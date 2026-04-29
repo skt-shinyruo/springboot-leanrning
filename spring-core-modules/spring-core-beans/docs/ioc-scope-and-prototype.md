@@ -11,10 +11,11 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## Scope 的第一分支：容器缓存还是每次创建
+## 问题：prototype 为什么注入到 singleton 后像单例
 
-- 这一章解决一个最常见的 scope 误判：把 “prototype” 理解成“每次方法调用都会 new”。
-- 先运行 `SpringCoreBeansLabTest#demonstratesPrototypeScopeBehavior`，把“prototype 注入 singleton 为什么像单例”“ObjectProvider 为什么能修”跑成断言，再回到正文对照 `doGetBean` 的 singleton/prototype 分支。
+这一章解决一个最常见的 scope 误判：把 prototype 理解成“每次方法调用都会 new”。更准确地说，prototype 的边界在“每次向容器获取”上，而不是在业务对象的普通方法调用上。
+
+先运行 `SpringCoreBeansLabTest#demonstratesPrototypeScopeBehavior`，把“prototype 注入 singleton 为什么像单例”“ObjectProvider 为什么能修”跑成断言，再回到正文对照 `doGetBean` 的 singleton/prototype 分支。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Scopes，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
@@ -26,11 +27,11 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPrototypeDestroySemanticsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansExerciseSolutionTest.java`
 
 
-## 机制主线
+## 机制主线：scope 是容器管理策略
 
 > 官方参考（Spring Framework 6.2.x，Scopes 与 scope 语义）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
 
-这一章的主题是：**scope 不是“对象的特性”，而是“容器如何管理对象的策略”。**
+这一章的主题是：**scope 不是对象自己的特性，而是容器如何管理对象的策略**。
 
 尤其要吃透一句话：
 
@@ -41,7 +42,7 @@
 - `singleton`：**同一个容器**里，这个 beanName 对应的实例只有一个
 - `prototype`：容器**每次创建/获取**都会创建一个新实例；容器通常不缓存它（也不负责销毁回调）
 
-### 1.1 机制系统阐述：条件 → 分支 → 结果（可断点验证）
+### 1.1 机制边界：条件、分支与结果（可断点验证）
 
 - **条件**：当前 bean 的 scope 是 singleton 还是 prototype
 - **分支**：`AbstractBeanFactory#doGetBean`
@@ -52,7 +53,7 @@
   - prototype 循环依赖直接 fail-fast（不会进单例缓存）
 - **断点入口**：`AbstractBeanFactory#doGetBean`（观察 `mbd.isPrototype()` 与 `isPrototypeCurrentlyInCreation`）
 
-## 本模块里能直接观察到的现象
+## 实验现象：同一个 prototype 为何表现不同
 
 代码对应：
 
@@ -293,7 +294,7 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 - 最小复现：
   - `SpringCoreBeansPrototypeDestroySemanticsLabTest`
 
-## 验证标准：prototype 是否真的每次重新获取
+## 验收口径：prototype 是否真的每次重新获取
 
 读完这一章需要能回答：
 
@@ -301,7 +302,7 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 2. 为什么“prototype 注入 singleton”会冻结？（获取动作只发生一次）
 3. 可以用哪条证据链证明 provider/lookup 把获取动作推迟到了“使用时”？
 
-## 收束：prototype 的关键不是方法调用，而是容器获取
+## 小结：prototype 的关键不是方法调用，而是容器获取
 
 
 <!-- BOOKIFY:START -->

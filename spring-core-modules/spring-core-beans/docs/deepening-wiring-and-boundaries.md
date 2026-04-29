@@ -1,8 +1,8 @@
 # 章节深化路线（Wiring & Boundaries）
 
-## 起点：章节深化路线（Wiring & Boundaries）
+## 定位：Wiring & Boundaries 章节的深化方式
 
-这类页面用于校准文档结构：把章节、最小实验、断点入口和验证口径放到同一张路线图里。
+Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy、dependsOn、ResolvableDependency、父子容器、命名、FactoryBean、代理、占位符、转换和泛型匹配。深化时要优先把“看起来相似”的现象拆开，让读者能用第一断点入口快速定位到正确分支。
 
 
 ## 官方文档对照（版本语境）
@@ -15,12 +15,12 @@
 - Spring Framework Reference（SpEL）：https://docs.spring.io/spring-framework/reference/core/expressions.html
 
 
-本部分的再加深重点：工程边界与真实误区（Lazy/dependsOn/resolvable dependency/层级/命名/FactoryBean/代理/占位符/转换/泛型匹配等），要求每章都能提供可复现反例与排障 SOP。
+本部分的再加深重点，是把工程边界和真实误区写成可复现反例与排障 SOP。读者不只需要知道结论，还需要知道相似现象之间的第一分流点。
 
 ## 执行化提示（边界章的“可复现反例”优先）
 
-- 每章至少补 1 个“误诊对照”：现象相似但机制不同（例如 depends-on 环 vs 循环依赖）。
-- 每章至少补 1 个“第一断点入口 + 观察清单”：让读者能在 1 分钟内把问题钉在正确分支。
+- 每章至少补 1 个误诊对照：现象相似但机制不同，例如 depends-on 环和普通循环依赖。
+- 每章至少补 1 个第一断点入口 + 观察清单，让读者能在 1 分钟内把问题钉在正确分支。
 
 ### Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 

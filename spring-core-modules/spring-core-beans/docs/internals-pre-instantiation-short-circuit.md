@@ -1,7 +1,7 @@
 # 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：15. 实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,7 +11,7 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 实例化前短路：构造器之前就可能返回对象
+## 问题：为什么构造器断点没有命中
 
 本章解释一个调试时很“反预期”的现象：读者明明在构造器里打了断点，但它就是不进；或者构造器抛异常按理会让容器启动失败，但某些情况下容器却还能正常拿到 bean。
 
@@ -29,15 +29,15 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`
 
 
-## 机制主线
+## 机制主线：`resolveBeforeInstantiation` 是默认创建链路前的分叉
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-这一章讲一个“像隐式行为”的容器机制：
+这一章讲一个容易被误认为隐式行为的容器机制：
 
 - `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`
 
-它允许在 bean 实例化之前返回一个对象，从而 **短路默认的创建路径**。
+它允许在 bean 实例化之前返回一个对象，从而短路默认的创建路径。
 
 ### 处理器时机与排序（为什么要先注册再创建）
 
@@ -59,7 +59,7 @@
 
 这说明：**默认情况下，单例会在 refresh 阶段被创建**（非 lazy）。
 
-### 1.1 机制系统阐述：条件 → 分支 → 结果
+### 1.1 机制边界：条件、分支与结果
 
 **条件**：是否有 IABPP 在 before-instantiation 阶段返回替身
 **分支**：`resolveBeforeInstantiation` 返回非 null → 直接暴露
@@ -182,7 +182,7 @@
 - 标准答案（可复述）：
   - 对 `resolveBeforeInstantiation(beanName)` 下条件断点；看 `applyBeanPostProcessorsBeforeInstantiation` 是否返回非 null；再反查是哪一个 `InstantiationAwareBeanPostProcessor` 返回的替身对象。
 
-## 验证标准：能说明构造器为什么没执行
+## 验收口径：能说明构造器为什么没执行
 
 需要能回答：
 
@@ -190,7 +190,7 @@
 2. 为什么短路属于“高风险扩展点”？（要点：该分支会绕过默认注入/初始化路径）
 3. 可以用哪两个断点证明“短路真的发生了”？（提示：`resolveBeforeInstantiation` + 相应的 IABPP）
 
-## 收束：短路发生在创建主线最前面
+## 小结：短路发生在创建主线最前面
 
 - `DefaultListableBeanFactory#preInstantiateSingletons`：非 lazy 单例通常在 refresh 期间从这里开始批量创建（本章现象的触发点）
 - `AbstractAutowireCapableBeanFactory#createBean`：创建入口（会先尝试“实例化前短路”）

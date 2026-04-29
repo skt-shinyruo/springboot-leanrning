@@ -1,7 +1,7 @@
 # Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：Environment Abstraction
+## 问题：Environment Abstraction
 
-先运行 `SpringCoreBeansEnvironmentPropertySourceLabTest` 固定「38. Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansEnvironmentPropertySourceLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -37,7 +37,7 @@
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：同一个 key 在多个 PropertySource 中同时存在
 **分支**：按 `MutablePropertySources` 的顺序从前到后查找
@@ -187,19 +187,19 @@ Spring 把“多个来源”组织成一个有序链表：
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansEnvironmentPropertySourceLabTest` / `SpringCoreBeansProfileRegistrationLabTest` / `SpringCoreBeansValuePlaceholderResolutionLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
 > `@Value("${...}")` 到底从哪里取值？
 > 为什么同一个 key 在不同环境/不同启动方式下值不一样？
 > `@PropertySource` 加了也不生效，或者被别的配置覆盖了，怎么断点证明？
 
-## 复现入口（可运行）
+## 运行入口
 
 本章新增 Lab（先运行通过，再设置断点）：
 
@@ -245,7 +245,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 4. `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
    - 观察：strict/non-strict 策略是如何被安装到 BeanFactory 的（缺失占位符是否 fail-fast）
 
-## 边界分流：Environment Abstraction
+## 边界：Environment Abstraction
 
 ### 误判点：现象要落回方法和变量
 
@@ -285,12 +285,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 - 最小复现：
   - `SpringCoreBeansProfileRegistrationLabTest`
 
-## 验证标准：Environment Abstraction
+## 验收口径：Environment Abstraction
 - 需要解释清楚：PropertySource 的“顺序”为什么比“有没有某个 key”更重要吗？
 - 遇到 `${demo.missing}` 没解析时，如何快速判断是“没有 property source/key”，还是“解析策略 non-strict 放行了”，还是“根本没装 placeholder 处理器”？
 - 需要说出：profiles 为什么必须在 refresh 前确定吗？它影响的是定义阶段还是创建阶段？
 
-## 收束：Environment Abstraction
+## 小结：Environment Abstraction
 
 
 <!-- BOOKIFY:START -->

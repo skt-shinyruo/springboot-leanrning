@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：SpEL 与 `@Value("#{...}")`：表达式解析链路
+## 问题：SpEL 与 `@Value("#{...}")`：表达式解析链路
 
-先运行 `SpringCoreBeansSpelValueLabTest` 固定「44. SpEL 与 `@Value("#{...}")`：表达式解析链路」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansSpelValueLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（SpEL，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/expressions.html
@@ -53,7 +53,7 @@
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：`@Value` 字符串包含 `${...}` 或 `#{...}`
 **分支**：`resolveEmbeddedValue` 先做占位符解析，再做 SpEL 求值
@@ -121,7 +121,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 - 目标类型：注入点类型（字段类型/参数类型）
 - 异常 root cause：`NumberFormatException` / `SpelEvaluationException` / `IllegalArgumentException` 等
 
-## 边界分流：SpEL 与 `@Value("#{...}")`：表达式解析链路
+## 边界：SpEL 与 `@Value("#{...}")`：表达式解析链路
 
 1. **把“类型转换失败”误以为 “SpEL 失败”**
    - 典型：`@Value("#{ 'not-a-number' }") private int n;`
@@ -164,12 +164,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansSpelValueLabTest test
 - 最小复现：
   - `SpringCoreBeansSpelValueLabTest`（配合本章断点/观察清单）
 
-## 验证标准：SpEL 与 `@Value("#{...}")`：表达式解析链路
+## 验收口径：SpEL 与 `@Value("#{...}")`：表达式解析链路
 - 需要解释清楚：`${...}` 与 `#{...}` 分别属于哪条链路吗？（占位符解析 vs 表达式求值）
 - 遇到值注入失败时，能否按“三连”收敛：解析（placeholder）→ 计算（SpEL）→ 转换（TypeConverter）？
 - 需要说出：最短断点链路该打在哪 3 个方法上，把上面三步分别观察到吗？
 
-## 收束：SpEL 与 `@Value("#{...}")`：表达式解析链路
+## 小结：SpEL 与 `@Value("#{...}")`：表达式解析链路
 
 这一章的目标不是“会写 SpEL”，而是：当 `@Value` 出问题时，需要能 **在 1 分钟内定位是解析/求值/转换的哪一步**。
 

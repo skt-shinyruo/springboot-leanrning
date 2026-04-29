@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：BeanDefinitionReader：除了注解与 XML
+## 问题：BeanDefinitionReader：除了注解与 XML
 
-- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -73,7 +73,7 @@ BeanDefinitionReader 的价值在于：
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：选择不同输入源（properties / groovy / xml / 注解）
 **分支**：对应 Reader 解析 → `BeanDefinition` 注册
@@ -151,15 +151,15 @@ BeanDefinitionReader 的价值在于：
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansGroovyBeanDefinitionReaderLabTest` / `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertiesBeanDefinitionReaderLabTest.java`
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansGroovyBeanDefinitionReaderLabTest.java`
@@ -192,7 +192,7 @@ Groovy reader 的典型断点：
 
 - `GroovyBeanDefinitionReader#loadBeanDefinitions`：groovy script 解析入口
 
-## 边界分流：BeanDefinitionReader：除了注解与 XML
+## 边界：BeanDefinitionReader：除了注解与 XML
 
 ### 误判点：不要把外层现象当成根因
 
@@ -224,12 +224,12 @@ Groovy reader 的典型断点：
 - 最小复现：
   - `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest` / `SpringCoreBeansGroovyBeanDefinitionReaderLabTest`
 
-## 验证标准：BeanDefinitionReader：除了注解与 XML
+## 验收口径：BeanDefinitionReader：除了注解与 XML
 - 需要解释清楚：BeanDefinitionReader 做的是“注册配方”还是“创建对象”吗？为什么这个区分重要？
 - 需要说出：Properties/Groovy 这类输入最终落到 Spring 的哪一种统一产物上吗？（提示：BeanDefinition）
 - 遇到“Reader 加载失败/资源不存在/脚本解析失败”时，最短断点入口在哪？
 
-## 收束：BeanDefinitionReader：除了注解与 XML
+## 小结：BeanDefinitionReader：除了注解与 XML
 
 
 <!-- BOOKIFY:START -->

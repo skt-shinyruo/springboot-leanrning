@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：Auto-Configuration 顺序
+## 问题：Auto-Configuration 顺序为什么会影响条件结果
 
-- 阅读路径：先运行本章 Lab，看清楚“同一份条件、不同顺序，结果不同”的反预期现象；再用断点把它放回 Boot 的 auto-config 导入与排序链路里理解。
+先运行本章 Lab，看清“同一份条件、不同顺序，结果不同”的现象；再用断点把它放回 Boot 的 auto-config 导入、排序与条件评估链路中解释。
 
 - 官方文档对照（适用版本：Spring Boot 3.5.9）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -45,7 +45,7 @@
 - 条件评估：`ConditionEvaluator#shouldSkip`
 - 定义注册：`ConfigurationClassPostProcessor#processConfigBeanDefinitions`
 
-### 机制系统阐述：条件 → 分支 → 结果（顺序问题版）
+### 机制边界：条件、分支与结果（顺序问题版）
 
 **条件**：依赖 Auto-Config 的 bean 是否已在定义层注册
 **分支**：排序后的导入列表 → 条件评估 → 注册/跳过
@@ -166,7 +166,7 @@
 
 ---
 
-## 验证标准：Auto-Configuration 顺序
+## 验收口径：Auto-Configuration 顺序
 需要用 3 句答题：
 
 1. 为什么跨 auto-config 的 `@ConditionalOnBean` 会出现“偶发不匹配”？（提示：顺序未定义 + 条件评估有时机）
@@ -174,6 +174,6 @@
 3. 可以用哪 2 个断点把“排序→条件评估→定义是否注册”走成证据链？
 
 
-## 收束：Auto-Configuration 顺序
+## 小结：Auto-Configuration 顺序
 
 Boot 的自动配置本质是“导入 + 条件评估 + 定义注册”，最终仍落到 BeanDefinition 与 refresh 主线（定义层→实例层→最终暴露对象）。

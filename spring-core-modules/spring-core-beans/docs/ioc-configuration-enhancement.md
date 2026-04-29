@@ -13,11 +13,11 @@
 
 ## `@Configuration` 增强：注册不变，调用语义会变
 
-这一章解释一个高频、也“像是 Spring 坏了”的现象：
+这一章解释一个高频且容易误判为“Spring 坏了”的现象：
 
 > 在 `@Configuration` 里调用另一个 `@Bean` 方法，为什么有时是同一个实例，有时会 new 出一个新实例？
 
-关键不在“BeanDefinition 有没有注册”，而在 **配置类的 `@Bean` 方法调用语义** 是否被增强（`proxyBeanMethods`）。
+关键不在 BeanDefinition 有没有注册，而在配置类的 `@Bean` 方法调用语义是否被增强（`proxyBeanMethods`）。
 
 先运行 `SpringCoreBeansContainerLabTest` 里 proxyBeanMethods 的对照用例，把“互调走容器 vs 互调走普通 Java 调用”跑成事实，再回到正文对照 `ConfigurationClassEnhancer` 的拦截点理解原因。
 
@@ -31,11 +31,11 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 
-## 机制主线
+## 机制主线：注册语义与调用语义分开看
 
 > 官方参考（Spring Framework 6.2.x，Java Config / @Configuration/@Bean 语义）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
 
-这一章解释一个经常让人“以为 Spring 坏了”的现象：
+这一章解释一个经常让人以为 Spring 行为不一致的现象：
 
 > 为什么在 `@Configuration` 里调用另一个 `@Bean` 方法，有时会得到同一个实例，有时会 new 出一个新实例？
 
@@ -49,8 +49,7 @@
 - `ConfigurationClassParser#parse`
 - `ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsForConfigurationClass`
 
-它把 `@Configuration/@Bean/@Import` 翻译成 **BeanDefinition** 并注册进 registry；
-实例化发生在 refresh 后段的 `preInstantiateSingletons`（不是这里）。
+它把 `@Configuration/@Bean/@Import` 翻译成 **BeanDefinition** 并注册进 registry；实例化发生在 refresh 后段的 `preInstantiateSingletons`，不是在解析配置类时发生。
 
 ## 增强机制细节（proxyBeanMethods=true 才发生）
 
@@ -73,7 +72,7 @@
 - 在方法体里直接调用另一个 `@Bean` 方法，就是一次普通 Java 方法调用
 - 这可能会产生额外实例（绕过容器缓存）
 
-### 1.1 机制系统阐述：条件 → 分支 → 结果（可断点验证）
+### 1.1 机制边界：条件、分支与结果（可断点验证）
 
 **条件**：配置类是 Full（`@Configuration`）还是 Lite（`@Component + @Bean`），以及 `proxyBeanMethods` 取值
 **分支**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` 标记 Full/Lite
@@ -82,7 +81,7 @@
 - Lite 或 proxy=false：互调为普通 Java 调用，可能产生额外对象
 **断点入口**：`ConfigurationClassPostProcessor#processConfigBeanDefinitions` / `ConfigurationClassEnhancer#enhance`
 
-将相关“现象”固化为可断言的验证闭环，而不宜仅凭日志推断：
+相关现象应固化为可断言的验证闭环，不宜仅凭日志推断：
 
 ### 2.1 读者到底在对比什么？
 
@@ -193,13 +192,13 @@ ConfigB configB(ConfigA a) {
      - `SpringCoreBeansContainerLabTest#liteConfiguration_stillPreservesSingleton_whenUsingMethodParameterInjection`
    - 关联章节：依赖解析的“候选收敛/注入点元数据证据链”见 [03](ioc-dependency-injection-resolution.md)
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansContainerLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-## 边界分流：不要把互调问题误判成 scope 问题
+## 边界：不要把互调问题误判成 scope 问题
 
 - **误区 1：`proxyBeanMethods=false` + `@Bean` 方法互调**
   - 现象：容器里 bean 依然是单例，但在配置类内部互调会 new 出“额外对象”
@@ -226,7 +225,7 @@ ConfigB configB(ConfigA a) {
 | 明明写了 `@Bean`，但行为像普通组件（互调不走容器） | Lite 模式（`@Component + @Bean`）默认不增强 | 断点 `ConfigurationClassPostProcessor#processConfigBeanDefinitions` 看 Full/Lite 判定；运行时 class 不增强 | 视需求改成 Full `@Configuration`；或同样避免互调 | `SpringCoreBeansContainerLabTest#liteConfiguration_componentWithBeanMethods_doesNotEnhance_beanMethodInterCallsCreateExtraInstance` |
 | 容易误以为“这是 scope 问题”，但并非 scope 问题 | 混淆了“bean 是否单例”与“方法调用是否走容器” | 对照：容器 `getBean` 仍返回同一个 singleton；互调返回的是方法体 new | 把依赖解析交回容器（参数注入），不要在方法里 new | 同上两条对照用例 |
 
-## 收束：`proxyBeanMethods` 影响的是方法调用路径
+## 小结：`proxyBeanMethods` 影响的是方法调用路径
 
 
 <!-- BOOKIFY:START -->
@@ -238,7 +237,7 @@ ConfigB configB(ConfigA a) {
 
 <!-- BOOKIFY:END -->
 
-## 验证标准：能说明互调是否经过容器
+## 验收口径：能说明互调是否经过容器
 读完后应能回答：
 
 1. `@Configuration` 的增强解决了什么问题？（提示：@Bean 方法调用语义）

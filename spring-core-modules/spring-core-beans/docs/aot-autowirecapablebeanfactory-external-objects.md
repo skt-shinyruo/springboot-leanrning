@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：容器外对象注入：AutowireCapableBeanFactory
+## 问题：容器外对象注入：AutowireCapableBeanFactory
 
-先运行 `SpringCoreBeansAutowireCapableBeanFactoryLabTest` 固定「43. 容器外对象注入：AutowireCapableBeanFactory」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansAutowireCapableBeanFactoryLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -44,7 +44,7 @@
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：对象不是 Spring 创建的
 **分支**：是否显式调用 `autowireBean/initializeBean/destroyBean`
@@ -62,7 +62,7 @@
 
 > 关键提醒：一定要使用 `initializeBean` 的返回值，否则可能丢失代理语义。
 
-## 结论先行：注入 ≠ 生命周期托管 ≠ 代理替换
+## 核心结论：注入、生命周期托管与代理替换不是同一件事
 
 对容器外对象，需要做到的事情通常分成三层：
 
@@ -109,15 +109,15 @@
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansAutowireCapableBeanFactoryLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 本模块提供一个最小对照实验，帮助读者建立预期：
 
@@ -138,7 +138,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCapableBeanFactoryLabTe
 3. `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`：`@PostConstruct` 触发点之一（也解释为什么必须 initialize）
 4. `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`：BPP 可能在这里返回 proxy（解释“final object != raw object”）
 
-## 边界分流：容器外对象注入：AutowireCapableBeanFactory
+## 边界：容器外对象注入：AutowireCapableBeanFactory
 > 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
 
@@ -170,12 +170,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCapableBeanFactoryLabTe
 - 标准答案（可复述）：
   - 它容易引入时机不确定、重复注入/重复初始化、以及与容器内 bean 语义不一致等问题；更稳妥的方式是把对象创建权交回容器（定义层注册），让创建链路可预测。
 
-## 验证标准：容器外对象注入：AutowireCapableBeanFactory
+## 验收口径：容器外对象注入：AutowireCapableBeanFactory
 - 需要解释清楚：为什么“容器外对象”不会自动触发 `@Autowired/@PostConstruct/@PreDestroy` 吗？
 - 需要说出：`autowireBean`、`initializeBean`、`destroyBean` 三个 API 分别补的是哪一段管道吗？
 - 需要说明：在容器外对象场景里，为什么仍然要警惕“最终暴露对象可能是 proxy”这件事吗？（提示：BPP 仍可能替换对象）
 
-## 收束：容器外对象注入：AutowireCapableBeanFactory
+## 小结：容器外对象注入：AutowireCapableBeanFactory
 
 - `AutowireCapableBeanFactory#autowireBean`（偏“只做注入”）
 - `AutowireCapableBeanFactory#initializeBean`（触发初始化链路）
@@ -188,7 +188,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCapableBeanFactoryLabTe
 - `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`（`@PostConstruct` 入口之一）
 - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（BPP 可能在这里返回 proxy）
 
-## 收束：容器外对象注入：AutowireCapableBeanFactory 与下一章入口
+## 小结：容器外对象注入：AutowireCapableBeanFactory 与下一章入口
 
 
 <!-- BOOKIFY:START -->

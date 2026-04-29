@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：内置 FactoryBean 图鉴
+## 问题：内置 FactoryBean 图鉴
 
-- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -47,7 +47,7 @@
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：`getBean` 命中的是 FactoryBean
 **分支**：默认返回 product；`&` 前缀返回 factory 本体
@@ -198,15 +198,15 @@
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansBuiltInFactoryBeansLabTest` / `SpringCoreBeansServiceLoaderFactoryBeansLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansBuiltInFactoryBeansLabTest.java`
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansServiceLoaderFactoryBeansLabTest.java`
@@ -249,7 +249,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 3. **误区：ServiceLocator 只是“语法糖”**
    - 它改变了依赖关系表达方式：从注入时确定 → 运行时决定；排障更难，慎用。
 
-## 边界分流：内置 FactoryBean 图鉴
+## 边界：内置 FactoryBean 图鉴
 
 需要注意：这是一种 **service locator 模式**，会把依赖关系从“注入点”迁移到“调用点”，可读性更差，应谨慎采用。
 
@@ -276,12 +276,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBuiltInFactoryBeansLabTest,Spri
 - 标准答案（可复述）：
   - `getObjectType()` 不准确/返回 null 会影响 type-based 发现与条件装配；`isSingleton()` 决定的是 product 缓存语义，不是工厂本体是否单例。
 
-## 验证标准：内置 FactoryBean 图鉴
+## 验收口径：内置 FactoryBean 图鉴
 - 需要解释清楚：FactoryBean 的 product/factory 分流规则吗？什么时候必须用 `&name`？
 - 需要说出：MethodInvoking/ServiceLocator/ServiceLoader 这几类 FactoryBean 各自把“依赖关系”放在了哪里吗？
 - 遇到“获取到的对象类型不对/每次返回都一样/调用时才失败”时，第一反应会去哪个章节/哪个断点入口？
 
-## 收束：内置 FactoryBean 图鉴
+## 小结：内置 FactoryBean 图鉴
 
 
 <!-- BOOKIFY:START -->

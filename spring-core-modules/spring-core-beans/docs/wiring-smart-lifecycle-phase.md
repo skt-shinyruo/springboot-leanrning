@@ -1,7 +1,7 @@
 # SmartLifecycle：start/stop 时机与 phase 顺序
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：27. SmartLifecycle：start/stop 时机与 phase 顺序。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：SmartLifecycle：start/stop 时机与 phase 顺序
+## 问题：容器启动后哪些组件会自动 start，关闭时按什么顺序 stop
 
-- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -36,7 +36,7 @@
 - 希望在容器 close 时 stop
 - 希望多个组件之间按 phase 排序
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：bean 实现 `SmartLifecycle`，且 `isAutoStartup()` 为 `true`
 **分支**：`LifecycleProcessor#onRefresh` → `DefaultLifecycleProcessor#startBeans` 按 phase 升序启动
@@ -123,15 +123,15 @@
 2. 为什么 start 按 phase 升序，而 stop 按 phase 反序？（提示：依赖关系与安全停机）
 3. `stop(Runnable)` 为什么必须调用 callback？如果不调用，会出现什么现象？
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansSmartLifecycleLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartLifecycleLabTest.java`
@@ -168,7 +168,7 @@
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansSmartLifecycleLabTest.java`
 断点入口：`DefaultLifecycleProcessor#startBeans`、`DefaultLifecycleProcessor#stopBeans`、`SmartLifecycle#start`
 
-## 边界分流：SmartLifecycle：start/stop 时机与 phase 顺序
+## 边界：SmartLifecycle：start/stop 时机与 phase 顺序
 
 ### 误判点：不要把外层现象当成根因
 
@@ -178,7 +178,7 @@
 - **误区 2：stop(Runnable) 不调用 callback**
   - 容器会等待 callback，用于支持异步 stop；若不调用 callback，关闭可能卡住。
 
-## 验证标准：SmartLifecycle：start/stop 时机与 phase 顺序
+## 验收口径：SmartLifecycle：start/stop 时机与 phase 顺序
 需要解释清楚：
 
 1. **phase 的排序规则是什么？为什么 phase 会影响“启动/停止顺序”？**

@@ -1,7 +1,7 @@
 # FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：23. FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：FactoryBean 深潜：product vs factory、类型匹配
+## 问题：FactoryBean 深潜：product vs factory、类型匹配
 
-- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -46,7 +46,7 @@
 - `getBean("valueFactory")` 获取到的是 **product**（`getObject()` 的返回值）
 - `getBean("&valueFactory")` 获取到的是 **factory**（FactoryBean 自身）
 
-### 1.1 机制系统阐述：条件 → 分支 → 结果
+### 1.1 机制边界：条件、分支与结果
 
 **条件**：beanName 是否以 `&` 开头
 **分支**：`AbstractBeanFactory#getObjectForBeanInstance`
@@ -206,15 +206,15 @@
 - 常见追问：`getObjectType()` 为什么重要？它会影响什么？
   - 答题要点：影响按类型查找/条件装配/候选收集；返回 `null` 或不稳定会导致“按类型发现失效/偶现缺 bean”等问题（见 [29](wiring-factorybean-edge-cases.md)）。
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java`
@@ -258,7 +258,7 @@
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java`
 断点入口：`AbstractBeanFactory#getType`、`AbstractBeanFactory#getObjectForBeanInstance`、`FactoryBeanRegistrySupport#getObjectFromFactoryBean`
 
-## 边界分流：FactoryBean 深潜：product vs factory、类型匹配
+## 边界：FactoryBean 深潜：product vs factory、类型匹配
 
 - 首选：`FactoryBean#getObjectType()`
 - 如果 `getObjectType()` 信息不足（返回 `null`），某些查找路径会选择 **不去实例化 factory**（尤其 `allowEagerInit=false` 时），于是可以观察到“按类型找不到但按名字能获取到”的现象（见 [FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](wiring-factorybean-edge-cases.md)）。
@@ -273,7 +273,7 @@
 - **误区 2：`isSingleton()` 返回与真实行为不一致**
   - 容器会按读者声明的语义缓存/不缓存；声明错了很容易造成“表面上像缓存 bug”。
 
-## 验证标准：FactoryBean 深潜：product vs factory、类型匹配
+## 验收口径：FactoryBean 深潜：product vs factory、类型匹配
 需要解释清楚：
 
 1. **`getBean(name)` 与 `getBean(&name)` 的差别是什么？两个缓存各自缓存的是什么？**

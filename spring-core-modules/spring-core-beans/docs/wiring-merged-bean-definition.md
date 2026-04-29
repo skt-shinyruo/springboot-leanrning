@@ -1,7 +1,7 @@
 # BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：35. BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：BeanDefinition 的合并（MergedBeanDefinition）
+## 问题：BeanDefinition 的合并（MergedBeanDefinition）
 
-- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -39,7 +39,7 @@
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：bean 定义存在 parent/子定义或需要解析默认值
 **分支**：`getMergedLocalBeanDefinition` 递归合并 parent → 生成 `RootBeanDefinition`
@@ -122,7 +122,7 @@ getMergedLocalBeanDefinition(beanName):
 
 这也是为什么可以在源码里看到一些熟悉的基础设施处理器实现了它（例如与 `@Autowired`、`@PostConstruct` 相关的处理器家族）。
 
-进一步阅读路径：
+继续阅读时，可以按这三条线补齐上下文：
 
 - 注解为什么能工作（基础设施处理器）：[12](internals-container-bootstrap-and-infrastructure.md)
 - 注入发生在哪个阶段：`postProcessProperties`： [30](wiring-injection-phase-field-vs-constructor.md)
@@ -179,13 +179,13 @@ getMergedLocalBeanDefinition(beanName):
 - 真正参与创建的是 `getMergedLocalBeanDefinition(beanName)` 返回的 `RootBeanDefinition`（元数据已合并）
 - 若只盯着原始定义，会把“定义层对象”误当成“创建时用的最终配方”，因此结论必然错位
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansMergedBeanDefinitionLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
 - 明明注册的是 `GenericBeanDefinition`（或者通过注解解析得到的定义），为什么调试时经常看到的是 `RootBeanDefinition`？
 - 在 registry 中获取到的 `BeanDefinition` 表面上缺了很多信息（property、init-method 等），但创建时又“似乎被自动补齐了”？
@@ -222,7 +222,7 @@ getMergedLocalBeanDefinition(beanName):
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansMergedBeanDefinitionLabTest.java`
 断点入口：`AbstractBeanFactory#getMergedLocalBeanDefinition`、`AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`、`MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition`
 
-## 边界分流：BeanDefinition 的合并（MergedBeanDefinition）
+## 边界：BeanDefinition 的合并（MergedBeanDefinition）
 
 ### 误判点：不要把外层现象当成根因
 
@@ -265,12 +265,12 @@ getMergedLocalBeanDefinition(beanName):
 - 证据链（方法级）：
   - `applyMergedBeanDefinitionPostProcessors` 的调用位置（发生在 `createBeanInstance` 之后、`populateBean` 之前）
 
-## 验证标准：BeanDefinition 的合并（MergedBeanDefinition）
+## 验收口径：BeanDefinition 的合并（MergedBeanDefinition）
 - 需要解释清楚：`BeanDefinition`（registry 里的原始定义）与 `MergedBeanDefinition/RootBeanDefinition`（创建时真正使用的配方）有什么区别吗？
 - 需要指出：`MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition` 在创建链路的哪个阶段触发吗？它“适合做什么/不适合做什么”？
 - 需要用断点证明：同一个 beanName 的 mbd 是“计算后缓存”的，而不是每次创建都重新算吗？（提示：观察 `getMergedLocalBeanDefinition` 的缓存命中）
 
-## 收束：BeanDefinition 的合并（MergedBeanDefinition）
+## 小结：BeanDefinition 的合并（MergedBeanDefinition）
 
 - `AbstractBeanFactory#getMergedLocalBeanDefinition`
 - `AbstractAutowireCapableBeanFactory#applyMergedBeanDefinitionPostProcessors`

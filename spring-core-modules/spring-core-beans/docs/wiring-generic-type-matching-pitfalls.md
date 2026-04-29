@@ -1,7 +1,7 @@
 # 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
+## 问题：泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
 
-先运行 `SpringCoreBeansGenericTypeMatchingPitfallsLabTest` 固定「37. 泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`，观察泛型匹配如何受代理与运行时类型信息影响；再围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -42,7 +42,7 @@
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：注入点是带泛型的 `ResolvableType`，候选类型信息不完整
 **分支**：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch` 发现泛型参数无法匹配
@@ -67,13 +67,13 @@
 
 这一章的核心就是：**当候选从 1) 退化到 3) 时，泛型匹配的可靠性会大幅下降。**
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-## 边界分流：泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
+## 边界：泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
 
 这一章解决一个“表面上很合理，但在真实项目里经常易错点”的问题：
 
@@ -81,7 +81,7 @@
 > 为什么按 `Handler<String>`（带泛型）去找/注入时，Spring 却说“没有候选”？
 > 但按原始类型 `Handler`（不带泛型）又能找到？
 
-结论先行：
+核心结论：
 
 - Spring 在“按泛型匹配”时依赖 `ResolvableType`
 - **如果候选 bean 在运行时丢失了泛型信息（常见原因：JDK dynamic proxy、手工注册 singleton 实例等）**，那么：
@@ -103,13 +103,13 @@
 
 ## 最小可复现：泛型信息一旦丢失，按 ResolvableType 就会失配
 
-### 2.1 复现入口（可运行）
+### 2.1 运行入口
 
 - 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/appendix/SpringCoreBeansGenericTypeMatchingPitfallsLabTest.java`
   - 类级：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest test`
   - 方法级（更快）：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenTypeInfoIsLost test`
-- 读者将断言/观察到：
+- 运行后应能观察到：
   - 容器“表面上”注册了一个 `T` 的实现，但在按 `ResolvableType` 匹配时可能失配（尤其是代理/手工注册实例时）
   - 结论不是“泛型不能用”，而是“泛型匹配依赖可被保留的类型信息”，要知道何时会丢
 
@@ -246,12 +246,12 @@ mvn -q -pl :spring-core-beans -Dtest=SpringCoreBeansGenericTypeMatchingPitfallsL
 - 最小复现：
   - `SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canBeRestoredByProvidingTargetTypeMetadata_evenIfRuntimeInstanceIsAProxy`
 
-## 验证标准：泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
+## 验收口径：泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
 - 需要解释清楚：为什么“泛型注入”在遇到代理/桥接方法时容易失去类型信息吗？（提示：运行时类型 vs 声明时类型）
 - 读者知道 Spring 用什么抽象来表达泛型类型信息吗？（提示：`ResolvableType`）
 - 遇到“按泛型注入失败”时，第一步会去哪设置断点/看哪个变量来确认类型信息有没有丢？（提示：依赖解析与 type matching 路径）
 
-## 收束：泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
+## 小结：泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失
 
 
 <!-- BOOKIFY:START -->

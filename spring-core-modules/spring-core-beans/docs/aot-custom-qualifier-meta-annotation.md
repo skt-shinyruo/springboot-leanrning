@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：自定义 Qualifier：meta-annotation 与候选收敛
+## 问题：自定义 Qualifier：meta-annotation 与候选收敛
 
-先运行 `SpringCoreBeansCustomQualifierLabTest` 固定「45. 自定义 Qualifier：meta-annotation 与候选收敛」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansCustomQualifierLabTest`，观察自定义 Qualifier 如何把候选集合收窄；再回到 `QualifierAnnotationAutowireCandidateResolver` 看匹配输入、过滤分支与最终 winner。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
@@ -39,14 +39,14 @@
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：注入点与候选 bean 同时标注自定义 Qualifier
 **分支**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` 做匹配过滤
 **结果**：候选集合被缩小 → winner 选择更稳定
 **断点入口**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
 
-## 结论先行：自定义 Qualifier 的本质
+## 核心结论：自定义 Qualifier 的本质
 
 自定义 Qualifier 的做法通常是：
 
@@ -119,15 +119,15 @@
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansCustomQualifierLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 本模块提供一个最小实验：
 
@@ -148,7 +148,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 - 自定义 Qualifier 是如何参与候选收敛的？
 - 可以在哪两个方法设置断点证明“候选集合如何被过滤”？
 
-## 边界分流：自定义 Qualifier：meta-annotation 与候选收敛
+## 边界：自定义 Qualifier：meta-annotation 与候选收敛
 
 - [依赖注入解析：类型/名称/@Qualifier/@Primary](ioc-dependency-injection-resolution.md)
 - [候选选择与优先级：@Primary/@Priority/@Order 的边界](wiring-autowire-candidate-selection-primary-priority-order.md)
@@ -190,12 +190,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 - 证据链（方法级）：
   - `QualifierAnnotationAutowireCandidateResolver`（或同类 resolver）的 `isAutowireCandidate` 分支
 
-## 验证标准：自定义 Qualifier：meta-annotation 与候选收敛
+## 验收口径：自定义 Qualifier：meta-annotation 与候选收敛
 - 需要解释清楚：自定义 Qualifier 解决的是“候选收敛”的哪一类问题吗？它和 `@Primary` 的边界是什么？
 - 需要说出：候选集合是在依赖解析的哪个方法里被过滤/收敛的吗？（提示：`doResolveDependency` / candidate resolver）
 - 需要能给出：如何用一个最小 LabTest + 两个断点把“为什么注入的是它”讲成可复述算法？
 
-## 收束：自定义 Qualifier：meta-annotation 与候选收敛
+## 小结：自定义 Qualifier：meta-annotation 与候选收敛
 
 
 <!-- BOOKIFY:START -->

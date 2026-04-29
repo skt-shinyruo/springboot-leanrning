@@ -40,7 +40,7 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
 
 
-## 本页路线图
+## 读法：先匹配现象，再回到正文
 
 这页不适合顺读背诵。遇到问题时按下面顺序定位：
 
@@ -61,19 +61,19 @@
 
 排障时先判层，再设置断点，效率最高。
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansContainerLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-## 边界分流：误判通常来自层次混淆
+## 边界：误判通常来自层次混淆
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
 > 这一节的目的不是“列口号”，而是把高频误判做成可复现的定位清单：每一条都能在本仓库的某个 Lab 中复现出来，并能设置断点观察到关键分支。
 
-### 复现入口（可运行）
+### 运行入口
 
 - 入口测试：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`
@@ -568,12 +568,12 @@
 - 最小复现：
   - `SpringCoreBeansProxyingPhaseLabTest`
 
-## 验证标准：能否把误判压回证据链
+## 验收口径：能否把误判压回证据链
 - 是否能做到：获取到一个现象（注入失败/获取到 proxy/占位符没解析/启动阶段异常）就先分层（定义层 vs 实例层），并跳到对应章节与 Lab？
 - 是否能明确区分三件事：**候选选择（谁赢）**、**集合排序（谁先谁后）**、**初始化顺序（谁先创建）**？
 - 是否能把“猜测”变成“证据链”：用一个实验/测试 + 断点 + 观察清单 把结论固定为可复现事实？
 
-## 收束：误判清单只解决入口，不替代断点
+## 小结：误判清单只解决入口，不替代断点
 
 
 <!-- BOOKIFY:START -->

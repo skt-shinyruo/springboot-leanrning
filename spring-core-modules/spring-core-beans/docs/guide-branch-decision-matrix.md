@@ -6,21 +6,19 @@
     观察对象：关键分支矩阵。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
-    对照入口：`LabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#doResolveDependency` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue` 这些入口切入。
+    对照入口：`SpringCoreBeansIocBranchMatrixLabTest` / `SpringCoreBeansInternalsBranchMatrixLabTest`。需要下探源码时，可以从 `DefaultListableBeanFactory#doResolveDependency` / `CommonAnnotationBeanPostProcessor#postProcessProperties` / `AbstractBeanFactory#resolveEmbeddedValue` 这些入口切入。
 
 <!-- CHAPTER-CARD:END -->
 
-## 本页路线图
+## 读法：先找 root cause，再选断点
 
-本页把阅读顺序、源码入口与可运行实验放在同一处。读法如下：
+这页是排障索引，不是概念章节。读者拿到异常后，先看最底层 root cause，再用矩阵选择阶段、入口方法和观察变量；最后用对应 Lab 把分支跑成断言。
 
-1. 先看导读和机制主线，确认本页要解释的现象。
-2. 再运行“最小可运行实验（Lab）”，把主线或分支固定成断言。
-3. 最后回到源码与断点、常见坑或自检题，把结论落到可复述证据链。
+如果只看外层 `BeanCreationException` 或 `UnsatisfiedDependencyException`，很容易把类型转换、值解析、候选选择或循环依赖混成同一个问题。
 
 ## 分支矩阵怎么读：把症状压成 if/then
 
-- 这页的用法很“工具化”：先运行 Branch Matrix 的聚合入口测试，把关键分支跑成断言；再用本页表格把异常/现象翻译成“阶段 → 第一断点 → 观察清单 → 对应 Lab”。
+本页的用法偏工具化：先运行 Branch Matrix 的聚合入口测试，把关键分支跑成断言；再用表格把异常/现象翻译成“阶段 → 第一断点 → 观察清单 → 对应 Lab”。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -112,7 +110,7 @@ Spring 容器的“外层异常”容易误导读者，因为它们经常只是�
 
 复习入口：`appendix-interview-playbook.md`（每题都对应“阶段 + 关键方法 + 可运行 Lab”）。
 
-## 验证标准：能从异常行走到断点
+## 验收口径：能从异常行走到断点
 读完后应能做到：
 
 1. 看到 `NoUniqueBeanDefinitionException`，能立刻说出“下哪个断点、看哪三个变量”。
@@ -120,6 +118,6 @@ Spring 容器的“外层异常”容易误导读者，因为它们经常只是�
 3. 看到“代理不生效”，能把问题分成“顺序问题 vs 时机问题”两类并给出证据链入口。
 
 
-## 收束：矩阵的终点是 `refresh()` 阶段定位
+## 小结：矩阵的终点是 `refresh()` 阶段定位
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。

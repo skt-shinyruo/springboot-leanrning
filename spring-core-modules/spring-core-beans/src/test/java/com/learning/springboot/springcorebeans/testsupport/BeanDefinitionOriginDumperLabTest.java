@@ -8,7 +8,7 @@ import org.springframework.beans.factory.support.AutowireCandidateQualifier;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.support.GenericApplicationContext;
 
-class BeanDefinitionOriginDumperLabTest {
+public class BeanDefinitionOriginDumperLabTest {
 
     @Test
     void dump_includesKeyBeanDefinitionFields_withoutRequiringBeanInstantiation() {
@@ -58,4 +58,3 @@ class BeanDefinitionOriginDumperLabTest {
         }
     }
 }
-

@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
+## 问题：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
-- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -48,7 +48,7 @@
 - refresh 阶段不会创建它
 - 第一次 `getBean(...)` 才会创建
 
-### 1.1 机制系统阐述：条件 → 分支 → 结果
+### 1.1 机制边界：条件、分支与结果
 
 **条件**：`mbd.isLazyInit()` 是否为 true
 **分支**：`preInstantiateSingletons` 是否跳过
@@ -164,7 +164,7 @@
 - “误认为 `@Lazy` 会影响 beanDefinition 的 lazy-init” → **优先定义层澄清**：注入点 `@Lazy` 与 beanDefinition `lazy-init` 是两种语义（本章第 3 节）
 - “看到的是 proxy 类型而不是目标类” → **实例层（代理语义）**：这是注入点 `@Lazy` 的本质（对照 [31](wiring-proxying-phase-bpp-wraps-bean.md)）
 
-## 验证标准：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
+## 验收口径：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
 - 常问：`lazy-init` 与注入点 `@Lazy` 有什么本质差别？
   - 答题要点：`lazy-init` 是定义层“延迟创建策略”；注入点 `@Lazy` 是“注入延迟解析 proxy”，把解析推迟到首次使用。
@@ -199,7 +199,7 @@
 
 > 结论：lazy-init 控制“容器是否主动创建”；注入点 `@Lazy` 控制“注入的是不是一个延迟解析的代理”。
 
-## 边界分流：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
+## 边界：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
 
 ### 误判点：不要把外层现象当成根因
@@ -210,7 +210,7 @@
 - **误区 2：在 proxy 上调用 `toString()` / `equals()` 触发真实创建**
   - 学习阶段尽量不要依赖日志；用断言固定“构造器是否被调用”。
 
-## 收束：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
+## 小结：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
 - `DefaultListableBeanFactory#preInstantiateSingletons`：refresh 时批量创建非 lazy 单例（lazy-init bean 会被跳过）
 - `AbstractBeanFactory#doGetBean`：第一次 `getBean(...)` 触发真正创建（lazy-init 的典型入口）

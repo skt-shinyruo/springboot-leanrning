@@ -1,7 +1,7 @@
 # 循环依赖：现象、原因与规避（constructor vs setter）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：循环依赖：现象、原因与规避（constructor vs setter）。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,11 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 循环依赖先分型：constructor 失败，setter 才有窗口
+## 问题：同样是相互依赖，为什么有的直接失败
 
-- 先运行“constructor fail-fast vs setter 可能成功”的最小实验，再带着断点把“为什么能救/为什么救不了”的证据链走通。
+循环依赖不能先问“Spring 能不能救”，而要先分型：依赖发生在构造器阶段，还是发生在属性填充阶段。constructor 循环通常没有提前暴露窗口；setter/field 循环只有在 singleton 创建窗口期才可能闭合。
+
+先运行“constructor fail-fast vs setter 可能成功”的最小实验，再带着断点把“为什么能救/为什么救不了”的证据链走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -22,9 +24,9 @@
 
     - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
     - 测试文件：
-    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
-    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansCircularDependencyBoundaryLabTest.java`
-    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansCircularDependencyBoundaryLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
 
 ## 机制主线：为什么 constructor 死、setter 有时能活？
 
@@ -37,7 +39,7 @@
 
 这也是为什么同样是“相互依赖”，表现会完全不同。
 
-### 机制系统阐述：constructor vs setter（条件 → 分支 → 结果）
+### 机制边界：constructor vs setter 的条件、分支与结果
 
 - **条件**：依赖发生在“实例化前”还是“实例化后但初始化前”
 - **分支**：
@@ -78,7 +80,7 @@
 ## 1.2 为什么读者看完仍不懂“为什么要三级缓存”？（桥接：2-level vs 3-level）
 
 > 若读者当前的核心困惑为“为什么不是二级缓存就够”，可先参阅：
-> - [`00. Why Index（基础问题索引）`](guide-why-index.md)（答案先行 + 10 分钟证据链）
+> - [`00. Why Index（基础问题索引）`](guide-why-index.md)（结论 + 10 分钟证据链）
 > - AOP 前置理解：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../spring-core-aop/docs/proxy-fundamentals-aop-proxy-mental-model.md)（为什么要跳：本章后面会用 raw vs proxy / early vs final 来解释“到底救没救”；验证什么：在 AOP 章先跑通一个最小 proxy 用例，并在“proxy 创建点 + 调用入口”各停一次，确认观察到的是“代理对象 + 调用路径”而不是“原始实例”）
 
 读者之所以会在“三级缓存”这里卡住，通常是因为把它误当成“多一个 Map 的实现细节”，而忽略了它在设计上解决的是两个更本质的问题：
@@ -135,7 +137,7 @@
 2. `AbstractAutowireCapableBeanFactory#setAllowRawInjectionDespiteWrapping(boolean)`（简称 `allowRawInjectionDespiteWrapping`）
    - 作用：当容器发现 **依赖方已经注入了 raw early reference**，但当前 bean 在初始化阶段又被 after-init BPP 包装成 proxy/wrapper 时，是否允许继续启动。
    - 影响结果：
-  - `false`：**一致性保护（工程默认）**。容器会尽量保证 early == final：优先让 early reference 与最终暴露对象保持一致（例如让 early 也返回 proxy）；若无法做到一致，则可能 **fail-fast（信息包含 *raw version*）**。
+     - `false`：**一致性保护（工程默认）**。容器会尽量保证 early == final：优先让 early reference 与最终暴露对象保持一致（例如让 early 也返回 proxy）；若无法做到一致，则可能 **fail-fast（信息包含 *raw version*）**。
      - `true`：允许继续启动，但代价是：**一部分依赖方获取到的对象形态与容器最终暴露形态不一致**（风险较高，属于“能够启动但不可靠”）。
 
 > 这两个开关解决的问题不同：
@@ -296,7 +298,7 @@ setter 注入能够“使依赖环得以闭合”的前提是：需要接受半�
 
 ---
 
-## 边界分流：能启动不等于依赖图健康
+## 边界：能启动不等于依赖图健康
 
 1. **误区：Spring 解决了循环依赖**
   - 更准确的说法：Spring 只在特定条件下“救活某些环”（singleton + early exposure + 合适的增强/代理策略）。
@@ -334,7 +336,7 @@ setter 注入能够“使依赖环得以闭合”的前提是：需要接受半�
 
 无需背实现细节，但必须能解释“为什么在这个窗口期能救 setter 循环、救不了 constructor 循环”。
 
-## 验证标准：三句话讲清 early exposure 窗口
+## 验收口径：三句话讲清 early exposure 窗口
 读完后应能用 3 句完整回答：
 
 1. constructor cycle 为什么 fail-fast？（依赖发生在实例化之前，没有 early exposure 窗口）
@@ -342,7 +344,7 @@ setter 注入能够“使依赖环得以闭合”的前提是：需要接受半�
 3. 工程上如何处理？（重构消环优先；延迟依赖是折中；setter 不是默认解法）
 
 
-## 收束：循环依赖的答案在创建窗口期
+## 小结：循环依赖的答案在创建窗口期
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 

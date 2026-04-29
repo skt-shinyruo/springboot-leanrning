@@ -1,7 +1,7 @@
 # 父子 ApplicationContext：可见性与覆盖边界
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：21. 父子 ApplicationContext：可见性与覆盖边界。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,11 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：父子 ApplicationContext：可见性与覆盖边界
+## 问题：child 能看见 parent，parent 为什么看不见 child
 
-先运行 `SpringCoreBeansContextHierarchyLabTest` 固定「21. 父子 ApplicationContext：可见性与覆盖边界」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+父子容器不是两个完全合并的注册表。child 在本地找不到时可以回退到 parent，但 parent 不会反向查 child；child 的同名定义也只是在 child 内部遮蔽 parent。
+
+先运行 `SpringCoreBeansContextHierarchyLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -37,7 +39,7 @@
 - parent/child context 的可见性规则
 - child 的“覆盖”只发生在 child 内部
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：当前 BeanFactory 是否存在 parent
 **分支**：`AbstractBeanFactory#doGetBean` 本地找不到就 fallback parent
@@ -124,15 +126,15 @@
 - 常见追问：为什么 parent/child 都有同类型 bean 时，按类型注入更容易出现歧义？
   - 答题要点：按类型会把 ancestors 一起纳入候选集（常见用 `BeanFactoryUtils#beanOfTypeIncludingAncestors`），需要 `@Qualifier/@Primary` 收敛。
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansContextHierarchyLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
@@ -169,7 +171,7 @@
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansContextHierarchyLabTest.java`
 断点入口：`BeanFactoryUtils#beanNamesForTypeIncludingAncestors`、`AbstractBeanFactory#doGetBean`、`AbstractApplicationContext#setParent`
 
-## 边界分流：父子 ApplicationContext：可见性与覆盖边界
+## 边界：父子 ApplicationContext：可见性与覆盖边界
 
 ### 误判点：不要把外层现象当成根因
 
@@ -179,7 +181,7 @@
 - **误区 2：以为 child 覆盖会影响 parent**
   - 不会。parent 完全不知道 child 的存在。
 
-## 验证标准：父子 ApplicationContext：可见性与覆盖边界
+## 验收口径：父子 ApplicationContext：可见性与覆盖边界
 需要解释清楚：
 
 1. **child 为什么能看到 parent 的 bean，但 parent 看不到 child 的 bean？**（搜索顺序与可见性规则）

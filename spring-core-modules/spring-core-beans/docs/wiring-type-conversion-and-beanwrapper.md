@@ -1,7 +1,7 @@
 # 类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：类型转换
+## 问题：类型转换
 
-- 阅读路径：先运行一遍本章 Lab，把“字符串 → 目标类型”的现象固定成断言；再带着断点把它放回 `populateBean(...)` / `@Value` 的真实调用链里看清楚。
+先运行一遍本章 Lab，把“字符串 → 目标类型”的现象固定成断言；再带着断点把它放回 `populateBean(...)` / `@Value` 的真实调用链里看清楚。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -45,7 +45,7 @@
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：属性填充或 `@Value` 注入需要把 String 转成目标类型
 **分支**：`TypeConverterDelegate#convertIfNecessary` 判断：ConversionService → PropertyEditor → 失败
@@ -123,7 +123,7 @@
 
 ---
 
-## 最小可运行实验（让“转换发生在哪”可断言）
+## 实验：让“转换发生在哪”可断言
 
 先运行（方法级更快）：
 
@@ -260,12 +260,12 @@
   - 注入系统：`resolveEmbeddedValue` / `populateBean` / `convertIfNecessary`
   - Binder 系统：走的是 Boot 的 binder 链路（不在本章主线）
 
-## 验证标准：类型转换
+## 验收口径：类型转换
 - 需要解释清楚：`@Value` 的“值注入”大致经历哪三步吗？（提示：占位符/SpEL → 类型转换）
 - 需要指出：类型转换的关键决策点在哪个方法里吗？（提示：`convertIfNecessary`）
 - 需要说明：ConversionService 与 PropertyEditor 的职责边界是什么，以及为什么 Boot Binder 的转换不等于注入转换吗？
 
-## 收束：类型转换
+## 小结：类型转换
 
 这一章只要记住三件事即可：
 

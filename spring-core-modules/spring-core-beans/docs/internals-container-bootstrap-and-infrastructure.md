@@ -11,14 +11,14 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 注解为何生效：基础设施处理器先进入容器
+## 问题：注解能力不是容器天然自带
 
 这一章回答两个排障高频问题：
 
 1. 为什么“同样是 Spring 容器”，有的启动方式里 `@Autowired/@PostConstruct/@Bean` 统统不生效？
 2. 注解能力到底从哪来？它在 `refresh()` 的哪一步开始“真的生效”？
 
-先运行 `SpringCoreBeansBootstrapInternalsLabTest`：对照 `GenericApplicationContext` 与 `AnnotationConfigApplicationContext` 的启动差异，把“基础设施没装/已装”的分界跑成事实；再回正文对照 `registerAnnotationConfigProcessors → invokeBeanFactoryPostProcessors → registerBeanPostProcessors` 三段时机。
+先运行 `SpringCoreBeansBootstrapInternalsLabTest`，对照 `GenericApplicationContext` 与 `AnnotationConfigApplicationContext` 的启动差异，把“基础设施没装/已装”的分界跑成事实；再回正文对照 `registerAnnotationConfigProcessors → invokeBeanFactoryPostProcessors → registerBeanPostProcessors` 三段时机。
 
 - 最小运行入口：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBootstrapInternalsLabTest test`
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -30,7 +30,7 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`
 
 
-## 机制主线
+## 机制主线：先注册处理器，再让注解生效
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -45,14 +45,14 @@
 - `@Autowired` 注入为 null
 - `@PostConstruct` 未执行
 
-这不是 bug，而是：读者没有把“注解解析与回调”的那套基础设施装进去。
+这不是 bug，而是读者没有把“注解解析与回调”的那套基础设施装进去。
 
 对应测试：
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`
   - `withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`（证据：字段为 null、`@PostConstruct` 未执行）
 
-### 1.1.1 机制系统阐述：条件 → 分支 → 结果
+### 1.1.1 机制边界：条件、分支与结果
 
 **条件**：是否注册 annotation processors
 **分支**：`AnnotationConfigUtils.registerAnnotationConfigProcessors` 是否被调用
@@ -374,7 +374,7 @@ GenericApplicationContext#refresh
 - 要么用 `AnnotationConfigApplicationContext`（默认自带 annotation processors）
 - 要么在 `GenericApplicationContext` 中显式调用 `AnnotationConfigUtils.registerAnnotationConfigProcessors(context)` 再 `refresh()`
 
-## 验证标准：能说明注解能力从哪里装入
+## 验收口径：能说明注解能力从哪里装入
 - 常问：为什么 `GenericApplicationContext` 里 `@Autowired/@PostConstruct` 默认不生效？
   - 答题要点：因为 annotation processors（BPP/BFPP）没有注册进容器；注解只是元数据，不是语言隐式行为。
 - 常见追问：如何用断点证明“处理器已经注册但尚未生效”？
@@ -410,7 +410,7 @@ GenericApplicationContext#refresh
 - 标准答案（可复述）：
   - 从 `AbstractApplicationContext#refresh` 入手，依次命中 `invokeBeanFactoryPostProcessors` 与 `registerBeanPostProcessors`，再落到 `AutowiredAnnotationBeanPostProcessor#postProcessProperties` 与 `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`，用 `beanName` 条件断点把噪音压到最低。
 
-## 边界分流：手工 BeanFactory 不等于 ApplicationContext
+## 边界：手工 BeanFactory 不等于 ApplicationContext
 
 这是一个高频的误区：很多人看到 registry 里有这些 internal processors，就以为注解已经“能用”。
 
@@ -435,7 +435,7 @@ GenericApplicationContext#refresh
 因此排障顺序可概括为：**优先确认处理器是否装配/是否执行，再确认依赖是否缺失**。
 
 
-## 收束：基础设施缺失会让注解表面上失效
+## 小结：基础设施缺失会让注解表面上失效
 
 - `AbstractApplicationContext#refresh`
   - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`

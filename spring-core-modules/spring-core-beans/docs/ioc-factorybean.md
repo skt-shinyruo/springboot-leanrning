@@ -1,7 +1,7 @@
 # `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：08. `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## `FactoryBean` 的第一分支：拿产品还是拿工厂
+## 问题：拿到的是产品，还是工厂本体
 
-这一章的阅读目标很具体：当看到“按名字/按类型拿到的对象类型不符合预期”时，需要能立刻想到 `FactoryBean` 的两条硬规则：
+这一章的阅读目标很具体：当看到“按名字/按类型拿到的对象类型不符合预期”时，需要先想到 `FactoryBean` 的两条硬规则：
 
 - `getBean("name")` 默认拿到的是 **product**
 - `getBean("&name")` 才能拿到 **factory 本体**
@@ -29,11 +29,11 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanDeepDiveLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 
-## 机制主线
+## 机制主线：一个 beanName 的两种语义
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-`FactoryBean` 是 Spring 里一个“老牌但重要”的扩展点，常见于各种框架集成（ORM、RPC、代理生成等）。
+`FactoryBean` 是 Spring 里一个历史很久但仍然重要的扩展点，常见于 ORM、RPC、代理生成等框架集成。
 
 这一章解决的问题是：
 
@@ -50,7 +50,7 @@
 - `"name"` → product（`FactoryBean#getObject()` 的返回值）
 - `"&name"` → factory（`FactoryBean` 实例本身）
 
-### 1.1.1 机制系统阐述：条件 → 分支 → 结果（可断点验证）
+### 1.1.1 机制边界：条件、分支与结果（可断点验证）
 
 - **条件**：beanName 是否以 `&` 开头
 - **分支**：`AbstractBeanFactory#getObjectForBeanInstance`
@@ -59,7 +59,7 @@
   - `"&name"`：直接返回 factory 本体
 - **断点入口**：`AbstractBeanFactory#getObjectForBeanInstance`
 
-这不是“语法糖”，而是 Spring IoC 对 FactoryBean 的硬规则：不记牢，排查注入问题会排查成本高。
+这不是语法糖，而是 Spring IoC 对 FactoryBean 的硬规则。没有先分清 product 与 factory，排查注入问题会很快走偏。
 
 ### 1.2 缓存语义：缓存的是 product（并且由 isSingleton 决定）
 
@@ -89,13 +89,7 @@
 - `getObjectType()` 为空 → `allowEagerInit=false` 的路径会直接放弃匹配
 - `isSingleton()` 为 true → product 会进入缓存（`factoryBeanObjectCache`），影响“是否每次创建”
 
-当某个 bean 实现了 `FactoryBean<T>`：
-
-- 容器默认把它当作“工厂”
-- **按 beanName 获取时返回的是 `T`（产品）**
-- 若想获取到工厂本身，需要在 beanName 前加 `&`
-
-这就是很多人第一次碰到 `FactoryBean` 时的迷惑点。
+当某个 bean 实现了 `FactoryBean<T>`，容器会同时维护两层语义：工厂本体按普通 bean 生命周期管理，默认对外暴露的却是 `T` 产品。若要获取工厂本身，必须在 beanName 前加 `&`。
 
 对应测试：
 
@@ -109,7 +103,7 @@
 - `getBean("sequence", Long.class)` 返回的是 Long（产品），并且每次调用递增
 - `getBean("&sequence")` 返回的是 `SequenceFactoryBean`（工厂本身）
 
-需要记住的就是：
+需要记住的是：
 
 - `"name"` → product
 - `"&name"` → factory
@@ -124,13 +118,11 @@
 
 ## FactoryBean 与代理/循环依赖的交叉
 
-- **early reference 一致性**：FactoryBean 产物若被代理，early reference 必须与最终暴露对象一致
+- **early reference 一致性**：FactoryBean 产物若被代理，early reference 必须与最终暴露对象一致。
+  调试时重点盯：`getEarlyBeanReference` 与 `getObjectFromFactoryBean` 返回形态是否一致。
 
- 调试时重点盯：`getEarlyBeanReference` 与 `getObjectFromFactoryBean` 返回形态是否一致。
-
-- **循环依赖边界**：FactoryBean 本体与 product 参与循环依赖时，容易出现“工厂已创建但产品不可用”的窗口
-
- 调试时重点盯：`singletonFactories` / `earlySingletonObjects` 是否含 product。
+- **循环依赖边界**：FactoryBean 本体与 product 参与循环依赖时，容易出现“工厂已创建但产品不可用”的窗口。
+  调试时重点盯：`singletonFactories` / `earlySingletonObjects` 是否含 product。
 
 
 ## `FactoryBean` 常见用途（理解即可）
@@ -194,13 +186,13 @@
 - `AbstractBeanFactory#isTypeMatch`：按类型查找/注入时的关键路径（强依赖 `getObjectType()` 的正确性与缓存语义）
 - `DefaultListableBeanFactory#getBeanNamesForType`：type-based 发现入口（对照 `allowEagerInit` 的边界）
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansFactoryBeanDeepDiveLabTest` / `SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-## 边界分流：name、type 与缓存三件事不要混
+## 边界：name、type 与缓存三件事不要混
 
 ### 高频误判
 
@@ -221,7 +213,7 @@
 | 按类型查找找不到（但按名字 `getBean("x")` 可以） | `FactoryBean#getObjectType()` 返回 `null` / 返回错误类型 / 不稳定，导致 type discovery 失败或误判 | 断点 `AbstractBeanFactory#isTypeMatch` / `DefaultListableBeanFactory#getBeanNamesForType`；关注 `allowEagerInit` 分支 | 让 `getObjectType()` 可推断且真实；必要时允许 eager init（谨慎）；或用 name/Qualifier 规避 | `SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName` / `#factoryBeanWithWrongObjectType_canBreakTypeBasedDiscovery_evenIfProductTypeIsActuallyCorrect` |
 | 容易误以为 `isSingleton()` 决定“工厂是否单例” | 误解：它决定的是 product 的缓存语义 | 断点 `FactoryBeanRegistrySupport#getObjectFromFactoryBean`；观察缓存命中与否 | 把“工厂本体 scope”与“产品缓存语义”分开理解与验证 | `SpringCoreBeansFactoryBeanDeepDiveLabTest#singletonFactoryBeanProduct_isCached_byTheContainer` / `#nonSingletonFactoryBeanProduct_isNotCached_byTheContainer` |
 
-## 收束：`&` 前缀决定取 factory 还是 product
+## 小结：`&` 前缀决定取 factory 还是 product
 
 
 <!-- BOOKIFY:START -->
@@ -233,7 +225,7 @@
 
 <!-- BOOKIFY:END -->
 
-## 验证标准：能解释 product/factory/type 三条分支
+## 验收口径：能解释 product/factory/type 三条分支
 读完后应能回答：
 
 1. 为什么 `getBean("name")` 返回的是 product，而不是工厂本身？

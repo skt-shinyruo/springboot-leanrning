@@ -1,5 +1,5 @@
 # <!--
-⚠️ SNAPSHOT FILE - 历史上由脚本生成（当前仓库已移除 `scripts/`，因此本章件按快照保留）。
+⚠️ SNAPSHOT FILE - 历史上由脚本生成（当前仓库已移除 `scripts/`，因此本章按快照保留）。
 - Generator: (removed)
 - Source: /home/feng/.m2/repository/org/springframework/spring-beans/6.2.15/spring-beans-6.2.15-sources.jar
 - Generated at: 2026-01-20 14:30:48
@@ -18,21 +18,21 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：spring-beans Public API 索引
+## 问题：spring-beans Public API 索引
 
-- 阅读路径：这是一份“查阅型文档”。当遇到某个 API/类名但不确定它属于哪类机制时，先在本章定位，再回到对应章节/测试完成闭环。
+这是一份查阅型文档。当遇到某个 API 或类名，但不确定它属于哪类机制时，先在本章定位，再回到对应章节与测试完成闭环。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
 !!! example "本章配套实验（先运行再读）"
 
-    - 索引本身不对应单一 Lab；用 断点包/Branch Matrix 作为总入口：
+    - 索引本身不对应单一 Lab；用断点包/Branch Matrix 作为总入口：
       - `SpringCoreBeansBreakpointPackLabTest`
       - `SpringCoreBeansIocBranchMatrixLabTest`
       - `SpringCoreBeansInternalsBranchMatrixLabTest`
 
-## 本页路线图
+## 读法：从 API 反查机制域
 
 这是一份查阅型快照，不顺读路径：
 
@@ -525,12 +525,12 @@
 
 答题模板：`appendix-interview-playbook.md`
 
-## 验证标准：spring-beans Public API 索引
+## 验收口径：spring-beans Public API 索引
 - 遇到一个 Spring 类型名（FQCN）时，是否能在 30 秒内用本索引定位到：对应章节 + 对应实验/测试 + 断点入口？
 - 是否能区分：这是“Public API（应当用/理解）”，还是“内部实现细节（版本波动大）”？
 - 能否把“查到一个类型”进一步落到“可运行、可证伪”的证据链，而不是停留在概念解释？
 
 
-## 收束：spring-beans Public API 索引
+## 小结：spring-beans Public API 索引
 
 Public API 是“从外部可见的能力面”，但真实行为由内部主线与关键分支决定；本索引用于把 API 映射回机制与证据链。

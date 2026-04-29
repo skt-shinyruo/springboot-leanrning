@@ -1,7 +1,7 @@
 # `@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
+## 问题：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
 
-- 阅读路径：先运行本章 Lab 得到两个对照结论（没装处理器 → 注解无效；装了处理器 → name-first 稳定注入），再回到源码把“是谁在什么时候把字段赋值”的证据链走通。
+先运行本章 Lab 得到两个对照结论：没装处理器时注解无效；装了处理器后，`@Resource` 按 name-first 规则稳定注入。随后回到源码，把“是谁在什么时候把字段赋值”的证据链走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Resources，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/resources.html
@@ -36,7 +36,7 @@
 
 ---
 
-## 机制系统阐述：条件 → 分支 → 结果
+## 机制边界：条件、分支与结果
 
 **条件**：注入点标注 `@Resource`，且容器已注册 `CommonAnnotationBeanPostProcessor`
 **分支**：`autowireResource` 先按 **name** 查找，找不到再 fallback 按 **type**
@@ -192,14 +192,14 @@
  调试时重点盯：`beanFactory.getBeanPostProcessors()` 是否包含 `CommonAnnotationBeanPostProcessor`。
 
 
-## 验证标准：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
+## 验收口径：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
 需要用 2 句答题：
 
 1. `@Resource` 为什么更接近 name-first？（默认用字段名当 beanName；由 CommonAnnotationBeanPostProcessor 处理）
 2. 为什么在某些容器里它完全不生效？（没注册 annotation processors，注解无人处理）
 
 
-## 收束：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
+## 小结：`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 

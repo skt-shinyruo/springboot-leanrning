@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：XML → BeanDefinitionReader：定义层解析与错误分型
+## 问题：XML → BeanDefinitionReader：定义层解析与错误分型
 
-先运行 `SpringCoreBeansXmlBeanDefinitionReaderLabTest` 固定「42. XML → BeanDefinitionReader：定义层解析与错误分型」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansXmlBeanDefinitionReaderLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -42,14 +42,14 @@ XML 只是其中一种输入形式。理解它的价值在于：它能让阅读�
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：XML 能否被读取与正确解析
 **分支**：资源读取 → XML 解析 → BeanDefinition 注册
 **结果**：任一环节失败即“定义层失败”，成功后才进入实例化链路
 **断点入口**：`XmlBeanDefinitionReader#loadBeanDefinitions`
 
-## 结论先行：XML 的价值不在“写法”，而在“链路”
+## 核心结论：XML 的价值不在“写法”，而在“链路”
 
 XML 这条链路的核心是：
 
@@ -101,15 +101,15 @@ XML 这条链路的核心是：
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java`
 
@@ -134,7 +134,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
 2. **误区：XML = 过时，不用学**
    - 在真实项目里，遗留配置/三方组件/某些 starter 仍可能引入 XML 资源；排障时必须认识链路。
 
-## 边界分流：XML → BeanDefinitionReader：定义层解析与错误分型
+## 边界：XML → BeanDefinitionReader：定义层解析与错误分型
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
@@ -166,12 +166,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest 
   - 定义层：`XmlBeanDefinitionReader#loadBeanDefinitions` / `registerBeanDefinition`
   - 实例层：`AbstractAutowireCapableBeanFactory#doCreateBean`
 
-## 验证标准：XML → BeanDefinitionReader：定义层解析与错误分型
+## 验收口径：XML → BeanDefinitionReader：定义层解析与错误分型
 - 需要解释清楚：XML 在 Spring 里最终会变成什么吗？（提示：BeanDefinition）
 - 遇到 `BeanDefinitionStoreException` 时，第一步应该先分型到“定义阶段”还是“创建阶段”？为什么？
 - 需要说出：从哪条最短调用链进断点，能最快定位到“哪个资源/哪个 element 解析失败”吗？
 
-## 收束：XML → BeanDefinitionReader：定义层解析与错误分型
+## 小结：XML → BeanDefinitionReader：定义层解析与错误分型
 
 - XML 是一种输入形式，它最终会被归一为 BeanDefinition 并注册到 BeanFactory
 - XML 相关异常排障优先做“定义层 vs 实例层”分型；定义层失败的典型信号是 `BeanDefinitionStoreException`

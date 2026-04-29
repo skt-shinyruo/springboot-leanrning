@@ -1,7 +1,7 @@
 # FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：FactoryBean 边界
+## 问题：FactoryBean 边界
 
-先运行 `SpringCoreBeansFactoryBeanEdgeCasesLabTest` 固定「29. FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansFactoryBeanEdgeCasesLabTest`，观察“按名字能拿到、按类型却发现不了”的边界；再回到 FactoryBean 的类型暴露、缓存和查找分支解释原因。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -33,7 +33,7 @@
 - 如果 `FactoryBean#getObjectType()` 返回 `null`
 - 那么在“不允许 eager init”的按类型扫描里，它可能不会被当成候选
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：`allowEagerInit=false` 且 `FactoryBean#getObjectType()==null`
 **分支**：`getBeanNamesForType` 不能为了“推断类型”而实例化 FactoryBean
@@ -130,15 +130,15 @@
 - 需要解释：为什么 `getBean("sequence")` 获取到的是 product，但 `getBean("&sequence")` 获取到的是 FactoryBean 本体？入口：`SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory`
 - 需要解释：`FactoryBean#isSingleton()` 会如何影响 product 的缓存语义？入口：`SpringCoreBeansFactoryBeanDeepDiveLabTest#singletonFactoryBeanProduct_isCached_byTheContainer` / `SpringCoreBeansFactoryBeanDeepDiveLabTest#nonSingletonFactoryBeanProduct_isNotCached_byTheContainer`
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansFactoryBeanEdgeCasesLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
@@ -173,7 +173,7 @@
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansFactoryBeanEdgeCasesLabTest.java`
 断点入口：`AbstractBeanFactory#getType`、`DefaultListableBeanFactory#getBeanNamesForType`、`FactoryBeanRegistrySupport#getTypeForFactoryBean`
 
-## 边界分流：FactoryBean 边界
+## 边界：FactoryBean 边界
 
 这一章补一个实用的边界：
 
@@ -185,7 +185,7 @@
 - **误区 2：类型判断导致条件注解误判**
   - Boot 的条件装配经常依赖 type matching；FactoryBean 的 object type 不准会产生反预期的条件匹配结果。
 
-## 验证标准：FactoryBean 边界
+## 验收口径：FactoryBean 边界
 需要解释清楚：
 
 1. **`getObjectType()` 返回 null 会导致哪几类能力失效？**（按类型发现/条件装配/候选收集）

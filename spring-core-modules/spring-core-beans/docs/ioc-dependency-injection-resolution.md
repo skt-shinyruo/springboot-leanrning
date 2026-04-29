@@ -11,9 +11,11 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 依赖解析先看 `DependencyDescriptor`
+## 问题：注入点到底向容器提出了什么需求
 
-- 阅读路径：先运行一次“候选歧义”的最小 Lab，再回到正文按“候选收集 → 候选收敛 → 最终注入”把主线走通。
+依赖注入不是“按类型随便找一个”。Spring 会先把字段、构造器参数或方法参数转换成 `DependencyDescriptor`，再基于类型、名称、注解、泛型和 required 语义收集候选，最后收敛成最终注入对象。
+
+阅读时先运行一次候选歧义的最小 Lab，再回到正文按“候选收集 → 候选收敛 → 最终注入”把主线走通。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
@@ -24,7 +26,7 @@
     - Lab：`SpringCoreBeansAutowireCandidateSelectionLabTest` / `SpringCoreBeansInjectionAmbiguityLabTest` / `SpringCoreBeansProgrammaticResolveDependencyLabTest` / `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest` / `SpringCoreBeansBeanGraphDebugLabTest` / `SpringCoreBeansOptionalInjectionLabTest` / `SpringCoreBeansJsr330InjectionLabTest` / `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionAmbiguityLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticResolveDependencyLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanDefinitionMetadataFlagsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansBeanGraphDebugLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansOptionalInjectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansJsr330InjectionLabTest.java`
 
-## 本页路线图
+## 读法：从描述符到候选收敛
 
 这章只围绕一条主线展开：**Spring 先把注入点变成 `DependencyDescriptor`，再收集候选，最后用限定规则收敛到一个结果**。
 
@@ -62,7 +64,7 @@
 2. 构造器注入（依赖名来自参数）：
    - `public Consumer(Worker worker)`
    - `dependencyName` **可能是** `worker`（需要参数名可发现，例如开启 `-parameters`），也可能是 `(null)`/`arg0`（此时 by-name fallback 证据链就会断掉）
-  - 因此：by-name fallback 在“构造器参数注入”上不如字段注入稳定，工程上更使用 `@Qualifier/@Primary` 把规则写死
+   - 因此：by-name fallback 在“构造器参数注入”上不如字段注入稳定，工程上更适合使用 `@Qualifier/@Primary` 把规则写死
 
 本仓库给了一个最小可观察入口（可先运行再读）：
 
@@ -102,9 +104,9 @@
 
 **关联阅读（把能力拼起来）：**
 
-- 注入阶段差异：`ioc-injection-phase-field-vs-constructor.md`
-- 泛型匹配误区：`ioc-generic-type-matching-pitfalls.md`
-- 自定义 `@Qualifier` 元注解：`ioc-custom-qualifier-meta-annotation.md`
+- 注入阶段差异：[`wiring-injection-phase-field-vs-constructor.md`](wiring-injection-phase-field-vs-constructor.md)
+- 泛型匹配误区：[`wiring-generic-type-matching-pitfalls.md`](wiring-generic-type-matching-pitfalls.md)
+- 自定义 `@Qualifier` 元注解：[`aot-custom-qualifier-meta-annotation.md`](aot-custom-qualifier-meta-annotation.md)
 
 ## 本模块里的最小例子：两个 `TextFormatter`
 
@@ -360,7 +362,7 @@ static class SingleWorkerConsumer {
 
 详见：[`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](wiring-resource-injection-name-first.md)
 
-### 3.6 机制系统阐述：候选收集 → 收敛 → 最终注入（条件→分支→结果）
+### 3.6 机制边界：候选收集 → 收敛 → 最终注入（条件→分支→结果）
 
 **条件**：候选集合 > 1，且注入点没有明确限定
 **分支**：`determineAutowireCandidate` 依次尝试 Qualifier → Primary → by-name → Priority
@@ -530,7 +532,7 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 
 - 优先从 Lab 的断言反推调用链，再定位到关键类/方法设置断点。
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
 - 入口（覆盖：单注入候选收敛 / 候选与依赖边对照 / 可选依赖 / JSR-330）：
   - `SpringCoreBeansAutowireCandidateSelectionLabTest`
@@ -556,7 +558,7 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 
 复习入口：`appendix-interview-playbook.md`（Q2/Q3）。
 
-## 验证标准：三句话说清候选为什么收敛
+## 验收口径：三句话说清候选为什么收敛
 读完后应能用 3 句复述：
 
 1. 当候选不止一个时，Spring 的“候选收集→候选收敛→最终注入”主线分别在哪个方法里发生？
@@ -564,6 +566,6 @@ Spring 也支持 JSR-330（`jakarta.inject`）注入体系，但需要把它与 
 3. 如何在 `doResolveDependency` 里用 3 个变量解释“为什么注入的是它/为什么失败”？
 
 
-## 收束：注入失败要落回候选集合
+## 小结：注入失败要落回候选集合
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。

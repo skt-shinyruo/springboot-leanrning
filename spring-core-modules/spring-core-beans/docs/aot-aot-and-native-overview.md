@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
+## 问题：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
 
-先运行 `SpringCoreBeansAotFactoriesLabTest` 固定「40. AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansAotFactoriesLabTest`，用断言确认 AOT 相关能力如何被发现和汇总；再把现象放回 RuntimeHints、AOT factories 与 Native closed-world 约束中理解。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -36,7 +36,7 @@
 
 ---
 
-## 结论先行：AOT/Native 改变了什么？
+## 核心结论：AOT/Native 改变了什么？
 
 可以把 JVM 与 Native 的差异理解为：
 
@@ -48,7 +48,7 @@
 - 读者有没有把“运行期才知道的需求”前置成 **构建期契约**？
 - 这些契约是否被 **Spring AOT 基础设施**发现与汇总？
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：运行期需要反射/代理/资源/序列化
 **分支**：是否在构建期注册 RuntimeHints
@@ -78,7 +78,7 @@
 
 ### 2.1 spring-beans 的 AOT 基础设施：`META-INF/spring/aot.factories` 与 `AotServices`
 
-很多初学者在学习 AOT 时会有一个错觉：
+学习 AOT 时常见的一个误判是：
 
 > “AOT = 编写 RuntimeHintsRegistrar + 配置 hints 即可”
 
@@ -156,13 +156,13 @@
 
 完成这三步后，可用“证据链”回答：为什么 JVM 可运行，而 Native 不一定可运行；以及 RuntimeHints 解决的具体问题类别（反射/资源/代理等）。
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansAotFactoriesLabTest` / `SpringCoreBeansAotRuntimeHintsLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
 学习阶段只要抓住一个主线：**AOT/Native 把很多“运行时的猜测与反射”前移到“构建期的显式声明”**。
 
@@ -180,7 +180,7 @@
 - 资源缺失（`ClassPathResource` 找不到、模板/配置加载失败）
 - 运行期扫描失效（“JVM 下能发现、Native 下发现不了”）
 
-## 复现入口（可运行）
+## 运行入口
 
 > 注意：本模块的 AOT Lab **不构建 native image**。
 > 采用 JVM 单测验证“构建期契约”的存在性（hints 是否注册），以保证可复现与低成本。
@@ -207,7 +207,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 
 - [RuntimeHints 入门：如何把“需求”变成可验证的契约](aot-runtimehints-basics.md)
 
-## 边界分流：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
+## 边界：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
 
 ### 误判点：把“JVM 可运行”误当成“Native 也可运行”
 
@@ -248,13 +248,13 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 - 最小复现：
   - `SpringCoreBeansAotRuntimeHintsLabTest` / `SpringCoreBeansAotFactoriesLabTest`
 
-## 验证标准：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
+## 验收口径：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
 - 需要用一句话解释：为什么“JVM 可运行”不等于“Native 可运行”？（提示：运行期信息在 Native 下不可得）
 - 需要说出：RuntimeHints 的作用域是什么、解决什么问题、解决不了什么问题吗？
 - 若要把一个 AOT/Native 失败变成“可复现证据链”，可以优先写一个什么样的最小对照测试？
 
-## 收束：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
-- 收束：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”。先把关键现象固定成断言，再用入口方法和断点解释结果。
+## 小结：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
+- 小结：JVM 可运行只能说明运行期动态能力足够；Native 还要求把反射、代理、资源等需求提前声明为构建期契约。先用测试固定现象，再用入口方法和断点解释结果。
 - 主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 
 <!-- BOOKIFY:START -->

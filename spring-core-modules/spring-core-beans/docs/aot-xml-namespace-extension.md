@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：XML namespace 扩展
+## 问题：XML namespace 扩展
 
-先运行 `SpringCoreBeansXmlNamespaceExtensionLabTest` 固定「46. XML namespace 扩展：NamespaceHandler / Parser / spring.handlers」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansXmlNamespaceExtensionLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -47,7 +47,7 @@
 - 自定义 XSD 文件（classpath 内）
 - 对应的 `NamespaceHandler` / `BeanDefinitionParser` 实现类
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：XML 元素属于自定义 namespace
 **分支**：`parseCustomElement` → `NamespaceHandlerResolver` → `BeanDefinitionParser`
@@ -134,17 +134,17 @@
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansXmlNamespaceExtensionLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
 > **XML 中那些表面上像隐式行为的 `<context:...>` / `<tx:...>` 到底是如何变成 BeanDefinition 的？是否可以自定义扩展？出现问题时应如何设置断点定位？**
 
-## 复现入口（可运行）
+## 运行入口
 
 入口测试（可先运行通再设置断点）：
 
@@ -181,7 +181,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
 3. **误区：观察到 `<tx:...>` 就以为是 transaction 模块的“运行时能力”**
    - `<tx:...>` 更多是“定义层注册基础设施 bean”，运行时能力通常由 BPP/代理实现。
 
-## 边界分流：XML namespace 扩展
+## 边界：XML namespace 扩展
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
@@ -220,12 +220,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlNamespaceExtensionLabTest te
 - 标准答案（可复述）：
   - 因为它的产物仍然是 BeanDefinition；实例怎么创建/怎么注入/怎么增强依旧走容器主线（`doCreateBean`、BPP 链等），namespace 只是换了一种输入语法。
 
-## 验证标准：XML namespace 扩展
+## 验收口径：XML namespace 扩展
 - 需要解释清楚：XML namespace 扩展发生在定义阶段还是创建阶段吗？输出产物是什么？
 - 需要说出：`spring.handlers` 与 `spring.schemas` 分别负责解决什么问题吗？（提示：handler 映射 vs XSD 映射）
 - 遇到 `<xxx:...>` 不生效时，最短的断点链路应该从哪里进？
 
-## 收束：XML namespace 扩展
+## 小结：XML namespace 扩展
 
 
 <!-- BOOKIFY:START -->

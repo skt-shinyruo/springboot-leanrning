@@ -11,9 +11,11 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 生命周期不是一个回调：先看 `initializeBean` 与 destroy
+## 问题：生命周期不是一个回调
 
-- 先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest` 把“顺序”变成断言，再回到正文把顺序映射到关键方法。
+生命周期不是一个注解或一个接口，而是对象从实例化、注入、初始化、使用到销毁的一条主线。排查“回调没执行”“顺序不对”“销毁没有发生”时，应先把现象放回 `initializeBean` 与 destroy 链路。
+
+先运行 `SpringCoreBeansLifecycleCallbackOrderLabTest` 把顺序变成断言，再回到正文把顺序映射到关键方法。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -21,12 +23,12 @@
 !!! example "本章配套实验（先运行再读）"
 
     - Lab：
-    - `SpringCoreBeansLifecycleCallbackOrderLabTest`
-    - `SpringCoreBeansAwareInfrastructureLabTest`
-    - `SpringCoreBeansPrototypeDestroySemanticsLabTest`
-    - `SpringCoreBeansDependsOnLabTest`
-    - `SpringCoreBeansSmartInitializingSingletonLabTest`
-    - `SpringCoreBeansSmartLifecycleLabTest`
+      - `SpringCoreBeansLifecycleCallbackOrderLabTest`
+      - `SpringCoreBeansAwareInfrastructureLabTest`
+      - `SpringCoreBeansPrototypeDestroySemanticsLabTest`
+      - `SpringCoreBeansDependsOnLabTest`
+      - `SpringCoreBeansSmartInitializingSingletonLabTest`
+      - `SpringCoreBeansSmartLifecycleLabTest`
     - 测试文件：
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansAwareInfrastructureLabTest.java`
@@ -60,9 +62,9 @@
 
 ## 源码级生命周期骨架：把顺序落到关键方法
 
-若只记住一句话：**生命周期 = instantiate → populate → initialize → (use) → destroy**。
+若只记住一句话：**生命周期 = instantiate → populate → initialize → use → destroy**。
 
-但读者 B/C 需要更具体：至少需要把“高层阶段”映射到 Spring 的关键方法名，否则一旦遇到代理/循环依赖/后处理器介入，就很难定位“到底是哪一段出了问题”。
+但排障需要更具体：至少要把高层阶段映射到 Spring 的关键方法名，否则一旦遇到代理、循环依赖或后处理器介入，就很难定位到底是哪一段出了问题。
 
 ### 1.1 从 refresh 到创建：生命周期发生在哪一段？
 
@@ -446,7 +448,7 @@ void init() {
 - 优先从 Lab 的断言反推调用链，再定位到关键类/方法设置断点。
 - 若在真实项目里遇到“顺序/代理/回调不符合预期”，先把目标 beanName 加条件断点，再看 `exposedObject` 是否被替换。
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
 - 入口（覆盖：回调顺序 / Aware 基础设施 / prototype 销毁语义 / 顺序控制 / 容器级 start-stop）：
   - `SpringCoreBeansLifecycleCallbackOrderLabTest`
@@ -520,7 +522,7 @@ void init() {
   - `SpringCoreBeansSmartLifecycleLabTest`
   - `SpringCoreBeansBeanFactoryVsApplicationContextLabTest`（观察 `ContextRefreshedEvent`）
 
-## 验证标准：能把回调放回创建和销毁链路
+## 验收口径：能把回调放回创建和销毁链路
 读完后应能回答：
 
 1. 初始化回调顺序大致如何（Aware / @PostConstruct / afterPropertiesSet / initMethod / after-init BPP）？
@@ -529,6 +531,6 @@ void init() {
 4. `dependsOn` 与 `SmartLifecycle phase` 分别解决哪类“顺序问题”？如何在断点里观察到它们的生效点？
 5. 若怀疑“某个回调没执行/代理没生效”，可先定位到 refresh 的哪一段？下哪两个断点？
 
-## 收束：回调顺序要落到方法级入口
+## 小结：回调顺序要落到方法级入口
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。

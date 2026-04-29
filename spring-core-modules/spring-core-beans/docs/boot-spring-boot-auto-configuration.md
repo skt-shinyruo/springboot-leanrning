@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：Spring Boot 自动装配如何影响 Bean（Auto-configuration
+## 问题：Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
-先运行 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest` 固定「10. Spring Boot 自动装配如何影响 Bean（Auto-configuration）」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`，先看到“显式 Bean 如何让自动配置 back off”的事实，再回到自动配置导入、条件评估和 BeanDefinition 注册这条链路。
 
 - 官方文档对照（适用版本：Spring Boot 3.5.9）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -53,7 +53,7 @@
 - 读者没写某个 bean，但容器里确实有（自动配置注册的）
 - 读者写了某个 bean，自动配置反而“没生效”（条件失败，例如 `@ConditionalOnMissingBean` 不成立）
 
-### 1.1 机制系统阐述：条件 → 分支 → 结果（Boot 版）
+### 1.1 机制边界：条件、分支与结果（Boot 版）
 
 **条件**：是否满足 `@Conditional*`（classpath/属性/已有 bean）
 **分支**：`ConditionEvaluator#shouldSkip` 决定跳过/注册
@@ -388,7 +388,7 @@ mvn -pl :spring-core-beans test
 - 条件细节（Bean 条件）：`OnBeanCondition#getMatchOutcome`
 - 注册定义：`DefaultListableBeanFactory#registerBeanDefinition`
 
-## 边界分流：Spring Boot 自动装配如何影响 Bean（Auto-configuration
+## 边界：Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
 ### 4.1 `matchIfMissing`：缺省值语义（面试高频误区）
 
@@ -399,12 +399,12 @@ mvn -pl :spring-core-beans test
   - **true**：显式开启
 - 这一点可以用 `SpringCoreBeansConditionEvaluationReportLabTest` 做 missing/false/true 三态对照。
 
-## 验证标准：Spring Boot 自动装配如何影响 Bean（Auto-configuration
+## 验收口径：Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 - 需要用一句话解释：自动装配（auto-configuration）主要发生在定义阶段还是创建阶段吗？为什么？
 - 需要说出：定位“为什么生效/为什么不生效”的最短证据链是什么吗？（提示：ConditionEvaluationReport + 断点到 matchOutcome）
 - 需要区分：overriding（同名定义冲突）和 NoUnique（同类型注入歧义）吗？它们分别怎么修？
 
-## 收束：Spring Boot 自动装配如何影响 Bean（Auto-configuration
+## 小结：Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
 
 <!-- BOOKIFY:START -->

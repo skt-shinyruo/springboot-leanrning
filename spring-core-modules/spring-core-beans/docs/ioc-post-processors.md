@@ -13,7 +13,7 @@
 
 ## BFPP 与 BPP 的边界：一个改定义，一个改对象
 
-这一章回答一个“源码阅读/排障”的关键问题：同样是 post-processor，为什么有的能改定义、有的能改对象，甚至还能把对象换成 proxy？
+这一章回答一个源码阅读和排障中的关键问题：同样叫 post-processor，为什么有的能改定义，有的能改对象，甚至还能把对象换成 proxy？
 
 只要先把两句结论吃透，后面的高级用法（注解为什么生效、AOP 代理在哪里产生、为什么会早实例化）就不容易走偏：
 
@@ -32,11 +32,11 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansStaticBeanFactoryPostProcessorLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
 
 
-## 机制主线
+## 机制主线：扩展点按阶段分工
 
 > 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
-这一章是理解 Spring “高级用法”的关键。许多看似“隐式行为”的特性，本质都是某个 post-processor 在某个阶段做了事。
+这一章是理解 Spring 高级用法的关键。许多看似隐式的特性，本质都是某个 post-processor 在某个阶段做了事。
 
 先记住两句话：
 
@@ -70,7 +70,7 @@
 
 也就是说：很多“注解配置能工作”，背后本身就依赖 BFPP/registry post-processor。
 
-### 1.4 机制系统阐述：BFPP 如何改变最终行为（可运行示例）
+### 1.4 机制边界：BFPP 如何改变最终行为（可运行示例）
 
 - **条件**：定义层被改写（BeanDefinition 里的属性/占位符被替换）
 - **分支**：`postProcessBeanFactory` 在实例化前执行
@@ -136,10 +136,10 @@
 
 **关联阅读（把这张图落到本仓库可断言闭环）：**
 
-- 实例化前短路：`ioc-pre-instantiation-short-circuit.md`
-- early reference：`ioc-early-reference-and-circular.md`
-- merged definition：`ioc-merged-bean-definition.md`
-- 销毁链路：`ioc-lifecycle-callback-order.md`
+- 实例化前短路：[`internals-pre-instantiation-short-circuit.md`](internals-pre-instantiation-short-circuit.md)
+- early reference：[`internals-early-reference-and-circular.md`](internals-early-reference-and-circular.md)
+- merged definition：[`wiring-merged-bean-definition.md`](wiring-merged-bean-definition.md)
+- 销毁链路：[`internals-lifecycle-callback-order.md`](internals-lifecycle-callback-order.md)
 
 ## 顺序（Ordering）：同一个扩展点里也要先分组再排序
 
@@ -385,7 +385,7 @@ BFPP 本该在“定义层”工作，若在里面直接拿 bean（实例层）�
    - 断点：`invokeBeanFactoryPostProcessors` vs `registerBeanPostProcessors`
    - 断言：过早 `getBean` 会让目标 bean 错过后续 BPP
 
-## 边界分流：post-processor 的误判要落回阶段
+## 边界：post-processor 的误判要落回阶段
 > 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
 
@@ -409,7 +409,7 @@ registerBeanPostProcessors(beanFactory):
 
 > **non-static BFPP 迫使配置类早实例化 ⇒ 配置类错过普通 BPP ⇒ 行为/增强出现顺序陷阱。**
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
 - 先运行这 5 个入口（覆盖定义层/实例层/顺序/时机/registry 扩张）：
   - `SpringCoreBeansContainerLabTest`
@@ -420,7 +420,7 @@ registerBeanPostProcessors(beanFactory):
   - `mvn -pl :spring-core-beans test`
   - 或者单独运行：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansPostProcessorOrderingLabTest test`
 
-## 收束：先问它改的是定义还是对象
+## 小结：先问它改的是定义还是对象
 
 - 简要复述：
   - BDRPP/BFPP 改定义（改配方）；BPP 改实例（换壳/增强）
@@ -442,7 +442,7 @@ registerBeanPostProcessors(beanFactory):
 
 <!-- BOOKIFY:END -->
 
-## 验证标准：三句话分清 BFPP 与 BPP
+## 验收口径：三句话分清 BFPP 与 BPP
 读完后应能用 3 句复述：
 
 1. BFPP/BDRPP 与 BPP 的核心差异是什么（改定义 vs 改实例）？

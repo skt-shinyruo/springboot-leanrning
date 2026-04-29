@@ -1,7 +1,7 @@
 # dependsOn：强制初始化顺序（即使没有显式依赖）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：dependsOn：强制初始化顺序（即使没有显式依赖）。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,11 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：dependsOn：强制初始化顺序（即使没有显式依赖）
+## 问题：`dependsOn` 管顺序，不管注入
 
-- 这章解决两个高频误判：
-  - **误判 1**：把 `dependsOn` 当成“注入依赖”（实际上它只管**初始化/销毁顺序**）
-  - **误判 2**：把“循环 depends-on”当成“三级缓存循环依赖”（本质是**定义层拓扑环**）
+这章解决两个高频误判。第一，把 `dependsOn` 当成注入依赖；实际它只管初始化和销毁顺序。第二，把循环 depends-on 当成三级缓存循环依赖；实际这是定义层拓扑环，遇环会直接失败。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -40,7 +38,7 @@
 
 > ⚠️ 处理原则：把 `dependsOn` 视为“最后手段”。能用显式依赖（构造注入/方法参数注入）就不要用它，因为**显式依赖更可维护、也更能被 IDE/测试/重构工具捕获**。
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：`mbd.getDependsOn()` 是否为空
 **分支**：`AbstractBeanFactory#doGetBean` 先 `getBean(dep)` 再创建自身
@@ -222,10 +220,10 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 - 标准答案：它是 **定义层的拓扑环**，不是“实例层早期引用”问题；三级缓存救不了，Spring 会 fail-fast。
 - 方法级证据链：`doGetBean` → `isDependent` 检测到图里已有反向边 → 直接抛异常。
 
-## 验证标准：dependsOn：强制初始化顺序（即使没有显式依赖）
+## 验收口径：dependsOn：强制初始化顺序（即使没有显式依赖）
 `dependsOn` = **BeanDefinition 里的 beanName 列表**；生效点在 `doGetBean`；影响创建/销毁顺序与依赖图记录，不影响候选选择与注入。
 
-## 收束：dependsOn：强制初始化顺序（即使没有显式依赖）
+## 小结：dependsOn：强制初始化顺序（即使没有显式依赖）
 
 - 本章完成后：请把 `dependsOn` 和 “注入依赖/循环依赖/后处理器顺序”明确分家；排障时优先用方法级证据链判定问题属于**定义层**还是**实例层**。
 - 下一章将讲 “能注入但不是 Bean”：`registerResolvableDependency`，它经常与 `*Aware` 混淆，但两者的生效点完全不同。

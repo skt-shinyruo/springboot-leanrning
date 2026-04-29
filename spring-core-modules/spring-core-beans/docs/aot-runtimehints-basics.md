@@ -11,7 +11,7 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：RuntimeHints 入门：把构建期契约完成验证
+## 问题：RuntimeHints 入门：把构建期契约完成验证
 
 - 目标只有一个：把 RuntimeHints 从“听说过”变成“能断言证明”。
 
@@ -41,7 +41,7 @@
 > **需要对哪些类型做反射？需要哪些动态代理？需要哪些 classpath 资源？**
 > 这些信息必须在构建期提前收集并固化，才能让 native image 在运行期具备等价能力。
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：运行期需要反射/代理/资源访问
 **分支**：是否通过 `RuntimeHintsRegistrar` 注册能力
@@ -131,10 +131,10 @@ RuntimeHints 不是“配置文件”，其定位更接近是一棵“契约对�
 - 标准答案：先把异常归类为“反射/代理/资源/序列化”之一，再补对应 hints；不要上来就全量放开反射。
 - 方法级证据链：看异常触发点（反射/代理/资源读取）→ 定位缺失类别 → 回到 registrar 增量注册并用单测锁定。
 
-## 验证标准：RuntimeHints 入门：把构建期契约完成验证
+## 验收口径：RuntimeHints 入门：把构建期契约完成验证
 RuntimeHints = **构建期契约对象**；通过 `RuntimeHintsRegistrar#registerHints` 注册；用 JVM 单测断言契约，避免 native 打包阶段才“撞墙”。
 
-## 收束：RuntimeHints 入门：把构建期契约完成验证
+## 小结：RuntimeHints 入门：把构建期契约完成验证
 
 - 本章完成后：需要把 RuntimeHints 当成“可测试的契约”来写，而不是当成“黑箱配置”来补。
 - 下一章起，将把“定义层输入”的真实世界补齐：XML → BeanDefinitionReader → BeanDefinition（以及失败时的异常分型）。

@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：PropertyEditor 与 BeanDefinition 值解析
+## 问题：PropertyEditor 与 BeanDefinition 值解析
 
-先运行 `SpringCoreBeansBeanDefinitionValueResolutionLabTest` 固定「50. PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansBeanDefinitionValueResolutionLabTest`，确认定义层 value 如何被解析成对象属性；再沿 `BeanDefinitionValueResolver`、占位符解析和类型转换链路拆分问题。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -31,14 +31,14 @@
 > 官方参考（Spring Framework 6.2.x，SpEL 与 @Value 表达式）：https://docs.spring.io/spring-framework/reference/core/expressions.html
 > 官方参考（Spring Framework 6.2.x，类型转换（ConversionService））：https://docs.spring.io/spring-framework/reference/core/validation/convert.html
 
-初学者在学习 Spring Beans 时，最容易遇到一个“表面上像黑盒”的问题：
+学习 Spring Beans 时，最容易把下面两个问题混成一个黑盒：
 
 1. **PropertyEditor（可插拔的类型转换）**：决定 “字符串怎么变成目标类型”
 2. **BeanDefinition 值解析（BeanDefinitionValueResolver）**：决定 “引用/集合/Map/Properties 等 value 怎么被解析成可注入的最终值”
 
 ---
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：BeanDefinition 中存在“定义层 value”
 **分支**：`BeanDefinitionValueResolver` 先解析引用/集合/占位符 → `TypeConverterDelegate` 再做类型转换
@@ -181,19 +181,19 @@ PropertyEditor 是一种“老机制”，但它仍然在 beans 主线上存在�
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansBeanDefinitionValueResolutionLabTest` / `SpringCoreBeansPropertyEditorLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
 > **在配置中写的是字符串/引用/集合，为什么运行时会变成对象？该步骤发生在何处？如何通过断点证明？**
 
 这一章将两个常被混淆的机制分别阐明，并用 Lab 使能够通过断点完成验证：
 
-## 复现入口（可运行）
+## 运行入口
 
 1. PropertyEditor（自定义 editor）
    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansPropertyEditorLabTest.java`
@@ -235,7 +235,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 - `resolvedValue` / `convertedValue`：解析/转换后的最终值
 - `typeConverter` / `conversionService`：走 ConversionService 还是 PropertyEditor（可与 [36](wiring-type-conversion-and-beanwrapper.md) 对照）
 
-## 边界分流：PropertyEditor 与 BeanDefinition 值解析
+## 边界：PropertyEditor 与 BeanDefinition 值解析
 
 所以很多新手误区来自于把 1) 和 2) 混在一起：
 
@@ -275,12 +275,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 - 标准答案（可复述）：
   - ConversionService 更现代、更易组合且能感知类型描述；PropertyEditor 主要是历史兼容且常有状态，容易引入并发/复用问题。排障时要能在断点里确认这次到底走了哪条分支。
 
-## 验证标准：PropertyEditor 与 BeanDefinition 值解析
+## 验收口径：PropertyEditor 与 BeanDefinition 值解析
 - 需要解释清楚：BeanDefinition 的 value 解析发生在创建阶段的哪一步吗？（提示：applyPropertyValues → value resolver → BeanWrapper）
 - 需要区分：这是“引用解析”（`RuntimeBeanReference`）还是“字符串转换”（`TypedStringValue` → convert）吗？
 - 遇到“属性注入值不对/转换失败/引用解析失败”时，能否用 3 个断点把问题固定在“解析 vs 转换 vs 赋值”的哪一段？
 
-## 收束：PropertyEditor 与 BeanDefinition 值解析
+## 小结：PropertyEditor 与 BeanDefinition 值解析
 
 1. `AbstractAutowireCapableBeanFactory#applyPropertyValues`（主线入口）
 2. `BeanDefinitionValueResolver#resolveValueIfNecessary`（按类型分派）

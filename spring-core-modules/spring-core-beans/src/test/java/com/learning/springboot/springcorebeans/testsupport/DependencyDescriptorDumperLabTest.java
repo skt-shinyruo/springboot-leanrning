@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.core.MethodParameter;
 
-class DependencyDescriptorDumperLabTest {
+public class DependencyDescriptorDumperLabTest {
 
     @Test
     void dump_includesFieldAndMethodParameterMetadata_andQualifierValue() throws Exception {
@@ -58,4 +58,3 @@ class DependencyDescriptorDumperLabTest {
         }
     }
 }
-

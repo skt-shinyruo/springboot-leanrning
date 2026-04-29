@@ -1,7 +1,7 @@
 # 从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：把 `ApplicationContext#refresh` 的“定义阶段”与“创建阶段”连成一条可设置断点的主线。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## `refresh()` 到 `doCreateBean`：先抓主线，再看分支
+## 问题：异常到底落在 `refresh()` 的哪一段
 
-这章是 “Container Internals” 的主线地图：把 `refresh()` 的十步骨架、以及 `doGetBean/doCreateBean` 的创建主线，串成一条能下断点的路线。
+这章是 Container Internals 的主线地图：把 `refresh()` 的十步骨架，以及 `doGetBean/doCreateBean` 的创建主线，串成一条能下断点的路线。
 
 读者在排障时经常卡在一句话：**问题到底发生在 refresh 的哪一段？是定义没生成，还是对象创建被短路/被代理替换？**
 
@@ -29,7 +29,7 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
 
 
-## 本页路线图
+## 读法：先阶段，再分支
 
 这章很长，但读法只有三步：
 
@@ -37,13 +37,13 @@
 2. 再进入单个 Bean：`doGetBean` 负责取对象，`doCreateBean` 负责实例化、注入、初始化和最终暴露。
 3. 最后看分支专题：预实例化、early reference、生命周期和 processor 顺序都要回到这条主线定位。
 
-## 机制主线
+## 机制主线：先形成定义图，再把图变成对象
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 > 基线版本：Spring Framework `6.2.15`（本仓库由 Spring Boot `3.5.9` 管理依赖版本）。
 
-本章的职责是：**把容器启动与 Bean 创建的主线串起来**，并且落到“关键方法 + 关键分支”上。
+本章的职责是把容器启动与 Bean 创建的主线串起来，并且落到“关键方法 + 关键分支”上。
 
 读者读完后，不需要背完 Spring 源码，但应该能做到：
 
@@ -57,12 +57,12 @@ Spring 的容器启动（`ApplicationContext#refresh`）表面上很长，但逻
 1. **形成“图”**：把“配置/注解/XML/Import/自动配置”等输入，最终变成一张 `BeanDefinition` 关系图（**定义阶段**）。
 2. **把图变成对象**：按需或预先把 `BeanDefinition` 实例化成真实对象，并完成注入、初始化、代理包装（**创建阶段**）。
 
-为阐明该机制，下文用两层主线将主线串联起来：
+为阐明该机制，下文用两层主线串联起来：
 
 - 容器主线：`AbstractApplicationContext#refresh`
 - Bean 主线：`AbstractBeanFactory#doGetBean` → `AbstractAutowireCapableBeanFactory#doCreateBean`
 
-可以把它想成两条流水线：第一条生产“施工图纸”（BeanDefinition），第二条把图纸“开工落地”（创建对象并装配）。
+可以把它想成两条流水线：第一条形成 BeanDefinition 这张施工图，第二条按图创建对象并完成装配。
 
 若希望把本章“读成故事”而不是“读成百科”，只盯两个问题推进阅读：
 
@@ -721,7 +721,7 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
   - `PostProcessorRegistrationDelegate#registerBeanPostProcessors`
   - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
-## 验证标准：能区分定义阶段与创建阶段
+## 验收口径：能区分定义阶段与创建阶段
 - 是否能用一句话区分：**定义阶段** 与 **创建阶段**？
   - 答题要点：定义阶段产物是 `BeanDefinition`（图在长）；创建阶段产物是“最终暴露对象”（可能被 BPP 代理/替换），入口是 `getBean`/`preInstantiateSingletons`。
 - 遇到“Bean 根本没注册/条件没生效”，第一反应应该去 refresh 的哪一步？
@@ -737,7 +737,7 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 - 创建阶段入口：`org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons` / `org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean`
 - 创建阶段主线：`org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean`
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
 - 按“先容器、后对象”的顺序开展验证：先建立 refresh 的阶段意识，再对照 doCreateBean 的五段式：
   - `SpringCoreBeansBootstrapInternalsLabTest`
@@ -751,7 +751,7 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 命令行可以用：`mvn -pl :spring-core-beans test`。
 
 
-## 收束：容器主线和 Bean 主线要一起看
+## 小结：容器主线和 Bean 主线要一起看
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 

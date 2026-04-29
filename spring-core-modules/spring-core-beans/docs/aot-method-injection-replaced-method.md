@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：方法注入（Method Injection）
+## 问题：方法注入（Method Injection）
 
-- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
@@ -51,7 +51,7 @@
 - 测试：`SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides`
 - XML：`spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：BeanDefinition 存在 `MethodOverrides`
 **分支**：实例化走 `instantiateWithMethodInjection`（CGLIB 子类化）
@@ -138,15 +138,15 @@
 
 ---
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansReplacedMethodLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
 
@@ -182,7 +182,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 3. `CglibSubclassingInstantiationStrategy#instantiateWithMethodInjection`：CGLIB 子类化实现点（“为什么必须是子类”）
 4. `MethodReplacer#reimplement`：替换逻辑真正执行点（最终证据）
 
-## 边界分流：方法注入（Method Injection）
+## 边界：方法注入（Method Injection）
 > 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
 
@@ -213,12 +213,12 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
 - 标准答案（可复述）：
   - 因为它需要覆盖/拦截目标方法；final 类/方法无法被覆盖，子类化天然受限，因此这类场景会失败或无法生效。
 
-## 验证标准：方法注入（Method Injection）
+## 验收口径：方法注入（Method Injection）
 - 需要解释清楚：replaced-method 属于 AOP 还是“实例化策略分支”？为什么？
 - 需要说出：它为什么必须依赖 CGLIB 子类化吗？final class/final method 会发生什么？
 - 如何用断点证明：方法替换发生在 `createBeanInstance` 的哪个分支里，并最终落到 `MethodReplacer#reimplement`？
 
-## 收束：方法注入（Method Injection）
+## 小结：方法注入（Method Injection）
 
 - `AbstractAutowireCapableBeanFactory#createBeanInstance`（实例化入口）
 - `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`（method injection 分支）

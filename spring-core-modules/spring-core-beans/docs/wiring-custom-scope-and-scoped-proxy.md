@@ -1,7 +1,7 @@
 # 自定义 Scope + scoped proxy：thread scope 的真实语义
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：28. 自定义 Scope + scoped proxy：thread scope 的真实语义。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,11 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：自定义 Scope + scoped proxy：thread scope 的真实语义
+## 问题：自定义 scope 的对象到底由谁决定生命周期
 
-先运行 `SpringCoreBeansCustomScopeLabTest` 固定「28. 自定义 Scope + scoped proxy：thread scope 的真实语义」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+自定义 scope 不是给对象贴一个标签，而是把“如何获取、缓存、销毁目标对象”的策略交给 `Scope#get`。当短生命周期对象要注入 singleton 时，还必须额外考虑 `ObjectProvider` 或 scoped proxy。
+
+先运行 `SpringCoreBeansCustomScopeLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Scopes，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-scopes.html
@@ -37,7 +39,7 @@ Spring 的 scope 机制是可扩展的：可以注册自定义 scope。
 - scope 的“每次从容器获取”语义
 - 为什么把短生命周期 scope 注入到 singleton 里需要 `ObjectProvider` 或 scoped proxy
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：容器 `getBean` 时发现 bean 定义了 scope（`singleton`/`prototype`/自定义）
 **分支**：`AbstractBeanFactory#doGetBean` 按 scope 分流
@@ -148,15 +150,15 @@ prototype 是最典型的例子。
 2. 为什么 thread scope 注入到 singleton 会“冻结”？需要能给出两种解法并说明代价吗？
 3. scoped proxy 的本质是什么？它为什么会提高 debug 成本？
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansCustomScopeLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
@@ -205,7 +207,7 @@ prototype 是最典型的例子。
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansCustomScopeLabTest.java`
 断点入口：`AbstractBeanFactory#doGetBean`、`SimpleThreadScope#get`、`ScopedProxyFactoryBean#getObject`
 
-## 边界分流：自定义 Scope + scoped proxy：thread scope 的真实语义
+## 边界：自定义 Scope + scoped proxy：thread scope 的真实语义
 
 ### 关键陷阱：把 scoped bean 直接注入 singleton，会被冻结在“注入那一刻”
 
@@ -214,7 +216,7 @@ prototype 是最典型的例子。
 - **误区 1：以为 scope 会自动传播到注入点**
   - scope 的语义是“容器如何管理对象”；注入点如果不做延迟解析，仍然只取一次。
 
-## 验证标准：自定义 Scope + scoped proxy：thread scope 的真实语义
+## 验收口径：自定义 Scope + scoped proxy：thread scope 的真实语义
 需要解释清楚：
 
 1. **Scope 契约的 3 个关键方法各自负责什么？**（get/remove/registerDestructionCallback）

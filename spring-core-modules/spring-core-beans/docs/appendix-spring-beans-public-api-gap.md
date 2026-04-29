@@ -10,17 +10,17 @@
 
 <!-- CHAPTER-CARD:END -->
 
-## 本页路线图
+## 读法：把 Gap 当作覆盖看板
 
 本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
 
 1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
 2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
-3. 最后用对应实验/测试 收束答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
+3. 最后用对应实验/测试收敛答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
 
-## 起点：spring-beans Public API Gap 清单（按包/机制域分批深化）
+## 问题：spring-beans Public API Gap 清单（按包/机制域分批深化）
 
-- 阅读路径：这章不是“讲课”，而是一个可维护的“覆盖率看板”：哪些 spring-beans 的 Public API 已经有 Lab+Docs 闭环，哪些仍需要补齐。可以用它驱动后续的学习/补齐工作。
+本章不是“讲课”，而是一个可维护的覆盖看板：哪些 spring-beans Public API 已经形成 Lab + Docs 闭环，哪些仍需要补齐。后续学习或补文档时，可以直接用它确定优先级。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -110,7 +110,7 @@ Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审�
 
 ---
 
-## 验证标准：spring-beans Public API Gap 清单（按包/机制域分批深化）
+## 验收口径：spring-beans Public API Gap 清单（按包/机制域分批深化）
 需要能回答：
 
 1. “Gap 清单”解决的是什么学习问题？（提示：把未知变成可审计）
@@ -118,6 +118,6 @@ Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审�
 3. 如何从 API 索引（95）→ Gap（96）→ 具体章节/Lab（正文）完成一次补齐？
 
 
-## 收束：spring-beans Public API Gap 清单（按包/机制域分批深化）
+## 小结：spring-beans Public API Gap 清单（按包/机制域分批深化）
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。

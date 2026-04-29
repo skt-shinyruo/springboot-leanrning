@@ -13,8 +13,7 @@
 
 ## 问题：为什么同一个 “bean” 在调试器里会出现好几种形态
 
-很多容器相关的问题，表面上看是一个简单现象：“已经把类交给 Spring 了，为什么注入的对象却不是预期的类？”
-进一步追下去，调试器里又会出现更多对象：`BeanDefinition`、merged `RootBeanDefinition`、原始实例、proxy 等。
+很多容器相关的问题，表面上只是一个简单现象：“已经把类交给 Spring 了，为什么注入的对象却不是预期的类？”继续追下去，调试器里又会出现更多对象：`BeanDefinition`、merged `RootBeanDefinition`、原始实例、proxy 等。
 
 这些对象并不是“实现细节噪音”，而是容器机制的分层结果。本章要做的，是把这组分层固定成可复用的心智模型，让排障时的第一个问题变得清晰：
 
@@ -27,30 +26,30 @@
     - Lab：
       - `SpringCoreBeansContainerLabTest`
       - `SpringCoreBeansBeanCreationTraceLabTest`
-    - `SpringCoreBeansProxyingPhaseLabTest`
+      - `SpringCoreBeansProxyingPhaseLabTest`
     - 测试文件：
-    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
-    - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`
+      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
       - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
 
 ## 解释：三层模型 + 最终暴露对象
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-容器可以被理解为三层结构（这是后续排障分层的基础）：
+容器可以先按三层理解，这是后续排障分层的基础：
 
 1. **输入层（inputs）**：注解、`@Bean`、`@Import`、XML、programmatic 注册等。
 2. **定义层（definitions）**：解析输入并注册 `BeanDefinition`（“如何构造”的配方与元数据）
 3. **实例层（instances）**：按定义创建对象、注入依赖、执行回调、注册销毁钩子
 
-在三层之上，再补一个读者最常在排障时遇到、但最容易被忽略的概念：
+在这三层之上，还要补一个排障时最常遇到、也最容易被忽略的概念：
 
 4. **最终暴露对象（exposed object）**：容器对外返回的对象（`getBean()`/注入点获取到的对象），它可能在多个阶段被替换/包装为 proxy。
 
 > 需要内化的一句关键表述：
 > **定义层回答“有没有/谁注册的/配方是什么”，实例层回答“什么时候创建/注入选了谁/最终是不是 proxy”。**
 
-### 机制阐释：对象为何会被替换（条件 → 分支 → 结果）
+### 对象替换的证据链：条件、分支与结果
 
 - **条件**：bean 是否走完整 `doCreateBean`，以及是否被 BPP/early reference 替换
 - **分支**：`applyBeanPostProcessorsAfterInitialization` / `getEarlyBeanReference`
@@ -175,8 +174,8 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 **关联阅读顺序：**
 
-- `ioc-resolvable-dependency.md`（能注入但不是 Bean）
-- `ioc-autowirecapablebeanfactory-external-objects.md`（外部对象如何接入容器能力）
+- [`wiring-resolvable-dependency.md`](wiring-resolvable-dependency.md)（能注入但不是 Bean）
+- [`aot-autowirecapablebeanfactory-external-objects.md`](aot-autowirecapablebeanfactory-external-objects.md)（外部对象如何接入容器能力）
 
 ## 排障决策表（将主观判断转化为可验证结论）
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -218,7 +217,7 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 - 最小复现：
   - `SpringCoreBeansBeanFactoryVsApplicationContextLabTest`
 
-## 验证标准：能把一个 bean 分成四类对象
+## 验收口径：能把一个 bean 分成四类对象
 
 需要用 3 句说明清楚：
 
@@ -226,7 +225,7 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 2. 为什么 `getBean()` 返回的不一定是原始实例？（在哪 3 个阶段可能被替换）
 3. 看到一个异常时，如何先分层到定义层/实例层，并给出第一个断点入口？
 
-## 收束：Bean 的最终形态不是原始实例那么简单
+## 小结：Bean 的最终形态不是原始实例那么简单
 
 - 本章把 Bean 的最小分层模型固定成“四个对象”：BeanDefinition / merged RootBeanDefinition / raw instance / exposed object。
 - 下一章开始进入 Boot 的自动装配：可以观察到“定义层”的复杂度显著上升，但排障方法论不变（先分层，再证据链）。

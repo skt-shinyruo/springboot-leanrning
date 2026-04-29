@@ -1,7 +1,7 @@
 # 候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：候选选择 vs 顺序：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,14 +11,14 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：候选选择 vs 顺序
+## 问题：为什么 `@Order` 不能解决单依赖歧义
 
-- 这章解决一个高频误判：把“集合排序”当成“单依赖选择”。
+这章解决一个高频误判：把集合排序当成单依赖选择。`@Order` 能影响 `List<T>` 这类集合注入的顺序，但不能让 `T` 这种单依赖自动选出唯一候选。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
-  许多 NoUnique/注入错对象问题，本质是候选收敛规则没理清。
+许多 NoUnique/注入错对象问题，本质是候选收敛规则没理清。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -163,7 +163,7 @@
 - 标准答案（可复述）：
   - `@Priority` 常在没有更强信号时作为单依赖 tie-break，也会影响集合排序；`@Order` 更偏集合排序信号，不负责单依赖选胜者。
 
-## 验证标准：候选选择 vs 顺序
+## 验收口径：候选选择 vs 顺序
 需要用 3 句回答：
 
 1. 单依赖注入与集合注入的根本差异是什么？
@@ -171,7 +171,7 @@
 3. 如何用断点证明“by-name fallback 真的发生了”？（提示：dependencyName 与 beanName）
 
 
-## 收束：候选选择 vs 顺序
+## 小结：候选选择 vs 顺序
 
 `ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
 

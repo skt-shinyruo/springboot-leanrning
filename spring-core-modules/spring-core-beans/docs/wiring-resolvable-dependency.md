@@ -1,7 +1,7 @@
 # registerResolvableDependency：能注入，但它不是 Bean
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：registerResolvableDependency：能注入，但它不是 Bean。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,14 +11,14 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：registerResolvableDependency：能注入，但它不是 Bean
+## 问题：为什么能 `@Autowired`，却不能 `getBean`
 
-先运行 `SpringCoreBeansResolvableDependencyLabTest` 固定「registerResolvableDependency：能注入，但它不是 Bean」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansResolvableDependencyLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
- 需要能 `@Autowired` 进来一个东西，但它**不是 BeanDefinition**、`getBean(类型)` 也找不到它。
+有些对象需要能 `@Autowired` 进来，但它们不是 BeanDefinition，`getBean(类型)` 也找不到。`registerResolvableDependency` 就是这类“可解析依赖”的入口。
 
 !!! example "本章配套实验（先运行再读）"
 
@@ -34,7 +34,7 @@
 > `registerResolvableDependency` 是在告诉容器：**遇到注入点需要这个 type，就给它这个 value**。
 > 但这个 value **不进入 BeanDefinition 注册表**，也**不进单例池/生命周期/后置处理器链**。
 
-### 机制系统阐述：条件 → 分支 → 结果
+### 机制边界：条件、分支与结果
 
 **条件**：依赖解析命中 `resolvableDependencies`
 **分支**：`doResolveDependency` 在“找候选 bean”之前先检查特殊依赖表
@@ -239,10 +239,10 @@
 - 标准答案：不适合。ResolvableDependency 按 type 直接命中，跳过候选收敛逻辑；要 Qualifier 就应该走候选选择（注册多个 bean）。
 - 方法级证据链：命中在 `doResolveDependency` 的 resolvableDependencies 分支，没有进入 `determineAutowireCandidate`（见 [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)）。
 
-## 验证标准：registerResolvableDependency：能注入，但它不是 Bean
+## 验收口径：registerResolvableDependency：能注入，但它不是 Bean
 ResolvableDependency = **注入时可解析的 type→value 映射**；命中在 `doResolveDependency`；它不是 bean，因此没有 BeanDefinition/生命周期/BPP/AOP 增强。
 
-## 收束：registerResolvableDependency：能注入，但它不是 Bean
+## 小结：registerResolvableDependency：能注入，但它不是 Bean
 
 - 本章完成后：需要把三件事分清楚：**能注入**、**能 getBean**、**会不会走生命周期/代理**。
 

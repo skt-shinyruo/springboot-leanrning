@@ -1,7 +1,7 @@
 # Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：Bean 注册入口：扫描、@Bean、@Import、registrar。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,11 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 注册入口先分层：Definition 还是 Instance
+## 问题：注册的是定义，还是已经创建好的实例
 
-- 先运行“注册入口对照”的最小 Lab（ComponentScan / Import / Programmatic），再回到正文把“注册发生在 refresh 的哪一段、到底注册了什么”对齐到断点与证据链。
+排查“为什么这个 bean 没有被注入、没有代理、没有回调”时，第一步不是看类上有没有注解，而是确认它进入容器的方式：注册的是 `BeanDefinition`，还是一个已经创建好的 singleton 实例。
+
+先运行注册入口对照的最小 Lab（ComponentScan / Import / Programmatic），再回到正文把“注册发生在 `refresh()` 的哪一段、到底注册了什么”对齐到断点与证据链。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 - 官方文档对照（Java Config / @Bean，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/java.html
@@ -35,7 +37,7 @@
 
     - 说明：`SpringCoreBeansProgrammaticRegistrationLabTest` 位于 Part 04，但它同时服务于本章的“定义层 vs 实例层”对照（把边界问题放在 wiring & boundaries 更利于工程化理解）。
 
-## 本页路线图
+## 读法：按注册入口看证据
 
 这章内容较长，按下面顺序读：
 
@@ -54,7 +56,7 @@
 3. **3 分钟复述闭环（说得清）**
    - 用“结论 → 证据链（方法级）→ 反例/误区”回答本章末尾的面试题（也可对照 `appendix-interview-playbook.md`）。
 
-## 机制系统阐述：注册入口的条件 → 分支 → 结果（可断点证明）
+## 机制边界：注册入口的条件、分支与结果（可断点证明）
 
 - **条件**：读者是“注册定义”还是“注册实例”，以及注册发生的时机
 - **分支**：
@@ -86,7 +88,7 @@
 1. **定义层（Definition）**：把“怎么造对象”交给容器（容器拥有创建权）
 2. **实例层（Instance）**：对象已由调用方创建，容器只是“给它一个名字”
 
-很多“注入未生效 / 代理未生效 / 回调未执行”的误区，往往来自分层误判：易误以为处于定义层，实际处于实例层。
+很多“注入未生效 / 代理未生效 / 回调未执行”的误区，往往来自分层误判：读者以为对象处于定义层，实际只是被放进了单例缓存。
 
 ---
 
@@ -773,7 +775,7 @@ AbstractBeanFactory#doGetBean(beanName)
 3. **`@Import`/Registrar 与 BDRPP 的边界是什么？为什么它们都在“定义层”但时机与能力不同？**
    - 要点：Import 体系发生在配置类解析阶段；BDRPP 是 refresh 早期的统一调度点，能动态加定义并影响后续 BFPP/BPP 链路。
 
-## 验证标准：三句话分清定义层与实例层
+## 验收口径：三句话分清定义层与实例层
 读完后应能用 3 句答题：
 
 1. Bean 注册的“第一性对象”是什么？（提示：BeanDefinition，而不是实例）

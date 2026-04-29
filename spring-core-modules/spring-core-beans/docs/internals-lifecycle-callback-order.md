@@ -1,7 +1,7 @@
 # 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：17. 生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,7 +11,7 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 回调顺序：`initializeBean` 前后发生了什么
+## 问题：回调顺序决定了对象处在哪个形态
 
 生命周期顺序是解释很多“表面上不按预期发生”的容器行为的钥匙：注入为什么发生在回调之前？代理到底在哪一步出现？为什么 `@PreDestroy` 有时永远不会触发？
 
@@ -34,7 +34,7 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansLifecycleCallbackOrderLabTest.java`
 
 
-## 机制主线
+## 机制主线：初始化链与销毁链分开看
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -50,9 +50,9 @@
 | `SmartInitializingSingleton` | 单例创建完成后 | 容器就绪后回调 |
 | `Lifecycle/SmartLifecycle` | start/stop 阶段 | 受 phase 顺序影响 |
 
-## 一个可断言的顺序（比看日志更可靠）
+## 一个可断言的顺序：比看日志更可靠
 
-读者 C 的目标不是“背顺序”，而是：**当看到一个对象行为不对时，能判断它到底处在生命周期的哪一段、被哪些扩展点改过**。
+本节的目标不是背顺序，而是让读者在对象行为不对时，能判断它到底处在生命周期的哪一段、被哪些扩展点改过。
 
 下面给一个“够读者排障”的顺序表（把它当成 `initializeBean` 周边的时间线）：
 
@@ -133,7 +133,7 @@ prototype 的语义是：
 - singleton 的 init callbacks 稳定发生在 BPP(before) 与 BPP(after) 之间
 - prototype 在容器 close 时不会被自动 destroy（除非读者自己显式管理）
 
-## 可复现闭环（基于 `SpringCoreBeansBootstrapInternalsLabTest`）
+## 可复现闭环（基于 `SpringCoreBeansLifecycleCallbackOrderLabTest`）
 
 完成该组用例后，至少需要复述 3 条结论：
 
@@ -220,7 +220,7 @@ prototype 的语义是：
 - 证据链（方法级）：
   - `AbstractAutowireCapableBeanFactory#initializeBean`
 
-## 验证标准：能把回调映射到 `initializeBean`
+## 验收口径：能把回调映射到 `initializeBean`
 
 需要能回答：
 
@@ -228,7 +228,7 @@ prototype 的语义是：
 2. prototype 默认为什么不会触发销毁回调？
 3. 当读者怀疑“回调未执行/执行顺序异常”，可优先关注哪两个断点？（提示：`initializeBean` 与 `destroySingletons`）
 
-## 边界分流：prototype 与 singleton 的销毁语义不同
+## 边界：prototype 与 singleton 的销毁语义不同
 
 > 注意：顺序表的意义是“能定位”，不是“每次都一模一样”。当 BPP 数量与排序变化时（见 [顺序（Ordering）：PriorityOrdered / Ordered / 无序](internals-post-processor-ordering.md)、[手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](wiring-programmatic-bpp-registration.md)），观察到的实际调用栈会变化，但大方向依然稳定。
 
@@ -239,7 +239,7 @@ prototype 的语义是：
 - **误区 3：BPP 本身也是特殊 bean**
   - BPP 会很早被实例化、很早被注册；在 BPP 构造器里依赖复杂 bean，容易触发“过早创建”与“错过后续处理器”。
 
-## 收束：生命周期顺序要用断言固定
+## 小结：生命周期顺序要用断言固定
 
 - `AbstractAutowireCapableBeanFactory#doCreateBean`：单个 bean 创建主流程（实例化 → 注入 → 初始化）
 - `AbstractAutowireCapableBeanFactory#populateBean`：属性填充阶段（`@Autowired/@Resource` 等注入发生在这一段）

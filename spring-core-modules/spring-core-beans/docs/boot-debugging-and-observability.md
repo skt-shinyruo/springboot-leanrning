@@ -11,9 +11,9 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：调试与自检：如何“观察到”容器正在做什么
+## 问题：调试与自检：如何“观察到”容器正在做什么
 
-先运行 `SpringCoreBeansAutoConfigurationLabTest` 固定「11. 调试与自检：如何“观察到”容器正在做什么」的最小现象。后文只追三件事：入口方法、关键分支、可观察变量。
+先运行 `SpringCoreBeansAutoConfigurationLabTest`，把“容器正在做什么”落到可观察事实上：入口方法在哪里、关键分支怎么走、哪些变量能证明结论。
 
 - 官方文档对照（适用版本：Spring Boot 3.5.9）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
@@ -25,7 +25,7 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/testsupport/BeanGraphDumper.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`
 
 
-## 本页路线图
+## 读法：先确定观察对象，再选工具
 
 调试类页面容易堆工具，本章按“先看对象，再选工具”的顺序读：
 
@@ -496,7 +496,7 @@ mvn -pl :spring-core-beans spring-boot:run
 - 常见追问：条件装配导致 bean 有/没有怎么定位？
   - 答题要点：查看 ConditionEvaluationReport（或 `--debug`）；先回答“为什么 match/why skip”，再核对是否被用户 bean 覆盖或被排除。
 
-## 边界分流：调试与自检：如何“观察到”容器正在做什么
+## 边界：调试与自检：如何“观察到”容器正在做什么
 > 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 
 
@@ -504,12 +504,12 @@ mvn -pl :spring-core-beans spring-boot:run
 - [Scope 与 prototype 注入陷阱](ioc-scope-and-prototype.md)
 - [生命周期](ioc-lifecycle-and-callbacks.md)
 
-## 验证标准：调试与自检：如何“观察到”容器正在做什么
+## 验收口径：调试与自检：如何“观察到”容器正在做什么
 - 是否能把一个现象先分层：定义层（注册/条件/顺序）vs 实例层（注入/生命周期/代理）？
 - 能否把“主观判断”转化为“可验证结论”：给出一个最小 LabTest 入口 + 断点入口 + 必看变量？
 - 能否在 1 分钟内回答：该 bean “是否已注册/由谁注册/最终暴露对象是什么/为何为 proxy”？
 
-## 收束：调试与自检：如何“观察到”容器正在做什么
+## 小结：调试与自检：如何“观察到”容器正在做什么
 
 - 这章的目标是把“调不动/看不见/栈太深”的问题收敛为一套固定流程：先分层（定义层 vs 实例层），再选对象（定义/候选/依赖边/最终暴露对象），最后用条件断点将噪音压到最小。
 - 三个最高收益断点（记住）：

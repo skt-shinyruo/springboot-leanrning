@@ -1,8 +1,8 @@
 # 章节深化路线（AOT & Real World）
 
-## 起点：章节深化路线（AOT & Real World）
+## 定位：AOT & Real World 章节的深化方式
 
-这类页面用于校准文档结构：把章节、最小实验、断点入口和验证口径放到同一张路线图里。
+AOT & Real World 章节把定义层输入和构建期契约放到真实工程语境中：XML、Properties、Groovy、SpEL、RuntimeHints、外部对象注入和自定义 namespace。深化时要把“能在 JVM 跑”与“能在 AOT/Native 下成立”分开，并把输入解析错误归因到明确阶段。
 
 
 ## 官方文档对照（版本语境）
@@ -16,12 +16,12 @@
 - Spring Framework Reference（Resources）：https://docs.spring.io/spring-framework/reference/core/resources.html
 
 
-本部分的再加深重点：把“输入层解析 + AOT 契约”做成可运行、可断言、可排障的工程知识，避免只停留在 API 介绍。
+本部分的再加深重点，是把输入层解析和 AOT 契约做成可运行、可断言、可排障的工程知识，避免停留在 API 介绍。
 
 ## 执行化提示（Real World 的“可运行契约”）
 
-- 输入层（XML/Properties/Groovy）章节：优先补“错误分型 → 入口方法 → 断点 → 断言”，让读者能把异常归因到解析/注册/转换阶段。
-- AOT 章节：优先补“hints 作为可测试契约”的落地方式（registrar + 测试断言），避免只靠 native 失败再补。
+- 输入层（XML/Properties/Groovy）章节优先补“错误分型 → 入口方法 → 断点 → 断言”，让读者能把异常归因到解析、注册或转换阶段。
+- AOT 章节优先补“hints 作为可测试契约”的落地方式（registrar + 测试断言），避免只靠 native 失败再补。
 
 ### AOT / Native 总览：为什么 JVM 运行成功 ≠ Native 运行成功
 

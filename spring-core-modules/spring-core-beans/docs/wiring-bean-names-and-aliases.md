@@ -1,7 +1,7 @@
 # Bean 名称与 alias：同一个实例，多一个名字
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：22. Bean 名称与 alias：同一个实例，多一个名字。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,9 +11,11 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 起点：Bean 名称与 alias：同一个实例，多一个名字
+## 问题：alias 是新 Bean，还是同一个 Bean 的另一个名字
 
-- 阅读路径：先阅读“本章要点”，再沿主线展开；必要时结合源码与断点进行观察，最后通过验证实验完成闭环。
+alias 不会复制 BeanDefinition，也不会创建第二个实例。它只是把别名解析回 canonical name，因此排查“按名称找不到”或 `@Resource` name-first 行为时，必须先看 alias 解析链路。
+
+先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
 
 - 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
@@ -46,7 +48,7 @@
 
 - `getBean("primaryName")` 与 `getBean("aliasName")` 获取到的是同一个实例（same reference）
 
-### 1.1 机制系统阐述：条件 → 分支 → 结果
+### 1.1 机制边界：条件、分支与结果
 
 **条件**：是否传入 aliasName
 **分支**：`canonicalName` / `transformedBeanName` 先做名称归一化
@@ -115,15 +117,15 @@
 - 常见追问：alias 能解决“按类型注入歧义”吗？
   - 答题要点：不能；alias 不改变类型候选集，只是名字入口；歧义仍需 `@Qualifier/@Primary` 收敛。
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreBeansBeanNameAliasLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
-## 复现入口（可运行）
+## 运行入口
 
 - 入口测试（先运行通过，再设置断点）：
   - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanNameAliasLabTest.java`
@@ -158,7 +160,7 @@
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansBeanNameAliasLabTest.java`
 断点入口：`DefaultListableBeanFactory#registerAlias`、`DefaultListableBeanFactory#canonicalName`、`AbstractBeanFactory#doGetBean`
 
-## 边界分流：Bean 名称与 alias：同一个实例，多一个名字
+## 边界：Bean 名称与 alias：同一个实例，多一个名字
 
 ### 误判点：不要把外层现象当成根因
 
@@ -168,7 +170,7 @@
 - **误区 2：alias 不会改变类型**
   - alias 只是名字；它不改变注入规则、不改变 `@Primary`/`@Qualifier` 的语义。
 
-## 验证标准：Bean 名称与 alias：同一个实例，多一个名字
+## 验收口径：Bean 名称与 alias：同一个实例，多一个名字
 需要解释清楚：
 
 1. **alias 的本质是什么？**（同一个实例，多一个名字；canonicalName/aliasMap 如何参与解析）

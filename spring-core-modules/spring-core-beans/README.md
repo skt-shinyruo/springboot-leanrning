@@ -41,12 +41,25 @@
 
 ## 如何运行（保持入口可回归）
 
+- 模块契约回归（文档导航 + testsupport 输出）：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansModuleContractLabTest test`
+- 仅运行文档契约：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansDocumentationContractTest test`
 - 运行本模块全部测试：`mvn -pl :spring-core-beans test`
 - 仅运行某个章节对应 Lab：`mvn -pl :spring-core-beans -Dtest=<TestClassName> test`
 - Explore/Debug（可选开关，不影响默认回归）：
   `mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans*ExploreTest test`
 
 ---
+
+## 模块级重写契约
+
+本模块可以重写文档、测试入口和测试支撑层，但重写必须服务同一个目标：把“现象 → 机制 → Lab → 断点 → 验证”这条证据链变短。具体理由见：[模块级重写理由：把文档、Lab 与测试支撑层绑成证据链](docs/deepening-module-rewrite-rationale.md)。
+
+| 层次 | 重写收益 | 可回归入口 |
+| --- | --- | --- |
+| README / Guide / Appendix | 把入口从链接清单变成路线选择，读者先定位问题再读正文 | `SpringCoreBeansDocumentationContractTest` |
+| 正文章节 | 统一为问题、机制、实验、断点、误区、小结，降低逐篇切换成本 | 对应章节 `*LabTest` |
+| Matrix / Pack | 把测试套件变成学习路线：最小闭环、关键分支、排障断点 | `SpringCoreBeansBookMatrixLabTest` / `SpringCoreBeansBreakpointPackLabTest` |
+| `testsupport` | 复用 BeanDefinition、依赖边、注入点 dump 能力，减少重复样板 | `SpringCoreBeansModuleContractLabTest` |
 
 ## 阅读路线（主线 / 断点 / 排障）
 
@@ -198,6 +211,7 @@
 - [spring-core-beans：内容级再加深策略（按章节）](docs/deepening-strategies.md)
 - [章节深化路线（模块目录与目录页）](docs/deepening-docs-root.md)
 - [章节深化路线（模块 README）](docs/deepening-module-readme.md)
+- [模块级重写理由：把文档、Lab 与测试支撑层绑成证据链](docs/deepening-module-rewrite-rationale.md)
 - [章节深化路线（Guide）](docs/deepening-guide.md)
 - [章节深化路线（IoC Container）](docs/deepening-ioc-container.md)
 - [章节深化路线（Boot Auto-Config）](docs/deepening-boot-autoconfig.md)

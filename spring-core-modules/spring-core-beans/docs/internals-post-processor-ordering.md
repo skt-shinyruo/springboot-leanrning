@@ -1,7 +1,7 @@
 # 顺序（Ordering）：PriorityOrdered / Ordered / 无序
 <!-- CHAPTER-CARD:START -->
 !!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单 收敛原因。
+    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
 
     观察对象：14. 顺序（Ordering）：PriorityOrdered / Ordered / 无序。
     主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
@@ -11,18 +11,18 @@
 <!-- CHAPTER-CARD:END -->
 
 
-## 顺序分组：`PriorityOrdered`、`Ordered` 与普通处理器
+## 问题：顺序不只是数字大小
 
-这一章处理的不是“接口名记忆”，而是一个很工程化的困惑：**同样是一组 post-processor，为什么换个注册方式/加一个 `@Order`，最终对象形态、代理叠加顺序、甚至某些定义是否生效都会变？**
+这一章处理的不是接口名记忆，而是一个很工程化的困惑：同样是一组 post-processor，为什么换个注册方式或加一个 `@Order`，最终对象形态、代理叠加顺序，甚至某些定义是否生效都会变？
 
 只要先把两件事跑成事实，后面看源码就不容易被术语绕晕：
 
 1. `PriorityOrdered/Ordered/无序` 决定的是 **分段执行/分段注册**（宏观顺序）
 2. 同一段内部才谈 `order` 值与 comparator（微观排序；是否认 `@Order` 取决于 comparator）
 
-先运行 `SpringCoreBeansPostProcessorOrderingLabTest`，把 BFPP/BDRPP/BPP 的分段顺序与组内排序跑成断言，再回正文对照 `PostProcessorRegistrationDelegate` 的两段算法（`invokeBeanFactoryPostProcessors` 与 `registerBeanPostProcessors`）。
+先运行 `SpringCoreBeansPostProcessorOrderingLabTest`，把 BFPP/BDRPP/BPP 的分段顺序与组内排序跑成断言，再回正文对照 `PostProcessorRegistrationDelegate` 的两段算法：`invokeBeanFactoryPostProcessors` 与 `registerBeanPostProcessors`。
 
-读者读完后需要能回答（≤5）：
+读者读完后需要能回答：
 
 - `PriorityOrdered` 与 `Ordered` 的“分段”语义是什么？
 - `@Order` 为什么经常不影响 BFPP/BDRPP/BPP 的执行顺序？
@@ -39,7 +39,7 @@
     - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java` / `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProgrammaticBeanPostProcessorLabTest.java`
 
 
-## 机制主线
+## 机制主线：先分组，再在组内排序
 
 > 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
 
@@ -69,7 +69,7 @@ Spring 在同一类 post-processor 内，常用的排序规则是：
 
 ## 1.1 源码解析：真正参与排序的“不是接口名”，而是 comparator 的比较规则
 
-在脑子里需要同时放下 2 个概念（后面会反复用到）：
+需要同时放下两个概念：
 
 1. **分组**：`PriorityOrdered` / `Ordered` / others（三段分组是“宏观规则”）
 2. **组内排序**：比较 `order` 值（`getOrder()` / `@Order` / `@Priority`）（这是“微观规则”）
@@ -120,7 +120,7 @@ Spring 里最常见的 comparator 是 `AnnotationAwareOrderComparator`，它是 
 
 ### 2.1 源码解析：`invokeBeanFactoryPostProcessors` 的分段执行算法（精简伪代码）
 
-本章不是让阅读者去背源码，而是使能够回答一个“工程上最关键”的问题：
+本章不是让读者背源码，而是使其能够回答一个工程上最关键的问题：
 
 > **为什么 Spring 要用多轮扫描 + 多段列表，而不是“一次性收集→一次性排序→一次性执行”？**
 
@@ -291,7 +291,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 - “容器自动发现 + 排序”体系：见本章（`registerBeanPostProcessors`）
 - “手工注册绕过排序”体系：见 [25](wiring-programmatic-bpp-registration.md)
 
-## 验证标准：能解释为什么 `@Order` 不一定生效
+## 验收口径：能解释为什么 `@Order` 不一定生效
 
 - 常问：`PriorityOrdered/Ordered/@Order` 三者谁更“强”？为什么？
   - 答题要点：分段规则按接口（PriorityOrdered/Ordered/others）决定；组内才按 order 值排序；`Ordered#getOrder()` 通常强于注解；`@Order` 是否生效取决于 comparator。
@@ -300,13 +300,13 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 - 常见追问：为什么手工 `addBeanPostProcessor(...)` 的顺序表面上“不听 Ordered”？
   - 答题要点：手工注册绕过 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 的排序流程；最终顺序就是注册顺序（见 [25](wiring-programmatic-bpp-registration.md)）。
 
-## 最小可运行实验（Lab）
+## 实验：把现象固定成断言
 
-本章引用的实验入口：
+本章可复核的实验入口：
 - Lab：`SpringCoreAopMultiProxyStackingLabTest` / `SpringCoreBeansPostProcessorOrderingLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
 - 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
 
-### 验证补充（从实验现象出发）
+### 从实验现象看边界
 
 当容器里存在多个 BFPP/BPP 时，“谁先运行”会直接决定最终结果。
 
@@ -380,7 +380,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPostProcessorOrderingLabTest.java`
 断点入口：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`、`PostProcessorRegistrationDelegate#registerBeanPostProcessors`、`AnnotationAwareOrderComparator#sort`
 
-## 边界分流：注解排序和接口排序不是一回事
+## 边界：注解排序和接口排序不是一回事
 
 ```text
 findOrder(obj):
@@ -451,7 +451,7 @@ registerBeanPostProcessors(beanFactory):
 - 最小复现：
   - `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticBppExecutionOrder_isRegistrationOrder_notOrderedInterface`
 
-## 收束：排序规则先分组，再比较 order 值
+## 小结：排序规则先分组，再比较 order 值
 
 - `AbstractApplicationContext#refresh`
   - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
