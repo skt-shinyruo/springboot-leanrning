@@ -113,6 +113,7 @@
 | `bean-mental-model.md` | Bean、BeanDefinition、单例缓存、最终暴露对象分别是什么关系？ |
 | `beanfactory-vs-applicationcontext.md` | BeanFactory 与 ApplicationContext 的能力差异是什么？ |
 | `bean-definition-registration.md` | 一个 BeanDefinition 是如何被注册进容器的？ |
+| `bean-definition-metadata-and-origin.md` | BeanDefinition 的 primary/autowireCandidate/source/factoryMethod 等元数据如何支撑候选选择和来源排查？ |
 | `bean-name-and-alias.md` | beanName 和 alias 如何影响定位、注入和排障？ |
 | `bean-definition-overriding.md` | 同名 BeanDefinition 冲突时，谁生效、谁失败、什么时候失败？ |
 | `merged-bean-definition.md` | MergedBeanDefinition / RootBeanDefinition 在什么阶段形成，解决什么问题？ |
@@ -121,7 +122,9 @@
 | `programmatic-registration.md` | `registerBeanDefinition`、`registerBean`、`registerSingleton` 的根本差异是什么？ |
 | `refresh-mainline.md` | `refresh()` 这条主线到底先做什么、后做什么？ |
 | `container-bootstrap-and-infrastructure.md` | 为什么注解处理器、自动装配和基础设施能够在容器里生效？ |
-| `beanfactory-post-processors.md` | BFPP / BDRPP 分别在改什么，什么时候改？ |
+| `post-processors-overview.md` | BFPP / BDRPP / BPP 的职责边界是什么，分别属于定义阶段还是实例阶段？ |
+| `beanfactory-post-processors.md` | BFPP 在什么时候修改已有 BeanDefinition，不能做什么？ |
+| `bdrpp-definition-registration.md` | BDRPP 为什么能在普通 BFPP 之前新增或改写 BeanDefinition？ |
 | `beanpost-processors.md` | BPP 如何介入实例创建，什么时候会把 bean 换成 proxy？ |
 | `post-processor-ordering.md` | PriorityOrdered、Ordered、无序处理器的排序规则如何影响行为？ |
 | `programmatic-bpp-registration.md` | 手工添加 BeanPostProcessor 为什么会绕过容器排序？ |
@@ -148,13 +151,13 @@
 | --- | --- |
 | `scope-and-prototype.md` | singleton、prototype、其他 scope 的行为边界是什么？ |
 | `custom-scope-and-scoped-proxy.md` | 自定义 Scope 与 scoped proxy 如何改变注入对象和目标对象的关系？ |
-| `lazy-and-depends-on.md` | `@Lazy`、lazy-init、`dependsOn` 分别控制什么、不控制什么？ |
+| `lazy-semantics.md` | lazy-init 与注入点 `@Lazy` 分别延迟了什么？ |
+| `depends-on.md` | `dependsOn` 如何强制初始化顺序，为什么它不是依赖注入规则？ |
 | `lifecycle-callbacks.md` | Aware、init、destroy、`@PostConstruct` 的顺序如何理解？ |
 | `smart-initializing-singleton.md` | `SmartInitializingSingleton` 为什么要等所有单例都创建完？ |
 | `smart-lifecycle.md` | `SmartLifecycle` 的 start/stop 与 phase 顺序如何工作？ |
-| `circular-dependency-and-early-reference.md` | 循环依赖究竟解决了什么，解决不了什么？ |
+| `circular-dependency.md` | 循环依赖究竟解决了什么，解决不了什么？ |
 | `early-reference-and-three-level-cache.md` | early reference 与三级缓存如何协作？ |
-| `raw-vs-proxy-in-circular-reference.md` | 循环依赖中 raw 对象与 proxy 不一致时会发生什么？ |
 | `proxying-phase.md` | BPP 在哪个窗口把 bean 包装成 proxy，自调用为什么绕过它？ |
 | `factorybean.md` | FactoryBean 的产品对象和工厂对象如何区分？ |
 | `factorybean-type-matching.md` | FactoryBean 的类型匹配边界在哪里，`getObjectType()` 为什么关键？ |
@@ -181,7 +184,6 @@
 | --- | --- |
 | `boot-auto-configuration-ordering.md` | Auto-configuration 的顺序为什么会影响条件命中？ |
 | `boot-auto-configuration-beans.md` | Boot 自动装配如何决定一个 Bean 出现还是退回 backoff？ |
-| `boot-debugging-and-observability.md` | 如何把 Boot 容器行为观察出来并定位到条件报告？ |
 
 ### 5.6 AOT / Native 场景
 
@@ -219,6 +221,8 @@
 ### 6.2 Guide
 
 `guide-*` 只负责学习路线、断点入口和阅读顺序，不重复机制细节。它们可以告诉读者“该去哪个主文档”，但不能把主文档的内容再讲一遍。
+
+`boot-debugging-and-observability.md` 这类观察/排障入口也归入支持文档：它可以聚合 Actuator、ConditionEvaluationReport、日志和断点入口，但不拥有新的 Bean 机制知识点。
 
 ### 6.3 Appendix
 
