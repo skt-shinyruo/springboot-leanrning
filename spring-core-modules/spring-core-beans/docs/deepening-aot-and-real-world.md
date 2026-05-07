@@ -25,7 +25,7 @@ AOT & Real World 章节把定义层输入和构建期契约放到真实工程语
 
 ### AOT / Native 总览：为什么 JVM 运行成功 ≠ Native 运行成功
 
-- 文件：`spring-core-modules/spring-core-beans/docs/aot-aot-and-native-overview.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/aot-native-overview.md`
 - 深化落点：
     - `SpringCoreBeansAotFactoriesLabTest`（再对照 `SpringCoreBeansAotRuntimeHintsLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -33,7 +33,7 @@ AOT & Real World 章节把定义层输入和构建期契约放到真实工程语
 
 ### RuntimeHints 入门：把构建期契约完成验证
 
-- 文件：`spring-core-modules/spring-core-beans/docs/aot-runtimehints-basics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/aot-runtimehints.md`
 - 深化落点：
     - `SpringCoreBeansAotRuntimeHintsLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `Class#getDeclaredMethods` 进，到 `Constructor#newInstance` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -65,7 +65,7 @@ AOT & Real World 章节把定义层输入和构建期契约放到真实工程语
 
 ### 自定义 Qualifier：meta-annotation 与候选收敛
 
-- 文件：`spring-core-modules/spring-core-beans/docs/aot-custom-qualifier-meta-annotation.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/aot-custom-qualifier.md`
 - 深化落点：
     - `SpringCoreBeansCustomQualifierLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `DefaultListableBeanFactory#findAutowireCandidates` 进，到 `DefaultListableBeanFactory#determineAutowireCandidate` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -81,7 +81,7 @@ AOT & Real World 章节把定义层输入和构建期契约放到真实工程语
 
 ### BeanDefinitionReader：Properties / Groovy 等其他输入
 
-- 文件：`spring-core-modules/spring-core-beans/docs/aot-beandefinitionreader-other-inputs-properties-groovy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/aot-beandefinitionreader-other-inputs.md`
 - 深化落点：
     - `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest#propertiesBeanDefinitionReader_registersBeanDefinitions_fromPropertiesFile`（再对照 `SpringCoreBeansGroovyBeanDefinitionReaderLabTest#groovyBeanDefinitionReader_registersBeanDefinitions_fromGroovyScript`），把“现象差异”固定成可重复的断言/输出。
     - 从 `DefaultListableBeanFactory#registerBeanDefinition` 进，到 `SpringCoreBeansPropertiesBeanDefinitionReaderLabTest#propertiesBeanDefinitionReader_registersBeanDefinitions_fromPropertiesFile` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -89,7 +89,7 @@ AOT & Real World 章节把定义层输入和构建期契约放到真实工程语
 
 ### 方法注入：replaced-method / MethodReplacer
 
-- 文件：`spring-core-modules/spring-core-beans/docs/aot-method-injection-replaced-method.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/aot-method-injection.md`
 - 深化落点：
     - `SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides`（再对照 `SpringCoreBeansReplacedMethodLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection` 进，到 `SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -97,7 +97,7 @@ AOT & Real World 章节把定义层输入和构建期契约放到真实工程语
 
 ### 内置 FactoryBean 图鉴
 
-- 文件：`spring-core-modules/spring-core-beans/docs/aot-built-in-factorybeans-gallery.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/aot-built-in-factorybeans.md`
 - 深化落点：
     - `SpringCoreBeansBuiltInFactoryBeansLabTest`（再对照 `SpringCoreBeansServiceLoaderFactoryBeansLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `AbstractBeanFactory#getObjectForBeanInstance` 进，到 `AbstractAutowireCapableBeanFactory#getEarlyBeanReference` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

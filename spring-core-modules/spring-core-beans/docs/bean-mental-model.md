@@ -90,24 +90,24 @@ Lab 与测试文件：
    - raw instance：FactoryBean 本身（工厂对象）
    - exposed object：`FactoryBean#getObject()` 的返回（产品对象）
    - 关键入口：`AbstractBeanFactory#getObjectForBeanInstance`
-   - 识别方式：`&name` 可用于获取工厂对象（见 [08](ioc-factorybean.md)）
+   - 识别方式：`&name` 可用于获取工厂对象（见 [08](factorybean.md)）
 
 2. **scoped proxy：获取到的是“代理”，真实目标对象位于另一个 beanName 下**
    - 定义层：通常会出现 `scopedTarget.<beanName>`（目标定义）+ `<beanName>`（代理定义）
    - raw instance：目标对象（按 scope 创建/缓存）
    - exposed object：代理对象（通常是 singleton 代理，但每次调用可路由到不同目标）
    - 关键入口：定义层改写（`ScopedProxyMode`）+ 运行期取值（`ScopedObject#getTargetObject`）
-   - 关联章节：scope 主线见 [04](ioc-scope-and-prototype.md)，深入见 [28](wiring-custom-scope-and-scoped-proxy.md)
+   - 关联章节：scope 主线见 [04](scope-and-prototype.md)，深入见 [28](custom-scope-and-scoped-proxy.md)
 
 3. **循环依赖（early reference）：容器给过依赖方“暂时引用”，但最终对外对象可能不同**
    - early：`getEarlyBeanReference` 可能返回 raw，也可能返回 proxy（由 BPP/AOP 决策）
    - final：`applyBeanPostProcessorsAfterInitialization` 可能再次替换成最终 proxy/wrapper
-   - 风险点：early 与 final 不一致 → raw 注入绕过代理 / fail-fast（见 [09](ioc-circular-dependencies.md)、[16](internals-early-reference-and-circular.md)）
+   - 风险点：early 与 final 不一致 → raw 注入绕过代理 / fail-fast（见 [09](circular-dependency.md)、[16](early-reference-and-three-level-cache.md)）
 
 4. **ResolvableDependency / 外部对象：能注入但不是“可枚举 Bean”**
    - 表象：`@Autowired` 成功，但 `getBeanDefinitionNames`/`getBeansOfType` 找不到
    - 原因：注入走的是依赖解析链路（实例层），不一定依赖 `BeanDefinition`（定义层）
-   - 关联章节：见本章「能注入 ≠ 一定是 Bean」与 [20](wiring-resolvable-dependency.md)、[43](aot-autowirecapablebeanfactory-external-objects.md)
+   - 关联章节：见本章「能注入 ≠ 一定是 Bean」与 [20](resolvable-dependency.md)、[43](aot-autowirecapablebeanfactory-external-objects.md)
 
 ## 方法级主线：refresh → doCreateBean → 最终暴露对象
 
@@ -154,16 +154,16 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 可将“为何获取到 proxy”归纳为三类入口（明确其存在即可）：
 
 1. **实例化前短路（pre）**：`resolveBeforeInstantiation`
-   - 典型：`InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation` 返回替身对象（见 [15](internals-pre-instantiation-short-circuit.md)）
+   - 典型：`InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation` 返回替身对象（见 [15](pre-instantiation-short-circuit.md)）
 2. **循环依赖窗口期（early）**：`getEarlyBeanReference`
-   - 典型：early 引用与最终暴露形态一致性问题（见 [16](internals-early-reference-and-circular.md)）
+   - 典型：early 引用与最终暴露形态一致性问题（见 [16](early-reference-and-three-level-cache.md)）
 3. **初始化后替换（after-init）**：`postProcessAfterInitialization`
-   - 典型：AOP/事务/懒代理等最常见 proxy 产生点（见 [31](wiring-proxying-phase-bpp-wraps-bean.md)）
+   - 典型：AOP/事务/懒代理等最常见 proxy 产生点（见 [31](proxying-phase.md)）
 
 > 补充两个“表面上像替换，但本质是 getBean 返回语义不同”的高频来源：
 >
 > 4) **FactoryBean 产品语义**：`getObjectForBeanInstance` 决定 `getBean(name)` 返回“工厂”还是“产品”
-> 5) **scoped proxy 的双定义**：`beanName` 对应 proxy，`scopedTarget.beanName` 对应真实目标（见 [04](ioc-scope-and-prototype.md)）
+> 5) **scoped proxy 的双定义**：`beanName` 对应 proxy，`scopedTarget.beanName` 对应真实目标（见 [04](scope-and-prototype.md)）
 
 ## 补充：能注入 ≠ 一定是 Bean（ResolvableDependency / 外部对象）
 
@@ -189,7 +189,7 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 **关联阅读顺序：**
 
-- [`wiring-resolvable-dependency.md`](wiring-resolvable-dependency.md)（能注入但不是 Bean）
+- [`resolvable-dependency.md`](resolvable-dependency.md)（能注入但不是 Bean）
 - [`aot-autowirecapablebeanfactory-external-objects.md`](aot-autowirecapablebeanfactory-external-objects.md)（外部对象如何接入容器能力）
 
 ## 排障决策表（将主观判断转化为可验证结论）
@@ -198,13 +198,13 @@ refresh 的骨架（只保留与本章相关的关键节点）：
 
 | 现象 | 先分层到哪里 | 证据（断点/观察点） | 最可能根因 | 修复思路 |
 | --- | --- | --- | --- | --- |
-| `NoSuchBeanDefinitionException` | 定义层 | `containsBeanDefinition` / `getBeanDefinition` 是否存在 | 根本没注册；或条件未满足/被排除 | 回到注册入口与条件：见 [02](ioc-bean-registration.md)、[21](boot-spring-boot-auto-configuration.md) |
-| 注入报 `NoUniqueBeanDefinitionException` | 实例层（依赖解析） | `doResolveDependency`→`findAutowireCandidates`→`determineAutowireCandidate` | 候选太多且没收敛信号 | 用 `@Qualifier/@Primary` 收敛；或让 auto-config back-off（见 [03](ioc-dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)） |
-| 易误判为原始对象，但行为表现为 proxy | 实例层（最终暴露对象） | `applyBeanPostProcessorsAfterInitialization` 里 `result != bean` | after-init BPP 替换了对象 | 追溯到具体 BPP，再回看其注册顺序与触发条件（见 [31](wiring-proxying-phase-bpp-wraps-bean.md)） |
-| 已声明 `@Bean`，但容器中未出现 | 定义层（注解基础设施） | `ConfigurationClassPostProcessor` 是否存在并执行 | 未装配 annotation processors / 配置类未被解析 | 先补齐注解基础设施（见 [22](internals-container-bootstrap-and-infrastructure.md)） |
-| `BeanCurrentlyInCreationException`（循环依赖） | 实例层（创建窗口） | `doCreateBean`（`earlySingletonExposure`）+ `getSingleton(..., allowEarlyReference=true)` | 依赖图存在环；或 early/final 一致性保护触发 | 优先消环；其次用 `ObjectProvider/@Lazy` 打断；不宜以“能够启动”为目标进行规避（见 [09](ioc-circular-dependencies.md)） |
-| “注入成功但容器里搜不到” | 边界层（ResolvableDependency/外部对象） | `registerResolvableDependency` / `autowireBean` 是否被调用 | 这是容器提供的“可注入能力”，不是普通 bean | 回到本章补充与 [20](wiring-resolvable-dependency.md)、[43](aot-autowirecapablebeanfactory-external-objects.md) |
-| 类型不符合预期（注入/获取结果与预期不一致） | 定义层 + 最终暴露层 | `getObjectForBeanInstance` / 是否存在 `scopedTarget.*` | FactoryBean 产品语义 / scoped proxy 双定义 | 先识别是 FactoryBean 还是 scoped proxy，再回到对应章节（见 [08](ioc-factorybean.md)、[04](ioc-scope-and-prototype.md)） |
+| `NoSuchBeanDefinitionException` | 定义层 | `containsBeanDefinition` / `getBeanDefinition` 是否存在 | 根本没注册；或条件未满足/被排除 | 回到注册入口与条件：见 [02](ioc-bean-registration.md)、[21](boot-auto-configuration-beans.md) |
+| 注入报 `NoUniqueBeanDefinitionException` | 实例层（依赖解析） | `doResolveDependency`→`findAutowireCandidates`→`determineAutowireCandidate` | 候选太多且没收敛信号 | 用 `@Qualifier/@Primary` 收敛；或让 auto-config back-off（见 [03](dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)） |
+| 易误判为原始对象，但行为表现为 proxy | 实例层（最终暴露对象） | `applyBeanPostProcessorsAfterInitialization` 里 `result != bean` | after-init BPP 替换了对象 | 追溯到具体 BPP，再回看其注册顺序与触发条件（见 [31](proxying-phase.md)） |
+| 已声明 `@Bean`，但容器中未出现 | 定义层（注解基础设施） | `ConfigurationClassPostProcessor` 是否存在并执行 | 未装配 annotation processors / 配置类未被解析 | 先补齐注解基础设施（见 [22](container-bootstrap-and-infrastructure.md)） |
+| `BeanCurrentlyInCreationException`（循环依赖） | 实例层（创建窗口） | `doCreateBean`（`earlySingletonExposure`）+ `getSingleton(..., allowEarlyReference=true)` | 依赖图存在环；或 early/final 一致性保护触发 | 优先消环；其次用 `ObjectProvider/@Lazy` 打断；不宜以“能够启动”为目标进行规避（见 [09](circular-dependency.md)） |
+| “注入成功但容器里搜不到” | 边界层（ResolvableDependency/外部对象） | `registerResolvableDependency` / `autowireBean` 是否被调用 | 这是容器提供的“可注入能力”，不是普通 bean | 回到本章补充与 [20](resolvable-dependency.md)、[43](aot-autowirecapablebeanfactory-external-objects.md) |
+| 类型不符合预期（注入/获取结果与预期不一致） | 定义层 + 最终暴露层 | `getObjectForBeanInstance` / 是否存在 `scopedTarget.*` | FactoryBean 产品语义 / scoped proxy 双定义 | 先识别是 FactoryBean 还是 scoped proxy，再回到对应章节（见 [08](factorybean.md)、[04](scope-and-prototype.md)） |
 
 ## 面试常问（标准答案 + 方法级证据链）
 

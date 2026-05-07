@@ -129,7 +129,7 @@
    - 最直接的 API：`beanFactory.getDependenciesForBean(beanName)`
    - 可以观察到：容器只会把“最终被注入/被引用”的那个 bean 记为依赖（而不是把所有候选都算进去）。
 
-> 补充：依赖关系表也会影响关闭时的销毁顺序；若想看更底层的 `dependentBeanMap` / `dependenciesForBeanMap`，结合 [19](wiring-depends-on.md) 一起看。
+> 补充：依赖关系表也会影响关闭时的销毁顺序；若想看更底层的 `dependentBeanMap` / `dependenciesForBeanMap`，结合 [19](depends-on.md) 一起看。
 
 ## Spring Boot 的“条件报告”：把自动装配的生效/失效原因打印出来
 
@@ -173,9 +173,9 @@
 如果这些输出与相应的理解不一致，优先回到：
 
 - `BEANS:textFormatters=...` → 本章第 1 节（先确认“候选集合到底有哪些”）
-- `BEANS:formattingService.injectedFormatter=...` → [03](ioc-dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)（候选收敛为何选中它）
-- `BEANS:prototype.*` → [04](ioc-scope-and-prototype.md)（prototype 注入陷阱 vs ObjectProvider/@Lookup）
-- `BEANS:lifecycle.*` → [05](ioc-lifecycle-and-callbacks.md)、[17](internals-lifecycle-callback-order.md)（生命周期回调顺序与证据链）
+- `BEANS:formattingService.injectedFormatter=...` → [03](dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)（候选收敛为何选中它）
+- `BEANS:prototype.*` → [04](scope-and-prototype.md)（prototype 注入陷阱 vs ObjectProvider/@Lookup）
+- `BEANS:lifecycle.*` → [05](lifecycle-callbacks.md)、[17](internals-lifecycle-callback-order.md)（生命周期回调顺序与证据链）
 - `BEANS:beanDefinitionCount=...` / “看不到容易误以为注册的 bean” → 本章第 2 节（先确认定义层是否存在，再决定往注册/条件/顺序走）
 
 ## 可复现闭环（基于 `SpringCoreBeansAutoConfigurationLabTest`）
@@ -278,11 +278,11 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 
 | 在看什么 | 它回答的问题 | 最小入口断点（条件断点） | 固定观察点（观察清单） | 关联章节 / 可运行实验 |
 | --- | --- | --- | --- | --- |
-| `BeanDefinition`（原始定义） | “到底有没有注册？”“定义元数据是什么？” | `DefaultListableBeanFactory#getBeanDefinition` | `beanFactory.containsBeanDefinition(beanName)`、`beanFactory.getBeanDefinition(beanName)`（scope/lazy/dependsOn） | [01](ioc-bean-mental-model.md)、[02](ioc-bean-registration.md)、`SpringCoreBeansContainerLabTest.beanDefinitionIsNotTheBeanInstance()` |
-| merged `RootBeanDefinition`（最终配方） | “创建时为什么看到的是 Root？”“最终生效配方是什么？” | `AbstractBeanFactory#getMergedLocalBeanDefinition` | `mbd`（`RootBeanDefinition`）、merged 缓存（`mergedBeanDefinitions` 等）、`mbd.getPropertyValues()` | [35](wiring-merged-bean-definition.md)、`SpringCoreBeansMergedBeanDefinitionLabTest` |
-| 实例 vs 代理（最终暴露对象） | “为什么注入的是 proxy？”“谁把对象换掉了？” | `AbstractAutowireCapableBeanFactory#initializeBean`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` | `beanName`、`bean` vs `result`、`beanFactory.getBeanPostProcessors()` | [06](ioc-post-processors.md)、[31](wiring-proxying-phase-bpp-wraps-bean.md)、`SpringCoreBeansBeanCreationTraceLabTest` |
-| 依赖图（两张表） | “为什么注入的是它？”“为什么启动/关闭顺序这样？” | `DefaultListableBeanFactory#doResolveDependency`、`DefaultSingletonBeanRegistry#registerDependentBean`、`DefaultSingletonBeanRegistry#destroySingletons` | `getDependenciesForBean` / `getDependentBeans`、`dependentBeanMap` / `dependenciesForBeanMap` | [03](ioc-dependency-injection-resolution.md)、[19](wiring-depends-on.md)、`SpringCoreBeansBeanGraphDebugLabTest`、`SpringCoreBeansDependsOnLabTest` |
-| 单例缓存（循环依赖/提前暴露） | “循环依赖为什么有时能救？”“early reference 发生在哪？” | `DefaultSingletonBeanRegistry#getSingleton`、`AbstractAutowireCapableBeanFactory#getEarlyBeanReference` | `singletonObjects` / `earlySingletonObjects` / `singletonFactories` 的变化 | [16](internals-early-reference-and-circular.md)、`SpringCoreBeansEarlyReferenceLabTest` |
+| `BeanDefinition`（原始定义） | “到底有没有注册？”“定义元数据是什么？” | `DefaultListableBeanFactory#getBeanDefinition` | `beanFactory.containsBeanDefinition(beanName)`、`beanFactory.getBeanDefinition(beanName)`（scope/lazy/dependsOn） | [01](bean-mental-model.md)、[02](ioc-bean-registration.md)、`SpringCoreBeansContainerLabTest.beanDefinitionIsNotTheBeanInstance()` |
+| merged `RootBeanDefinition`（最终配方） | “创建时为什么看到的是 Root？”“最终生效配方是什么？” | `AbstractBeanFactory#getMergedLocalBeanDefinition` | `mbd`（`RootBeanDefinition`）、merged 缓存（`mergedBeanDefinitions` 等）、`mbd.getPropertyValues()` | [35](merged-bean-definition.md)、`SpringCoreBeansMergedBeanDefinitionLabTest` |
+| 实例 vs 代理（最终暴露对象） | “为什么注入的是 proxy？”“谁把对象换掉了？” | `AbstractAutowireCapableBeanFactory#initializeBean`、`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` | `beanName`、`bean` vs `result`、`beanFactory.getBeanPostProcessors()` | [06](ioc-post-processors.md)、[31](proxying-phase.md)、`SpringCoreBeansBeanCreationTraceLabTest` |
+| 依赖图（两张表） | “为什么注入的是它？”“为什么启动/关闭顺序这样？” | `DefaultListableBeanFactory#doResolveDependency`、`DefaultSingletonBeanRegistry#registerDependentBean`、`DefaultSingletonBeanRegistry#destroySingletons` | `getDependenciesForBean` / `getDependentBeans`、`dependentBeanMap` / `dependenciesForBeanMap` | [03](dependency-injection-resolution.md)、[19](depends-on.md)、`SpringCoreBeansBeanGraphDebugLabTest`、`SpringCoreBeansDependsOnLabTest` |
+| 单例缓存（循环依赖/提前暴露） | “循环依赖为什么有时能救？”“early reference 发生在哪？” | `DefaultSingletonBeanRegistry#getSingleton`、`AbstractAutowireCapableBeanFactory#getEarlyBeanReference` | `singletonObjects` / `earlySingletonObjects` / `singletonFactories` 的变化 | [16](early-reference-and-three-level-cache.md)、`SpringCoreBeansEarlyReferenceLabTest` |
 
 > 经验法则：应先明确“当前观察对象的类别”，再决定断点与观察清单；否则读者容易在巨大调用栈中丢失主线。
 
@@ -322,7 +322,7 @@ var outcomes = report.getConditionAndOutcomesBySource().get(AutoConfig.class.get
 
 若想把条件报告当成“可查询的数据结构”（更适合进阶学习、也更容易做成最小复现），见本章第 11 节与 `SpringCoreBeansConditionEvaluationReportLabTest`。
 
-> 进阶提醒：当遇到 `@ConditionalOnBean` 这类“依赖另一个自动配置里注册的 bean”的场景时，除了看报告本身，还要考虑**条件评估时机**与**自动配置顺序**（after/before 元数据）。对应最小复现见 `SpringCoreBeansAutoConfigurationOrderingLabTest`，并对照 [10](boot-spring-boot-auto-configuration.md) 的顺序依赖小节。
+> 进阶提醒：当遇到 `@ConditionalOnBean` 这类“依赖另一个自动配置里注册的 bean”的场景时，除了看报告本身，还要考虑**条件评估时机**与**自动配置顺序**（after/before 元数据）。对应最小复现见 `SpringCoreBeansAutoConfigurationOrderingLabTest`，并对照 [10](boot-auto-configuration-beans.md) 的顺序依赖小节。
 
 当需要更细粒度地看依赖注入/bean 创建细节时，可以临时提高日志级别（只在学习/调试时使用）：
 
@@ -390,14 +390,14 @@ mvn -pl :spring-core-beans spring-boot:run
 
 | 观察到的异常 | 常见含义（先分流） | 最有效入口断点（优先打条件断点） | 关联章节 / 可运行实验 |
 | --- | --- | --- | --- |
-| `NoSuchBeanDefinitionException` | 容器里根本没有候选（定义没注册/条件没满足/按 name 找不到） | `DefaultListableBeanFactory#doResolveDependency`、`DefaultListableBeanFactory#getBeanNamesForType` | [03](ioc-dependency-injection-resolution.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`（`missingBeanLookupsFailFast()`） |
-| `NoUniqueBeanDefinitionException` | 候选太多且无法唯一化（典型：单依赖注入时同类型有多个候选） | `DefaultListableBeanFactory#doResolveDependency`、`DefaultListableBeanFactory#determineAutowireCandidate`、`DefaultListableBeanFactory#determinePrimaryCandidate` | [03](ioc-dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`（`orderAnnotation_doesNotResolveSingleInjectionAmbiguity()`） |
-| `UnsatisfiedDependencyException` | “注入失败”的总包装：可能是没有候选、候选太多、类型不匹配、创建链路失败（它经常包着真正 root cause） | `DefaultListableBeanFactory#doResolveDependency`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`AbstractAutowireCapableBeanFactory#populateBean` | [03](ioc-dependency-injection-resolution.md)、[30](wiring-injection-phase-field-vs-constructor.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java`（`unsatisfiedDependency_failsFast()`） |
-| `BeanCurrentlyInCreationException` | 循环依赖/提前暴露相关：某个 bean 正在创建中又被请求（构造器循环依赖最常见） | `DefaultSingletonBeanRegistry#getSingleton`、`DefaultSingletonBeanRegistry#beforeSingletonCreation`、`AbstractBeanFactory#doGetBean` | [09](ioc-circular-dependencies.md)、[16](internals-early-reference-and-circular.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`（`circularDependencyWithConstructorsFailsFast()`） |
-| `Circular depends-on relationship`（message） | **定义层拓扑环**：人为写了 `dependsOn A -> B -> A`；不要误判成“循环依赖/三级缓存” | `AbstractBeanFactory#doGetBean`、`DefaultSingletonBeanRegistry#registerDependentBean`、`DefaultSingletonBeanRegistry#isDependent` | [19](wiring-depends-on.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`（`dependsOn_cycle_failsFast()`） |
-| `BeanCreationException` | bean 创建链路失败（构造器异常 / init 回调异常 / BPP 包装失败 / 循环依赖失败等都会落到这里） | `AbstractAutowireCapableBeanFactory#doCreateBean`、`AbstractAutowireCapableBeanFactory#createBeanInstance`、`AbstractAutowireCapableBeanFactory#initializeBean` | [00](guide-deep-dive-guide.md)、[12](internals-container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`（`withoutBeforeInstantiationShortCircuit_refreshFailsAndConstructorWasCalled()`） |
-| `BeanDefinitionStoreException` | definition 解析/注册阶段失败（XML/注解解析/占位符等；通常发生在 refresh 前半段） | `XmlBeanDefinitionReader#loadBeanDefinitions`、`DefaultListableBeanFactory#registerBeanDefinition`、`AbstractApplicationContext#refresh` | [02](ioc-bean-registration.md)、[12](internals-container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java`（`beanDefinitionStoreException_invalidXml()`） |
-| （无异常）`@Autowired/@Resource/@PostConstruct` 不生效（字段为 null / 回调未执行） | 容器没装“注解能力基础设施”（annotation processors 未注册/未生效）；常见于 `GenericApplicationContext` 手工启动 | `AnnotationConfigUtils#registerAnnotationConfigProcessors`、`PostProcessorRegistrationDelegate#registerBeanPostProcessors`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`CommonAnnotationBeanPostProcessor#postProcessProperties` | [12](internals-container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`（`withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`）、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`（`withoutAnnotationConfigProcessors_resourceIsIgnored()`） |
+| `NoSuchBeanDefinitionException` | 容器里根本没有候选（定义没注册/条件没满足/按 name 找不到） | `DefaultListableBeanFactory#doResolveDependency`、`DefaultListableBeanFactory#getBeanNamesForType` | [03](dependency-injection-resolution.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansLabTest.java`（`missingBeanLookupsFailFast()`） |
+| `NoUniqueBeanDefinitionException` | 候选太多且无法唯一化（典型：单依赖注入时同类型有多个候选） | `DefaultListableBeanFactory#doResolveDependency`、`DefaultListableBeanFactory#determineAutowireCandidate`、`DefaultListableBeanFactory#determinePrimaryCandidate` | [03](dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansAutowireCandidateSelectionLabTest.java`（`orderAnnotation_doesNotResolveSingleInjectionAmbiguity()`） |
+| `UnsatisfiedDependencyException` | “注入失败”的总包装：可能是没有候选、候选太多、类型不匹配、创建链路失败（它经常包着真正 root cause） | `DefaultListableBeanFactory#doResolveDependency`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`AbstractAutowireCapableBeanFactory#populateBean` | [03](dependency-injection-resolution.md)、[30](injection-phase.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java`（`unsatisfiedDependency_failsFast()`） |
+| `BeanCurrentlyInCreationException` | 循环依赖/提前暴露相关：某个 bean 正在创建中又被请求（构造器循环依赖最常见） | `DefaultSingletonBeanRegistry#getSingleton`、`DefaultSingletonBeanRegistry#beforeSingletonCreation`、`AbstractBeanFactory#doGetBean` | [09](circular-dependency.md)、[16](early-reference-and-three-level-cache.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansContainerLabTest.java`（`circularDependencyWithConstructorsFailsFast()`） |
+| `Circular depends-on relationship`（message） | **定义层拓扑环**：人为写了 `dependsOn A -> B -> A`；不要误判成“循环依赖/三级缓存” | `AbstractBeanFactory#doGetBean`、`DefaultSingletonBeanRegistry#registerDependentBean`、`DefaultSingletonBeanRegistry#isDependent` | [19](depends-on.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansDependsOnLabTest.java`（`dependsOn_cycle_failsFast()`） |
+| `BeanCreationException` | bean 创建链路失败（构造器异常 / init 回调异常 / BPP 包装失败 / 循环依赖失败等都会落到这里） | `AbstractAutowireCapableBeanFactory#doCreateBean`、`AbstractAutowireCapableBeanFactory#createBeanInstance`、`AbstractAutowireCapableBeanFactory#initializeBean` | [00](guide-deep-dive-guide.md)、[12](container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansPreInstantiationLabTest.java`（`withoutBeforeInstantiationShortCircuit_refreshFailsAndConstructorWasCalled()`） |
+| `BeanDefinitionStoreException` | definition 解析/注册阶段失败（XML/注解解析/占位符等；通常发生在 refresh 前半段） | `XmlBeanDefinitionReader#loadBeanDefinitions`、`DefaultListableBeanFactory#registerBeanDefinition`、`AbstractApplicationContext#refresh` | [02](ioc-bean-registration.md)、[12](container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part02_boot_autoconfig/SpringCoreBeansExceptionNavigationLabTest.java`（`beanDefinitionStoreException_invalidXml()`） |
+| （无异常）`@Autowired/@Resource/@PostConstruct` 不生效（字段为 null / 回调未执行） | 容器没装“注解能力基础设施”（annotation processors 未注册/未生效）；常见于 `GenericApplicationContext` 手工启动 | `AnnotationConfigUtils#registerAnnotationConfigProcessors`、`PostProcessorRegistrationDelegate#registerBeanPostProcessors`、`AutowiredAnnotationBeanPostProcessor#postProcessProperties`、`CommonAnnotationBeanPostProcessor#postProcessProperties` | [12](container-bootstrap-and-infrastructure.md)、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBootstrapInternalsLabTest.java`（`withoutAnnotationConfigProcessors_autowiredAndPostConstructAreNotApplied()`）、`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansResourceInjectionLabTest.java`（`withoutAnnotationConfigProcessors_resourceIsIgnored()`） |
 
 > 小技巧：如果断点命中次数太多，先加条件（例如 `beanName.equals("xxx")`），再去看调用栈；深入分析路线见 [00](guide-deep-dive-guide.md)。
 
@@ -500,9 +500,9 @@ mvn -pl :spring-core-beans spring-boot:run
 > 官方参考（Spring Boot 3.5.9，Spring Boot Auto-configuration）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
 
 
-- [依赖注入解析](ioc-dependency-injection-resolution.md)
-- [Scope 与 prototype 注入陷阱](ioc-scope-and-prototype.md)
-- [生命周期](ioc-lifecycle-and-callbacks.md)
+- [依赖注入解析](dependency-injection-resolution.md)
+- [Scope 与 prototype 注入陷阱](scope-and-prototype.md)
+- [生命周期](lifecycle-callbacks.md)
 
 ## 验收口径：调试与自检：如何“观察到”容器正在做什么
 - 是否能把一个现象先分层：定义层（注册/条件/顺序）vs 实例层（注入/生命周期/代理）？

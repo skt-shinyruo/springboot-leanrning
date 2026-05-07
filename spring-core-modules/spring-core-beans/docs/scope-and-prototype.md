@@ -254,7 +254,7 @@ scoped proxy 常见被误解成“把 prototype 变成了一个单例”，但�
 | prototype 注入到 singleton 后“总是同一个” | 获取动作只发生在 singleton 创建时 | 断点 `doResolveDependency`；观察 prototype 的 `doGetBean("p")` 只发生一次 | 使用 `ObjectProvider` / `@Lookup` 延迟获取；或改 scope | `SpringCoreBeansLabTest` |
 | `@Lookup` 不生效 | final 类/方法无法覆盖；或没被容器增强 | 断点 `CglibSubclassingInstantiationStrategy`（可选）；观察目标类是否被增强 | 避免 final；优先用 `ObjectProvider` | `SpringCoreBeansContainerLabTest.lookupMethodCanObtainFreshPrototypeEachCall` |
 | prototype 的 `@PreDestroy` 不触发 | 容器默认不托管 prototype 的销毁 | `DefaultSingletonBeanRegistry#destroySingletons` 不会遍历 prototype；prototype 不进入 `disposableBeans` | 调用方显式销毁；或改为 singleton + 显式资源管理 | `SpringCoreBeansPrototypeDestroySemanticsLabTest` |
-| scoped proxy 行为“像代理/类型不对” | 注入的是代理而不是目标对象 | 观察注入对象是否为 proxy；看 scopedTarget 命名 | 明确按接口注入；理解代理边界；优先用 provider | `SpringCoreBeansCustomScopeLabTest`（结合 [28](wiring-custom-scope-and-scoped-proxy.md)） |
+| scoped proxy 行为“像代理/类型不对” | 注入的是代理而不是目标对象 | 观察注入对象是否为 proxy；看 scopedTarget 命名 | 明确按接口注入；理解代理边界；优先用 provider | `SpringCoreBeansCustomScopeLabTest`（结合 [28](custom-scope-and-scoped-proxy.md)） |
 
 ## 练习与参考答案（Exercise ↔ Solution）
 

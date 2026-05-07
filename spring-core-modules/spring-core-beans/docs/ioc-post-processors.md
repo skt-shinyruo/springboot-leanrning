@@ -136,9 +136,9 @@
 
 **关联阅读（把这张图落到本仓库可断言闭环）：**
 
-- 实例化前短路：[`internals-pre-instantiation-short-circuit.md`](internals-pre-instantiation-short-circuit.md)
-- early reference：[`internals-early-reference-and-circular.md`](internals-early-reference-and-circular.md)
-- merged definition：[`wiring-merged-bean-definition.md`](wiring-merged-bean-definition.md)
+- 实例化前短路：[`pre-instantiation-short-circuit.md`](pre-instantiation-short-circuit.md)
+- early reference：[`early-reference-and-three-level-cache.md`](early-reference-and-three-level-cache.md)
+- merged definition：[`merged-bean-definition.md`](merged-bean-definition.md)
 - 销毁链路：[`internals-lifecycle-callback-order.md`](internals-lifecycle-callback-order.md)
 
 ## 顺序（Ordering）：同一个扩展点里也要先分组再排序

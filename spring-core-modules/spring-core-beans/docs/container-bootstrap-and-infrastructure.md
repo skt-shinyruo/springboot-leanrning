@@ -447,9 +447,9 @@ GenericApplicationContext#refresh
       - `AbstractBeanFactory#doGetBean`
         - `AbstractAutowireCapableBeanFactory#doCreateBean`
           - `applyMergedBeanDefinitionPostProcessors`
-            - 一些基础设施 BPP 会在这里“基于 merged BD 缓存元数据”（见 [35](wiring-merged-bean-definition.md)）
+            - 一些基础设施 BPP 会在这里“基于 merged BD 缓存元数据”（见 [35](merged-bean-definition.md)）
           - `populateBean`
-            - `AutowiredAnnotationBeanPostProcessor#postProcessProperties`（`@Autowired/@Value` 注入点解析与赋值，见 [30](wiring-injection-phase-field-vs-constructor.md)）
+            - `AutowiredAnnotationBeanPostProcessor#postProcessProperties`（`@Autowired/@Value` 注入点解析与赋值，见 [30](injection-phase.md)）
             - `CommonAnnotationBeanPostProcessor#postProcessProperties`（`@Resource` 注入）
           - `initializeBean`
             - `InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization`（`@PostConstruct` 触发）

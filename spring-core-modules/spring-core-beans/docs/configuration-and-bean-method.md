@@ -190,7 +190,7 @@ ConfigB configB(ConfigA a) {
    - 可运行入口：
      - `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalse_stillPreservesSingleton_whenUsingMethodParameterInjection`
      - `SpringCoreBeansContainerLabTest#liteConfiguration_stillPreservesSingleton_whenUsingMethodParameterInjection`
-   - 关联章节：依赖解析的“候选收敛/注入点元数据证据链”见 [03](ioc-dependency-injection-resolution.md)
+   - 关联章节：依赖解析的“候选收敛/注入点元数据证据链”见 [03](dependency-injection-resolution.md)
 
 ## 实验：把现象固定成断言
 

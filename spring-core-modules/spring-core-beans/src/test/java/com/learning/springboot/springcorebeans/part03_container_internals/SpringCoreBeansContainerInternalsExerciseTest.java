@@ -21,7 +21,7 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         - 把 scoped bean 注入 singleton 时必须通过 ObjectProvider 或 scoped proxy 才能按 conversation 解析。
 
                         推荐步骤：
-                        1) 先阅读：`spring-core-modules/spring-core-beans/docs/wiring-custom-scope-and-scoped-proxy.md`
+                        1) 先阅读：`spring-core-modules/spring-core-beans/docs/custom-scope-and-scoped-proxy.md`
                         2) 写一个最小 scope 实现：get/remove/registerDestructionCallback/getConversationId
                         3) 用 `beanFactory.registerScope("conversation", new YourScope())` 注册
                         4) 写一个 lab 风格的小测试：两个不同 conversationId 断言两个不同实例
@@ -41,7 +41,7 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         练习：扩展 SmartLifecycle：增加 3 个不同 phase 的组件，并验证 start/stop 全序列。
 
                         推荐步骤：
-                        1) 先读：`spring-core-modules/spring-core-beans/docs/wiring-smart-lifecycle-phase.md`
+                        1) 先读：`spring-core-modules/spring-core-beans/docs/smart-lifecycle.md`
                         2) 在 `SpringCoreBeansSmartLifecycleLabTest` 的基础上增加更多组件：phase=-1/0/1
                         3) 写断言验证：start 升序、stop 反序
                         4) 同 phase 的顺序如果不稳定：
@@ -113,7 +113,7 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         推荐步骤：
                         1) 先跑并读懂 Labs：
                            - `SpringCoreBeansInjectionPhaseLabTest`
-                           - `spring-core-modules/spring-core-beans/docs/wiring-injection-phase-field-vs-constructor.md`
+                           - `spring-core-modules/spring-core-beans/docs/injection-phase.md`
                         2) 设计 3 种“可选依赖”写法并对照验证：
                            - `@Autowired(required=false)`（field 或 setter）
                            - `ObjectProvider<T>`（constructor 注入 provider，再 `getIfAvailable()`）

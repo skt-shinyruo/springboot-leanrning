@@ -679,10 +679,10 @@ Spring 默认会尽量避免这种“raw injection despite wrapping”，否则�
 
 主线走通后，用“专题页”把每个关键分支补齐细节：
 
-- 后处理器与顺序：[internals-post-processor-ordering.md](internals-post-processor-ordering.md)
-- BDRPP 注册与定义扩张：[internals-bdrpp-definition-registration.md](internals-bdrpp-definition-registration.md)
-- 预实例化短路：[internals-pre-instantiation-short-circuit.md](internals-pre-instantiation-short-circuit.md)
-- early reference 与循环依赖：[internals-early-reference-and-circular.md](internals-early-reference-and-circular.md)
+- 后处理器与顺序：[post-processor-ordering.md](post-processor-ordering.md)
+- BDRPP 注册与定义扩张：[bdrpp-definition-registration.md](bdrpp-definition-registration.md)
+- 预实例化短路：[pre-instantiation-short-circuit.md](pre-instantiation-short-circuit.md)
+- early reference 与循环依赖：[early-reference-and-three-level-cache.md](early-reference-and-three-level-cache.md)
 - 生命周期回调顺序：[internals-lifecycle-callback-order.md](internals-lifecycle-callback-order.md)
 
 可以发现：这些文件不是“散点知识”，而是主线上的分支专题。

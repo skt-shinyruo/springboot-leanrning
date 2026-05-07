@@ -98,7 +98,7 @@
 - `@Lookup`
 - scoped proxy（谨慎）
 
-见：[Scope 与 prototype 注入陷阱](ioc-scope-and-prototype.md)
+见：[Scope 与 prototype 注入陷阱](scope-and-prototype.md)
 
 - 现象：prototype 注入 singleton 后“表面上像单例”
 - 证据链：`AbstractBeanFactory#doGetBean` → `AbstractAutowireCapableBeanFactory#populateBean`
@@ -112,7 +112,7 @@
 - `@Order` 更常用于集合注入的排序
 - 单一依赖的候选选择应优先依据 `@Primary`、`@Qualifier` 等
 
-见：[依赖注入解析](ioc-dependency-injection-resolution.md)
+见：[依赖注入解析](dependency-injection-resolution.md)
 
 - 现象：集合注入顺序不稳定
 - 证据链：`AnnotationAwareOrderComparator#sort`
@@ -139,7 +139,7 @@
 
 - 用 `@Bean` 方法参数声明依赖
 
-见：[@Configuration 增强](ioc-configuration-enhancement.md)
+见：[@Configuration 增强](configuration-and-bean-method.md)
 
 - 现象：`proxyBeanMethods=false` 时出现多实例/方法互调失效
 - 证据链：`ConfigurationClassPostProcessor` → `ConfigurationClassEnhancer`
@@ -158,7 +158,7 @@
 - `"name"` → product
 - `"&name"` → factory
 
-见：[FactoryBean](ioc-factorybean.md)
+见：[FactoryBean](factorybean.md)
 
 - 现象：`getBean("x")` 获取到的不是 FactoryBean 本体
 - 证据链：`AbstractBeanFactory#getObjectForBeanInstance`（`&` 分支）
@@ -173,7 +173,7 @@
 - 半初始化对象、代理、生命周期都会让问题变复杂
 - Boot 环境里可能默认更严格，直接不让阅读者启动
 
-见：[循环依赖](ioc-circular-dependencies.md)
+见：[循环依赖](circular-dependency.md)
 
 - 现象：setter 循环勉强可启动，但运行期行为不稳定
 - 证据链：`DefaultSingletonBeanRegistry#singletonFactories` / `getEarlyBeanReference`
@@ -191,7 +191,7 @@
 
 - 学会看条件报告（`--debug` / `debug=true`）
 
-见：[Boot 自动装配](boot-spring-boot-auto-configuration.md) 与 [调试](boot-debugging-and-observability.md)
+见：[Boot 自动装配](boot-auto-configuration-beans.md) 与 [调试](boot-debugging-and-observability.md)
 
 - 现象：以为“自动装配=自动注入”，实际只是定义层导入
 - 证据链：`AutoConfigurationImportSelector` / `BeanDefinitionRegistry`
@@ -237,7 +237,7 @@
 
 - 对应实验/测试：`SpringCoreBeansAutowireCandidateSelectionLabTest#primaryOverridesPriority_forSingleInjection`
 
-见：[依赖注入解析](ioc-dependency-injection-resolution.md)
+见：[依赖注入解析](dependency-injection-resolution.md)
 
 ### 9) 以为 `@Primary` 能“覆盖一切”
 
@@ -250,7 +250,7 @@
 
 - 对应实验/测试：`SpringCoreBeansAutowireCandidateSelectionLabTest`（优先级/primary 的对比）
 
-见：[依赖注入解析](ioc-dependency-injection-resolution.md) 与 [`@Resource` 注入](wiring-resource-injection-name-first.md)
+见：[依赖注入解析](dependency-injection-resolution.md) 与 [`@Resource` 注入](resource-vs-autowired.md)
 
 - 现象：`@Primary` 未生效，被 `@Qualifier/@Resource` 覆盖
 - 证据链：`DefaultListableBeanFactory#determineAutowireCandidate`
@@ -272,20 +272,20 @@
 
 - 对应实验/测试：`SpringCoreBeansAutowireCandidateSelectionLabTest#orderAnnotation_affectsCollectionInjectionOrder`
 
-见：[依赖注入解析](ioc-dependency-injection-resolution.md)
+见：[依赖注入解析](dependency-injection-resolution.md)
 
 ### 11) 以为 `@PostConstruct` 发生在“构造器之前”
 
 事实：
 
 - `@PostConstruct` 发生在：实例化完成 + 依赖注入完成之后（属于初始化阶段的一部分）
-- 它依赖后处理器触发（不是 Java 语法自带能力），见 [容器启动与基础设施处理器：为什么注解能工作？](internals-container-bootstrap-and-infrastructure.md)
+- 它依赖后处理器触发（不是 Java 语法自带能力），见 [容器启动与基础设施处理器：为什么注解能工作？](container-bootstrap-and-infrastructure.md)
 
 如何验证：
 
 - 对应实验/测试：`SpringCoreBeansLifecycleCallbackOrderLabTest#singletonLifecycleCallbacks_happenInAStableOrderAroundInitialization`
 
-见：[生命周期：初始化、销毁与回调](ioc-lifecycle-and-callbacks.md) 与 [容器启动与基础设施处理器](internals-container-bootstrap-and-infrastructure.md)
+见：[生命周期：初始化、销毁与回调](lifecycle-callbacks.md) 与 [容器启动与基础设施处理器](container-bootstrap-and-infrastructure.md)
 
 - 现象：以为 `@PostConstruct` 在构造器前触发
 - 证据链：`AbstractAutowireCapableBeanFactory#initializeBean` → `InitDestroyAnnotationBeanPostProcessor`
@@ -303,7 +303,7 @@
 
 - 对应实验/测试：`SpringCoreBeansProxyingPhaseLabTest#beanPostProcessorCanReturnAProxyAsTheFinalExposedBean_andSelfInvocationStillBypassesTheProxy`
 
-见：[代理/替换阶段：BPP 如何把 Bean 换成 Proxy](wiring-proxying-phase-bpp-wraps-bean.md)
+见：[代理/替换阶段：BPP 如何把 Bean 换成 Proxy](proxying-phase.md)
 
 - 现象：bean 被代理/替换导致类型不匹配或自调用失效
 - 证据链：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
@@ -315,13 +315,13 @@
 事实：
 
 - setter 循环能救，靠的是“提前暴露引用”（early singleton exposure），这意味着可能获取到半初始化对象
-- 一旦代理介入，early 与 final 不一致会让问题更隐蔽（见 [early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](internals-early-reference-and-circular.md)）
+- 一旦代理介入，early 与 final 不一致会让问题更隐蔽（见 [early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](early-reference-and-three-level-cache.md)）
 
 如何验证：
 
 - 对应实验/测试：`SpringCoreBeansEarlyReferenceLabTest#getEarlyBeanReference_canProvideEarlyProxyDuringCircularDependencyResolution`
 
-见：[循环依赖](ioc-circular-dependencies.md) 与 [early reference 与循环依赖](internals-early-reference-and-circular.md)
+见：[循环依赖](circular-dependency.md) 与 [early reference 与循环依赖](early-reference-and-three-level-cache.md)
 
 - 现象：循环依赖启动成功但运行期异常/代理不一致
 - 证据链：`DefaultSingletonBeanRegistry#addSingletonFactory` / `getEarlyBeanReference`
@@ -339,7 +339,7 @@
 
 - 对应实验/测试：`SpringCoreBeansFactoryBeanEdgeCasesLabTest#factoryBeanWithNullObjectType_isNotDiscoverableByTypeWithoutEagerInit_butCanStillBeRetrievedByName`
 
-见：[FactoryBean](ioc-factorybean.md)、[FactoryBean 深潜](wiring-factorybean-deep-dive.md)、[FactoryBean 边界](wiring-factorybean-edge-cases.md)
+见：[FactoryBean](factorybean.md)、[FactoryBean 深潜](wiring-factorybean-deep-dive.md)、[FactoryBean 边界](wiring-factorybean-edge-cases.md)
 
 - 现象：按类型扫描/条件判断找不到 FactoryBean product
 - 证据链：`FactoryBeanRegistrySupport#getTypeForFactoryBean` / `isTypeMatch`
@@ -364,7 +364,7 @@
 - 修复：改为参数注入或开启 `proxyBeanMethods=true`
 - 验证：`SpringCoreBeansContainerLabTest`
 
-见：[@Configuration 增强](ioc-configuration-enhancement.md)
+见：[@Configuration 增强](configuration-and-bean-method.md)
 
 ### 16) 以为“按泛型找 bean（Handler<String>）一定可靠”
 
@@ -382,7 +382,7 @@
 
 - 对应实验/测试：`SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenCandidateLosesGenericInformation_likeJdkProxySingleton`
 
-见：[泛型匹配与注入误区](wiring-generic-type-matching-pitfalls.md)
+见：[泛型匹配与注入误区](generic-type-matching.md)
 
 - 现象：按泛型类型找不到候选（但按原始类型可用）
 - 证据链：`GenericTypeAwareAutowireCandidateResolver#checkGenericTypeMatch`
@@ -405,7 +405,7 @@
 
 - 对应实验/测试：`SpringCoreBeansTypeConversionLabTest`
 
-见：[类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](wiring-type-conversion-and-beanwrapper.md)
+见：[类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](type-conversion-and-beanwrapper.md)
 
 - 现象：定义层字符串在属性填充阶段被转换成目标类型
 - 证据链：`AbstractAutowireCapableBeanFactory#applyPropertyValues` → `TypeConverterDelegate#convertIfNecessary`

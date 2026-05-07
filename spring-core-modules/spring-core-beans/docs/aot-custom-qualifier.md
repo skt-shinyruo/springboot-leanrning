@@ -63,7 +63,7 @@
 
 对照阅读：
 
-- [依赖注入解析：候选收集→候选收敛→最终注入](ioc-dependency-injection-resolution.md)
+- [依赖注入解析：候选收集→候选收敛→最终注入](dependency-injection-resolution.md)
 - [候选选择与优先级：@Primary/@Priority/@Order 的边界](wiring-autowire-candidate-selection-primary-priority-order.md)
 
 ## DependencyDescriptor 深入分析：注入点语义决定“Qualifier 是否生效”
@@ -150,7 +150,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
 
 ## 边界：自定义 Qualifier：meta-annotation 与候选收敛
 
-- [依赖注入解析：类型/名称/@Qualifier/@Primary](ioc-dependency-injection-resolution.md)
+- [依赖注入解析：类型/名称/@Qualifier/@Primary](dependency-injection-resolution.md)
 - [候选选择与优先级：@Primary/@Priority/@Order 的边界](wiring-autowire-candidate-selection-primary-priority-order.md)
 
 ## 误判点：自定义 Qualifier：meta-annotation 与候选收敛

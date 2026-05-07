@@ -24,7 +24,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-lazy-semantics.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/lazy-semantics.md`
 - 深化落点：
     - `SpringCoreBeansLazyLabTest`（再对照 `SpringCoreBeansLazyLabTest#lazyInjectionPoint_canDeferCreationOfLazyBeanUntilFirstUse`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -32,7 +32,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### dependsOn：强制初始化顺序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-depends-on.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/depends-on.md`
 - 深化落点：
     - `SpringCoreBeansDependsOnLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#doGetBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -40,7 +40,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### registerResolvableDependency：能注入但不是 Bean
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-resolvable-dependency.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/resolvable-dependency.md`
 - 深化落点：
     - `SpringCoreBeansResolvableDependencyLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#resolvableDependencies` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -48,7 +48,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### 父子 ApplicationContext：可见性与覆盖边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-context-hierarchy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/context-hierarchy.md`
 - 深化落点：
     - `SpringCoreBeansContextHierarchyLabTest`（再对照 `SpringCoreBeansContextHierarchyLabTest.childContext_canSeeParentBeans_butParentCannotSeeChildBeans()`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#doGetBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -72,7 +72,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### BeanDefinition 覆盖（overriding）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-bean-definition-overriding.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/bean-definition-overriding.md`
 - 深化落点：
     - `SpringCoreBeansBeanDefinitionOverridingLabTest`（再对照 `SpringCoreBeansBeanDefinitionOriginLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#setAllowBeanDefinitionOverriding(...)` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -80,7 +80,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### 手工添加 BeanPostProcessor：顺序与陷阱
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-programmatic-bpp-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/programmatic-bpp-registration.md`
 - 深化落点：
     - `SpringCoreBeansProgrammaticBeanPostProcessorLabTest#programmaticallyAddedBpp_runsBeforeBeanDefinedBpp_evenIfBeanDefinedIsPriorityOrdered`（再对照 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultListableBeanFactory#addBeanPostProcessor` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -88,7 +88,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### SmartInitializingSingleton：单例创建完之后再做事
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-smart-initializing-singleton.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/smart-initializing-singleton.md`
 - 深化落点：
     - `SpringCoreBeansSmartInitializingSingletonLabTest`（再对照 `SpringCoreBeansSmartInitializingSingletonLabTest#afterSingletonsInstantiated_runsAfterNonLazySingletons_andBeforeLazyBeans`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractApplicationContext#finishBeanFactoryInitialization` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -96,7 +96,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### SmartLifecycle：start/stop 时机与 phase 顺序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-smart-lifecycle-phase.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/smart-lifecycle.md`
 - 深化落点：
     - `SpringCoreBeansSmartLifecycleLabTest`（再对照 `SpringCoreBeansSmartLifecycleLabTest#smartLifecycleDoesNotAutoStart_whenIsAutoStartupIsFalse`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractApplicationContext#finishRefresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -104,7 +104,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### 自定义 Scope + scoped proxy
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-custom-scope-and-scoped-proxy.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/custom-scope-and-scoped-proxy.md`
 - 深化落点：
     - `SpringCoreBeansCustomScopeLabTest#threadScope_createsOneInstancePerThread_whenAccessedDirectly`（再对照 `SpringCoreBeansCustomScopeLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#doGetBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -120,7 +120,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### 注入阶段：field vs constructor（postProcessProperties）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-injection-phase-field-vs-constructor.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/injection-phase.md`
 - 深化落点：
     - `SpringCoreBeansInjectionPhaseLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#autowireConstructor` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -128,7 +128,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### 代理产生阶段：BPP 如何换成 Proxy（self-invocation）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-proxying-phase-bpp-wraps-bean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/proxying-phase.md`
 - 深化落点：
     - `SpringCoreBeansBeanCreationTraceLabTest`（再对照 `SpringCoreBeansProxyingPhaseLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -136,7 +136,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### `@Resource` 注入：name-first
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-resource-injection-name-first.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/resource-vs-autowired.md`
 - 深化落点：
     - `SpringCoreBeansResourceInjectionLabTest#withoutAnnotationConfigProcessors_resourceIsIgnored`（再对照 `SpringCoreBeansResourceInjectionLabTest#registerAnnotationConfigProcessors_enablesResourceAndResolvesByNameFirst`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#populateBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -152,7 +152,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### `@Value("${...}")` 占位符解析：strict vs non-strict
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-value-placeholder-resolution-strict-vs-non-strict.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/value-placeholder-resolution.md`
 - 深化落点：
     - `SpringCoreBeansValuePlaceholderResolutionLabTest`（再对照 `SpringCoreBeansValuePlaceholderResolutionLabTest#defaultEmbeddedValueResolver_resolvesExistingProperty_butLeavesMissingPlaceholderUnresolved`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#resolveEmbeddedValue` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -160,7 +160,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### MergedBeanDefinition：RootBeanDefinition 从哪里来？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-merged-bean-definition.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/merged-bean-definition.md`
 - 深化落点：
     - `SpringCoreBeansMergedBeanDefinitionLabTest`，把本章要解释的现象跑出来（能稳定复现）。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#getMergedLocalBeanDefinition` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -168,7 +168,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### 类型转换：BeanWrapper / ConversionService / PropertyEditor
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-type-conversion-and-beanwrapper.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/type-conversion-and-beanwrapper.md`
 - 深化落点：
     - `SpringCoreBeansTypeConversionLabTest`（再对照 `SpringCoreBeansBeansSupportUtilitiesLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#populateBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -176,7 +176,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### 泛型匹配陷阱：ResolvableType 与代理导致类型信息丢失
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-generic-type-matching-pitfalls.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/generic-type-matching.md`
 - 深化落点：
     - `SpringCoreBeansGenericTypeMatchingPitfallsLabTest`（再对照 `SpringCoreBeansGenericTypeMatchingPitfallsLabTest#genericTypeMatching_canFailWhenTypeInfoIsLost`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `BeanDefinition#getResolvableType` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -184,7 +184,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### Environment/PropertySource：优先级与排障主线
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-environment-and-propertysource.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/environment-and-propertysource.md`
 - 深化落点：
     - `SpringCoreBeansEnvironmentPropertySourceLabTest`（再对照 `SpringCoreBeansProfileRegistrationLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `PropertySourcesPropertyResolver#getProperty` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -192,7 +192,7 @@ Wiring & Boundaries 章节处理的是工程里最容易误判的边界：Lazy�
 
 ### BeanFactory API 深入分析：接口族谱与手动 bootstrap 边界
 
-- 文件：`spring-core-modules/spring-core-beans/docs/wiring-beanfactory-api-deep-dive.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/beanfactory-api-and-autowirecapablebeanfactory.md`
 - 深化落点：
     - `SpringCoreBeansBeanFactoryApiLabTest`（再对照 `SpringCoreBeansBeanFactoryVsApplicationContextLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

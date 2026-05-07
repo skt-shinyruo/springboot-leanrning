@@ -64,7 +64,7 @@ class SpringCoreBeansExerciseTest {
                         3) 让本断言通过。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-beans/docs/ioc-dependency-injection-resolution.md`
+                        - `spring-core-modules/spring-core-beans/docs/dependency-injection-resolution.md`
                         """)
                 .isEqualTo("hello");
     }
@@ -85,7 +85,7 @@ class SpringCoreBeansExerciseTest {
                         3) 让本断言变绿。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-beans/docs/ioc-scope-and-prototype.md`
+                        - `spring-core-modules/spring-core-beans/docs/scope-and-prototype.md`
                         """)
                 .isNotEqualTo(second);
     }
@@ -139,7 +139,7 @@ class SpringCoreBeansExerciseTest {
                             - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionAmbiguityLabTest.java`
 
                             建议阅读：
-                            - `spring-core-modules/spring-core-beans/docs/ioc-dependency-injection-resolution.md`
+                            - `spring-core-modules/spring-core-beans/docs/dependency-injection-resolution.md`
                             - `spring-core-modules/spring-core-beans/docs/wiring-autowire-candidate-selection-primary-priority-order.md`
                             """)
                     .isEqualTo("primary");
@@ -162,7 +162,7 @@ class SpringCoreBeansExerciseTest {
                         3) 让本断言变绿。
 
                         建议阅读：
-                        - `spring-core-modules/spring-core-beans/docs/ioc-scope-and-prototype.md`
+                        - `spring-core-modules/spring-core-beans/docs/scope-and-prototype.md`
                         """)
                 .isEqualTo(provider2);
     }

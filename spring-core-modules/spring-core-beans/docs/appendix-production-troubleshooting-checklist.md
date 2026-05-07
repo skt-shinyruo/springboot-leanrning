@@ -55,14 +55,14 @@
 | 现象（Symptoms） | 首要阶段 | 第一断点（最短证据链） | 第一章（最短阅读） | 对应 Lab |
 | --- | --- | --- | --- | --- |
 | 扫不到/导不进（NoSuchBeanDefinition） | 定义层 | `DefaultListableBeanFactory#registerBeanDefinition` | `ioc-bean-registration.md` | `SpringCoreBeansComponentScanLabTest` / `SpringCoreBeansImportLabTest` |
-| 多候选歧义（NoUniqueBeanDefinition） | 注入解析 | `DefaultListableBeanFactory#doResolveDependency` | `ioc-dependency-injection-resolution.md` | `SpringCoreBeansAutowireCandidateSelectionLabTest` |
-| 代理不生效（像绕过 AOP） | 创建/after-init | `applyBeanPostProcessorsAfterInitialization` | `wiring-proxying-phase-bpp-wraps-bean.md` | `SpringCoreBeansProxyingPhaseLabTest`（或对应分支矩阵） |
-| 循环依赖异常/行为诡异 | 创建层（窗口期） | `DefaultSingletonBeanRegistry#getSingleton` | `ioc-circular-dependencies.md` | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
-| `@Value` 值不对/缺失不失败 | 定义层 + 注入阶段 | `AbstractBeanFactory#resolveEmbeddedValue` | `wiring-value-placeholder-resolution-strict-vs-non-strict.md` | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
-| `FactoryBean` 获取到的不是容易误以为的对象 | getBean 分流 | `AbstractBeanFactory#doGetBean` | `ioc-factorybean.md` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
-| Boot 自动装配“偶发失效” | 定义层顺序 | `AutoConfigurationImportSelector#selectImports` | `boot-auto-config-ordering.md` | `SpringCoreBeansAutoConfigurationOrderingLabTest` |
+| 多候选歧义（NoUniqueBeanDefinition） | 注入解析 | `DefaultListableBeanFactory#doResolveDependency` | `dependency-injection-resolution.md` | `SpringCoreBeansAutowireCandidateSelectionLabTest` |
+| 代理不生效（像绕过 AOP） | 创建/after-init | `applyBeanPostProcessorsAfterInitialization` | `proxying-phase.md` | `SpringCoreBeansProxyingPhaseLabTest`（或对应分支矩阵） |
+| 循环依赖异常/行为诡异 | 创建层（窗口期） | `DefaultSingletonBeanRegistry#getSingleton` | `circular-dependency.md` | `SpringCoreBeansCircularDependencyBoundaryLabTest` |
+| `@Value` 值不对/缺失不失败 | 定义层 + 注入阶段 | `AbstractBeanFactory#resolveEmbeddedValue` | `value-placeholder-resolution.md` | `SpringCoreBeansValuePlaceholderResolutionLabTest` |
+| `FactoryBean` 获取到的不是容易误以为的对象 | getBean 分流 | `AbstractBeanFactory#doGetBean` | `factorybean.md` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
+| Boot 自动装配“偶发失效” | 定义层顺序 | `AutoConfigurationImportSelector#selectImports` | `boot-auto-configuration-ordering.md` | `SpringCoreBeansAutoConfigurationOrderingLabTest` |
 | XML/namespace 解析失败 | 定义层输入 | `XmlBeanDefinitionReader#loadBeanDefinitions` | `aot-xml-bean-definition-reader.md` | `SpringCoreBeansXmlBeanDefinitionReaderLabTest` |
-| AOT/Native 行为缺失（反射/资源） | 构建期契约 | `RuntimeHintsRegistrar#registerHints` | `aot-runtimehints-basics.md` | `SpringCoreBeansAotRuntimeHintsLabTest` |
+| AOT/Native 行为缺失（反射/资源） | 构建期契约 | `RuntimeHintsRegistrar#registerHints` | `aot-runtimehints.md` | `SpringCoreBeansAotRuntimeHintsLabTest` |
 
 ---
 
@@ -79,7 +79,7 @@
    - 收敛规则：`determineAutowireCandidate` 的选择过程（Qualifier/Primary/Priority 是否参与）
    - 注入点语义：`DependencyDescriptor`（是否 required / 是否 @Lazy / 是否带 Qualifier）
 4. 最短下一跳：
-   - 章节：`ioc-dependency-injection-resolution.md`、`wiring-autowire-candidate-selection-primary-priority-order.md`
+   - 章节：`dependency-injection-resolution.md`、`wiring-autowire-candidate-selection-primary-priority-order.md`
    - 对照入口：`SpringCoreBeansAutowireCandidateSelectionLabTest`
 
 ### 代理不生效（像绕过 AOP）：先证“BPP 链是否完整”再证“替换是否发生”
@@ -93,7 +93,7 @@
    - 目标 bean 是否在 BPP 链完整前就被创建（过早实例化信号）
    - after-init 返回的对象是否发生替换（raw vs proxy）
 4. 最短下一跳：
-   - 章节：`wiring-proxying-phase-bpp-wraps-bean.md`、`wiring-programmatic-bpp-registration.md`
+   - 章节：`proxying-phase.md`、`programmatic-bpp-registration.md`
    - 对照入口：`SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`
 
 ### 循环依赖/early reference：先区分 constructor vs setter，再看 early 与 final 是否一致
@@ -105,7 +105,7 @@
    - `singletonsCurrentlyInCreation`（是否处于创建窗口期）
    - early reference 的形态（raw vs proxy）与最终暴露对象是否一致
 4. 最短下一跳：
-   - 章节：`ioc-circular-dependencies.md`、`internals-early-reference-and-circular.md`
+   - 章节：`circular-dependency.md`、`early-reference-and-three-level-cache.md`
    - 对照入口：`SpringCoreBeansCircularDependencyBoundaryLabTest` / `SpringCoreBeansEarlyReferenceLabTest`
 
 ## 排障的最短闭环（把“感觉”压成可验证步骤）
@@ -192,7 +192,7 @@
 
 对应章节：
 
-- `ioc-dependency-injection-resolution.md`
+- `dependency-injection-resolution.md`
 - `wiring-autowire-candidate-selection-primary-priority-order.md`
 
 ### 2.3 代理不生效（事务/安全/缓存像没开）
@@ -213,8 +213,8 @@
 
 对应章节：
 
-- `wiring-proxying-phase-bpp-wraps-bean.md`
-- `wiring-programmatic-bpp-registration.md`
+- `proxying-phase.md`
+- `programmatic-bpp-registration.md`
 
 ### 2.4 循环依赖 / 提前引用相关（启动失败或行为诡异）
 
@@ -236,8 +236,8 @@
 
 对应章节：
 
-- `ioc-circular-dependencies.md`
-- `internals-early-reference-and-circular.md`
+- `circular-dependency.md`
+- `early-reference-and-three-level-cache.md`
 
 ### 2.5 `@Value` 值不对 / 缺失不失败 / 运行期才暴露
 
@@ -253,9 +253,9 @@
 
 对应章节：
 
-- `wiring-value-placeholder-resolution-strict-vs-non-strict.md`
+- `value-placeholder-resolution.md`
 - `aot-spel-and-value-expression.md`
-- `wiring-type-conversion-and-beanwrapper.md`
+- `type-conversion-and-beanwrapper.md`
 
 ---
 

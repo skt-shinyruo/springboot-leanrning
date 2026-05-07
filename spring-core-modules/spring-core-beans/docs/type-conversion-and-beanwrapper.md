@@ -83,7 +83,7 @@
 2. 先把 `"${...}"` / `"#{...}"` 交给 BeanFactory 做解析：`AbstractBeanFactory#resolveEmbeddedValue`
 3. 再把解析后的字符串交给类型转换：`convertIfNecessary(...)`
 
-这也是为什么占位符章节（[34](wiring-value-placeholder-resolution-strict-vs-non-strict.md)）和本章经常一起出现：
+这也是为什么占位符章节（[34](value-placeholder-resolution.md)）和本章经常一起出现：
 
 - 必须先确定：**字符串到底解析成了什么**，再谈转换。
 
@@ -185,11 +185,11 @@
 
 | 现象 | 最可能根因 | 优先入口 |
 | --- | --- | --- |
-| 注入值还是 `"${demo.missing}"` 原样字符串 | 占位符解析是 non-strict；或 key 不存在 | 先看 [34](wiring-value-placeholder-resolution-strict-vs-non-strict.md) + `resolveEmbeddedValue` |
+| 注入值还是 `"${demo.missing}"` 原样字符串 | 占位符解析是 non-strict；或 key 不存在 | 先看 [34](value-placeholder-resolution.md) + `resolveEmbeddedValue` |
 | `@ConfigurationProperties` 能转，`@Value` 转不了 | Binder vs 注入链路混淆（两套系统） | 先把场景缩小到本模块纯容器 Lab，再看本章 1.2/2 |
 | 自定义 `Converter` 写了但完全没生效 | ConversionService 没被安装到 BeanFactory；或走了 PropertyEditor 分支 | 断点 `TypeConverterDelegate#convertIfNecessary` 看 conversionService 是否为 null |
 | 报 `TypeMismatchException` / `ConversionNotSupportedException` | 字符串已解析，但没有合适 converter/editor | `convertIfNecessary` 看 requiredType 与分支 |
-| 读者怀疑是“属性注入”但断点没进 `applyPropertyValues` | 可能是构造注入或 @Value 注入（BPP 路径） | 去 [30](wiring-injection-phase-field-vs-constructor.md) 看注入阶段分流 |
+| 读者怀疑是“属性注入”但断点没进 `applyPropertyValues` | 可能是构造注入或 @Value 注入（BPP 路径） | 去 [30](injection-phase.md) 看注入阶段分流 |
 
 ---
 

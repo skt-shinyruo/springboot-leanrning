@@ -159,8 +159,8 @@ Spring 会把 `dependsOn` 这条关系写进 `DefaultSingletonBeanRegistry` 的�
 
 - **候选选择**问题：不会影响 `@Primary` / `@Qualifier` / `@Order` 的规则（见 [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)）
 - **循环依赖**问题：`dependsOn` 的环不是三级缓存能救的（它会 fail-fast）
-- **AOP 自调用**问题：代理是否生效与 dependsOn 无关（见 [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）](wiring-proxying-phase-bpp-wraps-bean.md)）
-- **BeanPostProcessor 顺序**问题：处理器顺序由 ordering 体系决定，而不是 dependsOn（见 [顺序（Ordering）：PriorityOrdered / Ordered / 无序](internals-post-processor-ordering.md)）
+- **AOP 自调用**问题：代理是否生效与 dependsOn 无关（见 [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）](proxying-phase.md)）
+- **BeanPostProcessor 顺序**问题：处理器顺序由 ordering 体系决定，而不是 dependsOn（见 [顺序（Ordering）：PriorityOrdered / Ordered / 无序](post-processor-ordering.md)）
 
 ## 可复现闭环（基于 `SpringCoreBeansDependsOnLabTest`）
 

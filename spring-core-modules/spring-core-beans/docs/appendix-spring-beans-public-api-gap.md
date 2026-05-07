@@ -82,9 +82,9 @@ Gap 清单的目标是：**把这些“容易漏”的公共能力做成可审�
 
 | 缺口点（机制域的细粒度短板） | 最短证据链入口（方法级） | 最小可跑入口（实验/测试） | 文档入口（Docs） | 状态 |
 | --- | --- | --- | --- | --- |
-| 程序化依赖解析：把 `resolveDependency(...)` 当成可编程 probe（无需真的把字段注入进对象） | `DefaultListableBeanFactory#resolveDependency` / `#doResolveDependency` | `SpringCoreBeansProgrammaticResolveDependencyLabTest` | `ioc-dependency-injection-resolution.md` / `wiring-autowire-candidate-selection-primary-priority-order.md` | ✅ 已补齐 |
+| 程序化依赖解析：把 `resolveDependency(...)` 当成可编程 probe（无需真的把字段注入进对象） | `DefaultListableBeanFactory#resolveDependency` / `#doResolveDependency` | `SpringCoreBeansProgrammaticResolveDependencyLabTest` | `dependency-injection-resolution.md` / `wiring-autowire-candidate-selection-primary-priority-order.md` | ✅ 已补齐 |
 | BeanDefinition 元数据 flags：primary/autowireCandidate/qualifiers 对候选收敛的影响（不仅是注解） | `determineAutowireCandidate` / `isAutowireCandidate` | `SpringCoreBeansBeanDefinitionMetadataFlagsLabTest` | `wiring-autowire-candidate-selection-primary-priority-order.md` | ✅ 已补齐 |
-| 基础设施 Bean 的 role：`ROLE_INFRASTRUCTURE` 如何帮助排障（把“注解能力”识别为基础设施处理器） | `AnnotationConfigUtils#registerAnnotationConfigProcessors` | `SpringCoreBeansInfrastructureBeanRoleLabTest` | `internals-container-bootstrap-and-infrastructure.md` | ✅ 已补齐 |
+| 基础设施 Bean 的 role：`ROLE_INFRASTRUCTURE` 如何帮助排障（把“注解能力”识别为基础设施处理器） | `AnnotationConfigUtils#registerAnnotationConfigProcessors` | `SpringCoreBeansInfrastructureBeanRoleLabTest` | `container-bootstrap-and-infrastructure.md` | ✅ 已补齐 |
 
 ## 源码调用链（方法级）定位模板（Gap 场景）
 

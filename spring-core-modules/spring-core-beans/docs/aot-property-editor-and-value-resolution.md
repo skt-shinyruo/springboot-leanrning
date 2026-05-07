@@ -233,7 +233,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 
 - `value` 的实际类型：`RuntimeBeanReference` / `ManagedList` / `TypedStringValue` / plain literal
 - `resolvedValue` / `convertedValue`：解析/转换后的最终值
-- `typeConverter` / `conversionService`：走 ConversionService 还是 PropertyEditor（可与 [36](wiring-type-conversion-and-beanwrapper.md) 对照）
+- `typeConverter` / `conversionService`：走 ConversionService 还是 PropertyEditor（可与 [36](type-conversion-and-beanwrapper.md) 对照）
 
 ## 边界：PropertyEditor 与 BeanDefinition 值解析
 
@@ -253,8 +253,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionValueResolutionLa
 | 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
 | --- | --- | --- | --- | --- |
 | 属性值是 `RuntimeBeanReference`，但最终没解析成对象 | 引用解析失败 / beanName 不存在 | 断点 `BeanDefinitionValueResolver#resolveValueIfNecessary`；看 `RuntimeBeanReference#getBeanName` | 修正 beanName/alias；确认定义是否注册 | `SpringCoreBeansBeanDefinitionValueResolutionLabTest` |
-| `TypedStringValue` 注入失败（TypeMismatch） | 转换链路没命中合适 converter/editor | 断点 `BeanWrapperImpl#setPropertyValues` / `TypeConverterDelegate#convertIfNecessary`；看 requiredType 与分支 | 安装/注册 ConversionService 或 PropertyEditor；区分占位符/SpEL/转换三连 | `SpringCoreBeansPropertyEditorLabTest`（配合 [36](wiring-type-conversion-and-beanwrapper.md)） |
-| 容易误以为“值已解析”，但占位符未解析 | embedded value resolver non-strict 放行 | 断点 `AbstractBeanFactory#resolveEmbeddedValue` | 启用 strict 或补齐 property source/key | [34](wiring-value-placeholder-resolution-strict-vs-non-strict.md) |
+| `TypedStringValue` 注入失败（TypeMismatch） | 转换链路没命中合适 converter/editor | 断点 `BeanWrapperImpl#setPropertyValues` / `TypeConverterDelegate#convertIfNecessary`；看 requiredType 与分支 | 安装/注册 ConversionService 或 PropertyEditor；区分占位符/SpEL/转换三连 | `SpringCoreBeansPropertyEditorLabTest`（配合 [36](type-conversion-and-beanwrapper.md)） |
+| 容易误以为“值已解析”，但占位符未解析 | embedded value resolver non-strict 放行 | 断点 `AbstractBeanFactory#resolveEmbeddedValue` | 启用 strict 或补齐 property source/key | [34](value-placeholder-resolution.md) |
 | PropertyEditor 行为偶发、并发下异常 | editor 有状态且非线程安全 | 看 editor 是否复用、是否共享实例（setValue） | 避免共享 editor 实例；优先用 ConversionService | 结合本章与性能/并发相关用例复盘 |
 
 ## 面试常问（BeanDefinition 值解析：为什么它不是“单纯 setProperty”）

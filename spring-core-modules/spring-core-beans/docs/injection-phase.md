@@ -56,7 +56,7 @@
 - 一个无参构造器（`no-arg`）
 - 一个带参数的构造器，并用 `@Autowired` 标记为注入构造器（`autowired`）
 
-当容器具备注解处理能力时（见 [容器启动与基础设施处理器：为什么注解能工作？](internals-container-bootstrap-and-infrastructure.md)），它会：
+当容器具备注解处理能力时（见 [容器启动与基础设施处理器：为什么注解能工作？](container-bootstrap-and-infrastructure.md)），它会：
 
 - 在实例化之前先决定“用哪个构造器”
 - 再解析构造器参数依赖
@@ -106,7 +106,7 @@
 
 若想把“注解能力从哪来”也串起来，请回看：
 
-- [容器启动与基础设施处理器：为什么注解能工作？](internals-container-bootstrap-and-infrastructure.md)
+- [容器启动与基础设施处理器：为什么注解能工作？](container-bootstrap-and-infrastructure.md)
 
 - **不要在构造器里依赖 field injection 的字段**：那一定是 `null`（这是机制决定的，不是偶然）
 - **必填依赖优先用 constructor injection**：更早失败、更容易测试、也更符合不可变设计
@@ -126,8 +126,8 @@
 
 - “构造器里访问 field injection 字段为 null” → **这是实例层阶段差异（预期）**：field injection 在实例化之后才发生（本章第 1 节）
 - “constructor injection 没走到带参构造器/选错构造器” → **实例层（构造器解析）**：看 `determineCandidateConstructors` 与 `autowireConstructor`（本章源码锚点）
-- “`@Autowired/@Value` 完全不生效” → **优先定义层/基础设施问题**：注解处理器是否注册？（见 [12](internals-container-bootstrap-and-infrastructure.md)）
-- “注入发生了但候选选择不符合预期” → **实例层（依赖解析）**：转到 [03](ioc-dependency-injection-resolution.md)/[33](wiring-autowire-candidate-selection-primary-priority-order.md)
+- “`@Autowired/@Value` 完全不生效” → **优先定义层/基础设施问题**：注解处理器是否注册？（见 [12](container-bootstrap-and-infrastructure.md)）
+- “注入发生了但候选选择不符合预期” → **实例层（依赖解析）**：转到 [03](dependency-injection-resolution.md)/[33](wiring-autowire-candidate-selection-primary-priority-order.md)
 
 对应实验/测试：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansInjectionPhaseLabTest.java`
 

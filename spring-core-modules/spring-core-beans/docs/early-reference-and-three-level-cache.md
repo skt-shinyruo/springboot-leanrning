@@ -77,7 +77,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
-上一章（[循环依赖](ioc-circular-dependencies.md)）已经建立了一个关键事实：
+上一章（[循环依赖](circular-dependency.md)）已经建立了一个关键事实：
 
 - setter/field 循环依赖之所以可能成功，是因为 singleton 创建过程里存在 **early exposure 窗口期**。
 
@@ -87,7 +87,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansRawInjectionDespiteWrappingLabT
 
 若忽略“形态一致性”，就会遇到两类灾难：
 
-- **功能绕过**：依赖方获取到 raw，调用链绕过事务/安全/缓存等代理增强（见 [代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](wiring-proxying-phase-bpp-wraps-bean.md)）
+- **功能绕过**：依赖方获取到 raw，调用链绕过事务/安全/缓存等代理增强（见 [代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](proxying-phase.md)）
 - **类型不匹配**：final 是 JDK proxy，但读者按实现类注入/获取，直接类型不匹配
 
 ### 机制边界：时机、形态与结果（可断点验证）

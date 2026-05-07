@@ -134,7 +134,7 @@ BDRPP 的价值在于：它可以在定义阶段仍然可增长的窗口期动�
   - 典型断点：`PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`、`BeanDefinitionRegistryPostProcessor#postProcessBeanDefinitionRegistry`、`DefaultListableBeanFactory#registerBeanDefinition`
 - **实例层（非本章）**：Bean 有了，但注入不对/变成 proxy/生命周期回调顺序奇怪
   - 典型断点：`PostProcessorRegistrationDelegate#registerBeanPostProcessors`、`AbstractBeanFactory#doGetBean`、`AbstractAutowireCapableBeanFactory#doCreateBean`
-  - 对应章节：[14](internals-post-processor-ordering.md)、[15](internals-pre-instantiation-short-circuit.md)、[31](wiring-proxying-phase-bpp-wraps-bean.md)
+  - 对应章节：[14](post-processor-ordering.md)、[15](pre-instantiation-short-circuit.md)、[31](proxying-phase.md)
 ## 源码最短路径（call chain）
 
 > 落点：当需要回答“这个 bean 为什么会出现（明明未显式注册）”或“为什么 BFPP 能改到 BDRPP 注册的定义”时，用最短调用链把问题钉在 refresh 的精确阶段。
@@ -151,7 +151,7 @@ BDRPP 的价值在于：它可以在定义阶段仍然可增长的窗口期动�
   那读者处理的是“定义从哪里来的”问题（本章）
 - 若要追“最初的定义入口”（扫描/`@Bean`/`@Import`/registrar），先回到 [02](ioc-bean-registration.md)
 - `registerBeanPostProcessors` / `preInstantiateSingletons` / `doCreateBean`
-  那读者处理的是“实例如何被创建/被包装”问题（见 [14](internals-post-processor-ordering.md)、[25](wiring-programmatic-bpp-registration.md)、[31](wiring-proxying-phase-bpp-wraps-bean.md)）
+  那读者处理的是“实例如何被创建/被包装”问题（见 [14](post-processor-ordering.md)、[25](programmatic-bpp-registration.md)、[31](proxying-phase.md)）
 
 ## 固定观察点（观察清单）
 
@@ -259,7 +259,7 @@ BDRPP 的价值在于：它可以在定义阶段仍然可增长的窗口期动�
 - “未显式注册，但某个 bean 却出现了/多了很多 bean” → **优先定义层**：是否有 BDRPP/registrar 在动态注册定义？（本章 Lab）
 - “动态注册的 bean 找不到/未进入容器” → **优先定义层**：`postProcessBeanDefinitionRegistry` 是否被调用？是否真的 `registerBeanDefinition` 成功？
 - “bean 在，但属性/构造参数不符合预期” → **优先定义层（修改定义）**：BFPP 是否在 BDRPP 之后运行、是否覆盖了定义元数据？（对照本章第 3 节）
-- “在 post-processor 阶段 `getBean()` 引发奇怪顺序/代理缺失” → **优先实例层的时机问题**：可能触发了过早实例化，导致后续 BPP 来不及介入（对照 [14](internals-post-processor-ordering.md)、[25](wiring-programmatic-bpp-registration.md)）
+- “在 post-processor 阶段 `getBean()` 引发奇怪顺序/代理缺失” → **优先实例层的时机问题**：可能触发了过早实例化，导致后续 BPP 来不及介入（对照 [14](post-processor-ordering.md)、[25](programmatic-bpp-registration.md)）
 
 > 落点：在 debugger 里只看少数几个结构/变量，就能确认“定义到底有没有被注册进去、注册发生在哪、后续有没有被改”。
 
@@ -298,11 +298,11 @@ BDRPP 的价值在于：它可以在定义阶段仍然可增长的窗口期动�
 
 - **误区 3：以为 `@Order` 会改变“分组”（PriorityOrdered/Ordered/others）**
   - 分组本质上看接口类型，不看注解；`@Order` 只影响“组内排序”（且前提是它确实进入了会被 sort 的列表）。
-  - 对应章节：[14](internals-post-processor-ordering.md)
+  - 对应章节：[14](post-processor-ordering.md)
 
 - **误区 4：把“注解生效”误认为是 BDRPP 自己完成的**
   - BDRPP 负责把注解世界翻译成 BeanDefinition（图扩张），但 `@Autowired/@PostConstruct/@Resource` 这类行为依赖 BPP 在创建阶段介入。
-  - 对应章节：[022-12](internals-container-bootstrap-and-infrastructure.md)
+  - 对应章节：[022-12](container-bootstrap-and-infrastructure.md)
 
 - `AbstractApplicationContext#refresh`
   - `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`

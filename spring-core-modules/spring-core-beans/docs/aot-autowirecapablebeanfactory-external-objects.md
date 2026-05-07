@@ -142,8 +142,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAutowireCapableBeanFactoryLabTe
 > 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
 
 
-- [手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](wiring-programmatic-bpp-registration.md)
-- [初始化、销毁与回调](ioc-lifecycle-and-callbacks.md)
+- [手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](programmatic-bpp-registration.md)
+- [初始化、销毁与回调](lifecycle-callbacks.md)
 
 ## 误判点：容器外对象注入：AutowireCapableBeanFactory
 

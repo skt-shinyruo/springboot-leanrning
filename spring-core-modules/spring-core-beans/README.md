@@ -105,17 +105,17 @@
 
 | 现象/异常（读者视角） | 直达章节（最短路径） | 备注（先分层再追栈） |
 | --- | --- | --- |
-| `NoSuchBeanDefinitionException` / “@Bean/@Component 似乎未生效” | [Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）](docs/ioc-bean-registration.md)、[容器启动与基础设施处理器：为什么注解能工作？](docs/internals-container-bootstrap-and-infrastructure.md)、[Spring Boot 自动装配如何影响 Bean（Auto-configuration）](docs/boot-spring-boot-auto-configuration.md) | 优先判定“定义层有没有注册 BeanDefinition” |
-| `NoUniqueBeanDefinitionException` / 多实现注入歧义 | [依赖注入解析：类型/名称/@Qualifier/@Primary](docs/ioc-dependency-injection-resolution.md)、[候选选择与优先级：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界](docs/wiring-autowire-candidate-selection-primary-priority-order.md) | 收敛：`@Primary/@Qualifier/@Priority` |
-| “循环依赖”异常 / `BeanCurrentlyInCreationException` | [循环依赖：现象、原因与规避（constructor vs setter）](docs/ioc-circular-dependencies.md)、[early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](docs/internals-early-reference-and-circular.md) | 先区分 constructor vs setter；再看 early reference 参与者 |
-| “为什么 Spring 要用三级缓存？” / `three level cache` / `earlySingletonObjects` / `singletonFactories` | [基础问题索引（Why Index）：把高频“为什么”做成可验证闭环](docs/guide-why-index.md)、[循环依赖：现象、原因与规避（constructor vs setter）](docs/ioc-circular-dependencies.md)、[early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](docs/internals-early-reference-and-circular.md) | 优先把握“final/early/factory 三类语义”与“early 形态一致性（raw vs proxy）” |
-| lazy bean 启动期被拉起 / “明明 @Lazy 还被提前创建” | [dependsOn：强制初始化顺序（即使没有显式依赖）](docs/wiring-depends-on.md)、[Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](docs/wiring-lazy-semantics.md) | `dependsOn` 会显式 `getBean(dep)`，可强制拉起 lazy-init |
-| “获取到 proxy” / AOP 行为异常 / self-invocation | [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）](docs/wiring-proxying-phase-bpp-wraps-bean.md)、[实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行](docs/internals-pre-instantiation-short-circuit.md) | 先定位是 pre/early/after-init 哪个窗口替换对象 |
-| `@Value("${...}")` 解析失败 / 值不符合预期 | [`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](docs/wiring-value-placeholder-resolution-strict-vs-non-strict.md)、[Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](docs/wiring-environment-and-propertysource.md) | 关注 PropertySource precedence 与 placeholder resolver |
-| `@Resource` 注入错对象 / “为什么像按名称找？” | [`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](docs/wiring-resource-injection-name-first.md)、[Bean 名称与 alias：同一个实例，多一个名字](docs/wiring-bean-names-and-aliases.md) | name-first + alias 会共同影响最终命中 |
-| FactoryBean 混淆 `&` / “按类型发现/注入失效” | [`FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](docs/ioc-factorybean.md)、[FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义](docs/wiring-factorybean-deep-dive.md)、[FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](docs/wiring-factorybean-edge-cases.md) | 关键点：`getObjectType/isSingleton` 对 type matching 的影响 |
-| 后处理器顺序导致“偶发不生效”/手工注册 BPP 陷阱 | [顺序（Ordering）：PriorityOrdered / Ordered / 无序](docs/internals-post-processor-ordering.md)、[手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](docs/wiring-programmatic-bpp-registration.md) | 优先核对 `PriorityOrdered/Ordered` 的分组与排序；再确认是否绕过默认注册流程 |
-| AOT/Native 运行期缺失反射/代理/资源 | [AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”](docs/aot-aot-and-native-overview.md)、[RuntimeHints 入门：把构建期契约完成验证](docs/aot-runtimehints-basics.md) | 用 registrar + 单测把“构建期契约”固定 |
+| `NoSuchBeanDefinitionException` / “@Bean/@Component 似乎未生效” | [Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）](docs/ioc-bean-registration.md)、[容器启动与基础设施处理器：为什么注解能工作？](docs/container-bootstrap-and-infrastructure.md)、[Spring Boot 自动装配如何影响 Bean（Auto-configuration）](docs/boot-auto-configuration-beans.md) | 优先判定“定义层有没有注册 BeanDefinition” |
+| `NoUniqueBeanDefinitionException` / 多实现注入歧义 | [依赖注入解析：类型/名称/@Qualifier/@Primary](docs/dependency-injection-resolution.md)、[候选选择与优先级：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界](docs/wiring-autowire-candidate-selection-primary-priority-order.md) | 收敛：`@Primary/@Qualifier/@Priority` |
+| “循环依赖”异常 / `BeanCurrentlyInCreationException` | [循环依赖：现象、原因与规避（constructor vs setter）](docs/circular-dependency.md)、[early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](docs/early-reference-and-three-level-cache.md) | 先区分 constructor vs setter；再看 early reference 参与者 |
+| “为什么 Spring 要用三级缓存？” / `three level cache` / `earlySingletonObjects` / `singletonFactories` | [基础问题索引（Why Index）：把高频“为什么”做成可验证闭环](docs/guide-why-index.md)、[循环依赖：现象、原因与规避（constructor vs setter）](docs/circular-dependency.md)、[early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](docs/early-reference-and-three-level-cache.md) | 优先把握“final/early/factory 三类语义”与“early 形态一致性（raw vs proxy）” |
+| lazy bean 启动期被拉起 / “明明 @Lazy 还被提前创建” | [dependsOn：强制初始化顺序（即使没有显式依赖）](docs/depends-on.md)、[Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](docs/lazy-semantics.md) | `dependsOn` 会显式 `getBean(dep)`，可强制拉起 lazy-init |
+| “获取到 proxy” / AOP 行为异常 / self-invocation | [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）](docs/proxying-phase.md)、[实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行](docs/pre-instantiation-short-circuit.md) | 先定位是 pre/early/after-init 哪个窗口替换对象 |
+| `@Value("${...}")` 解析失败 / 值不符合预期 | [`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](docs/value-placeholder-resolution.md)、[Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](docs/environment-and-propertysource.md) | 关注 PropertySource precedence 与 placeholder resolver |
+| `@Resource` 注入错对象 / “为什么像按名称找？” | [`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](docs/resource-vs-autowired.md)、[Bean 名称与 alias：同一个实例，多一个名字](docs/wiring-bean-names-and-aliases.md) | name-first + alias 会共同影响最终命中 |
+| FactoryBean 混淆 `&` / “按类型发现/注入失效” | [`FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](docs/factorybean.md)、[FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义](docs/wiring-factorybean-deep-dive.md)、[FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](docs/wiring-factorybean-edge-cases.md) | 关键点：`getObjectType/isSingleton` 对 type matching 的影响 |
+| 后处理器顺序导致“偶发不生效”/手工注册 BPP 陷阱 | [顺序（Ordering）：PriorityOrdered / Ordered / 无序](docs/post-processor-ordering.md)、[手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](docs/programmatic-bpp-registration.md) | 优先核对 `PriorityOrdered/Ordered` 的分组与排序；再确认是否绕过默认注册流程 |
+| AOT/Native 运行期缺失反射/代理/资源 | [AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”](docs/aot-native-overview.md)、[RuntimeHints 入门：把构建期契约完成验证](docs/aot-runtimehints.md) | 用 registrar + 单测把“构建期契约”固定 |
 
 ## 目录（唯一顺序来源）
 
@@ -134,68 +134,68 @@
 ### IoC Container（注册 / 注入 / 生命周期 / 扩展点）
 
 - [Bean 注册入口：扫描、@Bean、@Import、registrar（已合并）](docs/ioc-bean-registration.md)
-- [依赖注入解析：类型/名称/@Qualifier/@Primary](docs/ioc-dependency-injection-resolution.md)
-- [Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](docs/ioc-scope-and-prototype.md)
-- [生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](docs/ioc-lifecycle-and-callbacks.md)
+- [依赖注入解析：类型/名称/@Qualifier/@Primary](docs/dependency-injection-resolution.md)
+- [Scope 与 prototype 注入陷阱（ObjectProvider / @Lookup / scoped proxy）](docs/scope-and-prototype.md)
+- [生命周期：初始化、销毁与回调（@PostConstruct/@PreDestroy 等）](docs/lifecycle-callbacks.md)
 - [容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](docs/ioc-post-processors.md)
-- [`@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](docs/ioc-configuration-enhancement.md)
-- [`FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](docs/ioc-factorybean.md)
-- [循环依赖：现象、原因与规避（constructor vs setter）](docs/ioc-circular-dependencies.md)
-- [Bean 运行机制：从 BeanDefinition 到最终暴露对象](docs/ioc-bean-mental-model.md)
+- [`@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](docs/configuration-and-bean-method.md)
+- [`FactoryBean`：产品 vs 工厂（以及 `&` 前缀）](docs/factorybean.md)
+- [循环依赖：现象、原因与规避（constructor vs setter）](docs/circular-dependency.md)
+- [Bean 运行机制：从 BeanDefinition 到最终暴露对象](docs/bean-mental-model.md)
 
 ### Boot Auto-Config（Boot 叠加后容器如何变复杂）
 
-- [Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？](docs/boot-auto-config-ordering.md)
-- [Spring Boot 自动装配如何影响 Bean（Auto-configuration）](docs/boot-spring-boot-auto-configuration.md)
+- [Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？](docs/boot-auto-configuration-ordering.md)
+- [Spring Boot 自动装配如何影响 Bean（Auto-configuration）](docs/boot-auto-configuration-beans.md)
 - [调试与自检：如何“观察到”容器正在做什么](docs/boot-debugging-and-observability.md)
 
 ### Internals（refresh 主线 / 处理器算法 / 缓存边界）
 
-- [容器启动与基础设施处理器：为什么注解能工作？](docs/internals-container-bootstrap-and-infrastructure.md)
-- [BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义](docs/internals-bdrpp-definition-registration.md)
-- [顺序（Ordering）：PriorityOrdered / Ordered / 无序](docs/internals-post-processor-ordering.md)
-- [实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行](docs/internals-pre-instantiation-short-circuit.md)
-- [early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](docs/internals-early-reference-and-circular.md)
+- [容器启动与基础设施处理器：为什么注解能工作？](docs/container-bootstrap-and-infrastructure.md)
+- [BeanDefinitionRegistryPostProcessor：在“注册阶段”动态加定义](docs/bdrpp-definition-registration.md)
+- [顺序（Ordering）：PriorityOrdered / Ordered / 无序](docs/post-processor-ordering.md)
+- [实例化前短路：postProcessBeforeInstantiation 能让构造器根本不执行](docs/pre-instantiation-short-circuit.md)
+- [early reference 与循环依赖：getEarlyBeanReference 到底解决什么？](docs/early-reference-and-three-level-cache.md)
 - [生命周期回调顺序：Aware / BPP / init / destroy（以及 prototype 为什么不销毁）](docs/internals-lifecycle-callback-order.md)
 - [从 `refresh()` 到 `doCreateBean()`：把 Spring Bean “变成对象”的主线走通（源码级）](docs/internals-refresh-to-bean-creation-mainline.md)
 
 ### Wiring & Boundaries（候选选择 / 代理 / 占位符 / 转换等）
 
-- [Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](docs/wiring-lazy-semantics.md)
-- [dependsOn：强制初始化顺序（即使没有显式依赖）](docs/wiring-depends-on.md)
-- [registerResolvableDependency：能注入，但它不是 Bean](docs/wiring-resolvable-dependency.md)
-- [父子 ApplicationContext：可见性与覆盖边界](docs/wiring-context-hierarchy.md)
+- [Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）](docs/lazy-semantics.md)
+- [dependsOn：强制初始化顺序（即使没有显式依赖）](docs/depends-on.md)
+- [registerResolvableDependency：能注入，但它不是 Bean](docs/resolvable-dependency.md)
+- [父子 ApplicationContext：可见性与覆盖边界](docs/context-hierarchy.md)
 - [Bean 名称与 alias：同一个实例，多一个名字](docs/wiring-bean-names-and-aliases.md)
 - [FactoryBean 深潜：product vs factory、类型匹配、以及 isSingleton 缓存语义](docs/wiring-factorybean-deep-dive.md)
-- [BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？](docs/wiring-bean-definition-overriding.md)
-- [手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](docs/wiring-programmatic-bpp-registration.md)
-- [SmartInitializingSingleton：所有单例都创建完之后再做事](docs/wiring-smart-initializing-singleton.md)
-- [SmartLifecycle：start/stop 时机与 phase 顺序](docs/wiring-smart-lifecycle-phase.md)
-- [自定义 Scope + scoped proxy：thread scope 的真实语义](docs/wiring-custom-scope-and-scoped-proxy.md)
+- [BeanDefinition 覆盖（overriding）：同名 bean 是“最后一个赢”还是“直接失败”？](docs/bean-definition-overriding.md)
+- [手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](docs/programmatic-bpp-registration.md)
+- [SmartInitializingSingleton：所有单例都创建完之后再做事](docs/smart-initializing-singleton.md)
+- [SmartLifecycle：start/stop 时机与 phase 顺序](docs/smart-lifecycle.md)
+- [自定义 Scope + scoped proxy：thread scope 的真实语义](docs/custom-scope-and-scoped-proxy.md)
 - [FactoryBean 边界：getObjectType 返回 null 会让“按类型发现”失效](docs/wiring-factorybean-edge-cases.md)
-- [注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](docs/wiring-injection-phase-field-vs-constructor.md)
-- [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）](docs/wiring-proxying-phase-bpp-wraps-bean.md)
-- [`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](docs/wiring-resource-injection-name-first.md)
+- [注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](docs/injection-phase.md)
+- [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）](docs/proxying-phase.md)
+- [`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](docs/resource-vs-autowired.md)
 - [候选选择与优先级：`@Primary` / `@Priority` / `@Order` / `@Qualifier` 的边界](docs/wiring-autowire-candidate-selection-primary-priority-order.md)
-- [`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](docs/wiring-value-placeholder-resolution-strict-vs-non-strict.md)
-- [BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？](docs/wiring-merged-bean-definition.md)
-- [类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](docs/wiring-type-conversion-and-beanwrapper.md)
-- [泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](docs/wiring-generic-type-matching-pitfalls.md)
-- [Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](docs/wiring-environment-and-propertysource.md)
-- [BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界](docs/wiring-beanfactory-api-deep-dive.md)
+- [`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](docs/value-placeholder-resolution.md)
+- [BeanDefinition 的合并（MergedBeanDefinition）：RootBeanDefinition 从哪里来？](docs/merged-bean-definition.md)
+- [类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](docs/type-conversion-and-beanwrapper.md)
+- [泛型匹配与注入误区：ResolvableType 与代理导致的类型信息丢失](docs/generic-type-matching.md)
+- [Environment Abstraction：PropertySource / @PropertySource / 优先级与排障主线](docs/environment-and-propertysource.md)
+- [BeanFactory API 深入分析：接口族谱与手动 bootstrap 的边界](docs/beanfactory-api-and-autowirecapablebeanfactory.md)
 
 ### AOT & Real World（XML/Reader/AOT/外部对象/SpEL/自定义 qualifier）
 
-- [AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”](docs/aot-aot-and-native-overview.md)
-- [RuntimeHints 入门：把构建期契约完成验证](docs/aot-runtimehints-basics.md)
+- [AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”](docs/aot-native-overview.md)
+- [RuntimeHints 入门：把构建期契约完成验证](docs/aot-runtimehints.md)
 - [XML → BeanDefinitionReader：定义层解析与错误分型](docs/aot-xml-bean-definition-reader.md)
 - [容器外对象注入：AutowireCapableBeanFactory](docs/aot-autowirecapablebeanfactory-external-objects.md)
 - [SpEL 与 `@Value("#{...}")`：表达式解析链路](docs/aot-spel-and-value-expression.md)
-- [自定义 Qualifier：meta-annotation 与候选收敛](docs/aot-custom-qualifier-meta-annotation.md)
+- [自定义 Qualifier：meta-annotation 与候选收敛](docs/aot-custom-qualifier.md)
 - [XML namespace 扩展：NamespaceHandler / Parser / spring.handlers](docs/aot-xml-namespace-extension.md)
-- [BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy](docs/aot-beandefinitionreader-other-inputs-properties-groovy.md)
-- [方法注入（Method Injection）：replaced-method / MethodReplacer](docs/aot-method-injection-replaced-method.md)
-- [内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀](docs/aot-built-in-factorybeans-gallery.md)
+- [BeanDefinitionReader：除了注解与 XML，还有 Properties / Groovy](docs/aot-beandefinitionreader-other-inputs.md)
+- [方法注入（Method Injection）：replaced-method / MethodReplacer](docs/aot-method-injection.md)
+- [内置 FactoryBean 图鉴：MethodInvoking / ServiceLocator / & 前缀](docs/aot-built-in-factorybeans.md)
 - [PropertyEditor 与 BeanDefinition 值解析：值从定义层落到对象](docs/aot-property-editor-and-value-resolution.md)
 
 ### Appendix（术语表 / 速查 / 排障清单 / 索引）

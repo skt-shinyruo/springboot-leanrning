@@ -132,7 +132,7 @@
   - 关键动作：先锁定冲突的 **beanName**，再追“谁先注册、谁后注册”
 - **实例层（不是 overriding 能解决）**：`NoUniqueBeanDefinitionException` / “同类型多候选注入歧义”
   - 关键入口：`DefaultListableBeanFactory#doResolveDependency`
-  - 修复方向：`@Primary/@Qualifier` 或让自动配置 back-off（见 [03](ioc-dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)、[10](boot-spring-boot-auto-configuration.md)）
+  - 修复方向：`@Primary/@Qualifier` 或让自动配置 back-off（见 [03](dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)、[10](boot-auto-configuration-beans.md)）
 
 ## 可复现闭环（用本仓库实验/测试运行一次）
 
@@ -169,7 +169,7 @@
 | --- | --- | --- | --- | --- |
 | 启动期 `BeanDefinitionOverrideException` | 禁止 overriding（fail-fast）且同名重复注册 | 断点 `DefaultListableBeanFactory#registerBeanDefinition`；看 `isAllowBeanDefinitionOverriding` | 改名/去重；或明确开启 overriding（但要承担可观测性成本） | `SpringCoreBeansBeanDefinitionOverridingLabTest` |
 | 启动正常但行为“像被悄悄改了” | 允许 overriding（last-wins），后注册覆盖前注册 | `getBeanDefinition(beanName)` 对照 source/resource/factoryMethod；看第二次注册发生点 | 优先禁止 overriding；或完善来源追踪与命名规范 | `SpringCoreBeansBeanDefinitionOriginLabTest` + overriding Lab |
-| 若希望用 overriding 解决注入歧义 | 概念误用：这是 type-based 的候选收敛问题 | `doResolveDependency`→`findAutowireCandidates` | 使用 `@Qualifier/@Primary/@Priority` 收敛，或让 auto-config back-off | [03](ioc-dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md) |
+| 若希望用 overriding 解决注入歧义 | 概念误用：这是 type-based 的候选收敛问题 | `doResolveDependency`→`findAutowireCandidates` | 使用 `@Qualifier/@Primary/@Priority` 收敛，或让 auto-config back-off | [03](dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md) |
 
 ## 边界：BeanDefinition 覆盖（overriding）
 

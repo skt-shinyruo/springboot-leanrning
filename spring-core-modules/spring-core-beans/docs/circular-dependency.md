@@ -101,8 +101,8 @@
 
 如需将“二级 vs 三级”的论证推进到方法级证据链，下一章可参阅：
 
-- [`16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？`](internals-early-reference-and-circular.md)（把 raw vs wrapped 与一致性保护系统阐述）
-- [`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](wiring-proxying-phase-bpp-wraps-bean.md)（把“最终暴露对象可能变化”的容器视角系统阐述）
+- [`16. early reference 与循环依赖：getEarlyBeanReference 到底解决什么？`](early-reference-and-three-level-cache.md)（把 raw vs wrapped 与一致性保护系统阐述）
+- [`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](proxying-phase.md)（把“最终暴露对象可能变化”的容器视角系统阐述）
 
 ## 三层缓存的真实语义：final / early / factory
 
@@ -196,7 +196,7 @@ constructor cycle 之所以“基本无解”，就在于构造器依赖发生�
 3. `getSingleton` 发现 A “in creation” 且存在 factory → 调用 factory 生成 early reference
 4. B 获取到 early reference 完成创建 → 回到 A 的 populate/initialize → 最终对象进入 `singletonObjects`
 
-> 提醒：这一章到这里为止即可。若希望进一步厘清“early reference 应该是 raw 还是 proxy”“raw vs wrapped 不一致为何会 fail-fast”，请去看 [early reference 与循环依赖](internals-early-reference-and-circular.md)（那一章专门讲这个误区）。
+> 提醒：这一章到这里为止即可。若希望进一步厘清“early reference 应该是 raw 还是 proxy”“raw vs wrapped 不一致为何会 fail-fast”，请去看 [early reference 与循环依赖](early-reference-and-three-level-cache.md)（那一章专门讲这个误区）。
 
 ### 4.4 异常 → 断点入口速查（把“看异常”变成“可定位”）
 
@@ -305,7 +305,7 @@ setter 注入能够“使依赖环得以闭合”的前提是：需要接受半�
 2. **误区：constructor 环就一定无解**
    - “能启动”并不等于“无代价”：`@Lazy/ObjectProvider` 的本质是改变时机，并引入代理/分支复杂度。
 3. **误区：只看启动成功，不看对象形态一致性**
-   - 一旦 AOP/代理介入，early 与 final 形态不一致会让问题更隐蔽；这部分请看 [16](internals-early-reference-and-circular.md)。
+   - 一旦 AOP/代理介入，early 与 final 形态不一致会让问题更隐蔽；这部分请看 [16](early-reference-and-three-level-cache.md)。
 
 ---
 

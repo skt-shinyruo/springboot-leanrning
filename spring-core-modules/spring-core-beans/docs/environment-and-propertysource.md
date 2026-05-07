@@ -130,7 +130,7 @@ Spring 把“多个来源”组织成一个有序链表：
 
 对照阅读：
 
-- [`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](wiring-value-placeholder-resolution-strict-vs-non-strict.md)
+- [`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast](value-placeholder-resolution.md)
 
 ---
 
@@ -213,7 +213,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansEnvironmentPropertySourceLabTes
 
 本章强相关的已存在 Labs（用于补齐“占位符解析”和“profiles”）：
 
-- `SpringCoreBeansValuePlaceholderResolutionLabTest`（[34](wiring-value-placeholder-resolution-strict-vs-non-strict.md)）
+- `SpringCoreBeansValuePlaceholderResolutionLabTest`（[34](value-placeholder-resolution.md)）
 - `SpringCoreBeansProfileRegistrationLabTest`（profiles 的最小可复现）
 
 - “在配置文件中设置了 `demo.key=foo`，但运行时却是 bar”

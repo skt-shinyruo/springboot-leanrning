@@ -115,10 +115,10 @@
 
 | 字段 | 什么时候被读取 | 方法级锚点（断点入口） | 影响的行为 | 关联章节 |
 | --- | --- | --- | --- | --- |
-| `scope` | 获取/创建 bean 时 | `AbstractBeanFactory#doGetBean` | singleton 缓存 vs prototype 每次创建 | [Scope 与 prototype 注入陷阱](ioc-scope-and-prototype.md) / [循环依赖](ioc-circular-dependencies.md) |
-| `lazyInit` | 容器预实例化与按需创建 | `DefaultListableBeanFactory#preInstantiateSingletons` | 是否在 refresh 期间创建 | [`@Lazy` 语义与边界](wiring-lazy-semantics.md) |
-| `dependsOn` | 创建前强制拉起依赖 | `AbstractBeanFactory#doGetBean`（读取 `mbd.getDependsOn()`） | 初始化/销毁顺序被强制化（并可能拉起 lazy） | [dependsOn：强制初始化顺序](wiring-depends-on.md) / [生命周期](ioc-lifecycle-and-callbacks.md) |
-| `autowireCandidate/primary/qualifiers` | 依赖解析（候选收集/收敛） | `DefaultListableBeanFactory#doResolveDependency` | 候选集合收敛与最终选择 | [依赖注入解析](ioc-dependency-injection-resolution.md) |
+| `scope` | 获取/创建 bean 时 | `AbstractBeanFactory#doGetBean` | singleton 缓存 vs prototype 每次创建 | [Scope 与 prototype 注入陷阱](scope-and-prototype.md) / [循环依赖](circular-dependency.md) |
+| `lazyInit` | 容器预实例化与按需创建 | `DefaultListableBeanFactory#preInstantiateSingletons` | 是否在 refresh 期间创建 | [`@Lazy` 语义与边界](lazy-semantics.md) |
+| `dependsOn` | 创建前强制拉起依赖 | `AbstractBeanFactory#doGetBean`（读取 `mbd.getDependsOn()`） | 初始化/销毁顺序被强制化（并可能拉起 lazy） | [dependsOn：强制初始化顺序](depends-on.md) / [生命周期](lifecycle-callbacks.md) |
+| `autowireCandidate/primary/qualifiers` | 依赖解析（候选收集/收敛） | `DefaultListableBeanFactory#doResolveDependency` | 候选集合收敛与最终选择 | [依赖注入解析](dependency-injection-resolution.md) |
 
 对应观察点：
 
@@ -202,7 +202,7 @@ Lab：`SpringCoreBeansImportLabTest`
 
 对应深入（外部对象如何接入容器能力）：[容器外对象注入：AutowireCapableBeanFactory](aot-autowirecapablebeanfactory-external-objects.md)
 
-对应章节（深入）：[手工添加 BPP：顺序与时机](wiring-programmatic-bpp-registration.md)
+对应章节（深入）：[手工添加 BPP：顺序与时机](programmatic-bpp-registration.md)
 
 Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`
 
@@ -239,12 +239,12 @@ Lab：`SpringCoreBeansProgrammaticRegistrationLabTest`
 
 - `getBean("aliasName")` 与 `getBean("primaryName")` 返回同一实例（alias 不会创建第二个对象）
 - `@Resource` 是 name-first：字段名/显式 name 会先参与匹配（包含 alias 的情况）；因此重构字段名/alias 时更容易出现隐性回归
-- `@Autowired` 的 by-name fallback（当候选>1 且缺少明确限定信号时）也可能命中 alias（它最终会走 “matches bean name” 的路径；详见 [注入解析](ioc-dependency-injection-resolution.md) 的收敛决策树）
+- `@Autowired` 的 by-name fallback（当候选>1 且缺少明确限定信号时）也可能命中 alias（它最终会走 “matches bean name” 的路径；详见 [注入解析](dependency-injection-resolution.md) 的收敛决策树）
 
 4. **交叉：`&` 前缀与 `scopedTarget.*`（名称看似相近，但语义存在分流）**
 
-- `&beanName`：FactoryBean 场景下用于获取 “factory 本体”（见 [`FactoryBean`](ioc-factorybean.md)）
-- `scopedTarget.<beanName>`：scoped proxy 会在容器里额外注册一个 target 定义（见 [Scope 与 prototype](ioc-scope-and-prototype.md)）
+- `&beanName`：FactoryBean 场景下用于获取 “factory 本体”（见 [`FactoryBean`](factorybean.md)）
+- `scopedTarget.<beanName>`：scoped proxy 会在容器里额外注册一个 target 定义（见 [Scope 与 prototype](scope-and-prototype.md)）
 
 将“名字层”单独运行一次（避免后续把注入问题误判为注册问题）：
 
@@ -466,7 +466,7 @@ ConfigurationClassPostProcessor#postProcessBeanFactory(beanFactory)
 - 现象：在一个 `@Bean` 方法里直接调用另一个 `@Bean` 方法，却得到了“新对象”而不是容器单例
   - 优先检查：是否处于 “lite mode”（例如仅 `@Component`）或 `proxyBeanMethods=false`
   - 证据链：`ConfigurationClassEnhancer#enhance` 是否命中；配置类是否被增强为 CGLIB 子类（类名通常带 `$$`）
-  - 对应章节：[`@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](ioc-configuration-enhancement.md)
+  - 对应章节：[`@Configuration` 增强与 `@Bean` 语义（proxyBeanMethods）](configuration-and-bean-method.md)
 
 ### 3.5 `@Import`：selector / registrar 到底在链路上哪里分叉？
 
@@ -562,8 +562,8 @@ AbstractBeanFactory#doGetBean(beanName)
 
 对应深入分析章节：
 
-- [注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](wiring-injection-phase-field-vs-constructor.md)
-- [类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](wiring-type-conversion-and-beanwrapper.md)
+- [注入阶段：field injection vs constructor injection（以及 `postProcessProperties`）](injection-phase.md)
+- [类型转换：BeanWrapper / ConversionService / PropertyEditor 的边界](type-conversion-and-beanwrapper.md)
 
 !!! warning "反例：过早 getBean（或实例层注册）会让阅读者“绕开管线”"
 
@@ -622,12 +622,12 @@ AbstractBeanFactory#doGetBean(beanName)
 | 扫不到 `@Component`（NoSuchBeanDefinition） | 定义层 | `ComponentScanAnnotationParser#parse` / `ClassPathBeanDefinitionScanner#doScan` / `registerBeanDefinition`；看 basePackage、过滤器、`beanName` | basePackage 写错 / excludeFilters 误伤 / 配置类没被解析 | 修正 basePackage；先证明 `processConfigBeanDefinitions` 命中；必要时用 `context.scan(...)` 对照 | `SpringCoreBeansComponentScanLabTest` |
 | `@Import` 表面上没生效 | 定义层 | `ConfigurationClassParser#processImports`；看是否命中 selector/registrar；最终是否落到 `registerBeanDefinition` | 触发类没被注册为配置类候选 / import 条件分支未命中（Conditional/Profile） | 先证明配置类解析链路已被触发并执行；再查 selector 返回值/registrar 是否被调用 | `SpringCoreBeansImportLabTest` |
 | `registerBeanDefinition` 之后 BFPP/BDRPP 不生效 | 定义层（时机） | 看调用发生在 `refresh()` 哪一段；`invokeBeanFactoryPostProcessors` 之后再注册即错过定义层加工 | 在 refresh 之后才动态加定义 | 把注册前移到 refresh 前（或用 BDRPP 动态注册）；避免事后补定义期待 BFPP 生效 | `SpringCoreBeansProgrammaticRegistrationLabTest` |
-| 定义有了但实例没创建 | 创建层 | `containsBeanDefinition=true` 且 `containsSingleton=false`；看是否命中 `preInstantiateSingletons/doGetBean` | bean 是 lazy-init / 从未触发 getBean / scope 不是 singleton | 明确触发创建（getBean/依赖触发）；排查 `@Lazy`/scope；需要时在 `preInstantiateSingletons` 断点验证 | [Lazy 语义](wiring-lazy-semantics.md) / [生命周期](ioc-lifecycle-and-callbacks.md) / [refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md) |
+| 定义有了但实例没创建 | 创建层 | `containsBeanDefinition=true` 且 `containsSingleton=false`；看是否命中 `preInstantiateSingletons/doGetBean` | bean 是 lazy-init / 从未触发 getBean / scope 不是 singleton | 明确触发创建（getBean/依赖触发）；排查 `@Lazy`/scope；需要时在 `preInstantiateSingletons` 断点验证 | [Lazy 语义](lazy-semantics.md) / [生命周期](lifecycle-callbacks.md) / [refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md) |
 | 实例存在但“注入/代理/回调不生效” | 注入/代理 | `containsSingleton=true` 但 `doCreateBean/populateBean/initializeBean` 从未命中；或 BPP 链不完整时就创建了 | 使用 `registerSingleton`；或过早 `getBean` 导致错过 BPP | **优先改为定义层注册**；避免在 BFPP/BDRPP 阶段触发目标 bean；必要时手工 `autowireBean/initializeBean`（明确风险） | `SpringCoreBeansProgrammaticRegistrationLabTest` |
-| `@Bean` 方法调用返回“新对象” | 运行时语义 | `ConfigurationClassEnhancer#enhance` 是否命中；配置类是否被增强；看 `proxyBeanMethods` | lite mode / `proxyBeanMethods=false` / 直接方法调用绕开容器 | 需要语义时开启 `proxyBeanMethods=true`；或改为参数注入/从容器获取依赖而非直接调用方法 | [`@Configuration` 增强与 `@Bean` 语义](ioc-configuration-enhancement.md) |
-| 同名 bean 冲突/覆盖（override/Conflicting） | 定义层 | `DefaultListableBeanFactory#registerBeanDefinition`；扫描场景也看 `ClassPathBeanDefinitionScanner#checkCandidate` | beanName 重复；Boot 默认禁止覆盖（多数场景） | 优先改名/限定扫描；确需覆盖再显式开启（谨慎） | [BeanDefinition 覆盖（overriding）](wiring-bean-definition-overriding.md) |
-| `FactoryBean` 注入/获取结果不符合预期 | 获取边界 | `AbstractBeanFactory#doGetBean` → `getObjectForBeanInstance`；看是否为 `FactoryBean` | 忘了 `beanName` 取的是“产品”；`&beanName` 才是工厂 | 需要工厂用 `&`；需要产品按产品类型注入；必要时检查 `getObjectType` 返回值 | [`FactoryBean`：产品 vs 工厂](ioc-factorybean.md) / [FactoryBean 深潜](wiring-factorybean-deep-dive.md) |
-| 候选太多/Qualifier 不生效 | 注入解析 | `DefaultListableBeanFactory#doResolveDependency` → `findAutowireCandidates/isAutowireCandidate`；看 `Qualifier`/`Primary` | 多候选未收敛；Qualifier 不匹配；按名称 fallback 误解 | 用 `@Qualifier/@Primary/@Resource` 明确收敛；必要时打印候选集合（或用 testsupport dumper） | [依赖注入解析](ioc-dependency-injection-resolution.md) / [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md) |
+| `@Bean` 方法调用返回“新对象” | 运行时语义 | `ConfigurationClassEnhancer#enhance` 是否命中；配置类是否被增强；看 `proxyBeanMethods` | lite mode / `proxyBeanMethods=false` / 直接方法调用绕开容器 | 需要语义时开启 `proxyBeanMethods=true`；或改为参数注入/从容器获取依赖而非直接调用方法 | [`@Configuration` 增强与 `@Bean` 语义](configuration-and-bean-method.md) |
+| 同名 bean 冲突/覆盖（override/Conflicting） | 定义层 | `DefaultListableBeanFactory#registerBeanDefinition`；扫描场景也看 `ClassPathBeanDefinitionScanner#checkCandidate` | beanName 重复；Boot 默认禁止覆盖（多数场景） | 优先改名/限定扫描；确需覆盖再显式开启（谨慎） | [BeanDefinition 覆盖（overriding）](bean-definition-overriding.md) |
+| `FactoryBean` 注入/获取结果不符合预期 | 获取边界 | `AbstractBeanFactory#doGetBean` → `getObjectForBeanInstance`；看是否为 `FactoryBean` | 忘了 `beanName` 取的是“产品”；`&beanName` 才是工厂 | 需要工厂用 `&`；需要产品按产品类型注入；必要时检查 `getObjectType` 返回值 | [`FactoryBean`：产品 vs 工厂](factorybean.md) / [FactoryBean 深潜](wiring-factorybean-deep-dive.md) |
+| 候选太多/Qualifier 不生效 | 注入解析 | `DefaultListableBeanFactory#doResolveDependency` → `findAutowireCandidates/isAutowireCandidate`；看 `Qualifier`/`Primary` | 多候选未收敛；Qualifier 不匹配；按名称 fallback 误解 | 用 `@Qualifier/@Primary/@Resource` 明确收敛；必要时打印候选集合（或用 testsupport dumper） | [依赖注入解析](dependency-injection-resolution.md) / [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md) |
 | “观察到 BeanDefinition 了”但来源不明确 | 定义层取证 | 在 `registerBeanDefinition` 看 `beanDefinition.getSource()` / `factoryMethodName` / `role` | 只看了名字/类型，没看来源元数据 | 固化证据链：source + factoryMethodName + 入口断点（scan/@Bean/@Import） | 本章 2.6 |
 
 ### 5.3 常见误区与边界（压缩版 checklist）
@@ -638,9 +638,9 @@ AbstractBeanFactory#doGetBean(beanName)
    - `containsBeanDefinition` 只证明“定义进来了”；实例是否创建取决于 lazy/预实例化/是否触发 getBean。
    - 最短判断：`containsBeanDefinition`（定义层） vs `containsSingleton`（实例层缓存）。
 3. **BeanDefinition 注册了，但候选选择/注入还是失败**
-   - 优先确认是否进入 `findAutowireCandidates`；再核对 beanName/Qualifier/Primary 是否匹配（见 [依赖注入解析](ioc-dependency-injection-resolution.md) / [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)）。
+   - 优先确认是否进入 `findAutowireCandidates`；再核对 beanName/Qualifier/Primary 是否匹配（见 [依赖注入解析](dependency-injection-resolution.md) / [候选选择与优先级](wiring-autowire-candidate-selection-primary-priority-order.md)）。
 4. **代理/注解不生效**
-   - 优先怀疑时机问题：目标 bean 是否在 BPP 链完整前被创建（见 [容器扩展点：BFPP vs BPP](ioc-post-processors.md) / [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy](wiring-proxying-phase-bpp-wraps-bean.md)）。
+   - 优先怀疑时机问题：目标 bean 是否在 BPP 链完整前被创建（见 [容器扩展点：BFPP vs BPP](ioc-post-processors.md) / [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy](proxying-phase.md)）。
 5. **扫描表面上没生效**
    - 优先检查：配置类是否被解析（`ConfigurationClassPostProcessor` 是否执行到）、basePackage 是否正确、excludeFilters 是否把目标排除了。
 6. **@Import 相关“没生效”**

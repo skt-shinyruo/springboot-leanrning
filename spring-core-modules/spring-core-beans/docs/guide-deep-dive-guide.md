@@ -157,13 +157,13 @@
 
 | 现象（观察到的） | 判定主要障碍所在层次 | 章节入口（最短路径） | 断点入口（抓住分支） | 对应实验/测试（证据链） |
 |---|---|---|---|---|
-| Bean 未注册（扫描/导入/`@Bean` 未生效） | 定义层（BeanDefinition 图未形成） | [refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md)<br>[注解为何生效（bootstrap）](internals-container-bootstrap-and-infrastructure.md) | `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`<br>`ConfigurationClassPostProcessor#processConfigBeanDefinitions` | `SpringCoreBeansRegistryPostProcessorLabTest`<br>`SpringCoreBeansBootstrapInternalsLabTest` |
-| `@Autowired` 为 null / `@PostConstruct` 未执行（常见于手工启动 BeanFactory） | 实例层（规则未装入：BPP 缺失） | [注解为何生效（bootstrap）](internals-container-bootstrap-and-infrastructure.md) | `PostProcessorRegistrationDelegate#registerBeanPostProcessors`<br>`AutowiredAnnotationBeanPostProcessor#postProcessProperties`<br>`InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization` | `SpringCoreBeansBootstrapInternalsLabTest`<br>`SpringCoreBeansBeanFactoryApiLabTest` |
+| Bean 未注册（扫描/导入/`@Bean` 未生效） | 定义层（BeanDefinition 图未形成） | [refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md)<br>[注解为何生效（bootstrap）](container-bootstrap-and-infrastructure.md) | `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`<br>`ConfigurationClassPostProcessor#processConfigBeanDefinitions` | `SpringCoreBeansRegistryPostProcessorLabTest`<br>`SpringCoreBeansBootstrapInternalsLabTest` |
+| `@Autowired` 为 null / `@PostConstruct` 未执行（常见于手工启动 BeanFactory） | 实例层（规则未装入：BPP 缺失） | [注解为何生效（bootstrap）](container-bootstrap-and-infrastructure.md) | `PostProcessorRegistrationDelegate#registerBeanPostProcessors`<br>`AutowiredAnnotationBeanPostProcessor#postProcessProperties`<br>`InitDestroyAnnotationBeanPostProcessor#postProcessBeforeInitialization` | `SpringCoreBeansBootstrapInternalsLabTest`<br>`SpringCoreBeansBeanFactoryApiLabTest` |
 | 启动即异常 vs 第一次 `getBean` 才异常 | refresh 预实例化 vs on-demand | [refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md) | `DefaultListableBeanFactory#preInstantiateSingletons`<br>`AbstractBeanFactory#doGetBean` | `SpringCoreBeansPreInstantiationLabTest` |
 | 单个注入歧义（NoUniqueBeanDefinitionException） | 候选层（候选集合收敛失败） | [候选选择与顺序](wiring-autowire-candidate-selection-primary-priority-order.md) | `DefaultListableBeanFactory#doResolveDependency` | `SpringCoreBeansInjectionAmbiguityLabTest`<br>`SpringCoreBeansAutowireCandidateSelectionLabTest` |
-| 循环依赖：setter 在特定条件下可闭合，constructor 一般无法闭合；或 early reference 形态异常 | 实例层（创建窗口 + 缓存/early reference） | [refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md)<br>[early reference 与循环依赖](internals-early-reference-and-circular.md) | `DefaultSingletonBeanRegistry#getSingleton/addSingletonFactory`<br>`AbstractAutowireCapableBeanFactory#doCreateBean`（earlySingletonExposure） | `SpringCoreBeansCircularDependencyBoundaryLabTest`<br>`SpringCoreBeansEarlyReferenceLabTest` |
-| 代理不生效 / 自调用绕过 / 误判为“存在 AOP 但未生效” | 实例层（BPP 包装阶段） | [BPP 如何把 Bean 换成 Proxy](wiring-proxying-phase-bpp-wraps-bean.md) | `BeanPostProcessor#postProcessAfterInitialization` | `SpringCoreBeansProxyingPhaseLabTest` |
-| `getBean("x")` 获取到的类型与预期不一致，`&x` 又呈现不同语义 | 实例层（FactoryBean 语义） | [FactoryBean：& 前缀与产品对象](ioc-factorybean.md)<br>[refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md) | `AbstractBeanFactory#getObjectForBeanInstance` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
+| 循环依赖：setter 在特定条件下可闭合，constructor 一般无法闭合；或 early reference 形态异常 | 实例层（创建窗口 + 缓存/early reference） | [refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md)<br>[early reference 与循环依赖](early-reference-and-three-level-cache.md) | `DefaultSingletonBeanRegistry#getSingleton/addSingletonFactory`<br>`AbstractAutowireCapableBeanFactory#doCreateBean`（earlySingletonExposure） | `SpringCoreBeansCircularDependencyBoundaryLabTest`<br>`SpringCoreBeansEarlyReferenceLabTest` |
+| 代理不生效 / 自调用绕过 / 误判为“存在 AOP 但未生效” | 实例层（BPP 包装阶段） | [BPP 如何把 Bean 换成 Proxy](proxying-phase.md) | `BeanPostProcessor#postProcessAfterInitialization` | `SpringCoreBeansProxyingPhaseLabTest` |
+| `getBean("x")` 获取到的类型与预期不一致，`&x` 又呈现不同语义 | 实例层（FactoryBean 语义） | [FactoryBean：& 前缀与产品对象](factorybean.md)<br>[refresh→doCreateBean 主线](internals-refresh-to-bean-creation-mainline.md) | `AbstractBeanFactory#getObjectForBeanInstance` | `SpringCoreBeansFactoryBeanDeepDiveLabTest` |
 
 该表无需一次性记忆；在排障时可按以下问题进行定位：
 
@@ -181,7 +181,7 @@
 
 ## 最小源码导航图（定义层 / 实例层 / 缓存层）
 
-将 [Bean 运行机制：从 BeanDefinition 到最终暴露对象](ioc-bean-mental-model.md) 的三层结构对应到源码，最小可以按以下结构建立映射。
+将 [Bean 运行机制：从 BeanDefinition 到最终暴露对象](bean-mental-model.md) 的三层结构对应到源码，最小可以按以下结构建立映射。
 
 ### 2.1 定义层：BeanDefinition 进入、存储、调整
 
@@ -199,8 +199,8 @@
 
 - [注册入口](ioc-bean-registration.md)
 - [PostProcessor 概览](ioc-post-processors.md)
-- [注解为何生效（基础设施处理器）](internals-container-bootstrap-and-infrastructure.md)
-- [BDRPP：定义注册](internals-bdrpp-definition-registration.md)
+- [注解为何生效（基础设施处理器）](container-bootstrap-and-infrastructure.md)
+- [BDRPP：定义注册](bdrpp-definition-registration.md)
 
 ### 2.2 实例层：createBean → 注入 → 初始化 → 可能被替换
 
@@ -216,9 +216,9 @@
 
 对应章节：
 
-- [注入发生在什么时候（field vs constructor）](wiring-injection-phase-field-vs-constructor.md)
-- [实例化前短路](internals-pre-instantiation-short-circuit.md)
-- [BPP 如何把 Bean 换成 Proxy](wiring-proxying-phase-bpp-wraps-bean.md)
+- [注入发生在什么时候（field vs constructor）](injection-phase.md)
+- [实例化前短路](pre-instantiation-short-circuit.md)
+- [BPP 如何把 Bean 换成 Proxy](proxying-phase.md)
 
 ### 2.3 缓存层：单例三层缓存与 early reference
 
@@ -229,8 +229,8 @@
 
 对应章节：
 
-- [循环依赖概览](ioc-circular-dependencies.md)
-- [early reference 与循环依赖：getEarlyBeanReference](internals-early-reference-and-circular.md)
+- [循环依赖概览](circular-dependency.md)
+- [early reference 与循环依赖：getEarlyBeanReference](early-reference-and-three-level-cache.md)
 
 ### 2.4 三项决定性因素：决定断点中可观察到的对象形态
 
@@ -291,7 +291,7 @@
 
 对应章节：
 
-- [依赖注入解析](ioc-dependency-injection-resolution.md)
+- [依赖注入解析](dependency-injection-resolution.md)
 - [候选选择与顺序](wiring-autowire-candidate-selection-primary-priority-order.md)
 
 ### 3.4 merged definition：从合并入口切入

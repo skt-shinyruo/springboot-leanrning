@@ -124,10 +124,10 @@
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-- “已编写 before-instantiation 的 BPP，但构造器仍然执行” → **实例层（时机/注册方式）**：BPP 是否在 refresh 前注册？是否真的被当作 BPP 注册进 BeanFactory？（对照 [25](wiring-programmatic-bpp-registration.md)）
+- “已编写 before-instantiation 的 BPP，但构造器仍然执行” → **实例层（时机/注册方式）**：BPP 是否在 refresh 前注册？是否真的被当作 BPP 注册进 BeanFactory？（对照 [25](programmatic-bpp-registration.md)）
 - “短路后出现 `BeanNotOfRequiredTypeException`” → **实例层（暴露类型）**：返回对象的类型是否与容器期望类型兼容？（JDK proxy 只实现接口）
-- “短路后生命周期回调/注入行为变得反预期” → **实例层（绕过默认流程）**：读者返回对象意味着可能绕过 `doCreateBean` 的部分阶段（可对照 [17](internals-lifecycle-callback-order.md)、[30](wiring-injection-phase-field-vs-constructor.md)）
-- “误认为这是 AOP/事务专属机制” → **实例层通用机制**：代理/替身的出现不止发生在 AOP（见 [31](wiring-proxying-phase-bpp-wraps-bean.md)）
+- “短路后生命周期回调/注入行为变得反预期” → **实例层（绕过默认流程）**：读者返回对象意味着可能绕过 `doCreateBean` 的部分阶段（可对照 [17](internals-lifecycle-callback-order.md)、[30](injection-phase.md)）
+- “误认为这是 AOP/事务专属机制” → **实例层通用机制**：代理/替身的出现不止发生在 AOP（见 [31](proxying-phase.md)）
 
 ## 源码调用链（方法级）：短路发生在哪个分支？
 

@@ -166,7 +166,7 @@
 
 若要把根因讲得更完整，可以对照阅读：
 
-- [容器启动与基础设施处理器：为什么注解能工作？](internals-container-bootstrap-and-infrastructure.md)
+- [容器启动与基础设施处理器：为什么注解能工作？](container-bootstrap-and-infrastructure.md)
 - [容器扩展点：BFPP vs BPP（以及它们能/不能做什么）](ioc-post-processors.md)
 
 ---

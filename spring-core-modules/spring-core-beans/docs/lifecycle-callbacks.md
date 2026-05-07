@@ -308,9 +308,9 @@ finishRefresh
 | 需求 | 更合适的钩子 | 为什么 | 在本仓库怎么验证/延伸阅读 |
 | --- | --- | --- | --- |
 | 初始化自身字段/校验注入完成 | `@PostConstruct` / `afterPropertiesSet` / `initMethod` | 注入已完成，位置稳定 | `SpringCoreBeansLifecycleCallbackOrderLabTest`（本章第 3 节） |
-| 需要“非 lazy 单例都创建完”后再做一次性事情（建索引/全量校验） | `SmartInitializingSingleton` | 明确发生在 `preInstantiateSingletons` 收尾 | `SpringCoreBeansSmartInitializingSingletonLabTest`；见 [`26`](wiring-smart-initializing-singleton.md) |
-| 需要按顺序 start/stop 基础设施组件（消费者/线程池容器等） | `SmartLifecycle`（phase） | start/stop 纳入容器生命周期，且有排序与 stop callback 语义 | `SpringCoreBeansSmartLifecycleLabTest`；见 [`27`](wiring-smart-lifecycle-phase.md) |
-| 只想强制某些 bean 初始化/销毁顺序（即使没有显式 DI） | `@DependsOn` / `dependsOn` | 只管顺序、不管注入；并会“拉起” lazy | `SpringCoreBeansDependsOnLabTest`；见 [`19`](wiring-depends-on.md) |
+| 需要“非 lazy 单例都创建完”后再做一次性事情（建索引/全量校验） | `SmartInitializingSingleton` | 明确发生在 `preInstantiateSingletons` 收尾 | `SpringCoreBeansSmartInitializingSingletonLabTest`；见 [`26`](smart-initializing-singleton.md) |
+| 需要按顺序 start/stop 基础设施组件（消费者/线程池容器等） | `SmartLifecycle`（phase） | start/stop 纳入容器生命周期，且有排序与 stop callback 语义 | `SpringCoreBeansSmartLifecycleLabTest`；见 [`27`](smart-lifecycle.md) |
+| 只想强制某些 bean 初始化/销毁顺序（即使没有显式 DI） | `@DependsOn` / `dependsOn` | 只管顺序、不管注入；并会“拉起” lazy | `SpringCoreBeansDependsOnLabTest`；见 [`19`](depends-on.md) |
 
 ### 4.6 关键误区：为什么 `@PostConstruct` 里调用 `@Transactional/@Async` 常常“不生效”？
 
@@ -327,8 +327,8 @@ void init() {
 
 更可靠的替代方案（按“时机更靠后”排序）：
 
-- **需要等容器里其他单例就绪**：用 `SmartInitializingSingleton`（见上表与 [`26`](wiring-smart-initializing-singleton.md)）
-- **需要 start/stop 与顺序**：用 `SmartLifecycle`（见 [`27`](wiring-smart-lifecycle-phase.md)）
+- **需要等容器里其他单例就绪**：用 `SmartInitializingSingleton`（见上表与 [`26`](smart-initializing-singleton.md)）
+- **需要 start/stop 与顺序**：用 `SmartLifecycle`（见 [`27`](smart-lifecycle.md)）
 - **Spring Boot 场景需要等应用就绪**：用 `ApplicationRunner` / `ApplicationReadyEvent`
 
 > 经验法则：`@PostConstruct` 适合“让自己可用”，不适合作为“执行一段需要 AOP/事务/异步语义的业务入口”。
@@ -347,7 +347,7 @@ void init() {
 - `SpringCoreBeansDependsOnLabTest#dependsOn_triggersLazyDependencyInstantiation`
 - `SpringCoreBeansDependsOnLabTest#dependsOn_affectsDestroyOrder_viaDependentBeanMap`
 
-更完整的机制与排障表见：[`19. dependsOn：强制初始化顺序（即使没有显式依赖）`](wiring-depends-on.md)
+更完整的机制与排障表见：[`19. dependsOn：强制初始化顺序（即使没有显式依赖）`](depends-on.md)
 
 ### 4.8 容器级 start/stop：`SmartLifecycle` 的 phase 与 stop(callback) 语义
 
@@ -362,7 +362,7 @@ void init() {
 - `SpringCoreBeansSmartLifecycleLabTest#smartLifecycleStartsInPhaseOrder_andStopsInReverseOrder`
 - `SpringCoreBeansSmartLifecycleLabTest#containerStopsSmartLifecycle_viaStopCallbackMethod_notStopMethod`
 
-延伸阅读：[`27. SmartLifecycle：start/stop 时机与 phase 顺序`](wiring-smart-lifecycle-phase.md)
+延伸阅读：[`27. SmartLifecycle：start/stop 时机与 phase 顺序`](smart-lifecycle.md)
 
 ---
 

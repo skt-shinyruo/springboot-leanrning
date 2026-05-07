@@ -112,7 +112,7 @@
 **关联阅读：**
 
 - 候选解析与注入点元数据：`wiring-dependency-injection-resolution.md`
-- 代理替换发生点：`wiring-proxying-phase-bpp-wraps-bean.md`
+- 代理替换发生点：`proxying-phase.md`
 - scope/prototype 与延迟获取：`wiring-scope-and-prototype.md`
 
 ## 可复现闭环（基于 `SpringCoreBeansLazyLabTest`）
@@ -162,7 +162,7 @@
 - “已标注 lazy-init，但 bean 仍在启动时创建” → **优先实例层（依赖链）**：是否有非 lazy 的 consumer 直接依赖它？（本章第 2 节 + `doResolveDependency`）
 - “在注入点添加 `@Lazy`，但仍然提前创建” → **优先实例层（proxy 触发点）**：是否调用了会触发真实解析的方法（如 `toString/equals`），或经由其他路径提前获取到了目标 bean？
 - “误认为 `@Lazy` 会影响 beanDefinition 的 lazy-init” → **优先定义层澄清**：注入点 `@Lazy` 与 beanDefinition `lazy-init` 是两种语义（本章第 3 节）
-- “看到的是 proxy 类型而不是目标类” → **实例层（代理语义）**：这是注入点 `@Lazy` 的本质（对照 [31](wiring-proxying-phase-bpp-wraps-bean.md)）
+- “看到的是 proxy 类型而不是目标类” → **实例层（代理语义）**：这是注入点 `@Lazy` 的本质（对照 [31](proxying-phase.md)）
 
 ## 验收口径：Lazy：lazy-init bean vs `@Lazy` 注入点（懒代理）
 

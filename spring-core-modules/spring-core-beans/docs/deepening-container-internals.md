@@ -23,7 +23,7 @@ Container Internals 章节要把 `refresh()` 主线、后处理器算法、缓�
 
 ### 容器启动与基础设施处理器：为什么注解能工作？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/internals-container-bootstrap-and-infrastructure.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/container-bootstrap-and-infrastructure.md`
 - 深化落点：
     - `SpringCoreBeansBootstrapInternalsLabTest`（再对照 `SpringCoreBeansResourceInjectionLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -31,7 +31,7 @@ Container Internals 章节要把 `refresh()` 主线、后处理器算法、缓�
 
 ### BDRPP：注册阶段动态加定义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/internals-bdrpp-definition-registration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/bdrpp-definition-registration.md`
 - 深化落点：
     - `SpringCoreBeansRegistryPostProcessorLabTest`（再对照 `SpringCoreBeansRegistryPostProcessorLabTest.beanDefinitionRegistryPostProcessor_canRegisterNewBeanDefinitions()`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -39,7 +39,7 @@ Container Internals 章节要把 `refresh()` 主线、后处理器算法、缓�
 
 ### 顺序（Ordering）：PriorityOrdered / Ordered / 无序
 
-- 文件：`spring-core-modules/spring-core-beans/docs/internals-post-processor-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/post-processor-ordering.md`
 - 深化落点：
     - `SpringCoreBeansPostProcessorOrderingLabTest`（再对照 `SpringCoreBeansProgrammaticBeanPostProcessorLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `PostProcessorRegistrationDelegate#sortPostProcessors` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -47,7 +47,7 @@ Container Internals 章节要把 `refresh()` 主线、后处理器算法、缓�
 
 ### 实例化前短路：postProcessBeforeInstantiation
 
-- 文件：`spring-core-modules/spring-core-beans/docs/internals-pre-instantiation-short-circuit.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/pre-instantiation-short-circuit.md`
 - 深化落点：
     - `SpringCoreBeansPreInstantiationLabTest`（再对照 `SpringCoreBeansPreInstantiationLabTest.withoutBeforeInstantiationShortCircuit_refreshFailsAndConstructorWasCalled()`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -55,7 +55,7 @@ Container Internals 章节要把 `refresh()` 主线、后处理器算法、缓�
 
 ### early reference 与循环依赖：getEarlyBeanReference
 
-- 文件：`spring-core-modules/spring-core-beans/docs/internals-early-reference-and-circular.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/early-reference-and-three-level-cache.md`
 - 深化落点：
     - `SpringCoreBeansEarlyReferenceLabTest`（再对照 `SpringCoreBeansRawInjectionDespiteWrappingLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `DefaultSingletonBeanRegistry#getSingleton` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

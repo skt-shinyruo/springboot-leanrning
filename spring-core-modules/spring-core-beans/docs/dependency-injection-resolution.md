@@ -104,9 +104,9 @@
 
 **关联阅读（把能力拼起来）：**
 
-- 注入阶段差异：[`wiring-injection-phase-field-vs-constructor.md`](wiring-injection-phase-field-vs-constructor.md)
-- 泛型匹配误区：[`wiring-generic-type-matching-pitfalls.md`](wiring-generic-type-matching-pitfalls.md)
-- 自定义 `@Qualifier` 元注解：[`aot-custom-qualifier-meta-annotation.md`](aot-custom-qualifier-meta-annotation.md)
+- 注入阶段差异：[`injection-phase.md`](injection-phase.md)
+- 泛型匹配误区：[`generic-type-matching.md`](generic-type-matching.md)
+- 自定义 `@Qualifier` 元注解：[`aot-custom-qualifier.md`](aot-custom-qualifier.md)
 
 ## 本模块里的最小例子：两个 `TextFormatter`
 
@@ -173,7 +173,7 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 
 在 `doResolveDependency` 里，真实项目常见的三类提前返回：
 
-- **resolvableDependencies 命中**：允许注入但不一定是 bean（例如 `BeanFactory`/`ApplicationContext` 等）。见：[ResolvableDependency：为什么有些东西能注入但不是 Bean？](wiring-resolvable-dependency.md)
+- **resolvableDependencies 命中**：允许注入但不一定是 bean（例如 `BeanFactory`/`ApplicationContext` 等）。见：[ResolvableDependency：为什么有些东西能注入但不是 Bean？](resolvable-dependency.md)
 - **值注入（@Value / 占位符 / SpEL）**：从 resolver 获取到 suggested value 后直接 `convertIfNecessary`（不会走“按类型找候选”）。
 - **注入点 `@Lazy`（懒解析代理）**：`@Lazy` 既可以标在 BeanDefinition 上（影响“什么时候创建”），也可以标在注入点上（影响“注入的是什么”）。注入点的 `@Lazy` 会在依赖解析阶段由 resolver 尝试返回一个 lazy-resolution proxy（同样不会走候选收敛）。
 - **集合/流/Provider 通道**：`List/Map/Stream/ObjectProvider/Optional` 会走 `resolveMultipleBeans(...)`，它解决的是“收集全部”，不是“选唯一”。
@@ -183,9 +183,9 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 读者对以下两类“最常见提前返回”通过断点进行一次验证，以建立可观察证据，而非仅记忆结论：
 
 - `@Value`：`AutowireCandidateResolver#getSuggestedValue` / `DefaultListableBeanFactory#doResolveDependency`（suggestedValue 分支）
-  - 关联阅读：[`@Value` 占位符解析：strict vs non-strict](wiring-value-placeholder-resolution-strict-vs-non-strict.md)
+  - 关联阅读：[`@Value` 占位符解析：strict vs non-strict](value-placeholder-resolution.md)
 - 注入点 `@Lazy`：`ContextAnnotationAutowireCandidateResolver#getLazyResolutionProxyIfNecessary`
-  - 关联阅读：[`@Lazy` 语义与边界](wiring-lazy-semantics.md)
+  - 关联阅读：[`@Lazy` 语义与边界](lazy-semantics.md)
 
 ### 2.2 需要关注的第一个变量：`matchingBeans` / `candidates`
 
@@ -232,7 +232,7 @@ public FormattingService(@Qualifier("upperFormatter") TextFormatter textFormatte
 2. **注入点 `@Lazy`**：是否返回 lazy-resolution proxy（`getLazyResolutionProxyIfNecessary`），从而绕开“选唯一候选”的痛点（但也会带来 proxy 语义）
 3. **`@Value`**：是否存在 `suggestedValue`（走值注入分支，根本不进入候选收集/收敛）
 4. **FactoryBean product 类型匹配**：候选的“类型”可能来自 FactoryBean 的 `getObjectType()` / BeanDefinition 的 targetType
-   - 如果 `getObjectType()` 误报/返回 null，可能导致候选集合“多了/少了”，最终表现为 NoSuch/NoUnique 或注入到意外对象（见 [FactoryBean](ioc-factorybean.md)）
+   - 如果 `getObjectType()` 误报/返回 null，可能导致候选集合“多了/少了”，最终表现为 NoSuch/NoUnique 或注入到意外对象（见 [FactoryBean](factorybean.md)）
 
 ## 候选收敛（narrow down）：从候选集合缩到唯一候选
 
@@ -307,7 +307,7 @@ determineAutowireCandidate(candidates, descriptor):
 2. 给候选实现类或 `@Bean` 方法打上 `@MyQualifier("x")`
 3. 在注入点上也打上 `@MyQualifier("x")`，观察 `matchingBeans` 如何被缩小，以及 resolver 在哪里读到限定信号
 
-参考（含可运行示例）：[自定义 Qualifier 元注解](aot-custom-qualifier-meta-annotation.md)
+参考（含可运行示例）：[自定义 Qualifier 元注解](aot-custom-qualifier.md)
 
 ### 3.3 `@Primary` vs `@Qualifier`：怎么选？
 
@@ -360,7 +360,7 @@ static class SingleWorkerConsumer {
 
 若在项目里见过“字段名改了，注入就变了/就坏了”，通常是 `@Resource` 的 name-first 语义触发。
 
-详见：[`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](wiring-resource-injection-name-first.md)
+详见：[`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](resource-vs-autowired.md)
 
 ### 3.6 机制边界：候选收集 → 收敛 → 最终注入（条件→分支→结果）
 
@@ -393,7 +393,7 @@ static class SingleWorkerConsumer {
    - 现象：候选集合被污染（多了/少了），最终 NoSuch/NoUnique 或注入到意外对象
    - 关键事实：FactoryBean 的 product 类型匹配高度依赖 `getObjectType()` 与缓存语义
    - 修复：实现正确的 `getObjectType()`；必要时提供更明确的 targetType；并在文档/测试里固化反例
-   - 关联：见 [FactoryBean](ioc-factorybean.md)
+   - 关联：见 [FactoryBean](factorybean.md)
 
 4. **误判：by-name fallback 在构造器参数注入上和字段注入一样可靠**
    - 现象：字段注入能选中，但构造器参数注入仍 NoUnique（或根本不走 by-name）
@@ -438,7 +438,7 @@ static class SingleWorkerConsumer {
 - 不要求在注入时立刻得到一个具体对象
 - 提供一个“将来可以向容器获取对象”的入口
 
-它对 prototype 注入 singleton 尤其重要，[04 章](ioc-scope-and-prototype.md)会详细解释。
+它对 prototype 注入 singleton 尤其重要，[04 章](scope-and-prototype.md)会详细解释。
 
 ---
 

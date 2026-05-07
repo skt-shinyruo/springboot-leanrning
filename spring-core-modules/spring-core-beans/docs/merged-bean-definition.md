@@ -124,8 +124,8 @@ getMergedLocalBeanDefinition(beanName):
 
 继续阅读时，可以按这三条线补齐上下文：
 
-- 注解为什么能工作（基础设施处理器）：[12](internals-container-bootstrap-and-infrastructure.md)
-- 注入发生在哪个阶段：`postProcessProperties`： [30](wiring-injection-phase-field-vs-constructor.md)
+- 注解为什么能工作（基础设施处理器）：[12](container-bootstrap-and-infrastructure.md)
+- 注入发生在哪个阶段：`postProcessProperties`： [30](injection-phase.md)
 - 生命周期回调顺序： [17](internals-lifecycle-callback-order.md)
 
 ---

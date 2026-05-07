@@ -91,7 +91,7 @@ alias 不会复制 BeanDefinition，也不会创建第二个实例。它只是�
 
 - “aliasName 找不到/解析不到 primaryName” → **优先定义层**：alias 是否在 refresh 前注册？是否被覆盖/冲突？（本章第 3 节）
 - “误认为 alias 会复制一个 bean，但两个名字获取到同一个对象” → **这是预期（实例层语义）**：alias 只是名字映射，不产生第二个实例（本章第 1 节）
-- “按类型注入仍然歧义” → **实例层（候选解析）**：alias 不改变候选选择规则（见 [03](ioc-dependency-injection-resolution.md)/[33](wiring-autowire-candidate-selection-primary-priority-order.md)）
+- “按类型注入仍然歧义” → **实例层（候选解析）**：alias 不改变候选选择规则（见 [03](dependency-injection-resolution.md)/[33](wiring-autowire-candidate-selection-primary-priority-order.md)）
 - “与 FactoryBean/`&` 同时出现时容易混淆” → **应先明确 name 变换**：`transformedBeanName` 同时负责 alias 与 `&`（见 [23](wiring-factorybean-deep-dive.md)）
 
 ## 可复现闭环（基于 `SpringCoreBeansBeanNameAliasLabTest`）

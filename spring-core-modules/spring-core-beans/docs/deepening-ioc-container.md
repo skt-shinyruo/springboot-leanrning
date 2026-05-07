@@ -33,7 +33,7 @@ IoC Container 章节承载本模块的基础模型：注册、注入、生命周
 
 ### 依赖注入解析：类型/名称/@Qualifier/@Primary
 
-- 文件：`spring-core-modules/spring-core-beans/docs/ioc-dependency-injection-resolution.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/dependency-injection-resolution.md`
 - 深化落点：
     - `SpringCoreBeansAutowireCandidateSelectionLabTest`（再对照 `SpringCoreBeansBeanGraphDebugLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -41,7 +41,7 @@ IoC Container 章节承载本模块的基础模型：注册、注入、生命周
 
 ### Scope 与 prototype 注入陷阱
 
-- 文件：`spring-core-modules/spring-core-beans/docs/ioc-scope-and-prototype.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/scope-and-prototype.md`
 - 深化落点：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -49,7 +49,7 @@ IoC Container 章节承载本模块的基础模型：注册、注入、生命周
 
 ### 生命周期：初始化、销毁与回调
 
-- 文件：`spring-core-modules/spring-core-beans/docs/ioc-lifecycle-and-callbacks.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/lifecycle-callbacks.md`
 - 深化落点：
     - `SpringCoreBeansLifecycleCallbackOrderLabTest`（再对照 `SpringCoreBeansPrototypeDestroySemanticsLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractAutowireCapableBeanFactory#doCreateBean` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -65,7 +65,7 @@ IoC Container 章节承载本模块的基础模型：注册、注入、生命周
 
 ### `@Configuration` 增强与 `@Bean` 语义
 
-- 文件：`spring-core-modules/spring-core-beans/docs/ioc-configuration-enhancement.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/configuration-and-bean-method.md`
 - 深化落点：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansContainerLabTest#configurationProxyBeanMethodsFalse_stillPreservesSingleton_whenUsingMethodParameterInjection`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -73,7 +73,7 @@ IoC Container 章节承载本模块的基础模型：注册、注入、生命周
 
 ### Bean 运行机制：从 BeanDefinition 到最终暴露对象
 
-- 文件：`spring-core-modules/spring-core-beans/docs/ioc-bean-mental-model.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/bean-mental-model.md`
 - 深化落点：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansBeanCreationTraceLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -81,7 +81,7 @@ IoC Container 章节承载本模块的基础模型：注册、注入、生命周
 
 ### `FactoryBean`：产品 vs 工厂（以及 `&` 前缀）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/ioc-factorybean.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/factorybean.md`
 - 深化落点：
     - `SpringCoreBeansContainerLabTest`（再对照 `SpringCoreBeansFactoryBeanDeepDiveLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `AbstractBeanFactory#getObjectForBeanInstance` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -89,7 +89,7 @@ IoC Container 章节承载本模块的基础模型：注册、注入、生命周
 
 ### 循环依赖：现象、原因与规避
 
-- 文件：`spring-core-modules/spring-core-beans/docs/ioc-circular-dependencies.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/circular-dependency.md`
 - 深化落点：
     - `SpringCoreBeansContainerLabTest#circularDependencyWithConstructorsFailsFast`（再对照 `SpringCoreBeansContainerLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `ConstructorResolver#autowireConstructor` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

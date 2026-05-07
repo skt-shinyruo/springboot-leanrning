@@ -48,8 +48,8 @@
 
 对照阅读（把“解析/求值/转换”三段分别看清）：
 
-- 占位符 strict vs non-strict： [34](wiring-value-placeholder-resolution-strict-vs-non-strict.md)
-- 类型转换边界： [36](wiring-type-conversion-and-beanwrapper.md)
+- 占位符 strict vs non-strict： [34](value-placeholder-resolution.md)
+- 类型转换边界： [36](type-conversion-and-beanwrapper.md)
 
 ---
 

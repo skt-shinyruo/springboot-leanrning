@@ -88,7 +88,7 @@
 
 **下一步去哪读（补知识点）：**
 
-- [依赖注入解析：候选收集→收敛→最终注入](ioc-dependency-injection-resolution.md)
+- [依赖注入解析：候选收集→收敛→最终注入](dependency-injection-resolution.md)
 - [候选选择与优先级：@Primary/@Priority/@Order 的边界](wiring-autowire-candidate-selection-primary-priority-order.md)
 
 ---
@@ -118,7 +118,7 @@
 
 **下一步去哪读（补知识点）：**
 
-- [scope 与 prototype：prototype 注入陷阱与三种解法](ioc-scope-and-prototype.md)
+- [scope 与 prototype：prototype 注入陷阱与三种解法](scope-and-prototype.md)
 
 ---
 
@@ -148,7 +148,7 @@
 **下一步去哪读（补知识点）：**
 
 - [BFPP vs BPP：定义层改配方 vs 实例层改对象](ioc-post-processors.md)
-- [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy](wiring-proxying-phase-bpp-wraps-bean.md)
+- [代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy](proxying-phase.md)
 - [调试与自检：从异常到断点入口](boot-debugging-and-observability.md)
 
 ## 新手易卡点与修复路径（快启版）

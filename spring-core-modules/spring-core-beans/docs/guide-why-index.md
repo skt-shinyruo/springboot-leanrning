@@ -114,9 +114,9 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 ### 下一步去哪读（Next reading）
 
-- Beans：[`09. 循环依赖（constructor vs setter）`](ioc-circular-dependencies.md)
-- Beans：[`16. early reference 与循环依赖：getEarlyBeanReference`](internals-early-reference-and-circular.md)
-- Beans：[`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](wiring-proxying-phase-bpp-wraps-bean.md)
+- Beans：[`09. 循环依赖（constructor vs setter）`](circular-dependency.md)
+- Beans：[`16. early reference 与循环依赖：getEarlyBeanReference`](early-reference-and-three-level-cache.md)
+- Beans：[`31. 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy`](proxying-phase.md)
 - AOP（前置理解）：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../spring-core-aop/docs/proxy-fundamentals-aop-proxy-mental-model.md)（为什么要跳：本章的“early 形态 = raw/proxy”离不开对“代理是什么、调用从哪进”的预期；验证什么：在 AOP 章先跑通一个最小 proxy 用例，确认“调用路径经过代理”才会触发增强）
 
 ---
@@ -145,7 +145,7 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 ### 下一步去哪读（Next reading）
 
-- Beans：[`16. early reference 与循环依赖`](internals-early-reference-and-circular.md)（其中对“形态一致性”进行系统阐述）
+- Beans：[`16. early reference 与循环依赖`](early-reference-and-three-level-cache.md)（其中对“形态一致性”进行系统阐述）
 
 ---
 
@@ -171,8 +171,8 @@ Spring 的“三级缓存”并不是为了“让循环依赖都能启动”，�
 
 ### 下一步去哪读（Next reading）
 
-- Beans：[`16. early reference 与循环依赖`](internals-early-reference-and-circular.md)
-- Beans：[`31. 代理替换阶段（BPP after-init）`](wiring-proxying-phase-bpp-wraps-bean.md)
+- Beans：[`16. early reference 与循环依赖`](early-reference-and-three-level-cache.md)
+- Beans：[`31. 代理替换阶段（BPP after-init）`](proxying-phase.md)
 
 ---
 
@@ -197,7 +197,7 @@ Spring 容器返回的是 **exposed object**，而不是“原始实例”；在
 
 ### 下一步去哪读（Next reading）
 
-- Beans：[`31. 代理产生阶段：BPP 如何把 Bean 换成 Proxy`](wiring-proxying-phase-bpp-wraps-bean.md)
+- Beans：[`31. 代理产生阶段：BPP 如何把 Bean 换成 Proxy`](proxying-phase.md)
 - AOP：[07. AOP 的容器主线：AutoProxyCreator 作为 BPP](../../spring-core-aop/docs/autoproxy-and-pointcuts-autoproxy-creator-mainline.md)（为什么要跳：Beans 侧能解释“BPP 允许换对象”，但“是谁、在什么时候 wrapIfNecessary”要靠 AOP 容器主线补齐；验证什么：按本节给出的 AOP 测试 + 断点锚点跑一遍，观察代理生成条件与目标对象）
 
 ---
@@ -236,7 +236,7 @@ mvn -pl :spring-core-aop -Dtest=SpringCoreAopExposeProxyLabTest#exposeProxyAllow
 ### 下一步去哪读（Next reading）
 
 - AOP：[03. self-invocation：为什么 `this.inner()` 不会被拦截](../../spring-core-aop/docs/proxy-fundamentals-self-invocation.md)（为什么要跳：本章说的是“call path 绕过 proxy”，AOP 章把“绕过发生在哪个调用点”讲得更细；验证什么：用本节的 self-invocation / exposeProxy 对照用例，观察“同类内部调用”是否经过代理）
-- Beans（补齐容器视角）：[`31. 代理替换发生在哪个阶段`](wiring-proxying-phase-bpp-wraps-bean.md)
+- Beans（补齐容器视角）：[`31. 代理替换发生在哪个阶段`](proxying-phase.md)
 
 ## 面试常问（Why Index）
 

@@ -74,7 +74,7 @@
 
 对应章节：
 
-- `internals-bdrpp-definition-registration.md`
+- `bdrpp-definition-registration.md`
 - `ioc-bean-registration.md`
 
 ### 1.3 段 C：实例层准备（注册 BPP 链）
@@ -92,7 +92,7 @@
 对应章节：
 
 - `ioc-post-processors.md`
-- `wiring-programmatic-bpp-registration.md`
+- `programmatic-bpp-registration.md`
 - `appendix-debugger-pack.md`
 
 ### 1.4 段 D：创建单例（实例化 → 注入 → 初始化 → 入缓存）
@@ -111,9 +111,9 @@
 对应章节：
 
 - `internals-refresh-to-bean-creation-mainline.md`
-- `ioc-lifecycle-and-callbacks.md`
-- `ioc-circular-dependencies.md`
-- `internals-early-reference-and-circular.md`
+- `lifecycle-callbacks.md`
+- `circular-dependency.md`
+- `early-reference-and-three-level-cache.md`
 
 ### 1.5 段 E：完成与后置回调（容器就绪）
 
@@ -128,7 +128,7 @@
 
 对应章节：
 
-- `wiring-smart-initializing-singleton.md`
+- `smart-initializing-singleton.md`
 
 ### 1.6 段内关键对象变化（在 debugger 里应该观察到什么）
 

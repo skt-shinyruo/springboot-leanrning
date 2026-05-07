@@ -128,8 +128,8 @@
 2. refresh 调用链（锚点）：`guide-applicationcontext-refresh-call-chain.md`
 3. 断点地图（收敛）：`guide-breakpoint-map.md`
 4. 循环依赖与 early reference：
-   - `ioc-circular-dependencies.md`
-   - `internals-early-reference-and-circular.md`
+   - `circular-dependency.md`
+   - `early-reference-and-three-level-cache.md`
 
 ### 2.3 本场必须运行的 2 个 Lab（讲师提前熟悉）
 

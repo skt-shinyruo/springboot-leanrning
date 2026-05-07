@@ -139,10 +139,10 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 
 1. **pre-instantiation short-circuit（实例化前短路）**
    - `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`
-   - 对应章节：[15](internals-pre-instantiation-short-circuit.md)
+   - 对应章节：[15](pre-instantiation-short-circuit.md)
 2. **early reference（循环依赖窗口）**
    - `SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference`
-   - 对应章节：[16](internals-early-reference-and-circular.md)
+   - 对应章节：[16](early-reference-and-three-level-cache.md)
 3. **after-init（最常见 final proxy）**
    - `BeanPostProcessor#postProcessAfterInitialization`
    - 本章重点（以及 AOP/事务常见落点）
@@ -153,7 +153,7 @@ Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展�
 | --- | --- | --- | --- | --- |
 | AOP/事务“不生效” | 调用没走 proxy（常见 self-invocation） | 断点 `applyBeanPostProcessorsAfterInitialization` 看是否替换；对照外部调用 vs `this.xxx()` | 让调用从容器注入的 proxy 进入；拆分 bean | `SpringCoreBeansProxyingPhaseLabTest` |
 | 按实现类 `getBean`/注入失败 | JDK proxy 只实现接口 | `Proxy.isProxyClass(...)`；注入点类型是实现类 | 按接口注入；或改 class-based proxy（注意 final） | `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansEarlyReferenceLabTest` |
-| 有时是原对象，有时是 proxy | 创建时机不同导致错过/命中 BPP | 对照 `registerBeanPostProcessors` 与目标 bean 创建时机；看是否过早 `getBean` | 避免在 BFPP/BDRPP 阶段过早创建；保证 BPP 链完整 | 结合 [14](internals-post-processor-ordering.md)、[25](wiring-programmatic-bpp-registration.md) |
+| 有时是原对象，有时是 proxy | 创建时机不同导致错过/命中 BPP | 对照 `registerBeanPostProcessors` 与目标 bean 创建时机；看是否过早 `getBean` | 避免在 BFPP/BDRPP 阶段过早创建；保证 BPP 链完整 | 结合 [14](post-processor-ordering.md)、[25](programmatic-bpp-registration.md) |
 | 循环依赖中“类型突然不对” | early reference 形态与 final 形态不一致 | 断点 `getEarlyBeanReference`；看 raw vs wrapped 一致性检查 | 理解 early reference 边界；避免 constructor cycle；必要时调整注入类型 | `SpringCoreBeansEarlyReferenceLabTest` |
 
 ## 断点闭环（照着走一次）

@@ -251,7 +251,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
   - 典型落点：`registerBeanPostProcessors`（决定 BPP 列表顺序）+ `applyBeanPostProcessors*`（把顺序变成最终对象形态）
 - **手工注册导致的“顺序失效”**：在代码里 `addBeanPostProcessor`，但期待 `Ordered/@Order` 生效
   - 典型落点：不经过 `registerBeanPostProcessors` 的排序流程，执行顺序只看“谁先 add”
-  - 对应章节：[25](wiring-programmatic-bpp-registration.md)
+  - 对应章节：[25](programmatic-bpp-registration.md)
 ## 源码最短路径（call chain）
 
 > 落点：当读者怀疑“顺序导致结果反预期”时，用最短调用链把问题归位：到底是 **BFPP（定义层）** 的顺序，还是 **BPP（实例层）** 的顺序？
@@ -289,7 +289,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 把这个反例看懂，即可把两个顺序体系彻底分开：
 
 - “容器自动发现 + 排序”体系：见本章（`registerBeanPostProcessors`）
-- “手工注册绕过排序”体系：见 [25](wiring-programmatic-bpp-registration.md)
+- “手工注册绕过排序”体系：见 [25](programmatic-bpp-registration.md)
 
 ## 验收口径：能解释为什么 `@Order` 不一定生效
 
@@ -298,7 +298,7 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 - 常见追问：为什么写了 `@Order`，但 post-processor 顺序没变？
   - 答题要点：`@Order` 不是“接口”，不会将处理器放入 Ordered 段；并且如果容器没使用 `AnnotationAwareOrderComparator`，也可能不会读注解。
 - 常见追问：为什么手工 `addBeanPostProcessor(...)` 的顺序表面上“不听 Ordered”？
-  - 答题要点：手工注册绕过 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 的排序流程；最终顺序就是注册顺序（见 [25](wiring-programmatic-bpp-registration.md)）。
+  - 答题要点：手工注册绕过 `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 的排序流程；最终顺序就是注册顺序（见 [25](programmatic-bpp-registration.md)）。
 
 ## 实验：把现象固定成断言
 
@@ -344,8 +344,8 @@ invokeBeanFactoryPostProcessors(beanFactory, externalBfpps):
 4. 在 Lab 中定义的三个 processor（priority/ordered/unordered）入口方法：观察断言里记录的执行顺序是怎么来的
 
 - “某个 BFPP 改定义没生效/被覆盖了” → **定义层 + 顺序问题**：优先确认它是否实现了 `PriorityOrdered/Ordered`，再确认它是否比其他 BFPP 更早执行（本章 Lab）
-- “某个 BPP 的代理/增强消失了或包裹顺序不对” → **实例层 + 顺序问题**：看 `registerBeanPostProcessors` 的排序与注册时机（对照 [31](wiring-proxying-phase-bpp-wraps-bean.md)）
-- “手工 `addBeanPostProcessor` 后，`Ordered` 反而不生效” → **实例层 + 注册方式问题**：手工注册的 BPP 不会走容器的排序流程（见 [25](wiring-programmatic-bpp-registration.md)）
+- “某个 BPP 的代理/增强消失了或包裹顺序不对” → **实例层 + 顺序问题**：看 `registerBeanPostProcessors` 的排序与注册时机（对照 [31](proxying-phase.md)）
+- “手工 `addBeanPostProcessor` 后，`Ordered` 反而不生效” → **实例层 + 注册方式问题**：手工注册的 BPP 不会走容器的排序流程（见 [25](programmatic-bpp-registration.md)）
 - “误认为 `@Order` 能解决单依赖注入歧义” → **不是顺序问题，是候选选择问题**：转到 [33](wiring-autowire-candidate-selection-primary-priority-order.md)
 
 一个实用的“断点分流口诀”：

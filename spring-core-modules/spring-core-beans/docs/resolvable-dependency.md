@@ -62,7 +62,7 @@
 2. 构造器注入（`@Autowired` 构造器/单构造器）
    `ConstructorResolver#autowireConstructor` → `resolveDependency(...)`
 3. `@Resource`（按名优先）
-   `CommonAnnotationBeanPostProcessor` 最终也会走 `resolveDependency` 或 `getBean(name)`（见 [`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](wiring-resource-injection-name-first.md)）
+   `CommonAnnotationBeanPostProcessor` 最终也会走 `resolveDependency` 或 `getBean(name)`（见 [`@Resource` 注入：为什么其定位更接近“按名称找 Bean”？](resource-vs-autowired.md)）
 
 ### 1.1 DependencyDescriptor 深入分析（决定“能不能命中”）
 
@@ -90,7 +90,7 @@
 
 - `DefaultListableBeanFactory#registerResolvableDependency(Class<?> dependencyType, Object autowiredValue)`
 
-> 注意：这是“容器级”的注册行为；注册到哪个 `BeanFactory`，就只对哪个上下文的注入生效（见 [父子 ApplicationContext：可见性与覆盖边界](wiring-context-hierarchy.md)）。
+> 注意：这是“容器级”的注册行为；注册到哪个 `BeanFactory`，就只对哪个上下文的注入生效（见 [父子 ApplicationContext：可见性与覆盖边界](context-hierarchy.md)）。
 
 ### 2.2 命中逻辑在依赖解析链路的哪个位置？
 

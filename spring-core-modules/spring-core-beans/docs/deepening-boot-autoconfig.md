@@ -32,7 +32,7 @@ Boot Auto-Config 章节的难点在于“看不见”：导入顺序、条件上
 
 ### Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
 
-- 文件：`spring-core-modules/spring-core-beans/docs/boot-auto-config-ordering.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/boot-auto-configuration-ordering.md`
 - 深化落点：
     - `SpringCoreBeansAutoConfigurationOrderingLabTest`（再对照 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `AutoConfigurationImportSelector#selectImports` 进，到 `ConditionEvaluator#shouldSkip` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
@@ -40,7 +40,7 @@ Boot Auto-Config 章节的难点在于“看不见”：导入顺序、条件上
 
 ### Spring Boot 自动装配如何影响 Bean（Auto-configuration）
 
-- 文件：`spring-core-modules/spring-core-beans/docs/boot-spring-boot-auto-configuration.md`
+- 文件：`spring-core-modules/spring-core-beans/docs/boot-auto-configuration-beans.md`
 - 深化落点：
     - `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`（再对照 `SpringCoreBeansAutoConfigurationImportOrderingLabTest`），把“现象差异”固定成可重复的断言/输出。
     - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。

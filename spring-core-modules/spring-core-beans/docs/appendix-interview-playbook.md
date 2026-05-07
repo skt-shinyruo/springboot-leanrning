@@ -88,7 +88,7 @@
 
 对照章节：
 
-- `ioc-dependency-injection-resolution.md`
+- `dependency-injection-resolution.md`
 - `wiring-autowire-candidate-selection-primary-priority-order.md`
 
 ### Q3：`@Resource` 和 `@Autowired` 的核心差异？
@@ -103,7 +103,7 @@
 
 对照章节：
 
-- `wiring-resource-injection-name-first.md`
+- `resource-vs-autowired.md`
 
 ---
 
@@ -119,7 +119,7 @@
 
 对照章节：
 
-- `ioc-lifecycle-and-callbacks.md`
+- `lifecycle-callbacks.md`
 - `internals-lifecycle-callback-order.md`
 
 ---
@@ -139,8 +139,8 @@
 对照章节：
 
 - `ioc-post-processors.md`
-- `internals-post-processor-ordering.md`
-- `wiring-programmatic-bpp-registration.md`
+- `post-processor-ordering.md`
+- `programmatic-bpp-registration.md`
 
 ---
 
@@ -156,7 +156,7 @@
 
 对照章节：
 
-- `ioc-circular-dependencies.md`
+- `circular-dependency.md`
 
 ### Q7：`getEarlyBeanReference` 解决的是什么问题？
 
@@ -169,7 +169,7 @@
 
 对照章节：
 
-- `internals-early-reference-and-circular.md`
+- `early-reference-and-three-level-cache.md`
 
 ---
 
@@ -187,7 +187,7 @@
 
 对照章节：
 
-- `ioc-factorybean.md`
+- `factorybean.md`
 - `wiring-factorybean-deep-dive.md`
 - `wiring-factorybean-edge-cases.md`
 
@@ -203,7 +203,7 @@
 
 对照章节：
 
-- `wiring-value-placeholder-resolution-strict-vs-non-strict.md`
+- `value-placeholder-resolution.md`
 
 ### Q10：字符串怎么变成 int/Duration/自定义值对象？
 
@@ -213,7 +213,7 @@
 
 对照章节：
 
-- `wiring-type-conversion-and-beanwrapper.md`
+- `type-conversion-and-beanwrapper.md`
 - `aot-spel-and-value-expression.md`
 
 ---
@@ -249,8 +249,8 @@
 
 对照章节：
 
-- `boot-auto-config-ordering.md`
-- `boot-spring-boot-auto-configuration.md`
+- `boot-auto-configuration-ordering.md`
+- `boot-auto-configuration-beans.md`
 
 ---
 
@@ -267,8 +267,8 @@
 
 对照章节：
 
-- `wiring-environment-and-propertysource.md`
-- `wiring-value-placeholder-resolution-strict-vs-non-strict.md`
+- `environment-and-propertysource.md`
+- `value-placeholder-resolution.md`
 
 ---
 
@@ -289,7 +289,7 @@
 
 对照章节：
 
-- `wiring-beanfactory-api-deep-dive.md`
+- `beanfactory-api-and-autowirecapablebeanfactory.md`
 - `aot-autowirecapablebeanfactory-external-objects.md`
 
 ---
@@ -307,8 +307,8 @@
 
 对照章节：
 
-- `aot-aot-and-native-overview.md`
-- `aot-runtimehints-basics.md`
+- `aot-native-overview.md`
+- `aot-runtimehints.md`
 
 ---
 

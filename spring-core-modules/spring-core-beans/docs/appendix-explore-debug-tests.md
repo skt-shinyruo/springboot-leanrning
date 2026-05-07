@@ -104,7 +104,7 @@ mvn -pl :spring-core-beans -Dspringcorebeans.explore=true test
    - `earlySingletonObjects`：early（循环依赖窗口期的 early reference）
    - `singletonFactories`：factory（按需生成 early reference 的工厂）
 2. **prototype 不进入 singleton 缓存**：不要用“缓存行为”去推断 prototype 生命周期（两套语义）
-3. **循环依赖窗口期缓存变化**：结合 [09](ioc-circular-dependencies.md)、[16](internals-early-reference-and-circular.md) 对照观察
+3. **循环依赖窗口期缓存变化**：结合 [09](circular-dependency.md)、[16](early-reference-and-three-level-cache.md) 对照观察
 
 断点入口（按收益排序）：
 
@@ -159,7 +159,7 @@ mvn -pl :spring-core-beans -Dspringcorebeans.explore=true test
 1. 先运行一遍 Core Labs（不加 explore 开关）：`mvn -pl :spring-core-beans test`
 2. 再运行 Explore（加开关）：`mvn -pl :spring-core-beans -Dspringcorebeans.explore=true -Dtest=SpringCoreBeans*ExploreTest test`
 3. 对照章节回主线：
-   - 缓存/循环依赖：看 [09](ioc-circular-dependencies.md) 与 [16](internals-early-reference-and-circular.md)
+   - 缓存/循环依赖：看 [09](circular-dependency.md) 与 [16](early-reference-and-three-level-cache.md)
    - 更系统的“从异常到断点入口”：看 [调试与可观察性](boot-debugging-and-observability.md)
 
 可以发现：Explore 用例的价值不是“多了一堆测试”，而是“读者终于能在调试器里观察到那个一直被口述的内部结构”。

@@ -111,7 +111,7 @@ Spring 提供了一个明确的回调：
 
 
 - “回调没触发” → **实例层（生命周期时机）**：该 bean 是否是 singleton？context 是否真的 refresh？
-- “回调里拿不到 lazy bean 实例” → **实例层语义**：这是预期；lazy-init 在 refresh 阶段不会创建（对照 [18](wiring-lazy-semantics.md)）
+- “回调里拿不到 lazy bean 实例” → **实例层语义**：这是预期；lazy-init 在 refresh 阶段不会创建（对照 [18](lazy-semantics.md)）
 - “回调里 `getBean` 导致启动变慢” → **实例层行为**：读者把 lazy bean 全部提前创建了（本章第 3 节）
 - “误认为它等价于 ApplicationRunner” → **生命周期粒度差异**：它更贴近 BeanFactory 的创建阶段（本章第 2 节 + `preInstantiateSingletons`）
 

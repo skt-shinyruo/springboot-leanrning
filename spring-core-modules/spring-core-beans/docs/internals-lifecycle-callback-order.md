@@ -63,7 +63,7 @@
 5. `@PostConstruct`（由 `InitDestroyAnnotationBeanPostProcessor` 触发）
 6. `InitializingBean#afterPropertiesSet`
 7. 自定义 initMethod（`@Bean(initMethod=...)`）
-8. `BeanPostProcessor#postProcessAfterInitialization`（代理/包装经常在这里发生，见 [代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](wiring-proxying-phase-bpp-wraps-bean.md)）
+8. `BeanPostProcessor#postProcessAfterInitialization`（代理/包装经常在这里发生，见 [代理/替换阶段：`BeanPostProcessor` 如何把 Bean “换成 Proxy”](proxying-phase.md)）
 
 销毁阶段（容器关闭时，singleton 才会默认触发）：
 
@@ -151,9 +151,9 @@ prototype 的语义是：
 > 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
 
 
-- “`@PostConstruct` 没触发/注入为 null” → **优先定义层/基础设施问题**：容器是否具备注解处理器？（见 [12](internals-container-bootstrap-and-infrastructure.md)）
+- “`@PostConstruct` 没触发/注入为 null” → **优先定义层/基础设施问题**：容器是否具备注解处理器？（见 [12](container-bootstrap-and-infrastructure.md)）
 - “`@PreDestroy` 没触发” → **优先实例层/生命周期语义问题**：是不是 prototype？context 是否真的 close？（本章第 2 节）
-- “BPP 里依赖复杂 bean 导致顺序怪异” → **实例层 + 顺序问题**：BPP 本身会很早创建/注册，必要时拆分依赖（对照 [14](internals-post-processor-ordering.md)、[25](wiring-programmatic-bpp-registration.md)）
+- “BPP 里依赖复杂 bean 导致顺序怪异” → **实例层 + 顺序问题**：BPP 本身会很早创建/注册，必要时拆分依赖（对照 [14](post-processor-ordering.md)、[25](programmatic-bpp-registration.md)）
 - “误认为 destroy 回调一定会执行” → **实例层 + scope 语义问题**：prototype 的销毁不由容器托管（本章第 2 节）
 
 ## 源码调用链（方法级）：初始化与销毁发生在哪里？
@@ -230,7 +230,7 @@ prototype 的语义是：
 
 ## 边界：prototype 与 singleton 的销毁语义不同
 
-> 注意：顺序表的意义是“能定位”，不是“每次都一模一样”。当 BPP 数量与排序变化时（见 [顺序（Ordering）：PriorityOrdered / Ordered / 无序](internals-post-processor-ordering.md)、[手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](wiring-programmatic-bpp-registration.md)），观察到的实际调用栈会变化，但大方向依然稳定。
+> 注意：顺序表的意义是“能定位”，不是“每次都一模一样”。当 BPP 数量与排序变化时（见 [顺序（Ordering）：PriorityOrdered / Ordered / 无序](post-processor-ordering.md)、[手工添加 BeanPostProcessor：顺序与 Ordered 的陷阱](programmatic-bpp-registration.md)），观察到的实际调用栈会变化，但大方向依然稳定。
 
 - **误区 1：在 `@PostConstruct` 做重 IO**
   - 会拉长启动时间，也更难测试与复用。

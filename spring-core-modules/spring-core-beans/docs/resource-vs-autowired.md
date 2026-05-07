@@ -75,7 +75,7 @@
 > 注解不是语言层隐式行为。注入发生，是因为容器里有处理器（BPP）把“注解元数据”翻译成“实际赋值动作”。
 
 对照阅读（注解为什么能工作）：
-- [容器启动与基础设施处理器：为什么注解能工作？](internals-container-bootstrap-and-infrastructure.md)
+- [容器启动与基础设施处理器：为什么注解能工作？](container-bootstrap-and-infrastructure.md)
 
 ---
 
@@ -154,7 +154,7 @@
   - 代价：beanName/字段名重构更敏感
 - 若希望 **按类型装配 + 候选规则收敛**（Primary/Qualifier/泛型收敛等）：
   - 优先 `@Autowired + @Qualifier/@Primary`
-- 参见：[03](ioc-dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)
+- 参见：[03](dependency-injection-resolution.md)、[33](wiring-autowire-candidate-selection-primary-priority-order.md)
 
 ---
 

@@ -205,7 +205,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansAotRuntimeHintsLabTest,SpringCo
 > **AOT/Native 的关键是把“运行期才能知道的事”变成“构建期必须说清楚的事”。**
 
 
-- [RuntimeHints 入门：如何把“需求”变成可验证的契约](aot-runtimehints-basics.md)
+- [RuntimeHints 入门：如何把“需求”变成可验证的契约](aot-runtimehints.md)
 
 ## 边界：AOT / Native 总览：为什么“JVM 可运行”不等于“Native 可运行”
 

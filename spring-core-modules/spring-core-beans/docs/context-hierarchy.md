@@ -164,7 +164,7 @@
 
 - “child 拿不到 parent 的 bean” → **优先定义层/上下文关系问题**：child 是否真的设置了 parent？parent 是否 refresh 并注册了该定义？
 - “在 child 中覆盖了 bean，但 parent 的行为未变化” → **这是预期（name-based、只在 child 生效）**：override 发生在查找链路上，不会反向影响 parent（本章第 2 节）
-- “按类型注入出现歧义（parent/child 都有同类型）” → **实例层（候选解析）**：需要 `@Qualifier/@Primary` 等规则收敛（见 [03](ioc-dependency-injection-resolution.md)/[33](wiring-autowire-candidate-selection-primary-priority-order.md)）
+- “按类型注入出现歧义（parent/child 都有同类型）” → **实例层（候选解析）**：需要 `@Qualifier/@Primary` 等规则收敛（见 [03](dependency-injection-resolution.md)/[33](wiring-autowire-candidate-selection-primary-priority-order.md)）
 - “以为这是 Boot 专属现象” → **容器机制**：parent/child 是 `ApplicationContext` 层面的通用能力（本章 Lab 用小容器也能复现）
 
 - 需要解释清楚：为什么 child 可以获取到 parent 的 bean，但 parent 拿不到 child 的 bean 吗？

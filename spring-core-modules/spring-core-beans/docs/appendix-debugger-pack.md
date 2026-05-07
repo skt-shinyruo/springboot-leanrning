@@ -107,7 +107,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 - `AbstractAutowireCapableBeanFactory#populateBean`
 - `AbstractAutowireCapableBeanFactory#initializeBean`
 
-对应章节：`ioc-lifecycle-and-callbacks.md`
+对应章节：`lifecycle-callbacks.md`
 
 ### 2.3 依赖解析（候选收集 → 候选收敛 → 注入）
 
@@ -115,14 +115,14 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 - `DefaultListableBeanFactory#findAutowireCandidates`
 - `DefaultListableBeanFactory#determineAutowireCandidate`
 
-对应章节：`ioc-dependency-injection-resolution.md`、`wiring-autowire-candidate-selection-primary-priority-order.md`
+对应章节：`dependency-injection-resolution.md`、`wiring-autowire-candidate-selection-primary-priority-order.md`
 
 ### 2.4 代理/包装发生在哪里（BPP 链）
 
 - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`
 - `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
 
-对应章节：`wiring-proxying-phase-bpp-wraps-bean.md`
+对应章节：`proxying-phase.md`
 
 ### 2.5 循环依赖与 early reference（三级缓存）
 
@@ -131,8 +131,8 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 - `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
 
 对应章节：
-- `ioc-circular-dependencies.md`
-- `internals-early-reference-and-circular.md`
+- `circular-dependency.md`
+- `early-reference-and-three-level-cache.md`
 
 ### 2.6 占位符解析 / SpEL / 类型转换（值注入三连）
 
@@ -140,9 +140,9 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
 - `TypeConverterDelegate#convertIfNecessary`（字符串 → 目标类型的决策点）
 
 对应章节：
-- `wiring-value-placeholder-resolution-strict-vs-non-strict.md`
+- `value-placeholder-resolution.md`
 - `aot-spel-and-value-expression.md`
-- `wiring-type-conversion-and-beanwrapper.md`
+- `type-conversion-and-beanwrapper.md`
 
 ---
 

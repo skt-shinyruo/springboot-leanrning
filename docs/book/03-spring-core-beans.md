@@ -34,7 +34,7 @@
 - 导航型文档（优先用来定位断点）：
   - Why Index（从“为什么”进入）：[`guide-why-index.md`](../../spring-core-modules/spring-core-beans/docs/guide-why-index.md)
   - 30 分钟快启：[`guide-quickstart-30min.md`](../../spring-core-modules/spring-core-beans/docs/guide-quickstart-30min.md)
-  - 代理替换阶段（AOP/事务前置）：[`wiring-proxying-phase-bpp-wraps-bean.md`](../../spring-core-modules/spring-core-beans/docs/wiring-proxying-phase-bpp-wraps-bean.md)
+  - 代理替换阶段（AOP/事务前置）：[`proxying-phase.md`](../../spring-core-modules/spring-core-beans/docs/proxying-phase.md)
   - 常见坑：[`appendix-common-pitfalls.md`](../../spring-core-modules/spring-core-beans/docs/appendix-common-pitfalls.md)
 
 ## 常见误区

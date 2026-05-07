@@ -54,7 +54,7 @@
 
 1. `@Value` 注解先被基础设施处理器识别（通常是 `AutowiredAnnotationBeanPostProcessor`）
 2. 它把注解里的字符串（例如 `"${demo.present}"`）交给 `BeanFactory#resolveEmbeddedValue`
-3. 解析后的结果再进入注入（必要时再做类型转换，见 [36](wiring-type-conversion-and-beanwrapper.md)）
+3. 解析后的结果再进入注入（必要时再做类型转换，见 [36](type-conversion-and-beanwrapper.md)）
 
 所以严格与否，最终会体现在：
 
@@ -155,8 +155,8 @@
 | 值是 `"${demo.missing}"` 原样 | non-strict resolver 放行了缺失占位符 | 回到本章 2/3；考虑启用 strict |
 | 直接启动失败：Could not resolve placeholder | strict resolver fail-fast（更健康） | 修复 property source / key / 默认值策略 |
 | `${...}` 解析没问题，但 `#{...}` 异常 | SpEL 求值问题 | 去看 [44](aot-spel-and-value-expression.md) |
-| 解析出来是字符串，但注入到 `int/Duration/...` 失败 | 类型转换问题 | 去看 [36](wiring-type-conversion-and-beanwrapper.md) |
-| `@Value` 完全不生效（字段没注入） | 注解处理器未注册/容器能力不完整 | 回到 [12](internals-container-bootstrap-and-infrastructure.md) |
+| 解析出来是字符串，但注入到 `int/Duration/...` 失败 | 类型转换问题 | 去看 [36](type-conversion-and-beanwrapper.md) |
+| `@Value` 完全不生效（字段没注入） | 注解处理器未注册/容器能力不完整 | 回到 [12](container-bootstrap-and-infrastructure.md) |
 
 ---
 
@@ -190,7 +190,7 @@
 - 证据链（方法级）：
   - 解析：`resolveEmbeddedValue`
   - 求值：`StandardBeanExpressionResolver#evaluate`（见 [44](aot-spel-and-value-expression.md)）
-  - 转换：`TypeConverterDelegate#convertIfNecessary`（见 [36](wiring-type-conversion-and-beanwrapper.md)）
+  - 转换：`TypeConverterDelegate#convertIfNecessary`（见 [36](type-conversion-and-beanwrapper.md)）
 
 ## 验收口径：`@Value("${...}")` 占位符解析
 - 需要解释清楚：为什么有时缺失 `${...}` 会“原样字符串通过”，有时会 fail-fast 吗？
