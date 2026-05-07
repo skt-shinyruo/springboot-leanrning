@@ -46,7 +46,7 @@
 
 - 主线章节只写**最小解释 + 可运行入口 + 导航**，不复制模块正文。
 - 侧边栏导航以 `docs/SUMMARY.md` 为唯一事实来源（SSOT）。
-- 写作风格与章节章法统一参考：[`docs/writing-style-guide.md`](../writing-style-guide.md)。
+- 模块级总纲统一放在 `docs/specs/`；`spring-core-beans` 后续重写以 [`spring-core-beans 文档按知识点重写 Spec`](../specs/2026-05-07-spring-core-beans-docs-knowledge-point-rewrite-spec.md) 为准。
 
 更多站点预览与构建方式见：[`docs-site/README.md`](../../docs-site/README.md)
 
@@ -109,7 +109,7 @@
 - 小结（≤3 条可复述句）
 - 下一跳（模块目录页 / 断点地图 / 分支矩阵的最短跳转）
 
-更完整的写作约束与示例见：[`docs/writing-style-guide.md`](../writing-style-guide.md)。
+`spring-core-beans` 的重写边界、去重规则与验收口径见：[`spring-core-beans 文档按知识点重写 Spec`](../specs/2026-05-07-spring-core-beans-docs-knowledge-point-rewrite-spec.md)。
 
 ### 链接策略（只聚合，不复写）
 
