@@ -72,7 +72,9 @@
 - **断点阅读（以可观察为中心）**：每章至少跑一次 Lab，按章节提供的 breakpoints/观察清单 观察关键数据结构。
   - 断点地图：`docs/guide-breakpoint-map.md` / 断点包：`docs/appendix-debugger-pack.md`
 - **排障阅读（从现象回到最短证据链）**：先用下文的“症状驱动导航”定位章节，再回到对应 Lab 固化现象与边界。
-  - 知识地图：`docs/appendix-knowledge-map.md` / 生产排障清单：`docs/appendix-production-troubleshooting-checklist.md`
+  - 知识地图（主文档归属表）：`docs/appendix-knowledge-map.md` / 生产排障清单：`docs/appendix-production-troubleshooting-checklist.md`
+
+知识地图是本模块的主文档归属表。README 只负责把读者导向主文档和最短证据入口，不在这里重复解释机制。
 
 ---
 
