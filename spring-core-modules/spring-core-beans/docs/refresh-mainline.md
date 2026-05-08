@@ -27,7 +27,7 @@
 5. `invokeBeanFactoryPostProcessors(beanFactory)`：执行 `BeanDefinitionRegistryPostProcessor` 和 `BeanFactoryPostProcessor`。
 6. `registerBeanPostProcessors(beanFactory)`：把 `BeanPostProcessor` 实例注册到 bean 创建链路。
 7. `initMessageSource()` / `initApplicationEventMulticaster()` / `onRefresh()` / `registerListeners()`：准备上下文级服务。
-8. `finishBeanFactoryInitialization(beanFactory)`：冻结常规定义变更入口，预实例化非懒加载单例。
+8. `finishBeanFactoryInitialization(beanFactory)`：冻结常规配置元数据缓存预期，预实例化非懒加载单例。
 9. `finishRefresh()`：发布刷新完成事件并启动生命周期处理。
 
 这条线的关键边界是：前半段还在完善容器的“定义和能力”，后半段才开始批量创建普通单例。
