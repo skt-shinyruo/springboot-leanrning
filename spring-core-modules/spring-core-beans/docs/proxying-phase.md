@@ -1,214 +1,39 @@
-# 代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）
-<!-- CHAPTER-CARD:START -->
-!!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
+    # 代理发生阶段：BPP 包装最终对象
+    <!-- CHAPTER-CARD:START -->
+    !!! summary "章节入口"
+        - 这一页只回答：BPP 在哪个窗口把 bean 包装成 proxy，自调用为什么绕过它？
+        - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansProxyingPhaseLabTest test`
+        - 相邻主题只做跳转，不在本页重复展开。
 
-    观察对象：代理产生在哪个阶段：BPP 如何把 Bean 换成 Proxy（以及 self-invocation）。
-    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+        观察对象：BPP after-initialization 代理替换、自调用绕过代理和 early reference 交叉窗口。
+        主线位置：生命周期、Scope 与代理边界。
+        对照入口：`SpringCoreBeansProxyingPhaseLabTest`。
+    <!-- CHAPTER-CARD:END -->
 
-    对照入口：`SpringCoreBeansBeanCreationTraceLabTest`。需要下探源码时，可以从 `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization` / `AbstractAutowireCapableBeanFactory#doCreateBean` / `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation` 这些入口切入。
+    ## 归属边界
 
-<!-- CHAPTER-CARD:END -->
+    这一页只回答一个问题：BPP 在哪个窗口把 bean 包装成 proxy，自调用为什么绕过它？
 
+    本页负责把这个问题收束到一个可运行证据入口。相邻主题只在“相邻跳转”中出现，避免同一个知识点散落到多个文件。
 
-## 问题：代理产生在哪个阶段
+    ## 最短证据入口
 
-- 本章落点：把 “AOP/事务/异步不生效” 这类问题，从“背概念”变成“方法级证据链 + 可复现最小实验”。
+    - `SpringCoreBeansProxyingPhaseLabTest`
 
-- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-- 官方文档对照（容器扩展点，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+    ## 观察口径
 
+    | 观察点 | 看什么 | 不在这里展开 |
+    | --- | --- | --- |
+    | 问题定位 | BPP 在哪个窗口把 bean 包装成 proxy，自调用为什么绕过它？ | 支持页只负责导航 |
+    | 运行证据 | `SpringCoreBeansProxyingPhaseLabTest` | 不用未验证的口头结论替代 Lab |
+    | 边界判断 | BPP after-initialization 代理替换、自调用绕过代理和 early reference 交叉窗口。 | 相邻 owner 文档另行负责 |
 
-!!! example "本章配套实验（先运行再读）"
+    ## 相邻跳转
 
-    - Lab：
-      - `SpringCoreBeansProxyingPhaseLabTest`
-      - `SpringCoreBeansBeanCreationTraceLabTest`
-      - `SpringCoreBeansEarlyReferenceLabTest`
-    - 测试文件：
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansBeanCreationTraceLabTest.java`
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansEarlyReferenceLabTest.java`
+    - [beanpost-processors.md](beanpost-processors.md)
+- [early-reference-and-three-level-cache.md](early-reference-and-three-level-cache.md)
+- [appendix-knowledge-map.md](appendix-knowledge-map.md)
 
-## 为什么最终暴露对象会变化？（统一解释：缓存解决“时机”，BPP 决定“形态”）
+    ## 小结
 
-> 若读者的困惑为“已观察到 bean 实例被创建，为何最终注入/获取时却变为 proxy？”
-> 先把这个索引页看完（结论与证据链先行）：[`00. Why Index（基础问题索引）`](guide-why-index.md)。
-
-这一章是 Beans ↔ AOP 的关键桥接点：它把“代理”放回 IoC 容器视角解释清楚。
-
-请先记住一句话（后续所有排障都围绕它展开）：
-
-> **容器对外返回的是最终暴露对象（exposed object），而不是原始实例；BPP 允许在创建过程中返回替身对象（proxy/wrapper）。**
-
-把它与循环依赖放在一起看，会更清晰：
-
-- **三级缓存**解决的是：循环依赖窗口期“什么时候可以交付引用”（final/early/factory 三类语义）
-- **BPP/`getEarlyBeanReference`**解决的是：窗口期“交付出去的引用到底是什么形态”（raw 还是 proxy），并尽量做到 early == final
-
-跨模块前置（只读 1 次，之后就能在两边自由切换）：
-
-- AOP 前置理解（call path/self-invocation）：[01. AOP：代理（Proxy）+ 入口（Call Path）](../../spring-core-aop/docs/proxy-fundamentals-aop-proxy-mental-model.md)（为什么要跳：本章解释“容器允许换对象”，AOP 侧补齐“代理到底是什么 + 调用从哪进”；验证什么：在 AOP 章跑一个最小 proxy 用例，确认只有“经过代理的调用”才会触发增强）
-- AOP 容器主线（为什么 AutoProxyCreator 是 BPP）：[07. AOP 的容器主线：AutoProxyCreator 作为 BPP](../../spring-core-aop/docs/autoproxy-and-pointcuts-autoproxy-creator-mainline.md)（为什么要跳：本章看到的是“BPP 把 bean 换成 proxy”，AOP 侧补齐“是谁在 after-init 阶段 wrapIfNecessary”；验证什么：在 `AbstractAutoProxyCreator#postProcessAfterInitialization` 附近观察 proxy 的产生条件与目标对象）
-
-## 机制主线：容器允许“换对象”
-
-> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
-
-Spring 的一个关键能力是：在 bean 创建过程中，容器允许扩展点返回“另一个对象”作为最终结果。
-
-把它落到一句话：
-
-> **BPP 是创建时拦截链，不是创建后补丁。**
-> 一个 bean 如果在 BPP 链完整之前就创建了，后续 BPP 不会 retroactive 生效。
-
-### 机制边界：条件、分支与结果
-
-**条件**：BPP 返回的 `result` 与原始 `bean` 不同
-**分支**：`initializeBean` 在 after-init 阶段“用 result 替换 bean”
-**结果**：容器暴露的是 **proxy/wrapper**，原对象只作为内部目标存在
-**断点入口**：`AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
-
-## 方法级主线：代理替换发生在 initializeBean 的哪一步？
-
-最常见的“换壳点”发生在初始化链路的末尾：
-
-1. `AbstractAutowireCapableBeanFactory#doCreateBean`
-2. `populateBean`（注入发生点）
-3. `initializeBean`
-   - `applyBeanPostProcessorsBeforeInitialization`
-   - `invokeInitMethods`
-  - `applyBeanPostProcessorsAfterInitialization` ← **最常见代理替换点**
-
-在断点里只要盯住这一句，就能把“代理是否发生”变成可观测事实：
-
-- `result != bean` ⇒ 发生了替换（最终暴露对象已不是原对象）
-
-## proxy 的两种形态与类型边界（必须会排障）
-> 官方参考（Spring Framework 6.2.x，容器扩展点：Post-Processor 体系）：https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
-
-
-### 2.1 JDK dynamic proxy（接口代理）
-
-特征：
-
-- `Proxy.isProxyClass(bean.getClass()) == true`
-- 只实现接口，不是目标类子类
-
-后果（高频误区）：
-
-- 按接口注入/获取通常没问题
-- 按实现类注入/获取可能失败（`BeanNotOfRequiredTypeException` / `NoSuchBeanDefinitionException`）
-
-### 2.2 class-based proxy（CGLIB/子类代理）
-
-特征：
-
-- `ClassUtils.isCglibProxyClass(bean.getClass()) == true`（或类名带 `$$`）
-- 本质是目标类子类（但会受 final 限制）
-
-后果：
-
-- 按实现类注入/获取通常仍可用（因为是子类）
-- 但 final 类/方法会让代理能力受限
-
-## self-invocation：为什么“表面上像配置问题”，本质是调用路径问题？
-
-当从容器获取到的是 proxy：
-
-- 外部调用：`proxy.outer()` ⇒ 走代理 ⇒ 拦截器链生效
-- 内部自调用：`this.inner()` ⇒ 直接调用目标对象方法 ⇒ **不走代理** ⇒ 拦截器链不生效
-
-这解释了大量真实项目的“事务不生效/切面不生效”：
-
-- 不是“切面没注册”
-- 是“这一次调用根本没经过 proxy”
-
-修复思路（原则层面）：
-
-- 把被拦截的方法挪到另一个 bean，通过容器注入再调用（让调用从 proxy 进入）
-- 或者使用更明确的设计表达依赖关系（而不是在同类内部 `this.xxx()`）
-
-## 必须知道的“三个替换点”（pre / early / after-init）
-
-排障时常受制于这一误判：
-
-> “在某个断点中观察到原对象，因此认为最终不可能是 proxy。”
-
-错。容器存在三个常见替换点：
-
-1. **pre-instantiation short-circuit（实例化前短路）**
-   - `InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`
-   - 对应章节：[15](pre-instantiation-short-circuit.md)
-2. **early reference（循环依赖窗口）**
-   - `SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference`
-   - 对应章节：[16](early-reference-and-three-level-cache.md)
-3. **after-init（最常见 final proxy）**
-   - `BeanPostProcessor#postProcessAfterInitialization`
-   - 本章重点（以及 AOP/事务常见落点）
-
-## 排障决策表（代理/增强：从“没生效”到“证据链”）
-
-| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
-| --- | --- | --- | --- | --- |
-| AOP/事务“不生效” | 调用没走 proxy（常见 self-invocation） | 断点 `applyBeanPostProcessorsAfterInitialization` 看是否替换；对照外部调用 vs `this.xxx()` | 让调用从容器注入的 proxy 进入；拆分 bean | `SpringCoreBeansProxyingPhaseLabTest` |
-| 按实现类 `getBean`/注入失败 | JDK proxy 只实现接口 | `Proxy.isProxyClass(...)`；注入点类型是实现类 | 按接口注入；或改 class-based proxy（注意 final） | `SpringCoreBeansProxyingPhaseLabTest` / `SpringCoreBeansEarlyReferenceLabTest` |
-| 有时是原对象，有时是 proxy | 创建时机不同导致错过/命中 BPP | 对照 `registerBeanPostProcessors` 与目标 bean 创建时机；看是否过早 `getBean` | 避免在 BFPP/BDRPP 阶段过早创建；保证 BPP 链完整 | 结合 [14](post-processor-ordering.md)、[25](programmatic-bpp-registration.md) |
-| 循环依赖中“类型突然不对” | early reference 形态与 final 形态不一致 | 断点 `getEarlyBeanReference`；看 raw vs wrapped 一致性检查 | 理解 early reference 边界；避免 constructor cycle；必要时调整注入类型 | `SpringCoreBeansEarlyReferenceLabTest` |
-
-## 断点闭环（照着走一次）
-
-### 6.1 断点入口（按收益排序）
-
-1. `AbstractAutowireCapableBeanFactory#initializeBean`（串联点：before/after-init BPP 都从这里过）
-2. `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`（最常见替换点：`result != bean`）
-3. 目标 BPP 的 `postProcessAfterInitialization`（定位“是谁换的”）
-4. （循环依赖相关）`AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
-
-### 6.2 固定观察点（观察清单）
-
-- `beanName`（条件断点只看目标 bean）
-- `bean` vs `result`（是否发生替换）
-- `result.getClass()`（proxy 类型判断）
-- `beanFactory.getBeanPostProcessors()`（链路里有哪些 BPP）
-
-## 面试常问（proxy 与 self-invocation）
-
-### Q1：为什么 `getBean()` 获取到的可能不是原始实例？最常见的替换点在哪？
-
-- 标准答案（可复述）：
-  - 容器返回最终暴露对象；after-init BPP（`postProcessAfterInitialization`）是最常见的替换点，AOP/事务通常在这里返回 proxy。
-- 证据链（方法级）：
-  - `initializeBean` → `applyBeanPostProcessorsAfterInitialization`
-
-### Q2：self-invocation 为什么会让事务/AOP不生效？
-
-- 标准答案（可复述）：
-  - 因为自调用发生在目标对象内部，走的是 `this.xxx()`，不会经过容器返回的 proxy，因此拦截器链不会触发。
-
-### Q3：JDK proxy 与 CGLIB proxy 的核心差别是什么？为什么会影响“按实现类注入”？
-
-- 标准答案（可复述）：
-  - JDK proxy 只实现接口，不是目标类子类；CGLIB proxy 是子类（但受 final 限制）。所以按实现类注入在 JDK proxy 下更容易失败。
-
-## 验收口径：代理产生在哪个阶段
-需要用 3 句回答：
-
-1. 代理最常见在哪个方法级替换点产生？（提示：after-init BPP）
-2. 为什么 self-invocation 一定绕过代理？
-3. 如何用断点证明“是谁把对象换成了 proxy”？
-
-
-## 小结：代理产生在哪个阶段
-
-`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
-
-<!-- BOOKIFY:START -->
-
-### 对应实验/测试
-
-- Lab：`SpringCoreBeansBeanCreationTraceLabTest` / `SpringCoreBeansEarlyReferenceLabTest` / `SpringCoreBeansProxyingPhaseLabTest`
-- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansProxyingPhaseLabTest.java`
-
-<!-- BOOKIFY:END -->
+    proxying-phase.md 的完成标准是：读者能用上面的 Lab 证明“BPP 在哪个窗口把 bean 包装成 proxy，自调用为什么绕过它？”，并知道哪些相邻问题应该跳到其他 owner 文档。

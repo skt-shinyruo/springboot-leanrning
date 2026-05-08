@@ -24,7 +24,7 @@ class SpringCoreBeansAutowireCandidateSelectionExerciseTest {
                            - `SpringCoreBeansInjectionAmbiguityLabTest`
                            - `SpringCoreBeansAutowireCandidateSelectionLabTest`
                         2) 阅读 doc（把规则写成决策树）：
-                           - `spring-core-modules/spring-core-beans/docs/wiring-autowire-candidate-selection-primary-priority-order.md`
+                           - `spring-core-modules/spring-core-beans/docs/autowire-candidate-selection.md`
                         3) 下断点验证你看到的分支（不要只看日志）：
                            - `DefaultListableBeanFactory#doResolveDependency`
                            - `DefaultListableBeanFactory#determineAutowireCandidate`

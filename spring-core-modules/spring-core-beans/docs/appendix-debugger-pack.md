@@ -1,191 +1,30 @@
-# 断点包（断点包总入口）
-<!-- CHAPTER-CARD:START -->
-!!! summary "章节入口"
-    - 使用方式：先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
-
-    观察对象：断点包（断点包总入口）。
-    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
-    对照入口：`SpringCoreBeansBreakpointPackLabTest`。需要下探源码时，可以从 `AbstractApplicationContext#refresh` / `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors` / `PostProcessorRegistrationDelegate#registerBeanPostProcessors` 这些入口切入。
-
-<!-- CHAPTER-CARD:END -->
-
-## 读法：把断点包当作排障索引
-
-本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
-
-1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
-2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
-3. 最后用对应实验/测试收敛答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
-
-## 断点包的使用边界：减少命中噪音
-
-- 这页可以当成“进入本模块的调试入口索引”：先运行一条最小回归，再按本页断点清单观察关键数据结构变化，最后回到对应章节补齐解释与边界。
-
-- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-!!! example "本章配套实验（先运行再读）"
-
-    - Lab（总入口/快速回归）：
-      - `SpringCoreBeansBreakpointPackLabTest`
-      - `SpringCoreBeansMainlineCallChainLabTest`
-    - Lab（关键分支矩阵入口）：
-      - `SpringCoreBeansIocBranchMatrixLabTest`
-      - `SpringCoreBeansInternalsBranchMatrixLabTest`
-    - 测试文件：
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansBreakpointPackLabTest.java`
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part00_guide/SpringCoreBeansMainlineCallChainLabTest.java`
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part01_ioc_container/SpringCoreBeansIocBranchMatrixLabTest.java`
-      - `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part03_container_internals/SpringCoreBeansInternalsBranchMatrixLabTest.java`
-
-## 机制主线：将“主观判断”转化为“可观察事实”
-
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-Spring IoC 的难点从来不是 API，而是：
-
-- 不知道某个“现象”发生在 refresh 的哪个阶段
-- 不知道某个“增强/代理/注入”到底由哪个处理器做的
-- 不知道“异常信息”应该回溯到哪个关键分支
-
-断点包的做法是：把常见问题压缩成 **断点入口 + 观察点 + 对应 Lab**，让阅读者最快收敛到证据链。
-
----
-
-## 使用方式（3 步闭环）
-
-1. **运行一个可复现入口**（先运行章首 Lab，以避免在业务项目中丢失主线）
-2. **按本章断点清单设置断点**（必要时用条件断点过滤 beanName）
-3. **只盯 观察清单**（避免在大型栈里被噪声淹没）
-
-运行命令：
-
-```bash
-mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBreakpointPackLabTest test
-```
-
-## 1.2 教程化验收（10/30/3）：把 断点包 当“能力训练器”
-
-可以用断点包 给自己做一个明确的训练闭环（适用于源码进阶/团队内训/面试）：
-
-1. **10 分钟（可运行）**：完成验证 `SpringCoreBeansBreakpointPackLabTest`，确保环境与入口 OK。
-2. **30 分钟（可观察到）**：只用本章 2.x 的断点 + 本章 3 的观察清单，把主线数据结构变化观察到。
-3. **3 分钟（可复述）**：把观察到的现象复述成“结论 → 证据链（方法名）→ 反例/误区”，对标：`appendix-interview-playbook.md`。
-
-## 1.1 团队内训如何用（可选）
-
-若正在做团队分享/内训，不宜“从目录按章讲完”。更高效的方式是：
-
-1. 先用本章断点包把主线完成验证（建立共同的观察点与语言）
-2. 再按课时选择讲解深度（60/90/120 分钟脚本 + 互动题/作业）
-
-内训讲义入口：[`appendix-team-training-kit.md`](appendix-team-training-kit.md)
-
-## 1.3 面试使用方式：形成固定证据链话术
-
-- 题库入口：`appendix-interview-playbook.md`（每题都绑定“关键方法 + 观察点 + 对应 Lab”）
-- 排障入口：`appendix-production-troubleshooting-checklist.md`（Symptoms → Repro → Evidence → Decision → Fix → Verify）
-- 相应的目标不是背“名词”，而是能在面试里说清楚：**发生在哪个阶段（refresh 哪一段）/ 证据链怎么证明 / 典型误区是什么**。
-
----
-
-## 最常用断点入口（按“主线 → 分支 → 现象”组织）
-
-### 2.1 refresh 主线（把一切放回时间线）
-
-- `AbstractApplicationContext#refresh`：容器生命周期总入口
-- `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`：BFPP/BDRPP 的入口（定义层）
-- `PostProcessorRegistrationDelegate#registerBeanPostProcessors`：BPP 注册入口（实例层）
-- `AbstractApplicationContext#finishBeanFactoryInitialization`：预实例化与单例创建入口
-
-对应章节：`internals-refresh-to-bean-creation-mainline.md`
-
-### 2.2 bean 创建主线（实例化/注入/初始化）
-
-- `AbstractAutowireCapableBeanFactory#doCreateBean`
-- `AbstractAutowireCapableBeanFactory#populateBean`
-- `AbstractAutowireCapableBeanFactory#initializeBean`
-
-对应章节：`lifecycle-callbacks.md`
-
-### 2.3 依赖解析（候选收集 → 候选收敛 → 注入）
-
-- `DefaultListableBeanFactory#doResolveDependency`
-- `DefaultListableBeanFactory#findAutowireCandidates`
-- `DefaultListableBeanFactory#determineAutowireCandidate`
-
-对应章节：`dependency-injection-resolution.md`、`wiring-autowire-candidate-selection-primary-priority-order.md`
-
-### 2.4 代理/包装发生在哪里（BPP 链）
-
-- `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization`
-- `AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization`
-
-对应章节：`proxying-phase.md`
-
-### 2.5 循环依赖与 early reference（三级缓存）
-
-- `DefaultSingletonBeanRegistry#getSingleton`
-- `DefaultSingletonBeanRegistry#addSingletonFactory`
-- `AbstractAutowireCapableBeanFactory#getEarlyBeanReference`
-
-对应章节：
-- `circular-dependency.md`
-- `early-reference-and-three-level-cache.md`
-
-### 2.6 占位符解析 / SpEL / 类型转换（值注入三连）
-
-- `AbstractBeanFactory#resolveEmbeddedValue`（`${...}`/`#{...}` 的入口）
-- `TypeConverterDelegate#convertIfNecessary`（字符串 → 目标类型的决策点）
-
-对应章节：
-- `value-placeholder-resolution.md`
-- `aot-spel-and-value-expression.md`
-- `type-conversion-and-beanwrapper.md`
-
----
-
-## 观察清单（最小够用版）
-
-无需一次看 100 个变量，最小观察清单 够用即可：
-
-- `beanName`：当前处理的 bean（优先用条件断点过滤）
-- `mbd` / `mergedBeanDefinition`：合并后的定义（见 35 章）
-- `exposedObject`：最终暴露对象（判断是否被代理/替换）
-- `singletonObjects / earlySingletonObjects / singletonFactories`：循环依赖/提前暴露相关
-- `beanFactory.getBeanPostProcessors()`：BPP 链顺序（判断“谁包谁/谁先谁后”）
-
-## 方法级调用链卡片（把断点观察变成可复述答案）
-
-断点包的目的不是“列断点”，而是帮读者形成一种稳定输出：
-
-1. **阶段**：应先将问题放回 refresh 主线的哪一段？
-2. **调用链**：用哪 2–4 个方法名将链路串起来？（入口 → 分支 → 落点）
-3. **证据**：在断点中观察哪 3 个变量/集合以证明结论？
-4. **修复**：修改的是“定义层（BeanDefinition）”还是“实例层（对象/代理）”，如何验证？
-
-如果能在 3 分钟内按这个卡片说完一个问题，读者就具备“源码进阶/面试/排障”三合一的能力闭环。
-
----
-
-## 断点包误用：下断点不等于有证据链
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-1. **只看异常，不看阶段**：同一个异常在不同阶段含义不同，必须先定位到 refresh 的哪一步。
-2. **下了断点但没有过滤**：不加 beanName 条件断点，大项目里可以被噪声淹没。
-3. **把“观察到”当成“理解”**：断点只能提供证据链，真正的边界/代价要回到对应章节阅读。
-
----
-
-## 验收口径：两句话说明第一断点
-读完后应能用 2 句复述：
-
-1. 遇到注入失败/代理不生效/循环依赖时，第一断点应设置在哪（各给 1 个方法名）。
-2. 在断点中只观察哪 3 个变量/结构，就能判断当前处在 refresh/创建/注入的哪一步。
-
-
-## 小结：断点包的输出是可复述证据
-
-`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+    # Appendix：断点包
+    <!-- CHAPTER-CARD:START -->
+    !!! summary "章节入口"
+        - 这页只做支持：聚合断点组、入口方法和 Lab 命令。
+        - 需要机制解释时，跳回主文档。
+        - 最短契约：`SpringCoreBeansDocumentationContractTest`。
+
+        观察对象：路线、索引、断点或 Lab 入口。
+        主线位置：支持文档，不拥有新的 Bean 知识点。
+        对照入口：`SpringCoreBeansDocumentationContractTest`。
+    <!-- CHAPTER-CARD:END -->
+
+    ## 职责
+
+    聚合断点组、入口方法和 Lab 命令。
+
+    ## 路由表
+
+    | 入口 | 用途 |
+    | --- | --- |
+    | [guide-breakpoint-map.md](guide-breakpoint-map.md) | 主文档或支持入口 |
+| [refresh-mainline.md](refresh-mainline.md) | 主文档或支持入口 |
+| [bean-creation-mainline.md](bean-creation-mainline.md) | 主文档或支持入口 |
+    | [appendix-knowledge-map.md](appendix-knowledge-map.md) | 全量 owner 归属表 |
+
+    ## 维护规则
+
+    - 只保留路线、索引、断点、Lab 或 checklist。
+    - 发现需要解释 Bean 行为时，新增或修改对应主文档，而不是扩写本页。
+    - 修改后运行 `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansDocumentationContractTest test`。

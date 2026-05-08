@@ -59,7 +59,7 @@ class SpringCoreBeansContainerInternalsExerciseTest {
                         练习：FactoryBean 进阶：实现一个 getObjectType 返回 null 的场景，并总结它会影响哪些 type-based 机制。
 
                         推荐步骤：
-                        1) 先读：`spring-core-modules/spring-core-beans/docs/wiring-factorybean-edge-cases.md`
+                        1) 先读：`spring-core-modules/spring-core-beans/docs/factorybean-type-matching.md`
                         2) 试着把一个真实业务场景抽象成 FactoryBean（例如动态创建 client）
                         3) 让 `getObjectType()` 在某些情况下返回 null
                         4) 观察并总结：

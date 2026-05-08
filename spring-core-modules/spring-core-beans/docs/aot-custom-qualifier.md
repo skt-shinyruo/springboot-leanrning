@@ -1,208 +1,39 @@
-# 自定义 Qualifier：meta-annotation 与候选收敛
-<!-- CHAPTER-CARD:START -->
-!!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把输入层解析或 AOT 契约变成可验证结果；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
+    # AOT 自定义 Qualifier
+    <!-- CHAPTER-CARD:START -->
+    !!! summary "章节入口"
+        - 这一页只回答：自定义 Qualifier 在 AOT 下要补什么契约？
+        - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test`
+        - 相邻主题只做跳转，不在本页重复展开。
 
-    观察对象：45. 自定义 Qualifier：meta-annotation 与候选收敛。
-    主线位置：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+        观察对象：自定义 qualifier meta-annotation 在候选选择和 native 可达性中的约束。
+        主线位置：AOT / Native。
+        对照入口：`SpringCoreBeansCustomQualifierLabTest`。
+    <!-- CHAPTER-CARD:END -->
 
-    对照入口：`SpringCoreBeansCustomQualifierLabTest`。需要下探源码时，可以从 `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` / `DefaultListableBeanFactory#findAutowireCandidates` / `DefaultListableBeanFactory#determineAutowireCandidate` 这些入口切入。
+    ## 归属边界
 
-<!-- CHAPTER-CARD:END -->
+    这一页只回答一个问题：自定义 Qualifier 在 AOT 下要补什么契约？
 
+    本页负责把这个问题收束到一个可运行证据入口。相邻主题只在“相邻跳转”中出现，避免同一个知识点散落到多个文件。
 
-## 问题：自定义 Qualifier：meta-annotation 与候选收敛
+    ## 最短证据入口
 
-先运行 `SpringCoreBeansCustomQualifierLabTest`，观察自定义 Qualifier 如何把候选集合收窄；再回到 `QualifierAnnotationAutowireCandidateResolver` 看匹配输入、过滤分支与最终 winner。
+    - `SpringCoreBeansCustomQualifierLabTest`
 
-- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-- 官方文档对照（注解驱动与注入，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
-- 官方文档对照（Spring Boot Reference，适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
+    ## 观察口径
 
+    | 观察点 | 看什么 | 不在这里展开 |
+    | --- | --- | --- |
+    | 问题定位 | 自定义 Qualifier 在 AOT 下要补什么契约？ | 支持页只负责导航 |
+    | 运行证据 | `SpringCoreBeansCustomQualifierLabTest` | 不用未验证的口头结论替代 Lab |
+    | 边界判断 | 自定义 qualifier meta-annotation 在候选选择和 native 可达性中的约束。 | 相邻 owner 文档另行负责 |
 
-!!! example "本章配套实验（先运行再读）"
+    ## 相邻跳转
 
-    - Lab：`SpringCoreBeansCustomQualifierLabTest`
-    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
+    - [qualifier-primary-priority-order.md](qualifier-primary-priority-order.md)
+- [aot-runtimehints.md](aot-runtimehints.md)
+- [appendix-knowledge-map.md](appendix-knowledge-map.md)
 
+    ## 小结
 
-## 机制主线
-
-> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
-
-当读者进入真实项目，`@Qualifier("beanName")` 常常不够用：
-
-- 读者希望限定条件有“业务语义”（例如 `@Cn` / `@Internal` / `@ReadOnly`）
-- 读者希望团队统一约束（避免到处写字符串 beanName）
-
-这就需要读者理解：**Qualifier 的本质是“候选收敛规则”**，而不是“改名”。
-
----
-
-### 机制边界：条件、分支与结果
-
-**条件**：注入点与候选 bean 同时标注自定义 Qualifier
-**分支**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate` 做匹配过滤
-**结果**：候选集合被缩小 → winner 选择更稳定
-**断点入口**：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
-
-## 核心结论：自定义 Qualifier 的本质
-
-自定义 Qualifier 的做法通常是：
-
-1. 定义一个注解（例如 `@Cn`）
-2. 用 `@Qualifier` 做 meta-annotation
-3. 在候选 bean 上标注 `@Cn`（作为候选元数据）
-4. 在注入点也标注 `@Cn`（作为收敛条件）
-
-因此需要把它放回依赖解析主线：
-
-- 候选收集：`findAutowireCandidates`
-- 候选收敛：`determineAutowireCandidate`
-- Qualifier 匹配：`QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`
-
-对照阅读：
-
-- [依赖注入解析：候选收集→候选收敛→最终注入](dependency-injection-resolution.md)
-- [候选选择与优先级：@Primary/@Priority/@Order 的边界](wiring-autowire-candidate-selection-primary-priority-order.md)
-
-## DependencyDescriptor 深入分析：注入点语义决定“Qualifier 是否生效”
-
-`DependencyDescriptor` 是注入点语义的入口：
-
-- `descriptor.getAnnotations()`：注入点是否存在自定义 Qualifier
-- `descriptor.getDependencyType()`：候选收集的类型基线
-- `descriptor.getDependencyName()`：by-name fallback 的隐式输入
-
-**结论**：Qualifier 不是“改 beanName”，而是“让 resolver 在候选收敛时多一个过滤条件”。
-
-## 依赖解析分支树（简化版）
-
-1. **快捷路径**：Optional/Provider/@Lazy/@Value
-2. **候选收集**：`findAutowireCandidates`
-3. **Qualifier 过滤**：`isAutowireCandidate`
-4. **winner 收敛**：Primary → by-name → Priority
-5. **失败**：无法唯一 → `NoUniqueBeanDefinitionException`
-
-## 关键变量（断点里只看这些）
-
-- `candidates`：候选集合（过滤前后差异）
-- `qualifiedName` / `value`：Qualifier 的匹配输入
-- `dependencyName`：by-name fallback 的关键输入
-
-- 两个同类型候选（两个实现）
-- 通过自定义 Qualifier 把候选收敛到 1 个
-
-入口测试：
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
-  - `customQualifierMetaAnnotation_canNarrowDownCandidates_forSingleInjection()`（meta-annotation 命中收敛）
-
-- `DefaultListableBeanFactory#findAutowireCandidates`（候选集合）
-- `QualifierAnnotationAutowireCandidateResolver#isAutowireCandidate`（Qualifier 匹配过滤）
-
-若要解释最终选中规则：
-
-- `DefaultListableBeanFactory#determineAutowireCandidate`
-
-- `DependencyDescriptor`：注入点的类型信息与注解（`@Qualifier/@Cn/...`）
-- `candidates`：当前候选集合里有哪些 beanName（以及它们的定义来源）
-- Qualifier 匹配细节：是 “meta-annotation 命中” 还是 “value/name 命中”
-
----
-
-需要能回答：
-
-- 自定义 Qualifier（meta-annotation）如何参与候选收敛？它影响的是“候选收集”还是“候选收敛”阶段？
-- 当候选有多个实现时，如何用 2 个断点证明“哪些候选被过滤/为什么被过滤”？
-- 为什么说它能把“字符串 Qualifier”提升为“带业务语义的类型约束”？（好处与边界是什么）
-
----
-
-## 实验：把现象固定成断言
-
-本章可复核的实验入口：
-- Lab：`SpringCoreBeansCustomQualifierLabTest`
-- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
-
-### 从实验现象看边界
-
-## 运行入口
-
-本模块提供一个最小实验：
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
-
-运行命令：
-
-```bash
-mvn -pl :spring-core-beans -Dtest=SpringCoreBeansCustomQualifierLabTest test
-```
-
-## 源码 / 断点入口（把“为什么注入的是它”讲成可复述算法）
-
-只需要 2 个断点，即可在真实项目里解释“为什么注入的是它”：
-
-观察点（设置断点时应该盯住这些变量）：
-
-- 自定义 Qualifier 是如何参与候选收敛的？
-- 可以在哪两个方法设置断点证明“候选集合如何被过滤”？
-
-## 边界：自定义 Qualifier：meta-annotation 与候选收敛
-
-- [依赖注入解析：类型/名称/@Qualifier/@Primary](dependency-injection-resolution.md)
-- [候选选择与优先级：@Primary/@Priority/@Order 的边界](wiring-autowire-candidate-selection-primary-priority-order.md)
-
-## 误判点：自定义 Qualifier：meta-annotation 与候选收敛
-
-1. **误区：自定义 Qualifier = 更好的 @Primary**
-   - `@Primary` 是“默认胜出者”，自定义 Qualifier 是“按语义显式选择”，适用场景不同。
-2. **误区：把 Qualifier 当作 beanName**
-   - Qualifier 是过滤条件，beanName 只是可能参与收敛的一种信号。
-
-## 排障决策表（Qualifier：为什么注入的不是所期望的那个）
-> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
-
-
-| 现象 | 最可能根因 | 证据（断点/观察点） | 修复思路 | 验证方式（本仓库） |
-| --- | --- | --- | --- | --- |
-| 注入到了“不是预期的实现” | 候选收敛规则没表达清楚（缺 Qualifier/Primary 冲突） | `DefaultListableBeanFactory#determineAutowireCandidate`；看最终 winner 如何选出 | 在注入点用 `@Qualifier`（或自定义 Qualifier）显式缩小候选；避免“靠默认” | `SpringCoreBeansCustomQualifierLabTest` |
-| `NoUniqueBeanDefinitionException` | 单依赖没有唯一胜者 | `findAutowireCandidates` 看候选集合；`isAutowireCandidate` 看过滤是否生效 | 明确 `@Qualifier` / `@Primary`；必要时拆分类型或引入语义标签 | 同上 |
-| 容易误以为 `@Primary` 会覆盖一切但实际被“压过” | 注入点带了更强限定（Qualifier） | `AutowireCandidateResolver#isAutowireCandidate` / `QualifierAnnotationAutowireCandidateResolver` | 认识强信号优先级：Qualifier > Primary（单依赖收敛） | 结合 [33](wiring-autowire-candidate-selection-primary-priority-order.md) |
-
-## 面试常问（自定义 Qualifier / meta-annotation）
-
-### Q1：自定义 Qualifier 解决的是什么问题？和 `@Primary` 的边界是什么？
-
-- 标准答案（可复述）：
-  - `@Primary` 是“默认胜者”；自定义 Qualifier 是“按语义显式选择”，用来缩小候选集合并表达业务意图，两者适用场景不同。
-- 证据链（方法级）：
-  - 候选收集：`DefaultListableBeanFactory#findAutowireCandidates`
-  - 限定过滤：`AutowireCandidateResolver#isAutowireCandidate`（Qualifier 逻辑在 resolver 里）
-  - winner 收敛：`DefaultListableBeanFactory#determineAutowireCandidate`
-- 最小复现：
-  - `SpringCoreBeansCustomQualifierLabTest`
-
-### Q2：自定义 Qualifier（meta-annotation）是怎么参与候选过滤的？
-
-- 标准答案（可复述）：
-  - 通过候选解析器识别注入点上的 Qualifier 元注解，进而决定某个候选是否可注入；它不是“改 beanName”，而是“改候选集合”。
-- 证据链（方法级）：
-  - `QualifierAnnotationAutowireCandidateResolver`（或同类 resolver）的 `isAutowireCandidate` 分支
-
-## 验收口径：自定义 Qualifier：meta-annotation 与候选收敛
-- 需要解释清楚：自定义 Qualifier 解决的是“候选收敛”的哪一类问题吗？它和 `@Primary` 的边界是什么？
-- 需要说出：候选集合是在依赖解析的哪个方法里被过滤/收敛的吗？（提示：`doResolveDependency` / candidate resolver）
-- 需要能给出：如何用一个最小 LabTest + 两个断点把“为什么注入的是它”讲成可复述算法？
-
-## 小结：自定义 Qualifier：meta-annotation 与候选收敛
-
-
-<!-- BOOKIFY:START -->
-
-### 对应实验/测试
-
-- Lab：`SpringCoreBeansCustomQualifierLabTest`
-- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansCustomQualifierLabTest.java`
-
-<!-- BOOKIFY:END -->
+    aot-custom-qualifier.md 的完成标准是：读者能用上面的 Lab 证明“自定义 Qualifier 在 AOT 下要补什么契约？”，并知道哪些相邻问题应该跳到其他 owner 文档。

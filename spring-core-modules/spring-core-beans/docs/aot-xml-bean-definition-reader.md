@@ -1,187 +1,39 @@
-# XML → BeanDefinitionReader：定义层解析与错误分型
-<!-- CHAPTER-CARD:START -->
-!!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把输入层解析或 AOT 契约变成可验证结果；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
+    # AOT XML Reader 边界
+    <!-- CHAPTER-CARD:START -->
+    !!! summary "章节入口"
+        - 这一页只回答：AOT 语境下 XML BeanDefinitionReader 的边界是什么？
+        - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest test`
+        - 相邻主题只做跳转，不在本页重复展开。
 
-    观察对象：42. XML → BeanDefinitionReader：定义层解析与错误分型。
-    主线位置：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+        观察对象：XML 读取在 AOT/native 中需要保留的资源和解析边界。
+        主线位置：AOT / Native。
+        对照入口：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`。
+    <!-- CHAPTER-CARD:END -->
 
-    对照入口：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`。需要下探源码时，可以从 `XmlBeanDefinitionReader#loadBeanDefinitions` / `DefaultBeanDefinitionDocumentReader#registerBeanDefinitions` / `BeanDefinitionParserDelegate#parseBeanDefinitionElement` 这些入口切入。
+    ## 归属边界
 
-<!-- CHAPTER-CARD:END -->
+    这一页只回答一个问题：AOT 语境下 XML BeanDefinitionReader 的边界是什么？
 
+    本页负责把这个问题收束到一个可运行证据入口。相邻主题只在“相邻跳转”中出现，避免同一个知识点散落到多个文件。
 
-## 问题：XML → BeanDefinitionReader：定义层解析与错误分型
+    ## 最短证据入口
 
-先运行 `SpringCoreBeansXmlBeanDefinitionReaderLabTest`，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
+    - `SpringCoreBeansXmlBeanDefinitionReaderLabTest`
 
-- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-- 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
-- 官方文档对照（Resources，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/resources.html
+    ## 观察口径
 
+    | 观察点 | 看什么 | 不在这里展开 |
+    | --- | --- | --- |
+    | 问题定位 | AOT 语境下 XML BeanDefinitionReader 的边界是什么？ | 支持页只负责导航 |
+    | 运行证据 | `SpringCoreBeansXmlBeanDefinitionReaderLabTest` | 不用未验证的口头结论替代 Lab |
+    | 边界判断 | XML 读取在 AOT/native 中需要保留的资源和解析边界。 | 相邻 owner 文档另行负责 |
 
-!!! example "本章配套实验（先运行再读）"
+    ## 相邻跳转
 
-    - Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
-    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java`
+    - [xml-bean-definition-reader.md](xml-bean-definition-reader.md)
+- [aot-runtimehints.md](aot-runtimehints.md)
+- [appendix-knowledge-map.md](appendix-knowledge-map.md)
 
+    ## 小结
 
-## 机制主线
-
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-这一章解决一个“不一定天天写，但读者一定会遇到”的问题：
-
-> **当看到 `BeanDefinitionStoreException`、`BeanDefinitionParsingException`、或者某个 bean “定义层”就读不进来时，应该从哪里下手？**
-
-Spring 的 IoC 容器把所有配置来源（注解、`@Bean`、`@Import`、XML、程序化注册……）最终都归一到：
-
-> **BeanDefinition（定义层）**
-
-XML 只是其中一种输入形式。理解它的价值在于：它能让阅读者更清晰地区分“定义层失败”与“实例层失败”。
-
----
-
-### 机制边界：条件、分支与结果
-
-**条件**：XML 能否被读取与正确解析
-**分支**：资源读取 → XML 解析 → BeanDefinition 注册
-**结果**：任一环节失败即“定义层失败”，成功后才进入实例化链路
-**断点入口**：`XmlBeanDefinitionReader#loadBeanDefinitions`
-
-## 核心结论：XML 的价值不在“写法”，而在“链路”
-
-XML 这条链路的核心是：
-
-- `XmlBeanDefinitionReader#loadBeanDefinitions`：把 XML 读成 BeanDefinition，并注册到 BeanFactory
-- 注册成功之后，后续仍走统一主线：refresh → instantiate → populate → initialize
-
-因此遇到 XML 相关异常时，第一件事就是分型：
-
-- **定义层异常**：读/解析/注册阶段失败（refresh 前半段）
-- **实例层异常**：创建/注入/初始化阶段失败（refresh 后半段或 getBean 时）
-
----
-
-本模块提供最小 XML 示例：
-
-- 正常 XML：成功注册 BeanDefinition，并能读取 definition 元信息
-- 非法 XML：抛出 `BeanDefinitionStoreException`（用于读者建立“错误分型”预期）
-
-入口测试：
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java`
-  - `xmlBeanDefinitionReader_loadsBeanDefinitions_andBeanDefinitionContainsConstructorArgValues()`（正常 XML：definition 可观察）
-  - `invalidXml_throwsBeanDefinitionStoreException_asDefinitionPhaseErrorSignal()`（非法 XML：定义层失败信号）
-
-把 XML 问题迅速收敛到 3 个层次（入口 → 解析 → 入库）：
-
-1. 入口：`XmlBeanDefinitionReader#loadBeanDefinitions`（读资源 + 进入 XML 解析）
-2. 解析：`DefaultBeanDefinitionDocumentReader#registerBeanDefinitions`（把 Document 变成一组 BeanDefinition）
-   - 进一步深入分析：`BeanDefinitionParserDelegate#parseBeanDefinitionElement`
-3. 入库：`DefaultListableBeanFactory#registerBeanDefinition`（定义注册入口：冲突/覆盖/合法性检查）
-
-当需要把错误放回 refresh 主线理解时：
-
-- `AbstractApplicationContext#refresh`
-- `PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors`
-
-- `Resource` / `resourceDescription`：到底读的是哪一个 XML（路径/类路径资源/文件资源）
-- `beanName` / `beanClassName`：解析到的定义是否符合预期
-- `BeanDefinition` 的关键信息：scope、propertyValues、constructorArgumentValues
-- 异常分型：是“XML 语法/命名空间解析失败”，还是“注册阶段合法性检查失败”
-
----
-
-这一章应当带走的能力是：
-
-- 能把 XML 输入归一到 BeanDefinition 视角
-- 能用 `BeanDefinitionStoreException` 快速判断“定义层失败”
-- 能在 debugger 里用 2–3 个入口断点把问题收敛到：读资源 → 解析 Document → registerBeanDefinition
-
----
-
-## 实验：把现象固定成断言
-
-本章可复核的实验入口：
-- Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
-- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
-
-### 从实验现象看边界
-
-## 运行入口
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java`
-
-运行命令：
-
-```bash
-mvn -pl :spring-core-beans -Dtest=SpringCoreBeansXmlBeanDefinitionReaderLabTest test
-```
-
-## 源码 / 断点入口（把“看 XML”变成“走链路”）
-
-观察点（设置断点时优先盯这些变量）：
-
-- `resource` / `resourceDescription`：到底读的是哪一个 XML（路径/类路径资源/文件资源）
-- `document` / `root`：XML 是否被正确解析成 Document（命名空间/元素结构是否符合预期）
-- `beanName` / `beanClassName`：解析出来的定义是什么（是否指向了读者期望的类型）
-- `BeanDefinition` 关键信息：constructor args / property values / scope / lazy 等元数据是否符合预期
-- 异常类型与 cause：是“解析失败”（document 层）还是“注册失败”（registry 层）
-
-1. **误区：XML 问题只能靠“看 XML”解决**
-   - 更有效：先分型（定义层 vs 实例层），再锁定断点入口。
-2. **误区：XML = 过时，不用学**
-   - 在真实项目里，遗留配置/三方组件/某些 starter 仍可能引入 XML 资源；排障时必须认识链路。
-
-## 边界：XML → BeanDefinitionReader：定义层解析与错误分型
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-### 误判点：不要把外层现象当成根因
-
-1. **误区：把 XML 问题当成“业务逻辑问题”**
-   - XML 读不进来时，容器甚至还没开始创建相应的业务 bean；优先用“定义层入口断点”确认读/解析/注册发生在何处失败。
-2. **误区：看到 `BeanDefinitionStoreException` 就直接全局搜字符串**
-   - 更快的方式：从 `XmlBeanDefinitionReader#loadBeanDefinitions` 进，先确认 resource 与 schema/namespace，再定位到具体 element 的 parse。
-3. **误区：以为 XML 只会影响“创建对象”**
-  - XML 的核心价值是让阅读者把“输入形态”统一回 BeanDefinition：看到的是“定义元数据”，不是实例本身。
-
-## 面试常问（XML：Reader 到底做了什么）
-
-### Q1：XML 是如何变成 BeanDefinition 并注册进容器的？
-
-- 标准答案（可复述）：
-  - XML 通过 `XmlBeanDefinitionReader` 读取与解析，产出 `BeanDefinition`，最终注册到 `DefaultListableBeanFactory` 的 registry；它属于定义层输入，不是直接 new 对象。
-- 证据链（方法级）：
-  - `XmlBeanDefinitionReader#loadBeanDefinitions`
-  - `DefaultListableBeanFactory#registerBeanDefinition`
-- 最小复现：
-  - `SpringCoreBeansXmlBeanDefinitionReaderLabTest`
-
-### Q2：排 XML 解析问题时，如何快速判断“定义没注册”还是“创建失败”？
-
-- 标准答案（可复述）：
-  - 先在 `registerBeanDefinition` 证明定义是否写入 registry；如果没写入，优先排资源/解析/schema/namespace；如果写入了，再回到 `doCreateBean` 看实例化/注入/初始化链路。
-  - 定义层：`XmlBeanDefinitionReader#loadBeanDefinitions` / `registerBeanDefinition`
-  - 实例层：`AbstractAutowireCapableBeanFactory#doCreateBean`
-
-## 验收口径：XML → BeanDefinitionReader：定义层解析与错误分型
-- 需要解释清楚：XML 在 Spring 里最终会变成什么吗？（提示：BeanDefinition）
-- 遇到 `BeanDefinitionStoreException` 时，第一步应该先分型到“定义阶段”还是“创建阶段”？为什么？
-- 需要说出：从哪条最短调用链进断点，能最快定位到“哪个资源/哪个 element 解析失败”吗？
-
-## 小结：XML → BeanDefinitionReader：定义层解析与错误分型
-
-- XML 是一种输入形式，它最终会被归一为 BeanDefinition 并注册到 BeanFactory
-- XML 相关异常排障优先做“定义层 vs 实例层”分型；定义层失败的典型信号是 `BeanDefinitionStoreException`
-
-
-<!-- BOOKIFY:START -->
-
-### 对应实验/测试
-
-- Lab：`SpringCoreBeansXmlBeanDefinitionReaderLabTest`
-- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansXmlBeanDefinitionReaderLabTest.java`
-
-<!-- BOOKIFY:END -->
+    aot-xml-bean-definition-reader.md 的完成标准是：读者能用上面的 Lab 证明“AOT 语境下 XML BeanDefinitionReader 的边界是什么？”，并知道哪些相邻问题应该跳到其他 owner 文档。

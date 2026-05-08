@@ -1,215 +1,39 @@
-# `@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast
-<!-- CHAPTER-CARD:START -->
-!!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把现象固化为断言；排查真实问题时，按“定义层/实例层/最终暴露对象”分层，再用断点与观察清单收敛原因。
+    # 占位符解析：strict vs non-strict
+    <!-- CHAPTER-CARD:START -->
+    !!! summary "章节入口"
+        - 这一页只回答：`${...}` 占位符何时 strict，何时 non-strict？
+        - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansValuePlaceholderResolutionLabTest test`
+        - 相邻主题只做跳转，不在本页重复展开。
 
-    观察对象：`@Value("${...}")` 占位符解析：默认 non-strict vs strict fail-fast。
-    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
+        观察对象：PropertySourcesPlaceholderConfigurer、embedded value resolver 和 unresolved placeholder 的行为差异。
+        主线位置：值解析、转换与外部输入。
+        对照入口：`SpringCoreBeansValuePlaceholderResolutionLabTest`。
+    <!-- CHAPTER-CARD:END -->
 
-    对照入口：`SpringCoreBeansValuePlaceholderResolutionLabTest`。需要下探源码时，可以从 `Environment#resolvePlaceholders` / `AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory` 这些入口切入。
+    ## 归属边界
 
-<!-- CHAPTER-CARD:END -->
+    这一页只回答一个问题：`${...}` 占位符何时 strict，何时 non-strict？
 
+    本页负责把这个问题收束到一个可运行证据入口。相邻主题只在“相邻跳转”中出现，避免同一个知识点散落到多个文件。
 
-## 问题：`@Value("${...}")` 占位符解析
+    ## 最短证据入口
 
-先运行 `SpringCoreBeansValuePlaceholderResolutionLabTest`，对照 missing placeholder 在 non-strict 与 strict 模式下的差异；再沿占位符解析入口、失败分支和可观察变量解释结果。
+    - `SpringCoreBeansValuePlaceholderResolutionLabTest`
 
-- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-- 官方文档对照（SpEL，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/expressions.html
+    ## 观察口径
 
+    | 观察点 | 看什么 | 不在这里展开 |
+    | --- | --- | --- |
+    | 问题定位 | `${...}` 占位符何时 strict，何时 non-strict？ | 支持页只负责导航 |
+    | 运行证据 | `SpringCoreBeansValuePlaceholderResolutionLabTest` | 不用未验证的口头结论替代 Lab |
+    | 边界判断 | PropertySourcesPlaceholderConfigurer、embedded value resolver 和 unresolved placeholder 的行为差异。 | 相邻 owner 文档另行负责 |
 
-!!! example "本章配套实验（先运行再读）"
+    ## 相邻跳转
 
-    - Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
-    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
+    - [environment-and-propertysource.md](environment-and-propertysource.md)
+- [spel-and-value-expression.md](spel-and-value-expression.md)
+- [appendix-knowledge-map.md](appendix-knowledge-map.md)
 
-## 机制主线：`@Value` 严不严格，取决于 resolver
+    ## 小结
 
-> 官方参考（Spring Framework 6.2.x，SpEL 与 @Value 表达式）：https://docs.spring.io/spring-framework/reference/core/expressions.html
-
-这一章回答一个在真实项目里容易困扰人的问题：
-
-> 为什么写了 `@Value("${demo.missing}")`，应用居然没有启动失败？
-> 注入进来的值甚至变成了字符串 `"${demo.missing}"`？
-
-先说结论（背这句就够排 80% 的误区）：
-
-> **占位符解析是否 strict，不是 @Value 决定的，而是 BeanFactory 里安装的 embedded value resolver 决定的。**
-
----
-
-### 机制边界：条件、分支与结果
-
-**条件**：BeanFactory 安装了哪一种 embedded value resolver
-**分支**：
-- 默认 resolver（多为 `Environment#resolvePlaceholders`）→ **non-strict**
-- `PropertySourcesPlaceholderConfigurer` → **strict fail-fast**
-**结果**：缺失占位符要么“原样保留”，要么直接抛异常
-**断点入口**：`AbstractBeanFactory#resolveEmbeddedValue` / `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
-
-## 先把链路拆开：`@Value` 不是“直接读 Environment”
-
-把 `@Value` 想清楚，读者就不会把问题误判成“配置没加载”或“环境没生效”：
-
-1. `@Value` 注解先被基础设施处理器识别（通常是 `AutowiredAnnotationBeanPostProcessor`）
-2. 它把注解里的字符串（例如 `"${demo.present}"`）交给 `BeanFactory#resolveEmbeddedValue`
-3. 解析后的结果再进入注入（必要时再做类型转换，见 [36](type-conversion-and-beanwrapper.md)）
-
-所以严格与否，最终会体现在：
-
-- `AbstractBeanFactory#resolveEmbeddedValue` 的返回值是什么？
-
----
-
-## 默认行为（non-strict）：缺失占位符可能原样保留
-
-对应实验：
-
-- `SpringCoreBeansValuePlaceholderResolutionLabTest#defaultEmbeddedValueResolver_resolvesExistingProperty_butLeavesMissingPlaceholderUnresolved`
-
-可以观察到两个稳定现象：
-
-- `demo.present` 存在 → `@Value("${demo.present}")` 注入为 `"hello"`
-- `demo.missing` 缺失 → `@Value("${demo.missing}")` 注入为 `"${demo.missing}"`（没有 fail-fast）
-
-本章 Lab 的输出已经把关键事实写死：
-
-- 默认 embedded value resolver 往往委托给 `Environment.resolvePlaceholders(..)`
-- `resolvePlaceholders(..)` 默认是 **non-strict**：解析不到时可能保留原样 `"${...}"`
-
-> 这类行为最大的误区在于：系统能启动，但在运行中才发现“配置没生效”，排障成本更高。
-
----
-
-## strict fail-fast：注册 `PropertySourcesPlaceholderConfigurer`（BFPP）
-
-对应实验：
-
-- `SpringCoreBeansValuePlaceholderResolutionLabTest#propertySourcesPlaceholderConfigurer_canMakeMissingPlaceholderFailFast`
-
-实验注册了一个 BFPP：
-
-- `PropertySourcesPlaceholderConfigurer`
-  - 并设置 `ignoreUnresolvablePlaceholders = false`
-
-可以观察到：
-
-- `refresh()` 直接失败
-- root cause 包含 “Could not resolve placeholder 'demo.missing'”
-
-关键点是它的**时机与职责**：
-
-- BFPP 发生在 bean 实例化之前，因此它可以把“严格策略”尽早装进容器
-- 这类 fail-fast 往往比“运行到某个业务路径才发现值不对”更健康
-
-对照阅读（BFPP vs BPP，谁更早）：
-- [容器扩展点：BFPP vs BPP](ioc-post-processors.md)
-
----
-
-## 默认值：`${key:default}` 让“缺失配置”可控
-
-很多团队走 strict 的原因是：他们宁可启动失败，也不想“原样字符串通过”。
-
-但 strict 并不意味着必须“所有 key 都必须配置齐全”。应当掌握一个更工程化的回退策略：
-
-- `${demo.missing:default-value}`
-
-对应实验（本仓库已补齐）：
-
-- `SpringCoreBeansValuePlaceholderResolutionLabTest#propertySourcesPlaceholderConfigurer_strictMode_allowsMissingPlaceholderWhenDefaultValueIsProvided`
-
-可以观察到：
-
-- strict 模式仍然存在（缺失 key 会 fail-fast）
-- 但当读者显式提供 default value 时，缺失 key 不会失败，注入变得可控
-
-这能帮助读者把“必须配置”的项与“可选配置”的项区分开来。
-
----
-
-## Debug 断点闭环：把 strict/non-strict 变成可见证据
-
-### 4.1 断点入口（按收益排序）
-
-1. `AbstractBeanFactory#resolveEmbeddedValue`：看 `"${...}"` 最终解析成了什么
-2. `AutowiredAnnotationBeanPostProcessor#postProcessProperties`：看 `@Value` 注入点把字符串交给谁解析
-3. `AbstractApplicationContext#prepareBeanFactory`：看默认 embedded value resolver 是何时安装的（non-strict 的来源）
-4. `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`：strict 策略如何介入（BFPP）
-
-### 4.2 固定观察点（观察清单）
-
-- 输入字符串：`"${demo.present}"` / `"${demo.missing}"`
-- 输出字符串：解析后的结果是否仍包含 `"${"`
-- 当前 Environment 的 PropertySources（尤其是 key 是否存在、以及优先级顺序）
-
----
-
-## 排障分流：先确定问题停留在“解析/求值/转换”的哪一步
-> 官方参考（Spring Framework 6.2.x，类型转换（ConversionService））：https://docs.spring.io/spring-framework/reference/core/validation/convert.html
-
-
-| 现象 | 最可能根因 | 下一步 |
-| --- | --- | --- |
-| 值是 `"${demo.missing}"` 原样 | non-strict resolver 放行了缺失占位符 | 回到本章 2/3；考虑启用 strict |
-| 直接启动失败：Could not resolve placeholder | strict resolver fail-fast（更健康） | 修复 property source / key / 默认值策略 |
-| `${...}` 解析没问题，但 `#{...}` 异常 | SpEL 求值问题 | 去看 [44](aot-spel-and-value-expression.md) |
-| 解析出来是字符串，但注入到 `int/Duration/...` 失败 | 类型转换问题 | 去看 [36](type-conversion-and-beanwrapper.md) |
-| `@Value` 完全不生效（字段没注入） | 注解处理器未注册/容器能力不完整 | 回到 [12](container-bootstrap-and-infrastructure.md) |
-
----
-
-## 源码调用链（方法级）：`${...}` 到底在哪一步被解析
-
-在排 `@Value` 时，最容易误诊的是把“占位符解析 / SpEL 求值 / 类型转换”混为一谈。本章只关心第一步（占位符解析），最短调用链如下：
-
-1. 注入点入口：`AutowiredAnnotationBeanPostProcessor#postProcessProperties`（识别 `@Value` 并触发解析）
-2. 解析入口：`AbstractBeanFactory#resolveEmbeddedValue`（把 `"${...}"` 交给 embedded value resolvers 逐个处理）
-3. strict 策略来源：`PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`（BFPP，在定义阶段安装/替换 resolver）
-4. 默认（non-strict）来源：`AbstractApplicationContext#prepareBeanFactory`（安装默认 embedded value resolver）
-
-在 `resolveEmbeddedValue` 里看“输入/输出字符串是否仍包含 `${`”，就能快速判断 strict/non-strict 是否生效。
-
-## 面试常问（`@Value`：strict vs non-strict）
-
-### Q1：为什么缺失的 `${...}` 有时会原样字符串通过、有时会 fail-fast？
-
-- 标准答案（可复述）：
-  - 因为 embedded value resolver 的策略不同：non-strict 会放行未解析占位符；strict 会在缺失时抛异常。策略不是 `@Value` 决定的，而是容器里安装了什么 resolver/placeholder configurer 决定的。
-- 证据链（方法级）：
-  - `AbstractBeanFactory#resolveEmbeddedValue`
-  - `PropertySourcesPlaceholderConfigurer#postProcessBeanFactory`
-- 最小复现：
-  - `SpringCoreBeansValuePlaceholderResolutionLabTest`
-
-### Q2：如何快速区分“占位符解析问题” vs “SpEL 求值问题” vs “类型转换问题”？
-
-- 标准答案（可复述）：
-  - 先在 `resolveEmbeddedValue` 看解析后的字符串；如果 `${...}` 还在，是解析问题；如果 `${...}` 已变成字符串但 `#{...}` 异常，是 SpEL 问题；如果字符串已正确但注入到目标类型失败，是类型转换问题（看 `convertIfNecessary`）。
-- 证据链（方法级）：
-  - 解析：`resolveEmbeddedValue`
-  - 求值：`StandardBeanExpressionResolver#evaluate`（见 [44](aot-spel-and-value-expression.md)）
-  - 转换：`TypeConverterDelegate#convertIfNecessary`（见 [36](type-conversion-and-beanwrapper.md)）
-
-## 验收口径：`@Value("${...}")` 占位符解析
-- 需要解释清楚：为什么有时缺失 `${...}` 会“原样字符串通过”，有时会 fail-fast 吗？
-- strict/non-strict 是谁决定的？是 `@Value` 注解本身吗？（提示：embedded value resolver / `PropertySourcesPlaceholderConfigurer`）
-- 如何在排障时快速分清：这是占位符解析问题、SpEL 求值问题、还是类型转换问题？（提示：三连分层）
-
-## 小结：`@Value("${...}")` 占位符解析
-
-这一章只要记住两件事即可：
-
-1. `@Value` 是否 strict 取决于 embedded value resolver（不是注解本身）
-2. strict fail-fast 的典型来源是 `PropertySourcesPlaceholderConfigurer`（BFPP，早期介入）
-
-
-<!-- BOOKIFY:START -->
-
-### 对应实验/测试
-
-- Lab：`SpringCoreBeansValuePlaceholderResolutionLabTest`
-- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part04_wiring_and_boundaries/SpringCoreBeansValuePlaceholderResolutionLabTest.java`
-
-<!-- BOOKIFY:END -->
+    value-placeholder-resolution.md 的完成标准是：读者能用上面的 Lab 证明“`${...}` 占位符何时 strict，何时 non-strict？”，并知道哪些相邻问题应该跳到其他 owner 文档。

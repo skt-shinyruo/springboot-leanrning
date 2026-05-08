@@ -1,47 +1,25 @@
-# 章节深化路线（Boot Auto-Config）
+    # Deepening：Boot Auto-Config 维护边界
 
-## 定位：Boot Auto-Config 章节的深化方式
+    ## 维护问题
 
-Boot Auto-Config 章节的难点在于“看不见”：导入顺序、条件上下文、BeanDefinition 注册和 back-off 时机都发生在启动阶段。深化时要把这些隐含决策改成可观察事实。
+    Boot owner 页与 Boot 支持页的分工。
 
+    ## 控制面
 
-## 官方文档对照（版本语境）
+    | 对象 | 维护动作 |
+    | --- | --- |
+    | [boot-auto-configuration-ordering.md](boot-auto-configuration-ordering.md) | 需要同步检查的文档 |
+| [boot-auto-configuration-beans.md](boot-auto-configuration-beans.md) | 需要同步检查的文档 |
+| [boot-debugging-and-observability.md](boot-debugging-and-observability.md) | 需要同步检查的文档 |
+    | [appendix-knowledge-map.md](appendix-knowledge-map.md) | owner 归属变更时同步更新 |
 
-- Spring Framework：`6.2.x`（本仓库基线：`6.2.15`）
-- Spring Boot：`3.5.9`
+    ## 风险链接
 
-- Spring Boot Reference（自动装配）：https://docs.spring.io/spring-boot/reference/using/auto-configuration.html
-- Spring Boot Reference（总览）：https://docs.spring.io/spring-boot/reference/
-- Spring Framework Reference（Beans）：https://docs.spring.io/spring-framework/reference/core/beans.html
+    - 指向旧 `ioc-*`、`wiring-*`、`internals-*` 主文档名的链接。
+    - 在支持页中扩写主文档已经负责的问题。
+    - 引用不存在的 `SpringCoreBeans*Test`。
 
+    ## 验证
 
-本部分的再加深重点，是把 Boot 的复杂度映射回“定义层、条件、导入、顺序”的可证明链路，并提供可复现反例与排障 SOP。
-
-## 执行化提示（把“看不见的条件”变成“可证明事实”）
-
-- 每个结论都要落到“导入列表 + 条件上下文 + BeanDefinition 注册表”三件套：既能在断点里观察到，也能用 Lab 固化。
-- 反例优先：把看似偶发的问题写成顺序、条件或覆盖的可复现分型，避免停留在日志解释。
-
-### 调试与自检：如何“观察到”容器正在做什么
-
-- 文件：`spring-core-modules/spring-core-beans/docs/boot-debugging-and-observability.md`
-- 深化落点：
-    - `SpringCoreBeansAutoConfigurationLabTest`（再对照 `SpringCoreBeansAutoConfigurationOrderingLabTest`），把“现象差异”固定成可重复的断言/输出。
-    - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
-  - 针对“机制主线”时，把关键入口串成更清晰的主线（例如：ApplicationContext#refresh → org.springframework.context.support.AbstractApplicationContext#refresh），并在关键分支处点明触发条件与结果形态。
-
-### Auto-Configuration 顺序：为什么跨 Auto-Config 的条件会“偶发失效”？
-
-- 文件：`spring-core-modules/spring-core-beans/docs/boot-auto-configuration-ordering.md`
-- 深化落点：
-    - `SpringCoreBeansAutoConfigurationOrderingLabTest`（再对照 `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`），把“现象差异”固定成可重复的断言/输出。
-    - 从 `AutoConfigurationImportSelector#selectImports` 进，到 `ConditionEvaluator#shouldSkip` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
-  - 针对“4. 常见误区（工程里最容易误诊的点）”时，把“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，按步骤验证。
-
-### Spring Boot 自动装配如何影响 Bean（Auto-configuration）
-
-- 文件：`spring-core-modules/spring-core-beans/docs/boot-auto-configuration-beans.md`
-- 深化落点：
-    - `SpringCoreBeansAutoConfigurationBackoffTimingLabTest`（再对照 `SpringCoreBeansAutoConfigurationImportOrderingLabTest`），把“现象差异”固定成可重复的断言/输出。
-    - 从 `ApplicationContext#refresh` 进，到 `org.springframework.context.support.AbstractApplicationContext#refresh` 看关键分支；用正文里给出的观察点（变量/对象/集合）判断当前命中的路径是否与结论一致。
-  - 针对“常见误区与边界”时，把“误判点”收敛成更短的分流：现象 → 第一入口 → 关键分支 → 结论，按步骤验证。
+    - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansDocumentationContractTest test`
+    - `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansModuleContractLabTest test`

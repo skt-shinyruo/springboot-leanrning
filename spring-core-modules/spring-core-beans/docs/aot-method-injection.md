@@ -1,236 +1,39 @@
-# 方法注入（Method Injection）：replaced-method / MethodReplacer
-<!-- CHAPTER-CARD:START -->
-!!! summary "章节入口"
-    - 使用方式：先运行章首 Lab，把输入层解析或 AOT 契约变成可验证结果；再回到正文用断点把关键分支（reader/hints/值解析）观察到并能解释。
+    # AOT 方法注入
+    <!-- CHAPTER-CARD:START -->
+    !!! summary "章节入口"
+        - 这一页只回答：方法注入在 AOT 下为什么需要单独验证？
+        - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test`
+        - 相邻主题只做跳转，不在本页重复展开。
 
-    观察对象：48. 方法注入（Method Injection）：replaced-method / MethodReplacer。
-    主线位置：输入层（XML/Properties/Groovy）解析的落点仍是 BeanDefinition；AOT/Native 的关键是把反射/代理/资源等需求变成可测试的构建期契约（RuntimeHints）。
+        观察对象：lookup-method/replaced-method 需要生成子类或方法替换时的 native 边界。
+        主线位置：AOT / Native。
+        对照入口：`SpringCoreBeansReplacedMethodLabTest`。
+    <!-- CHAPTER-CARD:END -->
 
-    对照入口：`SpringCoreBeansReplacedMethodLabTest`。需要下探源码时，可以从 `SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides` / `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection` / `AbstractBeanDefinition#getMethodOverrides` 这些入口切入。
+    ## 归属边界
 
-<!-- CHAPTER-CARD:END -->
+    这一页只回答一个问题：方法注入在 AOT 下为什么需要单独验证？
 
+    本页负责把这个问题收束到一个可运行证据入口。相邻主题只在“相邻跳转”中出现，避免同一个知识点散落到多个文件。
 
-## 问题：方法注入（Method Injection）
+    ## 最短证据入口
 
-先运行本章 Lab，把核心现象固定为可复现事实；随后围绕入口方法、关键分支和可观察变量阅读正文。
+    - `SpringCoreBeansReplacedMethodLabTest`
 
-- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-- 官方文档对照（AOT，Spring Framework 6.2.x）：https://docs.spring.io/spring-framework/reference/core/aot.html
-- 官方文档对照（Spring Boot Reference，适用版本：3.5.9）：https://docs.spring.io/spring-boot/reference/
+    ## 观察口径
 
+    | 观察点 | 看什么 | 不在这里展开 |
+    | --- | --- | --- |
+    | 问题定位 | 方法注入在 AOT 下为什么需要单独验证？ | 支持页只负责导航 |
+    | 运行证据 | `SpringCoreBeansReplacedMethodLabTest` | 不用未验证的口头结论替代 Lab |
+    | 边界判断 | lookup-method/replaced-method 需要生成子类或方法替换时的 native 边界。 | 相邻 owner 文档另行负责 |
 
-!!! example "本章配套实验（先运行再读）"
+    ## 相邻跳转
 
-    - Lab：`SpringCoreBeansReplacedMethodLabTest`
-    - 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
+    - [method-injection.md](method-injection.md)
+- [aot-runtimehints.md](aot-runtimehints.md)
+- [appendix-knowledge-map.md](appendix-knowledge-map.md)
 
+    ## 小结
 
-## 机制主线
-
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-这一章解决一个“可能没在新项目里写过，但在读源码/排障时经常看到”的问题：
-
-> **Spring beans 里的 replaced-method 是什么？它跟 AOP 有什么关系？它是怎么做到“改写方法实现”的？**
-
-先给结论：
-
-- `replaced-method` 属于 Spring beans 的 **method injection** 能力
-- 它发生在 **实例化阶段**，通过 **CGLIB 子类化** 生成一个“可替换方法的子类”
-- 它不是 AOP（不是 advisor/interceptor 那套调用链），但同样依赖代理/字节码增强思想
-
----
-
-入口测试：
-
-对应 XML：
-
----
-
-- 测试：`SpringCoreBeansReplacedMethodLabTest#replacedMethod_overridesTargetMethodViaCglibSubclassing_andIsVisibleInBeanDefinitionMethodOverrides`
-- XML：`spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
-
-### 机制边界：条件、分支与结果
-
-**条件**：BeanDefinition 存在 `MethodOverrides`
-**分支**：实例化走 `instantiateWithMethodInjection`（CGLIB 子类化）
-**结果**：目标方法被替换为 `MethodReplacer` 的实现
-**断点入口**：`AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`
-
-## 是什么：它解决什么问题？不解决什么问题？
-
-它解决的问题：
-
-- 让“某个方法的实现”变成 **配置驱动/可替换**（而不是写死在 class 里）
-- 让容器在实例化阶段生成一个“方法可被替换”的对象（适用于历史配置/框架扩展点）
-
-它不解决的问题：
-
-- 它不是 AOP：不提供 pointcut/advice 的条件匹配与链式拦截
-- 它不是依赖注入：不是“选哪个 bean 注入”
-- 其定位更接近是：**容器在创建对象时，生成一个“方法可被替换”的子类**
-
----
-
-## 使用方式：最小可用写法（XML）
-
-- 一个目标 bean（包含要被替换的方法）
-- 一个 `MethodReplacer`（实现 `reimplement(...)`）
-- 在 `<bean>` 内声明 `<replaced-method name="..." replacer="..."/>`
-
-- `service.greet("Alice")` 返回的是 replacer 的结果，而不是原始实现
-- 目标对象的 class 变成了 CGLIB enhanced class（可用 `Enhancer.isEnhanced` 观察）
-
----
-
-## 2.1 与 `@Lookup` 的差异与选型
-
-两者都属于“方法注入”，但机制与场景不同：
-
-- `replaced-method`：**替换方法实现**（完全由 `MethodReplacer` 接管）
-- `@Lookup`：**方法返回值由容器按需提供**（常用于 prototype 注入）
-
-选型取舍：
-
-- 需要“按调用返回不同 bean” → `@Lookup`
-- 需要“把方法实现整体替换掉” → `replaced-method`
-
-## 2.2 AOT/Native 风险与替代
-
-`replaced-method` 依赖 CGLIB 子类化与方法覆写：
-
-- 在 AOT/Native 场景中更脆弱（字节码生成/反射可见性受限）
-- final 类/方法直接不可用
-
-替代思路：
-
-- 改为显式策略接口 + 注入实现
-- 或用 `@Lookup` / `ObjectProvider` 解决动态返回需求
-
-## 原理：把现象放回容器主线（它发生在哪个阶段？）
-
-把它放回 beans 主线，可以更容易理解：
-
-1. XML 被解析为 BeanDefinition（定义层）
-2. BeanDefinition 内部会携带一个 `MethodOverrides`（记录 lookup/replaced 的方法覆盖信息）
-3. 当 BeanFactory 创建实例时：
-   - 如果发现 definition 存在 method overrides
-   - 就会走到 **InstantiationStrategy 的 method injection 分支**
-4. Spring 使用 CGLIB 生成子类，并在目标方法处委托给 `MethodReplacer`
-
-所以它的本质是：**定义层的“方法覆盖元数据”影响了实例化策略**。
-
----
-
-### 4.1 关键对象（至少要认识名字）
-
-- `AbstractBeanDefinition#getMethodOverrides`：定义层里存放 method override 元数据
-- `MethodReplacer`：替换实现（编写的逻辑）
-- `InstantiationStrategy`：
-  - 当存在 method overrides 时，Spring 会切到 method injection 的 instantiate 分支
-
-观察点：
-
-- BeanDefinition 的 `methodOverrides` 是否为空（为什么会走到 method injection 分支）
-- 生成后的 bean class 是否为 enhanced class（是否真的发生了子类化）
-- replacer 是如何被注入/查找到的（它本身也是一个 bean）
-
----
-
-## 实验：把现象固定成断言
-
-本章可复核的实验入口：
-- Lab：`SpringCoreBeansReplacedMethodLabTest`
-- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
-
-### 从实验现象看边界
-
-## 运行入口
-
-- `spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
-
-运行命令：
-
-```bash
-mvn -pl :spring-core-beans -Dtest=SpringCoreBeansReplacedMethodLabTest test
-```
-
-- `spring-core-modules/spring-core-beans/src/test/resources/part05_aot_and_real_world/xml/replaced-method.xml`
-
-- 若希望让某个 bean 的某个方法在运行时“由容器决定实现”，而不是固定写死在类里
-- 或者需要一种“配置驱动的可插拔方法实现”（历史上在 XML 配置时代更常见）
-
-最小结构（本仓库已提供可运行版本）：
-
-1. 一个目标 bean（包含要被替换的方法）
-2. 一个 `MethodReplacer` bean（提供替换实现）
-3. `<replaced-method name="..." replacer="..."/>`（把 method override 元数据写进 BeanDefinition）
-
-读者运行 Lab 后应该能断言：
-
-- 目标方法的返回值来自 replacer（而不是原始实现）
-- 目标对象的 runtime class 为 enhanced class（证明子类化发生）
-- BeanDefinition 的 `methodOverrides` 非空（证明“定义层元数据”驱动了实例化策略分支）
-
-## 怎么实现的：关键类/关键方法/关键分支 + 断点入口
-
-### 4.2 断点入口（从“为什么会走到这里”到“替换发生点”）
-
-1. `AbstractAutowireCapableBeanFactory#createBeanInstance`：实例化入口（选择 instantiation strategy）
-2. `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`：method injection 分支入口
-3. `CglibSubclassingInstantiationStrategy#instantiateWithMethodInjection`：CGLIB 子类化实现点（“为什么必须是子类”）
-4. `MethodReplacer#reimplement`：替换逻辑真正执行点（最终证据）
-
-## 边界：方法注入（Method Injection）
-> 官方参考（Spring Framework 6.2.x，注解驱动与依赖注入语义）：https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
-
-
-### 常见边界与误区
-
-1. **误区：这是 AOP**
-   - 不是。它是“实例化策略”层面的子类化替换。
-2. **边界：final class / final method**
-   - CGLIB 子类化的天然限制：final 类/方法无法被覆盖。
-3. **误区：这在现代项目里没意义**
-  - 可能不写，但需要在排障时识别：某个对象为什么是 enhanced class、为什么方法行为“不像源码那样”。
-
-## 面试常问（方法注入：replaced-method / MethodReplacer）
-
-### Q1：replaced-method 属于 AOP 吗？它解决的是什么问题？
-
-- 标准答案（可复述）：
-  - 不是 AOP；它是“实例化策略分支”层面的子类化替换。它通过 MethodOverride 元数据驱动，在实例化时生成 enhanced class，并在方法调用时委托 `MethodReplacer`。
-- 证据链（方法级）：
-  - `AbstractAutowireCapableBeanFactory#createBeanInstance`
-  - `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`
-  - `MethodReplacer#reimplement`
-- 最小复现：
-  - `SpringCoreBeansReplacedMethodLabTest`
-
-### Q2：为什么它必须依赖 CGLIB 子类化？final class/final method 会怎样？
-
-- 标准答案（可复述）：
-  - 因为它需要覆盖/拦截目标方法；final 类/方法无法被覆盖，子类化天然受限，因此这类场景会失败或无法生效。
-
-## 验收口径：方法注入（Method Injection）
-- 需要解释清楚：replaced-method 属于 AOP 还是“实例化策略分支”？为什么？
-- 需要说出：它为什么必须依赖 CGLIB 子类化吗？final class/final method 会发生什么？
-- 如何用断点证明：方法替换发生在 `createBeanInstance` 的哪个分支里，并最终落到 `MethodReplacer#reimplement`？
-
-## 小结：方法注入（Method Injection）
-
-- `AbstractAutowireCapableBeanFactory#createBeanInstance`（实例化入口）
-- `AbstractAutowireCapableBeanFactory#instantiateWithMethodInjection`（method injection 分支）
-- `SimpleInstantiationStrategy#instantiateWithMethodInjection`（策略抽象入口）
-- `CglibSubclassingInstantiationStrategy#instantiateWithMethodInjection`（CGLIB 子类化实现）
-- `MethodReplacer#reimplement`（相应的替换逻辑被调用的点）
-
-<!-- BOOKIFY:START -->
-
-### 对应实验/测试
-
-- Lab：`SpringCoreBeansReplacedMethodLabTest`
-- 测试文件：`spring-core-modules/spring-core-beans/src/test/java/com/learning/springboot/springcorebeans/part05_aot_and_real_world/SpringCoreBeansReplacedMethodLabTest.java`
-
-<!-- BOOKIFY:END -->
+    aot-method-injection.md 的完成标准是：读者能用上面的 Lab 证明“方法注入在 AOT 下为什么需要单独验证？”，并知道哪些相邻问题应该跳到其他 owner 文档。

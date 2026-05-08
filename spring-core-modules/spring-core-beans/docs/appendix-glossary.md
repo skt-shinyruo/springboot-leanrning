@@ -1,214 +1,30 @@
-# 术语表
-<!-- CHAPTER-CARD:START -->
-!!! summary "章节入口"
-    - 使用方式：先用本章的“清单/索引/分流”把问题分型，再回到对应章节用断点与 Lab 把结论证明出来；团队内训/复盘时可直接按本章结构复用。
-
-    观察对象：91. 术语表。
-    主线位置：`ApplicationContext#refresh` 主线：注册 BeanDefinition → BFPP 加工定义 → 实例化/注入 → BPP 增强（代理/回调）→ 生命周期与销毁。
-
-    对照入口：`SpringCoreBeansContainerLabTest`。需要下探源码时，可以从 `@Value("#{...}")` / `DefaultListableBeanFactory#registerBeanDefinition` / `DefaultSingletonBeanRegistry#getSingleton` 这些入口切入。
-
-<!-- CHAPTER-CARD:END -->
-
-## 读法：把术语翻译成可观察对象
-
-本页不是新的主线章节，而是把已读过的机制拿回来验证、排障和自检。读法如下：
-
-1. 先运行 Book Matrix、Branch Matrix 或本页列出的最小 Lab，把现象固定成可重复结果。
-2. 再按现象、题目或坑点定位对应章节、断点和关键变量。
-3. 最后用对应实验/测试收敛答案；如果答案仍然只停留在概念层面，再回到正文补齐机制。
-
-## 问题：术语表
-
-- 这页是工具页：当读者在正文里遇到某个术语，但一时说不清“它落到代码里是什么”（哪个类/哪个方法/哪个数据结构）时，可以直接来这里查。
-- 每个术语都尽量绑定到一个章节入口与一个可验证的观察点；不需要背完整列表，但应该能用它把“名词”翻译成“可断点证明的事实”。
-
-- 官方文档对照（适用版本：Spring Framework 6.2.x；本仓库基线：6.2.15）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-!!! example "本章配套实验（先运行再读）"
-
-    - Lab：`SpringCoreBeansContainerLabTest`
-
-
-## 机制主线
-
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-这份术语表的目标不是“背概念”，而是解决两个学习痛点：
-
-### 使用方式（把术语落成可排障结论）
-> 官方参考（Spring Framework 6.2.x，BeanFactory/Bean 语义总览）：https://docs.spring.io/spring-framework/reference/core/beans.html
-
-
-遇到术语时，按下面 4 步快速落地：
-
-1. **现象**：它通常对应哪类问题/异常？
-2. **证据链**：它在源码主线上出现在哪个方法？
-3. **修复**：需要能做的最小动作是什么？
-4. **验证**：哪个实验/测试 能复现并验证？
-
----
-
-## 容器与定义
-
-- **Bean**：被 Spring 容器管理的对象（最终 `getBean()` 获取到的“对外暴露对象”，可能是原始对象也可能是代理）。
-  章节：[`01`](bean-mental-model.md)
-- **BeanDefinition**：定义层元数据，描述“如何创建一个 bean”（class/factory method/scope/lazy/dependsOn/回调等）。
-  章节：[`01`](bean-mental-model.md)、[`35`](merged-bean-definition.md)
-- **RootBeanDefinition / MergedBeanDefinition**：创建时实际参与计算的“合并后的最终配方”。
-  章节：[`35`](merged-bean-definition.md)
-- **BeanFactory**：最核心的 IoC 容器能力（创建/注入/scope/生命周期骨架）。
-  章节：[`01`](bean-mental-model.md)
-- **ApplicationContext**：在 BeanFactory 上叠加事件、资源、环境等“应用级能力”，并提供 `refresh()` 主线。
-  章节：[`01`](bean-mental-model.md)、[`12`](container-bootstrap-and-infrastructure.md)
-- **refresh**：容器启动的主线流程（定义注册→执行 BFPP/BDRPP→注册 BPP→创建单例→收尾事件）。
-  章节：[`00`](guide-deep-dive-guide.md)、[`12`](container-bootstrap-and-infrastructure.md)
-
----
-
-## 注入与候选
-
-- **DependencyDescriptor**：注入点的“描述符”（需要什么类型/是否 required/是否带泛型/有哪些注解/名称等）。
-  章节：[`03`](dependency-injection-resolution.md)
-- **候选（candidates）**：按类型匹配得到的候选集合；单依赖需要进一步收敛为唯一胜者，否则失败（NoUnique）。
-  章节：[`03`](dependency-injection-resolution.md)、[`33`](wiring-autowire-candidate-selection-primary-priority-order.md)
-- **`@Qualifier` / AutowireCandidateResolver**：缩小候选集合（精确选择）；包含 meta-annotation 的 Qualifier 也在此阶段参与过滤。
-  章节：[`03`](dependency-injection-resolution.md)、[`45`](aot-custom-qualifier.md)
-- **`@Primary` / `@Priority`**：候选收敛的默认胜者/优先级线索（注意：并不等价于集合排序）。
-  章节：[`33`](wiring-autowire-candidate-selection-primary-priority-order.md)
-- **`@Order` / Ordered**：主要影响集合注入/链路顺序，不等价于“单依赖选谁”。
-  章节：[`33`](wiring-autowire-candidate-selection-primary-priority-order.md)、[`14`](post-processor-ordering.md)
-- **ObjectProvider**：把“获取依赖”延迟到使用时（常用于 prototype 注入 singleton、可选依赖等）。
-  章节：[`04`](scope-and-prototype.md)
-
----
-
-## 生命周期与扩展点
-
-- **生命周期（lifecycle callbacks）**：实例化→属性填充→初始化回调（Aware/@PostConstruct 等）→对外暴露→销毁回调。
-  章节：[`05`](lifecycle-callbacks.md)、[`17`](internals-lifecycle-callback-order.md)
-- **Aware**：让 bean “感知容器能力”的回调族（BeanName/BeanFactory/ApplicationContext 等）。
-  章节：[`12`](container-bootstrap-and-infrastructure.md)
-- **BFPP（BeanFactoryPostProcessor）**：作用于定义层（BeanDefinition），发生在实例化之前。
-  章节：[`06`](ioc-post-processors.md)、[`14`](post-processor-ordering.md)
-- **BDRPP（BeanDefinitionRegistryPostProcessor）**：BFPP 的增强版，可以再注册更多 BeanDefinition。
-  章节：[`13`](bdrpp-definition-registration.md)
-- **BPP（BeanPostProcessor）**：作用于实例层（创建过程中/初始化前后），可以包装/替换最终暴露对象（proxy）。
-  章节：[`06`](ioc-post-processors.md)、[`31`](proxying-phase.md)
-- **PriorityOrdered / Ordered**：处理器排序的两层契约（分段执行 + 组内排序）。
-  章节：[`14`](post-processor-ordering.md)
-
----
-
-## 代理、FactoryBean、循环依赖
-
-- **Proxy（代理）**：容器最终暴露对象可能是代理而非原始实例，常见由 BPP 在 after-init 返回。
-  章节：[`31`](proxying-phase.md)
-- **FactoryBean**：注册在容器里的是工厂，`getBean("name")` 默认获取到 product，`getBean("&name")` 才获取到工厂本身。
-  章节：[`08`](factorybean.md)、[`23`](wiring-factorybean-deep-dive.md)、[`29`](wiring-factorybean-edge-cases.md)
-- **early reference（提前暴露引用）**：为缓解部分单例循环依赖，在“还没初始化完”时暴露早期引用（可能与代理交互）。
-  章节：[`09`](circular-dependency.md)、[`16`](early-reference-and-three-level-cache.md)
-
----
-
-## 值解析与类型转换
-
-- **embedded value resolver**：`@Value` 字符串解析的核心机制（non-strict vs strict）。
-  章节：[`34`](value-placeholder-resolution.md)
-- **BeanWrapper**：属性读写与类型转换触发器（写入属性时触发 convertIfNecessary）。
-  章节：[`36`](type-conversion-and-beanwrapper.md)
-- **ConversionService**：现代转换体系（优先理解与使用）。
-  章节：[`36`](type-conversion-and-beanwrapper.md)
-
----
-
-## AOT 与真实世界补齐
-
-- **AOT（Ahead-of-Time）**：把原本运行期才能完成的工作（分析/生成/裁剪元信息）前移到构建期执行，以换取更快启动与更强可预知性。
-  章节：[`40`](aot-native-overview.md)
-- **RuntimeHints / RuntimeHintsRegistrar**：AOT/Native 下的“构建期契约”数据结构与注册入口，用于声明反射/代理/资源等运行期需求。
-  章节：[`41`](aot-runtimehints.md)
-- **XmlBeanDefinitionReader / BeanDefinitionReader**：把输入源（XML/properties/groovy 等）解析为 BeanDefinition 并注册到 BeanFactory 的 reader 家族（定义层输入）。
-  章节：[`42`](aot-xml-bean-definition-reader.md)、[`47`](aot-beandefinitionreader-other-inputs.md)
-- **AutowireCapableBeanFactory**：对容器外对象提供“注入/初始化/销毁”的能力入口（把部分容器管道应用到非托管对象上）。
-  章节：[`43`](aot-autowirecapablebeanfactory-external-objects.md)
-- **SpEL（Spring Expression Language）**：用于 `@Value("#{...}")` 等场景的表达式语言（表达式求值后仍会进入类型转换）。
-  章节：[`44`](aot-spel-and-value-expression.md)
-
----
-
-## 实验：把现象固定成断言
-
-本章可复核的实验入口：
-- Lab：`SpringCoreBeansContainerLabTest`
-- 命令：`mvn -pl :spring-core-beans test`（亦可在 IDE 中运行上述测试类）
-
-### 从实验现象看边界
-
-> 验证入口（可运行）：`SpringCoreBeansContainerLabTest`
-
-## 运行入口
-
-- 本章为索引/术语类内容，不直接提供单一 Lab 入口。
-- 做法：从本页跳转到对应章节后，按章节中的“运行入口”执行对应 Test。
-
-1. 读文档/看断点时遇到名词能快速定位“它到底是什么、在哪个阶段出现、影响什么”
-2. 把同一类名词放在一起对比，避免“记得名字但不知道边界”
-
-> 使用处理：遇到不熟悉的术语，可先在此处快速检索，再回到对应章节运行 Lab。
-> Part 05（AOT/XML/SpEL/容器外对象）相关术语请优先参阅上方“**AOT 与真实世界补齐**”小节。
-
-## 边界：术语表
-
-- **DependencyDescriptor**：注入点的“描述符”（需要什么类型/是否 required/是否带泛型/有哪些注解/名称等）。
-  章节：[`03`](dependency-injection-resolution.md)
-- **候选（candidates）**：按类型匹配得到的候选集合；单依赖需要进一步收敛为唯一胜者，否则失败。
-  章节：[`03`](dependency-injection-resolution.md)、[`33`](wiring-autowire-candidate-selection-primary-priority-order.md)
-- **`@Qualifier`**：缩小候选集合（精确选择）。
-  章节：[`03`](dependency-injection-resolution.md)
-- **`@Primary`**：默认胜者（没有更强限定条件时）。
-  章节：[`33`](wiring-autowire-candidate-selection-primary-priority-order.md)
-- **`@Order` / Ordered**：主要影响集合注入/链路执行顺序，不等价于“单依赖选谁”。
-  章节：[`33`](wiring-autowire-candidate-selection-primary-priority-order.md)、[`14`](post-processor-ordering.md)
-- **ResolvableDependency**：可注入但不是 bean 的特殊依赖（例如 `ApplicationContext`、`Environment`）。
-  章节：[`20`](resolvable-dependency.md)
-- **ResolvableType**：Spring 用来描述/匹配泛型的类型系统。
-  章节：[`37`](generic-type-matching.md)
-
-## 排障使用方式（术语 → 断点入口）
-
-若在真实项目里看到异常/现象，先不必急于“猜机制”，先把术语落到阶段与断点：
-
-1. 看到 **BeanDefinition / registry / reader**：优先认为是“定义层”，先去断点 `DefaultListableBeanFactory#registerBeanDefinition` / 对应 Reader 的 `loadBeanDefinitions`。
-2. 看到 **populate / convert / @Value**：优先认为是“注入/值解析/类型转换”阶段，去断点 `populateBean` / `resolveEmbeddedValue` / `convertIfNecessary`。
-3. 看到 **post-processor / proxy / advisor**：优先认为是“BPP 链导致的包装/替换”，去断点 `registerBeanPostProcessors` / `applyBeanPostProcessorsAfterInitialization`。
-4. 看到 **early reference / in creation**：优先认为是“循环依赖窗口期”，去断点 `DefaultSingletonBeanRegistry#getSingleton` / `addSingletonFactory`。
-
-更系统的分流表：`appendix-production-troubleshooting-checklist.md`
-
-## 面试使用方式（术语 → 结论 → 证据链）
-
-术语表不是用来背的；面试/述职时需要做到的是“把术语放回调用链与时机”：
-
-- 读者提到 BFPP/BDRPP/BPP：要能补一句“发生在 refresh 哪一段”，并说出关键方法：`invokeBeanFactoryPostProcessors` / `registerBeanPostProcessors`。
-- 读者提到 FactoryBean：要能补一句“名字 `&` 前缀的差异”，并能指到 `getObjectForBeanInstance`。
-- 读者提到循环依赖：要能补一句“三层缓存解决的是 setter 窗口期，不是构造器循环”，并能指到 `getSingleton`。
-
-答题模板入口：`appendix-interview-playbook.md`
-
-## 验收口径：术语表
-- 需要把下面 5 个名词分别放到 refresh 主线的哪个阶段吗：`BeanDefinition` / BFPP/BDRPP / BPP / `doGetBean` / `doCreateBean`？
-- 需要解释清楚：为什么同一个名词（例如 “processor”）在定义阶段与创建阶段的职责完全不同吗？
-- 能否用术语表把“看到名词 → 关联章节 → 运行 Lab → 设置断点验证”的链路完成验证？
-
-## 小结：术语表
-
-
-<!-- BOOKIFY:START -->
-
-### 对应实验/测试
-
-- Lab：`SpringCoreBeansContainerLabTest`
-
-<!-- BOOKIFY:END -->
+    # Appendix：术语表
+    <!-- CHAPTER-CARD:START -->
+    !!! summary "章节入口"
+        - 这页只做支持：给术语的一句话定义和 owner 链接。
+        - 需要机制解释时，跳回主文档。
+        - 最短契约：`SpringCoreBeansDocumentationContractTest`。
+
+        观察对象：路线、索引、断点或 Lab 入口。
+        主线位置：支持文档，不拥有新的 Bean 知识点。
+        对照入口：`SpringCoreBeansDocumentationContractTest`。
+    <!-- CHAPTER-CARD:END -->
+
+    ## 职责
+
+    给术语的一句话定义和 owner 链接。
+
+    ## 路由表
+
+    | 入口 | 用途 |
+    | --- | --- |
+    | [bean-mental-model.md](bean-mental-model.md) | 主文档或支持入口 |
+| [bean-definition-metadata-and-origin.md](bean-definition-metadata-and-origin.md) | 主文档或支持入口 |
+| [autowire-candidate-selection.md](autowire-candidate-selection.md) | 主文档或支持入口 |
+    | [appendix-knowledge-map.md](appendix-knowledge-map.md) | 全量 owner 归属表 |
+
+    ## 维护规则
+
+    - 只保留路线、索引、断点、Lab 或 checklist。
+    - 发现需要解释 Bean 行为时，新增或修改对应主文档，而不是扩写本页。
+    - 修改后运行 `mvn -pl :spring-core-beans -Dtest=SpringCoreBeansDocumentationContractTest test`。

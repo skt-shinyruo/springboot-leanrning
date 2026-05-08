@@ -140,7 +140,7 @@ class SpringCoreBeansExerciseTest {
 
                             建议阅读：
                             - `spring-core-modules/spring-core-beans/docs/dependency-injection-resolution.md`
-                            - `spring-core-modules/spring-core-beans/docs/wiring-autowire-candidate-selection-primary-priority-order.md`
+                            - `spring-core-modules/spring-core-beans/docs/autowire-candidate-selection.md`
                             """)
                     .isEqualTo("primary");
         }
