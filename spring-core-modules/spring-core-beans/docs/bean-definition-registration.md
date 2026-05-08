@@ -1,14 +1,14 @@
-    # BeanDefinition 注册：谁把定义放进容器
-    <!-- CHAPTER-CARD:START -->
-    !!! summary "章节入口"
-        - 这一页只回答：一个 BeanDefinition 是如何被注册进容器的？
-        - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionRegistrationDiffLabTest test`
-        - 相邻主题只做跳转，不在本页重复展开。
+# BeanDefinition 注册：谁把定义放进容器
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节入口"
+    - 这一页只回答：一个 BeanDefinition 是如何被注册进容器的？
+    - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansBeanDefinitionRegistrationDiffLabTest test`
+    - 相邻主题只做跳转，不在本页重复展开。
 
-        观察对象：扫描、配置类解析和普通定义注册如何把 BeanDefinition 放入 registry。
-        主线位置：容器与注册。
-        对照入口：`SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` / `SpringCoreBeansComponentScanLabTest`。
-    <!-- CHAPTER-CARD:END -->
+    观察对象：扫描、配置类解析和普通定义注册如何把 BeanDefinition 放入 registry。
+    主线位置：容器与注册。
+    对照入口：`SpringCoreBeansBeanDefinitionRegistrationDiffLabTest` / `SpringCoreBeansComponentScanLabTest`。
+<!-- CHAPTER-CARD:END -->
 
 ## 注册解决的是“容器知道什么”
 

@@ -1,14 +1,14 @@
-    # Bean 心智模型：定义、实例、缓存与最终暴露对象
-    <!-- CHAPTER-CARD:START -->
-    !!! summary "章节入口"
-        - 这一页只回答：Bean、BeanDefinition、单例缓存、最终暴露对象分别是什么关系？
-        - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`
-        - 相邻主题只做跳转，不在本页重复展开。
+# Bean 心智模型：定义、实例、缓存与最终暴露对象
+<!-- CHAPTER-CARD:START -->
+!!! summary "章节入口"
+    - 这一页只回答：Bean、BeanDefinition、单例缓存、最终暴露对象分别是什么关系？
+    - 最短命令：`mvn -pl :spring-core-beans -Dtest=SpringCoreBeansContainerLabTest test`
+    - 相邻主题只做跳转，不在本页重复展开。
 
-        观察对象：定义元数据、运行时实例、singleton 缓存、暴露给调用方的对象之间的边界。
-        主线位置：容器与注册。
-        对照入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBeanGraphDebugLabTest`。
-    <!-- CHAPTER-CARD:END -->
+    观察对象：定义元数据、运行时实例、singleton 缓存、暴露给调用方的对象之间的边界。
+    主线位置：容器与注册。
+    对照入口：`SpringCoreBeansContainerLabTest` / `SpringCoreBeansBeanGraphDebugLabTest`。
+<!-- CHAPTER-CARD:END -->
 
 ## 先分清四个对象
 
@@ -51,7 +51,7 @@ singleton 缓存不登记“有哪些 BeanDefinition”。它服务的是运行�
 
 `SpringCoreBeansContainerLabTest#factoryBeanByNameReturnsProductAndAmpersandReturnsFactory()` 里的 `sequence` 是 `SequenceFactoryBean`。Lab 里连续两次 `getBean("sequence", Long.class)` 得到 `1L` 和 `2L`，说明默认名字走的是产品对象；再调用 `getBean("&sequence")`，断言返回的是 `SequenceFactoryBean`，并且直接调用工厂的 `getObject()` 得到 `3L`。
 
-源码上，普通 `getBean` 先进入 `AbstractBeanFactory#doGetBean`，拿到实例后会判断是否需要从 `FactoryBean` 取产品；产品获取和缓存语义继续看 `FactoryBeanRegistrySupport#getObjectFromFactoryBean`。更完整的 `FactoryBean` 语义放在 [factorybean.md](factorybean.md)。
+源码上，普通 `getBean` 先进入 `AbstractBeanFactory#doGetBean`，拿到实例后交给 `AbstractBeanFactory#getObjectForBeanInstance` 判断当前名字是否带 `&`、该返回工厂本身还是产品；如果要返回产品，再进入 `FactoryBeanRegistrySupport#getObjectFromFactoryBean` 处理产品获取和缓存语义。更完整的 `FactoryBean` 语义放在 [factorybean.md](factorybean.md)。
 
 ## early reference 不是最终对象的同义词
 
@@ -68,7 +68,8 @@ early reference 是 Spring 为部分 setter / field 循环依赖保留的运行�
 1. `DefaultListableBeanFactory#getBeanDefinition`：先确认定义查询只取元数据。
 2. `AbstractBeanFactory#doGetBean`：看 `getBean(...)` 如何从名字、类型、scope、`FactoryBean` 语义进入创建或复用流程。
 3. `DefaultSingletonBeanRegistry#getSingleton`：看 singleton 实例什么时候从缓存返回，什么时候进入创建回调，什么时候允许 early reference。
-4. `FactoryBeanRegistrySupport#getObjectFromFactoryBean`：看普通名字为什么返回产品，`&` 前缀为什么绕开产品语义。
+4. `AbstractBeanFactory#getObjectForBeanInstance`：看普通名字和 `&` 前缀如何分流到产品对象或工厂对象。
+5. `FactoryBeanRegistrySupport#getObjectFromFactoryBean`：看需要产品对象时如何调用 `FactoryBean` 并处理产品缓存。
 
 再往下的构造、属性填充、初始化、后处理器替换对象，放到 [bean-creation-mainline.md](bean-creation-mainline.md) 继续读。
 
