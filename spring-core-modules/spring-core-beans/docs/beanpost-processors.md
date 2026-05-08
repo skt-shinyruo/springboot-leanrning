@@ -31,6 +31,7 @@ before-init BPP 发生在 init callback 前，适合给原始对象补充初始�
 `SpringCoreBeansBeanCreationTraceLabTest` 的事件顺序是：
 
 ```text
+dependency:constructed
 service:constructed
 iabpp:afterInstantiation(service)
 iabpp:postProcessProperties(service,hasDependencyProperty=true,dependencyInjected=false)
@@ -41,6 +42,8 @@ bpp:afterInitialization(service):replacedByJdkProxy
 ```
 
 `hasDependencyProperty=true` 说明属性值已经准备好；`dependencyInjected=false` 说明 setter 还没有执行。随后才出现 `service:setDependency`。这就是属性填充窗口和初始化窗口的分界。
+
+同一个扩展族还有实例化前短路入口，`postProcessBeforeInstantiation` 可以让构造器根本不执行；这个机制由 [pre-instantiation-short-circuit.md](pre-instantiation-short-circuit.md) 单独负责。
 
 ## afterInitialization 可以替换最终暴露对象
 
@@ -81,6 +84,7 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansLifecycleRawVsProxyLabTest,Spri
 
 - [post-processors-overview.md](post-processors-overview.md)：BFPP/BDRPP/BPP 的阶段分界。
 - [bean-creation-mainline.md](bean-creation-mainline.md)：单个 bean 创建主线。
+- [pre-instantiation-short-circuit.md](pre-instantiation-short-circuit.md)：实例化前短路为什么能跳过构造器。
 - [proxying-phase.md](proxying-phase.md)：代理替换、自调用和类型边界。
 - [programmatic-bpp-registration.md](programmatic-bpp-registration.md)：手工注册 BPP 的排序边界。
 - [appendix-knowledge-map.md](appendix-knowledge-map.md)：回到知识点地图。
