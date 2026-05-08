@@ -28,7 +28,7 @@
 | --- | --- | --- |
 | `ConfigurationClassPostProcessor` | `BeanDefinitionRegistryPostProcessor` / `BeanFactoryPostProcessor` | 解析 `@Configuration`、`@Bean`、`@ComponentScan`、`@Import` 等定义来源。 |
 | `AutowiredAnnotationBeanPostProcessor` | `InstantiationAwareBeanPostProcessor` | 解析 `@Autowired`、`@Value`，参与属性注入。 |
-| `CommonAnnotationBeanPostProcessor` | `BeanPostProcessor` | 解析 Jakarta Common Annotations，例如 `@PostConstruct`、`@PreDestroy`、`@Resource`。 |
+| `CommonAnnotationBeanPostProcessor` | `BeanPostProcessor` / `InstantiationAwareBeanPostProcessor` | 解析 Jakarta Common Annotations，例如 `@PostConstruct`、`@PreDestroy`、`@Resource`。 |
 
 这些 processor 的位置不同：`ConfigurationClassPostProcessor` 改的是定义集合；`AutowiredAnnotationBeanPostProcessor` 和 `CommonAnnotationBeanPostProcessor` 进入单个 bean 的创建链路。把它们都叫“基础设施 Bean”，不是说它们在同一个生命周期阶段执行，而是说它们共同提供容器能力。
 
