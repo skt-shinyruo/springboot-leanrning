@@ -34,9 +34,9 @@ mvn -pl :spring-core-beans -Dtest=SpringCoreBeansDocumentationContractTest,Sprin
 | 层级 | 需要掌握的问题 | 本文入口 | 深挖文档 |
 | --- | --- | --- | --- |
 | 定义层 | BeanDefinition 从哪里来、元数据如何影响后续创建和候选选择 | Bean 的本质、容器核心抽象、Bean 的来源 | `docs/bean-mental-model.md`、`docs/bean-definition-registration.md`、`docs/bean-definition-metadata-and-origin.md` |
-| 容器层 | BeanFactory、ApplicationContext、refresh 主线如何协作 | 容器核心抽象、容器启动与 refresh 主线 | `docs/beanfactory-vs-applicationcontext.md`、`docs/refresh-mainline.md`、`docs/container-bootstrap-and-infrastructure.md` |
+| 容器层 | BeanFactory、ApplicationContext、refresh 主线如何协作 | 容器核心抽象、容器启动与 refresh 主线 | `docs/beanfactory-vs-applicationcontext.md`、`docs/beanfactory-api-and-autowirecapablebeanfactory.md`、`docs/refresh-mainline.md`、`docs/container-bootstrap-and-infrastructure.md` |
 | 创建层 | 什么时候实例化、如何选构造器、哪里可能被短路 | Bean 创建主线、实例化方式 | `docs/bean-creation-mainline.md`、`docs/pre-instantiation-short-circuit.md` |
-| 注入层 | 注入点如何提出需求，候选如何收集、过滤、收敛 | 依赖注入方式、自动装配候选选择 | `docs/dependency-injection-resolution.md`、`docs/dependency-descriptor-and-injection-point.md`、`docs/autowire-candidate-selection.md` |
+| 注入层 | 注入点如何提出需求，候选如何收集、过滤、收敛 | 依赖注入方式、自动装配候选选择 | `docs/dependency-injection-resolution.md`、`docs/dependency-descriptor-and-injection-point.md`、`docs/autowire-candidate-selection.md`、`docs/optional-and-provider-injection.md`、`docs/resource-vs-autowired.md` |
 | 生命周期层 | Aware、init、destroy、Smart 回调如何排序 | 生命周期回调、初始化和销毁边界 | `docs/lifecycle-callbacks.md`、`docs/smart-initializing-singleton.md`、`docs/smart-lifecycle.md` |
 | 作用域层 | singleton、prototype、Web scope、自定义 scope 的复用边界 | Bean 作用域、Lazy 语义 | `docs/scope-and-prototype.md`、`docs/custom-scope-and-scoped-proxy.md`、`docs/lazy-semantics.md` |
 | 扩展层 | BFPP、BDRPP、BPP、FactoryBean 如何扩展容器 | 后处理器体系、FactoryBean、编程式注册 | `docs/post-processors-overview.md`、`docs/beanpost-processors.md`、`docs/factorybean.md` |
@@ -89,6 +89,21 @@ Bean 是由 Spring IoC 容器托管的对象。托管意味着容器掌握它的
 
 实际 Spring Boot 应用中使用的通常是 `ApplicationContext`，但真正负责 Bean 创建细节的核心仍然是内部的 `BeanFactory`，常见实现是 `DefaultListableBeanFactory`。
 
+### BeanFactory API 家族
+
+`BeanFactory` 是最小契约，真实容器通常还实现多个更细的接口。排障时要知道自己调用的是哪一层能力。
+
+| 接口或工具 | 关注点 | 常见排障问题 |
+| --- | --- | --- |
+| `BeanFactory` | 单个 Bean 的获取、存在性、类型、别名 | `getBean()` 返回产品、代理还是原始对象 |
+| `ListableBeanFactory` | 枚举 Bean、按类型查找多个候选 | `getBeansOfType()` 是否触发 eager init |
+| `HierarchicalBeanFactory` | 父子工厂查找 | 当前容器没有但父容器有 |
+| `ConfigurableBeanFactory` | scope、别名、类型转换、BPP、依赖关系注册 | 框架扩展修改容器内部策略 |
+| `AutowireCapableBeanFactory` | 创建或初始化容器外对象、解析依赖 | 第三方对象需要 Spring 注入但不是普通 Bean |
+| `BeanFactoryUtils` | 跨层级查找辅助 | 父子容器中同名或同类型 Bean 的聚合 |
+
+`AutowireCapableBeanFactory` 尤其容易被误用。`autowireBean()` 可以给已有对象做依赖注入，`initializeBean()` 可以执行初始化和 BPP，但它不会把这个对象自动变成普通 singleton Bean；是否注册、是否销毁、是否参与候选选择，需要调用方自己负责。
+
 ### BeanDefinition
 
 `BeanDefinition` 是 Bean 的定义元数据。容器不是直接拿注解或 XML 创建对象，而是先把各种输入统一转换成 `BeanDefinition`，再按定义创建 Bean。
@@ -99,8 +114,12 @@ Bean 是由 Spring IoC 容器托管的对象。托管意味着容器掌握它的
 - `scope`：作用域，如 singleton、prototype。
 - `lazyInit`：是否懒加载。
 - `primary`：是否优先候选。
+- `fallback`：是否只在没有普通候选时兜底。
+- `defaultCandidate`：是否参与默认候选判断，常影响条件注解和默认注入。
 - `autowireCandidate`：是否参与自动装配。
 - `dependsOn`：依赖的初始化顺序。
+- `parentName`：父定义名称，创建前会参与 merged definition。
+- `abstract`：是否只是模板定义，不能直接实例化。
 - `factoryBeanName` / `factoryMethodName`：工厂方法创建信息。
 - `initMethodName` / `destroyMethodName`：初始化和销毁方法。
 - constructor arguments：构造器参数。
@@ -120,6 +139,26 @@ Spring 的重要设计是把来源差异收敛到统一模型。XML、注解扫�
 - 让排障从“谁注册了它”推进到“创建时最终看到的定义是什么”。
 
 如果源码里看到注册时的定义和创建时的定义不完全一样，不要急着判断被篡改；先确认是否经过了 merge。排查 owner 是 `docs/merged-bean-definition.md`。
+
+### BeanDefinition 继承与模板定义
+
+BeanDefinition 继承不是 Java 类继承，而是定义元数据继承。子定义可以继承父定义的 class、scope、构造器参数、属性值、init/destroy 方法等元数据，再覆盖其中一部分。
+
+常见形态：
+
+- XML 里的 `<bean parent="...">`。
+- `GenericBeanDefinition#setParentName(...)`。
+- `abstract=true` 的模板定义。
+- 子定义覆盖或补充父定义的属性、构造器参数和方法元数据。
+
+排障价值在于：注册表里看到的子定义可能不完整，但创建阶段看到的是合并后的 RootBeanDefinition。尤其是 XML 或框架批量注册场景，很多重复配置会放在抽象父定义里，真正实例化的是子定义。
+
+边界：
+
+- `abstract=true` 的定义不能直接 `getBean()` 创建。
+- 子定义覆盖同名属性，不是和父属性简单并存。
+- 集合属性是否 merge 取决于集合元数据，不是所有集合都会自动合并。
+- 注解和 Java 配置日常较少直接使用父子 BeanDefinition，但底层 merged definition 仍是创建阶段的重要视图。
 
 ### BeanDefinition 的角色与来源
 
@@ -150,6 +189,30 @@ Bean 可以来自多种输入：
 | Boot 自动配置 | `@AutoConfiguration` 及条件注解 | 提供默认 Bean，用户自定义时 backoff |
 
 深层点在于：不同来源的优先级、注册时机和条件判断时机不同。尤其是 Spring Boot 自动配置，很多问题不是 Bean 创建失败，而是 BeanDefinition 根本没有注册，或因为已有 Bean 导致自动配置退让。
+
+### Component Scan 深水区
+
+注解扫描不是“看到 `@Component` 就一定注册”。扫描过程大致是：
+
+```text
+classpath 候选资源
+-> metadata reader 读取类元数据
+-> include / exclude filter 判断是否是候选组件
+-> 生成 BeanDefinition
+-> BeanNameGenerator 生成名称
+-> ScopeMetadataResolver 决定 scope / scoped proxy
+-> 注册到 BeanDefinitionRegistry
+```
+
+需要掌握的边界：
+
+- stereotype 注解可以是直接注解，也可以是元注解组合，例如自定义 `@UseCase` 标注了 `@Component`。
+- `includeFilters` / `excludeFilters` 会在注册前改变候选集合，被过滤掉的类不会进入 BeanDefinition 表。
+- `BeanNameGenerator` 可以改变默认 bean name，影响按名称查找、`@Resource` 和单值注入最后的名称收敛。
+- `ScopeMetadataResolver` 可以让扫描到的 BeanDefinition 带上 request/session/custom scope 或 scoped proxy 语义。
+- `@Indexed` 和 `spring.components` 索引可以优化候选发现，但它改变的是扫描性能和候选发现方式，不改变 Bean 创建主线。
+
+排查“类上明明有注解却没有 Bean”时，先看扫描 base package、过滤器、条件注解和索引，再看创建阶段。
 
 ### Import 机制
 
@@ -337,9 +400,10 @@ Spring 支持多种 Bean 实例化路径：
 3. 使用 `@Qualifier` 或自定义 qualifier 过滤。
 4. 处理泛型匹配，如 `Repository<User>`。
 5. 使用 `@Primary` 选择优先候选。
-6. 使用 `@Priority` 或 `@Order` 处理排序。
-7. 使用注入点名称进行最后收敛。
-8. 若仍无法唯一确定，则抛出异常。
+6. 区分普通候选、`@Fallback` 兜底候选和 `defaultCandidate`。
+7. 使用 `@Priority` 或 `@Order` 处理排序。
+8. 使用注入点名称进行最后收敛。
+9. 若仍无法唯一确定，则抛出异常。
 
 集合注入与单值注入不同：
 
@@ -381,17 +445,49 @@ Spring 自动装配时，注入点会被抽象成 `DependencyDescriptor`。它�
 
 `ObjectProvider` 很适合解决懒加载、可选依赖、多候选列表、prototype 动态获取等问题，但不要把大量业务分支写成运行期 `getIfAvailable()`，否则依赖关系会变得隐蔽。
 
+### required、Nullable、Fallback 与 defaultCandidate
+
+候选选择里有几组容易混淆的语义：
+
+| 机制 | 作用点 | 典型含义 |
+| --- | --- | --- |
+| `@Autowired(required = false)` | 注入点 | 依赖不存在时不失败，但多个候选冲突仍可能失败 |
+| `@Nullable` | 注入点 | 依赖可以解析为 null，表达可空语义 |
+| `Optional<T>` | 注入点 | 创建当前 Bean 时尝试解析一次，结果封装为 Optional |
+| `ObjectProvider<T>` | 注入点 | 保留到使用时再解析的能力 |
+| `@Fallback` | 候选 Bean | 普通候选不存在时才作为兜底候选参与 |
+| `defaultCandidate=false` | 候选 BeanDefinition | 不作为默认候选，常用于基础设施或只希望显式引用的 Bean |
+
+`@Primary` 表达“多个普通候选里优先选我”，`@Fallback` 表达“有普通候选时先不要选我”。这两个方向相反，适合默认实现、兼容实现、测试替身等不同场景。Boot 条件注解和默认候选判断也可能参考 `defaultCandidate`，所以排查自动配置 backoff 时，不要只看类型是否存在，还要看候选元数据。
+
+### 自定义候选解析
+
+`@Qualifier` 不只是字符串。Spring 会把注入点上的 qualifier 注解和候选 BeanDefinition 上的 qualifier 元数据交给 `AutowireCandidateResolver` 判断。
+
+常见扩展入口：
+
+- 自定义 qualifier 注解，例如 `@Region("cn")`、`@Tenant("internal")`。
+- `CustomAutowireConfigurer`：把自定义注解注册为 qualifier 类型。
+- 编程式 `AutowireCandidateQualifier`：框架注册 BeanDefinition 时直接写入 qualifier 元数据。
+- 自定义 `AutowireCandidateResolver`：极少数框架级场景，用来改变候选判断策略。
+
+团队里如果有多租户、多区域、多协议实现，优先用语义化 qualifier，而不是把 bean name 当业务路由规则。
+
 ## 11. `@Autowired` 与 `@Resource`
 
 `@Autowired` 是 Spring 注解，核心语义是 by-type，然后结合 qualifier、primary、名称等规则收敛。
 
 `@Resource` 是 JSR-250 注解，常见语义是 name-first。它会优先根据名称找 Bean，找不到时再按类型。
 
+`@Inject` / `@Named` 来自 JSR-330 / Jakarta Inject。Spring 支持它们，但语义更接近标准依赖注入注解，而不是 Spring 专属注解。
+
 差异带来的排障点：
 
 - 字段名变化可能影响 `@Resource` 注入结果。
 - 同类型多个 Bean 时，`@Autowired` 更依赖 `@Qualifier`、`@Primary`。
 - `@Resource(name = "...")` 更像显式按名称绑定。
+- `@Inject` 默认 required，通常配合 `@Named` 或 `Provider<T>` 表达名称和延迟。
+- `jakarta.inject.Provider<T>` 能延迟获取，但 API 能力少于 Spring 的 `ObjectProvider<T>`。
 
 不要只记注解名字，要记它们向容器提出的依赖需求不同。
 
@@ -402,6 +498,7 @@ Spring 自动装配时，注入点会被抽象成 `DependencyDescriptor`。它�
 | 注解 | 作用 |
 | --- | --- |
 | `@Primary` | 单值注入多个候选时优先选择 |
+| `@Fallback` | 普通候选不存在时作为兜底候选 |
 | `@Qualifier` | 按限定符过滤候选 |
 | `@Priority` | 候选优先级，可参与单值选择和排序 |
 | `@Order` | 集合或处理器排序，不等同于单值候选选择 |
@@ -410,6 +507,7 @@ Spring 自动装配时，注入点会被抽象成 `DependencyDescriptor`。它�
 
 - 需要指定某个 Bean：优先用 `@Qualifier`。
 - 需要提供默认实现：可以用 `@Primary`。
+- 需要提供兜底实现：可以用 `@Fallback`。
 - 需要集合顺序：使用 `@Order` 或实现 `Ordered`。
 - 不要用 `@Primary` 掩盖模块边界混乱，否则后续扩展容易出现隐式依赖。
 
@@ -562,6 +660,20 @@ Aware 接口会增强 Bean 对容器的感知，也会增加耦合。业务代�
 - 非 Web 容器中 request/session scope 不存在。
 - JVM 直接退出或进程被强杀时，销毁回调可能没有机会执行。
 
+### 销毁依赖图
+
+Spring 不只是按注册顺序销毁 singleton。容器会记录依赖关系，例如 A 注入了 B、A `dependsOn` B，或者框架显式注册 dependent bean。销毁时通常要先销毁依赖方，再销毁被依赖方，避免被依赖对象提前失效。
+
+相关概念：
+
+- dependent bean：依赖当前 Bean 的其他 Bean。
+- dependencies for bean：当前 Bean 依赖的其他 Bean。
+- disposable bean：需要销毁回调的 Bean。
+- inferred destroy method：`close`、`shutdown` 等可推断销毁方法。
+- `DestructionAwareBeanPostProcessor`：销毁前扩展点，例如处理 `@PreDestroy`。
+
+排查关闭阶段问题时，既要看生命周期回调本身，也要看依赖图是否把销毁顺序导向了预期结果。
+
 ## 16. FactoryBean
 
 `FactoryBean<T>` 是一种特殊 Bean。它本身被 Spring 管理，但 `getBean("name")` 返回的是它生产的产品对象。
@@ -640,6 +752,21 @@ class AppConfig {
 - `@Bean` 方法之间没有互相调用时，可以考虑 `proxyBeanMethods = false`。
 - 需要依赖其他 Bean 时，更推荐通过方法参数注入，而不是直接调用另一个 `@Bean` 方法。
 
+### `@Bean` 高级语义
+
+`@Bean` 不只出现在 full `@Configuration` 类里，也可以出现在普通组件或 lite 配置类里。lite 模式下，`@Bean` 方法之间的 Java 调用不会被 CGLIB 拦截，调用结果就是普通方法返回值，不自动等同于容器 singleton。
+
+需要额外掌握的点：
+
+- static `@Bean` 方法适合注册 `BeanFactoryPostProcessor` 这类需要很早创建的基础设施，避免过早实例化配置类本身。
+- `@Bean(autowireCandidate = false)` 可以让 Bean 可按名称获取，但不参与普通自动装配。
+- `@Bean(defaultCandidate = false)` 可以让 Bean 不作为默认候选，避免影响默认注入或部分条件判断。
+- `@Bean(bootstrap = Bean.Bootstrap.BACKGROUND)` 可标记支持后台初始化的 Bean，但是否并发创建还取决于容器 bootstrap executor 等启动配置。
+- `@ImportResource` 可以把 XML 定义并入 Java 配置模型，适合迁移老项目或接入仍依赖 XML namespace 的框架。
+- `@PropertySource` 影响 `Environment` 的 `PropertySource` 集合，不直接创建业务 Bean，但会影响后续占位符和值解析。
+
+排查配置类时，要先判断它是 full 还是 lite，再判断 `@Bean` 方法是作为工厂方法被容器调用，还是被业务代码直接当普通 Java 方法调用。
+
 ### 方法注入
 
 方法注入解决的是“长生命周期 Bean 需要每次动态获取短生命周期 Bean”的问题。经典形态是 `lookup-method` 或 `@Lookup`。
@@ -677,6 +804,19 @@ A 继续完成初始化
 - 最终注入的是 early reference，但后续又被包装成不同代理。
 
 工程上不要依赖循环依赖作为设计手段。它通常说明职责边界不清，应该拆出第三个协作者，或改用事件、回调、发布订阅等结构。
+
+### 循环依赖开关与异常边界
+
+循环依赖能否被尝试解决，还受容器配置影响。底层 `AbstractAutowireCapableBeanFactory` 有 `allowCircularReferences` 语义；Spring Boot 应用还可能通过 `spring.main.allow-circular-references` 控制是否允许循环依赖。
+
+常见失败形态：
+
+- `BeanCurrentlyInCreationException`：当前 Bean 正在创建，又被创建链路再次请求。
+- 构造器循环依赖：没有“先实例化、后填充属性”的窗口。
+- prototype 循环依赖：prototype 不进入 singleton 三级缓存。
+- raw injection despite wrapping：循环依赖中先注入了原始对象，后续又被代理包装，导致依赖方持有的不是最终暴露对象。
+
+所以看到循环依赖异常时，不要只问“Spring 为什么没帮我解决”。要先确认开关是否允许、依赖发生在构造器还是属性填充、scope 是否是 singleton、AOP 是否要求 early proxy 和最终 proxy 一致。
 
 ## 19. 三级缓存
 
@@ -897,6 +1037,23 @@ PropertySource 提供原始值
 | XML namespace extension | 把自定义标签解析成一个或多个 BeanDefinition |
 
 XML namespace 是很多旧框架集成的关键。一个 `<tx:annotation-driven>` 或自定义标签，背后可能注册的是后处理器、advisor、parser 产生的一组基础设施 Bean。排查这类问题时，不要只看 XML 标签，要看标签最终注册了哪些 BeanDefinition。
+
+### XML 细颗粒定义语义
+
+XML 最能暴露底层 BeanDefinition 模型，很多历史项目和框架集成仍会遇到这些语义：
+
+| XML 语义 | 对应含义 | 排障关注点 |
+| --- | --- | --- |
+| inner bean | 属性或构造器参数里的匿名 BeanDefinition | 没有独立 bean name，生命周期依附外层注入点 |
+| `idref` | 注入另一个 Bean 的名字字符串 | 校验目标名字存在，但注入值仍是字符串 |
+| `<null/>` | 显式注入 null | 和没有配置属性不是一回事 |
+| `list` / `set` / `map` / `props` | 集合属性注入 | 元素值解析、类型转换和 merge 规则 |
+| `merge=true` | 子定义集合合并父定义集合 | 只对支持 merge 的集合元数据生效 |
+| `p` namespace | 属性注入简写 | 可读性换简洁性，底层仍是 property values |
+| `c` namespace | 构造器参数简写 | 参数名、索引和类型匹配仍要能解析 |
+| `util:*` namespace | 注册集合、常量、属性等辅助 Bean | 常产生额外 BeanDefinition |
+
+XML 的默认值也会影响定义，例如 `default-lazy-init`、`default-autowire`、`default-init-method`、`default-destroy-method`。它们通常在读取 XML 时落到 BeanDefinition 或 defaults 上，再在 merged definition 阶段变成创建所需的最终视图。
 
 ## 25. 条件化 Bean
 
@@ -1165,6 +1322,11 @@ Boot 的默认 Bean 不是“低优先级 Bean”这么简单。很多时候它�
 | `@Lazy` 只是启动优化 | 它会改变创建时机，有时还会引入代理 |
 | prototype 会被容器自动销毁 | prototype 通常不由容器完整销毁 |
 | `@Order` 能解决单 Bean 注入冲突 | 单值候选选择主要看 primary、qualifier、priority、名称 |
+| `@Fallback` 和 `@Primary` 都是默认 Bean | `@Primary` 是优先普通候选，`@Fallback` 是没有普通候选时才兜底 |
+| 类上有 `@Component` 就一定注册 | component scan 的 base package、filter、条件和索引都会影响候选是否入表 |
+| `@Inject` 和 `@Autowired` 完全一样 | Spring 支持 JSR-330，但 `Provider`、`@Named`、required 语义和 Spring 专属扩展不同 |
+| `AutowireCapableBeanFactory.autowireBean()` 会注册 Bean | 它只给已有对象做注入，不自动加入 singleton 注册表 |
+| XML 集合子定义会自动合并父定义 | 是否合并取决于集合元数据的 merge 语义 |
 | `dependsOn` 表达依赖注入 | 它只表达初始化顺序 |
 | `getBean()` 一定返回原始对象 | 可能返回代理或 FactoryBean 产品 |
 | Boot 自动配置总是生效 | 条件不匹配或用户 Bean 存在时会退让 |
@@ -1178,9 +1340,11 @@ Boot 的默认 Bean 不是“低优先级 Bean”这么简单。很多时候它�
 先确认 BeanDefinition 是否存在：
 
 - 是否被扫描到。
+- 扫描 base package、include/exclude filter 是否允许它成为候选。
 - 条件是否匹配。
 - profile 是否激活。
 - 是否被同名覆盖。
+- 是否只是 `abstract` 父定义或模板定义。
 - 是否被自动配置 backoff。
 - Bean 名是否正确。
 
@@ -1190,8 +1354,10 @@ Boot 的默认 Bean 不是“低优先级 Bean”这么简单。很多时候它�
 
 - 构造器是否可选中。
 - 依赖是否能解析。
+- 候选是否被 `autowireCandidate=false`、`defaultCandidate=false`、`@Fallback` 或 qualifier 排除。
 - 类型转换是否成功。
 - 是否有循环依赖。
+- 循环依赖开关、scope、AOP early proxy 是否允许当前形态。
 - 初始化回调是否抛异常。
 - BeanPostProcessor 是否提前触发了创建。
 
@@ -1263,9 +1429,13 @@ ApplicationContext.refresh()
 对应要观察的对象：
 
 - `BeanDefinition`：定义是否正确。
+- merged `RootBeanDefinition`：父子定义、默认值、工厂方法和候选元数据最终长什么样。
+- `ClassPathBeanDefinitionScanner`：扫描候选类、过滤器、bean name 和 scope 元数据。
 - `DependencyDescriptor`：注入点提出了什么需求。
+- `AutowireCandidateResolver`：qualifier、fallback、default candidate、lazy 等候选规则怎样判断。
 - `BeanPostProcessor` 列表：谁会介入实例。
 - singleton 三层缓存：循环依赖和 early reference。
+- dependent bean 关系：销毁顺序和依赖图。
 - exposed object：最终暴露给调用方的对象。
 
 ## 40. 一句话总结
